@@ -16,9 +16,9 @@
       <Pattern>%d %-8X{name} %-6p %-20.20c{0} %m%n</Pattern>
     </layout>
     <sift>
-      <appender name="FILE-\${name}" class="ch.qos.logback.core.FileAppender">
+      <appender name="FILE-${name}" class="ch.qos.logback.core.FileAppender">
         <Append>true</Append>
-        <File>\${fascinator.home:-.}/logs/\${name}.log</File>
+        <File>${fascinator.home:-.}/logs/${name}.log</File>
         <layout class="ch.qos.logback.classic.PatternLayout">
           <Pattern>%d %-8X{name} %-6p %-20.20c{0} %m%n</Pattern>
         </layout>

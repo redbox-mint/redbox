@@ -9,7 +9,7 @@ export PROG_DIR=`cd \`dirname $0\`; pwd`
 PID_FILE=$PROG_DIR/tf.pid
 
 # display program header
-echo "The Fascinator - Arts Repository - Harvest Client"
+echo "The Fascinator - ReDBox - Harvest Client"
 
 # setup environment
 . $PROG_DIR/tf_env.sh
@@ -52,9 +52,10 @@ if running; then
 	ARGS="$*"
 	echo " * Starting harvest with: $JSON_FILE"
 	if [ -f $JSON_FILE ]; then
-		java $JAVA_OPTS -cp $CLASSPATH au.edu.usq.fascinator.HarvestClient $JSON_FILE $ARGS
+		LOG_FILE=$TF_HOME/logs/harvest.out
+		java $JAVA_OPTS -cp $CLASSPATH au.edu.usq.fascinator.HarvestClient $JSON_FILE $ARGS > $LOG_FILE 2>&1
 		echo "   - Finished on `date`"
-		echo "   - Log file: $TF_HOME/logs/harvest.out"
+		echo "   - Log file: $LOG_FILE"
 	else
 		echo "   - File not found!"
 		usage
