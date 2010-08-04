@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+    <Set name="contextPath">/redbox</Set>
+    <Set name="war"><SystemProperty name="jetty.home" default="."/>/../webapps/portal.war</Set>
+    <Set name="parentLoaderPriority">true</Set>
+    <Set name="extraClasspath"><SystemProperty name="extra.classpath" default=""/></Set>
+</Configure>

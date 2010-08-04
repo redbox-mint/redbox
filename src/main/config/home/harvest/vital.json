@@ -1,0 +1,27 @@
+{
+    "harvester": {
+        "type": "oai-pmh",
+        "oai-pmh": {
+            "url": "http://ogma.newcastle.edu.au/oaiprovider/",
+            "metadataPrefix": "marc",
+            "maxRequests": -1
+        }
+    },
+
+    "transformer": {
+        "harvestQueue": [],
+        "indexOnHarvest": "false",
+        "renderQueue": ["solrmarc"]
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "vital.py"
+        },
+        "params": {
+            "repository.name": "Newcastle",
+            "repository.type": "Vital"
+        }
+    }
+}

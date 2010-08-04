@@ -1,0 +1,165 @@
+{
+    "version": "0.6.15",
+    "configured": true,
+    "urlBase" : "http://localhost:8088/redbox/",
+    "email" : "adfi@usq.edu.au",
+    "sso": ["OpenID"],
+    "accesscontrol": {
+    "type" : "derby",
+        "derby" : {
+            "derbyHome" : "${fascinator.home}/database"
+        }
+    },
+    "authentication": {
+        "type": "internal",
+        "internal": {
+            "path": "${fascinator.home}/security/users.properties"
+        }
+    },
+    "roles": {
+        "type": "internal",
+        "internal": {
+            "path": "${fascinator.home}/security/roles.properties"
+        }
+    },
+    "storage": {
+        "type": "file-system",
+        "file-system": {
+            "home": "${fascinator.home}/storage"
+        }
+    },
+    "messaging" : {
+        "url" : "tcp://localhost:8086",
+        "stompUrl" : "stomp://localhost:8087",
+        "home" : "${fascinator.home}/activemq-data",
+        "threads" : [
+            {
+                "id" : "render",
+                "description" : "Render queue for priority objects requested by the user.",
+                "priority" : "8",
+                "config" : {
+                    "name" : "renderUser"
+                }
+            },
+            {
+                "id" : "render",
+                "description" : "Render queue for objects that are only using high speed transformers.",
+                "priority" : "6",
+                "config" : {
+                    "name" : "renderHigh"
+                }
+            },
+            {
+                "id" : "render",
+                "description" : "Render queue for most standard documents. External calls to ICE Service are performed.",
+                "priority" : "5",
+                "config" : {
+                    "name" : "renderNormal"
+                }
+            },
+            {
+                "id" : "render",
+                "description" : "Render queue for objects requiring FFmpeg transcoding and optionally calls to the ICE Service.",
+                "priority" : "3",
+                "config" : {
+                    "name" : "renderLow"
+                }
+            },
+            {
+                "id" : "harvest",
+                "description" : "Priority queue for user actions, allows access to the render queues faster.",
+                "priority" : "8",
+                "config" : {
+                    "name" : "harvestUser",
+                    "normal-renderers" : {
+                        "ffmpeg" : "renderLow",
+                        "ice2" : "renderNormal",
+                        "default" : "renderHigh"
+                    },
+                    "user-renderer" : "renderUser"
+                }
+            },
+            {
+                "id" : "harvest",
+                "description" : "Standard harvest queue for new object. May optionally run some fast transformers and an index before routing to the render queues.",
+                "priority" : "7",
+                "config" : {
+                    "name" : "harvest",
+                    "normal-renderers" : {
+                        "ffmpeg" : "renderLow",
+                        "ice2" : "renderNormal",
+                        "default" : "renderHigh"
+                    },
+                    "user-renderer" : "renderUser"
+                }
+            },
+            {
+                "id" : "ingest",
+                "description" : "Ingest queue for objects posted from external source.",
+                "priority" : "3",
+                "config" : {
+                    "name" : "ingest"
+                }
+            }
+        ]
+    },
+    "indexer": {
+        "type": "solr",
+        "properties": "SOF-META",
+        "solr": {
+            "uri": "http://localhost:8088/solr/fascinator",
+            "autocommit": false,
+            "embedded": false
+        },
+        "anotar": {
+            "uri": "http://localhost:8088/solr/anotar",
+            "autocommit": true,
+            "embedded": false
+        }
+    },
+    "transformerDefaults": {
+        "solrmarc": {
+            "id": "solrmarc",
+            "configPath": "${fascinator.home}/solrmarc/vital-config.properties"
+        }
+    },
+    "uploader": {
+        "basic-upload": {
+            "screen-label": "Basic Upload",
+            "security": ["registered", "metadata", "editor", "admin"],
+            "upload-path": "${fascinator.home}/uploads/workflow-harvester",
+            "json-config": "${fascinator.home}/harvest/workflows/workflow-harvester.json"
+        }
+    },
+    "mime-types" : {
+        "tfpackage" : "application/x-fascinator-package"
+    },
+    "portal": {
+        "home": "${portal.home}",
+        "contentDir": "${fascinator.home}/content",
+        "defaultView": "default",
+        "skins": {
+            "default": "default",
+            "order": []
+        },
+        "layout": "layout",
+        "nativeJython": true,
+        "packageTypes": {
+            "default": {
+                "jsonconfig": "packaging-config.json",
+                "packages-in-package": false
+            }
+        },
+        "harvestFiles": "${fascinator.home}/harvest",
+        "houseKeeping": {
+            "config": {
+                "derbyHome" : "${fascinator.home}/database",
+                "desktop": true,
+                "frequency": "300"
+            }
+        }
+    },
+    "watcher" : {
+    	"path": "${watcher.install.path}"
+    }
+}
