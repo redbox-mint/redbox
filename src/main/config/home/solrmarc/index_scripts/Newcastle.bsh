@@ -1,0 +1,49 @@
+import org.marc4j.marc.Record;
+import org.marc4j.marc.DataField;
+import org.marc4j.marc.Subfield;
+
+/**
+ * Conditionally extract primary (100) author data if the author is from the
+ * University of Newcastle
+ *
+ * @param record : The record to extract data from
+ * @return Set : A set of author strings
+ */
+public Set getPrimaryAuthor(Record record) {
+    Set result = new LinkedHashSet();
+    List fields = record.getVariableFields("100");
+    if (fields == null) return result;
+
+    for (DataField field : fields) {
+        Subfield affiliation = field.getSubfield('u');
+        if (affiliation != null && affiliation.getData().equalsIgnoreCase("University of Newcastle")) {
+            Subfield author = field.getSubfield('a');
+            if (author != null) result.add(author.getData());
+        }
+    }
+
+    return result;
+}
+
+/**
+ * Conditionally extract secondary (700) author data if the author is from the
+ * University of Newcastle
+ *
+ * @param record : The record to extract data from
+ * @return Set : A set of author strings
+ */
+public Set getSecondaryAuthor(Record record) {
+    Set result = new LinkedHashSet();
+    List fields = record.getVariableFields("700");
+    if (fields == null) return result;
+
+    for (DataField field : fields) {
+        Subfield affiliation = field.getSubfield('u');
+        if (affiliation != null && affiliation.getData().equalsIgnoreCase("University of Newcastle")) {
+            Subfield author = field.getSubfield('a');
+            if (author != null) result.add(author.getData());
+        }
+    }
+
+    return result;
+}

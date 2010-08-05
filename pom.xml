@@ -8,6 +8,7 @@
     <name>ReDBox</name>
     <properties>
         <staging.dir>${project.build.directory}/${project.artifactId}</staging.dir>
+        <staging.home.dir>${staging.dir}/home</staging.home.dir>
         <jetty.version>6.1.24</jetty.version>
         <fascinator.version>0.6.0-SNAPSHOT</fascinator.version>
     </properties>
@@ -59,12 +60,6 @@
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>start</artifactId>
             <version>${jetty.version}</version>
-        </dependency>
-        <!-- Arts Repository Plugins -->
-        <dependency>
-            <groupId>au.edu.usq.fascinator.plugins.arts</groupId>
-            <artifactId>plugin-harvester-hca-data</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <!-- Fascinator Plugins -->
         <dependency>
@@ -277,6 +272,17 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/config</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>**/solrmarc/**</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/config</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/solrmarc/**</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
