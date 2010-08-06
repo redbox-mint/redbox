@@ -121,6 +121,9 @@
         "solrmarc": {
             "id": "solrmarc",
             "configPath": "${fascinator.home}/solrmarc/vital-config.properties"
+        },
+        "marc-authors": {
+            "id": "marc-authors"
         }
     },
     "uploader": {

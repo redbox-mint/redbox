@@ -67,7 +67,15 @@ else:
     pyUtils.setAccessSchema(schema, "derby")
     rules.add(AddField("security_filter", "guest"))
 
-if pid == metaPid:
+if params.getProperty("recordType") == "marc-author":
+    rules.add(AddField("storage_id", oid))
+    title = params["title"]
+    author = params["author"]
+    rules.add(AddField("dc_title", "%s: %s" % (author, title)))
+    rules.add(AddField("recordtype", "author"))
+    rules.add(AddField("repository_name", params["repository.name"]))
+    rules.add(AddField("repository_type", params["repository.type"]))
+elif pid == metaPid:
     for payloadId in object.getPayloadIdList():
         try:
             payload = object.getPayload(payloadId)
