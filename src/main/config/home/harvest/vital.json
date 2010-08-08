@@ -2,7 +2,7 @@
     "harvester": {
         "type": "oai-pmh",
         "oai-pmh": {
-            "url": "http://ogma.newcastle.edu.au/oaiprovider/",
+            "url": "http://ogma.newcastle.edu.au:8080/oaiprovider/",
             "metadataPrefix": "marc",
             "maxRequests": 1
         }

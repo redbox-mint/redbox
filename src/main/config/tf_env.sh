@@ -9,7 +9,7 @@ export CLASSPATH="plugins/*:lib/*"
 JVM_OPTS="-XX:MaxPermSize=256m -Xmx512m"
 
 # jetty settings
-JETTY_OPTS="-Djetty.port=8088"
+JETTY_OPTS="-Djetty.port=8080"
 
 # use http_proxy if defined
 if [ -n "$http_proxy" ]; then
