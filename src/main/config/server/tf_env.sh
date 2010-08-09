@@ -5,7 +5,7 @@
 
 # set fascinator home directory
 if [ -z "$TF_HOME" ]; then
-	export TF_HOME=${dir.home}
+	export TF_HOME="${dir.home}"
 fi
 
 # java class path
@@ -45,7 +45,7 @@ JETTY_OPTS="-Djetty.port=8080 -Djetty.logs=$JETTY_LOGS -Djetty.home=${dir.server
 SOLR_OPTS="-Dsolr.solr.home=${dir.solr} -Djava.util.logging.config.file=${dir.solr}/logging.properties"
 
 # directories
-CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=${dir.portal} -Dstorage.home="${dir.storage}"
+CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=${dir.portal} -Dstorage.home=${dir.storage}"
 
 # set options for maven to use
-export JAVA_OPTS="$JVM_OPTS $JETTY_OPTS $PROXY_OPTS $CONFIG_DIRS"
+export JAVA_OPTS="$JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS"
