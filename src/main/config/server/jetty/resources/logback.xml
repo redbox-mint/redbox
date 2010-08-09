@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+  <!-- Console appender -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d %-8X{name} %-6p %-20.20c{0} %m%n</Pattern>
+    </layout>
+  </appender>
+  <!-- Sifting appender based on MDC -->
+  <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+    <discriminator>
+      <Key>name</Key>
+      <DefaultValue>main</DefaultValue>
+    </discriminator>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d %-8X{name} %-6p %-20.20c{0} %m%n</Pattern>
+    </layout>
+    <sift>
+      <appender name="FILE-${name}" class="ch.qos.logback.core.FileAppender">
+        <Append>true</Append>
+        <File>${fascinator.home:-.}/logs/${name}.log</File>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+          <Pattern>%d %-8X{name} %-6p %-20.20c{0} %m%n</Pattern>
+        </layout>
+      </appender>
+    </sift>
+  </appender>
+  <root level="INFO">
+    <appender-ref ref="SIFT" />
+  </root>
+  <logger name="au.edu.usq" level="DEBUG" />
+</configuration>
