@@ -25,7 +25,7 @@
     "storage": {
         "type": "file-system",
         "file-system": {
-            "home": "${fascinator.home}/storage"
+            "home": "${storage.home}"
         }
     },
     "messaging" : {
@@ -139,7 +139,7 @@
     },
     "portal": {
         "home": "${portal.home}",
-        "contentDir": "${fascinator.home}/portal",
+        "contentDir": "${portal.home}",
         "defaultView": "default",
         "skins": {
             "default": "default",

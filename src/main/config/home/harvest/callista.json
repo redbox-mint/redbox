@@ -1,0 +1,41 @@
+{
+    "harvester": {
+        "type": "callista",
+        "callista": {
+            "fileLocation": "${fascinator.home}/data/CallistaAuthors.csv"
+        }
+    },
+
+    "transformer": {
+        "harvestQueue": [],
+        "indexOnHarvest": "false",
+        "renderQueue": []
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "callista.py"
+        },
+        "params": {
+            "repository.name": "Newcastle",
+            "repository.type": "Callista"
+        }
+    },
+
+    "stages": [
+        {
+            "name": "pending",
+            "label": "New Authority Record",
+            "security": ["editor", "admin"],
+            "visibility": ["guest"]
+        },
+        {
+            "name": "live",
+            "label": "Confirmed Authority",
+            "security": ["editor", "admin"],
+            "visibility": ["guest"],
+            "template": "workflows/organiser"
+        }
+    ]
+}

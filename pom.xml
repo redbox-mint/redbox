@@ -7,12 +7,16 @@
     <packaging>pom</packaging>
     <name>ReDBox</name>
     <properties>
-        <staging.dir>${project.build.directory}/${project.artifactId}</staging.dir>
-        <staging.home.dir>${staging.dir}/home</staging.home.dir>
+        <dir.home>${project.home}/home</dir.home>
+        <dir.portal>${project.home}/portal</dir.portal>
+        <dir.server>${project.home}/server</dir.server>
+        <dir.solr>${project.home}/solr</dir.solr>
+        <dir.storage>${project.home}/storage</dir.storage>
         <jetty.version>6.1.24</jetty.version>
         <fascinator.version>0.6.0-SNAPSHOT</fascinator.version>
     </properties>
     <modules>
+        <module>plugins/harvester/callista</module>
         <module>plugins/transformer/marc-authors</module>
     </modules>
     <dependencies>
@@ -65,6 +69,11 @@
             <version>${jetty.version}</version>
         </dependency>
         <!-- ReDBox Project Plugins -->
+        <dependency>
+            <groupId>au.edu.usq.fascinator.redbox.plugins</groupId>
+            <artifactId>plugin-harvester-callista</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>au.edu.usq.fascinator.redbox.plugins</groupId>
             <artifactId>plugin-transformer-marc-authors</artifactId>
@@ -120,7 +129,42 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/config/home</directory>
+            </resource>
+            <resource>
+                <directory>src/main/config/portal</directory>
+            </resource>
+            <resource>
+                <directory>src/main/config/server</directory>
+            </resource>
+        </resources>
         <plugins>
+            <!-- Use Groovy to define a clean path to the top level directory.
+                 Windows pathing can be problematic, so we fix that here too -->
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import java.io.File;
+                                String baseDir = pom.basedir;
+                                File dir = new File(baseDir);
+                                String projectHome = dir.getParentFile().getAbsolutePath();
+                                project.properties['project.home'] = projectHome.replace("\\", "/");
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Support retrieving dependencies from WAR artifacts -->
             <plugin>
                 <groupId>org.appfuse</groupId>
@@ -148,7 +192,7 @@
                         </goals>
                         <configuration>
                             <includes>workflows/**</includes>
-                            <outputDirectory>${staging.dir}/home/harvest</outputDirectory>
+                            <outputDirectory>${dir.home}/harvest</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>au.edu.usq.fascinator</groupId>
@@ -165,7 +209,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${staging.dir}/webapps</outputDirectory>
+                            <outputDirectory>${dir.server}/webapps</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>au.edu.usq.fascinator</groupId>
@@ -183,26 +227,40 @@
                             </artifactItems>
                         </configuration>
                     </execution>
-                    <!-- Unpack default Fascinator and Solr configuration -->
+                    <!-- Unpack default Solr configuration -->
                     <execution>
-                        <id>unpack-config</id>
+                        <id>unpack-solr</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <includes>portal/**,solr/**,workflows/**</includes>
-                            <outputDirectory>${staging.dir}/home</outputDirectory>
+                            <includes>solr/**</includes>
+                            <outputDirectory>${dir.solr}/../</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>au.edu.usq.fascinator.plugins</groupId>
+                                    <artifactId>plugin-indexer-solr</artifactId>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!-- Unpack default Fascinator portal -->
+                    <execution>
+                        <id>unpack-portal</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <includes>portal/**</includes>
+                            <outputDirectory>${dir.portal}/../</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>au.edu.usq.fascinator</groupId>
                                     <artifactId>fascinator-portal</artifactId>
                                     <type>war</type>
                                     <classifier>skinny</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>au.edu.usq.fascinator.plugins</groupId>
-                                    <artifactId>plugin-indexer-solr</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -216,7 +274,7 @@
                         </goals>
                         <configuration>
                             <includeGroupIds>au.edu.usq.fascinator.plugins</includeGroupIds>
-                            <outputDirectory>${staging.dir}/plugins</outputDirectory>
+                            <outputDirectory>${dir.server}/plugins</outputDirectory>
                             <excludeTransitive>true</excludeTransitive>
                         </configuration>
                     </execution>
@@ -230,7 +288,7 @@
                         <configuration>
                             <excludeTypes>war,warpath</excludeTypes>
                             <excludeGroupIds>au.edu.usq.fascinator.plugins,org.mortbay.jetty</excludeGroupIds>
-                            <outputDirectory>${staging.dir}/lib</outputDirectory>
+                            <outputDirectory>${dir.server}/lib</outputDirectory>
                         </configuration>
                     </execution>
                     <!-- Jetty launcher -->
@@ -247,7 +305,7 @@
                                     <artifactId>start</artifactId>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${staging.dir}/jetty</outputDirectory>
+                            <outputDirectory>${dir.server}/jetty</outputDirectory>
                             <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
@@ -261,37 +319,122 @@
                         <configuration>
                             <includeGroupIds>org.mortbay.jetty</includeGroupIds>
                             <excludeArtifactIds>start</excludeArtifactIds>
-                            <outputDirectory>${staging.dir}/jetty/lib</outputDirectory>
+                            <outputDirectory>${dir.server}/jetty/lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Deploy ReDBox project over default Fascinator -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
+                    <!-- Configuration -->
                     <execution>
-                        <id>copy-config</id>
+                        <id>copy-home</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${staging.dir}</outputDirectory>
+                            <outputDirectory>${dir.home}</outputDirectory>
                             <includeEmptyDirs>true</includeEmptyDirs>
                             <resources>
+                                <!-- Most config copied first as is -->
                                 <resource>
-                                    <directory>src/main/config</directory>
+                                    <directory>src/main/config/home</directory>
                                     <filtering>false</filtering>
                                     <excludes>
                                         <exclude>**/solrmarc/**</exclude>
                                     </excludes>
                                 </resource>
+                                <!-- Copy Solrmarc through a filter to resolve path variable -->
                                 <resource>
-                                    <directory>src/main/config</directory>
+                                    <directory>src/main/config/home</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>**/solrmarc/**</include>
                                     </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Web portal -->
+                    <execution>
+                        <id>copy-portal</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.portal}</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/config/portal</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Server files -->
+                    <execution>
+                        <id>copy-server</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.server}</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/config/server</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>**/*.bat</exclude>
+                                        <exclude>**/*.sh</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Control Scripts -->
+                    <execution>
+                        <id>copy-scripts</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.server}</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <!-- Resolve some paths in our control scripts -->
+                                <resource>
+                                    <directory>src/main/config/server</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*.bat</include>
+                                        <include>**/*.sh</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Solr logging -->
+                    <execution>
+                        <id>copy-solr</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.solr}</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/config/solr</directory>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -305,24 +448,6 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
-            </plugin>
-            <!-- Assemble distribution package -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>package-dist-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/dist.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
