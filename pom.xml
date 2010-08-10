@@ -186,7 +186,7 @@
                     <!-- Unpack common workflow configuration -->
                     <execution>
                         <id>unpack-workflows</id>
-                        <phase>process-resources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -230,7 +230,7 @@
                     <!-- Unpack default Solr configuration -->
                     <execution>
                         <id>unpack-solr</id>
-                        <phase>package</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -248,7 +248,7 @@
                     <!-- Unpack default Fascinator portal -->
                     <execution>
                         <id>unpack-portal</id>
-                        <phase>package</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -368,6 +368,7 @@
                         <configuration>
                             <outputDirectory>${dir.portal}</outputDirectory>
                             <includeEmptyDirs>true</includeEmptyDirs>
+                            <overwrite>true</overwrite>
                             <resources>
                                 <resource>
                                     <directory>src/main/config/portal</directory>

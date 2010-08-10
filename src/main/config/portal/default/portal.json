@@ -1,0 +1,34 @@
+{
+  "portal" : {
+    "name" : "default",
+    "description" : "Everything",
+    "query" : "",
+    "records-per-page" : "25",
+    "facet-count" : "100",
+    "facet-sort-by-count" : "false",
+    "debug" : "true",
+    "use-session-navigation" : "true",
+    "facet-displays" : {
+      "list" : "List menu",
+      "tree" : "Dynamic tree"
+    },
+    "facet-fields" : {
+      "recordtype" : {
+        "label" : "Record type",
+        "display" : "list"
+      },
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      },
+      "workflow_step_label" : {
+        "label" : "Workflow Step",
+        "display" : "list"
+      }
+    }
+  }
+}
