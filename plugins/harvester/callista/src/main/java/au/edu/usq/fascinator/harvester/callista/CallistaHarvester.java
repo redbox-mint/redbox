@@ -75,6 +75,9 @@ public class CallistaHarvester extends GenericHarvester {
     /** Data structure to hold parsed data */
     private Map<String, List<String[]>> parsedData;
 
+    /** Debugging limit */
+    private int limit;
+
     /**
      * File System Harvester Constructor
      */
@@ -102,6 +105,9 @@ public class CallistaHarvester extends GenericHarvester {
         if (filePath == null) {
             throw new HarvesterException("No Callista data file provided!");
         }
+
+        String limitString = config.get("harvester/callista/limit", "-1");
+        limit = Integer.parseInt(limitString);
 
         csvData = new File(filePath);
         if (csvData == null || !csvData.exists()) {
@@ -160,17 +166,22 @@ public class CallistaHarvester extends GenericHarvester {
                     throw new HarvesterException("Error parsing CSV file", ex);
                 }
 
-                // Print debugging
                 for (String[] columns : values) {
                     // Ignore the header row
                     if (columns[0].equals("RESEARCHER_ID")) {
                         for (String column : columns) {
+                            // Print if debugging
                             //log.debug("HEADING {}: '{}'", j, column);
                             j++;
                         }
                         j = 0;
+
+                    // Store normal data rows
                     } else {
                         i++;
+                        if (i % 500 == 0) {
+                            log.info("Parsing row {}", i);
+                        }
                         String rId = columns[0];
                         if (!parsedData.containsKey(rId)) {
                             // New researcher, add an empty list
@@ -179,14 +190,22 @@ public class CallistaHarvester extends GenericHarvester {
                         parsedData.get(rId).add(columns);
                     }
                 }
+
+                // Check our record limit if debugging
+                if (limit != -1 && i >= limit) {
+                    stop = true;
+                    log.debug("Stopping at debugging limit");
+                }
             }
             in.close();
         } catch (IOException ex) {
             log.error("Error reading from CSV file", ex);
             throw new HarvesterException("Error reading from CSV file", ex);
         }
+        log.info("Parse complete: {} rows", i);
 
         // Process parsed data
+        i = 0;
         for (String key : parsedData.keySet()) {
             // Create the new record
             JsonConfigHelper json = new JsonConfigHelper();
@@ -196,7 +215,7 @@ public class CallistaHarvester extends GenericHarvester {
             json.set("id", key);
             json.set("step", "pending");
 
-            List<String> authors = new ArrayList();
+            List<JsonConfigHelper> authors = new ArrayList();
             for (String[] columns : parsedData.get(key)) {
                 try {
                     // IDS
@@ -228,11 +247,14 @@ public class CallistaHarvester extends GenericHarvester {
                             fName + "'");
                     // Email
                     store("email", columns[8], json);
-                    // Organisational Unit
-                    store("orgUnit", columns[11], json);
-                    store("orgUnitId", columns[12], json);
-                    // Author - store for later
-                    authors.add("\"" + StringUtils.trim(columns[9]) + "\"");
+
+                    // Author data used in publication
+                    JsonConfigHelper auth = new JsonConfigHelper();
+                    auth.set("author", columns[9]);
+                    auth.set("orgUnitId", columns[11]);
+                    auth.set("orgUnit", columns[12]);
+                    auth.set("expiry", columns[13]);
+                    authors.add(auth);
 
                 // Catch any data mismatches during storage
                 } catch(Exception ex) {
@@ -242,7 +264,7 @@ public class CallistaHarvester extends GenericHarvester {
 
             // Add author data
             if (!authors.isEmpty()) {
-                // Work-around for #656
+                // TODO: Work-around for #656
                 json.set("authors", "===REPLACE=ME===");
                 String list = "[" + StringUtils.join(authors, ",") + "]";
                 String jsonString = json.toString();
@@ -256,7 +278,7 @@ public class CallistaHarvester extends GenericHarvester {
             }
 
             // Add an empty package manifest
-            // Work-around for #656
+            // TODO: Work-around for #656
             packageJson.set("manifest", "===REPLACE=ME===");
             String jsonString = packageJson.toString();
             jsonString = jsonString.replace("\"===REPLACE=ME===\"", "{}");
@@ -267,6 +289,10 @@ public class CallistaHarvester extends GenericHarvester {
                 log.error("Error parsing json '{}': ", jsonString);
             }
 
+            i++;
+            if (i % 500 == 0) {
+                log.info("Object count: {}", i);
+            }
             if (json != null && packageJson != null) {
                 try {
                     String oid = storeJson(
@@ -277,6 +303,7 @@ public class CallistaHarvester extends GenericHarvester {
                 }
             }
         }
+        log.info("Object creation complete: {} objects", i);
 
         return fileObjectIdList;
     }
