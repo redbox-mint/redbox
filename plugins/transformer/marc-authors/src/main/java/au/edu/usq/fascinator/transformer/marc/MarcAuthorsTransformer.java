@@ -52,8 +52,8 @@ public class MarcAuthorsTransformer implements Transformer {
     /** PID for metadata input payload **/
     private static String METADATA_PAYLOAD = "metadata.json";
 
-    /** PID for harvest config payload **/
-    private static String HARVEST_PAYLOAD = "harvest.json";
+    /** PID for author metadata payload **/
+    private static String AUTHOR_PAYLOAD = "author.json";
 
     /** Logging **/
     private static Logger log = LoggerFactory
@@ -149,14 +149,15 @@ public class MarcAuthorsTransformer implements Transformer {
         try {
             payload = in.getPayload(METADATA_PAYLOAD);
             JsonConfigHelper json = new JsonConfigHelper(payload.open());
+            String id = json.get("id", "(no identifier)");
             String title = json.get("title");
             String author100 = json.get("author_100");
             if (author100 != null) {
-                createAuthorRecord(in, title, author100);
+                createAuthorRecord(in, id, title, author100);
             }
             String author700 = json.get("author_700");
             if (author700 != null) {
-                createAuthorRecord(in, title, author700);
+                createAuthorRecord(in, id, title, author700);
             }
         } catch (StorageException se) {
             log.error("No metadata found to transform.");
@@ -176,11 +177,9 @@ public class MarcAuthorsTransformer implements Transformer {
         return in;
     }
 
-    private void createAuthorRecord(DigitalObject object, String title,
-            String author) throws TransformerException {
+    private void createAuthorRecord(DigitalObject object, String id,
+            String title, String author) throws TransformerException {
         try {
-            Properties objectMeta = object.getMetadata();
-
             // Generate OID using author name + title
             String fullTitle = author + " : " + title;
             String oid = DigestUtils.md5Hex(fullTitle);
@@ -190,36 +189,36 @@ public class MarcAuthorsTransformer implements Transformer {
             DigitalObject authorObj = StorageUtils.getDigitalObject(storage,
                     oid);
 
-            // Add a harvesting config payload to the current object
-            JsonConfigHelper harvestJson = new JsonConfigHelper();
-            harvestJson.set("indexer/params/title", title);
-            harvestJson.set("indexer/params/author", author);
-            harvestJson.set("indexer/params/repository.name",
-                    objectMeta.getProperty("repository.name"));
-            harvestJson.set("indexer/params/repository.type",
-                    objectMeta.getProperty("repository.type"));
-            //log.debug(harvestJson.toString());
-            StorageUtils.createOrUpdatePayload(authorObj, HARVEST_PAYLOAD,
-                    IOUtils.toInputStream(harvestJson.toString(), "UTF-8"));
+            // Add an author metadata payload to the current object
+            JsonConfigHelper authorJson = new JsonConfigHelper();
+            authorJson.set("id", id);
+            authorJson.set("author", author);
+            authorJson.set("title", title);
+            StorageUtils.createOrUpdatePayload(authorObj, AUTHOR_PAYLOAD,
+                    IOUtils.toInputStream(authorJson.toString(), "UTF-8"));
 
+            // Generate the object properties
+            Properties objectMeta = object.getMetadata();
             Properties authorObjMeta = authorObj.getMetadata();
-            for (Object keyObject : objectMeta.keySet()) {
-                String key = keyObject.toString();
-                String value = objectMeta.getProperty(key);
-                authorObjMeta.setProperty(key, value);
-            }
+            copyProperty(objectMeta, authorObjMeta, "metaPid");
+            copyProperty(objectMeta, authorObjMeta, "rulesOid");
+            copyProperty(objectMeta, authorObjMeta, "repository.name");
+            copyProperty(objectMeta, authorObjMeta, "repository.type");
             authorObjMeta.setProperty("jsonConfigOid", oid);
-            authorObjMeta.setProperty("jsonConfigPid", HARVEST_PAYLOAD); // doesn't get used...
+            authorObjMeta.setProperty("id", id);
             authorObjMeta.setProperty("title", title);
             authorObjMeta.setProperty("author", author);
             authorObjMeta.setProperty("recordType", "marc-author");
-
             authorObj.close();
 
             harvestClient.reharvest(oid);
         } catch (Exception e) {
             throw new TransformerException(e);
         }
+    }
+
+    private void copyProperty(Properties from, Properties to, String key) {
+        from.setProperty(key, to.getProperty(key));
     }
 
     /**

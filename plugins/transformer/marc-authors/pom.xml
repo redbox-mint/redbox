@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.edu.usq.fascinator.redbox.plugins</groupId>
@@ -6,9 +7,10 @@
     <name>ReDBox - Plugin - Transformer - MARC Authors</name>
     <url>http://fascinator.usq.edu.au/trac/wiki/tf2/DeveloperNotes/plugins/transformer/marc-authors</url>
     <parent>
-        <groupId>au.edu.usq.fascinator</groupId>
-        <artifactId>fascinator-plugins</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <groupId>au.edu.usq.fascinator.redbox</groupId>
+        <artifactId>redbox-project</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../../parent/pom.xml</relativePath>
     </parent>
     <dependencies>
         <dependency>

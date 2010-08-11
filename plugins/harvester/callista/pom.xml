@@ -7,9 +7,10 @@
     <name>ReDBox - Plugin - Harvester - Callista</name>
     <url>http://fascinator.usq.edu.au/trac/wiki/tf2/DeveloperNotes/plugins/harvester/callista</url>
     <parent>
-        <groupId>au.edu.usq.fascinator</groupId>
-        <artifactId>fascinator-plugins</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <groupId>au.edu.usq.fascinator.redbox</groupId>
+        <artifactId>redbox-project</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../../parent/pom.xml</relativePath>
     </parent>
     <dependencies>
         <dependency>
