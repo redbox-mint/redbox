@@ -235,7 +235,7 @@
                         </goals>
                         <configuration>
                             <includes>solr/**</includes>
-                            <outputDirectory>${dir.solr}/../</outputDirectory>
+                            <outputDirectory>${project.home}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>au.edu.usq.fascinator.plugins</groupId>
@@ -253,7 +253,7 @@
                         </goals>
                         <configuration>
                             <includes>portal/**</includes>
-                            <outputDirectory>${dir.portal}/../</outputDirectory>
+                            <outputDirectory>${project.home}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>au.edu.usq.fascinator</groupId>
