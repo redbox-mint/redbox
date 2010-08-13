@@ -137,6 +137,9 @@
             <resource>
                 <directory>src/main/config/server</directory>
             </resource>
+            <resource>
+                <directory>src/main/config/solr</directory>
+            </resource>
         </resources>
         <plugins>
             <!-- Use Groovy to define a clean path to the top level directory.
@@ -329,6 +332,11 @@
                 <version>2.4.3</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                    <!-- Workaround bug MRESOURCES-104 -->
+                    <delimiters>
+                        <delimiter>${*}</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
                 </configuration>
                 <executions>
                     <!-- Configuration -->
