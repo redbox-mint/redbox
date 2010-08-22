@@ -151,7 +151,7 @@ if pid == metaPid:
         wfMeta = JsonConfigHelper()
         wfMeta.set("id", WORKFLOW_ID)
         wfMeta.set("step", "pending")
-        wfMeta.set("pageTitle", "Organiser")
+        wfMeta.set("pageTitle", "Name Authority Record")
         stages = jsonConfig.getJsonList("stages")
         for stage in stages:
             if stage.get("name") == "pending":
@@ -167,7 +167,7 @@ if pid == metaPid:
         try:
             StorageUtils.createOrUpdatePayload(object, "workflow.metadata", inStream)
         except StorageException, e:
-            print " * packaging-rules.py : Error updating workflow payload"
+            print " * name-authority.py : Error updating workflow payload"
 
     rules.add(AddField("workflow_id", wfMeta.get("id")))
     rules.add(AddField("workflow_step", wfMeta.get("step")))

@@ -1,0 +1,54 @@
+
+<input type="hidden" name="metaList" value="xmlns:dc, dc:title, dc:date, dc:description xmlns:z, z:type" />
+<input type="hidden" name="xmlns:dc" value="http://dublincore.org/documents/2008/01/14/dcmi-terms/" />
+<input type="hidden" name="xmlns:z" value="http://www.zotero.org/namespaces/export#" />
+<input type="hidden" name="z:type" value="Painting"/>
+
+<div class="inputscreens">
+    <h3><a href="#screen1">Details</a></h3>
+    <div id="screen1" class="inputscreen">
+        <fieldset class="login">
+            <p>
+                <label for="dc:title">Title</label>
+                <input id="dc:title" name="dc:title" type="text" placeholder="Enter title here" />
+            </p>
+            <p>
+                <label for="dc:description">Description</label>
+                <textarea id="dc:description" name="dc:description" rows="6" cols="80" placeholder="Enter description here" />
+            </p>
+        </fieldset>
+    </div>
+
+    <h3><a href="#screen2">Aliases</a></h3>
+    <div id="screen2" class="inputscreen">
+        <div>
+            <label for="add-items-search-query">Name search:&nbsp;</label>
+            <input id="add-items-search-query" type="text" size="25" />
+            <a class="search" id="add-items-search" href="#"><img src="../images/icons/magnifier.png" /></a>
+            <div class="paging"></div>
+            <div id="search-results" style="padding-bottom:4em;">
+            <h3>
+                Search Results:
+                <a href="#" class="showhide" style="display:none;">(hide)</a>
+                <span class="right result-info"></span>
+            </h3>
+            <div style="border:1px solid gray;padding:1ex;padding-left:2ex;margin-left:1em;">
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div style="margin-top:4px; margin-bottom: 4px;">
+    <input type="button" id="save-package" value="Update"/>
+    <span id="saved-result" style="padding-left:2em; font-size:120%;"></span>
+</div>
+
+<div class="box hidden" id="message-dialog" style="text-align:center;">
+    <span class=""></span>
+    <div style="padding-top:1em;"><input type="button" id="message-dialog-ok" value="OK"/></div>
+</div>
+
+<div id="controlbar">
+</div>
+

@@ -151,6 +151,10 @@
             "default": {
                 "jsonconfig": "packaging-config.json",
                 "packages-in-package": false
+            },
+            "name-authority": {
+                "jsonconfig": "name-authority.json",
+                "packages-in-package": false
             }
         },
         "harvestFiles": "${fascinator.home}/harvest",
@@ -163,6 +167,6 @@
         }
     },
     "watcher" : {
-    	"path": "${watcher.install.path}"
+        "path": "${watcher.install.path}"
     }
 }

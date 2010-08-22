@@ -1,0 +1,26 @@
+{
+  "portal" : {
+    "name" : "master",
+    "description" : "Name Authorities",
+    "query" : "recordtype:\"master\"",
+    "searchQuery" : "*:*",
+    "facet-fields" : {
+      "recordtype" : {
+        "label" : "Record type",
+        "display" : "list"
+      },
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      },
+      "workflow_step_label" : {
+        "label" : "Workflow Step",
+        "display" : "list"
+      }
+    }
+  }
+}

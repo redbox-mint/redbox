@@ -71,7 +71,9 @@ if params.getProperty("recordType") == "marc-author":
     rules.add(AddField("storage_id", oid))
     title = params["title"]
     author = params["author"]
-    rules.add(AddField("dc_title", "%s: %s" % (author, title)))
+    rules.add(AddField("dc_title", author))
+    rules.add(AddField("dc_description", "Author name extracted from MARCXML"))
+    rules.add(AddField("application/x-fascinator-author"))
     rules.add(AddField("recordtype", "author"))
     rules.add(AddField("repository_name", params["repository.name"]))
     rules.add(AddField("repository_type", params["repository.type"]))

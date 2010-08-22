@@ -1,8 +1,8 @@
 {
     "harvester": {
-        "type": "callista",
-        "callista": {
-            "fileLocation": "${fascinator.home}/data/CallistaAuthors.csv"
+        "type": "workflow-harvester",
+        "workflow-harvester": {
+            "force-storage": "true"
         }
     },
 
@@ -15,7 +15,7 @@
     "indexer": {
         "script": {
             "type": "python",
-            "rules": "workflows/name-authority.py"
+            "rules": "name-authority.py"
         },
         "params": {
             "repository.name": "Newcastle",

@@ -211,7 +211,7 @@ public class CallistaHarvester extends GenericHarvester {
             JsonConfigHelper json = new JsonConfigHelper();
             JsonConfigHelper packageJson = new JsonConfigHelper();
             packageJson.set("viewId", "default");
-            packageJson.set("packageType", "default");
+            packageJson.set("packageType", "name-authority");
             json.set("id", key);
             json.set("step", "pending");
 

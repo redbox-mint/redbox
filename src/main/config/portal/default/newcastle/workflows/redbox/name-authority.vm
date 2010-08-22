@@ -1,0 +1,39 @@
+#set($oid = $self.getFormData('oid'))
+#set($title = $self.getFormData('title'))
+#set($pageTitle = $title)
+##
+<style>
+    .inputscreens input { margin:0.5ex;}
+    .inputscreens textarea { margin:0.5ex;}
+    .inputscreens table { margin:0.5ex; margin-bottom:2ex;}
+    td.delete-row {cursor:pointer; color:blue;}
+    .prev-tab, .next-tab {cursor:pointer; color:blue; margin:1ex;}
+    div.tab-nav {padding-top:2ex;}
+    img.thumbnail {height: 100px; border: 1px solid black; margin: 10px 5px 0 0;}
+</style>
+<div class="grid_16">
+  <div class="box">
+    <div id="inputForms"><!-- --></div>
+  </div>
+</div>
+##  Javascript section
+##
+<script type="text/javascript" src="$portalPath/js/tree/jquery.tree.min.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+  var packageData = {
+            portalPath:"$portalPath",
+            metaData:$self.getJsonMetadata(),
+            ajaxRequestUrl:"$self.getAjaxRequestUrl()",
+            packagedItems:$self.getJsonPackagedItems(),
+            test:$self.getJsonTest(),
+            oid:"$oid"
+        };
+/*
+$self.getSearchResults()
+*/
+// ]]>
+</script>
+<script type="text/javascript" src="$portalPath/workflows/redbox/inputForms.js"></script>
+
+

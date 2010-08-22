@@ -1,0 +1,124 @@
+#if($formData.get("oid"))
+#set($manifest = $self.manifest)
+#set($oid = $self.getFormData('oid'))
+#set($title = $self.getFormData('title'))
+<div class="grid_4">
+    <div class="box menu">
+        <h2>Actions</h2>
+        <ul class="menu" id="actions">
+            <li><a href="$portalPath/detail/$oid">View details...</a></li>
+            <li><a href="#" id="package-modify">Add display name...</a></li>
+        </ul>
+    </div>
+    <div class="box">
+        <h2>Metadata</h2>
+        <form action="$portalPath/workflow" id="package-form" method="post">
+        <fieldset>
+            <p>
+                <label for="title">Name</label>
+                <input type="text" id="package-title" name="title" value="$!self.getPackageTitle()" />
+            </p>
+            <p>
+                <label for="description">Description</label>
+                <input type="text" id="package-description" name="description" value="$!self.getMeta('description')" />
+            </p>
+            <input type="hidden" name="targetStep" value="$self.getFormData('nextStep')" />
+            <input type="hidden" name="oid" value="$oid" />
+            <input class="button" id="update-package" type="button" value="Update" />
+        </fieldset>
+        </form>
+    </div>
+    <div id="item-props" class="box hidden">
+        <h2>Item properties</h2>
+        <div id="item-form">
+            <fieldset>
+            <p>
+                <label for="item-title">Title</label>
+                <input type="text" id="item-title" name="title" />
+            </p>
+            <p>
+                <label class="checkbox" for="item-hidden">Hidden</label>
+                <input class="checkbox" type="checkbox" id="item-hidden" name="hidden" />
+            </p>
+            <input class="button" id="update-item" type="button" value="Update" />
+            <input class="button" id="delete-item" type="button" value="Remove" />
+            <img class="hidden" id="item-loading" src="$portalPath/images/icons/loading.gif" />
+            </fieldset>
+        </div>
+    </div>
+</div>
+<div class="grid_12">
+    <div class="box">
+        <h2>Display names</h2>
+        <br />
+        <p>Names used by this person.</p>
+        <ul id="alias-list">
+        #foreach($node in $self.getManifest())
+            <li><a href="$portalPath/detail/$node.get('id')">$node.get("title")</a></li>
+        #end
+        </ul>
+        <form>
+            <fieldset class="login">
+                <legend>Find name</legend>
+                <input id="name-search-query" name="name-search-query" size="50" type="text" />
+                <button class="button" id="name-search">Go</button>
+            </fieldset>
+        </form>
+        <div class="name-search-result"></div>
+        <div class="hidden" id="delete-package-item"></div>
+    </div>
+    <div class="box">
+        <h2>Suggested names</h2>
+        <br />
+        <p>Below are some names that may match this person. Select one to add it to this person.</p>
+        #set($suggestedNames = $self.getSuggestedNames())
+        <ul>
+        #foreach($doc in $suggestedNames)
+            #set($authorName = $doc.getList("dc_title").get(0))
+            #set($authorId = $doc.get("id"))
+            <li><a class="add-alias" rel="$authorId" href="#add-alias">$authorName</a></li>
+        #end
+        </ul>
+    </div>
+    <div class="box hidden" id="preview">
+        <h2>Preview</h2>
+        <div id="content"></div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    $("#update-package").click(function() {
+        jQuery.post("$portalPath/actions/manifest.ajax",
+            {
+                func: "update-package-meta",
+                oid: "$oid",
+                metaList: ["title", "description"],
+                title: $("#package-title").val(),
+                description: $("#package-description").val()
+            },
+            function(data, status) {
+                $("#package-form").submit();
+            });
+        return false;
+    });
+    
+    $("#name-search").click(function() {
+        
+    });
+    
+    $(".add-alias").click(function() {
+        var authorId = $(this).attr("rel");
+        var authorName = $(this).text();
+        jQuery.post("$portalPath/workflows/name-authority.ajax",
+            {   func: "add",
+                
+            }, function(data, status) {
+                $("#alias-list").append('<li><a href="$portalPath/detail/'
+                    + authorId + '">' + authorName + '</a></li>');
+                $(this).parent().remove();
+            }, "json");
+        return false;
+    });
+});
+</script>
+#end

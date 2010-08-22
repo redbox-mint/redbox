@@ -20,6 +20,7 @@ package au.edu.usq.fascinator.transformer.marc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -155,9 +156,11 @@ public class MarcAuthorsTransformer implements Transformer {
             if (author100 != null) {
                 createAuthorRecord(in, id, title, author100);
             }
-            String author700 = json.get("author_700");
-            if (author700 != null) {
-                createAuthorRecord(in, id, title, author700);
+            
+            List<Object> author700 = json.getList("author_700");
+            for (Object o : author700) {
+                String author = o.toString();
+                createAuthorRecord(in, id, title, author);
             }
         } catch (StorageException se) {
             log.error("No metadata found to transform.");
@@ -181,9 +184,8 @@ public class MarcAuthorsTransformer implements Transformer {
             String title, String author) throws TransformerException {
         try {
             // Generate OID using author name + title
-            String fullTitle = author + " : " + title;
-            String oid = DigestUtils.md5Hex(fullTitle);
-            log.debug("Creating author record: {} ({})", fullTitle, oid);
+            String oid = DigestUtils.md5Hex(author);
+            log.debug("Creating author record: {} ({})", author, oid);
 
             // Signal a reharvest on the author object to index them
             DigitalObject authorObj = StorageUtils.getDigitalObject(storage,
@@ -213,12 +215,13 @@ public class MarcAuthorsTransformer implements Transformer {
 
             harvestClient.reharvest(oid);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TransformerException(e);
         }
     }
 
     private void copyProperty(Properties from, Properties to, String key) {
-        from.setProperty(key, to.getProperty(key));
+        to.setProperty(key, from.getProperty(key));
     }
 
     /**
