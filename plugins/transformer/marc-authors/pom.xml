@@ -22,10 +22,6 @@
             <artifactId>fascinator-plugin-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
-            <artifactId>plugin-storage-ram</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
