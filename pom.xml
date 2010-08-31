@@ -21,8 +21,6 @@
     </properties>
     <modules>
         <module>parent</module>
-        <module>plugins/harvester/callista</module>
-        <module>plugins/transformer/marc-authors</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -74,16 +72,7 @@
             <version>${jetty.version}</version>
         </dependency>
         <!-- ReDBox Project Plugins -->
-        <dependency>
-            <groupId>au.edu.usq.fascinator.redbox.plugins</groupId>
-            <artifactId>plugin-harvester-callista</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>au.edu.usq.fascinator.redbox.plugins</groupId>
-            <artifactId>plugin-transformer-marc-authors</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!-- None yet -->
         <!-- Fascinator Plugins -->
         <dependency>
             <groupId>au.edu.usq.fascinator.plugins</groupId>
@@ -118,11 +107,6 @@
         <dependency>
             <groupId>au.edu.usq.fascinator.plugins</groupId>
             <artifactId>plugin-storage-filesystem</artifactId>
-            <version>${fascinator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
-            <artifactId>plugin-transformer-solrmarc</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
     </dependencies>
@@ -354,17 +338,6 @@
                                 <resource>
                                     <directory>src/main/config/home</directory>
                                     <filtering>false</filtering>
-                                    <excludes>
-                                        <exclude>**/solrmarc/**</exclude>
-                                    </excludes>
-                                </resource>
-                                <!-- Copy Solrmarc through a filter to resolve path variable -->
-                                <resource>
-                                    <directory>src/main/config/home</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>**/solrmarc/**</include>
-                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
