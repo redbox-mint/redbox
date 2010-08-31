@@ -113,6 +113,8 @@ elif pid == metaPid:
             for k,v in coreFields.iteritems():
                 mapVuFind(v, k, marc)
 
+            rules.add(AddField("display_type", "marcxml"))
+
     except StorageException, e:
         print "Could not find marc data (%s)" % str(e)
 

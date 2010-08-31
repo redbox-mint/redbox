@@ -1,0 +1,35 @@
+body {
+    background: #B7DAA0;
+}
+
+.container_16 {
+    background: #E2FFCD;
+}
+
+h1#branding {
+    background: #C5DAAF;
+}
+
+.menu .selected, .menu .selected:hover, .facet-list .selected:hover {
+    background: #92A385;
+}
+
+.box {
+    background: #CAE8B2;
+}
+
+.box h2 {
+    background: #5E7553;
+}
+
+fieldset {
+    background: #E2FFCD;
+}
+
+thead th {
+    background: #92A385;
+}
+
+tbody th, tbody td {
+    background: #E2FFCD;
+}

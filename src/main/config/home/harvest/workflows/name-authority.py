@@ -234,4 +234,5 @@ else:
     rules.add(AddField("owner", owner))
 
 # add owner to workflow security
-AddField("workflow_security", owner)
+rules.add(AddField("workflow_security", owner))
+rules.add(AddField("display_type", "name-authority"))

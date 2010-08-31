@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
     <name>ReDBox - Project</name>
     <properties>
-        <fascinator.version>0.6.1</fascinator.version>
+        <fascinator.version>0.6.2-SNAPSHOT</fascinator.version>
         <jetty.version>6.1.24</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

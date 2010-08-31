@@ -1,5 +1,5 @@
 {
-    "version": "0.6.15",
+    "version": "0.7.2",
     "configured": true,
     "urlBase" : "http://novadev2.newcastle.edu.au:8080/redbox/",
     "email" : "dave.huthnance@newcastle.edu.au",
@@ -161,8 +161,11 @@
         "houseKeeping": {
             "config": {
                 "derbyHome" : "${fascinator.home}/database",
+                "quartzConfig": "${fascinator.home}/quartz.properties",
                 "desktop": true,
-                "frequency": "300"
+                "frequency": "300",
+                "jobs": [
+                ]
             }
         }
     },
