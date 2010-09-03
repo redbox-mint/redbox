@@ -1,0 +1,25 @@
+#parseDisplayTemplate("detail/common.vm")
+
+<h2>Dataset package</h2>
+detail view
+
+#if($parent.isDetail())
+    #if($parent.isPending())
+        <div id="pending" class="box articles notice">
+            <h2>Pending</h2>
+            <div class="warning">
+                <b>IMPORTANT</b>Please note that this object is currently in the render queue. There may be pending changes not visible below.
+            </div>
+        </div>
+    #end
+    #parseDisplayTemplate("detail/dialogs.vm")
+    #parseDisplayTemplate("detail/preview/header.vm")
+    #parseDisplayTemplate("detail/preview/body.vm")
+    #parseDisplayTemplate("detail/preview/footer.vm")
+    #parseDisplayTemplate("detail/annotation.vm")
+#else
+    #parseDisplayTemplate("detail/preview/simple/header.vm")
+    #parseDisplayTemplate("detail/preview/body.vm")
+    #parseDisplayTemplate("detail/preview/simple/footer.vm")
+#end
+

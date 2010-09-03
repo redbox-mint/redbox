@@ -1,0 +1,50 @@
+<div class="grid_4">
+  #set($menuTitle = "Actions")
+  #parse($page.getTemplate('wrapping/main-menu-open.vm'))
+  #set($menuTitle = $nullValue)
+  <ul class="menu">
+    <li><a href="$portalPath/search">Browse all</a></li>
+    ## FIXME
+    <li><a id="reharvest-view" href="#" rel="$portalId">Reharvest view...</a></li>
+    #if($portalId != $defaultPortal)
+    <li><a id="delete-view" href="#" rel="$portalId">Delete view...</a></li>
+    #end
+    <!-- <li><a href="$portalPath/upload">Upload a file</a></li> -->
+    <li><a id="add-new-dataset" href="#">Add a new Dataset</a></li>
+  </ul>
+  #parse($page.getTemplate('wrapping/main-menu-close.vm'))
+</div>
+
+<script type='text/javascript'>
+$(function(){
+    var jQ = $;
+    var processing = false;
+    jQ("#add-new-dataset").click(function(){
+        if(processing) return;
+        processing=true;
+        jQ("#add-new-dataset").append("<img src='$portalPath/images/loading-progress.gif'/>");
+        jQ.ajax({type:"POST", url: "$portalPath/actions/packaging.ajax",
+                data:{
+                    ajax:1,
+                    func:"create-new",
+                    packageType:"dataset",
+                    metaList:["title", "description"],
+                    title:"[Untitled]",
+                    description:""},
+                success:function(data){
+                    if(data.status=="ok"){
+                        window.location.href = data.url;
+                    }else{
+                        alert("Failed to create package!");
+                    }
+                },
+                error:function(xhr, status, e){
+                    alert("Failed to create package!");
+                },
+                dataType:"json"
+        });
+        return false;
+    });
+});
+</script>
+

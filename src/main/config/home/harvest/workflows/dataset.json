@@ -1,0 +1,41 @@
+{
+    "harvester": {
+        "type": "workflow-harvester",
+        "workflow-harvester": {
+            "force-storage": "true"
+        }
+    },
+
+    "transformer": {
+        "harvestQueue": [],
+        "renderQueue": []
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "dataset-rules.py"
+        },
+        "params": {
+            "repository.name": "Packages",
+            "repository.type": "Packages"
+        }
+    },
+
+    "stages": [
+        {
+            "name": "pending",
+            "label": "Pending",
+            "security": ["metadata", "editor", "admin"],
+            "visibility": ["metadata", "editor", "admin"],
+            "template": "workflows/datasetWorkflow"
+        },
+        {
+            "name": "live",
+            "label": "Packaged",
+            "security": ["editor", "admin"],
+            "visibility": ["guest"],
+            "template": "workflows/datasetWorkflow"
+        }
+    ]
+}

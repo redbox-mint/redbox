@@ -155,6 +155,10 @@
             "name-authority": {
                 "jsonconfig": "name-authority.json",
                 "packages-in-package": false
+            },
+            "dataset": {
+                "jsonconfig": "dataset.json",
+                "packages-in-package": false
             }
         },
         "harvestFiles": "${fascinator.home}/harvest",

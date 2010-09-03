@@ -1,0 +1,80 @@
+## test2
+#set($oid = $self.getFormData('oid'))
+#set($title = $self.getFormData('title'))
+#set($pageTitle = $title)
+##
+<style>
+ .inputscreens input { margin:0.5ex;}
+ .inputscreens textarea { margin:0.5ex;}
+ .inputscreens table { margin:0.5ex; margin-bottom:2ex;}
+ td.delete-row {cursor:pointer; color:blue;}
+ .prev-tab, .next-tab {cursor:pointer; color:blue; margin:1ex;}
+ div.tab-nav {padding-top:2ex;}
+ img.thumbnail {height: 100px; border: 1px solid black; margin: 10px 5px 0 0;}
+ div.accordion-header {padding-left:4ex; margin:0px;}
+ h1 {padding-bottom:1ex; }
+ h2.accordion-header {padding-left:4ex; margin:0px; background:gray;}
+ div.accordion      {margin-left:-1em;margin-bottom:2em;}
+</style>
+
+<div class="grid_16">
+  <div class="box">
+    <div id="datasetMetaForm"><!-- --></div>
+  </div>
+</div>
+
+##  Javascript section
+##
+<script type="text/javascript" src="$portalPath/js/tree/jquery.tree.min.js"></script>
+
+<script type="text/javascript">
+// <![CDATA[
+  var packageData = {
+            portalPath:"$portalPath",
+            metaData:$self.getJsonMetadata(),
+            ajaxRequestUrl:"$self.getAjaxRequestUrl()",
+            packagedItems:$self.getJsonPackagedItems(),
+            test:$self.getJsonTest(),
+            oid:"$oid"
+        };
+    (function(){
+        var metaData = packageData.metaData;
+        if(!metaData["dc:title"]) metaData["dc:title"]=metaData.title;
+        if(!metaData["dc:description"]) metaData["dc:description"]=metaData.description;
+    })();
+
+## // $self.getSearchResults()
+// ]]>
+</script>
+
+<script type="text/javascript" src="$portalPath/javascript-widgets/widgets.js"></script>
+<script type="text/javascript">
+(function(jQ){
+    $(function(){
+        function onContentLoaded(){
+
+            //widgets.messageBox("Just testing");
+
+            widgets.contentLoaded();
+            try{
+                widgets.formsById["main-form"].restore(packageData.metaData);
+            }catch(e){alert(e);}
+
+            jQ("#add-items-search").click(function(){itemSearch(1); return false;});
+            jQ("#add-items-search-query").keypress(function(e){
+                if(e.which==13) itemSearch(1);
+            });
+            jQ(".accordion").accordion({header:".accordion-header", collapsible:true,
+                    clearStyle:true, active:false});     // or active:2
+            widgets.changeToTabLayout(jQ(".inputscreens")).tabs();
+            //
+//            widgets.forms[0].ctx.findx("input, textarea").function(c, e){
+//                $(e).attr("title", e.id);
+//            });
+        }
+        jQ("#datasetMetaForm").load(packageData.portalPath + "/datasetMetaForm.html", onContentLoaded);
+    });
+})(jQuery);
+</script>
+
+
