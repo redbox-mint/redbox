@@ -13,9 +13,13 @@ class DetailData:
         pass
 
     def __activate__(self, context):
+        print "****************************"
+        print "__activate__()"
+        print "****************************"
         self.velocityContext = context
         self.fd = self.vc("formData").get
         oid = self.fd("oid")
+        print "-detail.py oid='%s'" % oid
 
     def escape(self, text):
         return StringEscapeUtils.escapeHtml(text)
@@ -28,5 +32,6 @@ class DetailData:
             log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
             return None
 
-
+    def getTest(self):
+        return "-Just testing-"
     

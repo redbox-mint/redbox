@@ -23,3 +23,4 @@ detail view
     #parseDisplayTemplate("detail/preview/simple/footer.vm")
 #end
 
+$self.getTest()
