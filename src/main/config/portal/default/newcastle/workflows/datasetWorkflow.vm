@@ -68,9 +68,9 @@
                     clearStyle:true, active:false});     // or active:2
             widgets.changeToTabLayout(jQ(".inputscreens")).tabs();
             //
-//            widgets.forms[0].ctx.findx("input, textarea").function(c, e){
-//                $(e).attr("title", e.id);
-//            });
+            widgets.forms[0].ctx.findx("input, textarea").each(function(c, e){
+               $(e).attr("title", e.id);
+            });
         }
         jQ("#datasetMetaForm").load(packageData.portalPath + "/datasetMetaForm.html", onContentLoaded);
     });
