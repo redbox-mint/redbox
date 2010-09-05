@@ -29,8 +29,8 @@
         }
     },
     "messaging" : {
-        "url" : "tcp://localhost:8086",
-        "stompUrl" : "stomp://localhost:8087",
+        "url" : "tcp://localhost:8081",
+        "stompUrl" : "stomp://localhost:8082",
         "home" : "${fascinator.home}/activemq-data",
         "threads" : [
             {
