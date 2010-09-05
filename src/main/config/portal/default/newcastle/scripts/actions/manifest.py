@@ -16,8 +16,7 @@ class ManifestData:
         self.fd = self.vc("formData").get
         formData = self.vc("formData")
 
-        print "formData=%s" % self.vc("formData")
-
+        #print "formData=%s" % self.vc("formData")
         result = "{}"
         func = self.fd("func")
         oid = self.fd("oid")
@@ -49,13 +48,12 @@ class ManifestData:
             except Exception, e:
                 print "Error: '%s'" % str(e)                                        ##
             self.__manifest = JsonConfigHelper(jsonWriter(tfpackage))               ##
-            #title = formData.get("title")
-            #self.__manifest.set("title", StringEscapeUtils.escapeHtml(title))
-            print "################ manifest.py"
-            print "#  tfpackage.title='%s'" % tfpackage.get("title", "?")
-            print "#  tfpackage.description='%s'" % tfpackage.get("description", "?")
-            print "################"
             self.__saveManifest()
+            if True:
+                print "* targetStep set to 'live'!"
+                wfMeta = self.__getWorkflowMetadata()
+                wfMeta.set("targetStep", "live")
+                self.__setWorkflowMetadata(wfMeta)
             # Re-index the object  - for title|description changes                  ##
             Services.indexer.index(self.__object.getId())                           ##
             Services.indexer.commit()                                               ##
@@ -125,3 +123,19 @@ class ManifestData:
         manifestStr = String(self.__manifest.toString())
         self.__object.updatePayload(self.__object.getSourceId(),
                                     ByteArrayInputStream(manifestStr.getBytes("UTF-8")))
+
+    def __getWorkflowMetadata(self):
+        wfPayload = self.__object.getPayload("workflow.metadata")
+        wfMeta = JsonConfigHelper(wfPayload.open())
+        wfPayload.close()
+        return wfMeta
+
+    def __setWorkflowMetadata(self, metadata):
+        try:
+            jsonString = String(metadata.toString())
+            inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+            self.__object.updatePayload("workflow.metadata", inStream)
+            return True
+        except StorageException, e:
+            return False
+

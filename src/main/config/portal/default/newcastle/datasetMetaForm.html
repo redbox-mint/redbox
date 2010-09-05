@@ -239,6 +239,7 @@
                 <!-- <input type="checkbox"/>  -->
             </div>
             <input type="submit" id="update-package" value="Submit" class="form-fields-submit"/>
+            <input type="hidden" class="submit-result-func" value="submitted_ok" />
             <p>
                 <span class="submitted-result" style="padding-left:2em;font-size:120%;"> </span>
                 <label class="validation-err-msg" style="color:red;vertical-align:top;" for="dc:abstract">
@@ -267,6 +268,11 @@
 
 <script type="text/javascript">
     var wfUrl = "../arts/painting-workflow";
+    function submitted_ok(){
+        //alert("Submitted ok " + location.href);
+        location.href = location.href.replace("/workflow/", "/detail/");
+    }
+
     function itemSearch(pageNum){
         var portalPath = packageData.portalPath;
         var packagedItems = packageData.packagedItems;

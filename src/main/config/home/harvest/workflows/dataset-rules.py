@@ -44,8 +44,6 @@ def revokeAccess(object, oldRole):
     schema.set("role", oldRole)
     object.removeAccessSchema(schema, "derby")
 
-def workflowData():
-    pass
 
 def getPackage():
     sourceId = object.getSourceId()
@@ -62,6 +60,14 @@ def getWorkflowMetadata():
     wfPayload.close()
     return wfMeta
 
+def setWorkflowMetadata(metadata):
+    try:
+        jsonString = String(metadata.toString())
+        inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+        self.object.updatePayload("workflow.metadata", inStream)
+        return True
+    except StorageException, e:
+        return False
 
 #start with blank solr document
 rules.add(New())
@@ -105,12 +111,10 @@ if pid == metaPid:
     # Workflow data
     WORKFLOW_ID = "dataset"
     wfChanged = False
-    customFields = {}
     message_list = None
     workflow_security = []
     try:
         wfMeta = getWorkflowMetadata()
-
         # Are we indexing because of a workflow progression?
         targetStep = wfMeta.get("targetStep")
         if targetStep is not None and targetStep != wfMeta.get("step"):
@@ -121,7 +125,6 @@ if pid == metaPid:
         # This must be a re-index then
         else:
             targetStep = wfMeta.get("step")
-
         # Security change
         stages = jsonConfig.getJsonList("stages")
         for stage in stages:
@@ -131,7 +134,6 @@ if pid == metaPid:
                 workflow_security = stage.getList("security")
                 if wfChanged == True:
                     message_list = stage.getList("message")
-
     except StorageException, e:
         # No workflow payload, time to create
         wfChanged = True
@@ -146,7 +148,6 @@ if pid == metaPid:
                 item_security = stage.getList("visibility")
                 workflow_security = stage.getList("security")
                 message_list = stage.getList("message")
-
     # Has the workflow metadata changed?
     if wfChanged == True:
         jsonString = String(wfMeta.toString())
@@ -168,6 +169,7 @@ if pid == metaPid:
     descriptionList = []
     formatList = ["application/x-fascinator-package"]
 
+    customFields = {}
     try:
         # Form processing
         formData = wfMeta.getJsonList("formData")
