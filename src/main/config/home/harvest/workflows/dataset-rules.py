@@ -5,7 +5,7 @@ from org.apache.commons.io import IOUtils
 
 import sys
 pathToWorkflows = "../../home/harvest/workflows/"
-if sys.path.count(pathToWorkflows):
+if sys.path.count(pathToWorkflows)==0:
     sys.path.append(pathToWorkflows)
 
 import time
