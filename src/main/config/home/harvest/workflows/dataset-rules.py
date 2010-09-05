@@ -3,8 +3,14 @@ from java.lang import String
 from java.io import StringWriter
 from org.apache.commons.io import IOUtils
 
+import sys
+pathToWorkflows = "../../home/harvest/workflows/"
+if sys.path.count(pathToWorkflows):
+    sys.path.append(pathToWorkflows)
+
 import time
 from json2 import read as jsonReader, write as jsonWriter
+
 
 
 from au.edu.usq.fascinator.api.storage import StorageException
