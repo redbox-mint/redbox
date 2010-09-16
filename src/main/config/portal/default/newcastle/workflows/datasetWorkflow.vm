@@ -48,6 +48,7 @@
 </script>
 
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets.js"></script>
+<script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
 (function(jQ){
     $(function(){
@@ -71,6 +72,7 @@
             widgets.forms[0].ctx.findx("input, textarea").each(function(c, e){
                $(e).attr("title", e.id);
             });
+            nameLookup.init();
         }
         jQ("#datasetMetaForm").load(packageData.portalPath + "/datasetMetaForm.html", onContentLoaded);
     });

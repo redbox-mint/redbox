@@ -66,7 +66,9 @@
 
     <h3><a href="#screen2">People</a></h3>
     <div id="screen2" class="inputscreen">
-        <div>
+        <div class="nameLookup-section">
+            <input type="hidden" class="nameLookup-url" value="http://localhost:8080/redbox/default/proxyGet?url=http://novadev2.newcastle.edu.au:8086/mint/master/opensearch/lookup?searchTerms={searchTerms}"/>
+            <input type="hidden" class="nameLookup-value-ns" value="nl"/>
             <h1>People</h1>
 
             <h2><label for="dc:creator">Creators</label></h2>
@@ -77,6 +79,7 @@
                  <th>#</th>
                  <th style="text-align:center;"><label for="dc:creator.1.foaf:Person.foaf:givenName">Given Name</label></th>
                  <th style="text-align:center;"><label for="dc:creator.1.foaf:Person.foaf:familyName">Family Name</label></th>
+                 <th></th>
                  <th style="text-align:center;"><label for="dc:creator.1.">Work email</label></th>
                  <th></th>
                  <th style="width:100%;"></th>
@@ -96,11 +99,15 @@
                  <td><img class="facets-grip" src="../images/icons/grippy.png"/></td>
                  <td class="sort-number">1</td>
                  <td><input type="text" placeholder="given name"
-                           id="dc:creator.0.foaf:Person.foaf:givenName" /></td>
-                 <td><input type="text" placeholder="family name"
-                           id="dc:creator.0.foaf:Person.foaf:familyName"/></td>
-                 <td><input type="text" placeholder="work email"
-                           id="dc:creator.0.vivo:workEmail"/></td>
+                            class="nameLookup-name nl nl-foaf:firstName"
+                            id="dc:creator.0.foaf:Person.foaf:givenName" /></td>
+                 <td><input type="text" placeholder="family name" 
+                            class="nameLookup-name nl nl-foaf:lastName"
+                            id="dc:creator.0.foaf:Person.foaf:familyName"/></td>
+                 <td><a href="#" class="nameLookup-lookup">lookup</a></td>
+                 <td><input type="text" placeholder="work email" size="60"
+                            class="nl nl-vivo:workEmail"
+                            id="dc:creator.0.vivo:workEmail"/></td>
                  <td class="delete-item"><a href="#">delete</a></td>
                </tr>
               </tbody>
@@ -138,6 +145,38 @@
                            id="vivo:contactInformation.0.foaf:Person.foaf:familyName"/></td>
                  <td><input type="text" placeholder="work email"
                            id="vivo:contactInformation.0.vivo:workEmail"/></td>
+                 <td class="delete-item"><a href="#">delete</a></td>
+               </tr>
+              </tbody>
+            </table>
+
+            <h2><label for="vivo:contactInformation">Mint lookup test</label></h2>
+            <table class="input-list sortable">
+             <thead>
+               <tr class="header-row">
+                 <th></th>
+                 <th>#</th>
+                 <th style="text-align:center;"><label for="vivo:contactInformation.1.foaf:Person.foaf:Name">Name</label></th>
+                 <th></th>
+                 <th style="width:100%;"></th>
+               </tr>
+             </thead>
+             <tfoot>
+               <tr>
+                  <td></td>
+                  <td></td>
+                  <td><input class="add-another-item" type="button" value="Add another contact"/></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+             </tfoot>
+             <tbody>
+               <tr class="item-input-display sortable-item">
+                 <td><img class="facets-grip" src="../images/icons/grippy.png"/></td>
+                 <td class="sort-number">1</td>
+                 <td><input type="text" placeholder="name"
+                           id="vivo:contactInformation.0.foaf:Person.foaf:Name" /></td>
+                 <td><a class="lookup" href="#">lookup</a></td>
                  <td class="delete-item"><a href="#">delete</a></td>
                </tr>
               </tbody>

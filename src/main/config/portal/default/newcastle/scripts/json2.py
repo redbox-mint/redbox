@@ -213,8 +213,7 @@ class JsonReader(object):
                 ch = self._next()
                 if ch != ",":
                     raise ReadException, "Not a valid JSON array: '%s' due to: '%s'" % (self._generator.all(), ch)
-            else:
-                assert ']' == self._next()
+        assert ']' == self._next()
         return result
 
     def _readObject(self):

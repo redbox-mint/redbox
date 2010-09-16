@@ -77,6 +77,7 @@ class DatasetWorkflowData(object):
             self.__object.close()
             self.__object=None
         if result is not None:
+            response = self.vc("response")
             writer = response.getPrintWriter("text/plain; charset=UTF-8")
             #writer = response.getPrintWriter("application/json; charset=UTF-8")
             writer.println(result)
