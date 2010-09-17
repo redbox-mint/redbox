@@ -21,6 +21,7 @@
                   draggable:false,
                   autoOpen:false
                 });
+    gdialog = dialog;
 
 
     var displayNameLookups = function(json, position, queryStr, callback){
@@ -46,9 +47,9 @@
           tbody.append(tr);
           label.dblclick(function(){dialog.dialog("option", "buttons").OK();});
           a.click(function(e){
-            var pos = a.position();
-            pos.left += position.left;
-            pos.top += position.top;
+            var pos = dialog.parent().position();
+            pos.left += 10;
+            pos.top += 20;
             displayDetails(result["rdfs:label"], result, pos, r);
             return false;
           });
@@ -68,8 +69,9 @@
                             callback(false);
                           }
                         });
-        dialog.dialog("option", "position", [position.left, position.top]);
+        //dialog.dialog("option", "position", [position.left, position.top]);
         dialog.dialog("open");
+        dialog.parent().css("top", position.top+"px").css("left", position.left+"px");
     }
 
     var displayDetails = function(name, details, pos, link){
@@ -84,8 +86,9 @@
                             "OK": function(){link.click(); detailDialog.dialog("close");},
                             "Cancel": function(){detailDialog.dialog("close");}
                           });
-        detailDialog.dialog("option", "position", [pos.left, pos.top]);
+        //detailDialog.dialog("option", "position", [pos.left, pos.top]);
         detailDialog.dialog("open").dialog("moveToTop");
+        detailDialog.parent().css("top", pos.top+"px").css("left", pos.left+"px");
     };
 
 //
@@ -108,9 +111,11 @@
                 error:function(x,s,e){callback({error:s});}
             });
         }
-        ctx.find(".nameLookup-lookup").unbind().click(function(e){
+        //ctx.find(".nameLookup-lookup").unbind().click(function(e){
+        ctx.find(".nameLookup-lookup").die().live("click", function(e){
             var target, parent, queryTerm, queryUrl;
             target=$(e.target);
+            gtarget = target
             parent=target.parent();
             if(parent.find(".nameLookup-name").size()==0){
                 parent = parent.parent();
@@ -129,7 +134,7 @@
                             var nst, k;
                             if(!ns) return;
                             nsp = ns+"-";
-                            ctx.find("."+ns).each(function(c, e){
+                            parent.find("."+ns).each(function(c, e){
                                 e=$(e);
                                 $.each(e.attr("class").split(/\s+/), function(_, cls){
                                     if(cls.substr(0, nsp.length)===nsp){
