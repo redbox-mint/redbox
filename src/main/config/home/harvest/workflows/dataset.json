@@ -17,8 +17,8 @@
             "rules": "dataset-rules.py"
         },
         "params": {
-            "repository.name": "Packages",
-            "repository.type": "Packages"
+            "repository.name": "Dataset",
+            "repository.type": "Dataset"
         }
     },
 
@@ -28,14 +28,14 @@
             "label": "Pending",
             "security": ["metadata", "editor", "admin"],
             "visibility": ["metadata", "editor", "admin"],
-            "template": "workflows/datasetWorkflow"
+            "template": "workflows/dataset"
         },
         {
             "name": "live",
-            "label": "Packaged",
+            "label": "Live",
             "security": ["editor", "admin"],
             "visibility": ["guest"],
-            "template": "workflows/datasetWorkflow"
+            "template": "workflows/dataset"
         }
     ]
 }

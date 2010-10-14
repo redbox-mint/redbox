@@ -1,9 +1,17 @@
 {
-    "version": "0.7.2",
+    "version": "0.7.7",
     "configured": true,
-    "urlBase" : "http://novadev2.newcastle.edu.au:8080/redbox/",
+    "urlBase" : "http://novadev2.newcastle.edu.au/redbox/",
+    "urlBaseLocal" : "http://localhost:8080/redbox/",
     "email" : "dave.huthnance@newcastle.edu.au",
-    "sso": ["OpenID"],
+    "sso": {
+        "plugins": ["OpenID"],
+        "urlExclusions": {
+            "startsWith" : ["css/", "feed/", "images/", "js/", "flowplayer/"],
+            "endsWidth" : [".ico"],
+            "equals" : ["css"]
+        }
+    },
     "accesscontrol": {
     "type" : "derby",
         "derby" : {
@@ -26,6 +34,11 @@
         "type": "file-system",
         "file-system": {
             "home": "${storage.home}"
+        },
+        "fedora3": {
+            "url": "http://localhost:8080/fedora",
+            "username": "fedoraAdmin",
+            "password": "fedoraAdmin"
         }
     },
     "messaging" : {
@@ -100,31 +113,49 @@
                 "config" : {
                     "name" : "ingest"
                 }
+            },
+            {
+                "id" : "subscriber",
+                "description" : "Subscriber queue for event log.",
+                "priority": "7",
+                "config": {
+                    "name" : "subscriber",
+                    "subscribers": ["solr-event-log"]
+                }
+            },
+            {
+                "id" : "solrwrapper",
+                "description" : "Wrapper for ingest into main Solr core.",
+                "priority": "5",
+                "config": {
+                    "name" : "solrwrapper"
+                }
             }
         ]
     },
     "indexer": {
         "type": "solr",
-        "properties": "SOF-META",
+        "properties": "TF-OBJ-META",
+        "useCache" : true,
+        "cachingLevel" : "dynamic",
+        "buffer": {
+            "docLimit" : "200",
+            "sizeLimit" : "204800",
+            "timeLimit" : "30"
+        },
         "solr": {
             "uri": "http://localhost:8080/solr/fascinator",
+            "coreName": "fascinator",
             "autocommit": false,
             "embedded": false
         },
         "anotar": {
             "uri": "http://localhost:8080/solr/anotar",
-            "autocommit": true,
-            "embedded": false
+            "coreName": "anotar",
+            "autocommit": true
         }
     },
     "transformerDefaults": {
-        "solrmarc": {
-            "id": "solrmarc",
-            "configPath": "${fascinator.home}/solrmarc/vital-config.properties"
-        },
-        "marc-authors": {
-            "id": "marc-authors"
-        }
     },
     "uploader": {
         "basic-upload": {
@@ -139,21 +170,18 @@
     },
     "portal": {
         "home": "${portal.home}",
-        "contentDir": "${portal.home}",
+        "contentDir": "${fascinator.home}/content",
         "defaultView": "default",
         "skins": {
             "default": "default",
             "order": [ "newcastle" ]
         },
+        "cachingLevel": "dynamic",
         "layout": "layout",
         "nativeJython": true,
         "packageTypes": {
             "default": {
                 "jsonconfig": "packaging-config.json",
-                "packages-in-package": false
-            },
-            "name-authority": {
-                "jsonconfig": "name-authority.json",
                 "packages-in-package": false
             },
             "dataset": {
@@ -174,6 +202,16 @@
         }
     },
     "watcher" : {
-        "path": "${watcher.install.path}"
+        "path": "${INSTALL_PATH}/watcher"
+    },
+    "subscriber": {
+        "solr": {
+            "uri": "http://localhost:8080/solr/eventlog",
+            "buffer": {
+                "docLimit" : "200",
+                "sizeLimit" : "204800",
+                "timeLimit" : "30"
+            }
+        }
     }
 }

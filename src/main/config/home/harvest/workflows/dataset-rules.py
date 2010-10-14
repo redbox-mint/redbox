@@ -1,179 +1,222 @@
-from java.io import ByteArrayInputStream
-from java.lang import String
-from java.io import StringWriter
-from org.apache.commons.io import IOUtils
+import sys, time
 
-import sys
 pathToWorkflows = "../../home/harvest/workflows/"
-if sys.path.count(pathToWorkflows)==0:
+if sys.path.count(pathToWorkflows) == 0:
     sys.path.append(pathToWorkflows)
-
-import time
 from json2 import read as jsonReader, write as jsonWriter
-
-
 
 from au.edu.usq.fascinator.api.storage import StorageException
 from au.edu.usq.fascinator.common import JsonConfigHelper
 from au.edu.usq.fascinator.common.storage import StorageUtils
-from au.edu.usq.fascinator.indexer.rules import AddField, New
-#
-# Available objects:
-#    indexer    : Indexer instance
-#    jsonConfig : JsonConfigHelper of our harvest config file
-#    rules      : RuleManager instance
-#    object     : DigitalObject to index
-#    payload    : Payload to index
-#    params     : Metadata Properties object
-#    pyUtils    : Utility object for accessing app logic
-#
 
-def indexList(name, values):
-    for value in values:
-        rules.add(AddField(name, value))
+from java.io import ByteArrayInputStream, StringWriter
+from java.lang import String
 
-def grantAccess(object, newRole):
-    schema = object.getAccessSchema("derby");
-    schema.setRecordId(oid)
-    schema.set("role", newRole)
-    object.setAccessSchema(schema, "derby")
+from org.apache.commons.io import IOUtils
 
-def revokeAccess(object, oldRole):
-    schema = object.getAccessSchema("derby");
-    schema.setRecordId(oid)
-    schema.set("role", oldRole)
-    object.removeAccessSchema(schema, "derby")
+class IndexData:
+    def __init__(self):
+        pass
 
+    def __activate__(self, context):
+        print " * Running dataset-rules.py..."
 
-def getPackage():
-    sourceId = object.getSourceId()
-    payload = object.getPayload(sourceId)
-    writer = StringWriter()
-    IOUtils.copy(payload.open(), writer)
-    tfpackage = jsonReader(writer.toString())
-    payload.close()
-    return tfpackage
+        # Prepare variables
+        self.index = context["fields"]
+        self.object = context["object"]
+        self.payload = context["payload"]
+        self.params = context["params"]
+        self.utils = context["pyUtils"]
+        self.config = context["jsonConfig"]
 
-def getWorkflowMetadata():
-    wfPayload = object.getPayload("workflow.metadata")
-    wfMeta = JsonConfigHelper(wfPayload.open())
-    wfPayload.close()
-    return wfMeta
+        # Common data
+        self.__newDoc()
 
-def setWorkflowMetadata(metadata):
-    try:
-        jsonString = String(metadata.toString())
-        inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
-        self.object.updatePayload("workflow.metadata", inStream)
-        return True
-    except StorageException, e:
-        return False
+        # Real metadata
+        if self.itemType == "object":
+            self.__basicData()
+            self.__metadata()
+            # Some of the above steps may request some
+            #  messages be sent, particularly workflows
+            self.__messages()
 
-#start with blank solr document
-rules.add(New())
+        # Make sure security comes after workflows
+        self.__security()
 
-#common fields
-oid = object.getId()
-pid = payload.getId()
-metaPid = params.getProperty("metaPid", "DC")
-if pid == metaPid:
-    itemType = "object"
-else:
-    oid += "/" + pid
-    itemType = "datastream"
-    rules.add(AddField("identifier", pid))
+    def __newDoc(self):
+        self.oid = self.object.getId()
+        self.pid = self.payload.getId()
+        metadataPid = self.params.getProperty("metaPid", "DC")
 
-rules.add(AddField("id", oid))
-rules.add(AddField("storage_id", oid))
-rules.add(AddField("item_type", itemType))
-rules.add(AddField("last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ")))
-
-item_security = []
-
-if pid == metaPid:
-    print "*************** dataset-rules.py ***************** 3"
-    for payloadId in object.getPayloadIdList():
-        try:
-            payload = object.getPayload(payloadId)
-            if str(payload.getType())=="Thumbnail":
-                rules.add(AddField("thumbnail", payload.getId()))
-            elif str(payload.getType())=="Preview":
-                rules.add(AddField("preview", payload.getId()))
-            elif str(payload.getType())=="AltPreview":
-                rules.add(AddField("altpreview", payload.getId()))
-        except Exception, e:
-            pass
-    #only need to index metadata for the main object
-    rules.add(AddField("repository_name", params["repository.name"]))
-    rules.add(AddField("repository_type", params["repository.type"]))
-
-    ##
-    # Workflow data
-    WORKFLOW_ID = "dataset"
-    wfChanged = False
-    message_list = None
-    workflow_security = []
-    try:
-        wfMeta = getWorkflowMetadata()
-        # Are we indexing because of a workflow progression?
-        targetStep = wfMeta.get("targetStep")
-        if targetStep is not None and targetStep != wfMeta.get("step"):
-            wfChanged = True
-            # Step change
-            wfMeta.set("step", targetStep)
-            wfMeta.removePath("targetStep")
-        # This must be a re-index then
+        if self.pid == metadataPid:
+            self.itemType = "object"
         else:
-            targetStep = wfMeta.get("step")
-        # Security change
-        stages = jsonConfig.getJsonList("stages")
-        for stage in stages:
-            if stage.get("name") == targetStep:
-                wfMeta.set("label", stage.get("label"))
-                item_security = stage.getList("visibility")
-                workflow_security = stage.getList("security")
-                if wfChanged == True:
-                    message_list = stage.getList("message")
-    except StorageException, e:
-        # No workflow payload, time to create
-        wfChanged = True
-        wfMeta = JsonConfigHelper()
-        wfMeta.set("id", WORKFLOW_ID)
-        wfMeta.set("step", "pending")
-        wfMeta.set("pageTitle", "Dataset Metadata.")
-        stages = jsonConfig.getJsonList("stages")
-        for stage in stages:
-            if stage.get("name") == "pending":
-                wfMeta.set("label", stage.get("label"))
-                item_security = stage.getList("visibility")
-                workflow_security = stage.getList("security")
-                message_list = stage.getList("message")
-    # Has the workflow metadata changed?
-    if wfChanged == True:
-        jsonString = String(wfMeta.toString())
-        inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+            self.oid += "/" + self.pid
+            self.itemType = "datastream"
+            self.utils.add(self.index, "identifier", self.pid)
+
+        self.utils.add(self.index, "id", self.oid)
+        self.utils.add(self.index, "storage_id", self.oid)
+        self.utils.add(self.index, "item_type", self.itemType)
+        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
+        self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
+        self.utils.add(self.index, "display_type", "package-dataset")
+
+        self.item_security = []
+        self.owner = self.params.getProperty("owner", None)
+
+    def __basicData(self):
+        self.utils.add(self.index, "repository_name", self.params["repository.name"])
+        self.utils.add(self.index, "repository_type", self.params["repository.type"])
+
+    def __security(self):
+        # Security
+        roles = self.utils.getRolesWithAccess(self.oid)
+        if roles is not None:
+            # For every role currently with access
+            for role in roles:
+                # Should show up, but during debugging we got a few
+                if role != "":
+                    if role in self.item_security:
+                        # They still have access
+                        self.utils.add(self.index, "security_filter", role)
+                    else:
+                        # Their access has been revoked
+                        self.__revokeAccess(role)
+            # Now for every role that the new step allows access
+            for role in self.item_security:
+                if role not in roles:
+                    # Grant access if new
+                    self.__grantAccess(role)
+                    self.utils.add(self.index, "security_filter", role)
+
+        # No existing security
+        else:
+            if self.item_security is None:
+                # Guest access if none provided so far
+                self.__grantAccess("guest")
+                self.utils.add(self.index, "security_filter", role)
+            else:
+                # Otherwise use workflow security
+                for role in self.item_security:
+                    # Grant access if new
+                    self.__grantAccess(role)
+                    self.utils.add(self.index, "security_filter", role)
+        # Ownership
+        if self.owner is None:
+            self.utils.add(self.index, "owner", "system")
+        else:
+            self.utils.add(self.index, "owner", self.owner)
+
+    def __indexList(self, name, values):
+        for value in values:
+            self.utils.add(self.index, name, value)
+
+    def __grantAccess(self, newRole):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("role", newRole)
+        self.utils.setAccessSchema(schema, "derby")
+
+    def __revokeAccess(self, oldRole):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("role", oldRole)
+        self.utils.removeAccessSchema(schema, "derby")
+
+    def __metadata(self):
+        self.titleList = ["New Dataset"]
+        self.descriptionList = []
+        self.creatorList = []
+        self.creationDate = []
+        self.contributorList = []
+        self.approverList = []
+        self.formatList = ["application/x-fascinator-package"]
+        self.fulltext = []
+        self.relationDict = {}
+        self.customFields = {}
+
+        # Try our data sources, order matters
+        self.__workflow()
+
+        # Some defaults if the above failed
+        if self.titleList == []:
+           self.titleList.append(self.object.getSourceId())
+        if self.formatList == []:
+            source = self.object.getPayload(self.object.getSourceId())
+            self.formatList.append(source.getContentType())
+
+        # Index our metadata finally
+        self.__indexList("dc_title", self.titleList)
+        self.__indexList("dc_creator", self.creatorList)  #no dc_author in schema.xml, need to check
+        self.__indexList("dc_contributor", self.contributorList)
+        self.__indexList("dc_description", self.descriptionList)
+        self.__indexList("dc_format", self.formatList)
+        self.__indexList("dc_date", self.creationDate)
+        self.__indexList("full_text", self.fulltext)
+        for key in self.customFields:
+            self.__indexList(key, self.customFields[key])
+        for key in self.relationDict:
+            self.__indexList(key, self.relationDict[key])
+
+    def __workflow(self):
+        # Workflow data
+        WORKFLOW_ID = "dataset"
+        wfChanged = False
+        workflow_security = []
+        self.message_list = None
         try:
-            StorageUtils.createOrUpdatePayload(object, "workflow.metadata", inStream)
+            wfPayload = self.object.getPayload("workflow.metadata")
+            wfMeta = JsonConfigHelper(wfPayload.open())
+            wfPayload.close()
+            wfMeta.set("pageTitle", "Dataset Metadata")
+            # Are we indexing because of a workflow progression?
+            targetStep = wfMeta.get("targetStep")
+            if targetStep is not None and targetStep != wfMeta.get("step"):
+                wfChanged = True
+                # Step change
+                wfMeta.set("step", targetStep)
+                wfMeta.removePath("targetStep")
+            # This must be a re-index then
+            else:
+                targetStep = wfMeta.get("step")
+            # Security change
+            stages = self.config.getJsonList("stages")
+            for stage in stages:
+                if stage.get("name") == targetStep:
+                    wfMeta.set("label", stage.get("label"))
+                    self.item_security = stage.getList("visibility")
+                    workflow_security = stage.getList("security")
+                    if wfChanged == True:
+                        self.message_list = stage.getList("message")
+
         except StorageException, e:
-            print " * dataset-rules.py : Error updating workflow payload"
+            # No workflow payload, time to create
+            wfChanged = True
+            wfMeta = JsonConfigHelper()
+            wfMeta.set("id", WORKFLOW_ID)
+            wfMeta.set("step", "pending")
+            wfMeta.set("pageTitle", "Dataset Metadata")
+            stages = self.config.getJsonList("stages")
+            for stage in stages:
+                if stage.get("name") == "pending":
+                    wfMeta.set("label", stage.get("label"))
+                    self.item_security = stage.getList("visibility")
+                    workflow_security = stage.getList("security")
+                    self.message_list = stage.getList("message")
 
-    rules.add(AddField("workflow_id", wfMeta.get("id")))
-    rules.add(AddField("workflow_step", wfMeta.get("step")))
-    rules.add(AddField("workflow_step_label", wfMeta.get("label")))
-    for group in workflow_security:
-        rules.add(AddField("workflow_security", group))
-    ##
+        # Has the workflow metadata changed?
+        if wfChanged == True:
+            jsonString = String(wfMeta.toString())
+            inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+            try:
+                StorageUtils.createOrUpdatePayload(self.object, "workflow.metadata", inStream)
+            except StorageException, e:
+                print " * ERROR updating dataset payload!"
 
-    # Index our metadata finally
-    titleList = ["New dataset package"]
-    descriptionList = []
-    formatList = ["application/x-fascinator-package"]
-
-    customFields = {}
-    try:
         # Form processing
         formData = wfMeta.getJsonList("formData")
-        print "formData='%s'" % str(formData)
         if formData.size() > 0:
             formData = formData[0]
         else:
@@ -183,80 +226,37 @@ if pid == metaPid:
             # Core fields
             title = formData.getList("title")
             if title:
-                titleList = title
+                self.titleList = title
             description = formData.getList("description")
             if description:
-                descriptionList = description
+                self.descriptionList = description
             # Non-core fields
             data = formData.getMap("/")
             for field in data.keySet():
                 if field not in coreFields:
-                    customFields[field] = formData.getList(field)
-    except Exception, e:
-        print "Error processing form data - '%s'" % str(e)
+                    self.customFields[field] = formData.getList(field)
 
-    tfpackage = getPackage()
-    titleList = [tfpackage.get("title", "[Untitled dataset package]")]
-    descriptionList = [tfpackage.get("description", "")]
-    print "titleList='%s'" % titleList
-    print "descriptionList='%s'" % descriptionList
+        # Manifest processing (formData is not present in wfMeta)
+        manifestPayload = self.object.getPayload(self.object.getSourceId())
+        manifest = JsonConfigHelper(manifestPayload.open())
+        manifestPayload.close()
+        title = manifest.get("title", "Untitled")
+        description = manifest.get("description", "")
+        self.titleList = [title]
+        self.descriptionList = [description]
 
-    # Index our metadata finally    
-    indexList("dc_title", titleList)
-    indexList("dc_description", descriptionList)
+        self.utils.add(self.index, "workflow_id", wfMeta.get("id"))
+        self.utils.add(self.index, "workflow_step", wfMeta.get("step"))
+        self.utils.add(self.index, "workflow_step_label", wfMeta.get("label"))
+        for group in workflow_security:
+            self.utils.add(self.index, "workflow_security", group)
+            if self.owner is not None:
+                self.utils.add(self.index, "workflow_security", self.owner)
 
-    for key in customFields:
-        indexList(key, customFields[key])
-
-    rules.add(AddField("displayType", "package-dataset"))
-    rules.add(AddField("display_type", "package-dataset"))
-
-    # AFTER saving the data, send messages for workflows
-    # Any messages for the new step?
-    if message_list is not None and len(message_list) > 0:
-        msg = JsonConfigHelper()
-        msg.set("oid", oid)
-        message = msg.toString()
-        for target in message_list:
-            pyUtils.sendMessage(target, message)
-
-# Security
-roles = pyUtils.getRolesWithAccess(oid)
-if roles is not None:
-    # For every role currently with access
-    for role in roles:
-        # Should show up, but during debugging we got a few
-        if role != "":
-            if role in item_security:
-                # They still have access
-                rules.add(AddField("security_filter", role))
-            else:
-                # Their access has been revoked
-                revokeAccess(pyUtils, role)
-    # Now for every role that the new step allows access
-    for role in item_security:
-        if role not in roles:
-            # Grant access if new
-            grantAccess(pyUtils, role)
-            rules.add(AddField("security_filter", role))
-# No existing security
-else:
-    if item_security is None:
-        # Guest access if none provided so far
-        grantAccess(pyUtils, "guest")
-        rules.add(AddField("security_filter", role))
-    else:
-        # Otherwise use workflow security
-        for role in item_security:
-            # Grant access if new
-            grantAccess(pyUtils, role)
-            rules.add(AddField("security_filter", role))
-# Ownership
-owner = params.getProperty("owner", "system")
-if owner is None:
-    rules.add(AddField("owner", "system"))
-else:
-    rules.add(AddField("owner", owner))
-
-# add owner to workflow security
-AddField("workflow_security", owner)
+    def __messages(self):
+        if self.message_list is not None and len(self.message_list) > 0:
+            msg = JsonConfigHelper()
+            msg.set("oid", self.oid)
+            message = msg.toString()
+            for target in self.message_list:
+                self.utils.sendMessage(target, message)

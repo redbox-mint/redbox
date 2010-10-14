@@ -109,6 +109,16 @@
             <artifactId>plugin-storage-filesystem</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
+        <dependency>
+            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <artifactId>plugin-storage-fedora3</artifactId>
+            <version>${fascinator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <artifactId>plugin-subscriber-solrEventLog</artifactId>
+            <version>${fascinator.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -140,11 +150,13 @@
                         </goals>
                         <configuration>
                             <source>
-                                import java.io.File;
-                                String baseDir = pom.basedir;
-                                File dir = new File(baseDir);
-                                String projectHome = dir.getParentFile().getAbsolutePath();
-                                project.properties['project.home'] = projectHome.replace("\\", "/");
+                                String projectHome = project.properties["project.home"];
+                                if (projectHome == null) {
+                                    projectHome = project.basedir.parentFile.absolutePath;
+                                    projectHome = projectHome.replace("\\", "/");
+                                    project.properties["project.home"] = projectHome;
+                                }
+                                println "Project will be deployed to: " + projectHome;
                             </source>
                         </configuration>
                     </execution>
@@ -423,6 +435,23 @@
                                 </resource>
                             </resources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Set executable attribute for shell scripts -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <chmod file="${dir.server}/*.sh" perm="740"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

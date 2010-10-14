@@ -3,8 +3,12 @@ h1#branding {
     padding: 0.2ex 2ex;
 }
 
-ul.nav { background: darkred;}
-ul.main li a { background: darkred;}
+#branding img {
+    border: 0;
+}
+
+ul.nav { background: darkred; }
+ul.main li a { background: darkred; }
 
 /* these are all green shades */
 /*

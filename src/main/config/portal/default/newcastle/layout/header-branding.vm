@@ -1,4 +1,8 @@
 <div class="grid_16">
-  <h1 id="branding"><a href="$portalPath/home"><img src="$portalPath/css/ReDBox.png" alt="ReDBox" style="border:0;"/></a></h1>
+    <h1 id="branding">
+        <a href="$portalPath/home">
+            <img src="$portalPath/images/redbox.png" alt="ReDBox" />
+        </a>
+    </h1>
 </div>
 <div class="clear"></div>

@@ -14,12 +14,12 @@ from json2 import read as jsonReader, write as jsonWriter
 import re
 
 
-class DatasetWorkflowData(object):
+class DatasetData(object):
     def __init__(self):
         pass
 
     def __activate__(self, context):
-        print "**** datasetWorkflow.py"
+        print "**** dataset.py"
         self.velocityContext = context
         formData = self.vc("formData")
         self.formData = formData
