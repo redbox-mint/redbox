@@ -67,7 +67,8 @@
     <h3><a href="#screen2">People</a></h3>
     <div id="screen2" class="inputscreen">
         <div class="nameLookup-section">
-            <input type="hidden" class="nameLookup-url" value="../proxyGet?url=http://novadev2.newcastle.edu.au:8086/mint/master/opensearch/lookup?searchTerms={searchTerms}"/>
+            <!-- <input type="hidden" class="nameLookup-url" value="../proxyGet?url=http://novadev2.newcastle.edu.au:8086/mint/master/opensearch/lookup?searchTerms={searchTerms}"/> -->
+            <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=mintPeople&qs=searchTerms%3D{searchTerms}"/>
             <input type="hidden" class="nameLookup-value-ns" value="nl"/>
             <h1>People</h1>
 
@@ -199,10 +200,13 @@
                     <tr class="item-input">
                         <td>
                             <span class="data-source-drop-down">
-                                <input type="hidden" class="json-data-source-url"
-                                       value="../json/anzsrc/for/index.json" />
+                                <!-- <input type="hidden" class="json-data-source-url"
+                                       value="../json/anzsrc/for/index.json" /> 
                                 <input type="hidden" class="json-data-source-url-lookup"
                                         value="http://localhost:8080/redbox/default/proxyGet?url=http://novadev2.newcastle.edu.au:8086/mint/for/opensearch/lookup?count=999%26level=" />
+                                -->
+                                <input type="hidden" class="json-data-source-url-lookup"
+                                        value="http://localhost:8080/redbox/default/proxyGet?ns=mintFor&qs=count%3D999%26level=" />
                                 <input type="hidden" class="json-data-top-level-id" value="top"/>
                                 <input type="hidden" class="json-data-id-key" value="rdf:about"/>
                                 <input type="hidden" class="json-data-label-key" value="skos:prefLabel"/>

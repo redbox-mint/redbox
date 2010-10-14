@@ -1,4 +1,5 @@
 from au.edu.usq.fascinator.api.storage import StorageException
+from au.edu.usq.fascinator.common import JsonConfig
 from au.edu.usq.fascinator.common import JsonConfigHelper
 from au.edu.usq.fascinator.portal import FormData
 from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
@@ -10,9 +11,8 @@ from java.net import URLDecoder
 import locale
 import time
 from json2 import read as jsonReader, write as jsonWriter                       ##
-from urllib2 import urlopen, build_opener, ProxyHandler, quote
+from urllib2 import urlopen, build_opener, ProxyHandler
 import socket
-import re
 
 socket.setdefaulttimeout(4)        # set the default timeout to 4 seconds
 noProxyHandler = ProxyHandler({})
@@ -20,23 +20,33 @@ noProxyUrlopener = build_opener(noProxyHandler)
 noProxyUrlopen = noProxyUrlopener.open
 defaultUrlopen = urlopen
 
-class ProxyGetData:
 
+class ProxyGetData:
     def __init__(self):
         pass
 
     def __activate__(self, context):
-        print "*** test.py ***"
+        print "*** proxyGet.py ***"
         self.velocityContext = context
         formData = self.vc("formData")
-        url = "http://novadev2.newcastle.edu.au:8086/mint/master/opensearch/lookup?searchTerms=smith"
-        url = formData.get("url") or url
         response = self.vc("response")
-
-        #def r(m):
-        #    return "=%s" % quote(m.groups()[0])
-        #url = re.sub("\\=([^\\&]*)", r, url)
+        ##
+        f = open(JsonConfig.getSystemFile().toString(), "rb")
+        proxyUrls = jsonReader(f.read()).get("proxy-urls", {})
+        f.close()
+        print " proxyUrls='%s'" % proxyUrls
+        print " ns='%s'" % formData.get("ns", "")
+        print " qs='%s'" % formData.get("qs", "")
+        ##
+        #url = "http://localhost:8080/mint/master/opensearch/lookup?searchTerms=smith"
+        #url = formData.get("url") or url
+        url = ""
+        url = proxyUrls.get(formData.get("ns", ""), url)
+        queryStr = formData.get("qs")
+        if queryStr:
+            url += "?%s" % queryStr
         print "url='%s'" % url
+
         data = None
         try:
             data = self._wget(url)
