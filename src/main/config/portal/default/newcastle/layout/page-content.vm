@@ -1,0 +1,24 @@
+#set($hasRenderMessages = ($renderMessages && !$renderMessages.isEmpty()))
+<div class="grid_16">
+    #parseTemplate("dialogs/notice.vm")
+    #parseTemplate("dialogs/login.vm")
+    #if(!$blockingNotifications && $hasRenderMessages)
+        #parseTemplate("layout/error-screen.vm")
+    #else
+        #if($page.authentication.is_logged_in())
+            #if($pageContent && (!$blockingNotifications || $renderSettingsForms))
+                $pageContent
+            #end
+        #else
+            <div class="grid_16">
+                <div id="notifications" class="box articles">
+                    <h2>System Notification</h2>
+                    <div class="content">
+                        <b>Access Denied</b><br/>You must be logged in to view this resource.
+                    </div>
+                </div>
+            </div>
+        #end
+    #end
+</div>
+<div class="clear"></div>

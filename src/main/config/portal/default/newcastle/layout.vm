@@ -1,0 +1,18 @@
+#if($noLayout)
+    #if($page.authentication.is_logged_in())
+        $!pageContent
+    #else
+        Access denied. You must be logged in to view this resource.
+    #end
+#else
+<!DOCTYPE html>
+<html>
+    <head>
+        #parseTemplate("layout/html-head.vm")
+    </head>
+    <body>
+        #parseTemplate("layout/page-structure.vm")
+        #parseTemplate("layout/action-form.vm")
+    </body>
+</html>
+#end
