@@ -1,8 +1,8 @@
 {
-    "version": "0.7.7",
+    "version": "0.7.12",
     "configured": true,
-    "urlBase" : "http://novadev2.newcastle.edu.au/redbox/",
-    "urlBaseLocal" : "http://localhost:8080/redbox/",
+    "urlBaseNovaDev2" : "http://novadev2.newcastle.edu.au/redbox/",
+    "urlBase" : "http://localhost:8080/redbox/",
     "email" : "dave.huthnance@newcastle.edu.au",
     "sso": {
         "plugins": ["OpenID"],
@@ -10,6 +10,8 @@
             "startsWith" : ["css/", "feed/", "images/", "js/", "flowplayer/"],
             "endsWidth" : [".ico"],
             "equals" : ["css"]
+        },
+        "trustTokens": {
         }
     },
     "accesscontrol": {
@@ -130,6 +132,26 @@
                 "config": {
                     "name" : "solrwrapper"
                 }
+            },
+            {
+                "id" : "emailnotification",
+                "description" : "Queue to send email notifications",
+                "priority" : "8",
+                "config" : {
+                    "name" : "emailnotification",
+                    "debug" : false,
+                    "from" : {
+                        "email" : "fascinator@usq.edu.au",
+                        "name": "The Fascinator"
+                    },
+                    "smtp" : {
+                        "host" : "smtp-gw.usq.edu.au"
+                    },
+                    "defaults" : {
+                        "subject" : "Notification",
+                        "body": "nt"
+                    }
+                }
             }
         ]
     },
@@ -199,6 +221,14 @@
                 "jobs": [
                 ]
             }
+        },
+        "oai-pmh": {
+            "metadataFormats": {
+                "oai_dc": {
+                    "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+                    "metadataNamespace": "http://www.openarchives.org/OAI/2.0/oai_dc/"
+                }
+            }
         }
     },
     "proxy-urls": {
@@ -208,7 +238,6 @@
         "mintAuthor" : "http://novadev2.newcastle.edu.au:8086/mint/author/opensearch/lookup",
         "mintGeoNames" : "http://novadev2.newcastle.edu.au:8086/mint/geonmaes/opensearch/lookup",
         "mintOrgUnit" : "http://novadev2.newcastle.edu.au:8086/mint/orgunit/opensearch/lookup"
-
     },
     "watcher" : {
         "path": "${INSTALL_PATH}/watcher"
