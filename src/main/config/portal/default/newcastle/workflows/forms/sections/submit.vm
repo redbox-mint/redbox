@@ -1,0 +1,21 @@
+<div>
+    <h2>Deposit</h2>
+    <p>
+        <input id="agreement" type="checkbox" />
+        <label for="agreement">I accept responsibility and accountability for the accuracy and completeness of the information provided.</label>
+    </p>
+    <input type="submit" disabled="disabled" id="update-package" value="Submit" class="form-fields-submit" />
+    <input type="hidden" class="submit-result-func" value="submitted_ok" />
+    <p><span class="submitted-result" style="padding-left: 2em; font-size: 120%;"></span></p>
+</div>
+<script type="text/javascript">
+$(function() {
+    $("#agreement").click(function() {
+        if ($(this).is(":checked")) {
+            $("#update-package").removeAttr("disabled");
+        } else {
+            $("#update-package").attr("disabled", "disabled");
+        }
+    });
+});
+</script>

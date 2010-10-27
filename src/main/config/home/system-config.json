@@ -1,8 +1,8 @@
 {
     "version": "0.7.12",
     "configured": true,
-    "urlBaseNovaDev2" : "http://novadev2.newcastle.edu.au/redbox/",
-    "urlBase" : "http://localhost:8080/redbox/",
+    "urlBase" : "http://novadev2.newcastle.edu.au/redbox/",
+    "urlBaseLocalhost" : "http://localhost:8080/redbox/",
     "email" : "dave.huthnance@newcastle.edu.au",
     "sso": {
         "plugins": ["OpenID"],

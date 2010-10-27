@@ -1,5 +1,72 @@
-<div style="font-size:120%;">
-    #foreach($item in $self.metadataList)
-        <div>$item</div>
-    #end
+<style type="text/css">
+dl {
+    font-size: 1.10em;
+}
+dt {
+    border-bottom: 1px solid #CCC;
+    font-weight: bold;
+}
+dd {
+    padding-bottom: 1em;
+}
+</style>
+
+#macro(showField $name $key)
+    <dt>$name</dt>
+    #set($value = $self.metadata.get($key))
+    <dd>
+        #if("$value" != "")
+            #if($value.startsWith("http:") ||
+                $value.startsWith("https://") ||
+                $value.startsWith("mailto:"))
+                <a href="$value">$value</a>
+            #else
+                $value
+            #end
+        #else
+            <em>(not specified)</em>
+        #end
+    </dd>
+#end
+
+#macro(showDateRange $name $fromKey $toKey)
+    <dt>$name</dt>
+    #set($from = $self.metadata.get($fromKey))
+    #set($to = $self.metadata.get($toKey))
+    <dd>
+        #if("$from" != "" && "$to" != "")
+            &lt;$from&gt;
+            #if("$to" != "")
+                to &lt;$to&gt;
+            #end
+        #elseif("$from" == "" && "$to" != "")
+            until &lt;$to&gt;
+        #else
+            <em>(not specified)</em>
+        #end
+    </dd>
+#end
+
+<div id="tabs">
+    <ul>
+        <li><a href="#general">General</a></li>
+        <li><a href="#description">Description</a></li>
+        <li><a href="#people">People</a></li>
+        <li><a href="#subject">Subject</a></li>
+        <li><a href="#provenance">Provenance</a></li>
+        <li><a href="#management">Management</a></li>
+    </ul>
+    #parseDisplayTemplate("detail/preview/sections/general.vm")
+    #parseDisplayTemplate("detail/preview/sections/description.vm")
+    #parseDisplayTemplate("detail/preview/sections/people.vm")
+    #parseDisplayTemplate("detail/preview/sections/subject.vm")
+    #parseDisplayTemplate("detail/preview/sections/provenance.vm")
+    #parseDisplayTemplate("detail/preview/sections/management.vm")
 </div>
+<script type="text/javascript" src="$portalPath/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#tabs").tabs({ cookie:{} });
+});
+</script>
+

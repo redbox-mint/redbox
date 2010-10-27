@@ -1,0 +1,82 @@
+#set($noLayout = true)
+#parseTemplate("workflows/forms/sections/navigation.vm")
+<div class="widget-form" id="main-form">
+    <input type="hidden" class="form-fields" value="
+        ## general
+        dc:title, dc:created, dc:modified, dc:coverage.from, dc:coverage.to, dc:language, dc:type,
+        ## description
+        dc:description, funding_body, grant_number, project_website,
+        ## people
+        dc:creator.foaf:Person.0.dc:identifier,
+        dc:creator.foaf:Person.0.pi,
+        dc:creator.foaf:Person.0.foaf:givenName,
+        dc:creator.foaf:Person.0.foaf:familyName,
+        dc:creator.foaf:Person.0.association,
+        primary_contact_name,
+        primary_contact_email,
+        ## subject
+        dc:subject.anzsrc:seo.0.skos:prefLabel,
+        dc:subject.anzsrc:seo.0.rdf:resource,
+        dc:subject.anzsrc:for.0.skos:prefLabel,
+        dc:subject.anzsrc:for.0.rdf:resource,
+        dc:subject.keywords.0,
+        ## provenance
+        sources_used,
+        access_conditions,
+        embargo_release,
+        embargo_expiry,
+        restrictions,
+        license,
+        ## management
+        url,
+        physical_storage,
+        data_owner,
+        data_custodian
+    " />
+    <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
+    <input type="hidden" class="form-fields-save-url" value="{packageData.portalPath}/workflow.ajax?func=update-package-meta&amp;oid={packageData.oid}" />
+    <input type="hidden" class="form-fields-submit-url" value="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}" />
+    <input type="hidden" id="metaList" value="[]" />
+    <input type="hidden" id="xmlns:dc" value="http://dublincore.org/documents/2008/01/14/dcmi-terms/" />
+    <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
+    <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
+    <div class="clear"></div>
+    <div class="inputscreens changeToTabLayout">
+        <h3><a href="#screen1">General</a></h3>
+        <div id="screen1" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/general.vm")
+            #nav(false true)
+        </div>
+        <h3><a href="#screen2">Description</a></h3>
+        <div id="screen2" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/description.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen3">People</a></h3>
+        <div id="screen3" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/people.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen4">Subject</a></h3>
+        <div id="screen4" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/subject.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen5">Provenance</a></h3>
+        <div id="screen5" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/provenance.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen6">Management</a></h3>
+        <div id="screen6" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/management.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen7">Submit</a></h3>
+        <div id="screen7" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/submit.vm")
+            #nav(true false)
+        </div>
+    </div>
+    <span class="saved-result"></span>
+</div>

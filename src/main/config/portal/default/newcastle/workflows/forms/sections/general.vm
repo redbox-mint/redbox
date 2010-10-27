@@ -1,0 +1,28 @@
+<div>
+    <h2><label for="dc:title">Title (*)</label></h2>
+    <p>
+        <input type="text" id="dc:title" size="80" placeholder="Enter the title of the research data" autofocus />
+        <label class="validation-err-msg" style="color: red;" for="dc:title">A title is required!</label>
+        <input type="hidden" class="validation-rule" value="for(dc:title);test(!='');when(onChange);name(test1);" />
+    </p>
+
+    <h2><label for="dc:created">Date Created</label></h2>
+    <p><input type="text" placeholder="Date created" class="dateYMD" id="dc:created" /></p>
+
+    <h2><label for="dc:modified">Date Modified</label></h2>
+    <p><input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" /></p>
+
+    <h2><label for="dc:coverage">Date Coverage</label></h2>
+    <p>
+        <label for="dc:coverage.from">From</label>
+        <input type="text" placeholder="Start date" class="dateYMD" id="dc:coverage.from" />
+        <label for="dc:coverage.to">To</label>
+        <input type="text" placeholder="End date" class="dateYMD" id="dc:coverage.to" />
+    </p>
+
+    <h2><label for="dc:language">Language</label></h2>
+    <p><input type="text" size="80" placeholder="Enter the language of the research data" id="dc:language" /></p>
+
+    <h2><label for="dc:type">Type</label></h2>
+    <p><input type="text" size="80" placeholder="Enter the type of the research data" id="dc:type" /></p>
+</div>

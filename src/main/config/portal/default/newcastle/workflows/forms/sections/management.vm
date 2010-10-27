@@ -1,0 +1,13 @@
+<div>
+    <h2><label for="url">URL</label></h2>
+    <p><input type="text" size="80" placeholder="URL" id="url" /></p>
+
+    <h2><label for="physical_storage">Physical storage</label></h2>
+    <p><input type="text" size="80" placeholder="Physical storage" id="physical_storage" /></p>
+
+    <h2><label for="data_owner">Data owner</label></h2>
+    <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
+
+    <h2><label for="data_custodian">Data custodian</label></h2>
+    <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
+</div>

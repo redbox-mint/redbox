@@ -2,6 +2,7 @@
 from java.io import ByteArrayInputStream
 from java.io import StringWriter
 from java.lang import String
+from java.util import HashMap, TreeMap
 from org.apache.commons.lang import StringEscapeUtils
 from org.apache.commons.io import IOUtils
 from au.edu.usq.fascinator.common import JsonConfigHelper
@@ -49,7 +50,7 @@ class DetailData:
         return tfpackage
 
     def getMetadataList(self):
-        l =[]
+        l = []
         metadata = self.getMetadata()
         if metadata.has_key("metaList"):
             metadata.pop("metaList")
@@ -58,4 +59,20 @@ class DetailData:
         l.sort()
         return l
 
-    
+    def getList(self, baseKey):
+        if baseKey[-1:] != ".":
+            baseKey = baseKey + "."
+        valueMap = TreeMap()
+        metadata = self.getMetadata()
+        for key in [k for k in metadata.keys() if k.startswith(baseKey)]:
+            value = metadata.get(key)
+            field = key[len(baseKey):]
+            index = field[:field.find(".")]
+            #print "%s. '%s' = '%s'" % (index, key, value)
+            data = valueMap.get(index)
+            if not data:
+                data = HashMap()
+                valueMap.put(index, data)
+            data.put(field[field.find(".")+1:], value)
+        return valueMap
+

@@ -1,0 +1,75 @@
+<div class="nameLookup-section">
+    <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=mintPeople&qs=searchTerms%3D{searchTerms}" />
+    <input type="hidden" class="nameLookup-value-ns" value="nl" />
+
+    <h2>Creators</h2>
+    <table class="input-list sortable" id="dc:creator.foaf:Person.">
+        <thead>
+            <tr class="header-row">
+                <th>&nbsp;</th>
+                <th>#</th>
+                <th>PI</th>
+                <th style="text-align: center;">Given name</th>
+                <th style="text-align: center;">Family name</th>
+                <th></th>
+                <th style="text-align: center;">Association</th>
+                <th></th>
+                <th style="width: 100%;"></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="9">
+                    <input class="add-another-item" type="button" value="Add another person" />
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-itemX">
+                <td><img class="facets-grip" src="../images/icons/grippy.png" /></td>
+                <td class="sort-number">1</td>
+                <td>
+                    <input type="checkbox" name="scope" value="1"
+                           id="dc:creator.foaf:Person.0.pi" />
+                </td>
+                <td>
+                    <input type="text" placeholder="given name" size="40"
+                           class="nameLookup-name nl nl-foaf:givenName"
+                           id="dc:creator.foaf:Person.0.foaf:givenName" />
+                </td>
+                <td>
+                    <input type="text" placeholder="given name" size="40"
+                           class="nameLookup-name nl nl-foaf:familyName"
+                           id="dc:creator.foaf:Person.0.foaf:familyName" />
+                </td>
+                <td>
+                    <a href="#" class="nameLookup-lookup">lookup</a>
+                    <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier" value="" />
+                </td>
+                <td>
+                    <select id="dc:creator.foaf:Person.0.association">
+                        <option value="1">School of Creative Arts</option>
+                        <option value="2">School of Humanities and Communication</option>
+                        <option value="3">Public Memory Research Centre</option>
+                    </select>
+                    <span class="data-source-drop-down">
+                        <input type="hidden" class="json-data-source-url"
+                               value="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}" />
+                        <input type="text" class="selection-add-label" id="" value="[one]" />
+                        <input type="text" class="selection-add-id" id="" value="[two]" />
+                    </span>
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Primary contact</h2>
+    <p>
+        <label for="primary_contact_name">Name</label>
+        <input type="text" size="80" placeholder="Primary contact name" id="primary_contact_name" />
+    </p>
+    <p>
+        <label for="primary_contact_email">Email</label>
+        <input type="text" size="80" placeholder="Primary contact email" id="primary_contact_email" />
+    </p>
+</div>

@@ -1,0 +1,23 @@
+<div id="description">
+    <dl>
+        #showField("Description" "dc:description")
+        <dt>Funding</dt>
+        #set($fundingBody = $self.metadata.get("funding_body"))
+        #set($grantNumber = $self.metadata.get("grant_number"))
+        <dd>
+            <em>Funding body:</em>
+            #if("$fundingBody" != "")
+                $fundingBody
+            #else
+                <em>(not specified)</em>
+            #end
+            <em>Grant number:</em>
+            #if("$grantNumber" != "")
+                $grantNumber
+            #else
+                <em>(not specified)</em>
+            #end
+        </dd>
+        #showField("Project website" "project_website")
+    </dl>
+</div>

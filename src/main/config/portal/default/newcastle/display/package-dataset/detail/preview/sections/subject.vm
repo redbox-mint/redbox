@@ -1,0 +1,45 @@
+<div id="subject">
+    <dl>
+        <dt>Socio-economic objectives</dt>
+        <dd>
+            #set($subjects = $self.getList("dc:subject.anzsrc:seo"))
+            #if($subjects.isEmpty())
+                <em>(not specified)</em>
+            #else
+                <ul>
+                    #foreach($subject in $subjects)
+                        <li>$subject.get("skos:prefLabel")</li>
+                    #end
+                </ul>
+            #end
+        </dd>
+        <dt>Field of research</dt>
+        <dd>
+            #set($subjects = $self.getList("dc:subject.anzsrc:for"))
+            #if($subjects.isEmpty())
+                <em>(not specified)</em>
+            #else
+                <ul>
+                    #foreach($subject in $subjects)
+                        <li>$subject.get("skos:prefLabel")</li>
+                    #end
+                </ul>
+            #end
+        </dd>
+        <dt>Keywords</dt>
+        <dd>
+            #set($subjects = $self.getList("dc:subject.keywords"))
+            #if($subjects.isEmpty())
+                <em>(not specified)</em>
+            #else
+                <ul>
+                    #foreach($subject in $subjects)
+                        #foreach($key in $subject.keySet())
+                            <li>$subject.get($key)</li>
+                        #end
+                    #end
+                </ul>
+            #end
+        </dd>
+    </dl>
+</div>

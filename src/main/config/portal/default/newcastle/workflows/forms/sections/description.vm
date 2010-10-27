@@ -1,0 +1,17 @@
+<div>
+    <h2><label for="dc:description">Description</label></h2>
+    <p>
+        <textarea rows="6" cols="80" id="dc:description" placeholder="Description of item"></textarea>
+    </p>
+
+    <h2><label for="funding">Funding</label></h2>
+    <p>
+        <label for="funding_body">Funding body</label>
+        <input type="text" placeholder="Funding body" id="funding_body" />
+        <label for="grant_number">Grant number</label>
+        <input type="text" placeholder="Grant number" id="grant_number" />
+    </p>
+
+    <h2><label for="project_website">Project website</label></h2>
+    <p><input type="text" size="80" placeholder="Enter the project website" id="project_website" /></p>
+</div>

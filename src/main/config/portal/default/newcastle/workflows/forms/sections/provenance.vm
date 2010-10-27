@@ -1,0 +1,23 @@
+<div>
+    <h2><label for="sources_used">Sources used</label></h2>
+    <p>
+        <textarea rows="6" cols="80" id="sources_used" placeholder="Sources used"></textarea>
+    </p>
+
+    <h2><label for="access_conditions">Access conditions</label></h2>
+    <p><input type="text" size="80" placeholder="Access conditions" id="access_conditions" /></p>
+
+    <h2><label for="embargo">Embargo</label></h2>
+    <p>
+        <label for="embargo_release">Release</label>
+        <input type="text" placeholder="Release date" class="dateYMD" id="embargo_release" />
+        <label for="embargo_expiry">Expiry</label>
+        <input type="text" placeholder="Expiry date" class="dateYMD" id="embargo_expiry" />
+    </p>
+
+    <h2><label for="restrictions">Restrictions</label></h2>
+    <p><input type="text" size="80" placeholder="Restrictions" id="restrictions" /></p>
+
+    <h2><label for="license">License</label></h2>
+    <p><input type="text" size="80" placeholder="License" id="license" /></p>
+</div>

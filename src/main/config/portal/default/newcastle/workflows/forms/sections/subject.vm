@@ -1,0 +1,73 @@
+<div>
+    <h2><label for="dc:subject.anzsrc:seo">Socio-economic Objectives</label></h2>
+    <table class="input-list">
+        <tfoot>
+            <tr class="item-input">
+                <td>
+                    <span class="data-source-drop-down" id="dc:subject.anzsrc:seo.0">
+                        <input type="hidden" class="json-data-source-url"
+                               value="../workflows/forms/json/anzsrc/seo/index.json" />
+                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="[one]" />
+                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="[two]" />
+                    </span>
+                    <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-display">
+                <td>
+                    <span class="item-display-item"></span>
+                    <span class="item-display-item" style="color: lightblue; display: none;"></span>
+                    <a class="delete-item" href="#">delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2><label for="dc:subject.anzsrc:for">Field of Research codes</label></h2>
+    <table class="input-list">
+        <tfoot>
+            <tr class="item-input">
+                <td>
+                    <span class="data-source-drop-down" id="dc:subject.anzsrc:for.0">
+                        <input type="hidden" class="json-data-source-url"
+                               value="../workflows/forms/json/anzsrc/for/index.json" />
+                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="[one]" />
+                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="[two]" />
+                    </span>
+                    <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-display">
+                <td>
+                    <span class="item-display-item"></span>
+                    <span class="item-display-item" style="color: lightblue; display: none;"></span>
+                    <a class="delete-item" href="#">delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2><label for="dc:subject">Keywords</label></h2>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add another keyword" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="text" size="40" placeholder="Keyword" id="dc:subject.keywords.0" /></td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,9 @@
+<div id="provenance">
+    <dl>
+        #showField("Sources used" "sources_used")
+        #showField("Access conditions" "access_conditions")
+        #showDateRange("Embargo" "embargo_release" "embargo_expiry")
+        #showField("Restrictions" "restrictions")
+        #showField("License" "license")
+    </dl>
+</div>

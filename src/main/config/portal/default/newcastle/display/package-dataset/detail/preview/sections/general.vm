@@ -1,0 +1,9 @@
+<div id="general">
+    <dl>
+        #showField("Date created" "dc:created")
+        #showField("Date modified" "dc:modified")
+        #showDateRange("Date coverage" "dc:coverage.from" "dc:coverage.to")
+        #showField("Language" "dc:language")
+        #showField("Type" "dc:type")
+    </dl>
+</div>

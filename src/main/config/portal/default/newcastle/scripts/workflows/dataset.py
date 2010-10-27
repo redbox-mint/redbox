@@ -1,6 +1,8 @@
-from __main__ import Services, formData
+from __main__ import Services
+#from __main__ import formData
 
 from au.edu.usq.fascinator.common import JsonConfigHelper
+from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
 
 from org.apache.commons.lang import StringEscapeUtils
 from java.lang import Exception as JavaException, Boolean, String
@@ -22,34 +24,44 @@ class DatasetData(object):
         print "**** dataset.py"
         self.velocityContext = context
         formData = self.vc("formData")
-        self.formData = formData
-
-        self.__oid = formData.get("oid")
+        response = self.vc("response")
+        self.__formData = formData
+        self.isAjax = bool(formData.get("ajax"))                     ##
         self.__tfpackage = None
         self.__manifest = None
         self.__object = None
+        self.__oid = formData.get("_oid") or formData.get("oid")
         func = formData.get("func", "")
         id = formData.get("id")
         result = None
 
-
-        print "formData: %s" % formData
+        #print "formData: %s" % formData
+        bindings = self.vc("bindings")
+        request = self.vc("request")
+        if self.vc("request").method=="GET" and func!="":
+            print " ****************  func was '%s'" % func
+            func = ""
+        if func=="" and request.getParameter("func"):
+            func = request.getParameter("func")
+        print "func='%s', oid='%s', id='%s'" % (func, self.__oid, id)
+        print "------------------------------------------"
         try:
+            if func=="file-upload":
+                print "*****************"
+                print "  file-upload"
+                print "*****************"
+                result = jsonWriter({"ok":"file-upload", "oid":self.__oid})
             if self.__oid:
                 # get the package manifest
-                self.__object = Services.getStorage().getObject(self.__oid)
-                sourceId = self.__object.getSourceId()
-                payload = self.__object.getPayload(sourceId)
-                writer = StringWriter()
-                IOUtils.copy(payload.open(), writer)
-                self.__tfpackage = jsonReader(writer.toString())
+                self.__tfpackage = self._getTFPackage()
                 self.__manifest = self.__tfpackage.get("manifest")
                 if not self.__manifest:
                     self.__manifest = {}
                     self.__tfpackage["manifest"]=self.__manifest
-                payload.close()
-                #print self.__oid
-                #print self.__tfpackage
+                if func=="update-package-meta":
+                    result = self._updatePackageMetadata()
+                elif func=="update-package-meta-deposit":
+                    result = self._updatePackageMetadata("live")
             if func=="getItem" and id:
                 doc = self._getPackagedItem(id)
                 result = jsonWriter({"doc":doc, "id":id})
@@ -77,12 +89,11 @@ class DatasetData(object):
             self.__object.close()
             self.__object=None
         if result is not None:
-            response = self.vc("response")
             writer = response.getPrintWriter("text/plain; charset=UTF-8")
             #writer = response.getPrintWriter("application/json; charset=UTF-8")
             writer.println(result)
             writer.close()
-    
+
     # Get from velocity context
     def vc(self, index):
         if self.velocityContext[index] is not None:
@@ -92,6 +103,9 @@ class DatasetData(object):
             return None
 
     def getJsonMetadata(self):              # used
+        d = self.__tfpackage
+        d["dc:title"]=d.get("title", "") or d.get("dc:title", "")
+        d["dc:abstract"]=d.get("description", "") or d.get("dc:abstract", "")
         return jsonWriter(self.__tfpackage)
 
     def getAjaxRequestUrl(self):
@@ -102,6 +116,10 @@ class DatasetData(object):
 
     def getJsonPackagedItems(self):
         return jsonWriter(self._getPackagedItems())
+
+    def getFormData(self, field):
+        formData = self.vc("formData")
+        return StringEscapeUtils.escapeHtml(formData.get(field, ""))
 
     def getSearchResults(self, query=None, pageNum=1):
 #        ##
@@ -129,7 +147,7 @@ class DatasetData(object):
         req.setParam("sort", "f_dc_title asc")
         req.addParam("fq", 'item_type:"object"')
         req.setParam("start", str((pageNum - 1) * recordsPerPage))
-        #print "req='%s'" % req.toString()
+        print "req='%s'" % req.toString()
         out = ByteArrayOutputStream()
         Services.indexer.search(req, out)
         writer = StringWriter()
@@ -198,7 +216,6 @@ class DatasetData(object):
             doc = docs[0]
         return doc
 
-
     def _search(self, ids):
         # id = "0a815e0473f54d98a8a74c36345fcceb"
         docs = []
@@ -229,13 +246,108 @@ class DatasetData(object):
                 } for d in docs]
         return docs
 
-    def getFormData(self, field):
-        return StringEscapeUtils.escapeHtml(self.formData.get(field, ""))
+    def _getObject(self):
+        if not self.__object:
+            try:
+                self.__object = Services.storage.getObject(self.__oid)
+            except StorageException, e:
+                self.errorMsg = "Failed to retrieve object : " + e.getMessage()
+                return None
+        return self.__object
 
-    def _savePackage(self):
-        json = jsonWriter(self.__tfpackage)
-        self.__object.updatePayload(self.__object.getSourceId(),
+    def _getTFPackage(self):
+        # get the TF package manifest
+        tfpackage = None
+        object = self._getObject()
+        sourceId = object.getSourceId()
+        payload = object.getPayload(sourceId)
+        writer = StringWriter()
+        IOUtils.copy(payload.open(), writer)
+        tfpackage = jsonReader(writer.toString())
+        payload.close()
+        return tfpackage
+
+    def _saveTFPackage(self, tfpackage):
+        json = jsonWriter(tfpackage)
+        object = self._getObject()
+        object.updatePayload(object.getSourceId(),
                         ByteArrayInputStream(String(json).getBytes("UTF-8")))
 
+    def _savePackage(self):
+        self._saveTFPackage(self.__tfpackage)
 
+    def _getWorkflowMetadata(self):
+        wfMetadata = None
+        object = self._getObject()
+        try:
+            payload = object.getPayload("workflow.metadata")
+            writer = StringWriter()
+            IOUtils.copy(payload.open(), writer)
+            wfMetadata = jsonReader(writer.toString())
+            payload.close()
+        except StorageException, e:
+            pass
+        return wfMetadata
 
+    def _saveWorkflowMetadata(self, wfMetadata):
+        json = jsonWriter(wfMetadata)
+        object = self._getObject()
+        object.updatePayload("workflow.metadata",
+                            ByteArrayInputStream(String(json).getBytes("UTF-8")))
+
+    def _updatePackageMetadata(self, targetStep=None):
+        print "** dataset update-package-meta **"
+        print "  targetStep='%s'" % targetStep
+        result = '{"error":"unknown"}'
+        formData = self.__formData
+        tfpackage = self.__tfpackage
+        try:
+            metaList = list(formData.getValues("metaList"))
+            #print "metaList='%s'" % str(metaList)
+            removedSet = set(tfpackage.get("metaList", [])).difference(metaList)
+            try:
+                for metaName in metaList:
+                    value = formData.get(metaName)
+                    tfpackage[metaName] = value
+                tfpackage["metaList"] = metaList
+                for metaName in removedSet:
+                    del tfpackage[metaName]
+            except Exception, e:
+                print "Error: '%s'" % str(e)
+            tfpackage["title"]=tfpackage.get("dc:title", "")
+            tfpackage["description"]=tfpackage.get("dc:abstract", "")
+            title = tfpackage["title"]
+            if title is None or title=="" or title=="None":
+                print dir(formData)
+                print formData.formFields
+                print formData.getValues("metaList")
+                result='{"error":"title is blank"}'
+                return result
+            ##
+            try:
+                wfMeta = self._getWorkflowMetadata()
+                if targetStep:
+                    wfMeta["targetStep"] = targetStep
+                print "title='%s'" % title
+                print "wfMeta='%s'" % wfMeta
+                formData2 = wfMeta.get("formData")
+                if formData2 is None:
+                    formData2 = {}
+                    wfMeta["formData"]=formData2
+                formData2["title"]=title
+                formData2["description"]=tfpackage["description"]
+                self._saveWorkflowMetadata(wfMeta)
+            except Exception, e:
+                print "  ERROR: %s" % str(e)
+            ##
+            self._saveTFPackage(tfpackage)
+            self._reIndex()     # Re-index - for title|description changes
+            result = jsonWriter({"ok":"updated ok", "oid":self.__oid})
+        except Exception, e:
+            result = jsonWriter({"error":str(e)})
+        return result
+
+    def _reIndex(self):
+        object = self._getObject()
+        Services.indexer.index(object.getId())
+        Services.indexer.commit()

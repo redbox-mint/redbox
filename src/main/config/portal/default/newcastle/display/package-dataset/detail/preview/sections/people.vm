@@ -1,0 +1,22 @@
+<div id="people">
+    <dl>
+        <dt>Creators</dt>
+        <dd>
+            #set($creators = $self.getList("dc:creator.foaf:Person"))
+            <ul>
+                #foreach($key in $creators.keySet())
+                    #set($creator = $creators.get($key))
+                    <li style="list-style-type:#if($creator.get('pi') == 1)disc#{else}circle#end;">
+                        $creator.get("foaf:givenName")&nbsp;$creator.get("foaf:familyName") ($creator.get("association"))
+                    </li>
+                #end
+            </ul>
+        </dd>
+        <dt>Primary contact</dt>
+        <dd>
+            #set($name = $self.metadata.get("primary_contact_name"))
+            #set($email = $self.metadata.get("primary_contact_email"))
+            #if("$name" != "")&quot;$name&quot;#end&nbsp;#if("$email" != "")&lt;$email&gt;#end
+        </dd>
+    </dl>
+</div>
