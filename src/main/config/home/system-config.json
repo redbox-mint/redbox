@@ -1,5 +1,5 @@
 {
-    "version": "0.7.12",
+    "version": "0.7.14",
     "configured": true,
     "urlBase" : "http://novadev2.newcastle.edu.au/redbox/",
     "urlBaseLocalhost" : "http://localhost:8080/redbox/",
@@ -15,7 +15,7 @@
         }
     },
     "accesscontrol": {
-    "type" : "derby",
+        "type" : "derby",
         "derby" : {
             "derbyHome" : "${fascinator.home}/database"
         }
@@ -223,6 +223,7 @@
             }
         },
         "oai-pmh": {
+            "sessionExpiry": "300000",
             "metadataFormats": {
                 "oai_dc": {
                     "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",

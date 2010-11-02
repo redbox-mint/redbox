@@ -1,17 +1,29 @@
-h1#branding {
-    background: red;
-    padding: 0.2ex 2ex;
+h1#branding, .branding {
+    background: #B1101A;
+    padding-bottom: 0;
 }
 
-#branding img {
-    border: 0;
+h1#branding a, .branding {
+    color: white;
 }
 
-ul.nav { background: darkred; }
-ul.main li a { background: darkred; }
+.branding .subtitle {
+    font-size: larger;
+    padding-left: 0.85em;
+    padding-bottom: 0.5em;
+}
+
+ul.nav, ul.main li a, .box h2 {
+    background: #500005;
+}
+
+ul.main li:hover a {
+    background: #B1101A;
+}
 
 /* these are all green shades */
 /*
+
 body {
     background: #B7DAA0;
 }

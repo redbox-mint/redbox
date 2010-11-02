@@ -15,7 +15,7 @@ dd {
     <dt>$name</dt>
     #set($value = $self.metadata.get($key))
     <dd>
-        #if("$value" != "")
+        #if("$!value" != "")
             #if($value.startsWith("http:") ||
                 $value.startsWith("https://") ||
                 $value.startsWith("mailto:"))
