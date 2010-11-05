@@ -1,15 +1,3 @@
-#from default.layout import LayoutData as DefaultLayoutData
-#
-#class LayoutData(DefaultLayoutData):
-#    def __activate__(self, context):
-#        DefaultLayoutData.__activate__(self, context)
-#        if not self.authentication.is_logged_in():
-#            self.response = context["response"]
-#            writer = self.response.getPrintWriter(type + "; charset=UTF-8")
-#            writer.println("Access denied. You must be logged in to view this resource.")
-#            writer.close()
-#
-
 import md5
 from authentication import AuthenticationData
 from java.net import URLDecoder
@@ -20,6 +8,7 @@ class LayoutData:
         pass
     
     def __activate__(self, context):
+        self.sessionState = context["sessionState"]
         self.services = context["Services"]
         self.security = context["security"]
         self.request = context["request"]
@@ -36,14 +25,16 @@ class LayoutData:
             writer.close()
         
         #self.formData = context["formData"]
-        #self.sessionState = context["sessionState"]
         #if self.formData is not None:
         #    for field in self.formData.getFormFields():
         #        log.debug("Form Data: '{}' => '{}'", field, self.formData.get(field))
         #if self.sessionState is not None:
         #    for field in self.sessionState.keySet():
         #        log.debug("Session Data: '{}' => '{}'", field, self.sessionState.get(field))
-    
+        #log.debug("PATH: '{}'", self.request.getPath())
+        #for param in self.request.getParameterNames():
+        #    log.debug("PARAM: '{}' : '{}'", param, self.request.getParameter(param));
+
     def getRelativePath(self):
         return self.__relPath
     
@@ -55,7 +46,14 @@ class LayoutData:
     
     def getPortalName(self):
         return self.getPortal().getDescription()
-    
+
+    def getQuery(self):
+        query = self.sessionState.get("query")
+        if query is None:
+            return ""
+        else:
+            return self.escapeHtml(query)
+
     def escapeXml(self, text):
         return StringEscapeUtils.escapeXml(text)
     
@@ -78,5 +76,4 @@ class LayoutData:
         return self.services.getHouseKeepingManager().getQueueStats()
     
     def getSsoProviders(self):
-        return self.security.ssoBuildLogonInterface()
-
+        return self.security.ssoBuildLogonInterface(self.sessionState)
