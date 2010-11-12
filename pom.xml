@@ -109,12 +109,13 @@
             <artifactId>plugin-storage-filesystem</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
+        <!--
         <dependency>
-            <!--  TODO release fedora3 plugin -->
             <groupId>au.edu.usq.fascinator.plugins</groupId>
             <artifactId>plugin-storage-fedora3</artifactId>
             <version>${fascinator.version}-SNAPSHOT</version>
         </dependency>
+        -->
         <dependency>
             <groupId>au.edu.usq.fascinator.plugins</groupId>
             <artifactId>plugin-subscriber-solrEventLog</artifactId>
