@@ -9,7 +9,7 @@ export PROG_DIR=`cd \`dirname $0\`; pwd`
 PID_FILE=$PROG_DIR/tf.pid
 
 # display program header
-echo "The Fascinator - ReDBox"
+echo "The Fascinator - ${project.name} - ${project.version}"
 
 usage() {
 	echo "Usage: `basename $0` {start|stop|restart|status}"

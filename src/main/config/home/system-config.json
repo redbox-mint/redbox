@@ -1,11 +1,10 @@
 {
     "version": "0.7.14",
     "configured": true,
-    "urlBase" : "http://novadev2.newcastle.edu.au/redbox/",
-    "urlBaseLocalhost" : "http://localhost:8080/redbox/",
+    "urlBase" : "${server.url.base}",
     "email" : "dave.huthnance@newcastle.edu.au",
     "sso": {
-        "plugins": ["OpenID"],
+        "plugins": [],
         "urlExclusions": {
             "startsWith" : ["css/", "feed/", "images/", "js/", "flowplayer/"],
             "endsWidth" : [".ico"],
@@ -44,8 +43,8 @@
         }
     },
     "messaging" : {
-        "url" : "tcp://localhost:8081",
-        "stompUrl" : "stomp://localhost:8082",
+        "url" : "tcp://localhost:${amq.port}",
+        "stompUrl" : "stomp://localhost:${amq.stomp.port}",
         "home" : "${fascinator.home}/activemq-data",
         "threads" : [
             {
@@ -166,13 +165,13 @@
             "timeLimit" : "30"
         },
         "solr": {
-            "uri": "http://localhost:8080/solr/fascinator",
+            "uri": "http://localhost:${jetty.port}/solr/fascinator",
             "coreName": "fascinator",
             "autocommit": false,
             "embedded": false
         },
         "anotar": {
-            "uri": "http://localhost:8080/solr/anotar",
+            "uri": "http://localhost:${jetty.port}/solr/anotar",
             "coreName": "anotar",
             "autocommit": true
         }
@@ -233,19 +232,19 @@
         }
     },
     "proxy-urls": {
-        "mintPeople" : "http://novadev2.newcastle.edu.au:8086/mint/master/opensearch/lookup",
-        "mintFor" : "http://novadev2.newcastle.edu.au:8086/mint/for/opensearch/lookup",
-        "mintSeo" : "http://novadev2.newcastle.edu.au:8086/mint/seo/opensearch/lookup",
-        "mintAuthor" : "http://novadev2.newcastle.edu.au:8086/mint/author/opensearch/lookup",
-        "mintGeoNames" : "http://novadev2.newcastle.edu.au:8086/mint/geonmaes/opensearch/lookup",
-        "mintOrgUnit" : "http://novadev2.newcastle.edu.au:8086/mint/orgunit/opensearch/lookup"
+        "mintPeople" : "${mint.proxy.url}/master/opensearch/lookup",
+        "mintFor" : "${mint.proxy.url}/for/opensearch/lookup",
+        "mintSeo" : "${mint.proxy.url}/seo/opensearch/lookup",
+        "mintAuthor" : "${mint.proxy.url}/author/opensearch/lookup",
+        "mintGeoNames" : "${mint.proxy.url}/geonames/opensearch/lookup",
+        "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup"
     },
     "watcher" : {
-        "path": "${INSTALL_PATH}/watcher"
+        "path": "${watcher.home}"
     },
     "subscriber": {
         "solr": {
-            "uri": "http://localhost:8080/solr/eventlog",
+            "uri": "http://localhost:${jetty.port}/solr/eventlog",
             "buffer": {
                 "docLimit" : "200",
                 "sizeLimit" : "204800",

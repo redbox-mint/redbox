@@ -13,6 +13,11 @@
         <relativePath>parent/pom.xml</relativePath>
     </parent>
     <properties>
+        <server.port>8080</server.port>
+        <amq.port>8081</amq.port>
+        <amq.stomp.port>8082</amq.stomp.port>
+        <server.url.base>http://localhost:${server.port}/redbox/</server.url.base>
+        <mint.proxy.url>http://localhost:8086/mint</mint.proxy.url>
         <dir.home>${project.home}/home</dir.home>
         <dir.portal>${project.home}/portal</dir.portal>
         <dir.server>${project.home}/server</dir.server>
@@ -122,6 +127,37 @@
             <version>${fascinator.version}</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>novadev1</id>
+            <activation>
+                <property>
+                    <name>env.HOSTNAME</name>
+                    <value>novadev1</value>
+                </property>
+            </activation>
+            <properties>
+                <server.port>9000</server.port>
+                <amq.port>9101</amq.port>
+                <amq.stomp.port>9102</amq.stomp.port>
+                <server.url.base>http://novadev1.newcastle.usq.edu.au/redbox/</server.url.base>
+                <mint.proxy.url>http://novadev1.newcastle.edu.au:9001/mint</mint.proxy.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>novadev2</id>
+            <activation>
+                <property>
+                    <name>env.HOSTNAME</name>
+                    <value>novadev2</value>
+                </property>
+            </activation>
+            <properties>
+                <server.url.base>http://novadev2.newcastle.usq.edu.au/redbox/</server.url.base>
+                <mint.proxy.url>http://novadev2.newcastle.usq.edu.au/mint</mint.proxy.url>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <resources>
             <resource>
