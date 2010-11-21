@@ -1,6 +1,9 @@
 #set($noLayout = true)
 #parseTemplate("workflows/forms/sections/navigation.vm")
-<div class="widget-form" id="main-form">
+<div class="widget-form" id="main-form"
+     data-submit-result-func="submitted_ok"
+     data-save-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta&amp;oid={packageData.oid}"
+     data-submit-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}">
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title, dc:created, dc:modified, dc:coverage.from, dc:coverage.to, dc:language, dc:type,
@@ -11,7 +14,7 @@
         dc:creator.foaf:Person.0.pi,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
-        dc:creator.foaf:Person.0.association,
+        ##dc:creator.foaf:Person.0.association,
         primary_contact_name,
         primary_contact_email,
         ## subject
@@ -34,13 +37,15 @@
         data_custodian
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
-    <input type="hidden" class="form-fields-save-url" value="{packageData.portalPath}/workflow.ajax?func=update-package-meta&amp;oid={packageData.oid}" />
-    <input type="hidden" class="form-fields-submit-url" value="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}" />
     <input type="hidden" id="metaList" value="[]" />
     <input type="hidden" id="xmlns:dc" value="http://dublincore.org/documents/2008/01/14/dcmi-terms/" />
     <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
     <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
     <div class="clear"></div>
+    <h1>
+        <a style="float:right;padding-right:4px;font-size:0.6em;" href="$portalPath/detail/$self.oid">View record</a>
+        <span id="title"> </span>
+    </h1>
     <div class="inputscreens changeToTabLayout">
         <h3><a href="#screen1">General</a></h3>
         <div id="screen1" class="inputscreen">

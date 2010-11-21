@@ -31,9 +31,11 @@ class ProxyGetData:
         formData = self.vc("formData")
         response = self.vc("response")
         ##
-        f = open(JsonConfig.getSystemFile().toString(), "rb")
-        proxyUrls = jsonReader(f.read()).get("proxy-urls", {})
-        f.close()
+        ##f = open(JsonConfig.getSystemFile().toString(), "rb")
+        ##proxyUrls = jsonReader(f.read()).get("proxy-urls", {})
+        ##f.close()
+        config = self.vc("systemConfig")
+        proxyUrls = config.getMap("proxy-urls")
         print " proxyUrls='%s'" % proxyUrls
         print " ns='%s'" % formData.get("ns", "")
         print " qs='%s'" % formData.get("qs", "")
@@ -41,8 +43,13 @@ class ProxyGetData:
         #url = "http://localhost:8080/mint/master/opensearch/lookup?searchTerms=smith"
         #url = formData.get("url") or url
         url = ""
-        url = proxyUrls.get(formData.get("ns", ""), url)
+        ##url = proxyUrls.get(formData.get("ns", ""), url)
+        key = formData.get("ns", "")
+        if proxyUrls.containsKey(key):
+            url = proxyUrls.get(key)
         queryStr = formData.get("qs")
+        if queryStr == "searchTerms={searchTerms}":
+            queryStr = None
         if queryStr:
             url += "?%s" % queryStr
         print "url='%s'" % url
@@ -56,6 +63,18 @@ class ProxyGetData:
             print "ERROR: %s" % str(e)
         try:
             tdata = jsonReader(data)
+            if formData.get("transform"):
+                print "-- transforming data"
+                dataList = []
+                for result in tdata["results"]:
+                    uri = result["rdf:about"]
+                    title = result["dc:title"][0]
+                    dataList.append({"scheme":0,"children":0,"id":uri,"label":title})
+                data = {
+                    "namespace": "http://fascinator.usq.edu.au/#",
+                    "selectable": "1",
+                    "list": dataList
+                }
             print "JSON ok"
         except Exception, e:
             print "Error to valid JSON: %s" % str(e)
@@ -82,16 +101,24 @@ class ProxyGetData:
         try:
             res = _urlopen(url)
             data = res.read()
+            print dir(res)
             res.close()
         except Exception, e:
             if res is not None:
                 res.close()
-            if hasattr(e, "reason"):
-                reason = str(e.reason)
-                if (reason=="timed out") and (noProxy is None) and (defaultUrlopen!=noProxyUrlopen):
-                    defaultUrlopen = noProxyUrlopen
-                    print "Timed out - trying again with no proxy"
-                    return self._wget(url)
+            if (noProxy is None) and (defaultUrlopen!=noProxyUrlopen):
+                if hasattr(e, "reason"):
+                    reason = str(e.reason)
+                    if reason=="timed out":
+                        defaultUrlopen = noProxyUrlopen
+                        print "Timed out - trying again with no proxy"
+                        return self._wget(url)
+                if hasattr(e, "code"):
+                    if e.code==503:
+                        defaultUrlopen = noProxyUrlopen
+                        print "503 - Service Unavailable - trying again with no proxy"
+                        return self._wget(url)
             print "ERROR: %s" % str(e)
             raise e
+        print "* **********", data
         return data

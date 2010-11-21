@@ -1,7 +1,7 @@
-from __main__ import Services
+#from __main__ import Services
 #from __main__ import formData
 
-from au.edu.usq.fascinator.common import JsonConfigHelper
+from au.edu.usq.fascinator.common import JsonConfigHelper, JsonConfig, FascinatorHome
 from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
 
 from org.apache.commons.lang import StringEscapeUtils
@@ -31,6 +31,9 @@ class DatasetData(object):
         self.__manifest = None
         self.__object = None
         self.__oid = formData.get("_oid") or formData.get("oid")
+        self.__currentStep = None
+        self.Services = context.get("Services")
+        self.page = context.get("page")
         func = formData.get("func", "")
         id = formData.get("id")
         result = None
@@ -39,12 +42,12 @@ class DatasetData(object):
         bindings = self.vc("bindings")
         request = self.vc("request")
         if self.vc("request").method=="GET" and func!="":
-            print " ****************  func was '%s'" % func
+            #print " ****************  func was '%s'" % func
             func = ""
         if func=="" and request.getParameter("func"):
             func = request.getParameter("func")
         print "func='%s', oid='%s', id='%s'" % (func, self.__oid, id)
-        print "------------------------------------------"
+        #print "------------------------------------------"
         try:
             if func=="file-upload":
                 print "*****************"
@@ -60,8 +63,11 @@ class DatasetData(object):
                     self.__tfpackage["manifest"]=self.__manifest
                 if func=="update-package-meta":
                     result = self._updatePackageMetadata()
+                    result = jsonWriter(result)
                 elif func=="update-package-meta-deposit":
-                    result = self._updatePackageMetadata("live")
+                    print " update-package-meta-deposit"
+                    result = self._updatePackageMetadata(True)
+                    result = jsonWriter(result)
             if func=="getItem" and id:
                 doc = self._getPackagedItem(id)
                 result = jsonWriter({"doc":doc, "id":id})
@@ -82,6 +88,18 @@ class DatasetData(object):
                 query = formData.get("query", "")
                 pageNum = int(formData.get("pageNum", "1"))
                 result = self.getSearchResults(query, pageNum)
+            elif func=="setItemRepresentation":
+                title = formData.get("title")
+                representation = formData.get("representation")
+                result = self._setItemRepresentation(id, title, representation)
+                result = jsonWriter(result)
+            elif func=="getPackagedItems":
+                docs = self._getPackagedItemsData()
+                start = 0
+                num = len(docs)
+                #start = int(formData.get("start", "0"))
+                #num = int(formData.get("num", str(len(docs))))
+                result = jsonWriter(docs[start:num])
         except Exception, e:
             log.error("Failed to load manifest", e);
             result = jsonWriter({"status":"error", "message":"%s" % str(e)})
@@ -102,6 +120,44 @@ class DatasetData(object):
             log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
             return None
 
+    def userRoles(self):
+        return self.vc("page").authentication.get_roles_list()
+
+    def username(self):
+        # .is_admin(), .is_logged_in()
+        return self.vc("page").authentication.get_username()
+
+    def getCurrentStep(self):
+        if self.__currentStep is None:
+            wfMeta = self._getWorkflowMetadata()
+            self.__currentStep = wfMeta.get("step", "")
+        return self.__currentStep
+
+    def getNextStepAcceptMessage(self):
+        step = self.getCurrentStep()
+        msg = "?"
+        if step=="pending":
+            msg = "I accept responsibility and accountability for the accuracy" + \
+            " and completeness of the information provided."
+        elif step=="reviewing":
+            msg = "Make record live."
+        elif step=="live":
+            msg = "[Live]"
+        return msg
+        
+    def getNextStepAcceptValidationErrorMessage(self):
+        step = self.getCurrentStep()
+        msg = "?"
+        if step=="pending":
+            msg = "You must accept responsibility and accountability for the" + \
+            " accuracy and completeness of the information provided before" + \
+            " you can submit this item!"
+        elif step=="reviewing":
+            msg = "You must check the 'Make record live' checkbox!"
+        elif step=="live":
+            msg = "[Live]"
+        return msg
+
     def getJsonMetadata(self):              # used
         d = self.__tfpackage
         d["dc:title"]=d.get("title", "") or d.get("dc:title", "")
@@ -119,7 +175,12 @@ class DatasetData(object):
 
     def getFormData(self, field):
         formData = self.vc("formData")
+        #print "getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
         return StringEscapeUtils.escapeHtml(formData.get(field, ""))
+
+    def getOid(self):
+        print "getOid()='%s'" % self.__oid
+        return self.__oid
 
     def getSearchResults(self, query=None, pageNum=1):
 #        ##
@@ -129,8 +190,7 @@ class DatasetData(object):
 #            search.__dict__[name] = bindings.get(name)
 #        #sData = search.SearchData()
 #        ##
-        from au.edu.usq.fascinator.api.indexer import SearchRequest
-        portal = Services.portalManager.get(portalId)
+        portal = self.Services.portalManager.get(portalId)
         recordsPerPage = portal.recordsPerPage
         if query is None:
             query = ""
@@ -149,25 +209,61 @@ class DatasetData(object):
         req.setParam("start", str((pageNum - 1) * recordsPerPage))
         print "req='%s'" % req.toString()
         out = ByteArrayOutputStream()
-        Services.indexer.search(req, out)
+        self.Services.indexer.search(req, out)
         writer = StringWriter()
         IOUtils.copy(ByteArrayInputStream(out.toByteArray()), writer)
         jsonStr = writer.toString()
-        json = jsonReader(jsonStr)
+        #json = jsonReader(jsonStr)
         return jsonStr
 
-        #page.authentication.is_admin()
-        class Obj(object):pass
-        page=Obj()
-        page.authentication=Obj()
-        def isAdmin():
-            return True
-        page.authentication.is_admin = isAdmin
-        search.__dict__["page"] = page
+        if False:
+            #page.authentication.is_admin()
+            class Obj(object):pass
+            page=Obj()
+            page.authentication=Obj()
+            def isAdmin():
+                return True
+            page.authentication.is_admin = isAdmin
+            search.__dict__["page"] = page
         sData = search.SearchData()
 
         r = sData.getResult()
         return r
+
+    def _getPackagedItemsData(self):
+        print "_getPackagedItemsData()"
+        maxPerRequest = 20  # get max of 20 at a time
+        packagedIds = []
+        docs = []
+        fields="id,dc_description,dc_title,dc_format,display_type,preview,thumbnail"
+        #fields+=",owner,security_filter"
+        try:
+            for i in self.__manifest.itervalues():
+                packagedIds.append(i["id"])
+            def idsSearch(ids):
+                query = " ".join(["id:"+id for id in ids])
+                req = SearchRequest(query)
+                #req.setParam("wt", "json") # already set
+                req.setParam("fl", fields)
+                req.setParam("rows", str(maxPerRequest*4))
+                #print "req='%s'" % req.toString()
+                out = ByteArrayOutputStream()
+                self.Services.indexer.search(req, out)
+                writer = StringWriter()
+                IOUtils.copy(ByteArrayInputStream(out.toByteArray()), writer)
+                jsonStr = writer.toString()
+                json = jsonReader(jsonStr)
+                docs = json.get("response",{"docs":[]}).get("docs", [])
+                return docs
+            for x in xrange(0, len(packagedIds), maxPerRequest):
+                ds = idsSearch(packagedIds[x:x+maxPerRequest])
+                docs.extend(ds)
+            docs.sort(lambda a, b: cmp(a["dc_title"][0], b["dc_title"][0]))
+            if len(docs)!=len(packagedIds):
+                print "Warning: packagedIds=%s but received %s docs" % (len(packagedIds), len(docs))
+        except Exception, e:
+            print "_getPackagedItemsData() error: '%s'" % str(e)
+        return docs
 
     def _addItem(self, id, title):
         # "node-eeceaa96721e8f5682b5bde81d0a6536" : {
@@ -194,6 +290,24 @@ class DatasetData(object):
             return True
         else:
             return False
+
+    def _setItemRepresentation(self, id, title, representation):
+        try:
+            #print "**** _setItemRepresentation(id='%s', title='%s', representation='%s')" % (id, title, representation)
+            nodeId = "node-%s" % id
+            if not self.__manifest.has_key(nodeId):
+                self.__manifest[nodeId] = {"id":id, "relationship":{}}
+            node = self.__manifest[nodeId]
+            node["title"]=title
+            if(node.get("relationship") is None):
+                node["relationship"]={}
+            relationship = node.get("relationship")
+            relationship["representation"]=representation
+            self._savePackage()
+            return self.__manifest.copy()
+        except Exception, e:
+            print "Error in _setItemRepresentation() - '%s'" % str(e)
+            return {"error": "Failed to set representation! '%s'" % str(e)}
 
     def _getPackagedItems(self):
         ids = []
@@ -228,7 +342,7 @@ class DatasetData(object):
             req.setParam("sort", "f_dc_title asc")
             req.setParam("sort", "dateCreated asc")
             out = ByteArrayOutputStream()
-            Services.indexer.search(req, out)
+            self.Services.indexer.search(req, out)
             writer = StringWriter()
             IOUtils.copy(ByteArrayInputStream(out.toByteArray()), writer)
             json = jsonReader(writer.toString())
@@ -249,7 +363,8 @@ class DatasetData(object):
     def _getObject(self):
         if not self.__object:
             try:
-                self.__object = Services.storage.getObject(self.__oid)
+                #self.__object = Services.storage.getObject(self.__oid)
+                self.__object = self.Services.storage.getObject(self.__oid)
             except StorageException, e:
                 self.errorMsg = "Failed to retrieve object : " + e.getMessage()
                 return None
@@ -295,10 +410,84 @@ class DatasetData(object):
         object.updatePayload("workflow.metadata",
                             ByteArrayInputStream(String(json).getBytes("UTF-8")))
 
-    def _updatePackageMetadata(self, targetStep=None):
+    def _updatePackageMetadata(self, progressStep=False):
         print "** dataset update-package-meta **"
-        print "  targetStep='%s'" % targetStep
-        result = '{"error":"unknown"}'
+        result = {"error":"unknown"}
+        currentStep = self.getCurrentStep()
+        targetStep = None
+        print "  currentStep='%s'" % currentStep
+        if currentStep=="":
+            # if currentStep=="" then creating a new collection!
+            print "****** Creating a new Collection ******"
+            print "????????????????????????????????????????"
+            # check security
+        try:
+            doc = {}
+            docs = self.__getSolrData(self.__oid).get("response", {}).get("docs", [])
+            if len(docs):
+                doc = docs[0]
+            workflowStep = doc.get("workflow_step")[0]
+            if workflowStep!=currentStep:
+                print "*** Warning: workflow_step != currentStep ('%s'!='%s')!" % \
+                        (workflowStep, currentStep)
+            workflowSecurity = doc.get("workflow_security", [])
+            #       "workflow_step", "security_filter"[] (visibility)
+            #
+            json = self.vc("systemConfig")
+            jsonConfigFile = json.getMap(
+                    "portal/packageTypes/dataset").get("jsonconfig")
+            jsonConfigFile = FascinatorHome.getPathFile(
+                    "harvest/workflows/" + jsonConfigFile)
+            f = open(jsonConfigFile.toString(), "r")
+            try:
+                config = jsonReader(f.read())
+            finally:
+                f.close()
+            stages = config.get("stages")
+            currentStage = None
+            nextStage = None
+            nextStep = None
+            for stage in stages:
+                if currentStage:
+                    nextStage = stage
+                    nextStep = nextStage.get("name")
+                    break
+                if stage.get("name")==currentStep:
+                    currentStage = stage
+            #if currentStep=="":
+            #    nextStep = stages[0]
+            #    nextStep = nextStage.get("name")
+            username = self.username()
+            userRoles = self.userRoles()
+            print "username='%s'" % username
+            print "userRoles='%s'" % userRoles
+            owner = doc.get("owner")
+            #print "workflow_security='%s'" % workflowSecurity
+            #print "security_filter='%s'" % doc.get("security_filter")
+            #object = self._getObject()
+            #metadata = object.getMetadata()
+            #owner = metadata.getProperty("owner")
+            print "nextStep='%s'" % nextStep
+            print "owner='%s'" % owner
+            if progressStep:
+                targetStep = nextStep
+                print "  targetStep='%s'" % targetStep
+                #return  {"error":"Just testing (next step='%s')" % nextStep}
+            if (currentStep=="pending") and (owner!=username) and ("admin" not in userRoles):
+                print "*** Not the owner of this object or an admin"
+                return {"error":"Only the owner or admin can do this!"}
+            if (currentStep=="reviewing") and ("admin" not in userRoles) and \
+                    (not set(userRoles).intersection(workflowSecurity)):
+                print "*** Not an admin or you do not have the correct role"
+                return {"error":"Not an admin or you do not have the correct role"}
+            if (currentStep=="live") and ("admin" not in userRoles) and \
+                    (not set(userRoles).intersection(workflowSecurity)):
+                print "*** Not an admin or you do not have the correct role"
+                return {"error":"Not an admin or you do not have the correct role"}
+        except Exception, e:
+            print "Error in _updatePackageMetadata(): '%s'" % str(e)
+            return {"error":str(e)}
+        #
         formData = self.__formData
         tfpackage = self.__tfpackage
         try:
@@ -315,14 +504,14 @@ class DatasetData(object):
             except Exception, e:
                 print "Error: '%s'" % str(e)
             tfpackage["title"]=tfpackage.get("dc:title", "")
-            tfpackage["description"]=tfpackage.get("dc:abstract", "")
+            tfpackage["description"]=tfpackage.get("dc:description", "")
             title = tfpackage["title"]
-            if title is None or title=="" or title=="None":
+            if not title:
+                print "*** no title ***"
                 print dir(formData)
                 print formData.formFields
                 print formData.getValues("metaList")
-                result='{"error":"title is blank"}'
-                return result
+                return {"error":"no title"}
             ##
             try:
                 wfMeta = self._getWorkflowMetadata()
@@ -339,15 +528,35 @@ class DatasetData(object):
                 self._saveWorkflowMetadata(wfMeta)
             except Exception, e:
                 print "  ERROR: %s" % str(e)
-            ##
+            # Save & re-index
             self._saveTFPackage(tfpackage)
             self._reIndex()     # Re-index - for title|description changes
-            result = jsonWriter({"ok":"updated ok", "oid":self.__oid})
+            if targetStep:
+                # progress all attachments as well
+                pass
+            result = {"ok":"updated ok", "oid":self.__oid}
         except Exception, e:
-            result = jsonWriter({"error":str(e)})
+            result = {"error":str(e)}
         return result
 
     def _reIndex(self):
         object = self._getObject()
-        Services.indexer.index(object.getId())
-        Services.indexer.commit()
+        self.Services.indexer.index(object.getId())
+        self.Services.indexer.commit()
+
+    def __getSolrData(self, oid):
+        #print "__getSolrData()"
+        resultDict = {}
+        try:
+            portal = self.page.getPortal()
+            query = 'id:"%s"' % oid
+            req = SearchRequest(query)
+            req.addParam("fq", 'item_type:"object"')
+            out = ByteArrayOutputStream()
+            self.Services.getIndexer().search(req, out)
+            writer = StringWriter()
+            IOUtils.copy(ByteArrayInputStream(out.toByteArray()), writer)
+            resultDict = jsonReader(writer.toString())
+        except Exception, e:
+            print "Error in __getSolrData(): '%s'" % str(e)
+        return resultDict

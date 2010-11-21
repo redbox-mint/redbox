@@ -65,43 +65,112 @@ div.tab-nav {
 .box h2 {
     background: none;
     color: black;
+    font-size: 1.1em;
     text-transform: none;
 }
+
+.helpWidget {
+    color: blue;
+    cursor:pointer;
+    float: right;
+}
+
 </style>
 <div class="grid_16">
-    <p><a href="$portalPath/detail/$oid/">View public record</a></p>
     <div class="box">
         <div id="inputForms"><!-- --></div>
     </div>
 </div>
 <script type="text/javascript" src="$portalPath/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="$portalPath/javascript-widgets/widgets.js"></script>
+<script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
-var packageData = {
-    ajaxRequestUrl: "$self.getAjaxRequestUrl()",
-    metaData: $self.getJsonMetadata(),
-    oid: "$oid",
-    packagedItems: $self.getJsonPackagedItems(),
-    portalPath: "$portalPath"
-};
-$(function() {
-    function onContentLoaded() {
-        widgets.contentLoaded();
-        try {
-            widgets.formsById["main-form"].restore(packageData.metaData);
-        } catch(e) {
-            alert(e);
-        }
-        $(".accordion").accordion({
-            header: ".accordion-header",
-            collapsible: true,
-            clearStyle: true,
-            active: false
-        });
-        widgets.changeToTabLayout($(".inputscreens")).tabs({ cookie: {} });
-        nameLookup.init();
-    }
-    $("#inputForms").load("$portalPath/workflows/forms/dataset", onContentLoaded);
-});
+// <![CDATA[
+  var packageData = {
+            portalPath:"$portalPath",
+            metaData:$self.getJsonMetadata(),
+            ajaxRequestUrl:"$self.getAjaxRequestUrl()",
+            packagedItems:$self.getJsonPackagedItems(),
+            test:$self.getJsonTest(),
+            oid:"$oid"
+        };
+/*
+$self.getSearchResults()
+$self.userRoles()
+$self.username()
+$self.getCurrentStep()
+*/
+// ]]>
 </script>
+<script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
+<script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
+<script type="text/javascript">
+(function($){
+    $(function(){
+        function onContentLoaded(){
+var pMsg=$("<p style='font-size:120%;color:green;'>Loading form data. Please wait...</p>");
+$(".inputscreens").hide().after(pMsg);
+            widgets.changeToTabLayout($(".inputscreens")).tabs({ "cookie": { "expires": 30 }});
+            widgets.contentLoaded(function(){
+                try{
+                    var st=new Date(), et, ms;
+                    widgets.formsById["main-form"].addListener("postOnRestore",
+                        function(ctx){
+                            ctx.findx(".lookup-show").each(function(){
+                                var e=$(this);
+                                e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?"identified as:":"lookup");
+                                e.find(".identified-as-name").text(e.find("input.nl").val());
+                            });
+                        }
+                    );
+                    widgets.formsById["main-form"].restore(packageData.metaData);
+                    et=new Date(); ms=et-st;
+                    //gdialog.text("restored in "+ms+"mS").dialog("open");
+                    //
+                    $(".accordion").accordion({header:".accordion-header", collapsible:true,
+                            clearStyle:true, active:false});     // or active:2
+                    //widgets.changeToTabLayout($(".inputscreens")).tabs();
+                    //
+                    var dcTitle=$("input[id=dc:title]"), title=$("#title");
+                    dcTitle.change(function(){
+                        title.text(dcTitle.val());
+                    }).change();
+pMsg.remove();
+$(".inputscreens").show();
+                }catch(e){alert(e);}
+                //$("#getPackagedItems").click(getPackagedItems);
+                //$("#add-items-search").click(function(){itemSearch(1); return false;});
+                //$("#add-items-search-query").keypress(function(e){
+                //    if(e.which==13) itemSearch(1);
+                //});
+                $("#deposit_accept_msg").text("$self.getNextStepAcceptMessage()");
+                $(".validation-err-msg[for=deposit_accept]").text(
+                        "$self.getNextStepAcceptValidationErrorMessage()");
+                nameLookup.init();
+                //$(".accordion").bind("accordionchangestart", function(e, ui){
+                //    getPackagedItems();
+                //});
+            });
+        }
+        $("#inputForms").load(packageData.portalPath + "/workflows/forms/dataset", onContentLoaded);
+        
+        var vrl = jQuery("#view-record-link");
+        vrl.attr("href", vrl.attr("href")+packageData.oid);
+        vrl.click(function(){
+            if(widgets.forms[0].hasChanges()){
+                return confirm("Are you sure you want to leave this page without saving first!");
+            }
+        });
+    });
+})(jQuery);
+
+function submitted_ok(){
+    //alert("Submitted ok " + location.href);
+    location.href = location.href.replace("/workflow/", "/detail/");
+}
+
+function convertOpenSearchToDropDown(data) {
+    console.log(data)
+}
+</script>
+<hr/>

@@ -3,17 +3,11 @@
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
     <h2>Creators</h2>
-    <table class="input-list sortable" id="dc:creator.foaf:Person.">
+    <table class="input-list sortable">
         <thead>
             <tr class="header-row">
                 <th>&nbsp;</th>
-                <th>#</th>
                 <th>PI</th>
-                <th style="text-align: center;">Given name</th>
-                <th style="text-align: center;">Family name</th>
-                <th></th>
-                <th style="text-align: center;">Association</th>
-                <th></th>
                 <th style="width: 100%;"></th>
             </tr>
         </thead>
@@ -25,41 +19,68 @@
             </tr>
         </tfoot>
         <tbody>
-            <tr class="item-input-display sortable-itemX">
-                <td><img class="facets-grip" src="../images/icons/grippy.png" /></td>
-                <td class="sort-number">1</td>
-                <td>
+            <tr class="item-input-display sortable-item">
+                <td style="vertical-align:middle;">
+                    <img class="facets-grip" src="../images/icons/grippy.png" />
+                </td>
+                <td style="vertical-align:middle;">
                     <input type="checkbox" name="scope" value="1"
                            id="dc:creator.foaf:Person.0.pi" />
                 </td>
                 <td>
-                    <input type="text" placeholder="given name" size="40"
-                           class="nameLookup-name nl nl-foaf:givenName"
-                           id="dc:creator.foaf:Person.0.foaf:givenName" />
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>Given name:</label>
+                                    <input type="text" placeholder="given name" size="40"
+                                           class="nameLookup-name"
+                                           id="dc:creator.foaf:Person.0.foaf:givenName" />
+                                </td>
+                                <td>
+                                    <label>Family name:</label>
+                                    <input type="text" placeholder="family name" size="40"
+                                           class="nameLookup-name"
+                                           id="dc:creator.foaf:Person.0.foaf:familyName" />
+                                </td>
+                                <td>
+                                    <span style="white-space:nowrap;">
+                                        <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
+                                        <span class="identified-as-name" style="border:0px solid #aaaaaa;padding:0.25ex;"></span>
+                                        <input id="dc:creator.foaf:Person.0.dc:title"
+                                               type="hidden"
+                                               class="nl nl-foaf:name" readonly="readonly"/>
+                                        <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
+                                               class="nl nl-rdf:about" value="" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    Association:
+                                    <span class="data-source-drop-down" style="padding-right:2em;"
+                                          data-delay="1"
+                                          data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}&transform=true">
+                                          <span class="selection-added">
+                                            <input type="hidden" class="selection-added-id"
+                                                 id="dc:creator.foaf:Person.0.association" value="" />
+                                            <input type="text" class="selection-added-label" readonly="readonly" size="24"
+                                                 id="dc:creator.foaf:Person.0.association.skos:prefLabel" value="" />
+                                            <a href="#" class="clear-item">change</a>
+                                          </span>
+                                          <span class="drop-down-location">
+                                              <button class="selection-add add-unique-only"
+                                                      data-add-on-click="1">
+                                                  Add <!-- '<span class="selection-add-label"></span>' -->
+                                              </button>
+                                          </span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
-                <td>
-                    <input type="text" placeholder="given name" size="40"
-                           class="nameLookup-name nl nl-foaf:familyName"
-                           id="dc:creator.foaf:Person.0.foaf:familyName" />
-                </td>
-                <td>
-                    <a href="#" class="nameLookup-lookup">lookup</a>
-                    <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier" value="" />
-                </td>
-                <td>
-                    <select id="dc:creator.foaf:Person.0.association">
-                        <option value="1">School of Creative Arts</option>
-                        <option value="2">School of Humanities and Communication</option>
-                        <option value="3">Public Memory Research Centre</option>
-                    </select>
-                    <span class="data-source-drop-down">
-                        <input type="hidden" class="json-data-source-url"
-                               value="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}" />
-                        <input type="text" class="selection-add-label" id="" value="[one]" />
-                        <input type="text" class="selection-add-id" id="" value="[two]" />
-                    </span>
-                </td>
-                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
             </tr>
         </tbody>
     </table>
@@ -72,4 +93,12 @@
         <label for="primary_contact_email">Email</label>
         <input type="text" size="80" placeholder="Primary contact email" id="primary_contact_email" />
     </p>
+    <p class="nameLookup-debugMsg">xxx</p>
 </div>
+<script type="text/javascript">
+function lookupDone(target, resultJson){
+    var p=target.parent();
+    target.text("identified as:");
+    p.find(".identified-as-name").text(p.find("input.nl").val());
+}
+</script>

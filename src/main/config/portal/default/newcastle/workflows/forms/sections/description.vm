@@ -1,8 +1,27 @@
 <div>
-    <h2><label for="dc:description">Description</label></h2>
-    <p>
-        <textarea rows="6" cols="80" id="dc:description" placeholder="Description of item"></textarea>
-    </p>
+    <h2>
+        <span class="helpWidget"
+              id="help-description"
+              data-help-content-id="help-description-content"
+              data-show-text="help"
+              data-hide-text="hide-Help">
+            <span class="helpWidget-show">Help</span>
+            <span class="helpWidget-hide">Hide help</span>
+        </span>
+        <label for="dc:description">Description</label>
+    </h2>
+    <div id="help-description-content" class="helpContent">
+        <p>The description could include:</p>
+        <ul>
+            <li>About the Research Project</li>
+            <li>Purpose and scope of the data</li>
+            <li>Entities being studied or recorded</li>
+            <li>Methodology</li>
+            <li>Characteristics and/or features</li>
+            <li>Format or structure of the data</li>
+        </ul>
+    </div>
+    <p><textarea rows="6" cols="80" id="dc:description" placeholder="Description of item"></textarea></p>
 
     <h2><label for="funding">Funding</label></h2>
     <p>
