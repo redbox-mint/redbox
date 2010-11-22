@@ -58,22 +58,25 @@
                             <tr>
                                 <td colspan="3">
                                     Association:
-                                    <span class="data-source-drop-down" style="padding-right:2em;"
+                                    <span class="data-source-drop-down"
+                                          id="dc:creator.foaf:Person.0"
                                           data-delay="1"
-                                          data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}&transform=true">
-                                          <span class="selection-added">
+                                          data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}"
+                                          data-id-key="rdf:about"
+                                          data-label-key="rdfs:label"
+                                          data-list-key="results">
+                                        <span class="selection-added">
                                             <input type="hidden" class="selection-added-id"
-                                                 id="dc:creator.foaf:Person.0.association" value="" />
+                                                   id="dc:creator.foaf:Person.0.association" value="" />
                                             <input type="text" class="selection-added-label" readonly="readonly" size="24"
-                                                 id="dc:creator.foaf:Person.0.association.skos:prefLabel" value="" />
+                                                   id="dc:creator.foaf:Person.0.association.skos:prefLabel" value="" />
                                             <a href="#" class="clear-item">change</a>
-                                          </span>
-                                          <span class="drop-down-location">
-                                              <button class="selection-add add-unique-only"
-                                                      data-add-on-click="1">
-                                                  Add <!-- '<span class="selection-add-label"></span>' -->
-                                              </button>
-                                          </span>
+                                        </span>
+                                        <span class="drop-down-location">
+                                            <button class="selection-add add-unique-only" data-add-on-click="1">
+                                                Add <!-- '<span class="selection-add-label"></span>' -->
+                                            </button>
+                                        </span>
                                     </span>
                                 </td>
                             </tr>
@@ -93,7 +96,6 @@
         <label for="primary_contact_email">Email</label>
         <input type="text" size="80" placeholder="Primary contact email" id="primary_contact_email" />
     </p>
-    <p class="nameLookup-debugMsg">xxx</p>
 </div>
 <script type="text/javascript">
 function lookupDone(target, resultJson){

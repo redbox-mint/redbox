@@ -4,11 +4,15 @@
         <tfoot>
             <tr class="item-input">
                 <td>
-                    <span class="data-source-drop-down" id="dc:subject.anzsrc:seo.0">
-                        <input type="hidden" class="json-data-source-url"
-                               value="../workflows/forms/json/anzsrc/seo/index.json" />
-                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="[one]" />
-                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="[two]" />
+                    <span class="data-source-drop-down"
+                          data-json-source-url="../proxyGet?ns=mintSeo&qs=count%3D999%26level%3D"
+                          data-top-level-id="top"
+                          data-id-key="rdf:about"
+                          data-label-key="skos:prefLabel"
+                          data-list-key="results"
+                          data-children-key="skos:narrower">
+                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
+                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
                     </span>
                     <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
                 </td>
@@ -24,17 +28,20 @@
             </tr>
         </tbody>
     </table>
-
     <h2><label for="dc:subject.anzsrc:for">Field of Research codes</label></h2>
     <table class="input-list">
         <tfoot>
             <tr class="item-input">
                 <td>
-                    <span class="data-source-drop-down" id="dc:subject.anzsrc:for.0">
-                        <input type="hidden" class="json-data-source-url"
-                               value="../workflows/forms/json/anzsrc/for/index.json" />
-                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="[one]" />
-                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="[two]" />
+                    <span class="data-source-drop-down"
+                          data-json-source-url="../proxyGet?ns=mintFor&qs=count%3D999%26level%3D"
+                          data-top-level-id="top"
+                          data-id-key="rdf:about"
+                          data-label-key="skos:prefLabel"
+                          data-list-key="results"
+                          data-children-key="skos:narrower">
+                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="" />
+                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="" />
                     </span>
                     <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
                 </td>

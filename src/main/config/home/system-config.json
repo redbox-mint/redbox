@@ -237,7 +237,8 @@
         "mintSeo" : "${mint.proxy.url}/seo/opensearch/lookup",
         "mintAuthor" : "${mint.proxy.url}/author/opensearch/lookup",
         "mintGeoNames" : "${mint.proxy.url}/geonames/opensearch/lookup",
-        "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup"
+        "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup",
+        "mintActivity" : "${mint.proxy.url}/activity/opensearch/lookup"
     },
     "watcher" : {
         "path": "${watcher.home}"

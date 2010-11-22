@@ -63,18 +63,6 @@ class ProxyGetData:
             print "ERROR: %s" % str(e)
         try:
             tdata = jsonReader(data)
-            if formData.get("transform"):
-                print "-- transforming data"
-                dataList = []
-                for result in tdata["results"]:
-                    uri = result["rdf:about"]
-                    title = result["dc:title"][0]
-                    dataList.append({"scheme":0,"children":0,"id":uri,"label":title})
-                data = {
-                    "namespace": "http://fascinator.usq.edu.au/#",
-                    "selectable": "1",
-                    "list": dataList
-                }
             print "JSON ok"
         except Exception, e:
             print "Error to valid JSON: %s" % str(e)
