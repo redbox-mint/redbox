@@ -36,7 +36,7 @@
             <span class="selection-added">
                 <input type="hidden" class="selection-added-id"
                        id="funding_body" value="" />
-                <input type="text" class="selection-added-label" readonly="readonly" size="24"
+                <input type="text" class="selection-added-label" readonly="readonly" size="80"
                        id="funding_body_label" value="" />
                 <a href="#" class="clear-item">change</a>
             </span>

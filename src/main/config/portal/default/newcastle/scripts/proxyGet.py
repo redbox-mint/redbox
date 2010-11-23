@@ -89,7 +89,7 @@ class ProxyGetData:
         try:
             res = _urlopen(url)
             data = res.read()
-            print dir(res)
+            #print dir(res)
             res.close()
         except Exception, e:
             if res is not None:
@@ -108,5 +108,5 @@ class ProxyGetData:
                         return self._wget(url)
             print "ERROR: %s" % str(e)
             raise e
-        print "* **********", data
+        #print "* **********", data
         return data

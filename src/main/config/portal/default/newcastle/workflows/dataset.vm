@@ -153,24 +153,12 @@ $(".inputscreens").show();
             });
         }
         $("#inputForms").load(packageData.portalPath + "/workflows/forms/dataset", onContentLoaded);
-        
-        var vrl = jQuery("#view-record-link");
-        vrl.attr("href", vrl.attr("href")+packageData.oid);
-        vrl.click(function(){
-            if(widgets.forms[0].hasChanges()){
-                return confirm("Are you sure you want to leave this page without saving first!");
-            }
-        });
     });
 })(jQuery);
 
 function submitted_ok(){
     //alert("Submitted ok " + location.href);
     location.href = location.href.replace("/workflow/", "/detail/");
-}
-
-function convertOpenSearchToDropDown(data) {
-    console.log(data)
 }
 </script>
 <hr/>

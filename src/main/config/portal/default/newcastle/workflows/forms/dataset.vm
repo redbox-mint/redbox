@@ -8,13 +8,17 @@
         ## general
         dc:title, dc:created, dc:modified, dc:coverage.from, dc:coverage.to, dc:language, dc:type,
         ## description
-        dc:description, funding_body, grant_number, project_website,
+        dc:description,
+        funding_body,
+        funding_body_label,
+        project_website,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.pi,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
-        ##dc:creator.foaf:Person.0.association,
+        dc:creator.foaf:Person.0.association,
+        dc:creator.foaf:Person.0.association.skos:prefLabel,
         primary_contact_name,
         primary_contact_email,
         ## subject
@@ -43,7 +47,7 @@
     <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
     <div class="clear"></div>
     <h1>
-        <a style="float:right;padding-right:4px;font-size:0.6em;" href="$portalPath/detail/$self.oid">View record</a>
+        <a id="view-record-link" style="float:right;padding-right:4px;font-size:0.6em;" href="$portalPath/detail/">View record</a>
         <span id="title"> </span>
     </h1>
     <div class="inputscreens changeToTabLayout">
@@ -85,3 +89,14 @@
     </div>
     <span class="saved-result"></span>
 </div>
+<script type="text/javascript">
+$(function(){
+    $("#view-record-link").click(function(){
+        var href = $(this).attr("href");
+        $(this).attr("href", href+packageData.oid);
+        if(widgets.forms[0].hasChanges()){
+            return confirm("Are you sure you want to leave this page without saving first!");
+        }
+    });
+});
+</script>

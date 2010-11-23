@@ -49,7 +49,7 @@
                                         <span class="identified-as-name" style="border:0px solid #aaaaaa;padding:0.25ex;"></span>
                                         <input id="dc:creator.foaf:Person.0.dc:title"
                                                type="hidden"
-                                               class="nl nl-foaf:name" readonly="readonly"/>
+                                               class="nl nl-rdfs:label" readonly="readonly"/>
                                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
                                                class="nl nl-rdf:about" value="" />
                                     </span>
@@ -59,7 +59,6 @@
                                 <td colspan="3">
                                     Association:
                                     <span class="data-source-drop-down"
-                                          id="dc:creator.foaf:Person.0"
                                           data-delay="1"
                                           data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=searchTerms%3D{searchTerms}"
                                           data-id-key="rdf:about"
