@@ -1,11 +1,11 @@
 <div>
     <h2><label for="dc:title">Title (*)</label></h2>
     <p>
-        <input type="text" id="dc:title" size="80" placeholder="Enter the title of the research data" autofocus />
+        <textarea rows="4" cols="80" id="dc:title" placeholder="Enter the title of the research data" autofocus></textarea>
         <label class="validation-err-msg" style="color: red;" for="dc:title">A title is required!</label>
         <input type="hidden" class="validation-rule" value="for(dc:title);test(!='');when(onChange);name(test1);" />
     </p>
-
+    
     <h2><label for="dc:created">Date Created</label></h2>
     <p><input type="text" placeholder="Date created" class="dateYMD" id="dc:created" /></p>
 
@@ -21,8 +21,70 @@
     </p>
 
     <h2><label for="dc:language">Language</label></h2>
-    <p><input type="text" size="80" placeholder="Enter the language of the research data" id="dc:language" /></p>
+    <p>
+        <input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
+        #*
+        <span class="data-source-drop-down"
+              data-json-source-url="../proxyGet?ns=mintLanguage&qs=count%3D999%26level%3D"
+              data-id-key="rdfs:label"
+              data-label-key="dc:description"
+              data-list-key="results">
+            <span class="selection-added">
+                <input type="hidden" class="selection-added-id"
+                       id="dc:language" value="eng" />
+                <input type="text" class="selection-added-label" readonly="readonly" size="80"
+                       id="dc:language.skos:prefLabel" value="English" />
+                <a href="#" class="clear-item">change</a>
+            </span>
+            <span class="drop-down-location">
+                <button class="selection-add add-unique-only" data-add-on-click="1">
+                    Select <!-- '<span class="selection-add-label"></span>' -->
+                </button>
+            </span>
+        </span>
+        *#
+    </p>
 
     <h2><label for="dc:type">Type</label></h2>
-    <p><input type="text" size="80" placeholder="Enter the type of the research data" id="dc:type" /></p>
+    <p>
+        <select id="dc:type" name="dc:type">
+            <option value="Collection">Collection</option>
+            <option value="Dataset" selected>Dataset</option>
+            <option value="Catalogue">Catalogue or Index</option>
+            <option value="Repository">Repository</option>
+            <option value="Registry">Registry</option>
+            <option value="FreeText">Other...</option>
+        </select>
+        <span id="freetext-type" class="hidden">
+            <span>&nbsp;Please specify:&nbsp;</span>
+            <input type="text" size="40" placeholder="Enter the type of the research data" id="dc:type.freetext" />
+        </span>
+    </p>
 </div>
+<script type="text/javascript">
+$(function() {
+    var typeSelect = $("#dc\\:type");
+    
+    function updateType() {
+        var type = typeSelect.val();
+        var freetext = $("#freetext-type");
+        if (type == "FreeText") {
+            freetext.removeClass("hidden");
+        } else {
+            freetext.addClass("hidden");
+        }
+    }
+    
+    typeSelect.change(updateType);
+    updateType();
+
+    $("#dc\\:language")
+        .autocomplete("$portalPath/proxyGet?ns=mintLanguage&qs=count%3D999%26simple=true",
+            {
+                formatItem: function(row, pos, count, term) {
+                    console.log(row, pos, count, term);
+                    return term;
+                }
+            });
+});
+</script>

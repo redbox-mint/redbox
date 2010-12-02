@@ -21,37 +21,17 @@
             <li>Format or structure of the data</li>
         </ul>
     </div>
-    <p><textarea rows="6" cols="80" id="dc:description" placeholder="Description of item"></textarea></p>
-
-    <h2><label for="funding">Funding</label></h2>
+    <p><textarea rows="12" cols="80" id="dc:description" placeholder="Description of the research data"></textarea></p>
+    
+    <h2>Related</h2>
+    <fieldset>
     <p>
-
-        <span class="data-source-drop-down"
-              data-top-level-id="top"
-              data-json-source-url="../proxyGet?ns=mintActivity&qs=count%3D999%26level%3D"
-              data-id-key="rdf:about"
-              data-label-key="skos:prefLabel"
-              data-list-key="results"
-              data-children-key="skos:narrower">
-            <span class="selection-added">
-                <input type="hidden" class="selection-added-id"
-                       id="funding_body" value="" />
-                <input type="text" class="selection-added-label" readonly="readonly" size="80"
-                       id="funding_body_label" value="" />
-                <a href="#" class="clear-item">change</a>
-            </span>
-            <span class="drop-down-location">
-                <button class="selection-add add-unique-only" data-add-on-click="1">
-                    Add <!-- '<span class="selection-add-label"></span>' -->
-                </button>
-            </span>
-        </span>
-        ##<label for="funding_body">Funding body</label>
-        ##<input type="text" placeholder="Funding body" id="funding_body" />
-        ##<label for="grant_number">Grant number</label>
-        ##<input type="text" placeholder="Grant number" id="grant_number" />
+        <label for="citation">Publication citation:&nbsp;</label>
+        <input type="text" size="80" placeholder="Enter the publication citation" id="citation" />
     </p>
-
-    <h2><label for="project_website">Project website</label></h2>
-    <p><input type="text" size="80" placeholder="Enter the project website" id="project_website" /></p>
+    <p>
+        <label for="website">Website:&nbsp;</label>
+        <input type="text" size="80" placeholder="Enter a website URL" id="website" />
+    </p>
+    </fieldset>
 </div>

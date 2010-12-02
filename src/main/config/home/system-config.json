@@ -216,7 +216,7 @@
                 "derbyHome" : "${fascinator.home}/database",
                 "quartzConfig": "${fascinator.home}/quartz.properties",
                 "desktop": true,
-                "frequency": "300",
+                "frequency": "3600",
                 "jobs": [
                 ]
             }
@@ -238,7 +238,8 @@
         "mintAuthor" : "${mint.proxy.url}/author/opensearch/lookup",
         "mintGeoNames" : "${mint.proxy.url}/geonames/opensearch/lookup",
         "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup",
-        "mintActivity" : "${mint.proxy.url}/activity/opensearch/lookup"
+        "mintActivity" : "${mint.proxy.url}/activity/opensearch/lookup",
+        "mintLanguage" : "${mint.proxy.url}/iso639-2/opensearch/lookup"
     },
     "watcher" : {
         "path": "${watcher.home}"

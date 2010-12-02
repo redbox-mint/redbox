@@ -6,12 +6,18 @@
      data-submit-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}">
     <input type="hidden" class="form-fields" value="
         ## general
-        dc:title, dc:created, dc:modified, dc:coverage.from, dc:coverage.to, dc:language, dc:type,
+        dc:title,
+        dc:created,
+        dc:modified,
+        dc:coverage.from,
+        dc:coverage.to,
+        dc:language,
+        dc:type,
+        dc:type.freetext,
         ## description
         dc:description,
-        funding_body,
-        funding_body_label,
-        project_website,
+        citation,
+        website,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.pi,
@@ -35,6 +41,8 @@
         restrictions,
         license,
         ## management
+        funding_body,
+        funding_body_label,
         url,
         physical_storage,
         data_owner,

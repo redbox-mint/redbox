@@ -24,16 +24,30 @@
 
     "stages": [
         {
-            "name": "pending",
-            "label": "Pending",
-            "security": ["metadata", "editor", "admin"],
-            "visibility": ["metadata", "editor", "admin"],
+            "name": "investigation",
+            "label": "Investigation",
+            "security": ["librarian", "reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"],
+            "template": "workflows/dataset"
+        },
+        {
+            "name": "metadata-review",
+            "label": "Metadata Review",
+            "security": ["reviewer", "admin"],
+            "visibility": ["reviewer", "admin"],
+            "template": "workflows/dataset"
+        },
+        {
+            "name": "final-review",
+            "label": "Final Review",
+            "security": ["reviewer", "admin"],
+            "visibility": ["reviewer", "admin"],
             "template": "workflows/dataset"
         },
         {
             "name": "live",
-            "label": "Live",
-            "security": ["editor", "admin"],
+            "label": "Published",
+            "security": ["admin"],
             "visibility": ["guest"],
             "template": "workflows/dataset"
         }

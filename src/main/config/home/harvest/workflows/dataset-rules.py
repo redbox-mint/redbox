@@ -196,11 +196,11 @@ class IndexData:
             wfChanged = True
             wfMeta = JsonConfigHelper()
             wfMeta.set("id", WORKFLOW_ID)
-            wfMeta.set("step", "pending")
+            wfMeta.set("step", "investigation")
             wfMeta.set("pageTitle", "Dataset Metadata")
             stages = self.config.getJsonList("stages")
             for stage in stages:
-                if stage.get("name") == "pending":
+                if stage.get("name") == "investigation":
                     wfMeta.set("label", stage.get("label"))
                     self.item_security = stage.getList("visibility")
                     workflow_security = stage.getList("security")
