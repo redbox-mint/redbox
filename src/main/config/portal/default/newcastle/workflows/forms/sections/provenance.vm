@@ -4,20 +4,31 @@
         <textarea rows="6" cols="80" id="sources_used" placeholder="Sources used"></textarea>
     </p>
 
-    <h2><label for="access_conditions">Access conditions</label></h2>
-    <p><input type="text" size="80" placeholder="Access conditions" id="access_conditions" /></p>
-
-    <h2><label for="embargo">Embargo</label></h2>
-    <p>
-        <label for="embargo_release">Release</label>
-        <input type="text" placeholder="Release date" class="dateYMD" id="embargo_release" />
-        <label for="embargo_expiry">Expiry</label>
-        <input type="text" placeholder="Expiry date" class="dateYMD" id="embargo_expiry" />
-    </p>
-
-    <h2><label for="restrictions">Restrictions</label></h2>
-    <p><input type="text" size="80" placeholder="Restrictions" id="restrictions" /></p>
-
-    <h2><label for="license">License</label></h2>
-    <p><input type="text" size="80" placeholder="License" id="license" /></p>
+    <h2>Rights</h2>
+    <fieldset>
+        <p>
+            <label for="access_conditions">Access conditions</label>
+            <input type="text" size="80" placeholder="Access conditions" id="access_conditions" />
+        </p>
+#*
+        <p>
+            <label for="embargo_release">Embargo Release</label>
+            <input type="text" placeholder="Release date" class="dateYMD" id="embargo_release" style="width:7em;" />
+            <label for="embargo_expiry">Expiry</label>
+            <input type="text" placeholder="Expiry date" class="dateYMD" id="embargo_expiry" style="width:7em;" />
+        </p>
+*#
+        <p>
+            <label for="restrictions">Restrictions, Embargoes or Usage Constraints</label>
+            <input type="text" size="80" placeholder="Restrictions" id="restrictions" />
+        </p>
+        <p>
+            <label for="license_cc">License - Creative Commons</label>
+            <input type="text" size="80" placeholder="Creative Commons" id="license_cc" />
+        </p>
+        <p>
+            <label for="license_other">License - Other</label>
+            <input type="text" size="80" placeholder="Other" id="license_other" />
+        </p>
+    </fieldset>
 </div>

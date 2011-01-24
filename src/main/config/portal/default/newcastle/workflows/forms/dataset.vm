@@ -7,32 +7,41 @@
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
-        dc:created,
-        dc:modified,
         dc:coverage.from,
         dc:coverage.to,
+        dc:created,
+        dc:modified,
+        date_completed,
+        time_period,
         dc:language,
+        dc:language.skos:prefLabel,
+        location,
         dc:type,
         dc:type.freetext,
         ## description
         dc:description,
-        citation,
+        citations.0,
+        data,
         website,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.pi,
+        dc:creator.foaf:Person.0.coPi,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
         dc:creator.foaf:Person.0.association,
         dc:creator.foaf:Person.0.association.skos:prefLabel,
         primary_contact_name,
         primary_contact_email,
+        supervisor,
+        collaborators.0,
         ## subject
         dc:subject.anzsrc:seo.0.skos:prefLabel,
         dc:subject.anzsrc:seo.0.rdf:resource,
         dc:subject.anzsrc:for.0.skos:prefLabel,
         dc:subject.anzsrc:for.0.rdf:resource,
         dc:subject.keywords.0,
+        research_activity,
         ## provenance
         sources_used,
         access_conditions,
@@ -41,12 +50,23 @@
         restrictions,
         license,
         ## management
-        funding_body,
-        funding_body_label,
         url,
         physical_storage,
+        retention_period,
+        disposal_date,
         data_owner,
-        data_custodian
+        data_custodian,
+        affiliation.0,
+        affiliation.0.skos:prefLabel,
+        funding.0,
+        grant.0,
+        project_title,
+        depositor,
+        data_size,
+        extent,
+        policy,
+        contracts,
+        management_plan
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />

@@ -77,4 +77,14 @@
             </tr>
         </tbody>
     </table>
+
+    <h2><label for="research_activity">Research Activity</label></h2>
+    <p>
+        <select id="research_activity" name="research_activity">
+            <option value="pure">Pure basic research</option>
+            <option value="strategic" selected>Strategic basic research</option>
+            <option value="applied">Applied research</option>
+            <option value="experimental">Experimental development</option>
+        </select>
+    </p>
 </div>

@@ -5,12 +5,11 @@
         <label class="validation-err-msg" style="color: red;" for="dc:title">A title is required!</label>
         <input type="hidden" class="validation-rule" value="for(dc:title);test(!='');when(onChange);name(test1);" />
     </p>
-    
-    <h2><label for="dc:created">Date Created</label></h2>
-    <p><input type="text" placeholder="Date created" class="dateYMD" id="dc:created" /></p>
 
-    <h2><label for="dc:modified">Date Modified</label></h2>
-    <p><input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" /></p>
+    <h2><label for="dc:title_alt">Alternative Title</label></h2>
+    <p>
+        <textarea rows="4" cols="80" id="dc:title_alt" placeholder="Optional alternative title"></textarea>
+    </p>
 
     <h2><label for="dc:coverage">Date Coverage</label></h2>
     <p>
@@ -20,10 +19,21 @@
         <input type="text" placeholder="End date" class="dateYMD" id="dc:coverage.to" />
     </p>
 
+    <h2><label for="dc:created">Date Created</label></h2>
+    <p><input type="text" placeholder="Date created" class="dateYMD" id="dc:created" /></p>
+
+    <h2><label for="dc:modified">Date Modified</label></h2>
+    <p><input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" /></p>
+
+    <h2><label for="date_completed">Date Completed</label></h2>
+    <p><input type="text" placeholder="Date completed" class="dateYMD" id="date_completed" /></p>
+
+    <h2><label for="time_period">Time Period</label></h2>
+    <p><input type="text" placeholder="Time period" id="time_period" /></p>
+
     <h2><label for="dc:language">Language</label></h2>
     <p>
-        <input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
-        #*
+        ##<input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
         <span class="data-source-drop-down"
               data-json-source-url="../proxyGet?ns=mintLanguage&qs=count%3D999%26level%3D"
               data-id-key="rdfs:label"
@@ -32,7 +42,7 @@
             <span class="selection-added">
                 <input type="hidden" class="selection-added-id"
                        id="dc:language" value="eng" />
-                <input type="text" class="selection-added-label" readonly="readonly" size="80"
+                <input type="text" class="selection-added-label" size="80"
                        id="dc:language.skos:prefLabel" value="English" />
                 <a href="#" class="clear-item">change</a>
             </span>
@@ -42,8 +52,10 @@
                 </button>
             </span>
         </span>
-        *#
     </p>
+
+    <h2><label for="location">Location</label></h2>
+    <p><input type="text" placeholder="Location" id="location" size="60" /></p>
 
     <h2><label for="dc:type">Type</label></h2>
     <p>

@@ -8,6 +8,7 @@
             <tr class="header-row">
                 <th>&nbsp;</th>
                 <th>PI</th>
+                <th>Co-PI</th>
                 <th style="width: 100%;"></th>
             </tr>
         </thead>
@@ -26,6 +27,10 @@
                 <td style="vertical-align:middle;">
                     <input type="checkbox" name="scope" value="1"
                            id="dc:creator.foaf:Person.0.pi" />
+                </td>
+                <td style="vertical-align:middle;">
+                    <input type="checkbox" name="scope" value="1"
+                           id="dc:creator.foaf:Person.0.coPi" />
                 </td>
                 <td>
                     <table>
@@ -87,16 +92,43 @@
         </tbody>
     </table>
     <h2>Primary contact</h2>
-    <fieldset>
-        <p>
-            <label for="primary_contact_name">Name</label>
-            <input type="text" size="80" placeholder="Enter a name" id="primary_contact_name" />
-        </p>
-        <p>
-            <label for="primary_contact_email">Email address</label>
-            <input type="text" size="80" placeholder="Enter an email address" id="primary_contact_email" />
-        </p>
-    </fieldset>
+    <table>
+        <tr>
+            <td>
+                <label for="primary_contact_name">Name</label>
+                <input type="text" size="40" placeholder="Enter a name" id="primary_contact_name" />
+            </td>
+        </tr>
+        </tr>
+            <td>
+                <label for="primary_contact_email">Email</label>
+                <input type="text" size="40" placeholder="Enter an email address" id="primary_contact_email" />
+            </td>
+        </tr>
+    </table>
+    <h2><label for="supervisor">Supervisor</label></h2>
+    <input type="text" size="80" placeholder="Supervisor (where applicable)" id="supervisor" />
+    <p>
+        <h2><label for="collaborators">Collaborators</label></h2>
+        <table class="input-list">
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td><input type="button" class="add-another-item" value="Add" /></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr class="item-input-display sortable-item">
+                    <td class="sort-number"></td>
+                    <td><input type="text" size="40" placeholder="Institution or organisation" id="collaborators.0" /></td>
+                    <td class="delete-item"><a href="#">delete</a></td>
+                    <td style="width: 100%;" />
+                </tr>
+            </tbody>
+        </table>
+    </p>
 </div>
 <script type="text/javascript">
 function lookupDone(target, resultJson){

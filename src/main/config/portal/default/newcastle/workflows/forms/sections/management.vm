@@ -1,4 +1,106 @@
 <div>
+    <h2><label for="url">Identifer or URL</label></h2>
+    <p><input type="text" size="80" placeholder="Location of the data" id="url" /></p>
+
+    <h2><label for="physical_storage">Stored at</label></h2>
+    <p><input type="text" size="80" placeholder="Physical location of the data" id="physical_storage" /></p>
+
+    <h2><label for="retention_period">Retention Period</label></h2>
+    <p><input type="text" size="80" placeholder="Retention period" id="retention_period" /></p>
+
+    <h2><label for="disposal_date">Disposal Date</label></h2>
+    <p><input type="text" size="25" placeholder="Disposal date" class="dateYMD" id="disposal_date" /></p>
+
+    <h2><label for="data_owner">Data Owner (IP)</label></h2>
+    <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
+
+    <h2><label for="data_custodian">Data Custodian</label></h2>
+    <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
+
+    <h2><label for="affiliation">Affiliation With</label></h2>
+    <p>
+        <span class="data-source-drop-down"
+              data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=count%3D9999"
+              data-id-key="rdf:about"
+              data-label-key="rdfs:label"
+              data-list-key="results">
+            <span class="selection-added">
+                <input type="hidden" class="selection-added-id"
+                       id="affiliation" value="" />
+                <input type="text" class="selection-added-label" readonly="readonly" size="24"
+                       id="affiliation.0.skos:prefLabel" value="" />
+                <a href="#" class="clear-item">change</a>
+            </span>
+            <span class="drop-down-location">
+                <button class="selection-add add-unique-only" data-add-on-click="1">
+                    Select <!-- '<span class="selection-add-label"></span>' -->
+                </button>
+            </span>
+        </span>
+    </p>
+
+    <h2><label for="funding">Funding Bodies</label></h2>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="text" size="40" placeholder="Funding body" id="funding.0" /></td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
+
+    <h2><label for="grant">Grant numbers</label></h2>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="text" size="40" placeholder="Grant number" id="grant.0" /></td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
+
+    <h2><label for="project_title">Project Title</label></h2>
+    <p><input type="text" size="80" placeholder="Project title" id="project_title" /></p>
+
+    <h2><label for="depositor">Depositor</label></h2>
+    <p><input type="text" size="80" placeholder="Depositor" id="depositor" /></p>
+
+    <h2><label for="data_size">Data Size</label></h2>
+    <p><input type="text" size="80" placeholder="Data size" id="data_size" /></p>
+
+    <h2><label for="extent">Extent or quantity</label></h2>
+    <p><input type="text" size="80" placeholder="Extent or quantity (i.e. no. of files)" id="extent" /></p>
+
+    <h2><label for="policy">Institutional Data Management Policy</label></h2>
+    <p><input type="text" size="80" placeholder="Institutional data management policy" id="policy" /></p>
+
+    <h2><label for="contracts">Contracts associated with the data or project (if appropriate)</label></h2>
+    <p><input type="text" size="80" placeholder="Contracts" id="contracts" /></p>
+
+    <h2><label for="management_plan">Location of data management plan</label></h2>
+    <p><input type="text" size="80" placeholder="Location of data management plan (if available)" id="management_plan" /></p>
+
+#*
     <h2><label for="funding">Funding</label></h2>
     <p>
         <span class="data-source-drop-down"
@@ -26,16 +128,7 @@
         ##<label for="grant_number">Grant number</label>
         ##<input type="text" placeholder="Grant number" id="grant_number" />
     </p>
+*#
+
     
-    <h2><label for="url">URL</label></h2>
-    <p><input type="text" size="80" placeholder="URL" id="url" /></p>
-
-    <h2><label for="physical_storage">Physical storage</label></h2>
-    <p><input type="text" size="80" placeholder="Physical storage" id="physical_storage" /></p>
-
-    <h2><label for="data_owner">Data owner</label></h2>
-    <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
-
-    <h2><label for="data_custodian">Data custodian</label></h2>
-    <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
 </div>

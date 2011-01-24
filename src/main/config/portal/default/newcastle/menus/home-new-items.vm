@@ -1,0 +1,21 @@
+<div class="grid_6">
+    #set($menuTitle = "Review stages")
+    #parse($page.getTemplate('wrapping/info-box-open.vm'))
+    <div class="block">
+        <ol>
+        #foreach($item in $self.latest)
+            #set($itemId = $item.get("id"))
+            #set($itemTitle = $item.get("dc_title").get(0))
+            <li#if($owner == $page.authentication.get_username()) class="owner"#end>
+                <a href="$portalPath/detail/$itemId">$itemTitle</a>
+                #set($wfStep = $item.get("workflow_step").get(0))
+                #set($wfLabel = $item.get("workflow_label").get(0))
+                #if ("$!wfStep" != "" && $wfStep != "" && $wfStep != "live")
+                <img class="workflow" src="$portalPath/images/icons/wf_${wfStep}.png" title="Workflow: $wfLabel"/>
+                #end
+            </li>
+        #end
+        </ol>
+    </div>
+    #parseTemplate("wrapping/info-box-close.vm")
+</div>

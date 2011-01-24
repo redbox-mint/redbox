@@ -5,8 +5,8 @@
               data-help-content-id="help-description-content"
               data-show-text="help"
               data-hide-text="hide-Help">
-            <span class="helpWidget-show">Help</span>
-            <span class="helpWidget-hide">Hide help</span>
+            <span class="helpWidget-show">show help</span>
+            <span class="helpWidget-hide">hide help</span>
         </span>
         <label for="dc:description">Description</label>
     </h2>
@@ -19,19 +19,35 @@
             <li>Methodology</li>
             <li>Characteristics and/or features</li>
             <li>Format or structure of the data</li>
+            <li>How was the data processed/analysed</li>
         </ul>
     </div>
     <p><textarea rows="12" cols="80" id="dc:description" placeholder="Description of the research data"></textarea></p>
     
     <h2>Related</h2>
     <fieldset>
-    <p>
-        <label for="citation">Publication citation:&nbsp;</label>
-        <input type="text" size="80" placeholder="Enter the publication citation" id="citation" />
-    </p>
-    <p>
-        <label for="website">Website:&nbsp;</label>
+        <h2><label for="citations">Publications (citing)</label></h2>
+        <table class="input-list">
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td><input type="button" class="add-another-item" value="Add" /></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr class="item-input-display sortable-item">
+                    <td class="sort-number"></td>
+                    <td><input type="text" size="40" placeholder="Citation" id="citations.0" /></td>
+                    <td class="delete-item"><a href="#">delete</a></td>
+                    <td style="width: 100%;" />
+                </tr>
+            </tbody>
+        </table>
+        <h2><label for="data">Data</label></h2>
+        <input type="text" size="80" placeholder="Enter data" id="data" />
+        <h2><label for="website">Website or other source</label></h2>
         <input type="text" size="80" placeholder="Enter a website URL" id="website" />
-    </p>
     </fieldset>
 </div>
