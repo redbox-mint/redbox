@@ -1,3 +1,7 @@
+body {
+    font-size: 75%;
+}
+
 h1#branding, .branding {
     background: #B1101A;
     padding-bottom: 0;
@@ -18,10 +22,22 @@ ul.nav, ul.main li a, .box h2 {
 }
 
 ul.main li:hover a {
-    background: #B1101A;
+    background-color: #900009;
+}
+
+ul.main li:hover ul li a {
+    background-color: #900009 !important;
+}
+
+ul.main li:hover ul li a:hover {
+    background-color: #500005 !important;
 }
 
 ul.main li ul li a {
-    background: #500005;
+    background-color: #500005;
     border-top: none;
+}
+
+ul.main li ul li.selected-view a {
+    font-style: italic;
 }

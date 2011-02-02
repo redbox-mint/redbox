@@ -1,10 +1,4 @@
-#if($noLayout)
-    #if($page.authentication.is_logged_in())
-        $!pageContent
-    #else
-        Access denied. You must be logged in to view this resource.
-    #end
-#else
+#if($noLayout)$!pageContent#else
 <!DOCTYPE html>
 <html>
     <head>

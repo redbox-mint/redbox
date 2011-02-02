@@ -26,6 +26,7 @@
     </properties>
     <modules>
         <module>parent</module>
+        <module>safe-api</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -77,7 +78,11 @@
             <version>${jetty.version}</version>
         </dependency>
         <!-- ReDBox Project Plugins -->
-        <!-- None yet -->
+        <dependency>
+            <groupId>au.edu.usq.fascinator.redbox</groupId>
+            <artifactId>redbox-safe-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Fascinator Plugins -->
         <dependency>
             <groupId>au.edu.usq.fascinator.plugins</groupId>
@@ -294,6 +299,24 @@
                                     <artifactId>fascinator-portal</artifactId>
                                     <type>war</type>
                                     <classifier>skinny</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!-- ReDBox overrides -->
+                    <execution>
+                        <id>copy-overrides</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.server}/plugins</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>au.edu.usq.fascinator.redbox</groupId>
+                                    <artifactId>redbox-safe-api</artifactId>
+                                    <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
