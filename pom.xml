@@ -303,24 +303,6 @@
                             </artifactItems>
                         </configuration>
                     </execution>
-                    <!-- ReDBox overrides -->
-                    <execution>
-                        <id>copy-overrides</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.server}/plugins</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>au.edu.usq.fascinator.redbox</groupId>
-                                    <artifactId>redbox-safe-api</artifactId>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
                     <!-- Fascinator plugins (without dependencies) -->
                     <execution>
                         <id>copy-plugins</id>

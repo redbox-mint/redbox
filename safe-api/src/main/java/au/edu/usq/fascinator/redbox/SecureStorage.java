@@ -115,6 +115,18 @@ public class SecureStorage implements Storage {
         storage.shutdown();
     }
 
+    /**
+     * This calls the Solr indexer to check if the current user is allowed to
+     * access the specified object. This access is based on the following rules:
+     *
+     * 1. The object exists in storage. Either a proper object, or referenced
+     *    object, i.e. harvest or rules file.
+     * 2. The object is owned by the logged in user
+     * 3. The logged in user is in a role with access to the object
+     *
+     * @param oid an object identifier
+     * @return true if access is allowed, false otherwise
+     */
     private boolean isAccessAllowed(String oid) {
         try {
             if (state.containsKey("username")) {
@@ -141,10 +153,12 @@ public class SecureStorage implements Storage {
                 User user = securityManager.getUser(state, username, "storage");
                 String[] rolesList = securityManager.getRolesList(state, user);
                 log.debug("roles: {}", rolesList);
-                String query = "storage_id:" + oid;
+                String query = "storage_id:" + oid
+                        + " OR harvest_config:" + oid
+                        + " OR harvest_rules:" + oid;
                 SearchRequest req = new SearchRequest(query);
-                req.setParam("fq", "owner:" + username);
-                req.addParam("fq", "security_filter:(" + StringUtils.join(rolesList, " OR ") + ")");
+                req.setParam("fq", "owner:" + username
+                        + " OR security_filter:(" + StringUtils.join(rolesList, " OR ") + ")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
                 JsonConfigHelper json = new JsonConfigHelper(new ByteArrayInputStream(out.toByteArray()));
