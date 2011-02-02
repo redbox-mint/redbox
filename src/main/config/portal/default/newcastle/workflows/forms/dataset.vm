@@ -7,6 +7,7 @@
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
+        dc:title_alt,
         dc:coverage.from,
         dc:coverage.to,
         dc:created,
@@ -74,7 +75,7 @@
     <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
     <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
     <div class="clear"></div>
-    <h1>
+    <h1 style="padding-bottom:1em;">
         <a id="view-record-link" style="float:right;padding-right:4px;font-size:0.6em;" href="$portalPath/detail/">View record</a>
         <span id="title"> </span>
     </h1>
@@ -115,7 +116,7 @@
             #nav(true false)
         </div>
     </div>
-    <span class="saved-result"></span>
+##    <span class="saved-result"></span>
 </div>
 <script type="text/javascript">
 $(function(){
@@ -125,6 +126,14 @@ $(function(){
         if(widgets.forms[0].hasChanges()){
             return confirm("Are you sure you want to leave this page without saving first!");
         }
+    });
+    $(".tab-nav .next-tab,.tab-nav .prev-tab").click(function(){
+        if(widgets.forms[0].hasChanges()){
+            $(".form-fields-save").click();
+        }
+    });
+    $(".form-fields-save").click(function(){
+        $(".saved-result").html("<img src='../images/loading-progress.gif'/>").show();
     });
 });
 </script>

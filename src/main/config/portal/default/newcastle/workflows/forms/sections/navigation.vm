@@ -13,5 +13,6 @@
     <span class="form-fields-save">
         <img src="../images/icons/save.png" height="30" alt="Save changes" />
     </span>
+    <span class="saved-result"></span>
 </div>
 #end

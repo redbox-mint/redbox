@@ -153,8 +153,6 @@ $self.getCurrentStep()
 */
 // ]]>
 </script>
-<script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
-<script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
 (function($){
     $(function(){
