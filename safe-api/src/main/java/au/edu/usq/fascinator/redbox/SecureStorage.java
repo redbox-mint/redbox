@@ -20,6 +20,7 @@ package au.edu.usq.fascinator.redbox;
 
 import au.edu.usq.fascinator.api.PluginDescription;
 import au.edu.usq.fascinator.api.PluginException;
+import au.edu.usq.fascinator.api.authentication.AuthenticationException;
 import au.edu.usq.fascinator.api.authentication.User;
 import au.edu.usq.fascinator.api.indexer.Indexer;
 import au.edu.usq.fascinator.api.indexer.SearchRequest;
@@ -35,9 +36,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
@@ -48,40 +52,59 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SecureStorage implements Storage {
 
+    private final static long DEFAULT_EXPIRY = 30000;
+    private static Map<String, CacheEntry> accessCache = new HashMap<String, CacheEntry>();
     private Logger log = LoggerFactory.getLogger(SecureStorage.class);
     private Storage storage;
     private Indexer indexer;
     private PortalSecurityManager securityManager;
     private JsonSessionState state;
-    private static Map<String, CacheEntry> accessCache = new HashMap<String, CacheEntry>();
+    private String username;
+    private List<String> rolesList;
 
     public SecureStorage(Storage storage, Indexer indexer, PortalSecurityManager securityManager, JsonSessionState state) {
         this.storage = storage;
         this.indexer = indexer;
         this.securityManager = securityManager;
         this.state = state;
+        username = null;
+        rolesList = new ArrayList<String>();
+        rolesList.add("guest");
+        if (state.containsKey("username")) {
+            username = state.get("username").toString();
+            try {
+                User user = securityManager.getUser(state, username, "system");
+                rolesList = Arrays.asList(securityManager.getRolesList(state, user));
+            } catch (AuthenticationException ae) {
+                log.error("Failed to get user access, assuming guest access", ae);
+            }
+        }
     }
 
     @Override
     public DigitalObject createObject(String oid) throws StorageException {
+        // everyone can create objects
         return storage.createObject(oid);
     }
 
     @Override
     public DigitalObject getObject(String oid) throws StorageException {
-        if (isAccessAllowed(oid)) {
-            return storage.getObject(oid);
+        DigitalObject obj = storage.getObject(oid);
+        if (isAccessAllowed(obj)) {
+            return obj;
         }
         throw new StorageException("Access denied");
     }
 
     @Override
     public void removeObject(String oid) throws StorageException {
+        DigitalObject obj = getObject(oid);
         storage.removeObject(oid);
     }
 
     @Override
     public Set<String> getObjectIdList() {
+        // TODO Filter list depending on access
         return storage.getObjectIdList();
     }
 
@@ -119,19 +142,20 @@ public class SecureStorage implements Storage {
      * This calls the Solr indexer to check if the current user is allowed to
      * access the specified object. This access is based on the following rules:
      *
-     * 1. The object exists in storage. Either a proper object, or referenced
-     *    object, i.e. harvest or rules file.
-     * 2. The object is owned by the logged in user
-     * 3. The logged in user is in a role with access to the object
-     *
+     * 1. If the object is indexed check the ownership and security
+     *    filters against the current user.
+     * 2. If the object is not indexed, check the storage directly since we
+     *    may be waiting on a commit from a workflow for example, or the
+     *    requested object is a harvest config or rules script.
+     * 
      * @param oid an object identifier
      * @return true if access is allowed, false otherwise
      */
-    private boolean isAccessAllowed(String oid) {
-        try {
-            if (state.containsKey("username")) {
-                String username = state.get("username").toString();
-                //log.debug("username: {}", username);
+    private boolean isAccessAllowed(DigitalObject obj) throws StorageException {
+        if (obj != null) {
+            String oid = obj.getId();
+            try {
+                // check the cache
                 String key = oid + ":" + username;
                 CacheEntry entry = accessCache.get(key);
                 if (entry == null) {
@@ -140,34 +164,53 @@ public class SecureStorage implements Storage {
                 } else {
                     long lastUpdated = entry.getLastUpdated();
                     long now = System.currentTimeMillis();
-                    if (now - lastUpdated > 300000L) {
-                        // 5 minute cache expiry
+                    log.debug("Elapsed time: {}", now - lastUpdated);
+                    if (now - lastUpdated > DEFAULT_EXPIRY) {
                         log.debug("Cache entry {} expired!", key);
                         entry = new CacheEntry();
                     } else {
-                        // use cached value
                         log.debug("Cached entry {}={}", key, entry.isAllowed());
                         return entry.isAllowed();
                     }
                 }
-                User user = securityManager.getUser(state, username, "storage");
-                String[] rolesList = securityManager.getRolesList(state, user);
-                log.debug("roles: {}", rolesList);
-                String query = "storage_id:" + oid
-                        + " OR harvest_config:" + oid
-                        + " OR harvest_rules:" + oid;
+
+                // check the index if the object exists (or is referenced)
+                String query = "storage_id:" + oid;
                 SearchRequest req = new SearchRequest(query);
+                req.setParam("fl", "id");
                 req.setParam("fq", "owner:" + username
-                        + " OR security_filter:(" + StringUtils.join(rolesList, " OR ") + ")");
+                        + " OR security_filter:("
+                        + StringUtils.join(rolesList, " OR ") + ")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
-                JsonConfigHelper json = new JsonConfigHelper(new ByteArrayInputStream(out.toByteArray()));
+                JsonConfigHelper json = new JsonConfigHelper(
+                        new ByteArrayInputStream(out.toByteArray()));
                 List<JsonConfigHelper> docs = json.getJsonList("response/docs");
-                entry.setAllowed(!docs.isEmpty());
+                if (docs.isEmpty()) {
+                    entry.setAllowed(false);
+                    Properties props = obj.getMetadata();
+                    props.store(out, "");
+                    if (props.containsKey("fileHash")) {
+                        // this is a harvest config or rules script
+                        entry.setAllowed(true);
+                    } else if (props.containsKey("owner")) {
+                        // current user owns this object, most likely a new
+                        // workflow object, or index has not completed yet
+                        if (props.getProperty("owner").equals(username)) {
+                            entry.setAllowed(true);
+                        }
+                    }
+                    obj.close();
+                } else {
+                    // query returned result(s), allow access
+                    entry.setAllowed(true);
+                }
                 return entry.isAllowed();
+            } catch (StorageException se) {
+                throw se;
+            } catch (Exception e) {
+                log.error("Failed to get access details", e);
             }
-        } catch (Exception e) {
-            log.error("Failed to get access details", e);
         }
         return false;
     }

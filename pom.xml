@@ -184,20 +184,23 @@
                 <version>1.0</version>
                 <executions>
                     <execution>
+                        <id>default</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>
-                                String projectHome = project.properties["project.home"];
-                                if (projectHome == null) {
-                                    projectHome = project.basedir.parentFile.absolutePath;
-                                    projectHome = projectHome.replace("\\", "/");
-                                    project.properties["project.home"] = projectHome;
-                                }
-                                println "Project will be deployed to: " + projectHome;
-                            </source>
+                            <source>setup.groovy</source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>clean</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>setup.groovy</source>
                         </configuration>
                     </execution>
                 </executions>
@@ -215,6 +218,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Remove previously deployed files -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${dir.server}</directory>
+                            <includes>
+                                <include>lib/*.jar</include>
+                                <include>plugins/*.jar</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
             <!-- Copy dependencies and configuration resources -->
             <plugin>

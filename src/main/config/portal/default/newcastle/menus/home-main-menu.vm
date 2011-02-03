@@ -35,7 +35,10 @@ $(function() {
             },
             success: function(data) {
                 if (data.status == "ok") {
-                    window.location.href = data.url;
+                    function redirect() {
+                        window.location.href = data.url;
+                    }
+                    setTimeout(redirect, 1500);
                 } else {
                     alert("Failed to create package!");
                 }
