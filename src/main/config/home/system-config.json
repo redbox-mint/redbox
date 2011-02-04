@@ -193,7 +193,7 @@
         "home": "${portal.home}",
         "contentDir": "${fascinator.home}/content",
         "defaultView": "default",
-        "sessionTimeout": "1440",
+        "sessionTimeout": "60",
         "skins": {
             "default": "default",
             "order": [ "newcastle" ]
