@@ -1,32 +1,44 @@
 <div>
     <h2>
-        <span class="helpWidget"
-              id="help-description"
-              data-help-content-id="help-description-content"
-              data-show-text="help"
-              data-hide-text="hide-Help">
-            <span class="helpWidget-show">show help</span>
-            <span class="helpWidget-hide">hide help</span>
+        <span class="helpWidget" data-help-content-id="help-description-content"
+            data-show-text="show help" data-hide-text="hide help">
         </span>
         <label for="dc:description">Description</label>
     </h2>
-    <div id="help-description-content" class="helpContent">
-        <p>The description could include:</p>
+    <div id="help-description-content" class="help-content">
+        <p>Description of the research that generated the dataset.</p>
+        This should include:
         <ul>
-            <li>About the Research Project</li>
-            <li>Purpose and scope of the data</li>
-            <li>Entities being studied or recorded</li>
-            <li>Methodology</li>
-            <li>Characteristics and/or features</li>
-            <li>Format or structure of the data</li>
-            <li>How was the data processed/analysed</li>
+            <li>information about the project</li>
+            <li>the purpose and scope of the data</li>
+            <li>entities being studied or recorded</li>
+            <li>methodology</li>
+            <li>characteristics and features of the data</li>
         </ul>
+##        <p>The description could include:</p>
+##        <ul>
+##            <li>About the Research Project</li>
+##            <li>Purpose and scope of the data</li>
+##            <li>Entities being studied or recorded</li>
+##            <li>Methodology</li>
+##            <li>Characteristics and/or features</li>
+##            <li>Format or structure of the data</li>
+##            <li>How was the data processed/analysed</li>
+##        </ul>
     </div>
     <p><textarea rows="12" cols="80" id="dc:description" placeholder="Description of the research data"></textarea></p>
     
     <h2>Related</h2>
     <fieldset>
-        <h2><label for="citations">Publications (citing)</label></h2>
+        <h2>
+            <span class="helpWidget" data-help-content-id="help-publications"
+                data-show-text="show help" data-hide-text="hide help">
+            </span>
+            <label for="citations">Publications (citing)</label>
+        </h2>
+        <div id="help-publications" class="help-content">
+            Include a citation to any publications underpinning this data.
+        </div>
         <table class="input-list">
             <tfoot>
                 <tr>
@@ -45,9 +57,27 @@
                 </tr>
             </tbody>
         </table>
-        <h2><label for="data">Data</label></h2>
+
+        <h2>
+            <span class="helpWidget" data-help-content-id="help-rel-data"
+                data-show-text="show help" data-hide-text="hide help">
+            </span>
+            <label for="data">Data</label>
+        </h2>
+        <div id="help-rel-data" class="help-content">
+            Include a citation to any data related to this data.
+        </div>
         <input type="text" size="80" placeholder="Enter data" id="data" />
-        <h2><label for="website">Website or other source</label></h2>
+
+        <h2>
+            <span class="helpWidget" data-help-content-id="help-rel-website"
+                data-show-text="show help" data-hide-text="hide help">
+            </span>
+            <label for="website">Website or other source</label>
+        </h2>
+        <div id="help-rel-website" class="help-content">
+            Include a URL for the relevant website.
+        </div>
         <input type="text" size="80" placeholder="Enter a website URL" id="website" />
     </fieldset>
 </div>

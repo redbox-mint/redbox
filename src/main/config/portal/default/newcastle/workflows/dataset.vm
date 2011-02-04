@@ -73,6 +73,19 @@ div.tab-nav {
     color: blue;
     cursor:pointer;
     float: right;
+    font-weight: normal;
+    font-size: 80%;
+}
+
+.help-content {
+    display:none;
+    border:1px gray dotted;
+    padding:0.5ex;
+    color: #002020;
+}
+
+.validation-err-msg {
+    color:red;
 }
 
 .ac_results {

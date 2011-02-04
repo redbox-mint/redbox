@@ -1,37 +1,105 @@
 <div>
-    <h2><label for="dc:title">Title (*)</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-title"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:title">Title (*)</label>
+    </h2>
+    <div class="help-content" id="help-title">
+        A unique title for the research dataset. The title should be unique to
+        the data itself ie. do not use the publication title as the data title.
+    </div>
     <p>
-        <textarea rows="4" cols="80" id="dc:title" placeholder="Enter the title of the research data" autofocus></textarea>
-        <label class="validation-err-msg" style="color: red;" for="dc:title">A title is required!</label>
-        <input type="hidden" class="validation-rule" value="for(dc:title);test(!='');when(onChange);name(test1);" />
+        <textarea rows="4" cols="80" id="dc:title" style="vertical-align: text-top;"
+            placeholder="Enter the title of the research data" autofocus></textarea>
+        <label class="validation-err-msg" for="dc:title"
+            data-rule="for(dc:title);test(!='');when(onBlur, onSave);name(test1);">
+            A title is required!
+        </label>
     </p>
 
-    <h2><label for="dc:title_alt">Alternative Title</label></h2>
-    <p>
-        <textarea rows="4" cols="80" id="dc:title_alt" placeholder="Optional alternative title"></textarea>
-    </p>
-
-    <h2><label for="dc:coverage">Date Coverage</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-coverage"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:coverage">Date Coverage</label>
+    </h2>
+    <div class="help-content" id="help-coverage">
+        User this to indicate a date range relevant to the dataset collection.
+        Year format requires manual entry e.g. 1990 To 2010
+    </div>
     <p>
         <label for="dc:coverage.from">From</label>
         <input type="text" placeholder="Start date" class="dateYMD" id="dc:coverage.from" />
         <label for="dc:coverage.to">To</label>
         <input type="text" placeholder="End date" class="dateYMD" id="dc:coverage.to" />
+        <label class="validation-err-msg" for="dc:coverage.from"
+            data-rule="for(dc:coverage.from);when(onChange, onSave);name(testCoverageFrom);
+                    test(/^[12]\d{3}([-\/]?(10|11|12|0?\d)([-\/]?(30|31|[012]?\d))?)?$/);">
+            A valid from date or year is required!
+        </label>
+        <label class="validation-err-msg" for="dc:coverage.to"
+            data-rule="for(dc:coverage.to);when(onChange, onSave);name(testCoverageTo);
+                    test(/^[12]\d{3}([-\/]?(10|11|12|0?\d)([-\/]?(30|31|[012]?\d))?)?$/ );">
+            A valid to date or year is required!
+        </label>
     </p>
 
-    <h2><label for="dc:created">Date Created</label></h2>
-    <p><input type="text" placeholder="Date created" class="dateYMD" id="dc:created" /></p>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-date-created"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:created">Date Created</label>
+    </h2>
+    <div class="help-content" id="help-date-created">
+        Date the dataset collection was created
+    </div>
+    <p>
+        <input type="text" placeholder="Date created" class="dateYMD" id="dc:created" />
+    </p>
 
-    <h2><label for="dc:modified">Date Modified</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-date-modified"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:modified">Date Modified</label>
+    </h2>
+    <div class="help-content" id="help-date-modified">
+        Date recording any modifications to the dataset collection.
+    </div>
     <p><input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" /></p>
 
-    <h2><label for="date_completed">Date Completed</label></h2>
-    <p><input type="text" placeholder="Date completed" class="dateYMD" id="date_completed" /></p>
+##    <h2>
+##        <!--<span class="helpWidget" data-help-content-id="help-date-completed"
+##            data-show-text="show help" data-hide-text="hide help">
+##        </span>-->
+##        <label for="date_completed">Date Completed</label>
+##    </h2>
+##    <div class="help-content" id="help-date-completed">
+##        Date completed
+##    </div>
+##    <p><input type="text" placeholder="Date completed" class="dateYMD" id="date_completed" /></p>
 
-    <h2><label for="time_period">Time Period</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-time-period"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="time_period">Time Period</label>
+    </h2>
+    <div class="help-content" id="help-time-period">
+        A text description of a time period if applicable. e.g. 21<sup style="vertical-align: super;">st</sup> century
+    </div>
     <p><input type="text" placeholder="Time period" id="time_period" /></p>
 
-    <h2><label for="dc:language">Language</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-language"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:language">Language</label>
+    </h2>
+    <div class="help-content" id="help-language">
+        Language of the dataset content. e.g. English, French etc.
+    </div>
     <p>
         ##<input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
         <span class="data-source-drop-down"
@@ -54,18 +122,62 @@
         </span>
     </p>
 
-    <h2><label for="location">Location</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-location"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="location">Location</label>
+    </h2>
+    <div class="help-content" id="help-location">
+        Geospatial location relevant to the data created. This may describe
+        a geographical area where data was collected, a place which is the subject
+        of a collection, or a location which is the focus of an activity e.g.
+        coordinates or placenames.
+    </div>
     <p><input type="text" placeholder="Location" id="location" size="60" /></p>
 
-    <h2><label for="dc:type">Type</label></h2>
+    <h2>
+        <label for="dc:type">Type</label>
+        <span class="helpWidget" data-help-content-id="help-type"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+    </h2>
+    <div class="help-content" id="help-type">
+        <dl>
+            <dt>CatalogueOrIndex</dt>
+            <dd>
+                Collection of resource descriptions describing the content of
+                one or more repositories or collective works at the item level.
+            </dd>
+            <dt>Collection</dt>
+            <dd>
+                Compiled content created as separate and independent works and
+                assembled into a collective whole for distribution and use.
+            </dd>
+            <dt>Dataset</dt>
+            <dd>
+                Collection of physical or digital objects generated by research activities.
+            </dd>
+            <dt>Registry</dt>
+            <dd>
+                Collection of registry objects compiled to support the business
+                of a community.
+            </dd>
+            <dt>Repository</dt>
+            <dd>
+                Collection of physical or digital objects compiled for information
+                and documentation purposes and/or for storage and safekeeping.
+            </dd>
+        </dl>
+    </div>
     <p>
         <select id="dc:type" name="dc:type">
+            <option value="Catalogue">Catalogue or Index</option>
             <option value="Collection">Collection</option>
             <option value="Dataset" selected>Dataset</option>
-            <option value="Catalogue">Catalogue or Index</option>
-            <option value="Repository">Repository</option>
             <option value="Registry">Registry</option>
-            <option value="FreeText">Other...</option>
+            <option value="Repository">Repository</option>
+##            <option value="FreeText">Other...</option>
         </select>
         <span id="freetext-type" class="hidden">
             <span>&nbsp;Please specify:&nbsp;</span>
@@ -75,8 +187,7 @@
 </div>
 <script type="text/javascript">
 $(function() {
-    var typeSelect = $("#dc\\:type");
-    
+    var typeSelect = $("#dc\\:type");  
     function updateType() {
         var type = typeSelect.val();
         var freetext = $("#freetext-type");

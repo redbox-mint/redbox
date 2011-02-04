@@ -9,8 +9,19 @@
                 <th>&nbsp;</th>
                 <th>PI</th>
                 <th>Co-PI</th>
-                <th style="width: 100%;"></th>
+                <th style="width: 100%;">
+                    <span class="helpWidget" data-help-content-id="help-creators"
+                        data-show-text="show help" data-hide-text="hide help">
+                    </span>
+                </th>
             </tr>
+            <tr><td colspan="4">
+                <div class="help-content" id="help-creators">
+                    <p>Given name and family name of persons who created the data.</p>
+                    <p>Please indicate persons with roles of Principal Investigator or
+                    Co-Principle Investigator by checking the boxes provided.</p>
+                </div>
+            </td></tr>
         </thead>
         <tfoot>
             <tr>
@@ -91,7 +102,16 @@
             </tr>
         </tbody>
     </table>
-    <h2>Primary contact</h2>
+
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-primary-contact"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        Primary contact
+    </h2>
+    <div class="help-content" id="help-primary-contact">
+        Given name and family name of person nominated as primary contact for the data.
+    </div>
     <table>
         <tr>
             <td>
@@ -106,10 +126,28 @@
             </td>
         </tr>
     </table>
-    <h2><label for="supervisor">Supervisor</label></h2>
+
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-supervisor"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="supervisor">Supervisor</label>
+    </h2>
+    <div class="help-content" id="help-supervisor">
+        Name of supervisor associated with the data creation if applicable.
+    </div>
     <input type="text" size="80" placeholder="Supervisor (where applicable)" id="supervisor" />
+
     <p>
-        <h2><label for="collaborators">Collaborators</label></h2>
+        <h2>
+            <span class="helpWidget" data-help-content-id="help-collaborators"
+                data-show-text="show help" data-hide-text="hide help">
+            </span>
+            <label for="collaborators">Collaborators</label>
+        </h2>
+        <div class="help-content" id="help-collaborators">
+            Names of other collaborators in the research project.
+        </div>
         <table class="input-list">
             <tfoot>
                 <tr>

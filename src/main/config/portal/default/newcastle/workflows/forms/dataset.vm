@@ -7,7 +7,6 @@
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
-        dc:title_alt,
         dc:coverage.from,
         dc:coverage.to,
         dc:created,

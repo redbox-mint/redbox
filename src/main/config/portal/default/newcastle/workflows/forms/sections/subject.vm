@@ -1,5 +1,13 @@
 <div>
-    <h2><label for="dc:subject.anzsrc:seo">Socio-economic Objectives</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-seo-codes"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:subject.anzsrc:seo">Socio-economic Objectives</label>
+    </h2>
+    <div class="help-content" id="help-seo-codes">
+        Selct relevant SEO code(s).
+    </div>
     <table class="input-list">
         <tfoot>
             <tr class="item-input">
@@ -28,7 +36,16 @@
             </tr>
         </tbody>
     </table>
-    <h2><label for="dc:subject.anzsrc:for">Field of Research codes</label></h2>
+
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-for-codes"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:subject.anzsrc:for">Field of Research codes</label>
+    </h2>
+    <div class="help-content" id="help-for-codes">
+        Select relevant FOR code(s).
+    </div>
     <table class="input-list">
         <tfoot>
             <tr class="item-input">
@@ -58,7 +75,15 @@
         </tbody>
     </table>
 
-    <h2><label for="dc:subject">Keywords</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-keywords"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="dc:subject">Keywords</label>
+    </h2>
+    <div class="help-content" id="help-keywords">
+        Enter descriptive keywords as required.
+    </div>
     <table class="input-list">
         <tfoot>
             <tr>
@@ -78,7 +103,44 @@
         </tbody>
     </table>
 
-    <h2><label for="research_activity">Research Activity</label></h2>
+    <h2>
+        <span class="helpWidget" data-help-content-id="help-research-activity"
+            data-show-text="show help" data-hide-text="hide help">
+        </span>
+        <label for="research_activity">Research Activity</label>
+    </h2>
+    <div class="help-content" id="help-research-activity">
+        <p>
+            1290.0 Australian Standard Research Classification (ASRC) 1998. Source: ABS
+        </p>
+        <p>
+            Pure basic research is experimental and theoretical work undertaken
+            to acquire new knowledge without looking for long term benefits
+            other than the advancement of knowledge.
+        </p>
+        <p>
+            Strategic basic research is experimental and theoretical
+            work undertaken to acquire new knowledge directed
+            into specified broad areas in the expectation of useful
+            discoveries. It provides the broad base of knowledge
+            necessary for the solution of recognised practical problems.
+        </p>
+        <p>
+            Applied research is original work undertaken primarily
+            to acquire new knowledge with a specific application in
+            view. It is undertaken either to determine possible
+            uses for the findings of basic research or to determine
+            new ways of achieving some specific and predetermined objectives.
+        </p>
+        <p>
+            Experimental development is systematic work, using
+            existing knowledge gained from research or practical
+            experience, that is directed to producing new
+            materials, products or devices, to installing new
+            processes, systems and services, or to improving
+            substantially those already produced or installed.
+        </p>
+    </div>
     <p>
         <select id="research_activity" name="research_activity">
             <option value="pure">Pure basic research</option>
