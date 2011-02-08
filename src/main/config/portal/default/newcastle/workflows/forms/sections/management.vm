@@ -98,6 +98,54 @@
     </p>
 
     <h2>
+        <label for="grant">Grant numbers</label>
+        <span class="helpWidget" data-help-content-id="help-grant-num">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-grant-num">
+        Select/enter the grant number.
+    </div>
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Internal?</th>
+                <th colspan="2">Grant</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="3"><input type="button" class="add-another-item" value="Add another" /></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="checkbox" id="grant.0.uon:internal" class="internal-grant"/></td>
+                <td>
+                    <table class="inner-table">
+                        <tr>
+                            <td>
+                                <input type="text" size="20" id="grant.0.dc:identifier"
+                                    placeholder="Grant number" class="autocomplete" />
+                                <input type="hidden" id="grant.0.rdf:resource" />
+                            </td>
+                            <td>
+                                <input type="text" size="60" id="grant.0.skos:prefLabel"
+                                    readonly="readonly" placeholder="Grant description"
+                                    class="autocomplete-label label" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="delete-item" style="text-align:right;width:100%;"><a href="#">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
         <label for="funding">Funding Bodies</label>
         <span class="helpWidget" data-help-content-id="help-funding-bodies">
             <img src="../images/icons/help.png"/>
@@ -110,7 +158,7 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><input type="button" class="add-another-item" value="Add" /></td>
+                <td><input type="button" class="add-another-item" value="Add another" /></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -118,35 +166,7 @@
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
-                <td><input type="text" size="40" placeholder="Funding body" id="funding.0" /></td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>
-        <label for="grant">Grant numbers</label>
-        <span class="helpWidget" data-help-content-id="help-grant-num">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-grant-num">
-        Select/enter the grant number.
-    </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td><input type="text" size="40" placeholder="Grant number" id="grant.0" /></td>
+                <td><input type="text" size="80" placeholder="Funding body" id="funding.0" /></td>
                 <td class="delete-item"><a href="#">delete</a></td>
                 <td style="width: 100%;" />
             </tr>
@@ -231,43 +251,84 @@
     </div>
     <p><input type="text" size="80" placeholder="Location of data management plan (if available)"
              id="management_plan" /></p>
-
-#*
-    <h2>
-        <label for="funding">Funding</label>
-        <span class="helpWidget" data-help-content-id="help-">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-">
-    </div>
-    <p>
-        <span class="data-source-drop-down"
-              data-top-level-id="top"
-              data-json-source-url="../proxyGet?ns=mintActivity&qs=count%3D999%26level%3D"
-              data-id-key="rdf:about"
-              data-label-key="skos:prefLabel"
-              data-list-key="results"
-              data-children-key="skos:narrower">
-            <span class="selection-added">
-                <input type="hidden" class="selection-added-id"
-                       id="funding_body" value="" />
-                <input type="text" class="selection-added-label" readonly="readonly" size="80"
-                       id="funding_body_label" value="" />
-                <a href="#" class="clear-item">change</a>
-            </span>
-            <span class="drop-down-location">
-                <button class="selection-add add-unique-only" data-add-on-click="1">
-                    Add <!-- '<span class="selection-add-label"></span>' -->
-                </button>
-            </span>
-        </span>
-        ##<label for="funding_body">Funding body</label>
-        ##<input type="text" placeholder="Funding body" id="funding_body" />
-        ##<label for="grant_number">Grant number</label>
-        ##<input type="text" placeholder="Grant number" id="grant_number" />
-    </p>
-*#
-
-    
 </div>
+<script type="text/javascript">
+$(function() {
+    function splitData(row) {
+        var items = row[0].split("::");
+        var id = items[0].replace(ARC_NS, "");
+        var label = items[1];
+        return {
+            id: id,
+            uri: items[0],
+            label: label,
+            source: items[2].replace(ADFI_NS, ""),
+            display: "[" + id + "] " + label
+        };
+    }
+
+    function addAutocomplete(elem) {
+        elem.autocomplete(
+            "../proxyGet?ns=mintActivity&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
+            {
+                extraParams: {
+                    qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
+                },
+                formatItem: function(row) { return splitData(row).display; },
+                formatResult: function(row) { return splitData(row).id; },
+                width: "40em"
+            }).result(function(event, row) {
+                var uri = $(this).next();
+                var label = $(this).parent().next().find(".autocomplete-label")
+                if (row) {
+                    var data = splitData(row);
+                    label.val(data.label);
+                    uri.val(data.uri);
+                }
+            });
+    }
+
+    $(".internal-grant").live("click", function() {
+        var checked = $(this).is(":checked");
+        var baseId = $(this).attr("id").replace(".uon:internal", "");
+        var idElem = $("input[id=" + baseId + ".dc:identifier]");
+        var labelElem = $("input[id=" + baseId + ".skos:prefLabel]");
+        var uriElem = $("input[id=" + baseId + ".rdf:resource]");
+        var uri = uriElem.val();
+        if (uri == UON_NS) {
+            if (labelElem.val() == "" ||
+                    confirm("The selected grant will be cleared.\nAre you sure you want to change it to an external grant?")) {
+                idElem.val("");
+                addAutocomplete(idElem);
+                labelElem
+                    .addClass("label")
+                    .attr("readonly", "readonly")
+                    .val("");
+                uriElem.val("");
+                return true;
+            }
+        } else {
+            if (uri == "" ||
+                    confirm("The selected grant will be cleared.\nAre you sure you want to change it to an internal grant?")) {
+                idElem.unautocomplete().val("");
+                labelElem
+                    .removeClass("label")
+                    .removeAttr("readonly")
+                    .val("");
+                uriElem.val(UON_NS);
+                return true;
+            }
+        }
+        return false;
+    });
+
+
+    $(".autocomplete").live("keydown", function() {
+        var baseId = $(this).attr("id").replace(".dc:identifier", "");
+        if (!$("input[id=" + baseId + ".uon:internal]").is(":checked")) {
+            $(this).unautocomplete();
+            addAutocomplete($(this));
+        }
+    });
+});
+</script>

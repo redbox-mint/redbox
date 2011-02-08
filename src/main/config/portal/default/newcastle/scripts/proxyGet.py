@@ -63,6 +63,19 @@ class ProxyGetData:
             print "ERROR: %s" % str(e)
         try:
             tdata = jsonReader(data)
+            # format for jquery.autocomplete
+            if formData.get("autocomplete", "false") == "true":
+                rows = []
+                fields = formData.get("fields", "").split(",")
+                results = tdata["results"]
+                for result in results:
+                    row = ""
+                    for field in fields:
+                        if row != "":
+                            row += "::"
+                        row += result.get(field)
+                    rows.append(row)
+                data = "\n".join(rows)
             print "JSON ok"
         except Exception, e:
             print "Error to valid JSON: %s" % str(e)

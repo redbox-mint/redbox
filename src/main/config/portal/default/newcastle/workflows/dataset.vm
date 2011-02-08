@@ -1,6 +1,7 @@
 #set($oid = $self.getFormData("oid"))
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
+<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
 <style type="text/css">
 .inputscreens input {
     margin: 0.5ex;
@@ -143,6 +144,17 @@ div.tab-nav {
     background-color: #0A246A;
     color: white;
 }
+
+.inner-table, .inner-table tr, .inner-table td {
+    border: none;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.label {
+    background: none;
+    border: none;
+}
 </style>
 <div class="grid_16">
     <div class="box">
@@ -174,6 +186,9 @@ $self.getCurrentStep()
 // ]]>
 </script>
 <script type="text/javascript">
+var ARC_NS = "http://example.com/arc/";
+var ADFI_NS = "http://namespace.adfi.usq.edu.au/grants#";
+var UON_NS = "urn:uon:internal";
 (function($){
     $(function(){
         function onContentLoaded(){
@@ -207,6 +222,13 @@ $(".inputscreens").hide().after(pMsg);
 pMsg.remove();
 $(".inputscreens").show();
                 }catch(e){alert(e);}
+
+                $(".internal-grant:checked").each(function() {
+                    var baseId = $(this).attr("id").replace(".uon:internal", "");
+                    $("input[id=" + baseId + ".dc:identifier]").unautocomplete();
+                    $("input[id=" + baseId + ".skos:prefLabel]").removeAttr("readonly").removeClass("label");
+                });
+
                 //$("#getPackagedItems").click(getPackagedItems);
                 //$("#add-items-search").click(function(){itemSearch(1); return false;});
                 //$("#add-items-search-query").keypress(function(e){

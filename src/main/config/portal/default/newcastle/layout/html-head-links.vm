@@ -1,1 +1,2 @@
 <link rel="stylesheet" type="text/css" href="$portalPath/css/redbox.css" />
+<link rel="stylesheet" type="text/css" href="$portalPath/js/autocomplete/jquery.autocomplete.css" />
