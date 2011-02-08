@@ -1,9 +1,9 @@
 <div>
     <h2>
-        <span class="helpWidget" data-help-content-id="help-url"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="url">Identifer or URL</label>
+        <span class="helpWidget" data-help-content-id="help-url">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-url">
         Persistent URI/URL representing the location of the data.
@@ -11,10 +11,10 @@
     <p><input type="text" size="80" placeholder="Location of the data" id="url" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-stored-at"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="physical_storage">Stored at</label>
+        <span class="helpWidget" data-help-content-id="help-stored-at">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-stored-at">
         Recored physical location of the data. For example:
@@ -23,10 +23,10 @@
     <p><input type="text" size="80" placeholder="Physical location of the data" id="physical_storage" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-retention-period"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="retention_period">Retention Period</label>
+        <span class="helpWidget" data-help-content-id="help-retention-period">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-retention-period">
         Record the period of time that the data must be kept
@@ -35,10 +35,10 @@
     <p><input type="text" size="80" placeholder="Retention period" id="retention_period" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-disposal-date"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="disposal_date">Disposal Date</label>
+        <span class="helpWidget" data-help-content-id="help-disposal-date">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-disposal-date">
         Indicate disposal date for data.
@@ -46,10 +46,10 @@
     <p><input type="text" size="25" placeholder="Disposal date" class="dateYMD" id="disposal_date" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-data-owner"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="data_owner">Data Owner (IP)</label>
+        <span class="helpWidget" data-help-content-id="help-data-owner">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-data-owner">
         Person/institution identified as intellectual property owner of the data.
@@ -57,10 +57,10 @@
     <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-data-custodian"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="data_custodian">Data Custodian</label>
+        <span class="helpWidget" data-help-content-id="help-data-custodian">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-data-custodian">
         Person/institution identified as custodian of the data.
@@ -68,10 +68,10 @@
     <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-affiliation-with"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="affiliation">Affiliation With</label>
+        <span class="helpWidget" data-help-content-id="help-affiliation-with">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-affiliation-with">
         Select appropriate affiliation.
@@ -98,10 +98,10 @@
     </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-funding-bodies"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="funding">Funding Bodies</label>
+        <span class="helpWidget" data-help-content-id="help-funding-bodies">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-funding-bodies">
         Select/enter the name of the research funding body.
@@ -126,10 +126,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-grant-num"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="grant">Grant numbers</label>
+        <span class="helpWidget" data-help-content-id="help-grant-num">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-grant-num">
         Select/enter the grant number.
@@ -154,10 +154,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-project-title"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="project_title">Project Title</label>
+        <span class="helpWidget" data-help-content-id="help-project-title">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-project-title">
         Title of the research project.
@@ -165,10 +165,10 @@
     <p><input type="text" size="80" placeholder="Project title" id="project_title" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-depositor"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="depositor">Depositor</label>
+        <span class="helpWidget" data-help-content-id="help-depositor">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-depositor">
         Record the name of the data depositor.
@@ -176,10 +176,10 @@
     <p><input type="text" size="80" placeholder="Depositor" id="depositor" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-data-size"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="data_size">Data Size</label>
+        <span class="helpWidget" data-help-content-id="help-data-size">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-data-size">
         Record the size of the data in KB, MB, GB, TB etc.
@@ -187,10 +187,10 @@
     <p><input type="text" size="80" placeholder="Data size" id="data_size" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-extent"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="extent">Extent or quantity</label>
+        <span class="helpWidget" data-help-content-id="help-extent">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-extent">
         Enter the number of files that comprise the data, including the format.
@@ -198,10 +198,10 @@
     <p><input type="text" size="80" placeholder="Extent or quantity (i.e. no. of files)" id="extent" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-policy"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="policy">Institutional Data Management Policy</label>
+        <span class="helpWidget" data-help-content-id="help-policy">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-policy">
         Include the title, version number and date.
@@ -209,10 +209,10 @@
     <p><input type="text" size="80" placeholder="Institutional data management policy" id="policy" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-contracts"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="contracts">Contracts associated with the data or project (if appropriate)</label>
+        <span class="helpWidget" data-help-content-id="help-contracts">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-contracts">
         Record if the data was produced under contract.
@@ -221,10 +221,10 @@
     <p><input type="text" size="80" placeholder="Contracts" id="contracts" /></p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-management_plan"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="management_plan">Location of data management plan</label>
+        <span class="helpWidget" data-help-content-id="help-management_plan">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-management_plan">
         Indicates existence of a data management plan.
@@ -234,10 +234,10 @@
 
 #*
     <h2>
-        <span class="helpWidget" data-help-content-id="help-"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="funding">Funding</label>
+        <span class="helpWidget" data-help-content-id="help-">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-">
     </div>

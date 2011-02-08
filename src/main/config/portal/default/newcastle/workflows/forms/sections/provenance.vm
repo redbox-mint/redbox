@@ -1,9 +1,9 @@
 <div>
     <h2>
-        <span class="helpWidget" data-help-content-id="help-sources-used"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="sources_used">Any sources of Data used/re-used (third party)</label>
+        <span class="helpWidget" data-help-content-id="help-sources-used">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-sources-used">
         Include names of dataset creators, year, name of dataset and
@@ -18,10 +18,10 @@
     </h2>
     <fieldset>
         <p>
-            <span class="helpWidget" data-help-content-id="help-access-conditions"
-                data-show-text="show help" data-hide-text="hide help">
-            </span>
             <label for="access_conditions">Access conditions</label>
+            <span class="helpWidget" data-help-content-id="help-access-conditions">
+                <img src="../images/icons/help.png"/>
+            </span>
             <div class="help-content" id="help-access-conditions">
                 Record any conditions associated with granting
                 access to the data. e.g. Contact Principal Investigator
@@ -38,10 +38,10 @@
         </p>
 *#
         <p>
-            <span class="helpWidget" data-help-content-id="help-restrictions"
-                data-show-text="show help" data-hide-text="hide help">
-            </span>
             <label for="restrictions">Restrictions, Embargoes or Usage Constraints</label>
+            <span class="helpWidget" data-help-content-id="help-restrictions">
+                <img src="../images/icons/help.png"/>
+            </span>
             <div class="help-content" id="help-restrictions">
                 Record any restrictions on access to the data,
                 example: Embargoed until 1 year after publication of
@@ -50,10 +50,10 @@
             <input type="text" size="80" placeholder="Restrictions" id="restrictions" />
         </p>
         <p>
-            <span class="helpWidget" data-help-content-id="help-license-cc"
-                data-show-text="show help" data-hide-text="hide help">
-            </span>
             <label for="license_cc">License - Creative Commons</label>
+            <span class="helpWidget" data-help-content-id="help-license-cc">
+                <img src="../images/icons/help.png"/>
+            </span>
             <div class="help-content" id="help-license-cc">
                 See: <a href="http://creativecommons.org.au/learn-more/licences">
                         http://creativecommons.org.au/learn-more/licences
@@ -62,10 +62,10 @@
             <input type="text" size="80" placeholder="Creative Commons" id="license_cc" />
         </p>
         <p>
-            <span class="helpWidget" data-help-content-id="help-license-other"
-                data-show-text="show help" data-hide-text="hide help">
-            </span>
             <label for="license_other">License - Other</label>
+            <span class="helpWidget" data-help-content-id="help-license-other">
+                <img src="../images/icons/help.png"/>
+            </span>
             <div class="help-content" id="help-license-other">
                 Examples of other licences:
                 <a href="http://www.opendefinition.org/licenses">

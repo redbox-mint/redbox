@@ -1,9 +1,9 @@
 <div>
     <h2>
-        <span class="helpWidget" data-help-content-id="help-seo-codes"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:subject.anzsrc:seo">Socio-economic Objectives</label>
+        <span class="helpWidget" data-help-content-id="help-seo-codes">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-seo-codes">
         Selct relevant SEO code(s).
@@ -38,10 +38,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-for-codes"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:subject.anzsrc:for">Field of Research codes</label>
+        <span class="helpWidget" data-help-content-id="help-for-codes">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-for-codes">
         Select relevant FOR code(s).
@@ -76,10 +76,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-keywords"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:subject">Keywords</label>
+        <span class="helpWidget" data-help-content-id="help-keywords">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-keywords">
         Enter descriptive keywords as required.
@@ -104,10 +104,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-research-activity"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="research_activity">Research Activity</label>
+        <span class="helpWidget" data-help-content-id="help-research-activity">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-research-activity">
         <p>

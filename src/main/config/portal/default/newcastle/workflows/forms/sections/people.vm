@@ -10,8 +10,8 @@
                 <th>PI</th>
                 <th>Co-PI</th>
                 <th style="width: 100%;">
-                    <span class="helpWidget" data-help-content-id="help-creators"
-                        data-show-text="show help" data-hide-text="hide help">
+                    <span class="helpWidget" data-help-content-id="help-creators">
+                        <img src="../images/icons/help.png"/>
                     </span>
                 </th>
             </tr>
@@ -73,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    Association:
+                                    Affiliation:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
                                           data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=count%3D9999"
@@ -93,10 +93,26 @@
                                             </button>
                                         </span>
                                     </span>
+                    <span class="helpWidget" data-help-content-class="help-association">
+                        <img src="../images/icons/help.png"/>
+                    </span>
+                    <span class="help-content help-association inline" >
+                        Select the appropriate affiliation.
+                    </span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+    <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:givenName"
+        data-rule="for(dc:creator.foaf:Person.1.foaf:givenName);when(onChange, onSave, onBlur);
+                test(notempty);">
+        A creators given name is required!
+    </label>
+    <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:familyName"
+        data-rule="for(dc:creator.foaf:Person.1.foaf:familyName);when(onChange, onSave, onBlur);
+                test(notempty);">
+        A creators given name is required!
+    </label>
                 </td>
                 <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
             </tr>
@@ -104,10 +120,10 @@
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-primary-contact"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         Primary contact
+        <span class="helpWidget" data-help-content-id="help-primary-contact">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-primary-contact">
         Given name and family name of person nominated as primary contact for the data.
@@ -117,21 +133,31 @@
             <td>
                 <label for="primary_contact_name">Name</label>
                 <input type="text" size="40" placeholder="Enter a name" id="primary_contact_name" />
+                <label class="validation-err-msg" for="primary_contact_name"
+                    data-rule="for(primary_contact_name);when(onChange, onSave, onBlur);
+                            test(notempty);">
+                    A primary contact name is required!
+                </label>
             </td>
         </tr>
         </tr>
             <td>
                 <label for="primary_contact_email">Email</label>
                 <input type="text" size="40" placeholder="Enter an email address" id="primary_contact_email" />
+                <label class="validation-err-msg" for="primary_contact_email"
+                    data-rule="for(primary_contact_email);when(onChange, onSave, onBlur);
+                            test(notempty);">
+                    A primary contact email is required!
+                </label>
             </td>
         </tr>
     </table>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-supervisor"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="supervisor">Supervisor</label>
+        <span class="helpWidget" data-help-content-id="help-supervisor">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-supervisor">
         Name of supervisor associated with the data creation if applicable.
@@ -140,10 +166,10 @@
 
     <p>
         <h2>
-            <span class="helpWidget" data-help-content-id="help-collaborators"
-                data-show-text="show help" data-hide-text="hide help">
-            </span>
             <label for="collaborators">Collaborators</label>
+            <span class="helpWidget" data-help-content-id="help-collaborators">
+                <img src="../images/icons/help.png"/>
+            </span>
         </h2>
         <div class="help-content" id="help-collaborators">
             Names of other collaborators in the research project.

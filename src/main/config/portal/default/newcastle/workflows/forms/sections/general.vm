@@ -1,9 +1,9 @@
 <div>
     <h2>
-        <span class="helpWidget" data-help-content-id="help-title"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:title">Title (*)</label>
+        <span class="helpWidget" data-help-content-id="help-title">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-title">
         A unique title for the research dataset. The title should be unique to
@@ -19,10 +19,10 @@
     </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-coverage"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:coverage">Date Coverage</label>
+        <span class="helpWidget" data-help-content-id="help-coverage">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-coverage">
         User this to indicate a date range relevant to the dataset collection.
@@ -46,56 +46,64 @@
     </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-date-created"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:created">Date Created</label>
+        <span class="helpWidget" data-help-content-id="help-date-created">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-date-created">
         Date the dataset collection was created
     </div>
     <p>
         <input type="text" placeholder="Date created" class="dateYMD" id="dc:created" />
+        <label class="validation-err-msg" for="dc:created"
+            data-rule="for(dc:created);when(onChange, onBlur, onSave);
+                    test(yyyymmdd);">
+            A valid date created must be entered (yyyy-mm-dd else leave blank)!
+        </label>
     </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-date-modified"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:modified">Date Modified</label>
+        <span class="helpWidget" data-help-content-id="help-date-modified">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-date-modified">
         Date recording any modifications to the dataset collection.
     </div>
-    <p><input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" /></p>
-
-##    <h2>
-##        <!--<span class="helpWidget" data-help-content-id="help-date-completed"
-##            data-show-text="show help" data-hide-text="hide help">
-##        </span>-->
-##        <label for="date_completed">Date Completed</label>
-##    </h2>
-##    <div class="help-content" id="help-date-completed">
-##        Date completed
-##    </div>
-##    <p><input type="text" placeholder="Date completed" class="dateYMD" id="date_completed" /></p>
+    <p>
+        <input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" />
+        <label class="validation-err-msg" for="dc:modified"
+            data-rule="for(dc:modified);when(onChange, onSave);
+                    test(yyyymmdd or empty);">
+            A valid date modified must be entered (yyyy-mm-dd else leave blank)!
+        </label>
+    </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-time-period"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="time_period">Time Period</label>
+        <span class="helpWidget" data-help-content-id="help-time-period">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-time-period">
         A text description of a time period if applicable. e.g. 21<sup style="vertical-align: super;">st</sup> century
     </div>
-    <p><input type="text" placeholder="Time period" id="time_period" /></p>
+    <p>
+        <input type="text" placeholder="Time period" id="time_period" />
+        <label class="validation-err-msg" for="time_period"
+            data-rule="for(time_period);when(onChange, onSave, onBlur);
+                    test(lenlt(2001));">
+            Text too long!
+        </label>
+    </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-language"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="dc:language">Language</label>
+        <span class="helpWidget" data-help-content-id="help-language">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-language">
         Language of the dataset content. e.g. English, French etc.
@@ -123,10 +131,10 @@
     </p>
 
     <h2>
-        <span class="helpWidget" data-help-content-id="help-location"
-            data-show-text="show help" data-hide-text="hide help">
-        </span>
         <label for="location">Location</label>
+        <span class="helpWidget" data-help-content-id="help-location">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
     <div class="help-content" id="help-location">
         Geospatial location relevant to the data created. This may describe
@@ -134,12 +142,14 @@
         of a collection, or a location which is the focus of an activity e.g.
         coordinates or placenames.
     </div>
-    <p><input type="text" placeholder="Location" id="location" size="60" /></p>
+    <p>
+        <input type="text" placeholder="Location" id="location" size="60" />
+    </p>
 
     <h2>
         <label for="dc:type">Type</label>
-        <span class="helpWidget" data-help-content-id="help-type"
-            data-show-text="show help" data-hide-text="hide help">
+        <span class="helpWidget" data-help-content-id="help-type">
+            <img src="../images/icons/help.png"/>
         </span>
     </h2>
     <div class="help-content" id="help-type">

@@ -72,9 +72,10 @@ div.tab-nav {
 .helpWidget {
     color: blue;
     cursor:pointer;
-    float: right;
+    //float: right;
     font-weight: normal;
     font-size: 80%;
+    padding-left:1em;
 }
 
 .help-content {
@@ -82,6 +83,12 @@ div.tab-nav {
     border:1px gray dotted;
     padding:0.5ex;
     color: #002020;
+}
+.help-content dt {
+    font-weight:bold;
+}
+.help-content dd {
+    padding-left:2em;
 }
 
 .validation-err-msg {
