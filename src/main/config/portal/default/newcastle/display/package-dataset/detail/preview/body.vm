@@ -46,7 +46,7 @@ $(function(){
         active:1,
         autoHeight:false,
         clearStyle:true,
-        collapsible:true,
+        collapsible:false,
         header:".accordion-header"
     });
 });

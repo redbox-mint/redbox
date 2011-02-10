@@ -33,8 +33,8 @@
         {
             "name": "metadata-review",
             "label": "Metadata Review",
-            "security": ["reviewer", "admin"],
-            "visibility": ["reviewer", "admin"],
+            "security": ["librarian", "reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"],
             "template": "workflows/dataset"
         },
         {

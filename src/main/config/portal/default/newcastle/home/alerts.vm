@@ -1,0 +1,26 @@
+<div class="grid_6">
+    #set($menuTitle = "Alerts")
+    #parseTemplate("wrapping/info-box-open.vm")
+    <div class="block">
+        #if($self.alerts.isEmpty())
+        <p>No recent alerts.</p>
+        #else
+        <p>Records currently under investigation:</p>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+            </tr>
+            #foreach($alert in $self.alerts)
+                #set($oid = $alert.get("id"))
+                #set($title = $alert.getFirst("dc_title"))
+                <tr>
+                    <td>$velocityCount</td>
+                    <td><a href="$portalPath/workflow/$oid">$title</a></td>
+                </tr>
+            #end
+        </table>
+        #end
+    </div>
+    #parseTemplate("wrapping/info-box-close.vm")
+</div>

@@ -1,6 +1,7 @@
 #set($oid = $self.getFormData("oid"))
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
+#set($stageLabel = $self.currentStepLabel)
 <script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
 <style type="text/css">
 .inputscreens input {
@@ -155,6 +156,14 @@ div.tab-nav {
     background: none;
     border: none;
 }
+
+#title {
+    float: left;
+    font-size: 0.65em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
 </style>
 <div class="grid_16">
     <div class="box">
@@ -175,7 +184,10 @@ div.tab-nav {
             ajaxRequestUrl:"$self.getAjaxRequestUrl()",
             packagedItems:$self.getJsonPackagedItems(),
             test:$self.getJsonTest(),
-            oid:"$oid"
+            oid:"$oid",
+            stage:"$self.getCurrentStep()",
+            stageLabel:"$self.getCurrentStepLabel()",
+            nextStageMessage:"$self.getNextStepAcceptMessage()"
         };
 /*
 $self.getSearchResults()

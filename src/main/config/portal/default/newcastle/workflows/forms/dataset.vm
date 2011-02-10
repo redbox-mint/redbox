@@ -121,6 +121,7 @@
 </div>
 <script type="text/javascript">
 $(function(){
+    $("#title").html("Stage: " + packageData.stageLabel);
     $("#view-record-link").click(function(){
         var href = $(this).attr("href");
         $(this).attr("href", href+packageData.oid);

@@ -1,0 +1,46 @@
+#macro(stage $number $field $name $description)
+    #set($count = $self.getStageCount($field))
+    <tr>
+        <td>$number</td>
+        <td>
+            #if($count == 0)
+                <em>$name</em>
+            #else
+                <a class="stagelink" href="$portalPath/search" rel="$name">$name</a>
+            #end
+            <br/>
+            <span>$description</span>
+        </td>
+        <td>$self.getStageCount($field)</td>
+    </tr>
+    #set($count = $NULL)
+#end
+<div class="grid_6">
+    #set($menuTitle = "Review Stages")
+    #parseTemplate("wrapping/info-box-open.vm")
+    <div class="block">
+        <p>Select a stage to find all records in that stage.</p>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Records</th>
+            </tr>
+            #stage(1 "investigation" "Investigation" "Potential records for investigation.")
+            #stage(2 "metadata-review" "Metadata Review" "Records to be reviewed by a data librarian.")
+            #stage(3 "final-review" "Final Review" "Completed records ready for publication and approval into the repository.")
+            #stage(4 "live" "Published" "Records already published in the repository.")
+        </table>
+    </div>
+    #parseTemplate("wrapping/info-box-close.vm")
+</div>
+<script type="text/javascript">
+$(function(){
+    $(".stagelink").click(function(){
+        var fq = 'workflow_step_label:"' + $(this).attr("rel") + '"';
+        setActionUri($(this).attr("href"));
+        doAction("add_fq", fq);
+        return false;
+    });
+});
+</script>

@@ -82,7 +82,7 @@ ul.main li ul li.selected-view a {
     margin-bottom: 0;
 }
 
-table.meta, table.meta tbody {
+table.meta {
     margin-top: 0;
     width: 100%;
 }

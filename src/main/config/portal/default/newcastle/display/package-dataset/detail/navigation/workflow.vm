@@ -3,6 +3,6 @@
 #if($hasWorkflow && $hasWorkflowAccess)
     #set($workflowStep = $self.getWorkflowStep())
     <li>
-        <a href="$portalPath/workflow/$oid" title="$workflowStep">Edit metadata record</a>
+        <a href="$portalPath/workflow/$oid" title="$workflowStep">Edit record (<em>$workflowStep</em>)</a>
     </li>
 #end

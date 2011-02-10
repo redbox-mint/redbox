@@ -1,0 +1,28 @@
+#set($pageTitle = "Home")
+
+#parseTemplate("elements/atom-link.vm")
+<h2 id="page-heading">
+  <span>$page.portalName</span> $atomHtml
+</h2>
+
+#parseTemplate("menus/home-main-menu.vm")
+
+<div class="grid_12">
+    ##parseTemplate("dialogs/view-delete.vm")
+    ##parseTemplate("dialogs/view-reharvest.vm")
+    #parseTemplate("dialogs/basic-search-form.vm")
+</div>
+<div class="clear"></div>
+
+<!-- IE7 needs a blank div here, class="prefix_4" doesn't work -->
+<div class="grid_4">&nbsp;</div>
+
+#if($page.authentication.is_logged_in())
+    #parseTemplate("home/stages.vm")
+    #parseTemplate("home/alerts.vm")
+    <div class="clear"></div>
+    <div class="grid_4">&nbsp;</div>
+    #parseTemplate("menus/home-new-items.vm")
+#else
+    #parseTemplate("menus/home-new-items.vm")
+#end

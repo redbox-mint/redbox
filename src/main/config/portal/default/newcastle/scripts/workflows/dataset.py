@@ -32,6 +32,7 @@ class DatasetData(object):
         self.__object = None
         self.__oid = formData.get("_oid") or formData.get("oid")
         self.__currentStep = None
+        self.__currentStepLabel = None
         self.Services = context.get("Services")
         self.page = context.get("page")
         func = formData.get("func", "")
@@ -133,16 +134,23 @@ class DatasetData(object):
             self.__currentStep = wfMeta.get("step", "")
         return self.__currentStep
 
+    def getCurrentStepLabel(self):
+        if self.__currentStepLabel is None:
+            wfMeta = self._getWorkflowMetadata()
+            self.__currentStepLabel = wfMeta.get("label", "")
+        return self.__currentStepLabel
+
     def getNextStepAcceptMessage(self):
         step = self.getCurrentStep()
         msg = "?"
-        if step=="pending":
-            msg = "I accept responsibility and accountability for the accuracy" + \
-            " and completeness of the information provided."
-        elif step=="reviewing":
-            msg = "Make record live."
+        if step=="investigation":
+            msg = "This record is ready for the Metadata Review stage."
+        elif step=="metadata-review":
+            msg = "This record is ready for the Final Review stage."
+        elif step=="final-review":
+            msg = "This record is ready to be Published."
         elif step=="live":
-            msg = "[Live]"
+            msg = "This record has already been Published."
         return msg
         
     def getNextStepAcceptValidationErrorMessage(self):
