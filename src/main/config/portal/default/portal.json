@@ -13,20 +13,16 @@
       "tree" : "Dynamic tree"
     },
     "facet-fields" : {
-      "recordtype" : {
-        "label" : "Record type",
-        "display" : "list"
-      },
-      "repository_name" : {
-        "label" : "Source",
-        "display" : "list"
-      },
-      "repository_type" : {
-        "label" : "Source type",
-        "display" : "list"
-      },
       "workflow_step_label" : {
-        "label" : "Workflow Step",
+        "label" : "Stage",
+        "display" : "list"
+      },
+      "f_dc_creator" : {
+        "label" : "Creator",
+        "display" : "list"
+      },
+      "f_dc_subject" : {
+        "label" : "Keyword",
         "display" : "list"
       }
     },

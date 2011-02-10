@@ -238,15 +238,19 @@ class IndexData:
         for field in manifest.iterkeys():
             if field not in coreFields:
                 value = manifest.get(field)
-                self.utils.add(self.index, field, value)
-                if field.startswith("dc:") and field.find("rdf:resource") == -1:
-                    # index dublin core fields for faceting
-                    facetField = field.replace("dc:", "dc_")
-                    dot = field.find(".")
-                    if dot > 0:
-                        facetField = facetField[:dot]
-                    #print "Indexing DC field '%s':'%s'" % (field, facetField)
-                    self.utils.add(self.index, facetField, value)
+                if value is not None and value.strip() != "":
+                    self.utils.add(self.index, field, value)
+                    if field.startswith("dc:") and \
+                            not (field.endswith(".dc:identifier") \
+                              or field.endswith(".rdf:resource") \
+                              or field.endswith(".association")):
+                        # index dublin core fields for faceting
+                        facetField = field.replace("dc:", "dc_")
+                        dot = field.find(".")
+                        if dot > 0:
+                            facetField = facetField[:dot]
+                        #print "Indexing DC field '%s':'%s'" % (field, facetField)
+                        self.utils.add(self.index, facetField, value)
 
         # Workflow processing
         self.utils.add(self.index, "workflow_id", wfMeta.get("id"))

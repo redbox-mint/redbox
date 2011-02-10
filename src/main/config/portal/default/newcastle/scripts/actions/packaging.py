@@ -64,8 +64,13 @@ class PackagingData:
         self.vc("sessionState").set("package/active", None)
         manifest = self.__getActiveManifest()
         manifest.set("packageType", packageType)
-        metaList = list(self.vc("formData").getValues("metaList"))
-        for metaName in metaList:
+
+        metaList = self.vc("formData").getValues("metaList")
+        if metaList is None:
+            metaList = self.vc("formData").getValues("metaList[]")
+        if metaList is None:
+            metaList = []
+        for metaName in list(metaList):
             value = self.vc("formData").get(metaName)
             manifest.set(metaName, value)
         #
