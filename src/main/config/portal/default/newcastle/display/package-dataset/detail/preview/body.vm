@@ -1,72 +1,53 @@
-<style type="text/css">
-dl {
-    font-size: 1.10em;
-}
-dt {
-    border-bottom: 1px solid #CCC;
-    font-weight: bold;
-}
-dd {
-    padding-bottom: 1em;
-}
-</style>
-
-#macro(showField $name $key)
-    <dt>$name</dt>
-    #set($value = $self.metadata.get($key))
-    <dd>
-        #if("$!value" != "")
-            #if($value.startsWith("http:") ||
-                $value.startsWith("https://") ||
-                $value.startsWith("mailto:"))
-                <a href="$value">$value</a>
-            #else
-                $value
-            #end
-        #else
-            <em>(not specified)</em>
-        #end
-    </dd>
+#macro(sectionHeading $heading)
+<span class="accordion-header">$heading</span>
 #end
-
-#macro(showDateRange $name $fromKey $toKey)
-    <dt>$name</dt>
-    #set($from = $self.metadata.get($fromKey))
-    #set($to = $self.metadata.get($toKey))
-    <dd>
-        #if("$from" != "" && "$to" != "")
-            &lt;$from&gt;
-            #if("$to" != "")
-                to &lt;$to&gt;
-            #end
-        #elseif("$from" == "" && "$to" != "")
-            until &lt;$to&gt;
-        #else
-            <em>(not specified)</em>
-        #end
-    </dd>
+#macro(display $key $name)
+    <tr>
+        <th>$name</th>
+        <td>#displayValue($key)</td>
+    </tr>
 #end
-
-<div id="tabs">
-    <ul>
-        <li><a href="#general">General</a></li>
-        <li><a href="#description">Description</a></li>
-        <li><a href="#people">People</a></li>
-        <li><a href="#subject">Subject</a></li>
-        <li><a href="#provenance">Provenance</a></li>
-        <li><a href="#management">Management</a></li>
-    </ul>
+#macro(displayList $key $name)
+    <tr>
+        <th>$name</th>
+        <td>#displayValueList($key)</td>
+    </tr>
+#end
+#macro(displayValue $key)
+    #set($value = $metaMap.get($key))
+    #if($value.size())
+        #foreach($item in $value)
+            <span class="meta-value">$!page.escapeHtml($item)</span><br/>
+        #end
+    #else
+        $!page.escapeHtml($value)
+    #end
+#end
+#macro(displayValueList $prefix)
+    #set($prefixList = $self.getList($prefix))
+    #foreach($key in $prefixList.keySet())
+        #foreach($value in $prefixList.get($key))
+            <span class="meta-value">$!page.escapeHtml($value)</span><br/>
+        #end
+    #end
+#end
+<div class="accordion">
     #parseDisplayTemplate("detail/preview/sections/general.vm")
     #parseDisplayTemplate("detail/preview/sections/description.vm")
     #parseDisplayTemplate("detail/preview/sections/people.vm")
     #parseDisplayTemplate("detail/preview/sections/subject.vm")
     #parseDisplayTemplate("detail/preview/sections/provenance.vm")
     #parseDisplayTemplate("detail/preview/sections/management.vm")
+    #parseDisplayTemplate("detail/preview/sections/admin.vm")
 </div>
-<script type="text/javascript" src="$portalPath/js/jquery.cookie.js"></script>
 <script type="text/javascript">
-$(function() {
-    $("#tabs").tabs({ cookie:{} });
+$(function(){
+    $(".accordion").accordion({
+        active:1,
+        autoHeight:false,
+        clearStyle:true,
+        collapsible:true,
+        header:".accordion-header"
+    });
 });
 </script>
-

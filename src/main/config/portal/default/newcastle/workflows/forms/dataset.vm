@@ -11,13 +11,11 @@
         dc:coverage.to,
         dc:created,
         dc:modified,
-        date_completed,
         time_period,
         dc:language,
         dc:language.skos:prefLabel,
         location,
         dc:type,
-        dc:type.freetext,
         ## description
         dc:description,
         citations.0,
@@ -48,7 +46,8 @@
         embargo_release,
         embargo_expiry,
         restrictions,
-        license,
+        license_cc,
+        license_other,
         ## management
         url,
         physical_storage,

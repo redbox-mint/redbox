@@ -1,0 +1,8 @@
+#if($page.authentication.is_admin())
+    #sectionHeading("Admin")
+    <table class="meta admin">
+        #foreach($key in $metaMap.keySet())
+            #display($key $key)
+        #end
+    </table>
+#end

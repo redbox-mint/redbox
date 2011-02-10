@@ -1,9 +1,16 @@
-<div id="general">
-    <dl>
-        #showField("Date created" "dc:created")
-        #showField("Date modified" "dc:modified")
-        #showDateRange("Date coverage" "dc:coverage.from" "dc:coverage.to")
-        #showField("Language" "dc:language")
-        #showField("Type" "dc:type")
-    </dl>
-</div>
+#sectionHeading("General")
+<table class="meta">
+    #display("dc:title" "Title")
+    <tr>
+        <th>Date Coverage</th>
+        <td>
+            <em>Start</em>: #displayValue("dc:coverage.from")
+            <em>End</em>: #displayValue("dc:coverage.to")
+        </td>
+    </tr>
+    #display("dc:created" "Date Created")
+    #display("time_period" "Time Period")
+    #display("dc:language.skos:prefLabel" "Language")
+    #display("location" "Location")
+    #display("dc:type" "Type")
+</table>

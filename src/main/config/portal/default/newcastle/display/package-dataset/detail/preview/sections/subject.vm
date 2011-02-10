@@ -1,45 +1,25 @@
-<div id="subject">
-    <dl>
-        <dt>Socio-economic objectives</dt>
-        <dd>
-            #set($subjects = $self.getList("dc:subject.anzsrc:seo"))
-            #if($subjects.isEmpty())
-                <em>(not specified)</em>
-            #else
-                <ul>
-                    #foreach($subject in $subjects)
-                        <li>$subject.get("skos:prefLabel")</li>
-                    #end
-                </ul>
+#sectionHeading("Subject")
+<table class="meta">
+    <tr>
+        <th>Socio-Economic Objective codes</th>
+        <td>
+            #set($seoList = $self.getList("dc:subject.anzsrc:seo"))
+            #foreach($key in $seoList.keySet())
+                #set($code = $seoList.get($key))
+                <span>$code.get("skos:prefLabel")</span><br/>
             #end
-        </dd>
-        <dt>Field of research</dt>
-        <dd>
-            #set($subjects = $self.getList("dc:subject.anzsrc:for"))
-            #if($subjects.isEmpty())
-                <em>(not specified)</em>
-            #else
-                <ul>
-                    #foreach($subject in $subjects)
-                        <li>$subject.get("skos:prefLabel")</li>
-                    #end
-                </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Field of Research codes</th>
+        <td>
+            #set($forList = $self.getList("dc:subject.anzsrc:for"))
+            #foreach($key in $forList.keySet())
+                #set($code = $forList.get($key))
+                <span>$code.get("skos:prefLabel")</span><br/>
             #end
-        </dd>
-        <dt>Keywords</dt>
-        <dd>
-            #set($subjects = $self.getList("dc:subject.keywords"))
-            #if($subjects.isEmpty())
-                <em>(not specified)</em>
-            #else
-                <ul>
-                    #foreach($subject in $subjects)
-                        #foreach($key in $subject.keySet())
-                            <li>$subject.get($key)</li>
-                        #end
-                    #end
-                </ul>
-            #end
-        </dd>
-    </dl>
-</div>
+        </td>
+    </tr>
+    #displayList("dc:subject.keywords" "Keywords")
+    #display("research_activity" "Research Activity")
+</table>

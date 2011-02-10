@@ -1,22 +1,27 @@
-<div id="people">
-    <dl>
-        <dt>Creators</dt>
-        <dd>
-            #set($creators = $self.getList("dc:creator.foaf:Person"))
-            <ul>
-                #foreach($key in $creators.keySet())
-                    #set($creator = $creators.get($key))
-                    <li style="list-style-type:#if($creator.get('pi') == 1)disc#{else}circle#end;">
-                        $creator.get("foaf:givenName")&nbsp;$creator.get("foaf:familyName") ($creator.get("association"))
-                    </li>
-                #end
-            </ul>
-        </dd>
-        <dt>Primary contact</dt>
-        <dd>
-            #set($name = $self.metadata.get("primary_contact_name"))
-            #set($email = $self.metadata.get("primary_contact_email"))
-            #if("$name" != "")&quot;$name&quot;#end&nbsp;#if("$email" != "")&lt;$email&gt;#end
-        </dd>
-    </dl>
-</div>
+#sectionHeading("People")
+<table class="meta">
+    <tr>
+        <th>Creators</th>
+        <td>
+            #set($creatorList = $self.getList("dc:creator.foaf:Person"))
+            #foreach($key in $creatorList.keySet())
+                #set($creator = $creatorList.get($key))
+                <span>$creator.get("foaf:givenName")&nbsp;$creator.get("foaf:familyName")</span>
+                #if($creator.get("pi") == 1), <em>Principal Investigator</em>#end
+                #if($creator.get("coPi") == 1), <em>Co-Principal Investigator</em>#end
+                #set($association = $creator.get("association.skos:prefLabel"))
+                #if($association), <em>$association</em>#end
+                <br/>
+            #end
+        </td>
+    </tr>
+    <tr>
+        <th>Primary Contact</th>
+        <td>
+            <em>Name</em>: #displayValue("primary_contact_name")
+            <em>Email</em>: #displayValue("primary_contact_email")
+        </td>
+    </tr>
+    #display("supervisor" "Supervisor")
+    #displayList("collaborators" "Collaborators")
+</table>

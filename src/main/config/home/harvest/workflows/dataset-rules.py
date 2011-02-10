@@ -1,23 +1,18 @@
-import sys, time
-
-pathToWorkflows = "../../home/harvest/workflows/"
-if sys.path.count(pathToWorkflows) == 0:
-    sys.path.append(pathToWorkflows)
-from json2 import read as jsonReader, write as jsonWriter
-
 from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import JsonConfigHelper
+from au.edu.usq.fascinator.common import FascinatorHome, JsonConfigHelper
 from au.edu.usq.fascinator.common.storage import StorageUtils
-
-from java.io import ByteArrayInputStream, StringWriter
+from java.io import StringWriter
 from java.lang import String
-
 from org.apache.commons.io import IOUtils
 
-class IndexData:
-    def __init__(self):
-        pass
+import sys
+import time
+pathToWorkflows = FascinatorHome.getPath("harvest/workflows")
+if sys.path.count(pathToWorkflows) == 0:
+    sys.path.append(pathToWorkflows)
+from json2 import read as jsonReader
 
+class IndexData:
     def __activate__(self, context):
         print " * Running dataset-rules.py..."
 
@@ -191,7 +186,7 @@ class IndexData:
                     if wfChanged == True:
                         self.message_list = stage.getList("message")
 
-        except StorageException, e:
+        except StorageException:
             # No workflow payload, time to create
             wfChanged = True
             wfMeta = JsonConfigHelper()
@@ -212,7 +207,7 @@ class IndexData:
             inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
             try:
                 StorageUtils.createOrUpdatePayload(self.object, "workflow.metadata", inStream)
-            except StorageException, e:
+            except StorageException:
                 print " * ERROR updating dataset payload!"
 
         # Form processing
@@ -221,7 +216,7 @@ class IndexData:
             formData = formData[0]
         else:
             formData = None
-        coreFields = ["title", "description"]
+        coreFields = ["title", "description", "manifest", "metaList"]
         if formData is not None:
             # Core fields
             title = formData.getList("title")
@@ -237,14 +232,16 @@ class IndexData:
                     self.customFields[field] = formData.getList(field)
 
         # Manifest processing (formData is not present in wfMeta)
-        manifestPayload = self.object.getPayload(self.object.getSourceId())
-        manifest = JsonConfigHelper(manifestPayload.open())
-        manifestPayload.close()
-        title = manifest.get("title", "Untitled")
-        description = manifest.get("description", "")
-        self.titleList = [title]
-        self.descriptionList = [description]
+        manifest = self.__getManifest()
+        self.titleList = [manifest.get("title", "Untitled")]
+        self.descriptionList = [manifest.get("description", "")]
+        for field in manifest.iterkeys():
+            if field not in coreFields:
+                value = manifest.get(field)
+                #print "ManifestIndex: %s='%s'" % (field, value)
+                self.utils.add(self.index, field, value)
 
+        # Workflow processing
         self.utils.add(self.index, "workflow_id", wfMeta.get("id"))
         self.utils.add(self.index, "workflow_step", wfMeta.get("step"))
         self.utils.add(self.index, "workflow_step_label", wfMeta.get("label"))
@@ -260,3 +257,15 @@ class IndexData:
             message = msg.toString()
             for target in self.message_list:
                 self.utils.sendMessage(target, message)
+
+    def __getManifest(self):
+        return self.__getJsonPayload(self.object.getSourceId())
+
+    def __getJsonPayload(self, pid):
+        payload = self.object.getPayload(pid)
+        writer = StringWriter()
+        IOUtils.copy(payload.open(), writer)
+        dataDict = jsonReader(writer.toString())
+        payload.close()
+        return dataDict
+

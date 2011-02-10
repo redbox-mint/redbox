@@ -1,8 +1,52 @@
-<div id="management">
-    <dl>
-        #showField("URL" "url")
-        #showField("Physical storage" "physical_storage")
-        #showField("Data owner" "data_owner")
-        #showField("Data custodian" "data_custodian")
-    </dl>
-</div>
+#sectionHeading("Management")
+<table class="meta">
+    #display("url" "Identifier or URL")
+    #display("physical_storage" "Physical Storage")
+    #display("retention_period" "Retention Period")
+    #display("disposal_date" "Disposal Date")
+    #display("data_owner" "Data Owner (IP)")
+    #display("data_custodian" "Data Custodian")
+    #display("affiliation.0.skos:prefLabel" "Affiliation")
+    <tr>
+        <th>Grant Numbers</th>
+        <td>
+            #set($grantList = $self.getList("grant"))
+            #foreach($key in $grantList.keySet())
+                #set($grant = $grantList.get($key))
+                <span>[$grant.get("dc:identifier")] $grant.get("skos:prefLabel")</span><br/>
+                #set($internal = $grant.get("uon:internal"))
+                #if("$!internal" != "") (<em>Internally Funded</em>)#end
+            #end
+        </td>
+    </tr>
+    #displayList("funding" "Funding Bodies")
+    #display("project_title" "Project Title")
+    #display("depositor" "Depositor")
+    #display("data_size" "Data Size")
+    #display("extent" "Extent or Quantity")
+    #display("policy" "Institutional Data Management Policy")
+    #display("contracts" "Contracts Associated with the Data or Project")
+    #display("management_plan" "Location of Data Management Plan")
+</table>
+#*
+        url,
+        physical_storage,
+        retention_period,
+        disposal_date,
+        data_owner,
+        data_custodian,
+        affiliation.0,
+        affiliation.0.skos:prefLabel,
+        grant.0.uon:internal,
+        grant.0.rdf:resource,
+        grant.0.dc:identifier,
+        grant.0.skos:prefLabel,
+        funding.0,
+        project_title,
+        depositor,
+        data_size,
+        extent,
+        policy,
+        contracts,
+        management_plan
+*#

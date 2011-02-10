@@ -41,3 +41,65 @@ ul.main li ul li a {
 ul.main li ul li.selected-view a {
     font-style: italic;
 }
+
+#content .accordion {
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+.accordion-header {
+    background: #500005;
+    color: white;
+    display: block;
+    font-size: 1.025em;
+    font-weight: normal;
+    margin: 0px;
+    padding-bottom: 2px;
+    padding-left: 1.75em;
+    padding-top: 2px;
+}
+
+.accordion-header.ui-state-active, .accordion-header:hover {
+    background: #900009;
+    border: 1px solid #CCCCCC;
+}
+
+#content .ui-accordion-content {
+    background: #EEEEEE;
+    font-size: 0.909em;
+    padding: 0;
+}
+
+#content .general h2 {
+    background: #EEEEEE;
+    border-top: 1px solid silver;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding-left: 0.7em;
+    margin-bottom: 0;
+}
+
+.ui-accordion .ui-accordion-content {
+    margin-bottom: 0;
+}
+
+table.meta, table.meta tbody {
+    margin-top: 0;
+    width: 100%;
+}
+
+table.meta th {
+    width: 20%;
+    word-wrap: break-word;
+}
+
+th.header {
+    background: #FFF5D2;
+    margin: 0;
+    padding: 0;
+}
+
+th.header h3 {
+    font-size: 1.1em;
+    margin-top: 0;
+    padding-left: 0.8em;
+}
