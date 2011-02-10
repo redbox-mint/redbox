@@ -31,6 +31,7 @@
         #end
     #end
 #end
+<p><a href="#" id="toggle-accordion">Show all sections</a></p>
 <div class="accordion">
     #parseDisplayTemplate("detail/preview/sections/general.vm")
     #parseDisplayTemplate("detail/preview/sections/description.vm")
@@ -42,12 +43,24 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    $(".accordion").accordion({
-        active:1,
-        autoHeight:false,
-        clearStyle:true,
-        collapsible:false,
-        header:".accordion-header"
+    function addAccordion() {
+        $(".accordion").accordion({
+            active:1,
+            autoHeight:false,
+            clearStyle:true,
+            collapsible:false,
+            header:".accordion-header"
+        });
+    }
+    $("#toggle-accordion").click(function(){
+        if ($(".ui-accordion").length > 0) {
+            $(".accordion").accordion("destroy");
+            $(this).text("Show sections individually");
+        } else {
+            addAccordion();
+        }
+        return false;
     });
+    addAccordion();
 });
 </script>
