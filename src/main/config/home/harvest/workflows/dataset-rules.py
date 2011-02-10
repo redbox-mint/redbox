@@ -1,7 +1,7 @@
 from au.edu.usq.fascinator.api.storage import StorageException
 from au.edu.usq.fascinator.common import FascinatorHome, JsonConfigHelper
 from au.edu.usq.fascinator.common.storage import StorageUtils
-from java.io import StringWriter
+from java.io import ByteArrayInputStream, StringWriter
 from java.lang import String
 from org.apache.commons.io import IOUtils
 
@@ -238,8 +238,15 @@ class IndexData:
         for field in manifest.iterkeys():
             if field not in coreFields:
                 value = manifest.get(field)
-                #print "ManifestIndex: %s='%s'" % (field, value)
                 self.utils.add(self.index, field, value)
+                if field.startswith("dc:") and field.find("rdf:resource") == -1:
+                    # index dublin core fields for faceting
+                    facetField = field.replace("dc:", "dc_")
+                    dot = field.find(".")
+                    if dot > 0:
+                        facetField = facetField[:dot]
+                    #print "Indexing DC field '%s':'%s'" % (field, facetField)
+                    self.utils.add(self.index, facetField, value)
 
         # Workflow processing
         self.utils.add(self.index, "workflow_id", wfMeta.get("id"))
