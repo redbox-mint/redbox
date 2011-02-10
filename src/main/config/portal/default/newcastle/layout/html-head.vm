@@ -1,0 +1,14 @@
+#parse($page.getTemplate('layout/html-head-title.vm'))
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="icon" type="image/vnd.microsoft.com" href="$portalPath/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/screen.css" media="screen" />
+<!--[if IE 6]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie6.css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie.css" media="screen" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness/jquery-ui-1.7.2.custom.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="$portalPath/css/styles.css" />
+<script type="text/javascript" src="$portalPath/js/json2.min.js"></script>
+<script type="text/javascript" src="$portalPath/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="$portalPath/js/jquery-ui-1.7.2.custom.min.js"></script>
+$!pageHeader
+#parse($page.getTemplate('layout/html-head-links.vm'))
+#parse($page.getTemplate('layout/html-head-scripts.vm'))

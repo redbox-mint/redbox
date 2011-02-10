@@ -6,6 +6,63 @@
         <input type="submit" disabled="disabled" id="update-package" value="Proceed" class="form-fields-submit" />
         <input type="hidden" class="submit-result-func" value="submitted_ok" />
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
+
+        <div style="color:red; padding:1em;" id="validation-summary">
+           <div id="not-valid-for-submitting" style="display:none;color:darkred;">
+                You must fixup all fields with missing required data or invalid data before
+                you can submit!
+           </div>
+           <div>
+                <label class="validation-err-msg" for="dc:title">
+                    A Title is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="location">
+                    A Location is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="dc:description">
+                    A Description is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="dc:creator.foaf:Person.0.foaf:familyName">
+                    A Creators 'Family name' is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="dc:subject.keywords.0">
+                    A Keyword is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="access_conditions">
+                    Access Conditions is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="restrictions">
+                    Restrictions, Embargoes or Usage Constraints is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="physical_storage">
+                    Stored at, is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="retention_period">
+                    Retention Period is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="extent">
+                     Extent or quantity is required!
+                </label>
+           </div>
+        </div>
     </p>
     <h2>Delete</h2>
     <p>

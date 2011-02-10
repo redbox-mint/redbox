@@ -18,7 +18,7 @@
     </h2>
     <fieldset>
         <p>
-            <label for="access_conditions">Access conditions</label>
+            <label for="access_conditions">Access conditions <span class="required" title="required">(*)</span></label>
             <span class="helpWidget" data-help-content-id="help-access-conditions">
                 <img src="../images/icons/help.png"/>
             </span>
@@ -28,17 +28,13 @@
                 to negotiate access to the data.
             </div>
             <input type="text" size="80" placeholder="Access conditions" id="access_conditions" />
+            <label class="validation-err-msg" for="access_conditions"
+                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+                Access conditions is required!
+            </label>
         </p>
-#*
         <p>
-            <label for="embargo_release">Embargo Release</label>
-            <input type="text" placeholder="Release date" class="dateYMD" id="embargo_release" style="width:7em;" />
-            <label for="embargo_expiry">Expiry</label>
-            <input type="text" placeholder="Expiry date" class="dateYMD" id="embargo_expiry" style="width:7em;" />
-        </p>
-*#
-        <p>
-            <label for="restrictions">Restrictions, Embargoes or Usage Constraints</label>
+            <label for="restrictions">Restrictions, Embargoes or Usage Constraints <span class="required" title="required">(*)</span></label>
             <span class="helpWidget" data-help-content-id="help-restrictions">
                 <img src="../images/icons/help.png"/>
             </span>
@@ -48,6 +44,10 @@
                 the research.
             </div>
             <input type="text" size="80" placeholder="Restrictions" id="restrictions" />
+            <label class="validation-err-msg" for="restrictions"
+                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+                Restrictions, Embargoes or Usage Constraints is required!
+            </label>
         </p>
         <p>
             <label for="license_cc">License - Creative Commons</label>

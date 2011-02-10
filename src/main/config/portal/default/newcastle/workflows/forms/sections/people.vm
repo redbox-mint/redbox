@@ -2,7 +2,7 @@
     <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=mintPeople&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
-    <h2>Creators</h2>
+    <h2>Creators <span class="required" title="required">(*)</span></h2>
     <table class="input-list sortable">
         <thead>
             <tr class="header-row">
@@ -48,16 +48,24 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <label>Given name:</label>
+                                    <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
                                     <input type="text" placeholder="given name" size="40"
-                                           class="nameLookup-name"
+                                           class="nameLookup-name creator-givenName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
+                                    <div>
+                                    </div>
                                 </td>
                                 <td>
-                                    <label>Family name:</label>
+                                    <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name: <span class="required" title="required">(*)</span></label>
                                     <input type="text" placeholder="family name" size="40"
-                                           class="nameLookup-name"
+                                           class="nameLookup-name creatorFamilyName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
+                                    <div>
+                                        <label for="dc:creator.foaf:Person.0.foaf:familyName"  class="validation-err-msg"
+                                            data-validation-rule="test(notEmpty);when(onChange, onSubmit, onBlur, onSave);liveFor(.creatorFamilyName);">
+                                            A creators family name is required!
+                                        </label>
+                                    </div>
                                 </td>
                                 <td>
                                     <span style="white-space:nowrap;">
@@ -73,7 +81,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    Affiliation:
+                                    Affiliation <span class="required" title="required">(*)</span>:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
                                           data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=count%3D9999"
@@ -103,16 +111,6 @@
                             </tr>
                         </tbody>
                     </table>
-    <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:givenName"
-        data-rule="for(dc:creator.foaf:Person.1.foaf:givenName);when(onChange, onSave, onBlur);
-                test(notempty);">
-        A creators given name is required!
-    </label>
-    <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:familyName"
-        data-rule="for(dc:creator.foaf:Person.1.foaf:familyName);when(onChange, onSave, onBlur);
-                test(notempty);">
-        A creators given name is required!
-    </label>
                 </td>
                 <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
             </tr>
@@ -132,12 +130,8 @@
         <tr>
             <td>
                 <label for="primary_contact_name">Name</label>
-                <input type="text" size="40" placeholder="Enter a name" id="primary_contact_name" />
-                <label class="validation-err-msg" for="primary_contact_name"
-                    data-rule="for(primary_contact_name);when(onChange, onSave, onBlur);
-                            test(notempty);">
-                    A primary contact name is required!
-                </label>
+                <input type="text" size="40" placeholder="Enter a name"
+                    id="primary_contact_name" />
             </td>
         </tr>
         </tr>
@@ -145,8 +139,7 @@
                 <label for="primary_contact_email">Email</label>
                 <input type="text" size="40" placeholder="Enter an email address" id="primary_contact_email" />
                 <label class="validation-err-msg" for="primary_contact_email"
-                    data-rule="for(primary_contact_email);when(onChange, onSave, onBlur);
-                            test(notempty);">
+                    data-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
                     A primary contact email is required!
                 </label>
             </td>

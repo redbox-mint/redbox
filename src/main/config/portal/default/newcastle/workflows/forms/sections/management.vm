@@ -11,7 +11,7 @@
     <p><input type="text" size="80" placeholder="Location of the data" id="url" /></p>
 
     <h2>
-        <label for="physical_storage">Stored at</label>
+        <label for="physical_storage">Stored at <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-stored-at">
             <img src="../images/icons/help.png"/>
         </span>
@@ -20,10 +20,16 @@
         Recored physical location of the data. For example:
         University of Newcastle central storage faciliy.
     </div>
-    <p><input type="text" size="80" placeholder="Physical location of the data" id="physical_storage" /></p>
+    <p>
+        <input type="text" size="80" placeholder="Physical location of the data" id="physical_storage" />
+        <label class="validation-err-msg" for="physical_storage"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Stored at, is required!
+        </label>
+    </p>
 
     <h2>
-        <label for="retention_period">Retention Period</label>
+        <label for="retention_period">Retention Period <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-retention-period">
             <img src="../images/icons/help.png"/>
         </span>
@@ -32,7 +38,13 @@
         Record the period of time that the data must be kept
         in line with institutional/funding body retention policies.
     </div>
-    <p><input type="text" size="80" placeholder="Retention period" id="retention_period" /></p>
+    <p>
+        <input type="text" size="80" placeholder="Retention period" id="retention_period" />
+        <label class="validation-err-msg" for="retention_period"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Retention Period is required!
+        </label>
+    </p>
 
     <h2>
         <label for="disposal_date">Disposal Date</label>
@@ -207,7 +219,7 @@
     <p><input type="text" size="80" placeholder="Data size" id="data_size" /></p>
 
     <h2>
-        <label for="extent">Extent or quantity</label>
+        <label for="extent">Extent or quantity <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-extent">
             <img src="../images/icons/help.png"/>
         </span>
@@ -215,7 +227,13 @@
     <div class="help-content" id="help-extent">
         Enter the number of files that comprise the data, including the format.
     </div>
-    <p><input type="text" size="80" placeholder="Extent or quantity (i.e. no. of files)" id="extent" /></p>
+    <p>
+        <input type="text" size="80" placeholder="Extent or quantity (i.e. no. of files)" id="extent" />
+        <label class="validation-err-msg" for="extent"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Extent or quantity is required!
+        </label>
+    </p>
 
     <h2>
         <label for="policy">Institutional Data Management Policy</label>

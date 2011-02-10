@@ -1,6 +1,6 @@
 <div>
     <h2>
-        <label for="dc:title">Title (*)</label>
+        <label for="dc:title">Title <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-title">
             <img src="../images/icons/help.png"/>
         </span>
@@ -13,7 +13,7 @@
         <textarea rows="4" cols="80" id="dc:title" style="vertical-align: text-top;"
             placeholder="Enter the title of the research data" autofocus></textarea>
         <label class="validation-err-msg" for="dc:title"
-            data-rule="for(dc:title);test(!='');when(onBlur, onSave);name(test1);">
+            data-validation-rule="test(!='');when(onBlur, onChange, onSubmit);">
             A title is required!
         </label>
     </p>
@@ -34,13 +34,13 @@
         <label for="dc:coverage.to">To</label>
         <input type="text" placeholder="End date" class="dateYMD" id="dc:coverage.to" />
         <label class="validation-err-msg" for="dc:coverage.from"
-            data-rule="for(dc:coverage.from);when(onChange, onSave);name(testCoverageFrom);
-                    test(/^[12]\d{3}([-\/]?(10|11|12|0?\d)([-\/]?(30|31|[012]?\d))?)?$/);">
+            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageFrom);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid from date or year is required!
         </label>
         <label class="validation-err-msg" for="dc:coverage.to"
-            data-rule="for(dc:coverage.to);when(onChange, onSave);name(testCoverageTo);
-                    test(/^[12]\d{3}([-\/]?(10|11|12|0?\d)([-\/]?(30|31|[012]?\d))?)?$/ );">
+            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageTo);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid to date or year is required!
         </label>
     </p>
@@ -57,8 +57,7 @@
     <p>
         <input type="text" placeholder="Date created" class="dateYMD" id="dc:created" />
         <label class="validation-err-msg" for="dc:created"
-            data-rule="for(dc:created);when(onChange, onBlur, onSave);
-                    test(yyyymmdd);">
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyymmdd or empty);">
             A valid date created must be entered (yyyy-mm-dd else leave blank)!
         </label>
     </p>
@@ -75,8 +74,7 @@
     <p>
         <input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" />
         <label class="validation-err-msg" for="dc:modified"
-            data-rule="for(dc:modified);when(onChange, onSave);
-                    test(yyyymmdd or empty);">
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyy_mm_dd or empty);">
             A valid date modified must be entered (yyyy-mm-dd else leave blank)!
         </label>
     </p>
@@ -93,8 +91,7 @@
     <p>
         <input type="text" placeholder="Time period" id="time_period" />
         <label class="validation-err-msg" for="time_period"
-            data-rule="for(time_period);when(onChange, onSave, onBlur);
-                    test(lenlt(2001));">
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(lenlt(2001));">
             Text too long!
         </label>
     </p>
@@ -131,7 +128,7 @@
     </p>
 
     <h2>
-        <label for="location">Location</label>
+        <label for="location">Location <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-location">
             <img src="../images/icons/help.png"/>
         </span>
@@ -144,10 +141,14 @@
     </div>
     <p>
         <input type="text" placeholder="Location" id="location" size="60" />
+        <label class="validation-err-msg" for="location"
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(notEmpty);">
+            A location is required!
+        </label>
     </p>
 
     <h2>
-        <label for="dc:type">Type</label>
+        <label for="dc:type">Type <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-type">
             <img src="../images/icons/help.png"/>
         </span>

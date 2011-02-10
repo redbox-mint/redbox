@@ -97,6 +97,12 @@ div.tab-nav {
     color:red;
 }
 
+span.required {
+    font-size:75%;
+    vertical-align:top;
+    font-weight:normal;
+}
+
 .ac_results {
     padding: 0px;
     border: 1px solid black;

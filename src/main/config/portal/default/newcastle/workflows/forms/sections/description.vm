@@ -1,6 +1,6 @@
 <div>
     <h2>
-        <label for="dc:description">Description</label>
+        <label for="dc:description">Description <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-description-content">
             <img src="../images/icons/help.png"/>
         </span>
@@ -15,23 +15,12 @@
             <li>methodology</li>
             <li>characteristics and features of the data</li>
         </ul>
-##        <p>The description could include:</p>
-##        <ul>
-##            <li>About the Research Project</li>
-##            <li>Purpose and scope of the data</li>
-##            <li>Entities being studied or recorded</li>
-##            <li>Methodology</li>
-##            <li>Characteristics and/or features</li>
-##            <li>Format or structure of the data</li>
-##            <li>How was the data processed/analysed</li>
-##        </ul>
     </div>
     <p>
         <textarea rows="12" cols="80" id="dc:description" style="vertical-align: text-top;"
                 placeholder="Description of the research data"></textarea>
         <label class="validation-err-msg" for="dc:description"
-            data-rule="for(dc:description);when(onChange, onSave, onBlur);
-                    test(notempty);">
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
             A description is required!
         </label>
     </p>
@@ -80,7 +69,7 @@
         <p>
             <input type="text" size="80" placeholder="Enter data" id="data" />
             <label class="validation-err-msg" for="data"
-                data-rule="for(data);when(onChange, onSave, onBlur);
+                data-rule="for(data);when(onChange, onSubmit, onBlur);
                         test(lenlt(2001));">
                 Text too long!
             </label>
@@ -98,7 +87,7 @@
         <p>
             <input type="text" size="80" placeholder="Enter a website URL" id="website" />
             <label class="validation-err-msg" for="website"
-                data-rule="for(website);when(onChange, onSave, onBlur);
+                data-rule="for(website);when(onChange, onSubmit, onBlur);
                         test(lenlt(2001));">
                 Text too long!
             </label>

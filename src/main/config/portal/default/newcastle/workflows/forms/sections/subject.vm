@@ -76,7 +76,7 @@
     </table>
 
     <h2>
-        <label for="dc:subject">Keywords</label>
+        <label for="dc:subject">Keywords <span class="required" title="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-keywords">
             <img src="../images/icons/help.png"/>
         </span>
@@ -96,9 +96,16 @@
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
-                <td><input type="text" size="40" placeholder="Keyword" id="dc:subject.keywords.0" /></td>
+                <td>
+                    <input type="text" size="40" placeholder="Keyword" id="dc:subject.keywords.0" class="vkeyword" />
+                </td>
                 <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
+                <td style="width: 100%;">
+                    <label for="dc:subject.keywords.0"  class="validation-err-msg"
+                        data-validation-rule="test(notEmpty);when(onChange, onSubmit, onBlur, onSave);liveFor(.vkeyword);">
+                        A keyword is required!
+                    </label>
+                </td>
             </tr>
         </tbody>
     </table>
