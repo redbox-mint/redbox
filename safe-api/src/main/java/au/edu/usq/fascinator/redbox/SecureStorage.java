@@ -70,15 +70,6 @@ public class SecureStorage implements Storage {
         username = null;
         rolesList = new ArrayList<String>();
         rolesList.add("guest");
-        if (state.containsKey("username")) {
-            username = state.get("username").toString();
-            try {
-                User user = securityManager.getUser(state, username, "system");
-                rolesList = Arrays.asList(securityManager.getRolesList(state, user));
-            } catch (AuthenticationException ae) {
-                log.error("Failed to get user access, assuming guest access", ae);
-            }
-        }
     }
 
     @Override
@@ -138,6 +129,18 @@ public class SecureStorage implements Storage {
         storage.shutdown();
     }
 
+    private void updateCredentials() {
+        if (state.containsKey("username")) {
+            username = state.get("username").toString();
+            try {
+                User user = securityManager.getUser(state, username, "system");
+                rolesList = Arrays.asList(securityManager.getRolesList(state, user));
+            } catch (AuthenticationException ae) {
+                log.error("Failed to get user access, assuming guest access", ae);
+            }
+        }
+    }
+
     /**
      * This calls the Solr indexer to check if the current user is allowed to
      * access the specified object. This access is based on the following rules:
@@ -153,6 +156,7 @@ public class SecureStorage implements Storage {
      */
     private boolean isAccessAllowed(DigitalObject obj) throws StorageException {
         if (obj != null) {
+            updateCredentials();
             String oid = obj.getId();
             try {
                 // check the cache
