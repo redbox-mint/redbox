@@ -10,9 +10,10 @@
         <img src="../images/icons/arrow_right.png" height="30" alt="Go to the next section of the form" />
     </span>
     #end
-    <span class="form-fields-save">
-        <img src="../images/icons/save.png" height="30" alt="Save changes" />
-    </span>
+##    <span class="form-fields-save">
+##        <img src="../images/icons/save.png" height="30" alt="Save changes" />
+##    </span>
+    <input type="button" class="form-fields-save" value="Save for later" />
     <span class="saved-result"></span>
 </div>
 #end

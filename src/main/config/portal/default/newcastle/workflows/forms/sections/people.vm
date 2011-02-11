@@ -62,7 +62,7 @@
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
                                     <div>
                                         <label for="dc:creator.foaf:Person.0.foaf:familyName"  class="validation-err-msg"
-                                            data-validation-rule="test(notEmpty);when(onChange, onSubmit, onBlur, onSave);liveFor(.creatorFamilyName);">
+                                            data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);liveFor(.creatorFamilyName);">
                                             A creators family name is required!
                                         </label>
                                     </div>
@@ -138,10 +138,6 @@
             <td>
                 <label for="primary_contact_email">Email</label>
                 <input type="text" size="40" placeholder="Enter an email address" id="primary_contact_email" />
-                <label class="validation-err-msg" for="primary_contact_email"
-                    data-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-                    A primary contact email is required!
-                </label>
             </td>
         </tr>
     </table>

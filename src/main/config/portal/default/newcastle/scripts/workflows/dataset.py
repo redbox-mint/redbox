@@ -439,8 +439,6 @@ class DatasetData(object):
                 print "*** Warning: workflow_step != currentStep ('%s'!='%s')!" % \
                         (workflowStep, currentStep)
             workflowSecurity = doc.get("workflow_security", [])
-            #       "workflow_step", "security_filter"[] (visibility)
-            #
             json = self.vc("systemConfig")
             jsonConfigFile = json.getMap(
                     "portal/packageTypes/dataset").get("jsonconfig")
@@ -499,8 +497,9 @@ class DatasetData(object):
         formData = self.__formData
         tfpackage = self.__tfpackage
         try:
-            metaList = list(formData.getValues("metaList"))
-            #print "metaList='%s'" % str(metaList)
+            print "formData metaList = '%s'" % formData.getValues("metaList[]")
+            metaList = list(formData.getValues("metaList[]"))
+            print "++metaList='%s'" % str(metaList)
             removedSet = set(tfpackage.get("metaList", [])).difference(metaList)
             try:
                 for metaName in metaList:
@@ -544,6 +543,7 @@ class DatasetData(object):
                 pass
             result = {"ok":"updated ok", "oid":self.__oid}
         except Exception, e:
+            print "*** error: %s" % str(e)
             result = {"error":str(e)}
         return result
 

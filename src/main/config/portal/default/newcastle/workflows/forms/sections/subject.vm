@@ -102,7 +102,7 @@
                 <td class="delete-item"><a href="#">delete</a></td>
                 <td style="width: 100%;">
                     <label for="dc:subject.keywords.0"  class="validation-err-msg"
-                        data-validation-rule="test(notEmpty);when(onChange, onSubmit, onBlur, onSave);liveFor(.vkeyword);">
+                        data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);liveFor(.vkeyword);">
                         A keyword is required!
                     </label>
                 </td>

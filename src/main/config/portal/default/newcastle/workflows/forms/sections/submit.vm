@@ -73,6 +73,7 @@
         <input type="button" id="delete-record" disabled="disabled" value="Delete" />
     </p>
 </div>
+
 <script type="text/javascript">
 $(function() {
     $("#agreementLabel").html(packageData.nextStageMessage);
@@ -81,8 +82,14 @@ $(function() {
         $("#update-package").hide();
     } else {
         $("#agreement").click(function() {
+            $("#not-valid-for-submitting").hide();
             if ($(this).is(":checked")) {
-                $("#update-package").removeAttr("disabled");
+                if(widgets.forms[0].validator.isOkToSubmit()==false){
+                    $(this).attr("checked", false);
+                    $("#not-valid-for-submitting").show();
+                }else{
+                    $("#update-package").removeAttr("disabled");
+                }
             } else {
                 $("#update-package").attr("disabled", "disabled");
             }
@@ -95,5 +102,19 @@ $(function() {
             }
         });
     }
+
+    $("#validation-summary label").click(function(){
+        var i, id;
+        try{
+            i=$(this);
+            id=i.attr("for");
+            i=$("*[id="+id+"]");
+            id=i.parents(".ui-tabs-panel").attr("id");
+            $("a[href=#"+id+"]").click();
+            i.focus();
+        }catch(e){
+        }
+        return false;
+    });
 });
 </script>
