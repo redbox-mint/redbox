@@ -8,6 +8,8 @@ from org.apache.commons.lang import StringEscapeUtils
 from java.util import HashMap, HashSet
 from org.apache.commons.io import IOUtils
 
+from au.edu.usq.fascinator.api.storage import StorageException
+
 class SolrDoc:
     def __init__(self, json):
         self.json = json
@@ -342,21 +344,23 @@ class OaiData:
     def getPayloadContent(self, oid, metadataFileName):
         object = self.services.getStorage().getObject(oid)
         
-        payload = object.getPayload(metadataFileName)
-        
-        sb = StringBuilder()
-        reader = BufferedReader(InputStreamReader(payload.open(), "UTF-8"))
-        line = reader.readLine()
-        
-        while line is not None:
-            sb.append(line).append("\n")
+        try:
+            payload = object.getPayload(metadataFileName)
+            sb = StringBuilder()
+            reader = BufferedReader(InputStreamReader(payload.open(), "UTF-8"))
             line = reader.readLine()
-        payload.close()
-        object.close()
-        
-        if sb:
-            return sb
-        return ""
+            
+            while line is not None:
+                sb.append(line).append("\n")
+                line = reader.readLine()
+            payload.close()
+            object.close()
+            
+            if sb:
+                return sb
+            return ""
+        except StorageException, e:
+            return ""
         
 
 

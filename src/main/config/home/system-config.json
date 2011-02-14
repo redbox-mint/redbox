@@ -247,6 +247,12 @@
                     "enabledViews": ["default"],
                     "schema": "http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/registryObjects.xsd",
                     "metadataNamespace": "http://ands.org.au/standards/rif-cs/registryObjects"
+                },
+                "marc": {
+                    "enabledInAllViews": false,
+                    "enabledViews": ["default"],
+                    "schema": "http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd",
+                    "metadataNamespace": "http://www.loc.gov/MARC21/slim"
                 }
             }
         }
