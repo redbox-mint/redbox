@@ -1,0 +1,8 @@
+<ListSets>
+    #foreach($portal in $page.portals)
+        <set>
+            <setSpec>$portal.name</setSpec>
+            <setName>$portal.description</setName>
+        </set>
+    #end
+</ListSets>

@@ -1,0 +1,17 @@
+<Identify>
+    <repositoryName>The Fascinator</repositoryName>
+    <baseURL>http://localhost:9997$contextPath/$portalId</baseURL>  ## use system-config urlBase?
+    <protocolVersion>2.0</protocolVersion>
+    <adminEmail>fascinator@usq.edu.au</adminEmail>  ## use system-config email?
+    <earliestDatestamp>0001-01-01T00:00:00Z</earliestDatestamp>
+    <deletedRecord>persistent</deletedRecord>
+    <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+    <description>
+        <oai-identifier xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd" xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier">
+            <scheme>oai</scheme>
+            <repositoryIdentifier>fascinator</repositoryIdentifier>
+            <delimiter>:</delimiter>
+            <sampleIdentifier>oai:fascinator:5e8ff9bf55ba3508199d22e984129be6</sampleIdentifier>
+        </oai-identifier>
+    </description>
+</Identify>

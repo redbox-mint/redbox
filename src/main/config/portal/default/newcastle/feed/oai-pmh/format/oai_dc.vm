@@ -1,0 +1,1 @@
+$self.getPayloadContent($item.get("id"), "oai_dc.xml")
