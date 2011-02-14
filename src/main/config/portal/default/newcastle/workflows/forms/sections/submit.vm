@@ -8,7 +8,8 @@
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
 
         <div style="color:red; padding:1em;" id="validation-summary">
-           <div id="not-valid-for-submitting" style="display:none;color:darkred;">
+           <div id="not-valid-for-submitting"  class="validation-err-msg"
+                    style="display:none;color:darkred;">
                 You must fixup all fields with missing required data or invalid data before
                 you can submit!
            </div>
@@ -116,5 +117,19 @@ $(function() {
         }
         return false;
     });
+    try{
+        var vTimer=null;
+        function onValidation(r){
+            function cb(){
+                vTimer=null;
+                if($("#validation-summary label:visible").size()==0){
+                    $("#not-valid-for-submitting").hide();
+                }
+            }
+            if(!vTimer) vTimer=setTimeout(cb, 200);
+        }
+        setTimeout(function(){widgets.forms[0].validator.onValidationListeners.push(onValidation);},
+                500);
+    }catch(e){}
 });
 </script>
