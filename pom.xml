@@ -131,6 +131,11 @@
             <artifactId>plugin-subscriber-solrEventLog</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
+        <dependency>
+            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <artifactId>plugin-transformer-jsonVelocity</artifactId>
+            <version>0.7.5-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
@@ -256,6 +261,20 @@
                                     <artifactId>fascinator-common</artifactId>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!-- Unpack Json Velocity Transformer Template -->
+                    <execution>
+                        <id>unpack-transformer-files</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>au.edu.usq.fascinator.plugins</includeGroupIds>
+                            <includeArtifactIds>plugin-transformer-jsonVelocity</includeArtifactIds>
+                            <includes>templates/**</includes>
+                            <outputDirectory>${dir.home}</outputDirectory>
                         </configuration>
                     </execution>
                     <!-- Fascinator and Solr web applications -->

@@ -1,8 +1,12 @@
 #from __main__ import Services
 #from __main__ import formData
 
-from au.edu.usq.fascinator.common import JsonConfigHelper, JsonConfig, FascinatorHome
+from au.edu.usq.fascinator.common import JsonSimpleConfig, JsonConfig, FascinatorHome
 from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
+
+from au.edu.usq.fascinator.api import PluginManager
+from au.edu.usq.fascinator.transformer.jsonVelocity import JsonVelocityTransformer
+from au.edu.usq.fascinator.api.transformer import TransformerException
 
 from org.apache.commons.lang import StringEscapeUtils
 from java.lang import Exception as JavaException, Boolean, String
@@ -549,6 +553,17 @@ class DatasetData(object):
 
     def _reIndex(self):
         object = self._getObject()
+        
+        # transform the object to other datastream e.g. dublin core, rif-cs and vitro
+        try:
+            simpleConfig = JsonSimpleConfig()
+            jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
+            print " *** jsonVelocityTransformer: ", jsonVelocityTransformer
+            jsonVelocityTransformer.init(simpleConfig.getSystemFile())
+            jsonVelocityTransformer.transform(object, "{}")
+        except TransformerException, e:
+            print "Fail to transform object using JsonVelocityTransformer: ", str(e)
+        
         self.Services.indexer.index(object.getId())
         self.Services.indexer.commit()
 

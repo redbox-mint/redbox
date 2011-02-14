@@ -177,6 +177,11 @@
         }
     },
     "transformerDefaults": {
+        "jsonVelocity": {
+            "id" : "jsonVelocity",
+            "sourcePayload" : ".tfpackage",
+            "templatesPath" : "${fascinator.home}/templates"
+        }
     },
     "uploader": {
         "basic-upload": {
@@ -228,6 +233,18 @@
                 "oai_dc": {
                     "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
                     "metadataNamespace": "http://www.openarchives.org/OAI/2.0/oai_dc/"
+                },
+                "eac_cpf": {
+                    "enabledInAllViews": false,
+                    "enabledViews": ["default"],
+                    "schema": "urn:isbn:1-931666-33-4 http://eac.staatsbibliothek-berlin.de/schema/cpf.xsd",
+                    "metadataNamespace": "urn:isbn:1-931666-33-4"
+                },
+                "rif_cs": {
+                    "enabledInAllViews": false,
+                    "enabledViews": ["default"],
+                    "schema": "http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/registryObjects.xsd",
+                    "metadataNamespace": "http://ands.org.au/standards/rif-cs/registryObjects"
                 }
             }
         }
