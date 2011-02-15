@@ -123,7 +123,8 @@
             <tr>
                 <th>#</th>
                 <th>Internal?</th>
-                <th colspan="2">Grant</th>
+                <th>Grant</th>
+                <th></th>
             </tr>
         </thead>
         <tfoot>
@@ -136,7 +137,7 @@
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
                 <td><input type="checkbox" id="grant.0.uon:internal" class="internal-grant"/></td>
-                <td>
+                <td style="width:100%">
                     <table class="inner-table">
                         <tr>
                             <td>
@@ -144,10 +145,10 @@
                                     placeholder="Grant number" class="autocomplete" />
                                 <input type="hidden" id="grant.0.rdf:resource" />
                             </td>
-                            <td>
+                            <td style="width:100%">
                                 <input type="text" size="60" id="grant.0.skos:prefLabel"
                                     readonly="readonly" placeholder="Grant description"
-                                    class="autocomplete-label label" />
+                                    class="autocomplete-label label" style="width:100%" />
                             </td>
                         </tr>
                     </table>
@@ -276,12 +277,13 @@ $(function() {
         var items = row[0].split("::");
         var id = items[0].replace(ARC_NS, "");
         var label = items[1];
+        var source = items[2].replace(ADFI_NS, "");
         return {
             id: id,
             uri: items[0],
             label: label,
-            source: items[2].replace(ADFI_NS, ""),
-            display: "[" + id + "] " + label
+            source: source,
+            display: "[" + id + "] (" + source + ") " + label
         };
     }
 
@@ -300,7 +302,7 @@ $(function() {
                 var label = $(this).parent().next().find(".autocomplete-label")
                 if (row) {
                     var data = splitData(row);
-                    label.val(data.label);
+                    label.val("(" + data.source + ") " + data.label);
                     uri.val(data.uri);
                 }
             });
@@ -341,7 +343,7 @@ $(function() {
     });
 
 
-    $(".autocomplete").live("keydown", function() {
+    $(".autocomplete").live("focus", function() {
         var baseId = $(this).attr("id").replace(".dc:identifier", "");
         if (!$("input[id=" + baseId + ".uon:internal]").is(":checked")) {
             $(this).unautocomplete();
