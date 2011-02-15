@@ -46,6 +46,9 @@ ul.main li ul li.selected-view a {
     font-family: Arial,Helvetica,sans-serif;
 }
 
+.accordion table {
+    margin-bottom: 4px;
+}
 .accordion-header {
     background: #500005;
     color: white;
@@ -102,4 +105,29 @@ th.header h3 {
     font-size: 1.1em;
     margin-top: 0;
     padding-left: 0.8em;
+}
+
+.box h2 a, .box h2 a.visible {
+    background-color: #500005;
+}
+
+.box h2 a:hover, .box h2 a.visible:hover {
+    background-color: #900009;
+}
+
+.toggle-accordion {
+    cursor: pointer;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+#toggle-accordion-icon {
+    float: left;
+}
+
+.accordion-reset {
+    border: 1px solid #500005;
+    font-size: 1.15em;
+    padding-bottom: 0;
+    padding-left: 1em;
 }
