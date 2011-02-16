@@ -69,7 +69,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-date-modified">
-        Date recording any modifications to the dataset collection.
+        Date recording any modifications to the metadata record.
     </div>
     <p>
         <input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" />
@@ -103,7 +103,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-language">
-        Language of the dataset content. e.g. English, French etc.
+        Language of the metadata record. e.g. English, French etc.
     </div>
     <p>
         ##<input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
@@ -178,6 +178,10 @@
             <dd>
                 Collection of physical or digital objects compiled for information
                 and documentation purposes and/or for storage and safekeeping.
+            </dd>
+            <dt>Other<dt>
+            <dd>
+                Do Not Use [This is a placeholder for future use.]
             </dd>
         </dl>
     </div>

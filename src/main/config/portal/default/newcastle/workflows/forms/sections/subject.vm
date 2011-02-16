@@ -6,7 +6,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-seo-codes">
-        Selct relevant SEO code(s).
+        Selct relevant SEO code/s.
     </div>
     <table class="input-list">
         <tfoot>
@@ -44,7 +44,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-for-codes">
-        Select relevant FOR code(s).
+        Select relevant FOR code/s.
     </div>
     <table class="input-list">
         <tfoot>
@@ -118,7 +118,7 @@
     </h2>
     <div class="help-content" id="help-research-activity">
         <p>
-            1290.0 Australian Standard Research Classification (ASRC) 1998. Source: ABS
+            1297.0 Australian Standard Research Classification (ANZSRC) 2008.
         </p>
         <p>
             Pure basic research is experimental and theoretical work undertaken

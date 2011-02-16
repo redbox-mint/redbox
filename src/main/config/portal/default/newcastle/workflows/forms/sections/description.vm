@@ -7,9 +7,9 @@
     </h2>
     <div id="help-description-content" class="help-content">
         <p>Description of the research that generated the dataset.</p>
-        This should include:
+        This should include information about:
         <ul>
-            <li>information about the project</li>
+            <li>the project</li>
             <li>the purpose and scope of the data</li>
             <li>entities being studied or recorded</li>
             <li>methodology</li>
@@ -64,7 +64,7 @@
             </span>
         </h2>
         <div id="help-rel-data" class="help-content">
-            Include a citation to any data related to this data.
+            Include a citation to any sources of third party data used/re-used.
         </div>
         <p>
             <input type="text" size="80" placeholder="Enter data" id="data" />

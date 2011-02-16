@@ -64,7 +64,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-data-owner">
-        Person/institution identified as intellectual property owner of the data.
+        Person/institution identified as intellectual property owners of the data.
     </div>
     <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
 
@@ -80,7 +80,7 @@
     <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
 
     <h2>
-        <label for="affiliation">Affiliation With</label>
+        <label for="affiliation">Data Affiliation</label>
         <span class="helpWidget" data-help-content-id="help-affiliation-with">
             <img src="../images/icons/help.png"/>
         </span>
@@ -108,6 +108,34 @@
             </span>
         </span>
     </p>
+
+    <h2>
+        <label for="funding">Funding Bodies</label>
+        <span class="helpWidget" data-help-content-id="help-funding-bodies">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-funding-bodies">
+        Select/enter the name of the research funding body.
+    </div>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add another" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="text" size="80" placeholder="Funding body" id="funding.0" /></td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
 
     <h2>
         <label for="grant">Grant numbers</label>
@@ -154,34 +182,6 @@
                     </table>
                 </td>
                 <td class="delete-item" style="text-align:right;width:100%;"><a href="#">delete</a></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>
-        <label for="funding">Funding Bodies</label>
-        <span class="helpWidget" data-help-content-id="help-funding-bodies">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-funding-bodies">
-        Select/enter the name of the research funding body.
-    </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add another" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td><input type="text" size="80" placeholder="Funding body" id="funding.0" /></td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
             </tr>
         </tbody>
     </table>
@@ -260,7 +260,7 @@
     <p><input type="text" size="80" placeholder="Contracts" id="contracts" /></p>
 
     <h2>
-        <label for="management_plan">Location of data management plan</label>
+        <label for="management_plan">Data management plan</label>
         <span class="helpWidget" data-help-content-id="help-management_plan">
             <img src="../images/icons/help.png"/>
         </span>
@@ -268,8 +268,12 @@
     <div class="help-content" id="help-management_plan">
         Indicates existence of a data management plan.
     </div>
-    <p><input type="text" size="80" placeholder="Location of data management plan (if available)"
-             id="management_plan" /></p>
+    <p>
+##        <input type="text" size="80" placeholder="Location of data management plan (if available)"
+##             id="management_plan" />
+        <input type="radio" name="management_plan" value="yes"/> Yes &#160; 
+        <input type="radio" name="management_plan" value="no"/> No
+    </p>
 </div>
 <script type="text/javascript">
 $(function() {
