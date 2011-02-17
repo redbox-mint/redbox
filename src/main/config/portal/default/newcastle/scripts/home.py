@@ -1,6 +1,27 @@
 from au.edu.usq.fascinator.api.indexer import SearchRequest
+from au.edu.usq.fascinator.common import FascinatorHome, JsonSimple
 from au.edu.usq.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
+
+class WorkflowStage:
+    def __init__(self, json, facets):
+        self.__json = json
+        self.__facets = facets
+
+    def getCount(self):
+        count = self.__facets.count(self.getName())
+        if count:
+            return count
+        return 0
+
+    def getName(self):
+        return self.__json.getString("noname", ["name"])
+
+    def getLabel(self):
+        return self.__json.getString("[No label]", ["label"])
+
+    def getDescription(self):
+        return self.__json.getString("No description.", ["description"])
 
 class HomeData:
     def __init__(self):
@@ -10,9 +31,10 @@ class HomeData:
         self.velocityContext = context
         self.vc("sessionState").remove("fq")
         self.__latest = None
-        self.__stages = None
+        self.__steps = None
         self.__alerts = None
         self.__result = None
+        self.__stages = None
         self.__search()
 
     # Get from velocity context
@@ -44,18 +66,23 @@ class HomeData:
         if portalSearchQuery:
             req.addParam("fq", portalSearchQuery)
         req.addParam("fq", "")
-        req.setParam("rows", "25")
-        req.setParam("sort", "last_modified desc, f_dc_title asc");
+        req.setParam("rows", "0")
+        req.setParam("facet", "true")
+        req.setParam("facet.field", "workflow_step")
         if not isAdmin:
             req.addParam("fq", security_query)
         out = ByteArrayOutputStream()
         indexer.search(req, out)
-        self.__result = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        steps = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        self.__steps = steps.getFacets().get("workflow_step")
 
-        req.addParam("fq", "workflow_step:investigation")
-        out = ByteArrayOutputStream()
-        indexer.search(req, out)
-        self.__alerts = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        wfConfig = JsonSimple(FascinatorHome.getPathFile("harvest/workflows/dataset.json"))
+        jsonStageList = wfConfig.getJsonSimpleList(["stages"])
+        stages = []
+        for jsonStage in jsonStageList:
+            wfStage = WorkflowStage(jsonStage, self.__steps)
+            stages.append(wfStage)
+        self.__stages = stages
 
         req = SearchRequest("*:*")
         req.setParam("fq", 'item_type:"object"')
@@ -64,15 +91,18 @@ class HomeData:
         if portalSearchQuery:
             req.addParam("fq", portalSearchQuery)
         req.addParam("fq", "")
-        req.setParam("rows", "0")
-        req.setParam("facet", "true")
-        req.setParam("facet.field", "workflow_step")
+        req.setParam("rows", "25")
+        req.setParam("sort", "last_modified desc, f_dc_title asc");
         if not isAdmin:
             req.addParam("fq", security_query)
         out = ByteArrayOutputStream()
         indexer.search(req, out)
-        self.__stages = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        self.__stages = self.__stages.getFacets().get("workflow_step")
+        self.__result = SolrResult(ByteArrayInputStream(out.toByteArray()))
+
+        req.addParam("fq", "workflow_step:%s" % stages[0].getName())
+        out = ByteArrayOutputStream()
+        indexer.search(req, out)
+        self.__alerts = SolrResult(ByteArrayInputStream(out.toByteArray()))
 
         req = SearchRequest("last_modified:[NOW-1MONTH TO *]")
         req.setParam("fq", 'item_type:"object"')
@@ -93,15 +123,12 @@ class HomeData:
     def getLatest(self):
         return self.__latest.getResults()
 
-    def getStageCount(self, stage):
-        count = self.__stages.count(stage)
-        if count:
-            return count
-        return 0
-
     def getAlerts(self):
         return self.__alerts.getResults()
 
     def getItemCount(self):
         return self.__result.getNumFound()
+
+    def getStages(self):
+        return self.__stages
 

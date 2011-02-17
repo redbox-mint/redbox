@@ -17,6 +17,10 @@
         "label" : "Stage",
         "display" : "list"
       },
+      "workflow_source" : {
+        "label" : "Source",
+        "display" : "list"
+      },
       "f_dc_creator" : {
         "label" : "Creator",
         "display" : "list"

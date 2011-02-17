@@ -18,14 +18,24 @@
         },
         "params": {
             "repository.name": "Dataset",
-            "repository.type": "Dataset"
+            "repository.type": "Dataset",
+            "workflow.source": "ReDBox"
         }
     },
 
     "stages": [
         {
+            "name": "inbox",
+            "label": "Inbox",
+            "description": "Potential records for investigation.",
+            "security": ["librarian", "reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"],
+            "template": "workflows/dataset"
+        },
+        {
             "name": "investigation",
             "label": "Investigation",
+            "description": "Records under investigation.",
             "security": ["librarian", "reviewer", "admin"],
             "visibility": ["librarian", "reviewer", "admin"],
             "template": "workflows/dataset"
@@ -33,6 +43,7 @@
         {
             "name": "metadata-review",
             "label": "Metadata Review",
+            "description": "Records to be reviewed by a data librarian.",
             "security": ["librarian", "reviewer", "admin"],
             "visibility": ["librarian", "reviewer", "admin"],
             "template": "workflows/dataset"
@@ -40,12 +51,14 @@
         {
             "name": "final-review",
             "label": "Final Review",
+            "description": "Completed records ready for publication and approval into the repository.",
             "security": ["reviewer", "admin"],
             "visibility": ["reviewer", "admin"],
             "template": "workflows/dataset"
         },
         {
             "name": "live",
+            "description": "Records already published in the repository.",
             "label": "Published",
             "security": ["admin"],
             "visibility": ["guest"],

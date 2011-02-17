@@ -5,18 +5,21 @@
         #if($self.alerts.isEmpty())
         <p>No recent alerts.</p>
         #else
-        <p>Records currently under investigation:</p>
+        <p>Records to be investigated:</p>
         <table>
             <tr>
                 <th>#</th>
                 <th>Title</th>
+                <th>Source</th>
             </tr>
             #foreach($alert in $self.alerts)
                 #set($oid = $alert.get("id"))
                 #set($title = $alert.getFirst("dc_title"))
+                #set($source = $alert.getFirst("workflow_source"))
                 <tr>
                     <td>$velocityCount</td>
                     <td><a href="$portalPath/workflow/$oid">$title</a></td>
+                    <td>$!source</td>
                 </tr>
             #end
         </table>

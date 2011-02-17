@@ -36,9 +36,9 @@ class ProxyGetData:
         ##f.close()
         config = self.vc("systemConfig")
         proxyUrls = config.getMap("proxy-urls")
-        print " proxyUrls='%s'" % proxyUrls
-        print " ns='%s'" % formData.get("ns", "")
-        print " qs='%s'" % formData.get("qs", "")
+        #print " proxyUrls='%s'" % proxyUrls
+        #print " ns='%s'" % formData.get("ns", "")
+        #print " qs='%s'" % formData.get("qs", "")
         ##
         #url = "http://localhost:8080/mint/master/opensearch/lookup?searchTerms=smith"
         #url = formData.get("url") or url
@@ -76,15 +76,15 @@ class ProxyGetData:
                         row += result.get(field)
                     rows.append(row)
                 data = "\n".join(rows)
-            print "JSON ok"
+            #print "JSON ok"
         except Exception, e:
             print "Error to valid JSON: %s" % str(e)
 
-        print "-- sending json response"
+        #print "-- sending json response"
         writer = response.getPrintWriter("text/plain; charset=UTF-8")
         writer.println(data);
         writer.close()
-        print "-- done"
+        #print "-- done"
 
     # Get from velocity context
     def vc(self, index):

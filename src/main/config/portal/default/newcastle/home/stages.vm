@@ -1,20 +1,3 @@
-#macro(stage $number $field $name $description)
-    #set($count = $self.getStageCount($field))
-    <tr>
-        <td>$number</td>
-        <td>
-            #if($count == 0)
-                <em>$name</em>
-            #else
-                <a class="stagelink" href="$portalPath/search" rel="$name">$name</a>
-            #end
-            <br/>
-            <span>$description</span>
-        </td>
-        <td>$self.getStageCount($field)</td>
-    </tr>
-    #set($count = $NULL)
-#end
 <div class="grid_6">
     #set($menuTitle = "Review Stages")
     #parseTemplate("wrapping/info-box-open.vm")
@@ -26,10 +9,23 @@
                 <th>Name</th>
                 <th>Records</th>
             </tr>
-            #stage(1 "investigation" "Investigation" "Potential records for investigation.")
-            #stage(2 "metadata-review" "Metadata Review" "Records to be reviewed by a data librarian.")
-            #stage(3 "final-review" "Final Review" "Completed records ready for publication and approval into the repository.")
-            #stage(4 "live" "Published" "Records already published in the repository.")
+            #foreach($stage in $self.stages)
+                #set($count = $stage.count)
+                <tr>
+                    <td>$velocityCount</td>
+                    <td>
+                        <img src="$portalPath/images/icons/wf_${stage.name}.png" />
+                        #if($count == 0)
+                            <em>$stage.label</em>
+                        #else
+                            <a class="stagelink" href="$portalPath/search" rel="$stage.label">$stage.label</a>
+                        #end
+                        <br/>
+                        <span>$stage.description</span>
+                    </td>
+                    <td style="text-align:center">$count</td>
+                </tr>
+            #end
         </table>
     </div>
     #parseTemplate("wrapping/info-box-close.vm")

@@ -147,7 +147,9 @@ class DatasetData(object):
     def getNextStepAcceptMessage(self):
         step = self.getCurrentStep()
         msg = "?"
-        if step=="investigation":
+        if step=="inbox":
+            msg = "This record is ready for the Investigation stage."
+        elif step=="investigation":
             msg = "This record is ready for the Metadata Review stage."
         elif step=="metadata-review":
             msg = "This record is ready for the Final Review stage."

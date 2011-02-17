@@ -64,6 +64,7 @@ class IndexData:
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
         self.utils.add(self.index, "repository_type", self.params["repository.type"])
+        self.utils.add(self.index, "workflow_source", self.params["workflow.source"])
 
     def __security(self):
         # Security
@@ -161,6 +162,7 @@ class IndexData:
         wfChanged = False
         workflow_security = []
         self.message_list = None
+        stages = self.config.getJsonList("stages")
         try:
             wfPayload = self.object.getPayload("workflow.metadata")
             wfMeta = JsonConfigHelper(wfPayload.open())
@@ -177,7 +179,6 @@ class IndexData:
             else:
                 targetStep = wfMeta.get("step")
             # Security change
-            stages = self.config.getJsonList("stages")
             for stage in stages:
                 if stage.get("name") == targetStep:
                     wfMeta.set("label", stage.get("label"))
@@ -188,14 +189,14 @@ class IndexData:
 
         except StorageException:
             # No workflow payload, time to create
+            firstStage =  stages.get(0).get("name")
             wfChanged = True
             wfMeta = JsonConfigHelper()
             wfMeta.set("id", WORKFLOW_ID)
-            wfMeta.set("step", "investigation")
+            wfMeta.set("step", firstStage)
             wfMeta.set("pageTitle", "Dataset Metadata")
-            stages = self.config.getJsonList("stages")
             for stage in stages:
-                if stage.get("name") == "investigation":
+                if stage.get("name") == firstStage:
                     wfMeta.set("label", stage.get("label"))
                     self.item_security = stage.getList("visibility")
                     workflow_security = stage.getList("security")

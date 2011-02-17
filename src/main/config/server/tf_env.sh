@@ -12,7 +12,7 @@ fi
 export CLASSPATH="plugins/*:lib/*"
 
 # jvm memory settings
-JVM_OPTS="-XX:MaxPermSize=256m -Xmx512m"
+JVM_OPTS="-XX:MaxPermSize=512m -Xmx512m"
 
 # logging directories
 export SOLR_LOGS=$TF_HOME/logs/solr
