@@ -54,7 +54,7 @@ ul.main li ul li.selected-view a {
     font-style: italic;
 }
 
-#content .accordion {
+#content .accordion, .inputscreens {
     font-family: Arial,Helvetica,sans-serif;
 }
 
@@ -142,4 +142,38 @@ th.header h3 {
     font-size: 1.15em;
     padding-bottom: 0;
     padding-left: 1em;
+}
+
+#delete-record-error {
+    color: red;
+}
+
+.ui-corner-all, .ui-corner-top {
+    border-radius: 0;
+}
+
+.actions {
+    text-align: right;
+}
+
+.delete-record:hover, .accept-record:hover {
+    cursor: pointer;
+}
+
+.deleted {
+    font-style: italic;
+    text-decoration: line-through;
+}
+
+.actions.deleted {
+    color: red;
+    text-decoration: none;
+}
+
+.accepted {
+    font-style: italic;
+}
+
+.actions.accepted {
+    color: green;
 }

@@ -1,4 +1,4 @@
-#sectionHeading("Provenance and Rights")
+#sectionHeading("Rights")
 <table class="meta">
     #display("sources_used" "Third Party Data Sources")
     #display("access_conditions" "Access Conditions")

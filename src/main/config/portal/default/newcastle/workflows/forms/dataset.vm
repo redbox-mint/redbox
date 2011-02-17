@@ -1,3 +1,5 @@
+#macro(heading $required)
+#end
 #set($noLayout = true)
 #parseTemplate("workflows/forms/sections/navigation.vm")
 <div class="widget-form" id="main-form"
@@ -101,7 +103,7 @@
             #parseTemplate("workflows/forms/sections/subject.vm")
             #nav(true true)
         </div>
-        <h3><a href="#screen5">Provenance</a></h3>
+        <h3><a href="#screen5">Rights</a></h3>
         <div id="screen5" class="inputscreen">
             #parseTemplate("workflows/forms/sections/provenance.vm")
             #nav(true true)
@@ -121,7 +123,9 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    $("#title").html("Stage: " + packageData.stageLabel);
+    $("#title").html('<span><img src="' + packageData.portalPath +
+        "/images/icons/wf_" + packageData.stage + '.png" /> ' +
+        packageData.stageLabel + "</span>");
     $("#view-record-link").click(function(){
         var href = $(this).attr("href");
         $(this).attr("href", href+packageData.oid);

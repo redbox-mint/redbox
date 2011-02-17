@@ -148,15 +148,15 @@ class DatasetData(object):
         step = self.getCurrentStep()
         msg = "?"
         if step=="inbox":
-            msg = "This record is ready for the Investigation stage."
+            msg = "This record is ready for the <strong>Investigation</strong> stage."
         elif step=="investigation":
-            msg = "This record is ready for the Metadata Review stage."
+            msg = "This record is ready for the <strong>Metadata Review</strong> stage."
         elif step=="metadata-review":
-            msg = "This record is ready for the Final Review stage."
+            msg = "This record is ready for the <strong>Final Review</strong> stage."
         elif step=="final-review":
-            msg = "This record is ready to be Published."
+            msg = "This record is ready to be <strong>Published</strong>."
         elif step=="live":
-            msg = "This record has already been Published."
+            msg = "This record has already been <strong>Published</strong>."
         return msg
         
     def getNextStepAcceptValidationErrorMessage(self):
@@ -503,8 +503,11 @@ class DatasetData(object):
         formData = self.__formData
         tfpackage = self.__tfpackage
         try:
-            print "formData metaList = '%s'" % formData.getValues("metaList[]")
-            metaList = list(formData.getValues("metaList[]"))
+            rawMetaList = formData.getValues("metaList[]")
+            print "formData metaList = '%s'" % rawMetaList
+            if rawMetaList is None:
+                rawMetaList = ["dc:title"]
+            metaList = list(rawMetaList)
             print "++metaList='%s'" % str(metaList)
             removedSet = set(tfpackage.get("metaList", [])).difference(metaList)
             try:
@@ -521,9 +524,9 @@ class DatasetData(object):
             title = tfpackage["title"]
             if not title:
                 print "*** no title ***"
-                print dir(formData)
-                print formData.formFields
-                print formData.getValues("metaList")
+                #print dir(formData)
+                #print formData.formFields
+                #print formData.getValues("metaList")
                 return {"error":"no title"}
             ##
             try:

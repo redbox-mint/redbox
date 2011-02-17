@@ -12,11 +12,6 @@
     <p>
         <textarea rows="6" cols="80" id="sources_used" placeholder="Sources used"></textarea>
     </p>
-
-    <h2>
-        Rights
-    </h2>
-    <fieldset>
         <p>
             <label for="access_conditions">Access conditions <span class="required" title="required">(*)</span></label>
             <span class="helpWidget" data-help-content-id="help-access-conditions">
@@ -74,5 +69,4 @@
             </div>
             <input type="text" size="80" placeholder="Other" id="license_other" />
         </p>
-    </fieldset>
 </div>

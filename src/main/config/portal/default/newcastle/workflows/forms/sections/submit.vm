@@ -69,9 +69,10 @@
     <p>
         <input id="deleteAgreement" type="checkbox" />
         <label id="deleteAgreementLabel" for="deleteAgreement">
-            I understand that deleting this record is permanent and cannot be undone.
+            I understand that deleting this record is <strong>permanent</strong> and cannot be undone.
         </label>
         <input type="button" id="delete-record" disabled="disabled" value="Delete" />
+        <p id="delete-record-error"></p>
     </p>
 </div>
 
@@ -103,6 +104,24 @@ $(function() {
             }
         });
     }
+
+    $("#delete-record").click(function(){
+        jQuery.ajax({
+            type : "POST",
+            url : packageData.portalPath + "/actions/delete.ajax",
+            success:
+                function (data, status) {
+                    window.location.href = packageData.portalPath + "/home";
+                },
+            error:
+                function (req, status, e) {
+                    $("#delete-record-error").html(req.responseText);
+                },
+            data: {
+                record: packageData.oid
+            }
+        });
+    });
 
     $("#validation-summary label").click(function(){
         var i, id;
