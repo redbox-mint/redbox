@@ -265,7 +265,8 @@
         "mintGeoNames" : "${mint.proxy.url}/geonames/opensearch/lookup",
         "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup",
         "mintActivity" : "${mint.proxy.url}/activity/opensearch/lookup",
-        "mintLanguage" : "${mint.proxy.url}/iso639-2/opensearch/lookup"
+        "mintLanguage" : "${mint.proxy.url}/iso639-2/opensearch/lookup",
+        "mintFunding" : "${mint.proxy.url}/funding/opensearch/lookup"
     },
     "watcher" : {
         "path": "${watcher.home}"

@@ -195,7 +195,7 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>setup.groovy</source>
+                            <source>${project.basedir}/setup.groovy</source>
                         </configuration>
                     </execution>
                     <execution>
@@ -205,7 +205,7 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>setup.groovy</source>
+                            <source>${project.basedir}/setup.groovy</source>
                         </configuration>
                     </execution>
                 </executions>

@@ -75,14 +75,17 @@ class ProxyGetData:
                             row += "::"
                         row += result.get(field)
                     rows.append(row)
-                data = "\n".join(rows)
+                if len(rows) > 0:
+                    data = "\n".join(rows)
+                else:
+                    data = ""
             #print "JSON ok"
         except Exception, e:
             print "Error to valid JSON: %s" % str(e)
 
         #print "-- sending json response"
         writer = response.getPrintWriter("text/plain; charset=UTF-8")
-        writer.println(data);
+        writer.print(data);
         writer.close()
         #print "-- done"
 

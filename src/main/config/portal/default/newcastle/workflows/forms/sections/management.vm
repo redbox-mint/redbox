@@ -110,35 +110,7 @@
     </p>
 
     <h2>
-        <label for="funding">Funding Bodies</label>
-        <span class="helpWidget" data-help-content-id="help-funding-bodies">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-funding-bodies">
-        Select/enter the name of the research funding body.
-    </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add another" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td><input type="text" size="80" placeholder="Funding body" id="funding.0" /></td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>
-        <label for="grant">Grant numbers</label>
+        <label for="grant">Grant Numbers</label>
         <span class="helpWidget" data-help-content-id="help-grant-num">
             <img src="../images/icons/help.png"/>
         </span>
@@ -170,18 +142,47 @@
                         <tr>
                             <td>
                                 <input type="text" size="20" id="grant.0.dc:identifier"
-                                    placeholder="Grant number" class="autocomplete" />
+                                    placeholder="Grant number" class="autocomplete-grant" />
                                 <input type="hidden" id="grant.0.rdf:resource" />
                             </td>
                             <td style="width:100%">
                                 <input type="text" size="60" id="grant.0.skos:prefLabel"
                                     readonly="readonly" placeholder="Grant description"
-                                    class="autocomplete-label label" style="width:100%" />
+                                    class="autocomplete-grant-label label" style="width:100%" />
                             </td>
                         </tr>
                     </table>
                 </td>
                 <td class="delete-item" style="text-align:right;width:100%;"><a href="#">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        <label for="funding">Funding Bodies</label>
+        <span class="helpWidget" data-help-content-id="help-funding-bodies">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-funding-bodies">
+        Select/enter the name of the research funding body.
+    </div>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="2"><input type="button" class="add-another-item" value="Add another" /></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="80" placeholder="Funding body"
+                        id="funding.0.skos:prefLabel" class="autocomplete-funding" />
+                    <input type="hidden" id="funding.0.rdf:resource" />
+                </td>
+                <td width="100%"><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
     </table>
@@ -277,7 +278,7 @@
 </div>
 <script type="text/javascript">
 $(function() {
-    function splitData(row) {
+    function splitGrantData(row) {
         var items = row[0].split("::");
         var id = items[0].replace(ARC_NS, "");
         var label = items[1];
@@ -291,21 +292,22 @@ $(function() {
         };
     }
 
-    function addAutocomplete(elem) {
+    function addAutocompleteGrant(elem) {
         elem.autocomplete(
             "../proxyGet?ns=mintActivity&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
                 },
-                formatItem: function(row) { return splitData(row).display; },
-                formatResult: function(row) { return splitData(row).id; },
+                formatItem: function(row) { return splitGrantData(row).display; },
+                formatResult: function(row) { return splitGrantData(row).id; },
+                mustMatch: true,
                 width: "40em"
             }).result(function(event, row) {
                 var uri = $(this).next();
-                var label = $(this).parent().next().find(".autocomplete-label")
+                var label = $(this).parent().next().find(".autocomplete-grant-label")
                 if (row) {
-                    var data = splitData(row);
+                    var data = splitGrantData(row);
                     label.val("(" + data.source + ") " + data.label);
                     uri.val(data.uri);
                 }
@@ -347,12 +349,45 @@ $(function() {
     });
 
 
-    $(".autocomplete").live("focus", function() {
+    $(".autocomplete-grant").live("focus", function() {
         var baseId = $(this).attr("id").replace(".dc:identifier", "");
         if (!$("input[id=" + baseId + ".uon:internal]").is(":checked")) {
             $(this).unautocomplete();
-            addAutocomplete($(this));
+            addAutocompleteGrant($(this));
         }
     });
+
+    function splitFundingData(row) {
+        var items = row[0].split("::");
+        return {
+            uri: items[0],
+            label: items[1]
+        };
+    }
+
+    $(".autocomplete-funding").live("focus", function() {
+        var elem = $(this);
+        $(this).unautocomplete();
+        $(this).autocomplete(
+            "../proxyGet?ns=mintFunding&autocomplete=true&fields=rdf:about,rdfs:label",
+            {
+                extraParams: {
+                    qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
+                },
+                formatItem: function(row) { return splitFundingData(row).label; },
+                formatResult: function(row) { return splitFundingData(row).label; },
+                width: "40em"
+            }).result(function(event, row) {
+                console.log("RUNNING RESULT: " + row);
+                var uriElem = $(this).next();
+                if (row) {
+                    uriElem.val(splitFundingData(row).uri);
+                } else {
+                    uriElem.val("urn:uon:internal");
+                }
+            })
+        }).live("blur", function() {
+            $(this).search();
+        });
 });
 </script>
