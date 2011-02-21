@@ -29,8 +29,8 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:creator.foaf:Person.0.foaf:familyName">
-                    A Creators 'Family name' is required!
+                <label class="validation-err-msg" for="dc:creator.foaf:Person.0.foaf:givenName">
+                    A Creators Given or Family name' is required!
                 </label>
            </div>
            <div>

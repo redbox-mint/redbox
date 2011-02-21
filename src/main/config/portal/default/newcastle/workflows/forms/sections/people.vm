@@ -47,27 +47,19 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>
-                                    <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
+                                <td style="border-bottom:none;">
+                                    <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name: <span class="required" title="required">(* or)</span></label>
                                     <input type="text" placeholder="given name" size="40"
-                                           class="nameLookup-name creator-givenName"
+                                           class="nameLookup-name creatorGivenName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
-                                    <div>
-                                    </div>
                                 </td>
-                                <td>
+                                <td style="border-bottom:none;">
                                     <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name: <span class="required" title="required">(*)</span></label>
                                     <input type="text" placeholder="family name" size="40"
-                                           class="nameLookup-name creatorFamilyName"
+                                           class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
-                                    <div>
-                                        <label for="dc:creator.foaf:Person.0.foaf:familyName"  class="validation-err-msg"
-                                            data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);liveFor(.creatorFamilyName);">
-                                            A creators family name is required!
-                                        </label>
-                                    </div>
                                 </td>
-                                <td>
+                                <td style="border-bottom:none;">
                                     <span style="white-space:nowrap;">
                                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
                                         <span class="identified-as-name" style="border:0px solid #aaaaaa;padding:0.25ex;"></span>
@@ -77,6 +69,26 @@
                                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
                                                class="nl nl-rdf:about" value="" />
                                     </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border:none;text-align:center;">
+                                    <label class="validation-err-msg"
+                                        for="dc:creator.foaf:Person.0.foaf:givenName"
+                                        data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);
+                                                                jsTest(
+                                                                    var fid, gid, f, g;
+                                                                    fid=id.replace('given', 'family');
+                                                                    gid=id.replace('family', 'given');
+                                                                    f=ctx.find('input[id='+fid+']').val();
+                                                                    g=ctx.find('input[id='+gid+']').val();
+                                                                    f=jQ.trim(f); g=jQ.trim(g);
+                                                                    r=(g=='')&&(f=='');
+                                                                    id=gid;
+                                                                );
+                                                                liveFor(.creatorName);">
+                                        A creators given name or family name is required!
+                                    </label>
                                 </td>
                             </tr>
                             <tr>

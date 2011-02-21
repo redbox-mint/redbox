@@ -95,6 +95,14 @@ div.tab-nav {
 
 .validation-err-msg {
     color:red;
+    cursor:pointer;
+}
+
+#validation-summary .validation-err-msg {
+    background-image: url(../images/icons/pencil.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 20px;
 }
 
 span.required {

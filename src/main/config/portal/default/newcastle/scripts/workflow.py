@@ -2,10 +2,12 @@ from au.edu.usq.fascinator.api.storage import StorageException
 from au.edu.usq.fascinator.common import JsonConfigHelper
 from au.edu.usq.fascinator.portal import FormData
 from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
+from au.edu.usq.fascinator.api.storage import PayloadType
 
 from java.io import ByteArrayInputStream
 from java.lang import String
 from java.net import URLDecoder
+from java.io import FileInputStream
 
 import locale
 import time
@@ -34,12 +36,22 @@ class WorkflowData:
         self.object = None
         self.pageService = Services.getPageService()
         self.renderer = self.vc("toolkit").getDisplayComponent(self.pageService)
+        oid = self.formData.get("oid")
+        func = self.formData.get("func")
+
+        if isAjax and func=="attach-file":
+            self.fileName = self.formData.get("uploadFile")
+            print "*** isAjax & func=attach-file, fileName='%s'" % self.fileName
+            #print "oid='%s'" % oid
+            self.fileDetails = self.vc("sessionState").get(self.fileName)
+            print " *** workflow.py : Upload details : ", repr(self.fileDetails)
+            self._ajax(func)
+            return
 
         # Normal workflow progressions
         if self.fileName is None:
             self.hasUpload = False
             self.fileDetails = None
-            oid = self.formData.get("oid")
             if oid is None:
                 self.formProcess = False
                 self.template = None
@@ -63,7 +75,6 @@ class WorkflowData:
             except Exception, e:
                 print "ERROR: %s" % str(e)
 
-        print "workflow.py ...."
         if isAjax and self.hasUpload:
             self._ajax()
         else:
@@ -83,7 +94,7 @@ class WorkflowData:
             log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
             return None
 
-    def _ajax(self):
+    def _ajax(self, func=None):
         formData = self.formData
         response = self.vc("response")
         print " workflow - ajax"
@@ -94,9 +105,34 @@ class WorkflowData:
             writer.println(jsonWriter({"error":self.fileDetails.get("error")}))
             writer.close()
 
-
         obj = self.getObject()
         oid = obj.getId()
+
+        if func=="attach-file":
+            print "## oid='%s'" % oid
+            print "## Upload details : ", repr(self.fileDetails)
+            fname = self.fileDetails.get("name")
+            fInputStream = FileInputStream(self.fileDetails.get("location"))
+            p = StorageUtils.createOrUpdatePayload(
+                    obj, fname, fInputStream)
+            p.setType(PayloadType.Attachment)
+            print p.getContentType()
+            print p.getType()
+            #print dir(p)
+            print "---"
+            p.close()
+            ## Index this payload
+            Services.indexer.index(self.getOid())
+            Services.indexer.commit()
+
+            print "## sending json response"
+            writer = response.getPrintWriter("text/plain; charset=UTF-8")
+            json = {"ok":"Submitted OK", "oid":oid}
+            writer.println(jsonWriter(json));
+            writer.close()
+            print "## done"
+            return
+
         for x in range(20):
             wfMetadata = self.getWorkflowMetadata()  # workflow.metadata
             print "%s waiting for workflowMetadata" % (x)
@@ -225,7 +261,6 @@ class WorkflowData:
                     uri = URLDecoder.decode(self.vc("request").getAttribute("RequestURI"))
                     basePath = self.vc("portalId") + "/" + self.vc("pageName")
                     oid = uri[len(basePath)+1:]
-
             # Now get the object
             if oid is not None:
                 try:

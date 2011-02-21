@@ -4,6 +4,8 @@
 #parseTemplate("workflows/forms/sections/navigation.vm")
 <div class="widget-form" id="main-form"
      data-submit-result-func="submitted_ok"
+     data-pre-save-func="preSave"
+     data-save-func="aboutToSave"
      data-save-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta&amp;oid={packageData.oid}"
      data-submit-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}">
     <input type="hidden" class="form-fields" value="
@@ -114,8 +116,13 @@
             #parseTemplate("workflows/forms/sections/management.vm")
             #nav(true true)
         </div>
-        <h3><a href="#screen7">Submit</a></h3>
+        <h3><a href="#screen7">Attachments</a></h3>
         <div id="screen7" class="inputscreen">
+            #parseTemplate("workflows/forms/sections/attach.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen8">Submit</a></h3>
+        <div id="screen8" class="inputscreen">
             #parseTemplate("workflows/forms/sections/submit.vm")
             #nav(true false)
         </div>
@@ -123,24 +130,52 @@
 ##    <span class="saved-result"></span>
 </div>
 <script type="text/javascript">
-$(function(){
-    $("#title").html('<span><img src="' + packageData.portalPath +
+var jQ=$;
+jQ(function(){
+    jQ("#title").html('<span><img src="' + packageData.portalPath +
         "/images/icons/wf_" + packageData.stage + '.png" /> ' +
         packageData.stageLabel + "</span>");
     $("#view-record-link").click(function(){
-        var href = $(this).attr("href");
+        var href = jQ(this).attr("href");
         $(this).attr("href", href+packageData.oid);
         if(widgets.forms[0].hasChanges()){
             return confirm("Are you sure you want to leave this page without saving first!");
         }
     });
-    $(".tab-nav .next-tab,.tab-nav .prev-tab").click(function(){
+    jQ(".tab-nav .next-tab,.tab-nav .prev-tab").click(function(){
         if(widgets.forms[0].hasChanges()){
-            $(".form-fields-save").click();
+            jQ(".form-fields-save").click();
         }
     });
-    $(".form-fields-save").click(function(){
-        $(".saved-result").html("<img src='../images/loading-progress.gif'/>").show();
+    jQ(".form-fields-save").click(function(){
+        var t, id, title, v=widgets.forms[0].validator;
+        try{
+            if(v.isOkToSave()==false){
+                t=jQ("textarea[id=dc:title]");
+                title = jQ.trim(t.val());
+                if(title==""){
+                    widgets.messageBox("Can not save without a 'Title'!",
+                        function(){
+                            id=t.parents(".ui-tabs-panel").attr("id");
+                            jQ("a[href=#"+id+"]").click();
+                            t.focus();
+                        });
+                    t.focus();
+                }else{
+                    widgets.messageBox("Can not save! Please check and fill in required fields!");
+                }
+            }
+        }catch(e){
+            alert("Error in save-click - "+e.message);
+        }
     });
 });
+
+function preSave(a,b){
+    $(".saved-result").html("<img src='../images/loading-progress.gif'/>").show();
+}
+
+function aboutToSave(w,data){
+}
+
 </script>

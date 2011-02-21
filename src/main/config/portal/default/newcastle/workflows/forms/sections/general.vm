@@ -13,7 +13,7 @@
         <textarea rows="4" cols="80" id="dc:title" style="vertical-align: text-top;"
             placeholder="Enter the title of the research data" autofocus></textarea>
         <label class="validation-err-msg" for="dc:title"
-            data-validation-rule="test(!='');when(onBlur, onChange, onSubmit);">
+            data-validation-rule="test(!='');when(onBlur, onChange, onSubmit, OnSave);">
             A title is required!
         </label>
     </p>
@@ -115,13 +115,13 @@
             <span class="selection-added">
                 <input type="hidden" class="selection-added-id"
                        id="dc:language" value="eng" />
-                <input type="text" class="selection-added-label" size="80"
+                <input type="text" class="selection-added-label" size="20" readonly="readonly"
                        id="dc:language.skos:prefLabel" value="English" />
                 <a href="#" class="clear-item">change</a>
             </span>
             <span class="drop-down-location">
                 <button class="selection-add add-unique-only" data-add-on-click="1">
-                    Select <!-- '<span class="selection-add-label"></span>' -->
+                    Select 
                 </button>
             </span>
         </span>

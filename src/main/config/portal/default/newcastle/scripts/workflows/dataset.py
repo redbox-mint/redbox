@@ -503,12 +503,8 @@ class DatasetData(object):
         formData = self.__formData
         tfpackage = self.__tfpackage
         try:
-            rawMetaList = formData.getValues("metaList[]")
-            print "formData metaList = '%s'" % rawMetaList
-            if rawMetaList is None:
-                rawMetaList = ["dc:title"]
-            metaList = list(rawMetaList)
-            print "++metaList='%s'" % str(metaList)
+            metaList = list(formData.getValues("metaList[]"))
+            #print "++metaList='%s'" % str(metaList)
             removedSet = set(tfpackage.get("metaList", [])).difference(metaList)
             try:
                 for metaName in metaList:

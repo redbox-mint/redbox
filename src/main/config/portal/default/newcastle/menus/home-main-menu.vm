@@ -30,7 +30,7 @@ $(function() {
                 func: "create-new",
                 packageType: "dataset",
                 metaList: ["title", "description"],
-                title: "[Untitled]",
+                title: "",
                 description: ""
             },
             success: function(data) {

@@ -189,6 +189,12 @@
             "security": ["registered", "metadata", "editor", "admin"],
             "upload-path": "${fascinator.home}/uploads/workflow-harvester",
             "json-config": "${fascinator.home}/harvest/workflows/workflow-harvester.json"
+        },
+        "attachment-upload":{
+            "screen-label": "Attachment Upload",
+            "security": ["registered", "metadata", "editor", "admin"],
+            "upload-path": "${fascinator.home}/uploads/attachments",
+            "json-config": "${fascinator.home}/harvest/workflows/attachment.json"
         }
     },
     "mime-types" : {
