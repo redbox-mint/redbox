@@ -13,7 +13,7 @@
         <textarea rows="4" cols="80" id="dc:title" style="vertical-align: text-top;"
             placeholder="Enter the title of the research data" autofocus></textarea>
         <label class="validation-err-msg" for="dc:title"
-            data-validation-rule="test(!='');when(onBlur, onChange, onSubmit, OnSave);">
+            data-validation-rule="test(!='' and !='[Untitled]');when(onBlur, onChange, onSubmit, OnSave);">
             A title is required!
         </label>
     </p>

@@ -153,8 +153,8 @@ jQ(function(){
             if(v.isOkToSave()==false){
                 t=jQ("textarea[id=dc:title]");
                 title = jQ.trim(t.val());
-                if(title==""){
-                    widgets.messageBox("Can not save without a 'Title'!",
+                if(title=="" || title=="[Untitled]"){
+                    widgets.messageBox("A 'Title' is required!",
                         function(){
                             id=t.parents(".ui-tabs-panel").attr("id");
                             jQ("a[href=#"+id+"]").click();
@@ -162,7 +162,7 @@ jQ(function(){
                         });
                     t.focus();
                 }else{
-                    widgets.messageBox("Can not save! Please check and fill in required fields!");
+                    widgets.messageBox("Cannot save! Please check and fill in required fields!");
                 }
             }
         }catch(e){

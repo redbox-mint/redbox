@@ -109,7 +109,7 @@
                                         </span>
                                         <span class="drop-down-location">
                                             <button class="selection-add add-unique-only" data-add-on-click="1">
-                                                Add <!-- '<span class="selection-add-label"></span>' -->
+                                                Add 
                                             </button>
                                         </span>
                                     </span>

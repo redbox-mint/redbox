@@ -19,8 +19,8 @@
                           data-label-key="skos:prefLabel"
                           data-list-key="results"
                           data-children-key="skos:narrower">
-                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
-                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
+                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
+                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
                     </span>
                     <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
                 </td>
@@ -57,8 +57,8 @@
                           data-label-key="skos:prefLabel"
                           data-list-key="results"
                           data-children-key="skos:narrower">
-                        <input type="text" class="selection-add-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="" />
-                        <input type="text" class="selection-add-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="" />
+                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="" />
+                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="" />
                     </span>
                     <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
                 </td>
