@@ -48,6 +48,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:oai="http://www.openarchives.org/OAI/2.0/"
+    xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
 >
 
 <xsl:output method="html"/>
@@ -653,6 +654,116 @@ p.intro {
 .xmlAttrValue {
 	color: #0000c0;
 }
+</xsl:template>
+
+
+<!-- rif_cs record -->
+
+<xsl:template match="rif:registryObjects">
+  <div class="dcdata">
+    <h3>Registry Interchange Format - Collections and Servies Metadata (rif_cs)</h3>
+    <table class="dcdata">
+      <xsl:apply-templates select="*" />
+    </table>
+  </div>
+</xsl:template>
+
+<xsl:template match="rif:registryObject">
+  <xsl:apply-templates select="*" />
+</xsl:template>
+
+<xsl:template match="rif:*">
+  <xsl:apply-templates select="*" />
+</xsl:template>
+
+<xsl:template match="rif:identifier[@type='uri']">
+  <tr><td class="key">Identifier</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:collection">
+  <tr><td class="key">Resource Type</td><td class="value">
+    <xsl:value-of select="@type"/>
+  </td></tr>
+  <xsl:apply-templates select="*" />
+</xsl:template>
+
+<xsl:template match="rif:name[@type='primary']">
+  <tr><td class="key">Title</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:description[@type='full']">
+  <tr><td class="key">Description</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:description[@type='accessRights']">
+  <tr><td class="key">Access Rights</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:description[@type='rights']">
+  <tr><td class="key">Rights</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:coverage">
+  <tr><td class="key">Coverage</td><td class="value">
+    <xsl:apply-templates select="rif:temporal/rif:text" />
+    <xsl:apply-templates select="rif:temporal/rif:date" />
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:temporal/rif:text">
+     <b>Time Period: </b> <xsl:value-of select="."/>
+</xsl:template>
+<xsl:template match="rif:date[@type='dateFrom']">
+    &#160; <i><b> Date </b><xsl:value-of select="."/></i>
+</xsl:template>
+<xsl:template match="rif:date[@type='dateTo']">
+    <i><b> to </b><xsl:value-of select="."/></i>
+</xsl:template>
+
+<xsl:template match="rif:subject[@type='local'][position()=1]">
+  <tr><td class="key">Subject and Keywords</td><td class="value">
+    <xsl:value-of select="."/><xsl:apply-templates select="../rif:subject[@type='local'][position()>1]" mode="nest"/>
+  </td></tr>
+</xsl:template>
+<xsl:template match="rif:subject[@type='local']" mode="nest">, <xsl:value-of select="."/></xsl:template>
+
+<xsl:template match="rif:subject[@type='anzsrc-toa']">
+  <tr><td class="key">Research Activity</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:relatedInfo[@type='publication'][position()=1]">
+  <tr><td class="key">Publications (citing)</td><td class="value">
+    <ul style="margin:0px; padding-left:1em;">
+      <xsl:apply-templates select="../rif:relatedInfo[@type='publication']" mode="nest"/>
+    </ul>
+  </td></tr>
+</xsl:template>
+<xsl:template match="rif:relatedInfo[@type='publication']" mode="nest">
+   <li><xsl:value-of select="."/></li>
+</xsl:template>
+
+<xsl:template match="rif:relatedInfo[@type='website']">
+  <tr><td class="key">Website</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
+</xsl:template>
+
+<xsl:template match="rif:relatedObject">
+  <tr><td class="key">Related (<xsl:value-of select="./rif:relation/@type"/>)</td><td class="value">
+    <xsl:value-of select="."/>
+  </td></tr>
 </xsl:template>
 
 </xsl:stylesheet>
