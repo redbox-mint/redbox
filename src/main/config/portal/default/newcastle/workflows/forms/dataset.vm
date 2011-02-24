@@ -169,6 +169,13 @@ jQ(function(){
             alert("Error in save-click - "+e.message);
         }
     });
+    // HACK - a work around for a BUG in Chrome - where the help stops working on the
+    //      'General' tab page after navigating away and back again!
+    setTimeout(function(){
+      jQ("a[href=#screen1]").click(function(){
+        setTimeout(function(){jQ("#screen1").hide().show();}, 10);
+      });
+    }, 100);
 });
 
 function preSave(a,b){
