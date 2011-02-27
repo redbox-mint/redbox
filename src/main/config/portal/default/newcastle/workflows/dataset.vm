@@ -146,6 +146,7 @@ span.required {
   var packageData = {
             portalPath:"$portalPath",
             metaData:$self.getJsonMetadata(),
+            attachedFiles:$self.getAttachedFiles(),
             ajaxRequestUrl:"$self.getAjaxRequestUrl()",
             packagedItems:$self.getJsonPackagedItems(),
             test:$self.getJsonTest(),

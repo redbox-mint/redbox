@@ -3,7 +3,9 @@ from au.edu.usq.fascinator.common import JsonConfigHelper
 from au.edu.usq.fascinator.portal import FormData
 from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
 from au.edu.usq.fascinator.api.storage import PayloadType
+from au.edu.usq.fascinator.api.indexer import SearchRequest
 
+from java.io import ByteArrayOutputStream
 from java.io import ByteArrayInputStream
 from java.lang import String
 from java.net import URLDecoder
@@ -39,14 +41,18 @@ class WorkflowData:
         oid = self.formData.get("oid")
         func = self.formData.get("func")
 
-        if isAjax and func=="attach-file":
-            self.fileName = self.formData.get("uploadFile")
-            print "*** isAjax & func=attach-file, fileName='%s'" % self.fileName
-            #print "oid='%s'" % oid
-            self.fileDetails = self.vc("sessionState").get(self.fileName)
-            print " *** workflow.py : Upload details : ", repr(self.fileDetails)
-            self._ajax(func)
-            return
+        if isAjax:
+            if func=="attach-file":
+                self.fileName = self.formData.get("uploadFile")
+                #print "*** isAjax & func=attach-file, fileName='%s'" % self.fileName
+                #print "oid='%s'" % oid
+                self.fileDetails = self.vc("sessionState").get(self.fileName)
+                #print " *** workflow.py : Upload details : ", repr(self.fileDetails)
+                self._ajax(func)
+                return
+            if func=="delete-attach-file":
+                self._ajax(func)
+                return
 
         # Normal workflow progressions
         if self.fileName is None:
@@ -95,61 +101,44 @@ class WorkflowData:
             return None
 
     def _ajax(self, func=None):
-        formData = self.formData
         response = self.vc("response")
-        print " workflow - ajax"
+        formData = self.formData
+
+        if func=="delete-attach-file":
+            return self._deleteAttachment(formData)
 
         if self.fileDetails.get("error"):
             print " *** ERROR: '%s'" % self.fileDetails.get("error")
             writer = response.getPrintWriter("text/plain; charset=UTF-8")
             writer.println(jsonWriter({"error":self.fileDetails.get("error")}))
             writer.close()
+            return
 
+        if func=="attach-file":
+            return self._attachment(formData)
+
+        print " workflow - ajax"
         obj = self.getObject()
         oid = obj.getId()
 
-        if func=="attach-file":
-            print "## oid='%s'" % oid
-            print "## Upload details : ", repr(self.fileDetails)
-            fname = self.fileDetails.get("name")
-            fInputStream = FileInputStream(self.fileDetails.get("location"))
-            p = StorageUtils.createOrUpdatePayload(
-                    obj, fname, fInputStream)
-            p.setType(PayloadType.Attachment)
-            print p.getContentType()
-            print p.getType()
-            #print dir(p)
-            print "---"
-            p.close()
-            ## Index this payload
-            Services.indexer.index(self.getOid())
-            Services.indexer.commit()
-
-            print "## sending json response"
-            writer = response.getPrintWriter("text/plain; charset=UTF-8")
-            json = {"ok":"Submitted OK", "oid":oid}
-            writer.println(jsonWriter(json));
-            writer.close()
-            print "## done"
-            return
-
-        for x in range(20):
-            wfMetadata = self.getWorkflowMetadata()  # workflow.metadata
-            print "%s waiting for workflowMetadata" % (x)
-            if wfMetadata:
-                break
-            time.sleep(.2)
-
-        if wfMetadata is None:
-            print "** no workflow metadata"
-            wfMetadataDict = {
-                            "id":"arts",
-                            "step":"pending",
-                            "pageTitle":"Uploaded Files - Management",
-                            "label":"Pending",
-                            "createdBy":"workflow.py"}
-            wfMetadata = JsonConfigHelper(jsonWriter(wfMetadataDict))
-            self._setWorkflowMetadata(wfMetadata)
+        wfMetadata = self.getWorkflowMetadata()  # workflow.metadata
+#        for x in range(20):
+#            wfMetadata = self.getWorkflowMetadata()  # workflow.metadata
+#            print "%s waiting for workflowMetadata" % (x)
+#            if wfMetadata:
+#                break
+#            time.sleep(.2)
+#
+#        if wfMetadata is None:
+#            print "** no workflow metadata"
+#            wfMetadataDict = {
+#                            "id":"arts",
+#                            "step":"pending",
+#                            "pageTitle":"Uploaded Files - Management",
+#                            "label":"Pending",
+#                            "createdBy":"workflow.py"}
+#            wfMetadata = JsonConfigHelper(jsonWriter(wfMetadataDict))
+#            self._setWorkflowMetadata(wfMetadata)
         print "-------------"
         print wfMetadata
         print "-------------"
@@ -188,6 +177,131 @@ class WorkflowData:
         writer.println(jsonWriter(json));
         writer.close()
         print "-- done"
+
+
+    def _attachment(self, formData):
+        try:
+            print "  attachment upload"
+            indexer = Services.indexer
+            obj = self.getObject()
+            oid = obj.getId()
+            #print "## oid='%s'" % oid
+            fname = self.fileDetails.get("name")
+            foid = self.fileDetails.get("oid")
+            print "filename='%s', foid='%s'" % (fname, foid)
+            formJson = jsonReader(formData.get("json", "{}"))
+            #print "formJson=%s" % str(formJson)
+            #print "## Upload details : ", repr(self.fileDetails)
+            try:
+                attachObj = Services.storage.getObject(foid)
+            except StorageException, e:
+                json=jsonWriter({"error":"Attached file - '%s'" % str(e)})
+                self._jsonResponseWrite(json)
+                return
+            #self._getWorkflowMetadataFor(attachObj)
+            attachWFMetadata = {
+                            "type":"attachment",
+                            "formData":{
+                                        "attached_to":oid,
+                                        "filename":fname,
+                                        "access_rights":formJson.get("accessRights", "private"),
+                                        "attachment_type":formJson.get("attachmentType", "")
+                                       },
+                            "createdBy":"workflow.py"}
+            attachedFiles = self._getAttachedFiles(oid)
+            fd = dict(attachWFMetadata["formData"])
+            fd["id"]=foid
+            attachedFiles.append(fd)
+            attachedFiles.sort(lambda a, b: cmp(a["filename"], b["filename"]))
+            self._setWorkflowMetadataFor(attachObj, attachWFMetadata)
+            #indexer.index(foid)
+            indexer.index(foid, "TF-OBJ-META")      # only need to reindex the main object
+            indexer.commit()
+            ## Index this payload
+            #Services.indexer.index(oid)
+            #Services.indexer.commit()
+            json = {"ok":"Completed OK", "oid":oid, "attachedFiles":attachedFiles}
+            self._jsonResponseWrite(json)
+        except Exception, e:
+            json=jsonWriter({"error":"in workflow.py _attachment() - '%s'" % str(e)})
+            self._jsonResponseWrite(json)
+
+
+    def _deleteAttachment(self, formData):
+        try:
+            print " * _deleteAttachment formData='%s'" % str(formData)
+            oid = self.formData.get("oid")
+            foid = formData.get("foid")
+            print "oid='%s', foid='%s'" % (oid, foid)
+            attachedFiles = self._getAttachedFiles(oid)
+            attachedFiles.sort(lambda a, b: cmp(a["filename"], b["filename"]))
+            # find
+            delFileData = [i for i in attachedFiles if i["id"]==foid]
+            if delFileData:
+                #print "delFileData='%s'" % str(delFileData)
+                attachedFiles.remove(delFileData[0])
+                try:
+                    indexer = Services.indexer
+                    indexer.remove(foid)
+                    indexer.commit()
+                    Services.storage.removeObject(foid)
+                except Exception, e:
+                    print "*** ERROR: '%s'" % str(e)
+            json = {"ok":"Deleted OK", "attachedFiles":attachedFiles}
+            #print json
+            self._jsonResponseWrite(json)
+        except Exception, e:
+            print "ERROR: %s" % str(e)
+            json=jsonWriter({"error":"in workflow.py _deleteAttachment() - '%s'" % str(e)})
+            self._jsonResponseWrite(json)
+
+    def _getAttachedFiles(self, oid):
+        sr = self._search("attached_to:%s" % oid)
+        docs = sr.get("response", {}).get("docs", [])
+        docs = [{
+                      "filename":d["filename"][0],
+                      "attachment_type":d["attachment_type"][0],
+                      "access_rights":d["access_rights"][0],
+                      "id":d["id"]
+                } for d in docs]
+        return docs
+    
+
+    def _getWorkflowMetadataFor(self, obj):
+        try:
+            wfPayload = obj.getPayload("workflow.metadata")
+            metadata = JsonConfigHelper(wfPayload.open())
+            wfPayload.close()
+        except StorageException, e:
+            print "_getWorkflowMetadataFor Error - '%s'" % str(e)
+            metadata = None
+        return metadata
+
+    def _setWorkflowMetadataFor(self, obj, metadata):
+        try:
+            md = JsonConfigHelper(jsonWriter(metadata))
+            jsonString = String(md.toString())
+            inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+            StorageUtils.createOrUpdatePayload(obj, "workflow.metadata", inStream)
+            return True
+        except StorageException, e:
+            return False
+
+    def _search(self, query):
+        req = SearchRequest(query)
+        req.setParam("rows", "1000")
+        out = ByteArrayOutputStream()
+        Services.indexer.search(req, out)
+        result = JsonConfigHelper(ByteArrayInputStream(out.toByteArray()))
+        return jsonReader(result.toString())
+
+
+    def _jsonResponseWrite(self, json):
+        response = self.vc("response")
+        writer = response.getPrintWriter("text/plain; charset=UTF-8")
+        writer.println(jsonWriter(json));
+        writer.close()
+
 
     def _setWorkflowMetadata(self, oldMetadata):
         try:

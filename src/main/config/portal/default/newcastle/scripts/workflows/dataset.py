@@ -15,6 +15,8 @@ from java.io import (InputStreamReader, ByteArrayInputStream,
     ByteArrayOutputStream, File, StringWriter)
 from org.apache.commons.io import IOUtils
 from au.edu.usq.fascinator.api.indexer import SearchRequest
+from au.edu.usq.fascinator.common import JsonConfigHelper
+
 
 from json2 import read as jsonReader, write as jsonWriter
 import re
@@ -177,6 +179,23 @@ class DatasetData(object):
         d["dc:title"]=d.get("title", "") or d.get("dc:title", "")
         d["dc:abstract"]=d.get("description", "") or d.get("dc:abstract", "")
         return jsonWriter(self.__tfpackage)
+
+    def getAttachedFiles(self):
+        req = SearchRequest("attached_to:%s" % self.__oid)
+        req.setParam("rows", "1000")
+        out = ByteArrayOutputStream()
+        Services.indexer.search(req, out)
+        result = JsonConfigHelper(ByteArrayInputStream(out.toByteArray()))
+        sr = jsonReader(result.toString())
+        docs = sr.get("response", {}).get("docs", [])
+        docs = [{
+                      "filename":d["filename"][0],
+                      "attachment_type":d["attachment_type"][0],
+                      "access_rights":d["access_rights"][0],
+                      "id":d["id"]
+                } for d in docs]
+        docs.sort(lambda a, b: cmp(a["filename"], b["filename"]))
+        return jsonWriter(docs)
 
     def getAjaxRequestUrl(self):
         return "../workflows/test.ajax"

@@ -1,0 +1,22 @@
+{
+    "harvester": {
+        "type": "workflow-harvester",
+        "workflow-harvester": { "force-storage": "true" }
+    },
+    "transformer": {
+        "harvestQueue": [],
+        "renderQueue": []
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "attachment-rules.py"
+        },
+        "params": {
+            "repository.name": "Attachment",
+            "repository.type": "Attachment",
+            "workflow.source": "ReDBox"
+        }
+    },
+    "stages": [ ]
+}

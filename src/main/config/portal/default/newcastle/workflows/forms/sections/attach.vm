@@ -1,0 +1,125 @@
+<div>
+    <h2>
+        Attached Files
+    </h2>
+    <fieldset>
+        <ul id="attached-files">
+        </ul>
+    </fieldset>
+
+
+    <h2>
+        Add a File
+    </h2>
+    <fieldset>
+      <div id="add-a-file" class="widget-form"
+            data-submit-url="../workflow.ajax?ajax=1&amp;oid={packageData.oid}&amp;func=attach-file"
+            data-pre-submit-func=""
+            data-submit-func="fileUploadFunc"
+            data-submit-result-func="uploadCompletedFunc"
+            data-form-fields="uploadFile, attachmentType, accessRights"
+            data-form-fields-readonly="ajax, oid, func, upload-file-workflow, metaDataList"
+            >
+        <input type="hidden" name="ajax" value="1"/>
+        <input type="hidden" name="oid" value=""/>
+        <input type="hidden" name="func" value="attach-file"/>
+        <input type="hidden" name="upload-file-workflow" value="attachment-upload"/>
+        <input type="hidden" name="metaDataList" value="[]" />
+
+        <div>
+            <h2>File</h2>
+            <input type="file" id="uploadFile" name="uploadFile" size="40" />
+        </div>
+        <div style="padding-top:1em;padding-bottom:0.5em;">
+            <h2>Type</h2>
+            <select id="attachmentType" style="left:20em;">
+                <option value="research-data">Research Data</option>
+                <option value="supporting-material">Supporting Material</option>
+            </select>
+        </div>
+        <div style="padding-top:1em;padding-bottom:1em;">
+            <h2>Access rights</h2>
+            <select id="accessRights">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+        </div>
+        <div style="padding-top:0.5em;">
+            <button id="add-file" class="form-fields-submit">Attach</button>
+            <span class="hidden submit-result" style="font-size: 120%;"> </span>
+            <img  class='hidden' id='upload-file-loading' alt='Loading. Please wait...'
+                src='../images/loading-progress.gif' />
+        </div>
+
+      </div>
+    </fieldset>
+</div>
+<script type="text/javascript">
+    var jQ=$;
+    function fileUploadFunc(widgetForm, data){
+        if(!data.uploadFile){
+            widgets.messageBox("Please select a file to be attached first!");
+            return false;
+        }
+        data.oid=packageData.oid;
+        jQ("#add-file").attr("disabled", true);
+        //widgets.messageBox(JSON.stringify(data));
+    }
+
+    function uploadCompletedFunc(widgetForm, rData){
+        if(rData.ok){
+            updateAttachedFiles(rData.attachedFiles);
+        }
+        jQ("#uploadFile").val("");
+    }
+
+    function updateAttachedFiles(attachedFiles){
+        var h, t, a, li, ul=jQ("#attached-files");
+        var url="../workflow.ajax?ajax=1&oid="+packageData.oid+"&func=delete-attach-file";
+        ul.html("");
+        function format(s){
+            return s.replace("-", " ").replace(/\b\w/g,
+                function(m){return m.toUpperCase();})
+        }
+        if(attachedFiles.length==0){
+            ul.append("<li>No attached files</li>");
+        }
+        jQ.each(attachedFiles, function(c, d){
+            li=jQ("<li/>");
+            h = "../detail/"+d.id+"/"+d.filename;
+            li.append("<a href='"+h+"'>"+d.filename+"</a>");
+            t=format(d.attachment_type);
+            li.append("<span style='font-weight:bold;padding-left:2em;'> Type: </span>"+t);
+            a=format(d.access_rights);
+            li.append("<span style='font-weight:bold;padding-left:2em;'> Access rights: </span>"+a);
+            // Delete link
+            t = jQ("<a href='#' style='padding-left:2em;'>delete</a>");
+            t.click(function(){
+                var s=jQ("<span style='padding-left:1em;color:darkgreen;'>deleting <img src='../images/loading-progress.gif' style='width:24px;'/></span>");
+                t.replaceWith(s);
+                jQ.ajax({
+                    url:url, data:{foid:d.id}, type:"POST", dataType:"json", timeout:5000,
+                    success:function(rJson, status){
+                        if(rJson.ok){ updateAttachedFiles(rJson.attachedFiles); }
+                        else{ s.replaceWith(t); }
+                    },
+                    error:function(xhr, status){
+                        s.replaceWith(t);
+                    }
+                });
+                return false;
+            });
+            li.append(t);
+            ul.append(li);
+        });
+    }
+
+    $(function(){
+        var but=jQ("#add-file"), uploadFile=jQ("#uploadFile");
+        but.attr("disabled", true);
+        uploadFile.change(function(){
+            but.attr("disabled", !uploadFile.val());
+        });
+        updateAttachedFiles(packageData.attachedFiles);
+    });
+</script>
