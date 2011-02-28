@@ -67,9 +67,7 @@ public class SecureStorage implements Storage {
         this.indexer = indexer;
         this.securityManager = securityManager;
         this.state = state;
-        username = null;
-        rolesList = new ArrayList<String>();
-        rolesList.add("guest");
+        setGuestAccess();
     }
 
     @Override
@@ -137,8 +135,17 @@ public class SecureStorage implements Storage {
                 rolesList = Arrays.asList(securityManager.getRolesList(state, user));
             } catch (AuthenticationException ae) {
                 log.error("Failed to get user access, assuming guest access", ae);
+                setGuestAccess();
             }
+        } else {
+            setGuestAccess();
         }
+    }
+
+    private void setGuestAccess() {
+        username = "guest";
+        rolesList = new ArrayList();
+        rolesList.add("guest");
     }
 
     /**
