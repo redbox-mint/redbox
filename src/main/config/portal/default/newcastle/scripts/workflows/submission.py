@@ -80,7 +80,6 @@ class SubmissionData(object):
         return self.__object
 
     def __update(self):
-        blah
         print "Updating '%s'" % self.__oid
         result = '{"ok":"Updated OK"}'
 

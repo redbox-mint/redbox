@@ -19,23 +19,23 @@ fieldset p textarea { display:block; width: 98%; }
         </p>
         <p>
             <label for="phoneNumber">Phone Number</label>
-            <input readonly="readonly" id="phoneNumber" type="text" size="40" value='$!self.getRequestData("emailAddress")' />
+            <input readonly="readonly" id="phoneNumber" type="text" size="40" value='$!self.getRequestData("phoneNumber")' />
         </p>
         <p>
             <label for="emailAddress">Email Address</label>
-            <input readonly="readonly" id="emailAddress" type="text" size="40" value='$!self.getRequestData("phoneNumber")' />
+            <input readonly="readonly" id="emailAddress" type="text" size="40" value='$!self.getRequestData("emailAddress")' />
         </p>
         #if("$!self.getCurrentStep()" == "inbox")
-            <input class="button" id="accept" type="submit" value="Accept" />
-            <input class="button" id="delete" type="submit" value="Delete" />
-            &nbsp;<label id="messages" for="delete"hm></label>
+            <input class="button" id="acceptButton" type="submit" value="Accept" />
+            <input class="button" id="deleteButton" type="submit" value="Delete" />
+            &nbsp;<label id="messages" for="delete"></label>
         #end
     </fieldset>
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
 $(function(){
-    $("#accept").click(function(){
+    $("#acceptButton").click(function(){
         jQuery.ajax({
             type: "POST",
             url: "$portalPath/workflow.ajax",
@@ -51,12 +51,12 @@ $(function(){
             data: {
                 ajax: true,
                 func: "update-package-meta-deposit",
-                oid: oid
+                oid: "$self.oid"
             },
             dataType: "json"
         });
     });
-    $("#delete").click(function(){
+    $("#deleteButton").click(function(){
         jQuery.ajax({
             type : "POST",
             url : "$portalPath/actions/delete.ajax",
