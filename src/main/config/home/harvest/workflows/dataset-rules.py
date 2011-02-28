@@ -189,14 +189,15 @@ class IndexData:
 
         except StorageException:
             # No workflow payload, time to create
-            firstStage =  stages.get(0).get("name")
+            #firstStage = stages.get(0).get("name")
+            secondStage = stages.get(1).get("name")  # want to start at Investigation
             wfChanged = True
             wfMeta = JsonConfigHelper()
             wfMeta.set("id", WORKFLOW_ID)
-            wfMeta.set("step", firstStage)
+            wfMeta.set("step", secondStage)
             wfMeta.set("pageTitle", "Dataset Metadata")
             for stage in stages:
-                if stage.get("name") == firstStage:
+                if stage.get("name") == secondStage:
                     wfMeta.set("label", stage.get("label"))
                     self.item_security = stage.getList("visibility")
                     workflow_security = stage.getList("security")
