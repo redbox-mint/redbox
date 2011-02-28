@@ -1,41 +1,39 @@
-<div class="grid_6">
-    #set($menuTitle = "Review Stages")
-    #parseTemplate("wrapping/info-box-open.vm")
-    <div class="block">
-        <p>Select a stage to find all records in that stage.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Records</th>
-                </tr>
-            </thead>
-            <tbody id="stages">
-            #foreach($stage in $self.stages)
-                #set($count = $stage.count)
-                <tr id="wfStage$velocityCount">
-                    <td>$velocityCount</td>
-                    <td>
-                        <img src="$portalPath/images/icons/wf_${stage.name}.png" />
-                        <span class="titleText">
-                        #if($count == 0)
-                            <em>$stage.label</em>
-                        #else
-                            <a class="stagelink" href="$portalPath/search" rel="$stage.label">$stage.label</a>
-                        #end
-                        </span>
-                        <br/>
-                        <span>$stage.description</span>
-                    </td>
-                    <td class="count" style="text-align:center">$count</td>
-                </tr>
-            #end
-            </tbody>
-        </table>
-    </div>
-    #parseTemplate("wrapping/info-box-close.vm")
+#set($menuTitle = "Review Stages")
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+    <p>Select a stage to find all records in that stage.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Records</th>
+            </tr>
+        </thead>
+        <tbody id="stages">
+        #foreach($stage in $self.stages)
+            #set($count = $stage.count)
+            <tr id="wfStage$velocityCount">
+                <td>$velocityCount</td>
+                <td>
+                    <img src="$portalPath/images/icons/wf_${stage.name}.png" />
+                    <span class="titleText">
+                    #if($count == 0)
+                        <em>$stage.label</em>
+                    #else
+                        <a class="stagelink" href="$portalPath/search" rel="$stage.label">$stage.label</a>
+                    #end
+                    </span>
+                    <br/>
+                    <span>$stage.description</span>
+                </td>
+                <td class="count" style="text-align:center">$count</td>
+            </tr>
+        #end
+        </tbody>
+    </table>
 </div>
+#parseTemplate("wrapping/info-box-close.vm")
 <script type="text/javascript">
 $(function(){
     $(".stagelink").live("click", function(){

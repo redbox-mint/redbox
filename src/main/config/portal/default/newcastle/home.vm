@@ -18,11 +18,17 @@
 <div class="grid_4">&nbsp;</div>
 
 #if($page.authentication.is_logged_in())
-    #parseTemplate("home/stages.vm")
-    #parseTemplate("home/alerts.vm")
+    <div class="grid_6">
+        #parseTemplate("home/stages.vm")
+        #parseTemplate("menus/home-new-items.vm")
+    </div>
+    <div class="grid_6">
+        #parseTemplate("home/alerts.vm")
+        ##parseTemplate("home/submissions.vm")
+    </div>
     <div class="clear"></div>
-    <div class="grid_4">&nbsp;</div>
-    #parseTemplate("menus/home-new-items.vm")
 #else
-    #parseTemplate("menus/home-new-items.vm")
+    <div class="grid_6">
+        #parseTemplate("menus/home-new-items.vm")
+    </div>
 #end

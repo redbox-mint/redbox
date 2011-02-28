@@ -195,6 +195,12 @@
             "security": ["registered", "metadata", "editor", "admin"],
             "upload-path": "${fascinator.home}/uploads/attachments",
             "json-config": "${fascinator.home}/harvest/workflows/attachment.json"
+        },
+        "submission-upload":{
+            "screen-label": "Submission Request",
+            "security": ["guest"],
+            "upload-path": "${fascinator.home}/uploads/submissions",
+            "json-config": "${fascinator.home}/harvest/workflows/submission.json"
         }
     },
     "mime-types" : {

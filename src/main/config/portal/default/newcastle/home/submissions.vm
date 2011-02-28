@@ -1,4 +1,4 @@
-#set($menuTitle = "Alerts")
+#set($menuTitle = "Submission Requests")
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
     #if($self.alerts.isEmpty())
@@ -84,7 +84,6 @@
                 },
             error: function(req, status, e) { alert(req.responseText); },
             data: {
-                ajax: true,
                 func: "update-package-meta-deposit",
                 oid: oid,
                 metaList: ["dc:title"],

@@ -18,11 +18,11 @@ class LayoutData:
         self.authentication = AuthenticationData()
         self.authentication.__activate__(context)
         
-        if self.request.isXHR() and not self.authentication.is_logged_in():
-            self.response = context["response"]
-            writer = self.response.getPrintWriter("text/html; charset=UTF-8")
-            writer.println("Access denied. You must be logged in to view this resource.")
-            writer.close()
+        #if self.request.isXHR() and not self.authentication.is_logged_in():
+        #    self.response = context["response"]
+        #    writer = self.response.getPrintWriter("text/html; charset=UTF-8")
+        #    writer.println("Access denied. You must be logged in to view this resource.")
+        #    writer.close()
         
         #self.formData = context["formData"]
         #if self.formData is not None:

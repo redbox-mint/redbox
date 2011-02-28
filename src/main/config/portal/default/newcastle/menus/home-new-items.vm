@@ -1,5 +1,4 @@
 #if(!$self.latest.isEmpty())
-<div class="grid_6">
     #set($menuTitle = "Most recent records")
     #parseTemplate("wrapping/menu-open.vm")
     <div class="block">
@@ -23,5 +22,4 @@
         </ol>
     </div>
     #parseTemplate("wrapping/info-box-close.vm")
-</div>
 #end

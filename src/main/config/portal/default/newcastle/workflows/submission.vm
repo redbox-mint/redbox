@@ -1,0 +1,77 @@
+#set($pageTitle = "Submission Request")
+<style type="text/css">
+fieldset p textarea { display:block; width: 98%; }
+</style>
+<div class="grid_16">
+    #if("$!self.getCurrentStep()" == "live")
+        <p><strong>This request has already been processed.</strong></p>
+    #else
+        <p>Please review the submission request and select the appropriate action.</p>
+    #end
+    <fieldset>
+        <p>
+            <label for="description">Description</label>
+            <textarea readonly="readonly" id="description" cols="40" rows="10">$!self.getRequestData("description")</textarea>
+        </p>
+        <p>
+            <label for="contactName">Contact Name</label>
+            <input readonly="readonly" id="contactName" type="text" size="40" value='$!self.getRequestData("contactName")' />
+        </p>
+        <p>
+            <label for="phoneNumber">Phone Number</label>
+            <input readonly="readonly" id="phoneNumber" type="text" size="40" value='$!self.getRequestData("emailAddress")' />
+        </p>
+        <p>
+            <label for="emailAddress">Email Address</label>
+            <input readonly="readonly" id="emailAddress" type="text" size="40" value='$!self.getRequestData("phoneNumber")' />
+        </p>
+        #if("$!self.getCurrentStep()" == "inbox")
+            <input class="button" id="accept" type="submit" value="Accept" />
+            <input class="button" id="delete" type="submit" value="Delete" />
+            &nbsp;<label id="messages" for="delete"hm></label>
+        #end
+    </fieldset>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+$(function(){
+    $("#accept").click(function(){
+        jQuery.ajax({
+            type: "POST",
+            url: "$portalPath/workflow.ajax",
+            success:
+                function (data, status) {
+                    if (data.error) {
+                        alert("Failed to accept submission request!\nReason: " + data.error);
+                    } else {
+                        window.location.href = "$portalPath/home";
+                    }
+                },
+            error: function(req, status, e) { alert(req.responseText); },
+            data: {
+                ajax: true,
+                func: "update-package-meta-deposit",
+                oid: oid
+            },
+            dataType: "json"
+        });
+    });
+    $("#delete").click(function(){
+        jQuery.ajax({
+            type : "POST",
+            url : "$portalPath/actions/delete.ajax",
+            success:
+                function (data, status) {
+                    window.location.href = "$portalPath/home";
+                },
+            error:
+                function (req, status, e) {
+                    $("#messages").html(req.responseText);
+                },
+            data: {
+                record: "$self.oid"
+            }
+        });
+    });
+});
+</script>

@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <th>Description</th>
+        <td>$metadata.getList("dc_description").get(0)</td>
+    </tr>
+    <tr>
+        <th>Contact Name</th>
+        <td>$metadata.getList("contactName").get(0)</td>
+    </tr>
+    <tr>
+        <th>Email Address</th>
+        <td>$metadata.getList("emailAddress").get(0)</td>
+    </tr>
+    <tr>
+        <th>Phone Number</th>
+        <td>$metadata.getList("phoneNumber").get(0)</td>
+    </tr>
+</table>
