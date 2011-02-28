@@ -17,6 +17,7 @@
             data-pre-submit-func=""
             data-submit-func="fileUploadFunc"
             data-submit-result-func="uploadCompletedFunc"
+            data-submit-err-result-func="uploadErrorFunc"
             data-form-fields="uploadFile, attachmentType, accessRights"
             data-form-fields-readonly="ajax, oid, func, upload-file-workflow, metaDataList"
             >
@@ -73,8 +74,16 @@
         jQ("#uploadFile").val("");
     }
 
+    function uploadErrorFunc(widgetForm, rData){
+        if(/already exists in storage/.test(rData.error)){
+            alert("This file already exists in the storage!\n Please select another file.")
+            jQ("#add-file").attr("disabled", false);
+            return false;
+        }
+    }
+
     function updateAttachedFiles(attachedFiles){
-        var h, t, a, li, ul=jQ("#attached-files");
+        var h, a, li, ul=jQ("#attached-files");
         var url="../workflow.ajax?ajax=1&oid="+packageData.oid+"&func=delete-attach-file";
         ul.html("");
         function format(s){
@@ -85,6 +94,7 @@
             ul.append("<li>No attached files</li>");
         }
         jQ.each(attachedFiles, function(c, d){
+            var t;
             li=jQ("<li/>");
             h = "../detail/"+d.id+"/"+d.filename;
             li.append("<a href='"+h+"'>"+d.filename+"</a>");
