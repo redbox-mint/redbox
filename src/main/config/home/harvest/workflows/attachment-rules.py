@@ -64,9 +64,9 @@ class IndexData:
             self.__index("identifier", self.pid)
         self.__index("id", self.oid)
         self.__index("storage_id", self.oid)
-        #self.__index("item_type", self.itemType)\
-        # always set to 'datastream' so that it does not show up in search results etc.
-        self.__index("item_type", "datastream")
+        self.__index("item_type", self.itemType)
+        ## always set to 'datastream' so that it does not show up in search results etc.
+        #self.__index("item_type", "datastream")
         self.__index("last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ"))
         self.__index("harvest_config", self.params.getProperty("jsonConfigOid"))
         self.__index("harvest_rules",  self.params.getProperty("rulesOid"))
@@ -81,10 +81,12 @@ class IndexData:
         formData = wfMeta.get("formData", {})
         for k, v in formData.iteritems():
             self.__index(k, v)
+        self.__index("dc_title", "Attachment-"+formData.get("filename", ""))
+        self.item_security.append("admin")
+        self.__index("workflow_security", "admin")
         if formData.get("access_rights", "private")=="public":
             self.item_security.append("guest")
-        else:
-            self.item_security.append("admin")
+            self.__index("workflow_security", "guest")
 
 
     def __getJsonPayload(self, pid):
