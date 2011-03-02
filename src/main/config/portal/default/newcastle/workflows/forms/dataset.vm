@@ -144,7 +144,7 @@ jQ(function(){
     });
     jQ(".tab-nav .next-tab,.tab-nav .prev-tab").click(function(){
         if(widgets.forms[0].hasChanges()){
-            jQ(".form-fields-save").click();
+            jQ(".form-fields-save:first").click();
         }
     });
     jQ(".form-fields-save").click(function(){
