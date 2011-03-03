@@ -5,16 +5,22 @@
 #set($reviewMode = $page.authentication.is_logged_in() && $self.isSubmitted())
 #set($disabled = "")
 #if($reviewMode)
-    #set($disabled = 'readonly="readonly" disabled="disabled"')
+    #set($disabled = 'readonly="readonly"')
 #end
 <style type="text/css">
 fieldset p textarea { display:block; width: 98%; }
-.required { color: red; }
+.required {
+#if($reviewMode)
+    display: none;
+#else
+    color: red;
+#end
+}
 label.validation, .validation label { color: red; display: block; }
 #submitLabel { color: green; }
 </style>
 <div class="grid_16 widget-form"
-    data-form-fields="submitted,workflow_source,description,contactName,emailAddress,phoneNumber"
+    data-form-fields="submitted,workflow_source,submitDate,description,contactName,emailAddress,phoneNumber"
     data-form-fields-readonly="submit"
     data-submit-url="$portalPath/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
     data-submit-result-func="afterSubmit">
@@ -31,6 +37,10 @@ label.validation, .validation label { color: red; display: block; }
     #end
     </p>
     <fieldset>
+        <p>
+            <label for="submitDate">Date Submitted</label>
+            <input id="submitDate" type="text" size="40" value="$!self.getSubmitDate()" readonly="readonly" />
+        </p>
         <p>
             <label for="description">Description <span class="required">*</span></label>
             <label class="validation" for="description" data-validation-rule="test(notEmpty);when(blur,submit);">A description is required!</label>
@@ -58,8 +68,11 @@ label.validation, .validation label { color: red; display: block; }
         #else
             #set($submitLabel = "Update")
         #end
-        <input class="button form-fields-submit" type="submit" value="$submitLabel" />
+        <input class="button form-fields-submit" id="submitButton" type="submit" value="$submitLabel" />
         <button id="deleteButton">Cancel</button>
+        <span class="hidden" id="loading">
+            <img src="$portalPath/images/icons/loading.gif" />
+        </span>
     </fieldset>
 </div>
 <div class="clear"></div>
@@ -68,7 +81,14 @@ label.validation, .validation label { color: red; display: block; }
 $(function(){
     widgets.contentLoaded();
 
+    $("#submitButton").click(function(){
+        $(this).attr("disabled", "disabled");
+        $("#loading").show();
+        return true;
+    });
+
     $("#deleteButton").click(function(){
+        $(this).attr("disabled", "disabled");
         jQuery.ajax({
             type : "POST",
             url : "$portalPath/actions/delete.ajax",
@@ -78,7 +98,8 @@ $(function(){
                 },
             error:
                 function (req, status, e) {
-                    $("#messages").html(req.responseText);
+                    alert(req.responseText);
+                    $("#deleteButton").removeAttr("disabled");
                 },
             data: {
                 record: "$self.oid"

@@ -3,20 +3,24 @@
     <p>This record was created from the following submission request details.</p>
     <fieldset>
         <p>
+            <label for="submitDate">Date Submitted</label>
+            <input id="submitDate" type="text" size="40" readonly="readonly" />
+        </p>
+        <p>
             <label for="description">Description</label>
-            <textarea id="description" cols="40" rows="10" readonly="readonly" disabled="disabled"></textarea>
+            <textarea id="description" cols="40" rows="10" readonly="readonly"></textarea>
         </p>
         <p>
             <label for="contactName">Contact Name</label>
-            <input id="contactName" type="text" size="40" readonly="readonly" disabled="disabled" />
+            <input id="contactName" type="text" size="40" readonly="readonly" />
         </p>
         <p>
             <label for="phoneNumber">Phone Number</label>
-            <input id="phoneNumber" type="text" size="40" readonly="readonly" disabled="disabled" />
+            <input id="phoneNumber" type="text" size="40" readonly="readonly" />
         </p>
         <p>
             <label for="emailAddress">Email Address</label>
-            <input id="emailAddress" type="text" size="40" readonly="readonly" disabled="disabled" />
+            <input id="emailAddress" type="text" size="40" readonly="readonly" />
         </p>
     </fieldset>
 </div>

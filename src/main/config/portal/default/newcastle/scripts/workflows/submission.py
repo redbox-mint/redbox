@@ -1,3 +1,4 @@
+import time
 from au.edu.usq.fascinator.common import JsonSimple
 from au.edu.usq.fascinator.api.storage import StorageException
 from java.io import ByteArrayInputStream
@@ -17,9 +18,9 @@ class SubmissionData(object):
         self.__requestData = self.__getJsonData(self.__object.getSourceId())
         self.__workflowData = self.__getJsonData("workflow.metadata")
         
-        print " ***** formData:", self.__formData
-        print " ***** requestData:", self.__requestData
-        print " ***** workflowData:", self.__workflowData
+        #print " ***** formData:", self.__formData
+        #print " ***** requestData:", self.__requestData
+        #print " ***** workflowData:", self.__workflowData
 
         if self.__formData.get("func") == "update-package-meta-deposit":
             result = self.__update()
@@ -43,6 +44,9 @@ class SubmissionData(object):
 
     def isSubmitted(self):
         return self.__requestData.getBoolean(False, ["submitted"])
+
+    def getSubmitDate(self):
+        return self.__requestData.getString(time.strftime("%Y-%m-%d %I:%M:%S %p"), ["submitDate"])
 
     def getErrorMessage(self):
         return self.__errorMessage

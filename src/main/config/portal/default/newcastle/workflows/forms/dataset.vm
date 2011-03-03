@@ -76,6 +76,7 @@
         management_plan,
         ## submission request
         submitted,
+        submitDate,
         description,
         contactName,
         phoneNumber,
