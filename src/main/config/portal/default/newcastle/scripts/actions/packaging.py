@@ -74,9 +74,9 @@ class PackagingData:
             value = self.vc("formData").get(metaName)
             manifest.set(metaName, value)
         #
-        print "------"
-        print manifest
-        print "------"
+        #print "------"
+        #print manifest
+        #print "------"
         manifest.store(outWriter, True)
         outWriter.close()
 

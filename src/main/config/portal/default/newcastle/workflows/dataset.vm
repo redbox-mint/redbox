@@ -129,6 +129,11 @@ span.required {
     margin: 0;
     padding: 0;
 }
+
+fieldset p textarea {
+    display: block;
+    width: 98%;
+}
 </style>
 <div class="grid_16">
     <div class="box">
@@ -172,7 +177,8 @@ var UON_NS = "urn:uon:internal";
         function onContentLoaded(){
 var pMsg=$("<p style='font-size:120%;color:green;'>Loading form data. Please wait...</p>");
 $(".inputscreens").hide().after(pMsg);
-            widgets.changeToTabLayout($(".inputscreens")).tabs({ "cookie": { "expires": 30 }});
+            if (!packageData.metaData.submitted){ $(".request").remove(); }
+            widgets.changeToTabLayout($(".inputscreens")).tabs();
             widgets.contentLoaded(function(){
                 try{
                     var st=new Date(), et, ms;
@@ -206,7 +212,6 @@ $(".inputscreens").show();
                     $("input[id=" + baseId + ".dc:identifier]").unautocomplete();
                     $("input[id=" + baseId + ".skos:prefLabel]").removeAttr("readonly").removeClass("label");
                 });
-
                 //$("#getPackagedItems").click(getPackagedItems);
                 //$("#add-items-search").click(function(){itemSearch(1); return false;});
                 //$("#add-items-search-query").keypress(function(e){

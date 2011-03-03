@@ -1,61 +1,73 @@
 #set($pageTitle = "Submission Request")
+#set($loggedIn = $page.authentication.is_logged_in())
+#set($dataEntryMode = !$page.authentication.is_logged_in() && !$self.isSubmitted())
+#set($submittedMode = !$page.authentication.is_logged_in() && $self.isSubmitted())
+#set($reviewMode = $page.authentication.is_logged_in() && $self.isSubmitted())
+#set($disabled = "")
+#if($reviewMode)
+    #set($disabled = 'readonly="readonly" disabled="disabled"')
+#end
 <style type="text/css">
 fieldset p textarea { display:block; width: 98%; }
+.required { color: red; }
+label.validation, .validation label { color: red; display: block; }
+#submitLabel { color: green; }
 </style>
-<div class="grid_16">
-    #if("$!self.getCurrentStep()" == "live")
-        <p><strong>This request has already been processed.</strong></p>
+<div class="grid_16 widget-form"
+    data-form-fields="submitted,workflow_source,description,contactName,emailAddress,phoneNumber"
+    data-form-fields-readonly="submit"
+    data-submit-url="$portalPath/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
+    data-submit-result-func="afterSubmit">
+    <input type="hidden" name="submitted" value="true" />
+    <input type="hidden" name="workflow_source" value="Submission Request" />
+    <p id="userPrompt">
+    #if($submittedMode)
+    Your request has been submitted and you will be contacted shortly. At this
+    stage you may change the details or cancel your request if necessary.
+    #elseif($reviewMode)
+    Please review the submission request and action as appropriate.
     #else
-        <p>Please review the submission request and select the appropriate action.</p>
+    Please provide a brief overview of your research data and how to contact you.
     #end
+    </p>
     <fieldset>
         <p>
-            <label for="description">Description</label>
-            <textarea readonly="readonly" id="description" cols="40" rows="10">$!self.getRequestData("description")</textarea>
+            <label for="description">Description <span class="required">*</span></label>
+            <label class="validation" for="description" data-validation-rule="test(notEmpty);when(blur,submit);">A description is required!</label>
+            <textarea id="description" cols="40" rows="10" $disabled>$!self.getRequestData("description")</textarea>
         </p>
         <p>
-            <label for="contactName">Contact Name</label>
-            <input readonly="readonly" id="contactName" type="text" size="40" value='$!self.getRequestData("contactName")' />
+            <label for="contactName">Contact Name <span class="required">*</span></label>
+            <label class="validation" for="contactName" data-validation-rule="test(notEmpty);when(blur,submit);">A contact name is required!</label>
+            <input id="contactName" type="text" size="40" value="$!self.getRequestData('contactName')" $disabled />
         </p>
         <p>
-            <label for="phoneNumber">Phone Number</label>
-            <input readonly="readonly" id="phoneNumber" type="text" size="40" value='$!self.getRequestData("phoneNumber")' />
+            <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+            <label class="validation" for="phoneNumber" data-validation-rule="test(notEmpty);when(blur,submit);">A phone number is required!</label>
+            <input id="phoneNumber" type="text" size="40" value="$!self.getRequestData('phoneNumber')" $disabled/>
         </p>
         <p>
-            <label for="emailAddress">Email Address</label>
-            <input readonly="readonly" id="emailAddress" type="text" size="40" value='$!self.getRequestData("emailAddress")' />
+            <label for="emailAddress">Email Address <span class="required">*</span></label>
+            <label class="validation" for="emailAddress" data-validation-rule="test(email);when(blur,submit);">A valid email address is required!</label>
+            <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" $disabled/>
         </p>
-        #if("$!self.getCurrentStep()" == "inbox")
-            <input class="button" id="acceptButton" type="submit" value="Accept" />
-            <input class="button" id="deleteButton" type="submit" value="Delete" />
-            &nbsp;<label id="messages" for="delete"></label>
+        #if($dataEntryMode)
+            #set($submitLabel = "Submit")
+        #elseif($reviewMode)
+            #set($submitLabel = "Accept")
+        #else
+            #set($submitLabel = "Update")
         #end
+        <input class="button form-fields-submit" type="submit" value="$submitLabel" />
+        <button id="deleteButton">Cancel</button>
     </fieldset>
 </div>
 <div class="clear"></div>
+<script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript">
 $(function(){
-    $("#acceptButton").click(function(){
-        jQuery.ajax({
-            type: "POST",
-            url: "$portalPath/workflow.ajax",
-            success:
-                function (data, status) {
-                    if (data.error) {
-                        alert("Failed to accept submission request!\nReason: " + data.error);
-                    } else {
-                        window.location.href = "$portalPath/home";
-                    }
-                },
-            error: function(req, status, e) { alert(req.responseText); },
-            data: {
-                ajax: true,
-                func: "update-package-meta-deposit",
-                oid: "$self.oid"
-            },
-            dataType: "json"
-        });
-    });
+    widgets.contentLoaded();
+
     $("#deleteButton").click(function(){
         jQuery.ajax({
             type : "POST",
@@ -74,4 +86,8 @@ $(function(){
         });
     });
 });
+
+function afterSubmit() {
+    window.location.reload();
+}
 </script>

@@ -3,37 +3,29 @@ from au.edu.usq.fascinator.api.storage import StorageException
 from java.io import ByteArrayInputStream
 from org.apache.commons.lang import StringEscapeUtils
 
-class WorkflowStage:
-    def __init__(self, json):
-        self.__json = json
-
-    def getName(self):
-        return self.__json.getString("noname", ["name"])
-
-    def getLabel(self):
-        return self.__json.getString("[No label]", ["label"])
-
-    def getDescription(self):
-        return self.__json.getString("No description.", ["description"])
+def truncate(s, maxLength):
+    return s[:maxLength] + (s[maxLength:] and "...")
 
 class SubmissionData(object):
     def __activate__(self, context):
         self.__services = context["Services"]
         self.__formData = context["formData"]
+        self.__auth = context["page"].authentication
         self.__oid = self.__formData.get("oid")
-        self.__object = None
+        self.__object = self.__getObject();
         self.__errorMessage = None
-        self.__workflow = None
-        self.__workflow = self.__getWorkflow()
-        func = self.__formData.get("func")
-        ajax = self.__formData.get("ajax")
-        if ajax and func == "update-package-meta-deposit":
+        self.__requestData = self.__getJsonData(self.__object.getSourceId())
+        self.__workflowData = self.__getJsonData("workflow.metadata")
+        
+        print " ***** formData:", self.__formData
+        print " ***** requestData:", self.__requestData
+        print " ***** workflowData:", self.__workflowData
+
+        if self.__formData.get("func") == "update-package-meta-deposit":
             result = self.__update()
             writer = response.getPrintWriter("application/json; charset=UTF-8")
             writer.println(result)
             writer.close()
-        else:
-            self.__requestData = self.__getRequestData()
         if self.__errorMessage:
             print "Error: %s" % self.__errorMessage
 
@@ -47,15 +39,18 @@ class SubmissionData(object):
         return self.__oid
 
     def getCurrentStep(self):
-        return self.__workflow.getString(None, ["step"])
+        return self.__workflowData.getString(None, ["step"])
+
+    def isSubmitted(self):
+        return self.__requestData.getBoolean(False, ["submitted"])
 
     def getErrorMessage(self):
         return self.__errorMessage
 
-    def __getRequestData(self):
+    def __getJsonData(self, pid):
         data = None
         object = self.__getObject()
-        payload = object.getPayload(object.getSourceId())
+        payload = object.getPayload(pid)
         data = JsonSimple(payload.open())
         payload.close()
         return data
@@ -71,27 +66,42 @@ class SubmissionData(object):
         return self.__workflow
 
     def __getObject(self):
-        if not self.__object:
-            try:
-                self.__object = self.__services.storage.getObject(self.__oid)
-            except StorageException, e:
-                self.__errorMessage = "Failed to retrieve object: " + e.getMessage()
-                return None
-        return self.__object
+        obj = None
+        try:
+            obj = self.__services.storage.getObject(self.__oid)
+        except StorageException, e:
+            self.__errorMessage = "Failed to retrieve object: " + e.getMessage()
+            return None
+        return obj
 
     def __update(self):
         print "Updating '%s'" % self.__oid
         result = '{"ok":"Updated OK"}'
 
-        json = self.__workflow.getJsonObject()
-        json.put("step", "live")
-        json.put("label", "Processed")
-        json.put("accepted", True)
+        # update from form data
+        data = self.__requestData.getJsonObject()
+        formFields = self.__formData.getFormFields()
+        for formField in formFields:
+            data.put(formField, self.__formData.get(formField))
+        description = self.__formData.get("description")
+        data.put("title", truncate(description, 25))
+        self.__updatePayload(self.__object.getSourceId(), data)
 
-        self.__getObject().updatePayload("workflow.metadata",
-                ByteArrayInputStream(json.toString()))
+        # update workflow metadata
+        if self.__auth.is_logged_in():
+            wf = self.__workflowData.getJsonObject()
+            wf.put("step", "investigation")
+            wf.put("label", "Investigation")
+            wf.put("pageTitle", "Metadata Record")
+            self.__updatePayload("workflow.metadata", wf)
+
+            # update ownership
+            self.__object.getMetadata().setProperty("owner", self.__auth.get_username())
+            self.__object.close();
 
         self.__services.indexer.index(self.__oid)
         self.__services.indexer.commit()
         return result
 
+    def __updatePayload(self, pid, data):
+        self.__object.updatePayload(pid, ByteArrayInputStream(data.toString()))

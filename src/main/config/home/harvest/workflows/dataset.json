@@ -17,9 +17,8 @@
             "rules": "dataset-rules.py"
         },
         "params": {
-            "repository.name": "Dataset",
-            "repository.type": "Dataset",
-            "workflow.source": "ReDBox"
+            "repository.name": "ReDBox",
+            "repository.type": "Metadata Registry"
         }
     },
 
@@ -28,9 +27,8 @@
             "name": "inbox",
             "label": "Inbox",
             "description": "Potential records for investigation.",
-            "security": ["librarian", "reviewer", "admin"],
-            "visibility": ["librarian", "reviewer", "admin"],
-            "template": "workflows/dataset"
+            "security": ["guest"],
+            "visibility": ["guest"]
         },
         {
             "name": "investigation",
@@ -38,7 +36,7 @@
             "description": "Records under investigation.",
             "security": ["librarian", "reviewer", "admin"],
             "visibility": ["librarian", "reviewer", "admin"],
-            "template": "workflows/dataset"
+            "template": "workflows/submission"
         },
         {
             "name": "metadata-review",

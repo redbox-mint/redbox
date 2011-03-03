@@ -73,7 +73,13 @@
         extent,
         policy,
         contracts,
-        management_plan
+        management_plan,
+        ## submission request
+        submitted,
+        description,
+        contactName,
+        phoneNumber,
+        emailAddress
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />
@@ -121,8 +127,13 @@
             #parseTemplate("workflows/forms/sections/attach.vm")
             #nav(true true)
         </div>
-        <h3><a href="#screen8">Submit</a></h3>
-        <div id="screen8" class="inputscreen">
+        <h3 class="request"><a href="#screen8">Request</a></h3>
+        <div id="screen8" class="inputscreen request">
+            #parseTemplate("workflows/forms/sections/request.vm")
+            #nav(true true)
+        </div>
+        <h3><a href="#screen9">Submit</a></h3>
+        <div id="screen9" class="inputscreen">
             #parseTemplate("workflows/forms/sections/submit.vm")
             #nav(true false)
         </div>

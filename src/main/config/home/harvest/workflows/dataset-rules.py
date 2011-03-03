@@ -3,6 +3,7 @@ from au.edu.usq.fascinator.common import FascinatorHome, JsonConfigHelper
 from au.edu.usq.fascinator.common.storage import StorageUtils
 from java.io import ByteArrayInputStream, StringWriter
 from java.lang import String
+from java.util import HashSet
 from org.apache.commons.io import IOUtils
 
 import sys
@@ -56,15 +57,13 @@ class IndexData:
         self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ"))
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
-        self.utils.add(self.index, "display_type", "package-dataset")
 
         self.item_security = []
-        self.owner = self.params.getProperty("owner", None)
+        self.owner = self.params.getProperty("owner", "guest")
 
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
         self.utils.add(self.index, "repository_type", self.params["repository.type"])
-        self.utils.add(self.index, "workflow_source", self.params["workflow.source"])
 
     def __security(self):
         # Security
@@ -106,7 +105,8 @@ class IndexData:
             self.utils.add(self.index, "owner", self.owner)
 
     def __indexList(self, name, values):
-        for value in values:
+        # convert to set so no duplicate values
+        for value in HashSet(values):
             self.utils.add(self.index, name, value)
 
     def __grantAccess(self, newRole):
@@ -163,11 +163,19 @@ class IndexData:
         workflow_security = []
         self.message_list = None
         stages = self.config.getJsonList("stages")
+        if self.owner == "guest":
+            pageTitle = "Submission Request"
+            displayType = "submission-request"
+            initialStep = 0
+        else:
+            pageTitle = "Metadata Record"
+            displayType = "package-dataset"
+            initialStep = 1
         try:
             wfPayload = self.object.getPayload("workflow.metadata")
             wfMeta = JsonConfigHelper(wfPayload.open())
             wfPayload.close()
-            wfMeta.set("pageTitle", "Dataset Metadata")
+            wfMeta.set("pageTitle", pageTitle)
             # Are we indexing because of a workflow progression?
             targetStep = wfMeta.get("targetStep")
             if targetStep is not None and targetStep != wfMeta.get("step"):
@@ -189,15 +197,14 @@ class IndexData:
 
         except StorageException:
             # No workflow payload, time to create
-            #firstStage = stages.get(0).get("name")
-            secondStage = stages.get(1).get("name")  # want to start at Investigation
+            initialStage = stages.get(initialStep).get("name")
             wfChanged = True
             wfMeta = JsonConfigHelper()
             wfMeta.set("id", WORKFLOW_ID)
-            wfMeta.set("step", secondStage)
-            wfMeta.set("pageTitle", "Dataset Metadata")
+            wfMeta.set("step", initialStage)
+            wfMeta.set("pageTitle", pageTitle)
             for stage in stages:
-                if stage.get("name") == secondStage:
+                if stage.get("name") == initialStage:
                     wfMeta.set("label", stage.get("label"))
                     self.item_security = stage.getList("visibility")
                     workflow_security = stage.getList("security")
@@ -235,13 +242,14 @@ class IndexData:
 
         # Manifest processing (formData is not present in wfMeta)
         manifest = self.__getManifest()
-        self.titleList = [manifest.get("title", "Untitled")]
+        self.titleList = [manifest.get("title", "[Untitled]")]
         self.descriptionList = [manifest.get("description", "")]
         for field in manifest.iterkeys():
             if field not in coreFields:
                 value = manifest.get(field)
                 if value is not None and value.strip() != "":
                     self.utils.add(self.index, field, value)
+                    # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier") \
                               or field.endswith(".rdf:resource") \
@@ -253,6 +261,8 @@ class IndexData:
                             facetField = facetField[:dot]
                         #print "Indexing DC field '%s':'%s'" % (field, facetField)
                         self.utils.add(self.index, facetField, value)
+
+        self.utils.add(self.index, "display_type", displayType)
 
         # Workflow processing
         self.utils.add(self.index, "workflow_id", wfMeta.get("id"))

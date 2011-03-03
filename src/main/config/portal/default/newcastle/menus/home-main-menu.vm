@@ -1,17 +1,19 @@
 <div class="grid_4">
-    #set($menuTitle = "Actions")
+    #set($menuTitle = "Options")
     #parseTemplate("wrapping/main-menu-open.vm")
     <ul class="menu">
-        <li><a href="$portalPath/search">Browse</a></li>
-        <li><a href="$portalPath/submission">Submit my dataset</a></li>
+        <li><a href="$portalPath/search">Browse records</a></li>
         ##<li><a id="reharvest-view" href="#" rel="$portalId">Reharvest view...</a></li>
         #if($page.authentication.is_admin() && $portalId != $defaultPortal)
         <li><a id="delete-view" href="#" rel="$portalId">Delete view...</a></li>
         #end
-        #if($page.authentication.is_logged_in())
-        <li><a id="add-new-dataset" href="#add-dataset">Add a new dataset</a></li>
-        #end
-        ##<li><a href="$portalPath/upload">Upload a file</a></li>
+        <li><a id="new-record" href="#">
+            #if($page.authentication.is_logged_in())
+                Add a new dataset
+            #else
+                Submit my dataset
+            #end
+        </a></li>
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")
 </div>
@@ -19,10 +21,10 @@
 $(function() {
     var jQ = $;
     var processing = false;
-    jQ("#add-new-dataset").click(function() {
+    jQ("#new-record").click(function() {
         if (processing) return;
         processing = true;
-        jQ("#add-new-dataset").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        jQ("#new-record").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
         jQ.ajax({
             type: "POST",
             url: "$portalPath/actions/packaging.ajax",
@@ -41,11 +43,11 @@ $(function() {
                     }
                     setTimeout(redirect, 1500);
                 } else {
-                    alert("Failed to create package!");
+                    alert("Failed to create record!");
                 }
             },
             error: function(xhr, status, e) {
-                alert("Failed to create package!");
+                alert("Failed to create record!");
             },
             dataType: "json"
         });
