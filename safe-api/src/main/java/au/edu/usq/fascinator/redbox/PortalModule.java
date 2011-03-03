@@ -28,7 +28,9 @@ import org.apache.tapestry5.ioc.MethodAdvice;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.services.ApplicationStateManager;
+import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Module to provide a safe Storage API for the Jython layer. The wrapper will
@@ -38,14 +40,15 @@ import org.slf4j.Logger;
  */
 public class PortalModule {
 
+    private Logger log = LoggerFactory.getLogger(PortalModule.class);
+
     @Match("ScriptingServices")
     public static void adviseSafe(final Logger log,
             final ApplicationStateManager appStateManager,
+            final RequestGlobals requestGlobals,
             final Indexer indexer,
             final PortalSecurityManager securityManager,
             MethodAdviceReceiver receiver) {
-        final JsonSessionState sessionState =
-                appStateManager.getIfExists(JsonSessionState.class);
 
         MethodAdvice advice = new MethodAdvice() {
 
@@ -54,7 +57,8 @@ public class PortalModule {
                 invocation.proceed();
                 Storage storage = (Storage) invocation.getResult();
                 invocation.overrideResult(new SecureStorage(storage, indexer,
-                        securityManager, sessionState));
+                        securityManager,
+                        appStateManager.getIfExists(JsonSessionState.class)));
             }
         };
 
