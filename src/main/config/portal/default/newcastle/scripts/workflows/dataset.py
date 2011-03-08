@@ -1,30 +1,25 @@
-#from __main__ import Services
-#from __main__ import formData
-
-from au.edu.usq.fascinator.common import JsonSimpleConfig, JsonConfig, FascinatorHome
-from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
-
 from au.edu.usq.fascinator.api import PluginManager
-from au.edu.usq.fascinator.transformer.jsonVelocity import JsonVelocityTransformer
-from au.edu.usq.fascinator.api.transformer import TransformerException
-
-from org.apache.commons.lang import StringEscapeUtils
-from java.lang import Exception as JavaException, Boolean, String
-from java.util import ArrayList, HashMap
-from java.io import (InputStreamReader, ByteArrayInputStream,
-    ByteArrayOutputStream, File, StringWriter)
-from org.apache.commons.io import IOUtils
 from au.edu.usq.fascinator.api.indexer import SearchRequest
+from au.edu.usq.fascinator.api.transformer import TransformerException
+from au.edu.usq.fascinator.common import FascinatorHome
 from au.edu.usq.fascinator.common import JsonConfigHelper
+from au.edu.usq.fascinator.common import JsonSimpleConfig
+from au.edu.usq.fascinator.common import MessagingServices
 
+from java.io import ByteArrayInputStream
+from java.io import ByteArrayOutputStream
+from java.io import StringWriter
+from java.lang import Exception
+from java.lang import String
+
+from org.apache.commons.io import IOUtils
+from org.apache.commons.lang import StringEscapeUtils
 
 from json2 import read as jsonReader, write as jsonWriter
-import re
-
 
 class DatasetData(object):
     def __init__(self):
-        pass
+        self.messaging = MessagingServices.getInstance()
 
     def __activate__(self, context):
         print "**** dataset.py"
@@ -160,7 +155,7 @@ class DatasetData(object):
         elif step=="live":
             msg = "This record has already been <strong>Published</strong>."
         return msg
-        
+
     def getNextStepAcceptValidationErrorMessage(self):
         step = self.getCurrentStep()
         msg = "?"
@@ -561,7 +556,7 @@ class DatasetData(object):
                 print "  ERROR: %s" % str(e)
             # Save & re-index
             self._saveTFPackage(tfpackage)
-            self._reIndex()     # Re-index - for title|description changes
+            self._reIndex(targetStep)  # Re-index - for title|description changes
             if targetStep:
                 # progress all attachments as well
                 pass
@@ -571,9 +566,9 @@ class DatasetData(object):
             result = {"error":str(e)}
         return result
 
-    def _reIndex(self):
+    def _reIndex(self, step):
         object = self._getObject()
-        
+
         # transform the object to other datastream e.g. dublin core, rif-cs and vitro
         try:
             simpleConfig = JsonSimpleConfig()
@@ -583,9 +578,11 @@ class DatasetData(object):
             jsonVelocityTransformer.transform(object, "{}")
         except TransformerException, e:
             print "Fail to transform object using JsonVelocityTransformer: ", str(e)
-        
-        self.Services.indexer.index(object.getId())
+
+        oid = object.getId()
+        self.Services.indexer.index(oid)
         self.Services.indexer.commit()
+        self.sendMessage(oid, step)
 
     def __getSolrData(self, oid):
         #print "__getSolrData()"
@@ -603,3 +600,14 @@ class DatasetData(object):
         except Exception, e:
             print "Error in __getSolrData(): '%s'" % str(e)
         return resultDict
+
+    def sendMessage(self, oid, step):
+        param = {}
+        param["oid"] = oid
+        if step is None:
+            param["eventType"] = "ReIndex"
+        else:
+            param["eventType"] = "NewStep : %s" % step
+        param["username"] = self.vc("page").authentication.get_username()
+        param["context"] = "Workflow"
+        self.messaging.onEvent(param)

@@ -1,30 +1,29 @@
+from au.edu.usq.fascinator.api.indexer import SearchRequest
 from au.edu.usq.fascinator.api.storage import StorageException
 from au.edu.usq.fascinator.common import JsonConfigHelper
+from au.edu.usq.fascinator.common import MessagingServices
+from au.edu.usq.fascinator.common.storage import StorageUtils
 from au.edu.usq.fascinator.portal import FormData
-from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
-from au.edu.usq.fascinator.api.storage import PayloadType
-from au.edu.usq.fascinator.api.indexer import SearchRequest
 
 from java.io import ByteArrayOutputStream
 from java.io import ByteArrayInputStream
 from java.lang import String
 from java.net import URLDecoder
-from java.io import FileInputStream
 
 import locale
 import time
-from json2 import read as jsonReader, write as jsonWriter                       ##
+from json2 import read as jsonReader, write as jsonWriter
 
 class WorkflowData:
     def __init__(self):
-        pass
+        self.messaging = MessagingServices.getInstance()
 
     def __activate__(self, context):
         print "*** workflow.py ***"
         self.velocityContext = context
 
         self.formData = self.vc("formData")
-        isAjax = bool(self.formData.get("ajax"))                     ##
+        isAjax = bool(self.formData.get("ajax"))
 
         self.errorMsg = None
         # Test if some actual form data is available
@@ -143,7 +142,7 @@ class WorkflowData:
         print wfMetadata
         print "-------------"
         time.sleep(.1)
-        self.prepareTemplate()                   #
+        self.prepareTemplate()
         wfMetadataDict = jsonReader(wfMetadata.toString())
         fData = wfMetadataDict.get("formData")
         if fData is None:
@@ -168,6 +167,8 @@ class WorkflowData:
         # Re-index the object
         Services.indexer.index(self.getOid())
         Services.indexer.commit()
+        # Notify our subscribers
+        self.sendMessage(self.getOid(), "Save")
         #
         title = wfMetadataDict.get("formData", {}).get("dc_title", "")
         abstract = wfMetadataDict.get("formData", {}).get("abstract", "")
@@ -177,7 +178,6 @@ class WorkflowData:
         writer.println(jsonWriter(json));
         writer.close()
         print "-- done"
-
 
     def _attachment(self, formData):
         try:
@@ -217,6 +217,8 @@ class WorkflowData:
             #indexer.index(foid)
             indexer.index(foid, "TF-OBJ-META")      # only need to reindex the main object
             indexer.commit()
+            # Notify our subscribers
+            self.sendMessage(foid, "Attachment")
             ## Index this payload
             #Services.indexer.index(oid)
             #Services.indexer.commit()
@@ -225,7 +227,6 @@ class WorkflowData:
         except Exception, e:
             json=jsonWriter({"error":"in workflow.py _attachment() - '%s'" % str(e)})
             self._jsonResponseWrite(json)
-
 
     def _deleteAttachment(self, formData):
         try:
@@ -244,6 +245,8 @@ class WorkflowData:
                     indexer = Services.indexer
                     indexer.remove(foid)
                     indexer.commit()
+                    # Notify our subscribers
+                    self.sendMessage("Delete")
                     Services.storage.removeObject(foid)
                 except Exception, e:
                     print "*** ERROR: '%s'" % str(e)
@@ -265,7 +268,6 @@ class WorkflowData:
                       "id":d["id"]
                 } for d in docs]
         return docs
-    
 
     def _getWorkflowMetadataFor(self, obj):
         try:
@@ -295,13 +297,11 @@ class WorkflowData:
         result = JsonConfigHelper(ByteArrayInputStream(out.toByteArray()))
         return jsonReader(result.toString())
 
-
     def _jsonResponseWrite(self, json):
         response = self.vc("response")
         writer = response.getPrintWriter("text/plain; charset=UTF-8")
         writer.println(jsonWriter(json));
         writer.close()
-
 
     def _setWorkflowMetadata(self, oldMetadata):
         try:
@@ -548,6 +548,8 @@ class WorkflowData:
         # Re-index the object
         Services.indexer.index(self.getOid())
         Services.indexer.commit()
+        # Notify our subscribers
+        self.sendMessage(self.getOid(), "Update")
 
     def redirectNeeded(self):
         return self.formProcess
@@ -570,3 +572,12 @@ class WorkflowData:
 
     def uploadDetails(self):
         return self.fileDetails
+
+    def sendMessage(self, oid, eventType):
+        param = {}
+        param["oid"] = oid
+        param["eventType"] = eventType
+        param["username"] = self.vc("page").authentication.get_username()
+        param["context"] = "Workflow"
+        self.messaging.onEvent(param)
+

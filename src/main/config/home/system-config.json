@@ -121,7 +121,7 @@
                 "priority": "7",
                 "config": {
                     "name" : "subscriber",
-                    "subscribers": ["solr-event-log"]
+                    "subscribers": ["solr-event-log", "vital"]
                 }
             },
             {
@@ -140,15 +140,15 @@
                     "name" : "emailnotification",
                     "debug" : false,
                     "from" : {
-                        "email" : "fascinator@usq.edu.au",
-                        "name": "The Fascinator"
+                        "email" : "dave.huthnance@newcastle.edu.au",
+                        "name": "ReDBox"
                     },
                     "smtp" : {
                         "host" : "smtp-gw.usq.edu.au"
                     },
                     "defaults" : {
                         "subject" : "Notification",
-                        "body": "nt"
+                        "body": "Default email message"
                     }
                 }
             }
@@ -290,6 +290,61 @@
                 "docLimit" : "200",
                 "sizeLimit" : "204800",
                 "timeLimit" : "30"
+            }
+        },
+        "vital": {
+            "tempDir": "${java.io.tmpdir}/rbvital",
+            "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
+            "failure": {
+                "emailQueue": "emailnotification",
+                "emailAddress": "pendlebu@usq.edu.au",
+                "emailSubject": "VITAL Integration Failed",
+                "emailTemplate": "This is an automated message from ReDBox.\n\nThe record titled: '[[TITLE]]' has had an error occur during transmission to VITAL.\n\nThe record's detail page is here: ${server.url.base}default/detail/[[OID]]\n\nError details are below:\n[[MESSAGE]]\n\n====================\n\n[[ERROR]]"
+            },
+            "server": {
+                "url": "http://novadev0.newcastle.edu.au:8080/fedora/",
+                "username": "username",
+                "password": "password",
+                "namespace": "uon",
+                "message": "Datastream update from ReDBox '[[OID]]'"
+            },
+            "dataStreams": {
+                "marc.xml": {
+                    "dsID": "MARC",
+                    "label": "MARC",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true
+                },
+                "oai_dc.xml": {
+                    "dsID": "DC",
+                    "label": "Dublin Core Metadata",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true
+                },
+                "rif_cs.xml": {
+                    "dsID": "RIF",
+                    "label": "RIF-CS Metadata",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true
+                }
+            },
+            "attachments": {
+                "dsIDPrefix": "ATTACHMENT",
+                "statusField": "access_rights",
+                "status": {
+                    "private": "I",
+                    "public": "A"
+                },
+                "labelField": "attachment_type",
+                "label": {
+                    "research-data": "Research Data",
+                    "supporting-material": "Supporting Material"
+                },
+                "controlGroup": "M",
+                "versionable": false
             }
         }
     }

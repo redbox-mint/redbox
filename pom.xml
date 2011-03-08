@@ -27,6 +27,7 @@
     <modules>
         <module>parent</module>
         <module>safe-api</module>
+        <module>plugins/vitalsubscriber</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -81,6 +82,11 @@
         <dependency>
             <groupId>au.edu.usq.fascinator.redbox</groupId>
             <artifactId>redbox-safe-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>au.edu.usq.fascinator.redbox</groupId>
+            <artifactId>redbox-vital-subscriber</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Fascinator Plugins -->
