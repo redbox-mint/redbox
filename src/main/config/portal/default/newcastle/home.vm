@@ -27,8 +27,4 @@
         ##parseTemplate("home/submissions.vm")
     </div>
     <div class="clear"></div>
-#else
-    <div class="grid_6">
-        #parseTemplate("menus/home-new-items.vm")
-    </div>
 #end

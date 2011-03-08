@@ -1,7 +1,6 @@
 #set($pageTitle = "Submission Request")
 #set($loggedIn = $page.authentication.is_logged_in())
 #set($dataEntryMode = !$page.authentication.is_logged_in() && !$self.isSubmitted())
-#set($submittedMode = !$page.authentication.is_logged_in() && $self.isSubmitted())
 #set($reviewMode = $page.authentication.is_logged_in() && $self.isSubmitted())
 #set($disabled = "")
 #if($reviewMode)
@@ -27,10 +26,7 @@ label.validation, .validation label { color: red; display: block; }
     <input type="hidden" name="submitted" value="true" />
     <input type="hidden" name="workflow_source" value="Submission Request" />
     <p id="userPrompt">
-    #if($submittedMode)
-    Your request has been submitted and you will be contacted shortly. At this
-    stage you may change the details or cancel your request if necessary.
-    #elseif($reviewMode)
+    #if($reviewMode)
     Please review the submission request and action as appropriate.
     #else
     Please provide a brief overview of your research data and how to contact you.
@@ -61,12 +57,10 @@ label.validation, .validation label { color: red; display: block; }
             <label class="validation" for="emailAddress" data-validation-rule="test(email);when(blur,submit);">A valid email address is required!</label>
             <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" $disabled/>
         </p>
-        #if($dataEntryMode)
-            #set($submitLabel = "Submit")
-        #elseif($reviewMode)
+        #if($reviewMode)
             #set($submitLabel = "Accept")
         #else
-            #set($submitLabel = "Update")
+            #set($submitLabel = "Submit")
         #end
         <input class="button form-fields-submit" id="submitButton" type="submit" value="$submitLabel" />
         <button id="deleteButton">Cancel</button>
@@ -109,6 +103,11 @@ $(function(){
 });
 
 function afterSubmit() {
+#if($dataEntryMode)
+    alert("Your request has been submitted and you will be contacted shortly.");
+    window.location.href = "$portalPath/home";
+#else
     window.location.reload();
+#end
 }
 </script>

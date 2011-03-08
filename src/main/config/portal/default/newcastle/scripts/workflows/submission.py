@@ -82,14 +82,15 @@ class SubmissionData(object):
         print "Updating '%s'" % self.__oid
         result = '{"ok":"Updated OK"}'
 
-        # update from form data
-        data = self.__requestData.getJsonObject()
-        formFields = self.__formData.getFormFields()
-        for formField in formFields:
-            data.put(formField, self.__formData.get(formField))
-        description = self.__formData.get("description")
-        data.put("title", truncate(description, 25))
-        self.__updatePayload(self.__object.getSourceId(), data)
+        if self.__formData.get("acceptOnly", "false") == "false":
+            # update from form data
+            data = self.__requestData.getJsonObject()
+            formFields = self.__formData.getFormFields()
+            for formField in formFields:
+                data.put(formField, self.__formData.get(formField))
+            description = self.__formData.get("description", "[No description]")
+            data.put("title", truncate(description, 25))
+            self.__updatePayload(self.__object.getSourceId(), data)
 
         # update workflow metadata
         if self.__auth.is_logged_in():
@@ -98,10 +99,12 @@ class SubmissionData(object):
             wf.put("label", "Investigation")
             wf.put("pageTitle", "Metadata Record")
             self.__updatePayload("workflow.metadata", wf)
-
-            # update ownership
+            # update ownership to the one who accepted the submission
             self.__object.getMetadata().setProperty("owner", self.__auth.get_username())
-            self.__object.close();
+        else:
+            # update ownership so guest users cannot see submission requests
+            self.__object.getMetadata().setProperty("owner", "system")
+        self.__object.close();
 
         self.__services.indexer.index(self.__oid)
         self.__services.indexer.commit()

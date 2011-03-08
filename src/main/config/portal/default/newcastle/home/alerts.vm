@@ -87,8 +87,7 @@
                 ajax: true,
                 func: "update-package-meta-deposit",
                 oid: oid,
-                metaList: ["dc:title"],
-                "dc:title": me.parent().parent().find(".titleText").text().trim()
+                acceptOnly: true
             },
             dataType: "json"
         });
