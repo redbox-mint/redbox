@@ -37,6 +37,7 @@ import au.edu.usq.fascinator.common.solr.SolrResult;
 
 import fedora.client.FedoraClient;
 import fedora.server.management.FedoraAPIM;
+import fedora.server.types.gen.Datastream;
 import fedora.server.types.gen.DatastreamDef;
 import fedora.server.types.gen.UserInfo;
 
@@ -106,7 +107,6 @@ public class VitalSubscriber implements Subscriber {
 
     /** VITAL integration config */
     private Map<String, JsonConfigHelper> pids;
-    private String[] altIds = {};
     private String attachDsPrefix;
     private String attachStatusField;
     private Map<String, String> attachStatuses;
@@ -114,6 +114,7 @@ public class VitalSubscriber implements Subscriber {
     private Map<String, String> attachLabels;
     private String attachControlGroup;
     private boolean attachVersionable;
+    private boolean attachRetainIds;
     private File foxmlTemplate;
 
     /** Temp directory */
@@ -245,7 +246,7 @@ public class VitalSubscriber implements Subscriber {
         }
         // And attachment handling
         String path = "subscriber/vital/attachments/";
-        attachDsPrefix = config.get(path + "dsIDPrefix");
+        attachDsPrefix = config.get(path + "dsIDPrefix", "ATTACHMENT");
         attachStatusField = config.get(path + "statusField");
         attachStatuses = getStringMap(config, path + "status");
         attachLabelField = config.get(path + "labelField");
@@ -253,6 +254,8 @@ public class VitalSubscriber implements Subscriber {
         attachControlGroup = config.get(path + "controlGroup");
         String versionable = config.get(path + "versionable");
         attachVersionable = Boolean.parseBoolean(versionable);
+        String retainIds = config.get(path + "retainIds", "true");
+        attachRetainIds = Boolean.parseBoolean(retainIds);
 
         // Are we sending emails on errors?
         emailQueue = config.get("subscriber/vital/failure/emailQueue");
@@ -603,7 +606,7 @@ public class VitalSubscriber implements Subscriber {
 
         // Submit all the payloads to VITAL now
         try {
-            processDatastream(fedora, object, vitalPid);
+            processDatastreams(fedora, object, vitalPid);
         } catch (Exception ex) {
             error("Failed to send object to VITAL", ex, oid, title);
             return;
@@ -647,7 +650,7 @@ public class VitalSubscriber implements Subscriber {
      * @param vitalPid : The VITAL PID to use
      * @throws Exception on any errors
      */
-    private void processDatastream(FedoraClient fedora, DigitalObject object,
+    private void processDatastreams(FedoraClient fedora, DigitalObject object,
             String vitalPid) throws Exception {
         int sent = 0;
 
@@ -663,6 +666,15 @@ public class VitalSubscriber implements Subscriber {
             String controlGroup = thisPid.get("controlGroup", "X");
             String strVersionable = thisPid.get("versionable", "true");
             boolean versionable = Boolean.parseBoolean(strVersionable);
+            String strRetainIds = thisPid.get("retainIds", "true");
+            boolean retainIds = Boolean.parseBoolean(strRetainIds);
+            String[] altIds = {};
+            if (retainIds && datastreamExists(fedora, vitalPid, dsId)) {
+                altIds = getAltIds(fedora, vitalPid, dsId);
+                for (String altId : altIds) {
+                    log.debug("Retaining alt ID: '{}' => {}'", dsId, altId);
+                }
+            }
 
             // MIME Type
             Payload payload = null;
@@ -682,7 +694,7 @@ public class VitalSubscriber implements Subscriber {
             }
 
             try {
-                sendToVital(fedora, object, ourPid, vitalPid, dsId,
+                sendToVital(fedora, object, ourPid, vitalPid, dsId, altIds,
                         label, mimeType, controlGroup, status, versionable);
             } catch (Exception ex) {
                 String message = partialUploadErrorMessage(
@@ -806,10 +818,18 @@ public class VitalSubscriber implements Subscriber {
                 // We found a real value
                 status = attachStatuses.get(statusData);
             }
+            String[] altIds = {};
+            if (attachRetainIds && datastreamExists(fedora, vitalPid, dsId)) {
+                altIds = getAltIds(fedora, vitalPid, dsId);
+                for (String altId : altIds) {
+                    log.debug("Retaining alt ID: '{}' => {}'", dsId, altId);
+                }
+            }
 
             try {
-                sendToVital(fedora, attachment, pid, vitalPid, dsId, label,
-                      mimeType, attachControlGroup, status, attachVersionable);
+                sendToVital(fedora, attachment, pid, vitalPid, dsId, altIds,
+                      label, mimeType, attachControlGroup, status,
+                      attachVersionable);
             } catch (Exception ex) {
                 // Throw error
                 throw new Exception("Error uploading attachment '" +
@@ -840,8 +860,8 @@ public class VitalSubscriber implements Subscriber {
      * @throws Exception if any errors occur
      */
     private void sendToVital(FedoraClient fedora, DigitalObject ourObject,
-            String ourPid, String vitalPid, String dsId, String label,
-            String mimeType, String controlGroup, String status,
+            String ourPid, String vitalPid, String dsId, String[] altIds,
+            String label, String mimeType, String controlGroup, String status,
             boolean versionable) throws Exception {
         // We might need to cleanup a file upload if things go wrong
         File tempFile = null;
@@ -997,6 +1017,45 @@ public class VitalSubscriber implements Subscriber {
             log.error("API Query error: ", ex);
         }
         return false;
+    }
+
+    /**
+     * Find and return any alternate identifiers already in use in fedora for
+     * the given datastream.
+     *
+     * @param fedora : An instantiated fedora client
+     * @param vitalPid : The VITAL PID to use
+     * @param dsPid : The datastream ID on the object
+     * @returns String[] : An array or String identifiers, will be empty if
+     * datastream does not exist.
+     */
+    private String[] getAltIds(FedoraClient fedora, String vitalPid,
+            String dsPid) {
+        Datastream ds = getDatastream(fedora, vitalPid, dsPid);
+        if (ds != null) {
+            return ds.getAltIDs();
+        }
+        return new String[] {};
+    }
+
+    /**
+     * Get the indicated datastream from VITAL. This method pre-supposes that
+     * the datastream does in fact exist. Call datastreamExists() first to
+     * confirm.
+     *
+     * @param fedora : An instantiated fedora client
+     * @param vitalPid : The VITAL PID to use
+     * @param dsPid : The datastream ID on the object
+     * @returns Datastream : The datastream requested, null if not found
+     */
+    private Datastream getDatastream(FedoraClient fedora, String vitalPid,
+            String dsPid) {
+        try {
+            return fedora.getAPIM().getDatastream(vitalPid, dsPid, null);
+        } catch (Exception ex) {
+            log.error("API Query error: ", ex);
+            return null;
+        }
     }
 
     /**

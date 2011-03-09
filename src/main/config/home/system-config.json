@@ -315,21 +315,24 @@
                     "label": "MARC",
                     "status": "A",
                     "controlGroup": "X",
-                    "versionable": true
+                    "versionable": true,
+                    "retainIds": true
                 },
                 "oai_dc.xml": {
                     "dsID": "DC",
                     "label": "Dublin Core Metadata",
                     "status": "A",
                     "controlGroup": "X",
-                    "versionable": true
+                    "versionable": true,
+                    "retainIds": true
                 },
                 "rif_cs.xml": {
                     "dsID": "RIF",
                     "label": "RIF-CS Metadata",
                     "status": "A",
                     "controlGroup": "X",
-                    "versionable": true
+                    "versionable": true,
+                    "retainIds": true
                 }
             },
             "attachments": {
@@ -345,7 +348,8 @@
                     "supporting-material": "Supporting Material"
                 },
                 "controlGroup": "M",
-                "versionable": false
+                "versionable": false,
+                "retainIds": true
             }
         }
     }
