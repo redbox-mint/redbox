@@ -31,6 +31,8 @@ import au.edu.usq.fascinator.api.subscriber.Subscriber;
 import au.edu.usq.fascinator.api.subscriber.SubscriberException;
 import au.edu.usq.fascinator.common.JsonConfig;
 import au.edu.usq.fascinator.common.JsonConfigHelper;
+import au.edu.usq.fascinator.common.JsonObject;
+import au.edu.usq.fascinator.common.JsonSimple;
 import au.edu.usq.fascinator.common.MessagingServices;
 import au.edu.usq.fascinator.common.solr.SolrDoc;
 import au.edu.usq.fascinator.common.solr.SolrResult;
@@ -53,13 +55,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.jms.JMSException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +90,7 @@ public class VitalSubscriber implements Subscriber {
     /** Messaging */
     private MessagingServices messaging;
     private String emailQueue;
-    private String emailAddress;
+    private List<String> emailAddresses;
     private String emailSubject;
     private String emailTemplate;
 
@@ -260,7 +265,14 @@ public class VitalSubscriber implements Subscriber {
         // Are we sending emails on errors?
         emailQueue = config.get("subscriber/vital/failure/emailQueue");
         if (emailQueue != null) {
-            emailAddress = config.get("subscriber/vital/failure/emailAddress");
+            List<Object> emails = config.getList(
+                    "subscriber/vital/failure/emailAddress");
+            emailAddresses = new ArrayList();
+            for (Object email : emails) {
+                if (email instanceof String) {
+                    emailAddresses.add((String) email);
+                }
+            }
             if (emailQueue != null) {
                 emailSubject = config.get(
                         "subscriber/vital/failure/emailSubject",
@@ -1184,11 +1196,15 @@ public class VitalSubscriber implements Subscriber {
         if (emailQueue != null) {
             // And when a complete and correct document fails to go to VITAL
             if (oid != null && title != null) {
-                JsonConfigHelper json = new JsonConfigHelper();
-                json.set("to", emailAddress);
-                json.set("subject", emailSubject);
+                JsonSimple messageJson = new JsonSimple();
+                JSONArray to = messageJson.writeArray("to");
+                for (String email : emailAddresses) {
+                    to.add(email);
+                }
+                JsonObject json = messageJson.getJsonObject();
+                json.put("subject", emailSubject);
                 // Emails require an Object ID... not sure why
-                json.set("oid", oid);
+                json.put("oid", oid);
 
                 // Grab the template and replace each placeholder
                 String body = emailTemplate.replace("[[OID]]", oid);
@@ -1207,11 +1223,12 @@ public class VitalSubscriber implements Subscriber {
                     body = body.replace("[[ERROR]]",
                             "{No error stacktrace provide}");
                 }
-                json.set("body", body);
+                json.put("body", body);
 
                 // Send the message
-                log.debug("Error, sending email:\n{}", json.toString(true));
-                messaging.queueMessage(emailQueue, json.toString());
+                log.debug("Error, sending email:\n{}",
+                        messageJson.toString(true));
+                messaging.queueMessage(emailQueue, messageJson.toString());
             }
         }
 

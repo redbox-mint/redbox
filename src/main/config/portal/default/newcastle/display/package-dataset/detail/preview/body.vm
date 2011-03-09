@@ -31,6 +31,14 @@
         #end
     #end
 #end
+#if($page.authentication.is_logged_in())
+    #set ($vPid = $parent.getProperty("vitalPid"))
+    #if ($vPid != $nullValue)
+<div class="vital-id">
+    This object has already been published to VITAL '<strong>$vPid</strong>'.
+</div>
+    #end
+#end
 <div id="toggle-accordion" class="toggle-accordion">
     <span id="toggle-accordion-icon" class="ui-icon ui-icon-triangle-1-e"></span>
     <span id="toggle-accordion-text">Show all sections</span>

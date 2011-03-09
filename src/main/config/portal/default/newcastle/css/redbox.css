@@ -177,3 +177,11 @@ th.header h3 {
 .actions.accepted {
     color: green;
 }
+
+.vital-id {
+    margin: 3px 0px;
+    padding: 4px;
+    border: 1px solid black;
+    background: #FFFFCC;
+    font-size: 120%;
+}

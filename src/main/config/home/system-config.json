@@ -297,7 +297,7 @@
             "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
             "failure": {
                 "emailQueue": "emailnotification",
-                "emailAddress": "pendlebu@usq.edu.au",
+                "emailAddress": ["pendlebu@usq.edu.au"],
                 "emailSubject": "VITAL Integration Failed",
                 "emailTemplate": "This is an automated message from ReDBox.\n\nThe record titled: '[[TITLE]]' has had an error occur during transmission to VITAL.\n\nThe record's detail page is here: ${server.url.base}default/detail/[[OID]]\n\nError details are below:\n[[MESSAGE]]\n\n====================\n\n[[ERROR]]"
             },
