@@ -38,6 +38,7 @@ import au.edu.usq.fascinator.common.solr.SolrResult;
 import fedora.client.FedoraClient;
 import fedora.server.management.FedoraAPIM;
 import fedora.server.types.gen.DatastreamDef;
+import fedora.server.types.gen.UserInfo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -98,6 +99,7 @@ public class VitalSubscriber implements Subscriber {
     private String fedoraNamespace;
     // Template for log entries
     private String fedoraMessageTemplate;
+    private int fedoraTimeout;
 
     /** Valid instantiation */
     boolean valid = false;
@@ -190,6 +192,8 @@ public class VitalSubscriber implements Subscriber {
         fedoraNamespace = config.get("subscriber/vital/server/namespace");
         fedoraUsername = config.get("subscriber/vital/server/username");
         fedoraPassword = config.get("subscriber/vital/server/password");
+        String timeout = config.get("subscriber/vital/server/timeout", "15");
+        fedoraTimeout = Integer.parseInt(timeout);
         if (fedoraUrl == null || fedoraNamespace == null ||
                 fedoraUsername == null || fedoraPassword == null) {
             throw new SubscriberException("VITAL Subscriber:" +
@@ -352,44 +356,51 @@ public class VitalSubscriber implements Subscriber {
      * Establish a connection to Fedora's management API (API-M) to confirm
      * credentials, then return the instantiated fedora client used to connect.
      *
-     * @param verbose : Should we create log entries. Typically used on the
-     * test connection in the constructor.
+     * @param firstConnection : If this is the first connection (ie. from the
+     * Constructor), set this flag. Some logging will occur, and a basic API
+     * call will be triggered to test genuine connectivity with regards to the
+     * network and the credentials supplied.
      * @return FedoraClient : The client used to connect to the API
      * @throws SubscriberException if there was an error
      */
     private FedoraClient fedoraConnect() throws SubscriberException {
         return fedoraConnect(false);
     }
-    private FedoraClient fedoraConnect(boolean verbose)
+    private FedoraClient fedoraConnect(boolean firstConnection)
             throws SubscriberException {
-        FedoraClient fc = null;
+        FedoraClient fedora = null;
         try {
             // Connect to the server
-            fc = new FedoraClient(fedoraUrl, fedoraUsername, fedoraPassword);
-            if (verbose) {
+            fedora = new FedoraClient(fedoraUrl, fedoraUsername, fedoraPassword);
+            fedora.SOCKET_TIMEOUT_SECONDS = fedoraTimeout;
+            if (firstConnection) {
                 log.info("Connected to FEDORA : '{}'", fedoraUrl);
             }
             // Make sure we can get the server version
-            String version = fc.getServerVersion();
-            if (verbose) {
+            String version = fedora.getServerVersion();
+            if (firstConnection) {
                 log.info("FEDORA version: '{}'", version);
             }
             // And that we have appropriate access to the management API
-            FedoraAPIM fedora = fc.getAPIM();
-            if (verbose) {
-                log.info("API-M access confirmed");
+            FedoraAPIM apim = fedora.getAPIM();
+            if (firstConnection) {
+                log.info("API-M access testing... {} second timeout",
+                        fedoraTimeout);
+                UserInfo user = apim.describeUser(fedoraUsername);
+                log.info("API-M access confirmed: User '{}', ID: '{}'",
+                        fedoraUsername, user.getId());
             }
         } catch (MalformedURLException ex) {
             throw new SubscriberException("VITAL Subscriber:" +
                     " Server URL is Invalid (?) : ", ex);
         } catch (IOException ex) {
             throw new SubscriberException("VITAL Subscriber:" +
-                    " Could not retrieve server version! : ", ex);
+                    " Error connecting to VITAL! : ", ex);
         } catch (Exception ex) {
             throw new SubscriberException("VITAL Subscriber:" +
                     " Error accesing management API! : ", ex);
         }
-        return fc;
+        return fedora;
     }
 
     /**

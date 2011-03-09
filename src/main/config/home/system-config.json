@@ -306,7 +306,8 @@
                 "username": "username",
                 "password": "password",
                 "namespace": "uon",
-                "message": "Datastream update from ReDBox '[[OID]]'"
+                "message": "Datastream update from ReDBox '[[OID]]'",
+                "timeout": "15"
             },
             "dataStreams": {
                 "marc.xml": {
