@@ -336,7 +336,7 @@
                 }
             },
             "attachments": {
-                "dsIDPrefix": "ATTACHMENT",
+                "dsID": "ATTACHMENT%02d",
                 "statusField": "access_rights",
                 "status": {
                     "private": "I",
@@ -349,6 +349,28 @@
                 },
                 "controlGroup": "M",
                 "versionable": false,
+                "altIds": {
+                    "application/pdf": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/fulltext#FULLTEXT%d",
+                        "info:vital/synchronize/thumbnail#THUMBNAIL"
+                    ],
+                    "image/": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/thumbnail#THUMBNAIL"
+                    ],
+                    "text/": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/fulltext#FULLTEXT%d"
+                    ],
+                    "default": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d"
+                    ]
+                },
                 "retainIds": true
             }
         }

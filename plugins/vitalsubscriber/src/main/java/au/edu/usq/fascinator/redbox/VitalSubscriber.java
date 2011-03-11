@@ -57,9 +57,12 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.jms.JMSException;
 
 import org.apache.commons.io.IOUtils;
@@ -112,7 +115,7 @@ public class VitalSubscriber implements Subscriber {
 
     /** VITAL integration config */
     private Map<String, JsonConfigHelper> pids;
-    private String attachDsPrefix;
+    private String attachDs;
     private String attachStatusField;
     private Map<String, String> attachStatuses;
     private String attachLabelField;
@@ -120,6 +123,7 @@ public class VitalSubscriber implements Subscriber {
     private String attachControlGroup;
     private boolean attachVersionable;
     private boolean attachRetainIds;
+    private Map<String, List<String>> attachAltIds;
     private File foxmlTemplate;
 
     /** Temp directory */
@@ -251,7 +255,15 @@ public class VitalSubscriber implements Subscriber {
         }
         // And attachment handling
         String path = "subscriber/vital/attachments/";
-        attachDsPrefix = config.get(path + "dsIDPrefix", "ATTACHMENT");
+        attachDs = config.get(path + "dsID", "ATTACHMENT%02d");
+        Pattern p = Pattern.compile("%\\d*d");
+        Matcher m = p.matcher(attachDs);
+        if (!m.find()) {
+            throw new SubscriberException("VITAL Subscriber: " +
+                    "'*/attachments/dsId' must have a format placeholder for " +
+                    "incrementing integer, eg. '%d' or '%02d'. The value " +
+                    "provided ('" + attachDs + "') is invalid");
+        }
         attachStatusField = config.get(path + "statusField");
         attachStatuses = getStringMap(config, path + "status");
         attachLabelField = config.get(path + "labelField");
@@ -261,6 +273,33 @@ public class VitalSubscriber implements Subscriber {
         attachVersionable = Boolean.parseBoolean(versionable);
         String retainIds = config.get(path + "retainIds", "true");
         attachRetainIds = Boolean.parseBoolean(retainIds);
+        // To make life easier we're going to use the new JSON Library here
+        attachAltIds = new LinkedHashMap();
+        JsonSimple json;
+        try {
+            json = new JsonSimple(config.toString());
+        } catch (IOException ex) {
+            throw new SubscriberException("VITAL Subscriber:" +
+                    " Error parsing attachment JSON", ex);
+        }
+        // Use the base object for iteration
+        JsonObject objAltIds = json.getObject(
+                "subscriber", "vital", "attachments", "altIds");
+        // And the library for access methods
+        JsonSimple altIds = new JsonSimple(objAltIds);
+        for (Object oKey : objAltIds.keySet()) {
+            String key = (String) oKey;
+            List<String> ids = altIds.getStringList(key);
+            if (ids.isEmpty()) {
+                log.warn("WARNING: '{}' has no altIds configured.", key);
+            } else {
+                attachAltIds.put(key, ids);
+            }
+        }
+        // Make sure 'default' exists, even if empty
+        if (!attachAltIds.containsKey("default")) {
+            attachAltIds.put("default", new ArrayList());
+        }
 
         // Are we sending emails on errors?
         emailQueue = config.get("subscriber/vital/failure/emailQueue");
@@ -760,53 +799,84 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Make sure there were even results
-        int dsIdSuffix = 1;
-        int total = result.getNumFound();
-        if (total == 0) {
+        if (result.getNumFound() == 0) {
             log.info("No attachments found for '{}'", oid);
             return;
         }
 
-        // Loop through each attachments
+        // Do a *first* pre-pass establishing which IDs to use
+        Map<String, Map<String, String>> idMap = new HashMap();
+        List<String> usedIds = new ArrayList();
+        for (SolrDoc item : result.getResults()) {
+            // Has it been to VITAL before?
+            String aOid = item.getFirst("id");
+            DigitalObject attachment = storage.getObject(aOid);
+            Properties metadata = attachment.getMetadata();
+            String vitalDsId = metadata.getProperty("vitalDsId");
+            String vitalOrder = metadata.getProperty("vitalOrder");
+
+            // Record what we know
+            Map<String, String> map = new HashMap();
+            if (vitalDsId != null) {
+                map.put("hasId", "true");
+                map.put("vitalDsId", vitalDsId);
+                map.put("vitalOrder", vitalOrder);
+                usedIds.add(vitalDsId);
+            } else {
+                map.put("hasId", "false");
+            }
+            idMap.put(aOid, map);
+        }
+
+        // Another pass, now that we know all the used IDs
+        int dsIdSuffix = 1;
+        for (SolrDoc item : result.getResults()) {
+            String aOid = item.getFirst("id");
+            boolean hasId = Boolean.parseBoolean(idMap.get(aOid).get("hasId"));
+            // This record needs a new ID
+            if (!hasId) {
+                String newId = String.format(attachDs, dsIdSuffix);
+                // Make sure it's not in use already
+                       // either by us
+                while (usedIds.contains(newId) ||
+                       // or by VITAL
+                        datastreamExists(fedora, vitalPid, newId))
+                {
+                    dsIdSuffix++;
+                    newId = String.format(attachDs, dsIdSuffix);
+                }
+                // 'Use' it
+                idMap.get(aOid).put("vitalDsId", newId);
+                idMap.get(aOid).put("vitalOrder", String.valueOf(dsIdSuffix));
+                usedIds.add(newId);
+                dsIdSuffix++;
+            }
+        }
+
+        // Now, the real work. Loop through each attachment
         for (SolrDoc item : result.getResults()) {
             String aOid = item.getFirst("id");
             log.info("Processing Attachment: '{}'", aOid);
 
             // Get the object from storage
-            DigitalObject attachment = null;
-            try {
-                attachment = storage.getObject(aOid);
-            } catch (Exception ex) {
-                throw new Exception("Error accessing attachment '" +
-                        aOid + "' : ", ex);
-            }
+            DigitalObject attachment = storage.getObject(aOid);
 
             // Find our workflow/form data
+            Payload wfPayload = attachment.getPayload("workflow.metadata");
             JsonConfigHelper workflow = null;
-            Payload wfPayload = null;
             try {
-                wfPayload = attachment.getPayload("workflow.metadata");
                 workflow = new JsonConfigHelper(wfPayload.open());
             } catch (Exception ex) {
-                throw new Exception("Error accessing attachment metadata '" +
-                        aOid + "' : ", ex);
+                throw ex;
             } finally {
-                if (wfPayload != null) {
-                    wfPayload.close();
-                }
+                wfPayload.close();
             }
 
             // Find our payload
             String pid = workflow.get("formData/filename",
                     attachment.getSourceId());
             log.info(" === Attachment PID: '{}'", pid);
-            Payload payload = null;
-            try {
-                payload = attachment.getPayload(pid);
-            } catch (Exception ex) {
-                throw new Exception("Error accessing attachment data '" +
-                        aOid + "' : ", ex);
-            }
+            Payload payload = attachment.getPayload(pid);
 
             // MIME Type - Default to binary data
             String mimeType = payload.getContentType();
@@ -815,9 +885,8 @@ public class VitalSubscriber implements Subscriber {
             }
 
             // Get our VITAL config
-            // TODO, because dsId is dynamically generated and sort order cannot
-            // be gaurenteed between executions, the dsId needs to be stored and checked
-            String dsId = String.format(attachDsPrefix + "%02d", dsIdSuffix);
+            String dsId = idMap.get(aOid).get("vitalDsId");
+            String vitalOrder = idMap.get(aOid).get("vitalOrder");
             String label = dsId; // Default
             String labelData = workflow.get("formData/" + attachLabelField);
             if (attachLabels.containsKey(labelData)) {
@@ -830,6 +899,7 @@ public class VitalSubscriber implements Subscriber {
                 // We found a real value
                 status = attachStatuses.get(statusData);
             }
+            // Check for Alt IDs that already exist... if configured to
             String[] altIds = {};
             if (attachRetainIds && datastreamExists(fedora, vitalPid, dsId)) {
                 altIds = getAltIds(fedora, vitalPid, dsId);
@@ -837,6 +907,8 @@ public class VitalSubscriber implements Subscriber {
                     log.debug("Retaining alt ID: '{}' => {}'", dsId, altId);
                 }
             }
+            altIds = resolveAltIds(altIds, mimeType,
+                    Integer.valueOf(vitalOrder));
 
             try {
                 sendToVital(fedora, attachment, pid, vitalPid, dsId, altIds,
@@ -848,9 +920,88 @@ public class VitalSubscriber implements Subscriber {
                         aOid + "' : ", ex);
             }
 
-            // Increase our counter
-            dsIdSuffix++;
+            // The submission was successful, store the dsId if not already
+            boolean hasId = Boolean.parseBoolean(idMap.get(aOid).get("hasId"));
+            if (!hasId) {
+                Properties metadata = attachment.getMetadata();
+                metadata.setProperty("vitalDsId", dsId);
+                metadata.setProperty("vitalOrder", vitalOrder);
+                attachment.close();
+            }
         } // End for loop
+    }
+
+    /**
+     * For the given mime type, ensure that the array of alternate identifiers
+     * is correct. If identifiers are missing they will be added to the array.
+     *
+     * @param oldArray : The old array of identifiers
+     * @param mimeType : The mime type of the datastream
+     * @param count : The attachment count, to use in the format call
+     * @return String[] : An array containing all of the old IDs with any that
+     * were missing for the mime type
+     */
+    private String[] resolveAltIds(String[] oldArray, String mimeType,
+            int count) {
+        // First, find the valid list we want
+        String key = null;
+        for (String mimeTest : attachAltIds.keySet()) {
+            // Ignore 'default'
+            if (mimeTest.equals("default")) {
+                continue;
+            }
+            // Is it a broad group?
+            if (mimeTest.endsWith("/")) {
+                if (mimeType.startsWith(mimeTest)) {
+                    key = mimeTest;
+                }
+            // Or a specific mime type?
+            } else {
+                if (mimeType.equals(mimeTest)) {
+                    key = mimeTest;
+                }
+            }
+        }
+        // Use default if not found
+        if (key == null) {
+            key = "default";
+        }
+        // Loop through the ids we're going to use
+        for (String newId : attachAltIds.get(key)) {
+            // If there is a format requirement, use it
+            String formatted = String.format(newId, count);
+            // Modify our arrray (if we it's not there)
+            oldArray = growArray(oldArray, formatted);
+        }
+        return oldArray;
+    }
+
+    /**
+     * Check the array for the new element, and if not found, generate a new
+     * array containing all of the old elements plus the new.
+     *
+     * @param oldArray : The old array of data
+     * @param newElement : The new element we want
+     * @return String[] : An array containing all of the old data
+     */
+    private String[] growArray(String[] oldArray, String newElement) {
+        // Look for the element first
+        for (String element : oldArray) {
+            if (element.equals(newElement)) {
+                // If it's already there, we're done
+                return oldArray;
+            }
+        }
+        log.debug("Adding ID: '{}'", newElement);
+
+        // Ok, we know we need a new array
+        int length = oldArray.length + 1;
+        String[] newArray = new String[length];
+        // Copy the old array contents
+        System.arraycopy(oldArray, 0, newArray, 0, oldArray.length);
+        // And the new element, and return
+        newArray[length - 1] = newElement;
+        return newArray;
     }
 
     /**
