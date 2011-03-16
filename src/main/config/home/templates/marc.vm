@@ -1,0 +1,120 @@
+
+#macro (showElementMarc $field $tagNumber $ind1 $ind2 $code $label $anzsrc)
+#set($valueMap = $util.getList($item, $field))
+#foreach($key in $valueMap.keySet())
+#set($value = $valueMap.get($key))
+#if ($label != "")
+#set($labelVal = $value.get($label))
+#if ($anzsrc == "anzsrc")
+#set($labelVal = $labelVal.split("-").get(0).trim())
+#end
+#else
+#set($labelVal = $value.get($key))
+#end
+        <marc:datafield tag="$tagNumber" ind1="$ind1" ind2="$ind2">
+            <marc:subfield code="$code">$labelVal</marc:subfield>
+        </marc:datafield>
+        
+#end
+#end
+
+<marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+    <marc:record>
+##Collection type
+        <marc:datafield tag="655" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("dc:type")</marc:subfield>
+        </marc:datafield>
+        
+##Primary Title
+        <marc:datafield tag="245" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("dc:title")</marc:subfield>
+        </marc:datafield>
+        
+##Electronic location
+        <marc:datafield tag="856" ind1=" " ind2=" ">
+            <marc:subfield code="u">$urlBase/detail/$oid</marc:subfield>
+        </marc:datafield>
+    
+##Description full
+        <marc:datafield tag="520" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("dc:description")</marc:subfield>
+        </marc:datafield>
+    
+## <description type='rights'>
+##AccessRight
+        <marc:datafield tag="506" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("access_conditions")</marc:subfield>
+        </marc:datafield>
+        
+##Keywords
+        #showElementMarc("dc:subject.keywords", "653", " ", " ", "a", "", "")
+##for
+        #showElementMarc("dc:subject.anzsrc:for", "654", " ", " ", "a", "skos:prefLabel", "anzsrc")
+##seo
+        #showElementMarc("dc:subject.anzsrc:seo", "654", " ", " ", "a", "skos:prefLabel", "anzsrc")
+        
+##Quantity
+        <marc:datafield tag="300" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("extent")</marc:subfield>
+        </marc:datafield>
+        
+##Website
+        <marc:datafield tag="856" ind1=" " ind2=" ">
+            <marc:subfield code="u">$item.get("website")</marc:subfield>
+        </marc:datafield>
+        
+##Publication
+        #showElementMarc("citations", "856", " ", " ", "u", "", "")
+        
+##Data size
+        <marc:datafield tag="300" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("data_size")</marc:subfield>
+        </marc:datafield>
+        
+##Date created
+        <marc:datafield tag="260" ind1=" " ind2=" ">
+            <marc:subfield code="c">$item.get("dc:created")</marc:subfield>
+        </marc:datafield>
+        
+##External sources
+        <marc:datafield tag="787" ind1=" " ind2=" ">
+            <marc:subfield code="t">$item.get("sources_used")</marc:subfield>
+        </marc:datafield>
+        
+##Language
+        <marc:datafield tag="546" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("dc:language")</marc:subfield>
+        </marc:datafield>
+        
+##Retention Period
+        <marc:datafield tag="540" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("retention_period")</marc:subfield>
+        </marc:datafield>
+        
+##Temporal coverage
+        <marc:datafield tag="653" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("time_period")</marc:subfield>
+        </marc:datafield>
+        
+##Principal Investigator
+#set($creatorList = $util.getList($item, "dc:creator.foaf:Person"))
+#foreach($key in $creatorList.keySet())
+#set($creator = $creatorList.get($key))
+#if($creator.get("pi") == 1)
+        <marc:datafield tag="100" ind1=" " ind2=" ">
+            <marc:subfield code="a">$creator.get("foaf:givenName")&amp;nbsp;$creator.get("foaf:familyName")</marc:subfield>
+        </marc:datafield>
+#end
+#end
+
+##Supervisor
+        <marc:datafield tag="720" ind1=" " ind2=" ">
+            <marc:subfield code="a">$item.get("supervisor")</marc:subfield>
+        </marc:datafield>
+        
+##Collaborators
+        #showElementMarc("collaborators", "500", " ", " ", "a", "", "")
+    </marc:record>
+    
+</marc:collection>

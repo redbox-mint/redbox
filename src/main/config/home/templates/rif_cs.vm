@@ -1,0 +1,109 @@
+#macro(showElementRifCS $tag $field $attr $label $anzsrc)
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key))
+    #if ($label != "")
+    #set($labelVal = $value.get($label))
+    #if ($anzsrc == "anzsrc")
+        #set($labelVal = $labelVal.split("-").get(0).trim())
+    #end
+    <$tag$attr>$labelVal</$tag>
+    #else
+    <$tag$attr>$value.get($key)</$tag>
+    #end
+    #end
+#end
+
+#macro(showRelatedInfo $field, $relatedInfoType, $identifierType)
+#set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key))
+        <rif:relatedInfo type="$relatedInfoType"><rif:identifier type="$identifierType">$value.get($key)</rif:identifier></rif:relatedInfo>
+    #end
+#end
+
+#set($quote='"')
+#set($lang = "xml:lang=${quote}$item.get('dc:language')${quote}")
+<rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd"> 
+    <rif:registryObject group="University of Newcastle"> 
+        <rif:key>$urlBase/detail/$oid</rif:key> 
+        <rif:originatingSource type="authoritative">$urlBase/detail/$oid</rif:originatingSource>
+        
+        #set($dateModified="")
+        #if ($item.get("dc:modified")!="")
+            #set($dateModified="dateModified=${quote}$util.getW3CDateTime($item.get('dc:modified'))$quote")
+        #end
+
+        #set($dateAccessioned="")
+        #if ($item.get("dc:created")!="")
+            #set($dateAccessioned="dateAccessioned=${quote}$util.getW3CDateTime($item.get('dc:created'))$quote")
+        #end
+
+        <rif:collection type="$item.get("dc:type")" $dateModified $dateAccessioned>
+
+            <rif:identifier type="uri">$urlBase/detail/$oid</rif:identifier>
+            <rif:name type="primary" $lang>
+                <rif:namePart type="full">$item.get("dc:title")</rif:namePart>
+            </rif:name>
+            
+            <rif:description type="full" $lang>$item.get("dc:description")</rif:description>
+            <rif:description type="accessRights" $lang>$item.get("access_conditions")</rif:description>
+            <rif:description type="rights" $lang>$item.get("restrictions")</rif:description>
+            ##<rif:location>
+            ##    <rif:address>
+            ##        <rif:electronic type="url">
+            ##            <rif:value>$item.get("url")</rif:value>
+            ##        </rif:electronic>
+            ##    </rif:address>
+            ##</rif:location>
+            <rif:coverage>
+                 #set($coverageFrom="")
+                 #if ($item.get("dc:coverage.from")!="")
+                    #set($coverageFrom=$util.getW3CDateTime($item.get("dc:coverage.from")))
+                 #end
+
+                 #set($coverageTo="")
+                 #if ($item.get("dc:coverage.to")!="")
+                    #set($coverageTo=$util.getW3CDateTime($item.get("dc:coverage.to")))
+                 #end
+                <rif:temporal>
+                    <rif:date type="dateFrom" dateFormat="W3CDTF">$coverageFrom</rif:date>
+                    <rif:date type="dateTo" dateFormat="W3CDTF">$coverageTo</rif:date>
+                </rif:temporal>
+
+                <rif:temporal>
+                    <rif:text>$item.get("time_period")</rif:text>
+                </rif:temporal>
+##                <rif:spatial type="{}" $lang>
+##                    {co-ords}
+##                </rif:spatial>
+            </rif:coverage>
+            
+            #showElementRifCS("rif:subject" "dc:subject.keywords", " type=${quote}local${quote} $lang", "", "")
+            #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "skos:prefLabel", "anzsrc")
+            #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "skos:prefLabel", "anzsrc")
+            <rif:subject type="anzsrc-toa">$item.get("research_activity")</rif:subject>
+            
+            #showRelatedInfo("citations", "publication", "local")
+            <rif:relatedInfo type="website"><rif:identifier type="local">$item.get("website")</rif:identifier></rif:relatedInfo>
+            
+            <rif:relatedObject>
+                <rif:key>$item.get("data_owner")</rif:key>
+                <rif:relation type="isOwnedBy"/>
+            </rif:relatedObject>
+            
+            <rif:relatedObject>
+                <rif:key>$item.get("data_custodian")</rif:key>
+                <rif:relation type="isCustodianOf"/>
+            </rif:relatedObject>
+            
+            <rif:relatedObject>
+                <rif:key>$item.get("primary_contact_name")</rif:key>
+                <rif:relation type="isPrimaryContactFor"/>
+            </rif:relatedObject>
+            
+        </rif:collection>
+    </rif:registryObject> 
+</rif:registryObjects>

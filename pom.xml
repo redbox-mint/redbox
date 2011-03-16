@@ -312,20 +312,6 @@
                             </artifactItems>
                         </configuration>
                     </execution>
-                    <!-- Unpack Json Velocity Transformer Template -->
-                    <execution>
-                        <id>unpack-transformer-files</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>au.edu.usq.fascinator.plugins</includeGroupIds>
-                            <includeArtifactIds>plugin-transformer-jsonVelocity</includeArtifactIds>
-                            <includes>templates/**</includes>
-                            <outputDirectory>${dir.home}</outputDirectory>
-                        </configuration>
-                    </execution>
                     <!-- Fascinator and Solr web applications -->
                     <execution>
                         <id>copy-webapps</id>
