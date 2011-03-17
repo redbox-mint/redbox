@@ -1,6 +1,6 @@
 <div>
     <h2>
-        <label for="url">Identifer or URL</label>
+        <label for="url">Identifer or URL <span class="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-url">
             <img src="../images/icons/help.png"/>
         </span>
@@ -8,7 +8,13 @@
     <div class="help-content" id="help-url">
         Persistent URI/URL representing the location of the data.
     </div>
-    <p><input type="text" size="80" placeholder="Location of the data" id="url" /></p>
+    <p>
+        <label class="validation-err-msg" for="url"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            An identifier or URL is required!
+        </label>
+        <input type="text" size="60" placeholder="persistent identifier or url" id="url" />
+    </p>
 
     <h2>
         <label for="physical_storage">Stored at <span class="required" title="required">(*)</span></label>
@@ -17,14 +23,13 @@
         </span>
     </h2>
     <div class="help-content" id="help-stored-at">
-        Recored physical location of the data. For example:
-        University of Newcastle central storage faciliy.
+        Record physical location of the data e.g. University of Newcastle central storage faciliy.
     </div>
     <p>
-        <input type="text" size="80" placeholder="Physical location of the data" id="physical_storage" />
+        <input type="text" size="60" placeholder="physical location" id="physical_storage" />
         <label class="validation-err-msg" for="physical_storage"
             data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            Stored at, is required!
+            A physical location is required!
         </label>
     </p>
 
@@ -39,10 +44,28 @@
         in line with institutional/funding body retention policies.
     </div>
     <p>
-        <input type="text" size="80" placeholder="Retention period" id="retention_period" />
+        <input type="text" size="60" placeholder="retention period" id="retention_period" />
         <label class="validation-err-msg" for="retention_period"
             data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
             Retention Period is required!
+        </label>
+    </p>
+
+    <h2>
+        <label for="extent">Extent or Quantity <span class="required" title="required">(*)</span></label>
+        <span class="helpWidget" data-help-content-id="help-extent">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+
+    <div class="help-content" id="help-extent">
+        Enter the number of files that comprise the data, including the format.
+    </div>
+    <p>
+        <input type="text" size="60" placeholder="quantity" id="extent" />
+        <label class="validation-err-msg" for="extent"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Extent or quantity is required!
         </label>
     </p>
 
@@ -55,7 +78,7 @@
     <div class="help-content" id="help-disposal-date">
         Indicate disposal date for data.
     </div>
-    <p><input type="text" size="25" placeholder="Disposal date" class="dateYMD" id="disposal_date" /></p>
+    <p><input type="text" size="25" placeholder="disposal date" class="dateYMD" id="disposal_date" /></p>
 
     <h2>
         <label for="data_owner">Data Owner (IP)</label>
@@ -66,7 +89,7 @@
     <div class="help-content" id="help-data-owner">
         Person/institution identified as intellectual property owners of the data.
     </div>
-    <p><input type="text" size="80" placeholder="Data owner" id="data_owner" /></p>
+    <p><input type="text" size="60" placeholder="person or institution" id="data_owner" /></p>
 
     <h2>
         <label for="data_custodian">Data Custodian</label>
@@ -77,7 +100,7 @@
     <div class="help-content" id="help-data-custodian">
         Person/institution identified as custodian of the data.
     </div>
-    <p><input type="text" size="80" placeholder="Data custodian" id="data_custodian" /></p>
+    <p><input type="text" size="60" placeholder="person or institution" id="data_custodian" /></p>
 
     <h2>
         <label for="affiliation">Data Affiliation</label>
@@ -108,6 +131,35 @@
             </span>
         </span>
     </p>
+
+    <h2>
+        <label for="funding">Funding Bodies</label>
+        <span class="helpWidget" data-help-content-id="help-funding-bodies">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-funding-bodies">
+        Select/enter the name of the research funding body.
+    </div>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="2"><input type="button" class="add-another-item" value="Add another" /></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="Funding body"
+                        id="funding.0.skos:prefLabel" class="autocomplete-funding" />
+                    <input type="hidden" id="funding.0.rdf:resource" />
+                </td>
+                <td width="100%"><a class="delete-item" href="#">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
 
     <h2>
         <label for="grant">Grant Numbers</label>
@@ -142,47 +194,18 @@
                         <tr>
                             <td>
                                 <input type="text" size="20" id="grant.0.dc:identifier"
-                                    placeholder="Grant number" class="autocomplete-grant" />
+                                    placeholder="grant number" class="autocomplete-grant" />
                                 <input type="hidden" id="grant.0.rdf:resource" />
                             </td>
                             <td style="width:100%">
                                 <input type="text" size="60" id="grant.0.skos:prefLabel"
-                                    readonly="readonly" placeholder="Grant description"
+                                    readonly="readonly" placeholder="grant description"
                                     class="autocomplete-grant-label label" style="width:100%" />
                             </td>
                         </tr>
                     </table>
                 </td>
                 <td class="delete-item" style="text-align:right;width:100%;"><a href="#">delete</a></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>
-        <label for="funding">Funding Bodies</label>
-        <span class="helpWidget" data-help-content-id="help-funding-bodies">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-funding-bodies">
-        Select/enter the name of the research funding body.
-    </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td colspan="2"><input type="button" class="add-another-item" value="Add another" /></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td>
-                    <input type="text" size="80" placeholder="Funding body"
-                        id="funding.0.skos:prefLabel" class="autocomplete-funding" />
-                    <input type="hidden" id="funding.0.rdf:resource" />
-                </td>
-                <td width="100%"><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
     </table>
@@ -196,7 +219,7 @@
     <div class="help-content" id="help-project-title">
         Title of the research project.
     </div>
-    <p><input type="text" size="80" placeholder="Project title" id="project_title" /></p>
+    <p><input type="text" size="60" placeholder="title" id="project_title" /></p>
 
     <h2>
         <label for="depositor">Depositor</label>
@@ -207,7 +230,7 @@
     <div class="help-content" id="help-depositor">
         Record the name of the data depositor.
     </div>
-    <p><input type="text" size="80" placeholder="Depositor" id="depositor" /></p>
+    <p><input type="text" size="60" placeholder="depositor" id="depositor" /></p>
 
     <h2>
         <label for="data_size">Data Size</label>
@@ -218,24 +241,7 @@
     <div class="help-content" id="help-data-size">
         Record the size of the data in KB, MB, GB, TB etc.
     </div>
-    <p><input type="text" size="80" placeholder="Data size" id="data_size" /></p>
-
-    <h2>
-        <label for="extent">Extent or quantity <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-extent">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-extent">
-        Enter the number of files that comprise the data, including the format.
-    </div>
-    <p>
-        <input type="text" size="80" placeholder="Extent or quantity (i.e. no. of files)" id="extent" />
-        <label class="validation-err-msg" for="extent"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            Extent or quantity is required!
-        </label>
-    </p>
+    <p><input type="text" size="60" placeholder="size" id="data_size" /></p>
 
     <h2>
         <label for="policy">Institutional Data Management Policy</label>
@@ -246,7 +252,7 @@
     <div class="help-content" id="help-policy">
         Include the title, version number and date.
     </div>
-    <p><input type="text" size="80" placeholder="Institutional data management policy" id="policy" /></p>
+    <p><input type="text" size="60" placeholder="Institutional data management policy" id="policy" /></p>
 
     <h2>
         <label for="contracts">Contracts associated with the data or project (if appropriate)</label>
@@ -258,7 +264,7 @@
         Record if the data was produced under contract.
         Include name of organisation and date.
     </div>
-    <p><input type="text" size="80" placeholder="Contracts" id="contracts" /></p>
+    <p><input type="text" size="60" placeholder="Contracts" id="contracts" /></p>
 
     <h2>
         <label for="management_plan">Data management plan</label>
@@ -270,7 +276,7 @@
         Indicates existence of a data management plan.
     </div>
     <p>
-##        <input type="text" size="80" placeholder="Location of data management plan (if available)"
+##        <input type="text" size="60" placeholder="Location of data management plan (if available)"
 ##             id="management_plan" />
         <input type="radio" name="management_plan" value="yes"/> Yes &#160; 
         <input type="radio" name="management_plan" value="no"/> No
@@ -378,7 +384,6 @@ $(function() {
                 formatResult: function(row) { return splitFundingData(row).label; },
                 width: "40em"
             }).result(function(event, row) {
-                console.log("RUNNING RESULT: " + row);
                 var uriElem = $(this).next();
                 if (row) {
                     uriElem.val(splitFundingData(row).uri);

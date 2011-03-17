@@ -1,43 +1,5 @@
 <div>
     <h2>
-        <label for="dc:subject.anzsrc:seo">Socio-economic Objectives</label>
-        <span class="helpWidget" data-help-content-id="help-seo-codes">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-seo-codes">
-        Selct relevant SEO code/s.
-    </div>
-    <table class="input-list">
-        <tfoot>
-            <tr class="item-input">
-                <td>
-                    <span class="data-source-drop-down"
-                          data-json-source-url="../proxyGet?ns=mintSeo&qs=count%3D999%26level%3D"
-                          data-top-level-id="top"
-                          data-id-key="rdf:about"
-                          data-label-key="skos:prefLabel"
-                          data-list-key="results"
-                          data-children-key="skos:narrower">
-                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
-                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
-                    </span>
-                    <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
-                </td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-display">
-                <td>
-                    <span class="item-display-item"></span>
-                    <span class="item-display-item" style="color: lightblue; display: none;"></span>
-                    <a class="delete-item" href="#">delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>
         <label for="dc:subject.anzsrc:for">Field of Research codes</label>
         <span class="helpWidget" data-help-content-id="help-for-codes">
             <img src="../images/icons/help.png"/>
@@ -60,7 +22,45 @@
                         <input type="text" class="selection-added-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="" />
                         <input type="text" class="selection-added-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="" />
                     </span>
-                    <button class="item-add selection-add add-unique-only">Add '<span class="selection-add-label"></span>'</button>
+                    <button class="item-add selection-add add-unique-only">Add FOR code</button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-display">
+                <td>
+                    <span class="item-display-item"></span>
+                    <span class="item-display-item" style="display:none;"></span>
+                    <a class="delete-item" href="#">delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        <label for="dc:subject.anzsrc:seo">Socio-Economic Objectives</label>
+        <span class="helpWidget" data-help-content-id="help-seo-codes">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-seo-codes">
+        Select relevant SEO code/s.
+    </div>
+    <table class="input-list">
+        <tfoot>
+            <tr class="item-input">
+                <td>
+                    <span class="data-source-drop-down"
+                          data-json-source-url="../proxyGet?ns=mintSeo&qs=count%3D999%26level%3D"
+                          data-top-level-id="top"
+                          data-id-key="rdf:about"
+                          data-label-key="skos:prefLabel"
+                          data-list-key="results"
+                          data-children-key="skos:narrower">
+                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
+                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
+                    </span>
+                    <button class="item-add selection-add add-unique-only">Add SEO code</button>
                 </td>
             </tr>
         </tfoot>
@@ -88,7 +88,7 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><input type="button" class="add-another-item" value="Add another keyword" /></td>
+                <td><input type="button" class="add-another-item" value="Add keyword" /></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -97,7 +97,7 @@
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
                 <td>
-                    <input type="text" size="40" placeholder="Keyword" id="dc:subject.keywords.0" class="vkeyword" />
+                    <input type="text" size="60" placeholder="keyword" id="dc:subject.keywords.0" class="vkeyword" />
                 </td>
                 <td class="delete-item"><a href="#">delete</a></td>
                 <td style="width: 100%;">
@@ -150,8 +150,9 @@
     </div>
     <p>
         <select id="research_activity" name="research_activity">
+            <option value="" selected="selected">Please select one</option>
             <option value="pure">Pure basic research</option>
-            <option value="strategic" selected>Strategic basic research</option>
+            <option value="strategic">Strategic basic research</option>
             <option value="applied">Applied research</option>
             <option value="experimental">Experimental development</option>
         </select>

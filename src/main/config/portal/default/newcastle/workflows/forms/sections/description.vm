@@ -9,6 +9,11 @@
         <p>Description of the research that generated the dataset.</p>
         This should include information about:
         <ul>
+            <li>
+                information about the dataset e.g. This dataset contains observational data,
+                calibration files and catalogue information collected from the
+                Mount Stromlo Observatory Facility.
+            </li>
             <li>the project</li>
             <li>the purpose and scope of the data</li>
             <li>entities being studied or recorded</li>
@@ -18,79 +23,76 @@
     </div>
     <p>
         <textarea rows="12" cols="80" id="dc:description" style="vertical-align: text-top;"
-                placeholder="Description of the research data"></textarea>
+                placeholder="description of the research dataset"></textarea>
         <label class="validation-err-msg" for="dc:description"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            A description is required!
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty and lenlt(4001));">
+            A description is required and must not exceed 4000 characters!
         </label>
     </p>
     
-    <h2>Related</h2>
-    <fieldset>
-        <h2>
-            <label for="citations">Publications (citing)</label>
-            <span class="helpWidget" data-help-content-id="help-publications">
-                <img src="../images/icons/help.png"/>
-            </span>
-        </h2>
-        <div id="help-publications" class="help-content">
-            Include a citation to any publications underpinning this data.
-        </div>
-        <table class="input-list">
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td><input type="button" class="add-another-item" value="Add" /></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tfoot>
-            <tbody>
-                <tr class="item-input-display sortable-item">
-                    <td class="sort-number"></td>
-                    <td>
-                        <input type="text" size="40" placeholder="Citation" id="citations.0" />
-                    </td>
-                    <td class="delete-item"><a href="#">delete</a></td>
-                    <td style="width: 100%;" />
-                </tr>
-            </tbody>
-        </table>
+    <h2>
+        <label for="citations">Related Publications (citing)</label>
+        <span class="helpWidget" data-help-content-id="help-publications">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div id="help-publications" class="help-content">
+        Include URLs to any publications underpinning this data.
+    </div>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add publication" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="publication url" id="citations.0" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
 
-        <h2>
-            <label for="data">Data</label>
-            <span class="helpWidget" data-help-content-id="help-rel-data">
-                <img src="../images/icons/help.png"/>
-            </span>
-        </h2>
-        <div id="help-rel-data" class="help-content">
-            Include a citation to any sources of third party data used/re-used.
-        </div>
-        <p>
-            <input type="text" size="80" placeholder="Enter data" id="data" />
-            <label class="validation-err-msg" for="data"
-                data-rule="for(data);when(onChange, onSubmit, onBlur);
-                        test(lenlt(2001));">
-                Text too long!
-            </label>
-        </p>
+    <h2>
+        <label for="data">Data Re-Use</label>
+        <span class="helpWidget" data-help-content-id="help-rel-data">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div id="help-rel-data" class="help-content">
+        Include a citation to any sources of third party data used/re-used.
+    </div>
+    <p>
+        <input type="text" size="60" placeholder="data citation" id="data" />
+        <label class="validation-err-msg" for="data"
+            data-rule="for(data);when(onChange, onSubmit, onBlur);
+                    test(lenlt(2001));">
+            Text too long!
+        </label>
+    </p>
 
-        <h2>
-            <label for="website">Website or other source</label>
-            <span class="helpWidget" data-help-content-id="help-rel-website">
-                <img src="../images/icons/help.png"/>
-            </span>
-        </h2>
-        <div id="help-rel-website" class="help-content">
-            Include a URL for the relevant website.
-        </div>
-        <p>
-            <input type="text" size="80" placeholder="Enter a website URL" id="website" />
-            <label class="validation-err-msg" for="website"
-                data-rule="for(website);when(onChange, onSubmit, onBlur);
-                        test(lenlt(2001));">
-                Text too long!
-            </label>
-        </p>
-    </fieldset>
+    <h2>
+        <label for="website">Related Website</label>
+        <span class="helpWidget" data-help-content-id="help-rel-website">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div id="help-rel-website" class="help-content">
+        Include a URL for the relevant website.
+    </div>
+    <p>
+        <input type="text" size="60" placeholder="website url" id="website" />
+        <label class="validation-err-msg" for="website"
+            data-rule="for(website);when(onChange, onSubmit, onBlur);
+                    test(lenlt(2001));">
+            Text too long!
+        </label>
+    </p>
 </div>

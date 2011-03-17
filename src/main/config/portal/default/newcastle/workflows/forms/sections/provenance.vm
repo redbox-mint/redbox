@@ -1,72 +1,72 @@
 <div>
     <h2>
-        <label for="sources_used">Any sources of Data used/re-used (third party)</label>
-        <span class="helpWidget" data-help-content-id="help-sources-used">
+        <label for="access_conditions">Access conditions <span class="required" title="required">(*)</span></label>
+        <span class="helpWidget" data-help-content-id="help-access-conditions">
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
-    <div class="help-content" id="help-sources-used">
-        Include names of dataset creators, year, name of dataset and
-        if available, a URL or DOI to provide attribution.
+    <div class="help-content" id="help-access-conditions">
+        Record any conditions associated with granting
+        access to the data e.g. Contact Principal Investigator
+        to negotiate access to the data.
     </div>
     <p>
-        <textarea rows="6" cols="80" id="sources_used" placeholder="Sources used"></textarea>
+        <input type="text" size="60" placeholder="access conditions" id="access_conditions" />
+        <label class="validation-err-msg" for="access_conditions"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Access conditions are required!
+        </label>
     </p>
-        <p>
-            <label for="access_conditions">Access conditions <span class="required" title="required">(*)</span></label>
-            <span class="helpWidget" data-help-content-id="help-access-conditions">
-                <img src="../images/icons/help.png"/>
-            </span>
-            <div class="help-content" id="help-access-conditions">
-                Record any conditions associated with granting
-                access to the data. e.g. Contact Principal Investigator
-                to negotiate access to the data.
-            </div>
-            <input type="text" size="80" placeholder="Access conditions" id="access_conditions" />
-            <label class="validation-err-msg" for="access_conditions"
-                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-                Access conditions is required!
-            </label>
-        </p>
-        <p>
-            <label for="restrictions">Restrictions, Embargoes or Usage Constraints <span class="required" title="required">(*)</span></label>
-            <span class="helpWidget" data-help-content-id="help-restrictions">
-                <img src="../images/icons/help.png"/>
-            </span>
-            <div class="help-content" id="help-restrictions">
-                Record any restrictions on access to the data,
-                example: Embargoed until 1 year after publication of
-                the research.
-            </div>
-            <input type="text" size="80" placeholder="Restrictions" id="restrictions" />
-            <label class="validation-err-msg" for="restrictions"
-                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-                Restrictions, Embargoes or Usage Constraints is required!
-            </label>
-        </p>
-        <p>
-            <label for="license_cc">License - Creative Commons</label>
-            <span class="helpWidget" data-help-content-id="help-license-cc">
-                <img src="../images/icons/help.png"/>
-            </span>
-            <div class="help-content" id="help-license-cc">
-                See: <a href="http://creativecommons.org.au/learn-more/licences">
-                        http://creativecommons.org.au/learn-more/licences
-                     </a>
-            </div>
-            <input type="text" size="80" placeholder="Creative Commons" id="license_cc" />
-        </p>
-        <p>
-            <label for="license_other">License - Other</label>
-            <span class="helpWidget" data-help-content-id="help-license-other">
-                <img src="../images/icons/help.png"/>
-            </span>
-            <div class="help-content" id="help-license-other">
-                Examples of other licences:
-                <a href="http://www.opendefinition.org/licenses">
-                    http://www.opendefinition.org/licenses
-                </a>
-            </div>
-            <input type="text" size="80" placeholder="Other" id="license_other" />
-        </p>
+    <h2>
+        <label for="restrictions">Restrictions, Embargoes or Usage Constraints <span class="required" title="required">(*)</span></label>
+        <span class="helpWidget" data-help-content-id="help-restrictions">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-restrictions">
+        Record any restrictions on access to the data e.g. Embargoed until 1
+        year after publication of the research.
+    </div>
+    <p>
+        <input type="text" size="60" placeholder="restriction on access" id="restrictions" />
+        <label class="validation-err-msg" for="restrictions"
+            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+            Restrictions, Embargoes or Usage Constraints is required!
+        </label>
+    </p>
+    <h2>
+        <label for="license_cc">License - Creative Commons</label>
+        <span class="helpWidget" data-help-content-id="help-license-cc">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-license-cc">
+        See: <a href="http://creativecommons.org.au/learn-more/licences" target="blank">
+                http://creativecommons.org.au/learn-more/licences
+             </a>
+    </div>
+    <p>
+        <select name="license_cc">
+            <option value="">Please select one</option>
+            <option value="http://creativecommons.org/licenses/by/3.0/au">CC BY: Attribution</option>
+            <option value="http://creativecommons.org/licenses/by-sa/3.0/au">CC BY-SA: Attribution-Share Alike</option>
+            <option value="http://creativecommons.org/licenses/by-nd/3.0/au">CC BY-ND: Attribution-No Derivative Works</option>
+            <option value="http://creativecommons.org/licenses/by-nc/3.0/au">CC BY-NC: Attribution-Noncommerical</option>
+            <option value="http://creativecommons.org/licenses/by-nc-sa/3.0/au">CC BY-NC-SA: Attribution-Noncommerical-Share Alike</option>
+            <option value="http://creativecommons.org/licenses/by-nc-nd/3.0/au">CC BY-NC-ND: Attribution-Noncommerical-No Derivatives</option>
+        </select>
+    </p>
+    <h2>
+        <label for="license_other">License - Other</label>
+        <span class="helpWidget" data-help-content-id="help-license-other">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-license-other">
+        Examples of other licences:
+        <a href="http://www.opendefinition.org/licenses" target="blank">
+            http://www.opendefinition.org/licenses
+        </a>
+    </div>
+    <p><input type="text" size="60" placeholder="other license" id="license_other" /></p>
 </div>

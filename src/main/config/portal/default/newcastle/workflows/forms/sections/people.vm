@@ -2,31 +2,35 @@
     <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=mintPeople&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
-    <h2>Creators <span class="required" title="required">(*)</span></h2>
+    <h2>
+        Creators <span class="required" title="required">(*)</span>
+        <span class="helpWidget" data-help-content-id="help-creators">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-creators">
+        Information about the creators of the research dataset including:
+        <ul>
+            <li>
+                Indicate persons with roles of Principal Investigator or
+                Co-Principle Investigator by checking the boxes provided.
+            </li>
+            <li>Given name and/or family name of persons who created the data.</li>
+            <li>Select the persons' appropriate affiliation.</li>
+    </div>
     <table class="input-list sortable">
         <thead>
             <tr class="header-row">
                 <th>&nbsp;</th>
                 <th>PI</th>
-                <th>Co-PI</th>
-                <th style="width: 100%;">
-                    <span class="helpWidget" data-help-content-id="help-creators">
-                        <img src="../images/icons/help.png"/>
-                    </span>
-                </th>
+                <th colspan="4">Co-PI</th>
             </tr>
-            <tr><td colspan="4">
-                <div class="help-content" id="help-creators">
-                    <p>Given name and family name of persons who created the data.</p>
-                    <p>Please indicate persons with roles of Principal Investigator or
-                    Co-Principle Investigator by checking the boxes provided.</p>
-                </div>
-            </td></tr>
         </thead>
         <tfoot>
             <tr>
-                <td colspan="9">
-                    <input class="add-another-item" type="button" value="Add another person" />
+                <td colspan="3">&nbsp;</td>
+                <td colspan="6">
+                    <input class="add-another-item" type="button" value="Add person" />
                 </td>
             </tr>
         </tfoot>
@@ -49,17 +53,13 @@
                             <tr>
                                 <td style="border-bottom:none;">
                                     <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name: <span class="required" title="required">(* or)</span></label>
-                                    <input type="text" placeholder="given name" size="40"
+                                    <input type="text" placeholder="given name" size="30"
                                            class="nameLookup-name creatorGivenName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
-                                </td>
-                                <td style="border-bottom:none;">
                                     <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name: <span class="required" title="required">(*)</span></label>
-                                    <input type="text" placeholder="family name" size="40"
+                                    <input type="text" placeholder="family name" size="30"
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
-                                </td>
-                                <td style="border-bottom:none;">
                                     <span style="white-space:nowrap;">
                                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
                                         <span class="identified-as-name" style="border:0px solid #aaaaaa;padding:0.25ex;"></span>
@@ -72,7 +72,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="border:none;text-align:center;">
+                                <td style="border:none">
                                     <label class="validation-err-msg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);
@@ -103,22 +103,16 @@
                                         <span class="selection-added">
                                             <input type="hidden" class="selection-added-id"
                                                    id="dc:creator.foaf:Person.0.association" value="" />
-                                            <input type="text" class="selection-added-label" readonly="readonly" size="24"
+                                            <input type="text" class="selection-added-label" readonly="readonly" size="60"
                                                    id="dc:creator.foaf:Person.0.association.skos:prefLabel" value="" />
                                             <a href="#" class="clear-item">change</a>
                                         </span>
                                         <span class="drop-down-location">
                                             <button class="selection-add add-unique-only" data-add-on-click="1">
-                                                Add 
+                                                Select
                                             </button>
                                         </span>
                                     </span>
-                    <span class="helpWidget" data-help-content-class="help-association">
-                        <img src="../images/icons/help.png"/>
-                    </span>
-                    <span class="help-content help-association inline" >
-                        Select the appropriate affiliation.
-                    </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -142,14 +136,13 @@
         <tr>
             <td>
                 <label for="primary_contact_name">Name</label>
-                <input type="text" size="40" placeholder="Enter a name"
-                    id="primary_contact_name" />
+                <input type="text" size="60" placeholder="full name" id="primary_contact_name" />
             </td>
         </tr>
         </tr>
             <td>
                 <label for="primary_contact_email">Email</label>
-                <input type="text" size="40" placeholder="Enter an email address" id="primary_contact_email" />
+                <input type="text" size="60" placeholder="email address" id="primary_contact_email" />
             </td>
         </tr>
     </table>
@@ -163,7 +156,7 @@
     <div class="help-content" id="help-supervisor">
         Name of supervisor associated with the data creation if applicable.
     </div>
-    <input type="text" size="80" placeholder="Supervisor (where applicable)" id="supervisor" />
+    <input type="text" size="60" placeholder="supervisor full name" id="supervisor" />
 
     <p>
         <h2>
@@ -179,7 +172,7 @@
             <tfoot>
                 <tr>
                     <td></td>
-                    <td><input type="button" class="add-another-item" value="Add" /></td>
+                    <td><input type="button" class="add-another-item" value="Add collaborator" /></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -187,7 +180,7 @@
             <tbody>
                 <tr class="item-input-display sortable-item">
                     <td class="sort-number"></td>
-                    <td><input type="text" size="40" placeholder="Institution or organisation" id="collaborators.0" /></td>
+                    <td><input type="text" size="60" placeholder="collaborator" id="collaborators.0" /></td>
                     <td class="delete-item"><a href="#">delete</a></td>
                     <td style="width: 100%;" />
                 </tr>

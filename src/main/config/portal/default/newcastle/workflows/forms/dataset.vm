@@ -11,15 +11,15 @@
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
+        dc:type,
         dc:coverage.from,
         dc:coverage.to,
         dc:created,
         dc:modified,
         time_period,
+        location,
         dc:language,
         dc:language.skos:prefLabel,
-        location,
-        dc:type,
         ## description
         dc:description,
         citations.0,

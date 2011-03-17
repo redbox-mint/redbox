@@ -7,143 +7,14 @@
     </h2>
     <div class="help-content" id="help-title">
         A unique title for the research dataset. The title should be unique to
-        the data itself ie. do not use the publication title as the data title.
+        the data itself, i.e. do not use the publication title as the data title.
     </div>
     <p>
         <textarea rows="4" cols="80" id="dc:title" style="vertical-align: text-top;"
-            placeholder="Enter the title of the research data" autofocus></textarea>
+            placeholder="unique title of research dataset" autofocus></textarea>
         <label class="validation-err-msg" for="dc:title"
             data-validation-rule="test(!='' and !='[Untitled]');when(onBlur, onChange, onSubmit, OnSave);">
             A title is required!
-        </label>
-    </p>
-
-    <h2>
-        <label for="dc:coverage">Date Coverage</label>
-        <span class="helpWidget" data-help-content-id="help-coverage">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-coverage">
-        User this to indicate a date range relevant to the dataset collection.
-        Year format requires manual entry e.g. 1990 To 2010
-    </div>
-    <p>
-        <label for="dc:coverage.from">From</label>
-        <input type="text" placeholder="Start date" class="dateYMD" id="dc:coverage.from" />
-        <label for="dc:coverage.to">To</label>
-        <input type="text" placeholder="End date" class="dateYMD" id="dc:coverage.to" />
-        <label class="validation-err-msg" for="dc:coverage.from"
-            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageFrom);
-                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
-            A valid from date or year is required!
-        </label>
-        <label class="validation-err-msg" for="dc:coverage.to"
-            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageTo);
-                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
-            A valid to date or year is required!
-        </label>
-    </p>
-
-    <h2>
-        <label for="dc:created">Date Created</label>
-        <span class="helpWidget" data-help-content-id="help-date-created">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-date-created">
-        Date the dataset collection was created
-    </div>
-    <p>
-        <input type="text" placeholder="Date created" class="dateYMD" id="dc:created" />
-        <label class="validation-err-msg" for="dc:created"
-            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyymmdd or empty);">
-            A valid date created must be entered (yyyy-mm-dd else leave blank)!
-        </label>
-    </p>
-
-    <h2>
-        <label for="dc:modified">Date Modified</label>
-        <span class="helpWidget" data-help-content-id="help-date-modified">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-date-modified">
-        Date recording any modifications to the metadata record.
-    </div>
-    <p>
-        <input type="text" placeholder="Date modified" class="dateYMD" id="dc:modified" />
-        <label class="validation-err-msg" for="dc:modified"
-            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyy_mm_dd or empty);">
-            A valid date modified must be entered (yyyy-mm-dd else leave blank)!
-        </label>
-    </p>
-
-    <h2>
-        <label for="time_period">Time Period</label>
-        <span class="helpWidget" data-help-content-id="help-time-period">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-time-period">
-        A text description of a time period if applicable. e.g. 21<sup style="vertical-align: super;">st</sup> century
-    </div>
-    <p>
-        <input type="text" placeholder="Time period" id="time_period" />
-        <label class="validation-err-msg" for="time_period"
-            data-validation-rule="when(onChange, onBlur, onSubmit);test(lenlt(2001));">
-            Text too long!
-        </label>
-    </p>
-
-    <h2>
-        <label for="dc:language">Language</label>
-        <span class="helpWidget" data-help-content-id="help-language">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-language">
-        Language of the metadata record. e.g. English, French etc.
-    </div>
-    <p>
-        ##<input type="text" size="20" value="eng" placeholder="Enter the language of the research data" id="dc:language" />
-        <span class="data-source-drop-down"
-              data-json-source-url="../proxyGet?ns=mintLanguage&qs=count%3D999%26level%3D"
-              data-id-key="rdfs:label"
-              data-label-key="dc:description"
-              data-list-key="results">
-            <span class="selection-added">
-                <input type="hidden" class="selection-added-id"
-                       id="dc:language" value="eng" />
-                <input type="text" class="selection-added-label" size="20" readonly="readonly"
-                       id="dc:language.skos:prefLabel" value="English" />
-                <a href="#" class="clear-item">change</a>
-            </span>
-            <span class="drop-down-location">
-                <button class="selection-add add-unique-only" data-add-on-click="1">
-                    Select 
-                </button>
-            </span>
-        </span>
-    </p>
-
-    <h2>
-        <label for="location">Location <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-location">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-location">
-        Geospatial location relevant to the data created. This may describe
-        a geographical area where data was collected, a place which is the subject
-        of a collection, or a location which is the focus of an activity e.g.
-        coordinates or placenames.
-    </div>
-    <p>
-        <input type="text" placeholder="Location" id="location" size="60" />
-        <label class="validation-err-msg" for="location"
-            data-validation-rule="when(onChange, onBlur, onSubmit);test(notEmpty);">
-            A location is required!
         </label>
     </p>
 
@@ -155,7 +26,7 @@
     </h2>
     <div class="help-content" id="help-type">
         <dl>
-            <dt>CatalogueOrIndex</dt>
+            <dt>Catalogue or Index</dt>
             <dd>
                 Collection of resource descriptions describing the content of
                 one or more repositories or collective works at the item level.
@@ -179,10 +50,6 @@
                 Collection of physical or digital objects compiled for information
                 and documentation purposes and/or for storage and safekeeping.
             </dd>
-            <dt>Other<dt>
-            <dd>
-                Do Not Use [This is a placeholder for future use.]
-            </dd>
         </dl>
     </div>
     <p>
@@ -192,37 +59,128 @@
             <option value="Dataset" selected>Dataset</option>
             <option value="Registry">Registry</option>
             <option value="Repository">Repository</option>
-##            <option value="FreeText">Other...</option>
         </select>
-        <span id="freetext-type" class="hidden">
-            <span>&nbsp;Please specify:&nbsp;</span>
-            <input type="text" size="40" placeholder="Enter the type of the research data" id="dc:type.freetext" />
+    </p>
+
+    <h2>
+        <label for="dc:coverage">Date Coverage</label>
+        <span class="helpWidget" data-help-content-id="help-coverage">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-coverage">
+        Use this to indicate a date range relevant to the dataset collection.
+        Year only dates requires manual entry, e.g. 1990 to 2010.
+    </div>
+    <p>
+        <label for="dc:coverage.from">From</label>
+        <input type="text" placeholder="start date" class="dateYMD" id="dc:coverage.from" />
+        <label for="dc:coverage.to">To</label>
+        <input type="text" placeholder="end date" class="dateYMD" id="dc:coverage.to" />
+        <label class="validation-err-msg" for="dc:coverage.from"
+            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageFrom);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+            A valid from date or year is required!
+        </label>
+        <label class="validation-err-msg" for="dc:coverage.to"
+            data-validation-rule="when(onChange, onBlur, onSubmit);name(testCoverageTo);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+            A valid to date or year is required!
+        </label>
+    </p>
+
+    <h2>
+        <label for="dc:created">Date Created</label>
+        <span class="helpWidget" data-help-content-id="help-date-created">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-date-created">
+        Date when the dataset collection was created.
+    </div>
+    <p>
+        <input type="text" placeholder="date created" class="dateYMD" id="dc:created" />
+        <label class="validation-err-msg" for="dc:created"
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyymmdd or empty);">
+            A valid date created must be entered (yyyy-mm-dd else leave blank)!
+        </label>
+    </p>
+
+    <h2>
+        <label for="dc:modified">Date Modified</label>
+        <span class="helpWidget" data-help-content-id="help-date-modified">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-date-modified">
+        Date recording any modifications to the metadata record.
+    </div>
+    <p>
+        <input type="text" placeholder="date modified" class="dateYMD" id="dc:modified" />
+        <label class="validation-err-msg" for="dc:modified"
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(yyyy_mm_dd or empty);">
+            A valid date modified must be entered (yyyy-mm-dd else leave blank)!
+        </label>
+    </p>
+
+    <h2>
+        <label for="time_period">Time Period</label>
+        <span class="helpWidget" data-help-content-id="help-time-period">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-time-period">
+        A text description of a time period if applicable e.g. 21st century.
+    </div>
+    <p>
+        <input type="text" placeholder="time period" id="time_period" size="60" />
+        <label class="validation-err-msg" for="time_period"
+            data-validation-rule="when(onChange, onBlur, onSubmit);test(lenlt(2001));">
+            Text too long!
+        </label>
+    </p>
+
+    <h2>
+        <label for="location">Geospatial Location</label>
+        <span class="helpWidget" data-help-content-id="help-location">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-location">
+        Geospatial location relevant to the data created. This may describe
+        a geographical area where data was collected, a place which is the subject
+        of a collection, or a location which is the focus of an activity e.g.
+        coordinates or placenames.
+    </div>
+    <p><input type="text" placeholder="geospatial location" id="location" size="60" /></p>
+
+    <h2>
+        <label for="dc:language">Language</label>
+        <span class="helpWidget" data-help-content-id="help-language">
+            <img src="../images/icons/help.png"/>
+        </span>
+    </h2>
+    <div class="help-content" id="help-language">
+        Language of the metadata record. e.g. English, French, etc.
+    </div>
+    <p>
+        <span class="data-source-drop-down"
+              data-json-source-url="../proxyGet?ns=mintLanguage&qs=count%3D999"
+              data-id-key="rdfs:label"
+              data-label-key="dc:description"
+              data-list-key="results">
+            <span class="selection-added">
+                <input type="hidden" class="selection-added-id"
+                       id="dc:language" name="dc:language" value="eng" />
+                <input type="text" class="selection-added-label" size="30" readonly="readonly"
+                       id="dc:language.skos:prefLabel" name="dc:language.skos:prefLabel" value="English" />
+                <a href="#" class="clear-item">change</a>
+            </span>
+            <span class="drop-down-location">
+                <button class="selection-add add-unique-only" data-add-on-click="1">
+                    Select
+                </button>
+            </span>
         </span>
     </p>
 </div>
-<script type="text/javascript">
-$(function() {
-    var typeSelect = $("#dc\\:type");  
-    function updateType() {
-        var type = typeSelect.val();
-        var freetext = $("#freetext-type");
-        if (type == "FreeText") {
-            freetext.removeClass("hidden");
-        } else {
-            freetext.addClass("hidden");
-        }
-    }
-    
-    typeSelect.change(updateType);
-    updateType();
-
-    $("#dc\\:language")
-        .autocomplete("$portalPath/proxyGet?ns=mintLanguage&qs=count%3D999%26simple=true",
-            {
-                formatItem: function(row, pos, count, term) {
-                    console.log(row, pos, count, term);
-                    return term;
-                }
-            });
-});
-</script>
