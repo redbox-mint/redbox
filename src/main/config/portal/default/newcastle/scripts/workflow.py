@@ -246,7 +246,7 @@ class WorkflowData:
                     indexer.remove(foid)
                     indexer.commit()
                     # Notify our subscribers
-                    self.sendMessage("Delete")
+                    self.sendMessage(oid, "Delete")
                     Services.storage.removeObject(foid)
                 except Exception, e:
                     print "*** ERROR: '%s'" % str(e)
