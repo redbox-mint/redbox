@@ -333,6 +333,14 @@
                     "controlGroup": "X",
                     "versionable": true,
                     "retainIds": true
+                },
+                ".tfpackage": {
+                    "dsID": "REDBOX",
+                    "label": "ReDBox Form Data",
+                    "status": "I",
+                    "controlGroup": "M",
+                    "versionable": true,
+                    "retainIds": true
                 }
             },
             "attachments": {

@@ -707,11 +707,24 @@ public class VitalSubscriber implements Subscriber {
 
         // Each payload we care about needs to be sent
         for (String ourPid : pids.keySet()) {
+            // Fascinator packages have unpredictable names,
+            //  so we just use the extension
+            // eg. 'e6e174fe-3508-4c8a-8530-1d6bb644d10a.tfpackage'
+            String realPid = ourPid;
+            if (ourPid.equals(".tfpackage")) {
+                realPid = getPackagePid(object);
+                if (realPid == null) {
+                    String message = partialUploadErrorMessage(
+                            ourPid, sent, pids.size(), vitalPid);
+                    throw new Exception(message +
+                            "\n\nPackage not found.");
+                }
+            }
             log.info("Processing PID to send to VITAL: '{}'", ourPid);
 
             // Get our configuration
             JsonConfigHelper thisPid = pids.get(ourPid);
-            String dsId = thisPid.get("dsID", ourPid);
+            String dsId = thisPid.get("dsID", realPid);
             String label = thisPid.get("label", dsId);
             String status = thisPid.get("status", "A");
             String controlGroup = thisPid.get("controlGroup", "X");
@@ -731,12 +744,12 @@ public class VitalSubscriber implements Subscriber {
             Payload payload = null;
             String mimeType = null;
             try {
-                payload = object.getPayload(ourPid);
+                payload = object.getPayload(realPid);
             } catch (StorageException ex) {
                 String message = partialUploadErrorMessage(
-                        ourPid, sent, pids.size(), vitalPid);
+                        realPid, sent, pids.size(), vitalPid);
                 throw new Exception(message + "\n\nError accessing payload '" +
-                        ourPid + "' : ", ex);
+                        realPid + "' : ", ex);
             }
             mimeType = payload.getContentType();
             // Default to binary data
@@ -745,11 +758,11 @@ public class VitalSubscriber implements Subscriber {
             }
 
             try {
-                sendToVital(fedora, object, ourPid, vitalPid, dsId, altIds,
+                sendToVital(fedora, object, realPid, vitalPid, dsId, altIds,
                         label, mimeType, controlGroup, status, versionable);
             } catch (Exception ex) {
                 String message = partialUploadErrorMessage(
-                        ourPid, sent, pids.size(), vitalPid);
+                        realPid, sent, pids.size(), vitalPid);
                 throw new Exception(message, ex);
             }
 
@@ -929,6 +942,22 @@ public class VitalSubscriber implements Subscriber {
                 attachment.close();
             }
         } // End for loop
+    }
+
+    /**
+     * For the given digital object, find the Fascinator package inside.
+     *
+     * @param object : The object with a package
+     * @return String : The payload ID of the package, NULL if not found
+     * @throws Exception if any errors occur
+     */
+    private String getPackagePid(DigitalObject object) throws Exception {
+        for (String pid : object.getPayloadIdList()) {
+            if (pid.endsWith(".tfpackage")) {
+                return pid;
+            }
+        }
+        return null;
     }
 
     /**
