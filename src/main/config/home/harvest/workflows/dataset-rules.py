@@ -64,6 +64,13 @@ class IndexData:
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
         self.utils.add(self.index, "repository_type", self.params["repository.type"])
+        # VITAL integration
+        vitalPid = self.params["vitalPid"]
+        if vitalPid is not None:
+            self.utils.add(self.index, "vitalPid", vitalPid)
+        vitalHandle = self.params["vitalHandle"]
+        if vitalHandle is not None:
+            self.utils.add(self.index, "vitalHandle", vitalHandle)
 
     def __security(self):
         # Security

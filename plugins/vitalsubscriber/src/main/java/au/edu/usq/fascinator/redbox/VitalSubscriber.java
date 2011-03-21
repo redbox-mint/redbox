@@ -129,6 +129,9 @@ public class VitalSubscriber implements Subscriber {
     /** Temp directory */
     private File tmpDir;
 
+    /** Wait conditions */
+    private List<String> waitProperties;
+
     /**
      * Gets an identifier for this type of plugin. This should be a simple name
      * such as "file-system" for a storage plugin, for example.
@@ -371,7 +374,7 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Do we have a template?
-        String templatePath = config.get("vital/foxmlTemplate");
+        String templatePath = config.get("subscriber/vital/foxmlTemplate");
         if (templatePath != null) {
             foxmlTemplate = new File(templatePath);
             if (!foxmlTemplate.exists()) {
@@ -379,6 +382,22 @@ public class VitalSubscriber implements Subscriber {
                 throw new SubscriberException("VITAL Subscriber:" +
                         " The new object template provided does not exist: '" +
                         templatePath + "'");
+            }
+        }
+
+        // Wait conditions
+        waitProperties = new ArrayList();
+        Map<String, String> waitConditions = getStringMap(config,
+                "subscriber/vital/waitConditions");
+        for (String type : waitConditions.keySet()) {
+            String value = waitConditions.get(type);
+            if (value == null) {
+                continue;
+            }
+            // We only support properties at this stage
+            if (type.equals("property")) {
+                log.info("New wait condition: Property '{}'.", value);
+                waitProperties.add(value);
             }
         }
 
@@ -649,10 +668,55 @@ public class VitalSubscriber implements Subscriber {
                 metadata.setProperty(VITAL_PROPERTY_KEY, vitalPid);
                 // Trigger a save on the object's metadata
                 object.close();
+
+                // We have just created a new object,
+                //   do we have wait conditions?
+                if (!waitProperties.isEmpty()) {
+                    // We need to re-index this object, so that
+                    //  the new PID can be found by others
+                    JsonObject message = new JsonObject();
+                    message.put("oid", oid);
+                    message.put("commit", "true");
+                    messaging.queueMessage("indexer", message.toString());
+                }
             } catch (Exception ex) {
                 error("Failed to create object in VITAL", ex, oid, title);
                 return;
             }
+        }
+
+        // Do we have any wait conditions to test?
+        if (!waitProperties.isEmpty()) {
+            boolean process = false;
+            for (String test : waitProperties) {
+                String value = metadata.getProperty(test);
+                if (value != null) {
+                    // We found a property we've been told to wait for
+                    log.info("Wait condition '{}' found.", test);
+                    process = true;
+                }
+            }
+            // Are we continuing?
+            if (!process) {
+                log.info("No wait conditions have been met, processing halted");
+                return;
+            }
+        }
+
+        // Need to make sure the object is active
+        try {
+            String isActive = metadata.getProperty("vitalActive");
+            if (isActive == null) {
+                log.info("Activating object in fedora: '{}'", oid);
+                fedora.getAPIM().modifyObject(vitalPid, "A", null, null,
+                        "ReDBox activating object: '" + oid + "'");
+                // Record this so we don't do it again
+                metadata.setProperty("vitalActive", "true");
+                object.close();
+            }
+        } catch (Exception ex) {
+            error("Failed to activate object in VITAL", ex, oid, title);
+            return;
         }
 
         // Submit all the payloads to VITAL now

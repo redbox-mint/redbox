@@ -151,6 +151,14 @@
                         "body": "Default email message"
                     }
                 }
+            },
+            {
+                "id" : "indexer",
+                "description" : "An indexer accessible via messages",
+                "priority" : "5",
+                "config" : {
+                    "name" : "indexer"
+                }
             }
         ]
     },
@@ -236,6 +244,12 @@
                 "desktop": true,
                 "frequency": "3600",
                 "jobs": [
+                    {
+                        "name": "vital-handles",
+                        "type": "external",
+                        "url": "${server.url.base}default/hkjobs/vital.script",
+                        "timing": "0 0/15 * * * ?"
+                    }
                 ]
             }
         },
@@ -295,6 +309,9 @@
         "vital": {
             "tempDir": "${java.io.tmpdir}/rbvital",
             "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
+            "waitConditions": {
+                "property": "vitalHandle"
+            },
             "failure": {
                 "emailQueue": "emailnotification",
                 "emailAddress": ["pendlebu@usq.edu.au", "dave.huthnance@newcastle.edu.au"],

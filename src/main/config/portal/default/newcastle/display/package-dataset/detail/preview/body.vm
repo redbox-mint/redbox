@@ -33,9 +33,15 @@
 #end
 #if($page.authentication.is_logged_in())
     #set ($vPid = $parent.getProperty("vitalPid"))
+    #set ($vHandle = $parent.getProperty("vitalHandle"))
     #if ($vPid != $nullValue)
 <div class="vital-id">
     This object has already been published to VITAL '<strong>$vPid</strong>'.
+    #if ($vHandle != $nullValue)
+    (ACTIVE, Handle: <a href="$vHandle">$vHandle</a>)
+    #else
+    (INACTIVE, waiting for handle)
+    #end
 </div>
     #end
 #end

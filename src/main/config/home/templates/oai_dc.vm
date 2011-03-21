@@ -23,6 +23,10 @@
     xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd" 
     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
     xmlns:dc="http://purl.org/dc/elements/1.1/">
+#set ($handle = $util.getMetadata($object, "vitalHandle"))
+#if ($handle != "")
+<dc:identifier>$handle</dc:identifier>
+#end
 #showSingleElement($item, "dc:title" "dc:title", "")
 #showSingleElement($item, "dc:description" "dc:description", "")
 #showSingleElement($item, "dc:type" "dc:type", "")

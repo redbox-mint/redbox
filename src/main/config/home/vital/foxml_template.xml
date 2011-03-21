@@ -7,6 +7,6 @@
             NAME="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
             VALUE="FedoraObject" />
         <foxml:property NAME="info:fedora/fedora-system:def/model#state"
-            VALUE="A" />
+            VALUE="I" />
     </foxml:objectProperties>
 </foxml:digitalObject>

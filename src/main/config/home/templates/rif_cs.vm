@@ -27,8 +27,8 @@
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
             xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd"> 
-    <rif:registryObject group="University of Newcastle"> 
-        <rif:key>$urlBase/detail/$oid</rif:key> 
+    <rif:registryObject group="University of Newcastle">
+        <rif:key>$urlBase/detail/$oid</rif:key>
         <rif:originatingSource type="authoritative">$urlBase/detail/$oid</rif:originatingSource>
         
         #set($dateModified="")
@@ -43,7 +43,10 @@
 
         <rif:collection type="$item.get("dc:type")" $dateModified $dateAccessioned>
 
-            <rif:identifier type="uri">$urlBase/detail/$oid</rif:identifier>
+            #set ($handle = $util.getMetadata($object, "vitalHandle"))
+            #if ($handle != "")
+            <rif:identifier type="uri">$handle</rif:identifier>
+            #end
             <rif:name type="primary" $lang>
                 <rif:namePart type="full">$item.get("dc:title")</rif:namePart>
             </rif:name>
