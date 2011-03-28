@@ -23,7 +23,7 @@ class WorkflowData:
         self.velocityContext = context
 
         self.formData = self.vc("formData")
-        isAjax = bool(self.formData.get("ajax"))
+        isAjax = bool(self.formData.get("ajax")) or self.vc("request").isXHR()
 
         self.errorMsg = None
         # Test if some actual form data is available
@@ -40,11 +40,16 @@ class WorkflowData:
         oid = self.formData.get("oid")
         func = self.formData.get("func")
 
+        print "formData=%s" % self.formData
         if isAjax:
             if func=="attach-file":
                 self.fileName = self.formData.get("uploadFile")
+                #print "self.fileName=%s" % self.fileName
+                #print "sessionState=%s" % self.vc("sessionState")
+                # Chrome/WebKit prefixes C:\fakepath\ with javascript manipulated file inputs
+                self.fileName = self.fileName.replace("C:\\fakepath\\", "")
                 #print "*** isAjax & func=attach-file, fileName='%s'" % self.fileName
-                #print "oid='%s'" % oid
+                #print "oid='%s'" % oida
                 self.fileDetails = self.vc("sessionState").get(self.fileName)
                 #print " *** workflow.py : Upload details : ", repr(self.fileDetails)
                 self._ajax(func)
