@@ -165,13 +165,13 @@
     </div>
     <p>
         <span class="data-source-drop-down"
-              data-json-source-url="../proxyGet?ns=mintLanguage&qs=count%3D999"
-              data-id-key="rdfs:label"
-              data-label-key="dc:description"
+              data-json-source-url="../proxyGet?ns=Languages&qs=count%3D999"
+              data-id-key="dc:identifier"
+              data-label-key="dc:title"
               data-list-key="results">
             <span class="selection-added">
                 <input type="hidden" class="selection-added-id"
-                       id="dc:language" name="dc:language" value="eng" />
+                       id="dc:language" name="dc:language" value="http://id.loc.gov.vocabulary/iso639-2/eng" />
                 <input type="text" class="selection-added-label" size="30" readonly="readonly"
                        id="dc:language.skos:prefLabel" name="dc:language.skos:prefLabel" value="English" />
                 <a href="#" class="clear-item">change</a>

@@ -113,7 +113,7 @@
     </div>
     <p>
         <span class="data-source-drop-down"
-              data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=count%3D9999"
+              data-json-source-url="../proxyGet?ns=Parties_Groups&qs=count%3D9999"
               data-id-key="rdf:about"
               data-label-key="rdfs:label"
               data-list-key="results">
@@ -300,7 +300,7 @@ $(function() {
 
     function addAutocompleteGrant(elem) {
         elem.autocomplete(
-            "../proxyGet?ns=mintActivity&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
+            "../proxyGet?ns=Activities&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
@@ -375,7 +375,7 @@ $(function() {
         var elem = $(this);
         $(this).unautocomplete();
         $(this).autocomplete(
-            "../proxyGet?ns=mintFunding&autocomplete=true&fields=rdf:about,rdfs:label",
+            "../proxyGet?ns=Funding_Bodies&autocomplete=true&fields=rdf:about,rdfs:label",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }

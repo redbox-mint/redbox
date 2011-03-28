@@ -1,5 +1,5 @@
 <div class="nameLookup-section">
-    <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=mintPeople&qs=searchTerms%3D{searchTerms}" />
+    <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
     <h2>
@@ -96,7 +96,7 @@
                                     Affiliation <span class="required" title="required">(*)</span>:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
-                                          data-json-source-url="../proxyGet?ns=mintOrgUnit&qs=count%3D9999"
+                                          data-json-source-url="../proxyGet?ns=Parties_Groups&qs=count%3D9999"
                                           data-id-key="rdf:about"
                                           data-label-key="rdfs:label"
                                           data-list-key="results">

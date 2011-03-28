@@ -13,7 +13,7 @@
             <tr class="item-input">
                 <td>
                     <span class="data-source-drop-down"
-                          data-json-source-url="../proxyGet?ns=mintFor&qs=count%3D999%26level%3D"
+                          data-json-source-url="../proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
                           data-top-level-id="top"
                           data-id-key="rdf:about"
                           data-label-key="skos:prefLabel"
@@ -51,7 +51,7 @@
             <tr class="item-input">
                 <td>
                     <span class="data-source-drop-down"
-                          data-json-source-url="../proxyGet?ns=mintSeo&qs=count%3D999%26level%3D"
+                          data-json-source-url="../proxyGet?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
                           data-top-level-id="top"
                           data-id-key="rdf:about"
                           data-label-key="skos:prefLabel"

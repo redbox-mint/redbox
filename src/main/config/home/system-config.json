@@ -1,22 +1,22 @@
 {
     "version": "0.7.14",
     "configured": true,
-    "urlBase" : "${server.url.base}",
-    "email" : "dave.huthnance@newcastle.edu.au",
+    "urlBase": "${server.url.base}",
+    "email": "dave.huthnance@newcastle.edu.au",
     "sso": {
         "plugins": [],
         "urlExclusions": {
-            "startsWith" : ["css/", "feed/", "images/", "js/", "flowplayer/"],
-            "endsWidth" : [".ico"],
-            "equals" : ["css"]
+            "startsWith": ["css/", "feed/", "images/", "js/", "flowplayer/"],
+            "endsWidth": [".ico"],
+            "equals": ["css"]
         },
         "trustTokens": {
         }
     },
     "accesscontrol": {
-        "type" : "derby",
-        "derby" : {
-            "derbyHome" : "${fascinator.home}/database"
+        "type": "derby",
+        "derby": {
+            "derbyHome": "${fascinator.home}/database"
         }
     },
     "authentication": {
@@ -42,122 +42,118 @@
             "password": "fedoraAdmin"
         }
     },
-    "messaging" : {
-        "url" : "tcp://localhost:${amq.port}",
-        "stompUrl" : "stomp://localhost:${amq.stomp.port}",
-        "home" : "${fascinator.home}/activemq-data",
-        "threads" : [
+    "messaging": {
+        "url": "tcp://localhost:${amq.port}",
+        "stompUrl": "stomp://localhost:${amq.stomp.port}",
+        "home": "${fascinator.home}/activemq-data",
+        "threads": [
             {
-                "id" : "render",
-                "description" : "Render queue for priority objects requested by the user.",
-                "priority" : "8",
-                "config" : {
-                    "name" : "renderUser"
-                }
-            },
-            {
-                "id" : "render",
-                "description" : "Render queue for objects that are only using high speed transformers.",
-                "priority" : "6",
-                "config" : {
-                    "name" : "renderHigh"
-                }
-            },
-            {
-                "id" : "render",
-                "description" : "Render queue for most standard documents. External calls to ICE Service are performed.",
-                "priority" : "5",
-                "config" : {
-                    "name" : "renderNormal"
-                }
-            },
-            {
-                "id" : "render",
-                "description" : "Render queue for objects requiring FFmpeg transcoding and optionally calls to the ICE Service.",
-                "priority" : "3",
-                "config" : {
-                    "name" : "renderLow"
-                }
-            },
-            {
-                "id" : "harvest",
-                "description" : "Priority queue for user actions, allows access to the render queues faster.",
-                "priority" : "8",
-                "config" : {
-                    "name" : "harvestUser",
-                    "normal-renderers" : {
-                        "ffmpeg" : "renderLow",
-                        "ice2" : "renderNormal",
-                        "default" : "renderHigh"
-                    },
-                    "user-renderer" : "renderUser"
-                }
-            },
-            {
-                "id" : "harvest",
-                "description" : "Standard harvest queue for new object. May optionally run some fast transformers and an index before routing to the render queues.",
-                "priority" : "7",
-                "config" : {
-                    "name" : "harvest",
-                    "normal-renderers" : {
-                        "ffmpeg" : "renderLow",
-                        "ice2" : "renderNormal",
-                        "default" : "renderHigh"
-                    },
-                    "user-renderer" : "renderUser"
-                }
-            },
-            {
-                "id" : "ingest",
-                "description" : "Ingest queue for objects posted from external source.",
-                "priority" : "3",
-                "config" : {
-                    "name" : "ingest"
-                }
-            },
-            {
-                "id" : "subscriber",
-                "description" : "Subscriber queue for event log.",
-                "priority": "7",
+                "id": "render",
+                "description": "Render queue for priority objects requested by the user.",
+                "priority": "8",
                 "config": {
-                    "name" : "subscriber",
-                    "subscribers": ["solr-event-log", "vital"]
+                    "name": "renderUser"
                 }
             },
             {
-                "id" : "solrwrapper",
-                "description" : "Wrapper for ingest into main Solr core.",
+                "id": "render",
+                "description": "Render queue for objects that are only using high speed transformers.",
+                "priority": "6",
+                "config": {
+                    "name": "renderHigh"
+                }
+            },
+            {
+                "id": "render",
+                "description": "Render queue for most standard documents. External calls to ICE Service are performed.",
                 "priority": "5",
                 "config": {
-                    "name" : "solrwrapper"
+                    "name": "renderNormal"
                 }
             },
             {
-                "id" : "emailnotification",
-                "description" : "Queue to send email notifications",
-                "priority" : "8",
-                "config" : {
-                    "name" : "emailnotification",
-                    "debug" : false,
-                    "from" : {
-                        "email" : "dave.huthnance@newcastle.edu.au",
+                "id": "render",
+                "description": "Render queue for objects requiring FFmpeg transcoding and optionally calls to the ICE Service.",
+                "priority": "3",
+                "config": {
+                    "name": "renderLow"
+                }
+            },
+            {
+                "id": "harvest",
+                "description": "Priority queue for user actions, allows access to the render queues faster.",
+                "priority": "8",
+                "config": {
+                    "name": "harvestUser",
+                    "normal-renderers": {
+                        "default": "renderNormal"
+                    },
+                    "user-renderer": "renderUser"
+                }
+            },
+            {
+                "id": "harvest",
+                "description": "Standard harvest queue for new object. May optionally run some fast transformers and an index before routing to the render queues.",
+                "priority": "7",
+                "config": {
+                    "name": "harvest",
+                    "normal-renderers": {
+                        "default": "renderNormal"
+                    },
+                    "user-renderer": "renderUser"
+                }
+            },
+            {
+                "id": "ingest",
+                "description": "Ingest queue for objects posted from external source.",
+                "priority": "3",
+                "config": {
+                    "name": "ingest"
+                }
+            },
+            {
+                "id": "subscriber",
+                "description": "Subscriber queue for event log.",
+                "priority": "7",
+                "config": {
+                    "name": "subscriber",
+                    "subscribers": ["vital"]
+                }
+            },
+            {
+                "id": "solrwrapper",
+                "description": "Wrapper for ingest into main Solr core.",
+                "priority": "5",
+                "config": {
+                    "name": "solrwrapper"
+                }
+            },
+            {
+                "id": "emailnotification",
+                "description": "Queue to send email notifications",
+                "priority": "8",
+                "config": {
+                    "name": "emailnotification",
+                    "debug": false,
+                    "from": {
+                        "email": "dave.huthnance@newcastle.edu.au",
                         "name": "ReDBox"
                     },
-                    "smtp" : {
-                        "host" : "smtp.newcastle.edu.au"
+                    "smtp": {
+                        "host": "smtp.newcastle.edu.au"
                     },
-                    "defaults" : {
-                        "subject" : "Notification",
+                    "defaults": {
+                        "subject": "Notification",
                         "body": "Default email message"
                     }
                 }
             },
             {
-                "id" : "indexer",
-                "description" : "An indexer accessible via messages",
-                "priority" : "5",
-                "config" : {
-                    "name" : "indexer"
+                "id": "indexer",
+                "description": "An indexer accessible via messages",
+                "priority": "5",
+                "config": {
+                    "name": "indexer"
                 }
             }
         ]
@@ -165,12 +161,11 @@
     "indexer": {
         "type": "solr",
         "properties": "TF-OBJ-META",
-        "useCache" : true,
-        "cachingLevel" : "dynamic",
+        "useCache": true,
         "buffer": {
-            "docLimit" : "200",
-            "sizeLimit" : "204800",
-            "timeLimit" : "30"
+            "docLimit": "200",
+            "sizeLimit": "204800",
+            "timeLimit": "30"
         },
         "solr": {
             "uri": "http://localhost:${jetty.port}/solr/fascinator",
@@ -186,9 +181,9 @@
     },
     "transformerDefaults": {
         "jsonVelocity": {
-            "id" : "jsonVelocity",
-            "sourcePayload" : ".tfpackage",
-            "templatesPath" : "${fascinator.home}/templates"
+            "id": "jsonVelocity",
+            "sourcePayload": ".tfpackage",
+            "templatesPath": "${fascinator.home}/templates"
         }
     },
     "uploader": {
@@ -211,8 +206,8 @@
             "json-config": "${fascinator.home}/harvest/workflows/submission.json"
         }
     },
-    "mime-types" : {
-        "tfpackage" : "application/x-fascinator-package"
+    "mime-types": {
+        "tfpackage": "application/x-fascinator-package"
     },
     "portal": {
         "home": "${portal.home}",
@@ -239,7 +234,7 @@
         "harvestFiles": "${fascinator.home}/harvest",
         "houseKeeping": {
             "config": {
-                "derbyHome" : "${fascinator.home}/database",
+                "derbyHome": "${fascinator.home}/database",
                 "quartzConfig": "${fascinator.home}/quartz.properties",
                 "desktop": true,
                 "frequency": "3600",
@@ -284,28 +279,18 @@
         }
     },
     "proxy-urls": {
-        "mintPeople" : "${mint.proxy.url}/master/opensearch/lookup",
-        "mintFor" : "${mint.proxy.url}/for/opensearch/lookup",
-        "mintSeo" : "${mint.proxy.url}/seo/opensearch/lookup",
-        "mintAuthor" : "${mint.proxy.url}/author/opensearch/lookup",
-        "mintGeoNames" : "${mint.proxy.url}/geonames/opensearch/lookup",
-        "mintOrgUnit" : "${mint.proxy.url}/orgunit/opensearch/lookup",
-        "mintActivity" : "${mint.proxy.url}/activity/opensearch/lookup",
-        "mintLanguage" : "${mint.proxy.url}/iso639-2/opensearch/lookup",
-        "mintFunding" : "${mint.proxy.url}/funding/opensearch/lookup"
+        "Activities": "${mint.proxy.url}/Activities/opensearch/lookup",
+        "ANZSRC_FOR": "${mint.proxy.url}/ANZSRC_FOR/opensearch/lookup",
+        "ANZSRC_SEO": "${mint.proxy.url}/ANZSRC_SEO/opensearch/lookup",
+        "Languages": "${mint.proxy.url}/Languages/opensearch/lookup",
+        "Funding_Bodies": "${mint.proxy.url}/Funding_Bodies/opensearch/lookup",
+        "Parties_Groups": "${mint.proxy.url}/Parties_Groups/opensearch/lookup",
+        "Parties_People": "${mint.proxy.url}/Parties_People/opensearch/lookup"
     },
-    "watcher" : {
+    "watcher": {
         "path": "${watcher.home}"
     },
     "subscriber": {
-        "solr": {
-            "uri": "http://localhost:${jetty.port}/solr/eventlog",
-            "buffer": {
-                "docLimit" : "200",
-                "sizeLimit" : "204800",
-                "timeLimit" : "30"
-            }
-        },
         "vital": {
             "tempDir": "${java.io.tmpdir}/rbvital",
             "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
