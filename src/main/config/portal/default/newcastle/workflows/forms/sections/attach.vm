@@ -105,8 +105,8 @@
         jQ.each(attachedFiles, function(c, d){
             var t;
             li=jQ("<li/>");
-            h = "../detail/"+d.id+"/"+d.filename;
-            li.append("<a href='"+h+"'>"+d.filename+"</a>");
+            h = "../detail/"+d.id+"/"+d.filename+"?preview=true";
+            li.append("<a href='"+h+"' target='_blank'>"+d.filename+"</a>");
             t=format(d.attachment_type);
             li.append("<span style='font-weight:bold;padding-left:2em;'> Type: </span>"+t);
             a=format(d.access_rights);

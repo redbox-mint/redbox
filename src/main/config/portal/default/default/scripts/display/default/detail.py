@@ -62,6 +62,9 @@ class DetailData:
             data.put(field[field.find(".")+1:], value)
         return valueMap
 
+    def escape(self, value):
+        return StringEscapeUtils.escapeHtml(value)
+
     def test(self):
         return "-test() scripts/display/default/detail.py-"
 
