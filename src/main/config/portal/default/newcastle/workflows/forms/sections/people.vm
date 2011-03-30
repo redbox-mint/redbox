@@ -9,21 +9,27 @@
         </span>
     </h2>
     <div class="help-content" id="help-creators">
-        Information about the creators of the research dataset including:
+        <p>Record names of the creators.</p>
         <ul>
             <li>
-                Indicate persons with roles of Principal Investigator or
-                Co-Principle Investigator by checking the boxes provided.
+                Enter the given name or family name of persons who created the
+                research dataset/collection, registry/repository, catalogue or
+                index. Click 'lookup' to search and select the name authority
+                record.
             </li>
-            <li>Given name and/or family name of persons who created the data.</li>
             <li>Select the persons' appropriate affiliation.</li>
+            <li>
+                Indicate persons with roles of 'Chief Investigator' or 'Partner
+                Investigator' by checking the boxes provided.
+            </li>
+        </ul>
     </div>
     <table class="input-list sortable">
         <thead>
             <tr class="header-row">
                 <th>&nbsp;</th>
-                <th>PI</th>
-                <th colspan="4">Co-PI</th>
+                <th>CI</th>
+                <th colspan="4">PI</th>
             </tr>
         </thead>
         <tfoot>
@@ -41,22 +47,22 @@
                 </td>
                 <td style="vertical-align:middle;">
                     <input type="checkbox" name="scope" value="1"
-                           id="dc:creator.foaf:Person.0.pi" />
+                           id="dc:creator.foaf:Person.0.ci" />
                 </td>
                 <td style="vertical-align:middle;">
                     <input type="checkbox" name="scope" value="1"
-                           id="dc:creator.foaf:Person.0.coPi" />
+                           id="dc:creator.foaf:Person.0.pi" />
                 </td>
                 <td>
                     <table>
                         <tbody>
                             <tr>
                                 <td style="border-bottom:none;">
-                                    <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name: <span class="required" title="required">(* or)</span></label>
+                                    <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
                                     <input type="text" placeholder="given name" size="30"
                                            class="nameLookup-name creatorGivenName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
-                                    <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name: <span class="required" title="required">(*)</span></label>
+                                    <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name:</label>
                                     <input type="text" placeholder="family name" size="30"
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
@@ -93,7 +99,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    Affiliation <span class="required" title="required">(*)</span>:
+                                    Affiliation:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
                                           data-json-source-url="../proxyGet?ns=Parties_Groups&qs=count%3D9999"
@@ -130,7 +136,9 @@
         </span>
     </h2>
     <div class="help-content" id="help-primary-contact">
-        Given name and family name of person nominated as primary contact for the data.
+        Record the details of person nominated as 'primary contact' for the
+        research dataset/collection, registry/repository, catalogue or index.
+        Enter a given or family name or given name and click 'lookup'.
     </div>
     <table>
         <tr>
@@ -154,7 +162,9 @@
         </span>
     </h2>
     <div class="help-content" id="help-supervisor">
-        Name of supervisor associated with the data creation if applicable.
+        Record name of supervisor associated with the data creation if
+        applicable. Enter family name or given name to search and select the
+        name authority record.
     </div>
     <input type="text" size="60" placeholder="supervisor full name" id="supervisor" />
 
@@ -166,7 +176,8 @@
             </span>
         </h2>
         <div class="help-content" id="help-collaborators">
-            Names of other collaborators in the research project.
+            Names of other collaborators in the research project, if applicable,
+            e.g. CSIRO, University of X, Prof. Jim Bloggs, etc.
         </div>
         <table class="input-list">
             <tfoot>

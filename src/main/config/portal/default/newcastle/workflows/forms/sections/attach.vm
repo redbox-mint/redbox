@@ -9,11 +9,19 @@
 
 
     <h2>
-        Add a File
+        <label for="add-a-file">Add a File</label>
+        <span class="helpWidget" data-help-content-id="help-add-a-file">
+            <img src="../images/icons/help.png"/>
+        </span>
     </h2>
+    <div class="help-content" id="help-add-a-file">
+        Attach files to accompany the record, e.g. data, and/or supporting
+        material. Assign a 'Private' or 'Public' access value to each file
+        attached.
+    </div>
     <fieldset>
       <div id="add-a-file" class="widget-form"
-            data-submit-url="../workflow.ajax?ajax=1&amp;oid={packageData.oid}&amp;func=attach-file"
+            data-submit-url="$portalPath/workflow.ajax?ajax=1&amp;oid=$oid&amp;func=attach-file"
             data-pre-submit-func=""
             data-submit-func="fileUploadFunc"
             data-submit-result-func="uploadCompletedFunc"
@@ -71,7 +79,7 @@
             widgets.messageBox("Please select a file to be attached first!");
             return false;
         }
-        data.oid=packageData.oid;
+        data.oid="$oid";
         jQ("#add-file").attr("disabled", true);
         //widgets.messageBox(JSON.stringify(data));
     }
@@ -93,7 +101,7 @@
 
     function updateAttachedFiles(attachedFiles){
         var h, a, li, ul=jQ("#attached-files");
-        var url="../workflow.ajax?ajax=1&oid="+packageData.oid+"&func=delete-attach-file";
+        var url="$portalPath/workflow.ajax?ajax=1&oid=$oid&func=delete-attach-file";
         ul.html("");
         function format(s){
             return s.replace("-", " ").replace(/\b\w/g,

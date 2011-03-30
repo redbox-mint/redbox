@@ -1,13 +1,17 @@
-#macro(heading $required)
-#end
 #set($noLayout = true)
-#parseTemplate("workflows/forms/sections/navigation.vm")
+#set($oid = $self.getFormData("oid"))
+#set($portalPath = $self.getFormData("portalPath"))
+#set($stage = $self.getFormData("stage"))
+#set($stageLabel = $self.getFormData("stageLabel"))
+#set($nextStageMessage = $self.getFormData("nextStageMessage"))
+#set($nextStageErrorMessage = $self.getFormData("nextStageErrorMessage"))
+##parseTemplate("workflows/forms/sections/navigation.vm")
 <div class="widget-form" id="main-form"
-     data-submit-result-func="submitted_ok"
-     data-pre-save-func="preSave"
-     data-save-func="aboutToSave"
-     data-save-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta&amp;oid={packageData.oid}"
-     data-submit-url="{packageData.portalPath}/workflow.ajax?func=update-package-meta-deposit&amp;oid={packageData.oid}">
+    data-pre-save-func="preSave"
+    data-save-result-func="saveSuccess"
+    data-save-url="$portalPath/workflow.ajax?func=update-package-meta&amp;oid=$oid"
+    data-submit-result-func="submitSuccess"
+    data-submit-url="$portalPath/workflow.ajax?func=update-package-meta-deposit&amp;oid=$oid">
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
@@ -17,18 +21,19 @@
         dc:created,
         dc:modified,
         time_period,
-        location,
+        location.0,
+        location.0.type,
         dc:language,
         dc:language.skos:prefLabel,
         ## description
         dc:description,
         citations.0,
-        data,
-        website,
+        data.0,
+        website.0,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
+        dc:creator.foaf:Person.0.ci,
         dc:creator.foaf:Person.0.pi,
-        dc:creator.foaf:Person.0.coPi,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
         dc:creator.foaf:Person.0.association,
@@ -88,78 +93,104 @@
     <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
     <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
     <div class="clear"></div>
-    <h1 style="padding-bottom:1em;">
-        <a id="view-record-link" style="float:right;padding-right:4px;font-size:0.6em;" href="$portalPath/detail/">View record</a>
-        <span id="title"> </span>
-    </h1>
+    <div id="form-heading">
+        <a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>
+        <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
+    </div>
     <div class="inputscreens changeToTabLayout">
         <h3><a href="#screen1">General</a></h3>
         <div id="screen1" class="inputscreen">
             #parseTemplate("workflows/forms/sections/general.vm")
-            #nav(false true)
+            ##nav(false true)
         </div>
         <h3><a href="#screen2">Description</a></h3>
         <div id="screen2" class="inputscreen">
             #parseTemplate("workflows/forms/sections/description.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen3">People</a></h3>
         <div id="screen3" class="inputscreen">
             #parseTemplate("workflows/forms/sections/people.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen4">Subject</a></h3>
         <div id="screen4" class="inputscreen">
             #parseTemplate("workflows/forms/sections/subject.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen5">Rights</a></h3>
         <div id="screen5" class="inputscreen">
             #parseTemplate("workflows/forms/sections/provenance.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen6">Management</a></h3>
         <div id="screen6" class="inputscreen">
             #parseTemplate("workflows/forms/sections/management.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen7">Attachments</a></h3>
         <div id="screen7" class="inputscreen">
             #parseTemplate("workflows/forms/sections/attach.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3 class="request"><a href="#screen8">Request</a></h3>
         <div id="screen8" class="inputscreen request">
             #parseTemplate("workflows/forms/sections/request.vm")
-            #nav(true true)
+            ##nav(true true)
         </div>
         <h3><a href="#screen9">Submit</a></h3>
         <div id="screen9" class="inputscreen">
             #parseTemplate("workflows/forms/sections/submit.vm")
-            #nav(true false)
+            ##nav(true false)
         </div>
     </div>
-##    <span class="saved-result"></span>
+    <div class="navigation">
+        <span class="go-prev-tab">
+            <img src="../images/icons/arrow_left.png" height="30" alt="Go to the previous section of the form" />
+        </span>
+        <span class="go-next-tab">
+            <img src="../images/icons/arrow_right.png" height="30" alt="Go to the next section of the form" />
+        </span>
+    <input type="button" class="form-fields-save" value="Save" />
+    <input type="button" class="form-fields-save-close" value="Save and close" />
+    <span class="saved-result"></span>
+    </div>
 </div>
 <script type="text/javascript">
-var jQ=$;
-jQ(function(){
-    jQ("#title").html('<span><img src="' + packageData.portalPath +
-        "/images/icons/wf_" + packageData.stage + '.png" /> ' +
-        packageData.stageLabel + "</span>");
+var saveAndClose = false;
+$(function(){
     $("#view-record-link").click(function(){
-        var href = jQ(this).attr("href");
-        $(this).attr("href", href+packageData.oid);
         if(widgets.forms[0].hasChanges()){
-            return confirm("Are you sure you want to leave this page without saving first!");
+            return confirm("The record has been modified.\nAre you sure you want to leave this page?");
         }
     });
-    jQ(".tab-nav .next-tab,.tab-nav .prev-tab").click(function(){
-        if(widgets.forms[0].hasChanges()){
-            jQ(".form-fields-save:first").click();
+
+    $(".go-prev-tab").click(function(){
+        var selected = widgetTabs.tabs("option", "selected");
+        var last = widgetTabs.tabs("length");
+        if(selected==0){
+            widgetTabs.tabs("select", last-1);
+        }else{
+            widgetTabs.tabs("select", selected-1);
         }
     });
-    jQ(".form-fields-save").click(function(){
+
+    $(".go-next-tab").click(function(){
+        var selected = widgetTabs.tabs("option", "selected");
+        var last = widgetTabs.tabs("length");
+        if(selected==last-1){
+            widgetTabs.tabs("select", 0);
+        }else{
+            widgetTabs.tabs("select", selected+1);
+        }
+    });
+
+    $(".form-fields-save-close").click(function(){
+        saveAndClose = true;
+        $(".form-fields-save").click();
+    });
+
+    $(".form-fields-save").click(function(){
         var t, id, title, v=widgets.forms[0].validator;
         try{
             if(v.isOkToSave()==false){
@@ -181,6 +212,7 @@ jQ(function(){
             alert("Error in save-click - "+e.message);
         }
     });
+
     // HACK - a work around for a BUG in Chrome - where the help stops working on the
     //      'General' tab page after navigating away and back again!
     setTimeout(function(){
@@ -190,11 +222,20 @@ jQ(function(){
     }, 100);
 });
 
-function preSave(a,b){
-    $(".saved-result").html("<img src='../images/loading-progress.gif'/>").show();
+function preSave(widgetForm, data){
+    $(".saved-result").html("<img src='../images/icons/loading.gif'/>").show();
 }
 
-function aboutToSave(w,data){
+function aboutToSave(widgetForm, data){
 }
 
+function saveSuccess(){
+    if(saveAndClose){
+        window.location.href = "$portalPath/home";
+    }
+}
+
+function submitSuccess(){
+    window.location.href = "$portalPath/detail/$oid";
+}
 </script>

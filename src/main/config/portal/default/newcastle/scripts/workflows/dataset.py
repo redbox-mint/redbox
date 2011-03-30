@@ -26,6 +26,7 @@ class DatasetData(object):
 
         # We use these here in __activate__()
         formData = self.vc("formData")
+        print "context=%s" % formData
         #self.log.debug("formData: {}", repr(formData))
         response = self.vc("response")
         request = self.vc("request")
@@ -178,7 +179,7 @@ class DatasetData(object):
     ### Supports form rendering, not involved in AJAX
     def getFormData(self, field):
         formData = self.vc("formData")
-        #print "getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
+        print "********** getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
         return StringEscapeUtils.escapeHtml(formData.get(field, ""))
 
     ### Supports form rendering, not involved in AJAX

@@ -2,183 +2,38 @@
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
 #set($stageLabel = $self.currentStepLabel)
-<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
-<style type="text/css">
-.inputscreens input {
-    margin: 0.5ex;
-}
-
-.inputscreens textarea {
-    margin: 0.5ex;
-}
-
-.inputscreens table {
-    margin: 0.5ex;
-    margin-bottom: 2ex;
-}
-
-td.delete-row {
-    cursor: pointer;
-    color: blue;
-}
-
-.prev-tab,.next-tab, .form-fields-save {
-    cursor: pointer;
-    color: blue;
-    margin: 1ex;
-}
-
-.saved-result {
-    font-size: 120%;
-    vertical-align: middle;
-}
-
-div.tab-nav {
-    padding-top: 2ex;
-}
-
-img.thumbnail {
-    height: 100px;
-    border: 1px solid black;
-    margin: 10px 5px 0 0;
-}
-
-div.accordion-header {
-    padding-left: 4ex;
-    margin: 0px;
-}
-
-h2.accordion-header {
-    padding-left: 4ex;
-    margin: 0px;
-    background: gray;
-}
-
-div.accordion {
-    margin-left: -1em;
-    margin-bottom: 2em;
-}
-
-div.tab-nav {
-    border-top: thin solid #CCC;
-    padding-top: 2ex;
-}
-
-.box h2 {
-    background: none;
-    color: black;
-    font-size: 1.1em;
-    text-transform: none;
-}
-
-.helpWidget {
-    color: blue;
-    cursor:pointer;
-    //float: right;
-    font-weight: normal;
-    font-size: 80%;
-    padding-left:1em;
-}
-
-.help-content {
-    display:none;
-    border:1px gray dotted;
-    padding:0.5ex;
-    color: #002020;
-}
-.help-content dt {
-    font-weight:bold;
-}
-.help-content dd {
-    padding-left:2em;
-}
-
-.validation-err-msg {
-    color:red;
-    cursor:pointer;
-}
-
-#validation-summary .validation-err-msg {
-    background-image: url(../images/icons/pencil.png);
-    background-repeat: no-repeat;
-    background-position: right top;
-    padding-right: 20px;
-}
-
-span.required {
-    font-size:75%;
-    vertical-align:top;
-    font-weight:normal;
-}
-
-.inner-table, .inner-table tr, .inner-table td {
-    border: none;
-    margin: 0 !important;
-    padding: 0;
-}
-
-.label {
-    background: none;
-    border: none;
-}
-
-#title {
-    float: left;
-    font-size: 0.65em;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-}
-
-fieldset p textarea {
-    display: block;
-    width: 98%;
-}
-</style>
-<div class="grid_16">
-    <div class="box">
-        <div id="inputForms"><!-- --></div>
-    </div>
+<div class="grid_16" id="inputForms">
+    <p class="loading-data">Loading form data, please wait...</p>
 </div>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.ajaxQueue.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.bgiframe.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
-<script type="text/javascript" src="$portalPath/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
-// <![CDATA[
-  var packageData = {
-            portalPath:"$portalPath",
-            metaData:$self.getJsonMetadata(),
-            attachedFiles:$self.getAttachedFiles(),
-            oid:"$oid",
-            stage:"$self.getCurrentStep()",
-            stageLabel:"$self.getCurrentStepLabel()",
-            nextStageMessage:"$self.getNextStepAcceptMessage()"
-        };
-/*
-$self.getSearchResults()
-$self.userRoles()
-$self.username()
-$self.getCurrentStep()
-*/
-// ]]>
-</script>
-<script type="text/javascript">
+var packageData = {
+    metaData: $self.getJsonMetadata(),
+    attachedFiles: $self.getAttachedFiles(),
+    nextStageMessage: "$self.getNextStepAcceptMessage()"
+}
 var ARC_NS = "http://example.com/arc/";
 var ADFI_NS = "http://namespace.adfi.usq.edu.au/grants#";
 var UON_NS = "urn:uon:internal";
+var widgetTabs;
 (function($){
     $(function(){
         function onContentLoaded(){
-var pMsg=$("<p style='font-size:120%;color:green;'>Loading form data. Please wait...</p>");
-$(".inputscreens").hide().after(pMsg);
-            if (!packageData.metaData.submitted){ $(".request").remove(); }
-            widgets.changeToTabLayout($(".inputscreens")).tabs();
+            if (packageData.metaData.submitted!="true"){ $(".request").remove(); }
+            widgetTabs = widgets.changeToTabLayout($(".inputscreens"));
+            widgetTabs.tabs({
+                select: function(event, ui){
+                    if(widgets.forms[0].hasChanges()){
+                        $(".form-fields-save:first").click();
+                    }
+                }
+            });
             widgets.contentLoaded(function(){
                 try{
-                    var st=new Date(), et, ms;
                     widgets.formsById["main-form"].addListener("postOnRestore",
                         function(ctx){
                             ctx.findx(".lookup-show").each(function(){
@@ -189,47 +44,29 @@ $(".inputscreens").hide().after(pMsg);
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
-                    et=new Date(); ms=et-st;
-                    //gdialog.text("restored in "+ms+"mS").dialog("open");
-                    //
-                    $(".accordion").accordion({header:".accordion-header", collapsible:true,
-                            clearStyle:true, active:false});     // or active:2
-                    //widgets.changeToTabLayout($(".inputscreens")).tabs();
-                    //
-                    var dcTitle=$("input[id=dc:title]"), title=$("#title");
-                    dcTitle.change(function(){
-                        title.text(dcTitle.val());
-                    }).change();
-pMsg.remove();
-$(".inputscreens").show();
-                }catch(e){alert(e);}
-
+                }catch(e){
+                    alert(e);
+                }
                 $(".internal-grant:checked").each(function() {
                     var baseId = $(this).attr("id").replace(".uon:internal", "");
                     $("input[id=" + baseId + ".dc:identifier]").unautocomplete();
                     $("input[id=" + baseId + ".skos:prefLabel]").removeAttr("readonly").removeClass("label");
                 });
-                //$("#getPackagedItems").click(getPackagedItems);
-                //$("#add-items-search").click(function(){itemSearch(1); return false;});
-                //$("#add-items-search-query").keypress(function(e){
-                //    if(e.which==13) itemSearch(1);
-                //});
-                $("#deposit_accept_msg").text("$self.getNextStepAcceptMessage()");
-                $(".validation-err-msg[for=deposit_accept]").text(
-                        "$self.getNextStepAcceptValidationErrorMessage()");
                 nameLookup.init();
-                //$(".accordion").bind("accordionchangestart", function(e, ui){
-                //    getPackagedItems();
-                //});
+                //$("#deposit_accept_msg").text("$self.getNextStepAcceptMessage()");
+                //$(".validation-err-msg[for=deposit_accept]").text(
+                //        "$self.getNextStepAcceptValidationErrorMessage()");
             });
         }
-        $("#inputForms").load(packageData.portalPath + "/workflows/forms/dataset", onContentLoaded);
+        $("#inputForms").load("$portalPath/workflows/forms/dataset.ajax",
+                {   oid: "$oid",
+                    portalPath: "$portalPath",
+                    stage: "$self.getCurrentStep()",
+                    stageLabel: "$self.getCurrentStepLabel()",
+                    nextStageMessage: "$self.getNextStepAcceptMessage()",
+                    nextStageErrorMessage: "$self.getNextStepAcceptValidationErrorMessage()"
+                },
+                onContentLoaded);
     });
 })(jQuery);
-
-function submitted_ok(){
-    //alert("Submitted ok " + location.href);
-    location.href = location.href.replace("/workflow/", "/detail/");
-}
 </script>
-<hr/>

@@ -111,7 +111,7 @@
     </table>
 
     <h2>
-        <label for="research_activity">Research Activity</label>
+        <label for="research_activity">Type of Research Activity</label>
         <span class="helpWidget" data-help-content-id="help-research-activity">
             <img src="../images/icons/help.png"/>
         </span>
@@ -121,26 +121,26 @@
             1297.0 Australian Standard Research Classification (ANZSRC) 2008.
         </p>
         <p>
-            Pure basic research is experimental and theoretical work undertaken
-            to acquire new knowledge without looking for long term benefits
-            other than the advancement of knowledge.
+            <strong>Pure basic research</strong> is experimental and theoretical
+            work undertaken to acquire new knowledge without looking for long
+            term benefits other than the advancement of knowledge.
         </p>
         <p>
-            Strategic basic research is experimental and theoretical
-            work undertaken to acquire new knowledge directed
+            <strong>Strategic basic research</strong> is experimental and
+            theoretical work undertaken to acquire new knowledge directed
             into specified broad areas in the expectation of useful
             discoveries. It provides the broad base of knowledge
             necessary for the solution of recognised practical problems.
         </p>
         <p>
-            Applied research is original work undertaken primarily
-            to acquire new knowledge with a specific application in
+            <strong>Applied research</strong> is original work undertaken
+            primarily to acquire new knowledge with a specific application in
             view. It is undertaken either to determine possible
             uses for the findings of basic research or to determine
             new ways of achieving some specific and predetermined objectives.
         </p>
         <p>
-            Experimental development is systematic work, using
+            <strong>Experimental development</strong> is systematic work, using
             existing knowledge gained from research or practical
             experience, that is directed to producing new
             materials, products or devices, to installing new
@@ -150,7 +150,7 @@
     </div>
     <p>
         <select id="research_activity" name="research_activity">
-            <option value="" selected="selected">Please select one</option>
+            <option>Please select one</option>
             <option value="pure">Pure basic research</option>
             <option value="strategic">Strategic basic research</option>
             <option value="applied">Applied research</option>

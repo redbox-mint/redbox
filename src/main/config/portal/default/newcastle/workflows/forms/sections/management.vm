@@ -1,12 +1,13 @@
 <div>
     <h2>
-        <label for="url">Identifer or URL <span class="required">(*)</span></label>
+        <label for="url">Identifier or URL <span class="required">(*)</span></label>
         <span class="helpWidget" data-help-content-id="help-url">
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
     <div class="help-content" id="help-url">
-        Persistent URI/URL representing the location of the data.
+        For example: a persistent URI representing the location of the research
+        dataset/collection, registry/repository, catalogue or index.
     </div>
     <p>
         <label class="validation-err-msg" for="url"
@@ -23,7 +24,9 @@
         </span>
     </h2>
     <div class="help-content" id="help-stored-at">
-        Record physical location of the data e.g. University of Newcastle central storage faciliy.
+        Record physical location of the research dataset/collection,
+        registry/repository, catalogue or index, if applicable. For example:
+        University of X.
     </div>
     <p>
         <input type="text" size="60" placeholder="physical location" id="physical_storage" />
@@ -57,9 +60,10 @@
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
-
     <div class="help-content" id="help-extent">
-        Enter the number of files that comprise the data, including the format.
+        Enter the number of files that comprise the research dataset/collection,
+        registry/repository, catalogue or index (including supporting material),
+        and the format.
     </div>
     <p>
         <input type="text" size="60" placeholder="quantity" id="extent" />
@@ -81,7 +85,7 @@
     <p><input type="text" size="25" placeholder="disposal date" class="dateYMD" id="disposal_date" /></p>
 
     <h2>
-        <label for="data_owner">Data Owner (IP)</label>
+        <label for="data_owner.0">Data Owner (IP)</label>
         <span class="helpWidget" data-help-content-id="help-data-owner">
             <img src="../images/icons/help.png"/>
         </span>
@@ -89,7 +93,24 @@
     <div class="help-content" id="help-data-owner">
         Person/institution identified as intellectual property owners of the data.
     </div>
-    <p><input type="text" size="60" placeholder="person or institution" id="data_owner" /></p>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add owner" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td><input type="text" size="60" placeholder="collaborator" id="data_owner.0" /></td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
 
     <h2>
         <label for="data_custodian">Data Custodian</label>
@@ -109,7 +130,8 @@
         </span>
     </h2>
     <div class="help-content" id="help-affiliation-with">
-        Select appropriate affiliation.
+        Select appropriate affiliation relevant to the data, e.g. Research
+        Centre for Clean Coal Technology, or School of Engineering.
     </div>
     <p>
         <span class="data-source-drop-down"
@@ -133,13 +155,13 @@
     </p>
 
     <h2>
-        <label for="funding">Funding Bodies</label>
+        <label for="funding">Funding Body/s</label>
         <span class="helpWidget" data-help-content-id="help-funding-bodies">
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
     <div class="help-content" id="help-funding-bodies">
-        Select/enter the name of the research funding body.
+        Select/enter the name of the research funding body, if applicable.
     </div>
     <table class="input-list">
         <tfoot>
@@ -168,7 +190,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-grant-num">
-        Select/enter the grant number.
+        Select/enter the grant number and/or title if applicable.
     </div>
     <table class="input-list">
         <thead>
@@ -217,7 +239,8 @@
         </span>
     </h2>
     <div class="help-content" id="help-project-title">
-        Title of the research project.
+        Enter title of the Research Project, if applicable. Note project titles
+        will usually differ from the title of the associated Grant.
     </div>
     <p><input type="text" size="60" placeholder="title" id="project_title" /></p>
 
@@ -228,7 +251,7 @@
         </span>
     </h2>
     <div class="help-content" id="help-depositor">
-        Record the name of the data depositor.
+        Record the name of the depositor.
     </div>
     <p><input type="text" size="60" placeholder="depositor" id="depositor" /></p>
 
@@ -250,21 +273,10 @@
         </span>
     </h2>
     <div class="help-content" id="help-policy">
-        Include the title, version number and date.
+        Include the title, version number and date of an associated
+        Institutional Policy, where a policy is available.
     </div>
     <p><input type="text" size="60" placeholder="Institutional data management policy" id="policy" /></p>
-
-    <h2>
-        <label for="contracts">Contracts associated with the data or project (if appropriate)</label>
-        <span class="helpWidget" data-help-content-id="help-contracts">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-contracts">
-        Record if the data was produced under contract.
-        Include name of organisation and date.
-    </div>
-    <p><input type="text" size="60" placeholder="Contracts" id="contracts" /></p>
 
     <h2>
         <label for="management_plan">Data management plan</label>

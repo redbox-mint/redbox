@@ -148,10 +148,6 @@ th.header h3 {
     color: red;
 }
 
-.ui-corner-all, .ui-corner-top {
-    border-radius: 0;
-}
-
 .actions {
     text-align: right;
 }
@@ -185,3 +181,211 @@ th.header h3 {
     background: #FFFFCC;
     font-size: 120%;
 }
+
+/* input forms */
+.loading-data {
+    color: green;
+    font-size: 1.2em;
+}
+
+#form-heading {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+}
+
+#form-heading span {
+    font-size: 1.1em;
+}
+
+#inputForms h2 {
+    background: none;
+    color: black;
+    margin-top: 0;
+    font-size: 1.05em;
+    text-transform: none;
+}
+
+#inputForms img {
+    vertical-align: text-bottom;
+}
+
+.navigation {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-fields-save-close, .form-fields-save {
+    vertical-align: super;
+}
+
+span.required {
+    font-size: 75%;
+    vertical-align: top;
+    font-weight: normal;
+}
+
+.help-content {
+    background: #FFFFCC;
+    border: 1px gray dotted;
+    color: #002020;
+    display: none;
+    margin: 4px 2em;
+    padding: 4px;
+}
+
+.help-content dl {
+    margin-bottom: 0;
+}
+
+.help-content dt {
+    font-weight: bold;
+}
+
+.help-content dd {
+    padding-left: 2em;
+}
+
+.validation-err-msg {
+    color: red;
+    cursor: pointer;
+}
+
+#validation-summary .validation-err-msg {
+    background-image: url(../images/icons/pencil.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 20px;
+}
+
+/*
+.inputscreens input {
+    margin: 0.5ex;
+}
+
+.inputscreens textarea {
+    margin: 0.5ex;
+}
+
+.inputscreens table {
+    margin: 0.5ex;
+    margin-bottom: 2ex;
+}
+
+td.delete-row {
+    cursor: pointer;
+    color: blue;
+}
+
+.prev-tab,.next-tab, .form-fields-save {
+    cursor: pointer;
+    color: blue;
+    margin: 1ex;
+}
+
+.saved-result {
+    font-size: 120%;
+    vertical-align: middle;
+}
+
+div.tab-nav {
+    padding-top: 2ex;
+}
+
+img.thumbnail {
+    height: 100px;
+    border: 1px solid black;
+    margin: 10px 5px 0 0;
+}
+
+div.accordion-header {
+    padding-left: 4ex;
+    margin: 0px;
+}
+
+h2.accordion-header {
+    padding-left: 4ex;
+    margin: 0px;
+    background: gray;
+}
+
+div.accordion {
+    margin-left: -1em;
+    margin-bottom: 2em;
+}
+
+div.tab-nav {
+    border-top: thin solid #CCC;
+    padding-top: 2ex;
+}
+
+.box h2 {
+    background: none;
+    color: black;
+    font-size: 1.1em;
+    text-transform: none;
+}
+
+.helpWidget {
+    color: blue;
+    cursor:pointer;
+    //float: right;
+    font-weight: normal;
+    font-size: 80%;
+    padding-left:1em;
+}
+
+.help-content {
+    display:none;
+    border:1px gray dotted;
+    padding:0.5ex;
+    color: #002020;
+}
+.help-content dt {
+    font-weight:bold;
+}
+.help-content dd {
+    padding-left:2em;
+}
+
+.validation-err-msg {
+    color:red;
+    cursor:pointer;
+}
+
+#validation-summary .validation-err-msg {
+    background-image: url(../images/icons/pencil.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 20px;
+}
+
+span.required {
+    font-size:75%;
+    vertical-align:top;
+    font-weight:normal;
+}
+
+.inner-table, .inner-table tr, .inner-table td {
+    border: none;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.label {
+    background: none;
+    border: none;
+}
+
+#title {
+    float: left;
+    font-size: 0.65em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+fieldset p textarea {
+    display: block;
+    width: 98%;
+}
+*/

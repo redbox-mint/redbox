@@ -2,7 +2,7 @@
     <h2>Progress</h2>
     <p>
         <input id="agreement" type="checkbox" />
-        <label id="agreementLabel" for="agreement"> </label>
+        <label id="agreementLabel" for="agreement"></label>
         <input type="submit" disabled="disabled" id="update-package" value="Proceed" class="form-fields-submit" />
         <input type="hidden" class="submit-result-func" value="submitted_ok" />
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
@@ -108,17 +108,17 @@ $(function() {
     $("#delete-record").click(function(){
         jQuery.ajax({
             type : "POST",
-            url : packageData.portalPath + "/actions/delete.ajax",
+            url : "$portalPath/actions/delete.ajax",
             success:
                 function (data, status) {
-                    window.location.href = packageData.portalPath + "/home";
+                    window.location.href = "$portalPath/home";
                 },
             error:
                 function (req, status, e) {
                     $("#delete-record-error").html(req.responseText);
                 },
             data: {
-                record: packageData.oid
+                record: "$oid"
             }
         });
     });

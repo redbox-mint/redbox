@@ -6,19 +6,23 @@
         </span>
     </h2>
     <div id="help-description-content" class="help-content">
-        <p>Description of the research that generated the dataset.</p>
-        This should include information about:
+        <p>
+            Description of the research dataset/collection, registry/repository,
+            catalogue or index.
+        </p>
+        <p>This should include:</p>
         <ul>
             <li>
-                information about the dataset e.g. This dataset contains observational data,
-                calibration files and catalogue information collected from the
-                Mount Stromlo Observatory Facility.
+                information about the research dataset/collection,
+                registry/repository, catalogue or index, including its
+                characteristics and features  e.g. This dataset contains
+                observational data, calibration files and catalogue information
+                collected from the Mount Stromlo Observatory Facility.
             </li>
-            <li>the project</li>
-            <li>the purpose and scope of the data</li>
-            <li>entities being studied or recorded</li>
-            <li>methodology</li>
-            <li>characteristics and features of the data</li>
+            <li>
+                If applicable: the scope; details of entities being studied or
+                recorded; methodologies used.
+            </li>
         </ul>
     </div>
     <p>
@@ -31,13 +35,14 @@
     </p>
     
     <h2>
-        <label for="citations">Related Publications (citing)</label>
+        <label for="citations">Related Publications</label>
         <span class="helpWidget" data-help-content-id="help-publications">
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
     <div id="help-publications" class="help-content">
-        Include URLs to any publications underpinning this data.
+        Include URL/s to any publications underpinning the research
+        dataset/collection, registry/repository, catalogue or index.
     </div>
     <table class="input-list">
         <tfoot>
@@ -61,22 +66,34 @@
     </table>
 
     <h2>
-        <label for="data">Data Re-Use</label>
+        <label for="data">Related Data</label>
         <span class="helpWidget" data-help-content-id="help-rel-data">
             <img src="../images/icons/help.png"/>
         </span>
     </h2>
     <div id="help-rel-data" class="help-content">
-        Include a citation to any sources of third party data used/re-used.
+        Include a URL to any sources of third party data used/re-used.
     </div>
-    <p>
-        <input type="text" size="60" placeholder="data citation" id="data" />
-        <label class="validation-err-msg" for="data"
-            data-rule="for(data);when(onChange, onSubmit, onBlur);
-                    test(lenlt(2001));">
-            Text too long!
-        </label>
-    </p>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add data" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="data url" id="data.0" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
 
     <h2>
         <label for="website">Related Website</label>
@@ -85,14 +102,26 @@
         </span>
     </h2>
     <div id="help-rel-website" class="help-content">
-        Include a URL for the relevant website.
+        Include URL/s for the relevant website.
     </div>
-    <p>
-        <input type="text" size="60" placeholder="website url" id="website" />
-        <label class="validation-err-msg" for="website"
-            data-rule="for(website);when(onChange, onSubmit, onBlur);
-                    test(lenlt(2001));">
-            Text too long!
-        </label>
-    </p>
+    <table class="input-list">
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add website" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="website url" id="website.0" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+    </table>
 </div>

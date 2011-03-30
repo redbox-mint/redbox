@@ -6,9 +6,8 @@
         </span>
     </h2>
     <div class="help-content" id="help-access-conditions">
-        Record any conditions associated with granting
-        access to the data e.g. Contact Principal Investigator
-        to negotiate access to the data.
+        Describe any conditions associated with granting access, for example:
+        Contact Chief Investigator to negotiate access to the data.
     </div>
     <p>
         <input type="text" size="60" placeholder="access conditions" id="access_conditions" />
@@ -24,8 +23,8 @@
         </span>
     </h2>
     <div class="help-content" id="help-restrictions">
-        Record any restrictions on access to the data e.g. Embargoed until 1
-        year after publication of the research.
+        Describe any access restrictions, for example: Embargoed until 1 year
+        after publication of the research.
     </div>
     <p>
         <input type="text" size="60" placeholder="restriction on access" id="restrictions" />
@@ -47,7 +46,7 @@
     </div>
     <p>
         <select name="license_cc">
-            <option value="">Please select one</option>
+            <option>Please select one</option>
             <option value="http://creativecommons.org/licenses/by/3.0/au">CC BY: Attribution</option>
             <option value="http://creativecommons.org/licenses/by-sa/3.0/au">CC BY-SA: Attribution-Share Alike</option>
             <option value="http://creativecommons.org/licenses/by-nd/3.0/au">CC BY-ND: Attribution-No Derivative Works</option>
