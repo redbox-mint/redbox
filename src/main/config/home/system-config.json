@@ -242,7 +242,7 @@
                     {
                         "name": "vital-handles",
                         "type": "external",
-                        "url": "${server.url.base}default/hkjobs/vital.script",
+                        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/vital.script",
                         "timing": "0 0/15 * * * ?"
                     }
                 ]
