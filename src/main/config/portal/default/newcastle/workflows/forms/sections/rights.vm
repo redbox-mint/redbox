@@ -1,0 +1,51 @@
+<h3><a href="#rights">Rights</a></h3>
+<div id="rights" class="inputscreen">
+    #fieldTitle("access_conditions" "Access Conditions" true)
+    <div class="help-content" id="help-access_conditions">
+        Describe any conditions associated with granting access, eg.
+        Contact Chief Investigator to negotiate access to the data.
+    </div>
+    <p>
+        <input type="text" size="60" id="access_conditions"
+            placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
+        #requiredValidation("access_conditions" "Access conditions are required!")
+    </p>
+
+    #fieldTitle("restrictions" "Restrictions, Embargoes or Usage Contraints" true)
+    <div class="help-content" id="help-restrictions">
+        Describe any access restrictions, eg. Embargoed until 1 year
+        after publication of the research.
+    </div>
+    <p>
+        <input type="text" size="60" id="restrictions"
+            placeholder="eg. Embargoed until 1 year after publication of the research." />
+        #requiredValidation("restrictions" "Restrictions, Embargoes or Usage Constraints are required!")
+    </p>
+
+    #fieldTitle("license_cc" "License - Creative Commons" false)
+    <div class="help-content" id="help-license_cc">
+        See: <a href="http://creativecommons.org.au/learn-more/licences" target="blank">
+                http://creativecommons.org.au/learn-more/licences
+             </a>
+    </div>
+    <p>
+        <select name="license_cc">
+            <option>Please select one...</option>
+            <option value="http://creativecommons.org/licenses/by/3.0/au">CC BY: Attribution</option>
+            <option value="http://creativecommons.org/licenses/by-sa/3.0/au">CC BY-SA: Attribution-Share Alike</option>
+            <option value="http://creativecommons.org/licenses/by-nd/3.0/au">CC BY-ND: Attribution-No Derivative Works</option>
+            <option value="http://creativecommons.org/licenses/by-nc/3.0/au">CC BY-NC: Attribution-Noncommerical</option>
+            <option value="http://creativecommons.org/licenses/by-nc-sa/3.0/au">CC BY-NC-SA: Attribution-Noncommerical-Share Alike</option>
+            <option value="http://creativecommons.org/licenses/by-nc-nd/3.0/au">CC BY-NC-ND: Attribution-Noncommerical-No Derivatives</option>
+        </select>
+    </p>
+
+    #fieldTitle("license_other" "License - Other" false)
+    <div class="help-content" id="help-license_other">
+        Examples of other licences:
+        <a href="http://www.opendefinition.org/licenses" target="blank">
+            http://www.opendefinition.org/licenses
+        </a>
+    </div>
+    <p><input type="text" size="60" placeholder="other license" id="license_other" /></p>
+</div>

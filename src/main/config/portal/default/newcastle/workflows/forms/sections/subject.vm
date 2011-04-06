@@ -1,122 +1,37 @@
-<div>
-    <h2>
-        <label for="dc:subject.anzsrc:for">Field of Research codes</label>
-        <span class="helpWidget" data-help-content-id="help-for-codes">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-for-codes">
+<h3><a href="#subject">Subject</a></h3>
+<div id="subject" class="inputscreen">
+    #fieldTitle("dc:subject.anzsrc:for" "Fields of Research" false)
+    <div class="help-content" id="help-dc:subject.anzsrc:for">
         Select relevant FOR code/s.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr class="item-input">
-                <td>
-                    <span class="data-source-drop-down"
-                          data-json-source-url="../proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
-                          data-top-level-id="top"
-                          data-id-key="rdf:about"
-                          data-label-key="skos:prefLabel"
-                          data-list-key="results"
-                          data-children-key="skos:narrower">
-                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:for.0.skos:prefLabel" value="" />
-                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:for.0.rdf:resource" value="" />
-                    </span>
-                    <button class="item-add selection-add add-unique-only">Add FOR code</button>
-                </td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-display">
-                <td>
-                    <span class="item-display-item"></span>
-                    <span class="item-display-item" style="display:none;"></span>
-                    <a class="delete-item" href="#">delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    #mintMultiSelectField("dc:subject.anzsrc:for.0.rdf:resource"
+                          "dc:subject.anzsrc:for.0.skos:prefLabel"
+                          "$portalPath/proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
+                          "rdf:about"
+                          "skos:prefLabel"
+                          "results"
+                          "skos:narrower")
 
-    <h2>
-        <label for="dc:subject.anzsrc:seo">Socio-Economic Objectives</label>
-        <span class="helpWidget" data-help-content-id="help-seo-codes">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-seo-codes">
+    #fieldTitle("dc:subject.anzsrc:seo" "Socio-Economic Objective" false)
+    <div class="help-content" id="help-dc:subject.anzsrc:seo">
         Select relevant SEO code/s.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr class="item-input">
-                <td>
-                    <span class="data-source-drop-down"
-                          data-json-source-url="../proxyGet?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
-                          data-top-level-id="top"
-                          data-id-key="rdf:about"
-                          data-label-key="skos:prefLabel"
-                          data-list-key="results"
-                          data-children-key="skos:narrower">
-                        <input type="text" class="selection-added-label" id="dc:subject.anzsrc:seo.0.skos:prefLabel" value="" />
-                        <input type="text" class="selection-added-id" id="dc:subject.anzsrc:seo.0.rdf:resource" value="" />
-                    </span>
-                    <button class="item-add selection-add add-unique-only">Add SEO code</button>
-                </td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-display">
-                <td>
-                    <span class="item-display-item"></span>
-                    <span class="item-display-item" style="color: lightblue; display: none;"></span>
-                    <a class="delete-item" href="#">delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    #mintMultiSelectField("dc:subject.anzsrc:seo.0.rdf:resource"
+                          "dc:subject.anzsrc:seo.0.skos:prefLabel"
+                          "$portalPath/proxyGet?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
+                          "rdf:about"
+                          "skos:prefLabel"
+                          "results"
+                          "skos:narrower")
 
-    <h2>
-        <label for="dc:subject">Keywords <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-keywords">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-keywords">
+    #fieldTitle("dc:subject" "Keywords" true)
+    <div class="help-content" id="help-dc:subject">
         Enter descriptive keywords as required.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add keyword" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td>
-                    <input type="text" size="60" placeholder="keyword" id="dc:subject.keywords.0" class="vkeyword" />
-                </td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;">
-                    <label for="dc:subject.keywords.0"  class="validation-err-msg"
-                        data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);liveFor(.vkeyword);">
-                        A keyword is required!
-                    </label>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    #inputList("dc:subject.keywords" "keyword" "Add keyword" "A keyword is required!")
 
-    <h2>
-        <label for="research_activity">Type of Research Activity</label>
-        <span class="helpWidget" data-help-content-id="help-research-activity">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-research-activity">
+    #fieldTitle("research_activity" "Type of Research Activity" false)
+    <div class="help-content" id="help-research_activity">
         <p>
             1297.0 Australian Standard Research Classification (ANZSRC) 2008.
         </p>
@@ -150,7 +65,7 @@
     </div>
     <p>
         <select id="research_activity" name="research_activity">
-            <option>Please select one</option>
+            <option>Please select one...</option>
             <option value="pure">Pure basic research</option>
             <option value="strategic">Strategic basic research</option>
             <option value="applied">Applied research</option>

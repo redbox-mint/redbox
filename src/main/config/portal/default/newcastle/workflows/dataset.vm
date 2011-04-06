@@ -1,25 +1,27 @@
 #set($oid = $self.getFormData("oid"))
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
-#set($stageLabel = $self.currentStepLabel)
 <div class="grid_16" id="inputForms">
     <p class="loading-data">Loading form data, please wait...</p>
 </div>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.ajaxQueue.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.bgiframe.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
+<script type="text/javascript" src="$portalPath/js/jquery.jqEasyCharCounter.min.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
+var ARC_NS = "http://example.com/arc/";
+var ADFI_NS = "http://namespace.adfi.usq.edu.au/grants#";
+var UON_NS = "urn:uon:internal";
+
+var widgetTabs;
 var packageData = {
     metaData: $self.getJsonMetadata(),
     attachedFiles: $self.getAttachedFiles(),
     nextStageMessage: "$self.getNextStepAcceptMessage()"
-}
-var ARC_NS = "http://example.com/arc/";
-var ADFI_NS = "http://namespace.adfi.usq.edu.au/grants#";
-var UON_NS = "urn:uon:internal";
-var widgetTabs;
+};
+
 (function($){
     $(function(){
         function onContentLoaded(){
@@ -38,9 +40,11 @@ var widgetTabs;
                         function(ctx){
                             ctx.findx(".lookup-show").each(function(){
                                 var e=$(this);
+                                console.log(e);
                                 e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?"identified as:":"lookup");
                                 e.find(".identified-as-name").text(e.find("input.nl").val());
                             });
+                            nameLookup.init();
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
@@ -52,10 +56,6 @@ var widgetTabs;
                     $("input[id=" + baseId + ".dc:identifier]").unautocomplete();
                     $("input[id=" + baseId + ".skos:prefLabel]").removeAttr("readonly").removeClass("label");
                 });
-                nameLookup.init();
-                //$("#deposit_accept_msg").text("$self.getNextStepAcceptMessage()");
-                //$(".validation-err-msg[for=deposit_accept]").text(
-                //        "$self.getNextStepAcceptValidationErrorMessage()");
             });
         }
         $("#inputForms").load("$portalPath/workflows/forms/dataset.ajax",

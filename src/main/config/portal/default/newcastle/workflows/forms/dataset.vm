@@ -1,3 +1,108 @@
+#macro(fieldTitle $id $label $required)
+    <h2>
+        <label for="$id">$label#if($required)<span class="required">(*)</span>#end</label>
+        <span class="helpWidget" data-help-content-id="help-$id">
+            <img src="$portalPath/images/icons/help.png"/>
+        </span>
+    </h2>
+#end
+
+#macro(requiredValidation $id $message)
+    <label class="validation-err-msg" for="$id"
+        data-validation-rule="when(blur,change,submit);test(notEmpty)">
+        $message
+    </label>
+#end
+
+#macro(dateValidation $id)
+    <label class="validation-err-msg" for="dc:created"
+        data-validation-rule="when(blur,change,submit);test(yyyy_mm_dd or empty);">
+        A valid date created must be entered (yyyy-mm-dd else leave blank)!
+    </label>
+#end
+
+#macro(mintSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey)
+    <span class="data-source-drop-down"
+          data-json-source-url="$sourceUrl"
+          data-id-key="$idKey"
+          data-label-key="$labelKey"
+          data-list-key="$listKey">
+        <span class="selection-added">
+            <input type="hidden" class="selection-added-id" id="$id" name="$id" />
+            <input type="text" class="selection-added-label" size="30" readonly="readonly" id="$labelId" name="$labelId" />
+            <a href="#" class="clear-item">change</a>
+        </span>
+        <span class="drop-down-location">
+            <button class="selection-add add-unique-only" data-add-on-click="1">
+                Select
+            </button>
+        </span>
+    </span>
+#end
+
+#macro(mintMultiSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey $childrenKey)
+    <table class="input-list">
+        <tfoot>
+            <tr class="item-input">
+                <td>
+                    <span class="data-source-drop-down"
+                          data-json-source-url="$sourceUrl"
+                          data-top-level-id="top"
+                          data-id-key="$idKey"
+                          data-label-key="$labelKey"
+                          data-list-key="$listKey"
+                          data-children-key="$childrenKey">
+                        <input type="text" class="selection-added-label" id="$labelId" />
+                        <input type="text" class="selection-added-id" id="$id" />
+                    </span>
+                    <button class="item-add selection-add add-unique-only reset-on-add">
+                        Select
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="item-display">
+                <td>
+                    <span class="item-display-item"></span>
+                    <span class="item-display-item hidden"></span>
+                    <a class="delete-item" href="#">delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+#end
+
+#macro(inputList $id $placeholder $addLabel $requiredLabel)
+    #set($vid = $id.replaceAll(":", "").replaceAll(".", ""))
+    <table class="input-list">
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="$placeholder" id="${id}.0" class="v${vid}" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;">
+                    #if("$!requiredLabel" != "")
+                    <label for="${id}.0" class="validation-err-msg"
+                        data-validation-rule="test(notEmpty);when(blur,change,submit);liveFor(.v${vid});">
+                        $requiredLabel
+                    </label>
+                    #end
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="$addLabel" /></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+#end
+
 #set($noLayout = true)
 #set($oid = $self.getFormData("oid"))
 #set($portalPath = $self.getFormData("portalPath"))
@@ -5,7 +110,7 @@
 #set($stageLabel = $self.getFormData("stageLabel"))
 #set($nextStageMessage = $self.getFormData("nextStageMessage"))
 #set($nextStageErrorMessage = $self.getFormData("nextStageErrorMessage"))
-##parseTemplate("workflows/forms/sections/navigation.vm")
+
 <div class="widget-form" id="main-form"
     data-pre-save-func="preSave"
     data-save-result-func="saveSuccess"
@@ -32,15 +137,22 @@
         website.0,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
+        dc:creator.foaf:Person.0.dc:title,
         dc:creator.foaf:Person.0.ci,
         dc:creator.foaf:Person.0.pi,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
         dc:creator.foaf:Person.0.association,
         dc:creator.foaf:Person.0.association.skos:prefLabel,
-        primary_contact_name,
-        primary_contact_email,
-        supervisor,
+        primaryContact.dc:identifier,
+        primaryContact.dc:title,
+        primaryContact.foaf:givenName
+        primaryContact.foaf:familyName
+        primaryContact.foaf:email,
+        supervisor.0.dc:identifier,
+        supervisor.0.dc:title,
+        supervisor.0.foaf:givenName,
+        supervisor.0.foaf:familyName,
         collaborators.0,
         ## subject
         dc:subject.anzsrc:seo.0.skos:prefLabel,
@@ -79,6 +191,10 @@
         policy,
         contracts,
         management_plan,
+        ## notes
+        notes.0.date,
+        notes.0.username,
+        notes.0.description,
         ## submission request
         submitted,
         submitDate,
@@ -97,52 +213,18 @@
         <a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>
         <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
     </div>
-    <div class="inputscreens changeToTabLayout">
-        <h3><a href="#screen1">General</a></h3>
-        <div id="screen1" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/general.vm")
-            ##nav(false true)
-        </div>
-        <h3><a href="#screen2">Description</a></h3>
-        <div id="screen2" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/description.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen3">People</a></h3>
-        <div id="screen3" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/people.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen4">Subject</a></h3>
-        <div id="screen4" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/subject.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen5">Rights</a></h3>
-        <div id="screen5" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/provenance.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen6">Management</a></h3>
-        <div id="screen6" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/management.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen7">Attachments</a></h3>
-        <div id="screen7" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/attach.vm")
-            ##nav(true true)
-        </div>
-        <h3 class="request"><a href="#screen8">Request</a></h3>
-        <div id="screen8" class="inputscreen request">
-            #parseTemplate("workflows/forms/sections/request.vm")
-            ##nav(true true)
-        </div>
-        <h3><a href="#screen9">Submit</a></h3>
-        <div id="screen9" class="inputscreen">
-            #parseTemplate("workflows/forms/sections/submit.vm")
-            ##nav(true false)
-        </div>
+    <div class="inputscreens">
+        #parseTemplate("workflows/forms/sections/general.vm")
+        #parseTemplate("workflows/forms/sections/coverage.vm")
+        #parseTemplate("workflows/forms/sections/description.vm")
+        #parseTemplate("workflows/forms/sections/people.vm")
+        #parseTemplate("workflows/forms/sections/subject.vm")
+        #parseTemplate("workflows/forms/sections/rights.vm")
+        #parseTemplate("workflows/forms/sections/management.vm")
+        #parseTemplate("workflows/forms/sections/attach.vm")
+        #parseTemplate("workflows/forms/sections/notes.vm")
+        #parseTemplate("workflows/forms/sections/request.vm")
+        #parseTemplate("workflows/forms/sections/submit.vm")
     </div>
     <div class="navigation">
         <span class="go-prev-tab">
@@ -151,9 +233,9 @@
         <span class="go-next-tab">
             <img src="../images/icons/arrow_right.png" height="30" alt="Go to the next section of the form" />
         </span>
-    <input type="button" class="form-fields-save" value="Save" />
-    <input type="button" class="form-fields-save-close" value="Save and close" />
-    <span class="saved-result"></span>
+        <input type="button" class="form-fields-save" value="Save" />
+        <input type="button" class="form-fields-save-close" value="Save and close" />
+        <span class="saved-result"></span>
     </div>
 </div>
 <script type="text/javascript">
@@ -223,10 +305,7 @@ $(function(){
 });
 
 function preSave(widgetForm, data){
-    $(".saved-result").html("<img src='../images/icons/loading.gif'/>").show();
-}
-
-function aboutToSave(widgetForm, data){
+    $(".saved-result").html('<img src="$portalPath/images/icons/loading.gif" />').show();
 }
 
 function saveSuccess(){

@@ -1,65 +1,48 @@
-<div>
-    <h2>
-        <label for="url">Identifier or URL <span class="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-url">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-url">
-        For example: a persistent URI representing the location of the research
-        dataset/collection, registry/repository, catalogue or index.
-    </div>
-    <p>
-        <label class="validation-err-msg" for="url"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            An identifier or URL is required!
-        </label>
-        <input type="text" size="60" placeholder="persistent identifier or url" id="url" />
-    </p>
+<h3><a href="#management">Management</a></h3>
+<div id="management" class="inputscreen">
+    <fieldset>
+        <h2>Location</h2>
+        #fieldTitle("url" "Identifier or URL" true)
+        <div class="help-content" id="help-url">
+            For example: a persistent URI representing the location of the research
+            dataset/collection, registry/repository, catalogue or index.
+        </div>
+        <p>
+            <input type="text" size="60" placeholder="persistent identifier or url" id="url" />
+            #requiredValidation("url" "An identifier or URL is required!")
+        </p>
 
-    <h2>
-        <label for="physical_storage">Stored at <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-stored-at">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-stored-at">
-        Record physical location of the research dataset/collection,
-        registry/repository, catalogue or index, if applicable. For example:
-        University of X.
-    </div>
-    <p>
-        <input type="text" size="60" placeholder="physical location" id="physical_storage" />
-        <label class="validation-err-msg" for="physical_storage"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            A physical location is required!
-        </label>
-    </p>
+        <h2>
+            <label for="physical_storage">Stored at <span class="required" title="required">(*)</span></label>
+            <span class="helpWidget" data-help-content-id="help-stored-at">
+                <img src="../images/icons/help.png"/>
+            </span>
+        </h2>
+        <div class="help-content" id="help-stored-at">
+            Record physical location of the research dataset/collection,
+            registry/repository, catalogue or index, if applicable. For example:
+            University of X.
+        </div>
+        <p>
+            <input type="text" size="60" placeholder="physical location" id="physical_storage" />
+            <label class="validation-err-msg" for="physical_storage"
+                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
+                A physical location is required!
+            </label>
+        </p>
+    </fieldset>
 
-    <h2>
-        <label for="retention_period">Retention Period <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-retention-period">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-retention-period">
+    #fieldTitle("retention_period" "Retention Period" true)
+    <div class="help-content" id="help-retention_period">
         Record the period of time that the data must be kept
         in line with institutional/funding body retention policies.
     </div>
     <p>
         <input type="text" size="60" placeholder="retention period" id="retention_period" />
-        <label class="validation-err-msg" for="retention_period"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            Retention Period is required!
-        </label>
+        #requiredValidation("retention_period" "Retention Period is required!")
     </p>
 
-    <h2>
-        <label for="extent">Extent or Quantity <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-extent">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
+    #fieldTitle("extent" "Extent or Quantity" true)
     <div class="help-content" id="help-extent">
         Enter the number of files that comprise the research dataset/collection,
         registry/repository, catalogue or index (including supporting material),
@@ -67,109 +50,46 @@
     </div>
     <p>
         <input type="text" size="60" placeholder="quantity" id="extent" />
-        <label class="validation-err-msg" for="extent"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-            Extent or quantity is required!
-        </label>
+        #requiredValidation("extent" "Extent or quantity is required!")
     </p>
 
-    <h2>
-        <label for="disposal_date">Disposal Date</label>
-        <span class="helpWidget" data-help-content-id="help-disposal-date">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-disposal-date">
+    #fieldTitle("disposal_date" "Disposal Date" false)
+    <div class="help-content" id="help-disposal_date">
         Indicate disposal date for data.
     </div>
     <p><input type="text" size="25" placeholder="disposal date" class="dateYMD" id="disposal_date" /></p>
 
-    <h2>
-        <label for="data_owner.0">Data Owner (IP)</label>
-        <span class="helpWidget" data-help-content-id="help-data-owner">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-data-owner">
+    #fieldTitle("data_owner" "Data Owner (IP)" false)
+    <div class="help-content" id="help-data_owner">
         Person/institution identified as intellectual property owners of the data.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add owner" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td><input type="text" size="60" placeholder="collaborator" id="data_owner.0" /></td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
+    #inputList("data_owner" "data owner" "Add owner" "")
 
-    <h2>
-        <label for="data_custodian">Data Custodian</label>
-        <span class="helpWidget" data-help-content-id="help-data-custodian">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-data-custodian">
+    #fieldTitle("data_custodian" "Data Custodian" false)
+    <div class="help-content" id="help-data_custodian">
         Person/institution identified as custodian of the data.
     </div>
     <p><input type="text" size="60" placeholder="person or institution" id="data_custodian" /></p>
 
-    <h2>
-        <label for="affiliation">Data Affiliation</label>
-        <span class="helpWidget" data-help-content-id="help-affiliation-with">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-affiliation-with">
-        Select appropriate affiliation relevant to the data, e.g. Research
+    #fieldTitle("affiliation" "Data Affiliation" false)
+    <div class="help-content" id="help-affiliation">
+        Select appropriate affiliation relevant to the data, eg. Research
         Centre for Clean Coal Technology, or School of Engineering.
     </div>
     <p>
-        <span class="data-source-drop-down"
-              data-json-source-url="../proxyGet?ns=Parties_Groups&qs=count%3D9999"
-              data-id-key="rdf:about"
-              data-label-key="rdfs:label"
-              data-list-key="results">
-            <span class="selection-added">
-                <input type="hidden" class="selection-added-id"
-                       id="affiliation" value="" />
-                <input type="text" class="selection-added-label" readonly="readonly" size="24"
-                       id="affiliation.0.skos:prefLabel" value="" />
-                <a href="#" class="clear-item">change</a>
-            </span>
-            <span class="drop-down-location">
-                <button class="selection-add add-unique-only" data-add-on-click="1">
-                    Select
-                </button>
-            </span>
-        </span>
+        #mintSelectField("affiliation.0"
+                         "affiliation.0.skos:prefLabel"
+                         "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
+                         "rdf:about"
+                         "rdfs:label"
+                         "results")
     </p>
 
-    <h2>
-        <label for="funding">Funding Body/s</label>
-        <span class="helpWidget" data-help-content-id="help-funding-bodies">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-funding-bodies">
+    #fieldTitle("funding_bodies" "Funding Body/s" false)
+    <div class="help-content" id="help-funding_bodies">
         Select/enter the name of the research funding body, if applicable.
     </div>
     <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td colspan="2"><input type="button" class="add-another-item" value="Add another" /></td>
-            </tr>
-        </tfoot>
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
@@ -181,15 +101,16 @@
                 <td width="100%"><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="2"><input type="button" class="add-another-item" value="Add funding body" /></td>
+            </tr>
+        </tfoot>
     </table>
 
-    <h2>
-        <label for="grant">Grant Numbers</label>
-        <span class="helpWidget" data-help-content-id="help-grant-num">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-grant-num">
+    #fieldTitle("grants" "Grant Numbers" false)
+    <div class="help-content" id="help-grants">
         Select/enter the grant number and/or title if applicable.
     </div>
     <table class="input-list">
@@ -201,12 +122,6 @@
                 <th></th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <td></td>
-                <td colspan="3"><input type="button" class="add-another-item" value="Add another" /></td>
-            </tr>
-        </tfoot>
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
@@ -230,68 +145,49 @@
                 <td class="delete-item" style="text-align:right;width:100%;"><a href="#">delete</a></td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="3"><input type="button" class="add-another-item" value="Add grant" /></td>
+            </tr>
+        </tfoot>
     </table>
 
-    <h2>
-        <label for="project_title">Project Title</label>
-        <span class="helpWidget" data-help-content-id="help-project-title">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-project-title">
+    #fieldTitle("project_title" "Project Title" false)
+    <div class="help-content" id="help-project_title">
         Enter title of the Research Project, if applicable. Note project titles
         will usually differ from the title of the associated Grant.
     </div>
     <p><input type="text" size="60" placeholder="title" id="project_title" /></p>
 
-    <h2>
-        <label for="depositor">Depositor</label>
-        <span class="helpWidget" data-help-content-id="help-depositor">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
+    #fieldTitle("depositor" "Depository" false)
     <div class="help-content" id="help-depositor">
         Record the name of the depositor.
     </div>
     <p><input type="text" size="60" placeholder="depositor" id="depositor" /></p>
 
-    <h2>
-        <label for="data_size">Data Size</label>
-        <span class="helpWidget" data-help-content-id="help-data-size">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-data-size">
+    #fieldTitle("data_size" "Data Size" false)
+    <div class="help-content" id="help-data_size">
         Record the size of the data in KB, MB, GB, TB etc.
     </div>
     <p><input type="text" size="60" placeholder="size" id="data_size" /></p>
 
-    <h2>
-        <label for="policy">Institutional Data Management Policy</label>
-        <span class="helpWidget" data-help-content-id="help-policy">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
+    #fieldTitle("policy" "Institutional Data Management Policy" false)
     <div class="help-content" id="help-policy">
         Include the title, version number and date of an associated
         Institutional Policy, where a policy is available.
     </div>
-    <p><input type="text" size="60" placeholder="Institutional data management policy" id="policy" /></p>
+    <p><input type="text" size="60" placeholder="title, version number and date of policy" id="policy" /></p>
 
-    <h2>
-        <label for="management_plan">Data management plan</label>
-        <span class="helpWidget" data-help-content-id="help-management_plan">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
+    #fieldTitle("management_plan" "Data Management Plan" false)
     <div class="help-content" id="help-management_plan">
         Indicates existence of a data management plan.
     </div>
     <p>
-##        <input type="text" size="60" placeholder="Location of data management plan (if available)"
-##             id="management_plan" />
-        <input type="radio" name="management_plan" value="yes"/> Yes &#160; 
-        <input type="radio" name="management_plan" value="no"/> No
+        <input type="radio" id="management_plan_yes" name="management_plan" value="yes" />
+        <label for="management_plan_yes">Yes</label>
+        <input type="radio" name="management_plan" value="no" />
+        <label for="management_plan_no">No</label>
     </p>
 </div>
 <script type="text/javascript">
@@ -312,7 +208,7 @@ $(function() {
 
     function addAutocompleteGrant(elem) {
         elem.autocomplete(
-            "../proxyGet?ns=Activities&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
+            "$portalPath/proxyGet?ns=Activities&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
@@ -387,7 +283,7 @@ $(function() {
         var elem = $(this);
         $(this).unautocomplete();
         $(this).autocomplete(
-            "../proxyGet?ns=Funding_Bodies&autocomplete=true&fields=rdf:about,rdfs:label",
+            "$portalPath/proxyGet?ns=Funding_Bodies&autocomplete=true&fields=rdf:about,rdfs:label",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }

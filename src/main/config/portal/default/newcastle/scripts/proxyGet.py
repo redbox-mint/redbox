@@ -1,15 +1,3 @@
-from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import JsonConfig
-from au.edu.usq.fascinator.common import JsonConfigHelper
-from au.edu.usq.fascinator.portal import FormData
-from au.edu.usq.fascinator.common.storage import StorageUtils                   ##
-
-from java.io import ByteArrayInputStream
-from java.lang import String
-from java.net import URLDecoder
-
-import locale
-import time
 from json2 import read as jsonReader, write as jsonWriter                       ##
 from urllib2 import urlopen, build_opener, ProxyHandler
 import socket
@@ -20,31 +8,16 @@ noProxyUrlopener = build_opener(noProxyHandler)
 noProxyUrlopen = noProxyUrlopener.open
 defaultUrlopen = urlopen
 
-
 class ProxyGetData:
-    def __init__(self):
-        pass
-
     def __activate__(self, context):
-        print "*** proxyGet.py ***"
         self.velocityContext = context
         formData = self.vc("formData")
         response = self.vc("response")
-        ##
-        ##f = open(JsonConfig.getSystemFile().toString(), "rb")
-        ##proxyUrls = jsonReader(f.read()).get("proxy-urls", {})
-        ##f.close()
         config = self.vc("systemConfig")
         proxyUrls = config.getMap("proxy-urls")
-        #print " proxyUrls='%s'" % proxyUrls
-        #print " ns='%s'" % formData.get("ns", "")
-        #print " qs='%s'" % formData.get("qs", "")
-        ##
-        #url = "http://localhost:8080/mint/master/opensearch/lookup?searchTerms=smith"
-        #url = formData.get("url") or url
         url = ""
-        ##url = proxyUrls.get(formData.get("ns", ""), url)
         key = formData.get("ns", "")
+        #print " ********", proxyUrls
         if proxyUrls.containsKey(key):
             url = proxyUrls.get(key)
         queryStr = formData.get("qs")

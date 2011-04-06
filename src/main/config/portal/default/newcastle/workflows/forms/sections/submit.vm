@@ -1,4 +1,5 @@
-<div>
+<h3><a href="#submit">Submit</a></h3>
+<div id="submit" class="inputscreen">
     <h2>Progress</h2>
     <p>
         <input id="agreement" type="checkbox" />

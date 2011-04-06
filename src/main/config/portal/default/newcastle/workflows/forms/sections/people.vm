@@ -1,20 +1,16 @@
-<div class="nameLookup-section">
-    <input type="hidden" class="nameLookup-url" value="../proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
+<h3><a href="#people">People</a></h3>
+<div id="people" class="inputscreen nameLookup-section">
+    <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
-    <h2>
-        Creators <span class="required" title="required">(*)</span>
-        <span class="helpWidget" data-help-content-id="help-creators">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-creators">
+    #fieldTitle("dc:creator" "Creators" true)
+    <div class="help-content" id="help-dc:creator">
         <p>Record names of the creators.</p>
         <ul>
             <li>
-                Enter the given name or family name of persons who created the
-                research dataset/collection, registry/repository, catalogue or
-                index. Click 'lookup' to search and select the name authority
+                Enter the given name and/or family name of persons who created
+                the research dataset/collection, registry/repository, catalogue
+                or index. Click 'lookup' to search and select the name authority
                 record.
             </li>
             <li>Select the persons' appropriate affiliation.</li>
@@ -27,37 +23,28 @@
     <table class="input-list sortable">
         <thead>
             <tr class="header-row">
-                <th>&nbsp;</th>
+                <th></th>
                 <th>CI</th>
-                <th colspan="4">PI</th>
+                <th>PI</th>
+                <th colspan="3">Person</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <td colspan="3">&nbsp;</td>
-                <td colspan="6">
-                    <input class="add-another-item" type="button" value="Add person" />
-                </td>
-            </tr>
-        </tfoot>
         <tbody>
             <tr class="item-input-display sortable-item">
-                <td style="vertical-align:middle;">
-                    <img class="facets-grip" src="../images/icons/grippy.png" />
+                <td class="valign-middle">
+                    <img class="facets-grip" src="$portalPath/images/icons/grippy.png" />
                 </td>
-                <td style="vertical-align:middle;">
-                    <input type="checkbox" name="scope" value="1"
-                           id="dc:creator.foaf:Person.0.ci" />
+                <td class="valign-middle">
+                    <input type="checkbox" id="dc:creator.foaf:Person.0.ci" />
                 </td>
-                <td style="vertical-align:middle;">
-                    <input type="checkbox" name="scope" value="1"
-                           id="dc:creator.foaf:Person.0.pi" />
+                <td class="valign-middle">
+                    <input type="checkbox" id="dc:creator.foaf:Person.0.pi" />
                 </td>
                 <td>
-                    <table>
+                    <table class="lookup">
                         <tbody>
                             <tr>
-                                <td style="border-bottom:none;">
+                                <td>
                                     <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
                                     <input type="text" placeholder="given name" size="30"
                                            class="nameLookup-name creatorGivenName creatorName"
@@ -66,19 +53,19 @@
                                     <input type="text" placeholder="family name" size="30"
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
-                                    <span style="white-space:nowrap;">
+                                    <span class="lookup-show">
                                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
-                                        <span class="identified-as-name" style="border:0px solid #aaaaaa;padding:0.25ex;"></span>
+                                        <span class="identified-as-name"></span>
                                         <input id="dc:creator.foaf:Person.0.dc:title"
                                                type="hidden"
                                                class="nl nl-rdfs:label" readonly="readonly"/>
                                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
-                                               class="nl nl-rdf:about" value="" />
+                                               class="nl nl-rdf:about" />
                                     </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="border:none">
+                                <td>
                                     <label class="validation-err-msg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);
@@ -93,7 +80,7 @@
                                                                     id=gid;
                                                                 );
                                                                 liveFor(.creatorName);">
-                                        A creators given name or family name is required!
+                                        A creator's given name or family name is required!
                                     </label>
                                 </td>
                             </tr>
@@ -102,7 +89,7 @@
                                     Affiliation:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
-                                          data-json-source-url="../proxyGet?ns=Parties_Groups&qs=count%3D9999"
+                                          data-json-source-url="$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
                                           data-id-key="rdf:about"
                                           data-label-key="rdfs:label"
                                           data-list-key="results">
@@ -124,85 +111,167 @@
                         </tbody>
                     </table>
                 </td>
-                <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
+                <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td colspan="6">
+                    <input class="add-another-item" type="button" value="Add person" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    #fieldTitle("primaryContact" "Primary Contact" false)
+    <div class="help-content" id="help-primaryContact">
+        Record the details of person nominated as 'primary contact' for the
+        research dataset/collection, registry/repository, catalogue or index.
+        Enter a given name and/or family name and click 'lookup' to search and
+        select the name authority record.
+    </div>
+    <table class="lookup">
+        <tbody>
+            <tr>
+                <td>
+                    <label for="primaryContact.foaf:givenName">Given name:</label>
+                    <input type="text" placeholder="given name" size="30"
+                           class="nameLookup-name pcGivenName pcName"
+                           id="primaryContact.foaf:givenName" />
+                    <label for="primaryContact.foaf:familyName">Family name:</label>
+                    <input type="text" placeholder="family name" size="30"
+                           class="nameLookup-name pcFamilyName pcName"
+                           id="primaryContact.foaf:familyName" />
+                    <span class="lookup-show">
+                        <a href="#" class="nameLookup-lookup" data-selected-func="pcLookupDone">lookup</a>
+                        <span class="identified-as-name"></span>
+                        <input id="primaryContact.dc:title"
+                               type="hidden"
+                               class="nl nl-rdfs:label" readonly="readonly"/>
+                        <input type="hidden" id="primaryContact.dc:identifier"
+                               class="nl nl-rdf:about" value="" />
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="validation-err-msg"
+                        for="primaryContact.foaf:givenName"
+                        data-validation-rule="test(notEmpty);when(blur,change,submit);
+                                                jsTest(
+                                                    var fid, gid, f, g;
+                                                    fid=id.replace('given', 'family');
+                                                    gid=id.replace('family', 'given');
+                                                    f=ctx.find('input[id='+fid+']').val();
+                                                    g=ctx.find('input[id='+gid+']').val();
+                                                    f=jQ.trim(f); g=jQ.trim(g);
+                                                    r=(g=='')&&(f=='');
+                                                    id=gid;
+                                                );
+                                                liveFor(.pcName);">
+                        The primary contact's given name or family name is required!
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="primaryContact.foaf:email">Email address:</label>
+                    <input type="text" id="primaryContact.foaf:email" size="60" />
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <h2>
-        Primary contact
-        <span class="helpWidget" data-help-content-id="help-primary-contact">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div class="help-content" id="help-primary-contact">
-        Record the details of person nominated as 'primary contact' for the
-        research dataset/collection, registry/repository, catalogue or index.
-        Enter a given or family name or given name and click 'lookup'.
-    </div>
-    <table>
-        <tr>
-            <td>
-                <label for="primary_contact_name">Name</label>
-                <input type="text" size="60" placeholder="full name" id="primary_contact_name" />
-            </td>
-        </tr>
-        </tr>
-            <td>
-                <label for="primary_contact_email">Email</label>
-                <input type="text" size="60" placeholder="email address" id="primary_contact_email" />
-            </td>
-        </tr>
-    </table>
-
-    <h2>
-        <label for="supervisor">Supervisor</label>
-        <span class="helpWidget" data-help-content-id="help-supervisor">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
+    #fieldTitle("supervisor" "Supervisors" false)
     <div class="help-content" id="help-supervisor">
         Record name of supervisor associated with the data creation if
-        applicable. Enter family name or given name to search and select the
-        name authority record.
+        applicable. Enter a given name and/or family name and click 'lookup' to
+        search and select the name authority record.
     </div>
-    <input type="text" size="60" placeholder="supervisor full name" id="supervisor" />
+    <table class="input-list">
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <table class="lookup">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label for="supervisor.0.foaf:givenName">Given name:</label>
+                                    <input type="text" placeholder="given name" size="30"
+                                           class="nameLookup-name supGivenName supName"
+                                           id="supervisor.0.foaf:givenName" />
+                                    <label for="supervisor.0.foaf:familyName">Family name:</label>
+                                    <input type="text" placeholder="family name" size="30"
+                                           class="nameLookup-name supFamilyName supName"
+                                           id="supervisor.0.foaf:familyName" />
+                                    <span class="lookup-show">
+                                        <a href="#" class="nameLookup-lookup" data-selected-func="supLookupDone">lookup</a>
+                                        <span class="identified-as-name"></span>
+                                        <input id="supervisor.0.dc:title"
+                                               type="hidden"
+                                               class="nl nl-rdfs:label" readonly="readonly"/>
+                                        <input type="hidden" id="supervisor.0.dc:identifier"
+                                               class="nl nl-rdf:about" value="" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="validation-err-msg"
+                                        for="supervisor.0.foaf:givenName"
+                                        data-validation-rule="test(notEmpty);when(blur,change,submit);
+                                                                jsTest(
+                                                                    var fid, gid, f, g;
+                                                                    fid=id.replace('given', 'family');
+                                                                    gid=id.replace('family', 'given');
+                                                                    f=ctx.find('input[id='+fid+']').val();
+                                                                    g=ctx.find('input[id='+gid+']').val();
+                                                                    f=jQ.trim(f); g=jQ.trim(g);
+                                                                    r=(g=='')&&(f=='');
+                                                                    id=gid;
+                                                                );
+                                                                liveFor(.supName);">
+                                        The supervisor's given name or family name is required!
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <input class="add-another-item" type="button" value="Add supervisor" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
 
-    <p>
-        <h2>
-            <label for="collaborators">Collaborators</label>
-            <span class="helpWidget" data-help-content-id="help-collaborators">
-                <img src="../images/icons/help.png"/>
-            </span>
-        </h2>
-        <div class="help-content" id="help-collaborators">
-            Names of other collaborators in the research project, if applicable,
-            e.g. CSIRO, University of X, Prof. Jim Bloggs, etc.
-        </div>
-        <table class="input-list">
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td><input type="button" class="add-another-item" value="Add collaborator" /></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tfoot>
-            <tbody>
-                <tr class="item-input-display sortable-item">
-                    <td class="sort-number"></td>
-                    <td><input type="text" size="60" placeholder="collaborator" id="collaborators.0" /></td>
-                    <td class="delete-item"><a href="#">delete</a></td>
-                    <td style="width: 100%;" />
-                </tr>
-            </tbody>
-        </table>
-    </p>
+    #fieldTitle("collaborators" "Collaborators" false)
+    <div class="help-content" id="help-collaborators">
+        Names of other collaborators in the research project, if applicable,
+        eg. CSIRO, University of X, Prof. Jim Bloggs, etc.
+    </div>
+    #inputList("collaborators" "eg. CSIRO, University of X, Prof. Jim Bloggs, etc." "Add collaborator")
 </div>
 <script type="text/javascript">
-function lookupDone(target, resultJson){
+function lookupDone(target,data){
     var p=target.parent();
     target.text("identified as:");
     p.find(".identified-as-name").text(p.find("input.nl").val());
+}
+
+function pcLookupDone(target,data){
+    lookupDone(target,data);
+    $("#primaryContact\\.foaf\\:email").val(data["result-metadata"].all["Email"]);
+}
+
+function supLookupDone(target,data){
+    lookupDone(target,data);
 }
 </script>

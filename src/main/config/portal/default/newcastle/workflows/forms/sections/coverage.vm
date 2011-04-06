@@ -1,0 +1,86 @@
+<h3><a href="#coverage">Coverage</a></h3>
+<div id="coverage" class="inputscreen">
+    #fieldTitle("dc:coverage" "Date Coverage" false)
+    <div class="help-content" id="help-dc:coverage">
+        Use this to indicate a date range relevant to the research
+        dataset/collection, registry/repository, catalogue or index. Year format
+        requires manual entry, eg. 1990 to 2010
+    </div>
+    <p>
+        <input type="text" placeholder="eg. 1990" class="dateYMD" id="dc:coverage.from" />
+        <label for="dc:coverage.to">to</label>
+        <input type="text" placeholder="eg. 2010" class="dateYMD" id="dc:coverage.to" />
+        <label class="validation-err-msg" for="dc:coverage.from"
+            data-validation-rule="when(blur,change,submit);name(testCoverageFrom);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+            A valid from date or year is required!
+        </label>
+        <label class="validation-err-msg" for="dc:coverage.to"
+            data-validation-rule="when(blur,change,submit);name(testCoverageTo);
+                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+            A valid to date or year is required!
+        </label>
+    </p>
+
+    #fieldTitle("time_period" "Time Period" false)
+    <div class="help-content" id="help-time_period">
+        A text description of a time period relating to the coverage of the
+        research dataset/collection, registry/repository, catalogue or index, if
+        applicable, eg. 21st Century, WWII, The Depression, etc.
+    </div>
+    <p>
+        <input type="text" id="time_period" size="60"
+            placeholder="eg. 21st Century, WWII, The Depression, etc." />
+    </p>
+
+    #fieldTitle("location" "Geospatial Location" false)
+    <div class="help-content" id="help-location">
+        Geospatial location relevant to the research dataset/collection,
+        registry/repository, catalogue or index. This may describe a
+        geographical area where data was collected, a place which is the subject
+        of a collection, or a location which is the focus of an activity, eg.
+        coordinates or placename.
+    </div>
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Type</th>
+                <th>Value</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="item-input-display">
+                <td class="sort-number"></td>
+                <td>
+                    <select name="location.0.type">
+                        <option value="gml">OpenGIS Geography Markup Language</option>
+                        <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
+                        <option value="gpx">GPS Exchange Format</option>
+                        <option value="iso31661">Country code (iso31661)</option>
+                        <option value="iso31662">Country subdivision code (iso31662)</option>
+                        <option value="iso19139dcmiBox">DCMI Box notation (iso19139)</option>
+                        <option value="kml">Keyhole Markup Language</option>
+                        <option value="kmlPolyCoords">KML long/lat co-ordinates</option>
+                        <option value="dcmiPoint">DCMI Point notation</option>
+                        <option value="text" selected>Free text</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" size="60" placeholder="eg. coordinates or placename" id="location.0" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;" />
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="add-another-item" value="Add location" /></td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

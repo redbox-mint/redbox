@@ -1,0 +1,59 @@
+<h3><a href="#notes">Notes</a></h3>
+<div id="notes" class="inputscreen">
+    #fieldTitle("notes.0" "Notes" false)
+    <div class="help-content" id="help-notes.0">
+        Enter administrative notes as required.
+    </div>
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>Date/Username</th>
+                <th colspan=3">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="item-input-display notes">
+                <td style="vertical-align:middle;">
+                    <input type="text" id="notes.0.date" class="datetime" readonly="readonly"
+                        value="$self.getCurrentTime()" size="25" />
+                    <input type="text" id="notes.0.username" readonly="readonly"
+                        value="$page.authentication.get_username()" size="25" />
+                </td>
+                <td>
+                    <textarea cols="80" rows="4" placeholder="description" id="notes.0.description" class="vnote"></textarea>
+                </td>
+                <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
+                <td style="vertical-align:middle;width:100%;">
+                    <label for="notes.0.text" class="validation-err-msg"
+                        data-validation-rule="test(notEmpty);when(blur,change,submit);liveFor(.vnote);">
+                        A note description is required!
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><input type="button" class="add-another-item add-note" value="Add note" /></td>
+                <td colspan="4"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script type="text/javascript">
+$(function(){
+    function pad(s,len,c){
+        c = c || "0";
+        var ps = s.toString();
+        while(ps.length<len){ ps = c + ps; }
+        return ps;
+    }
+
+    $(".add-note").live("click", function(){
+        var d = new Date();
+        var s = d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2)+"T"+
+                pad(d.getHours(),2)+":"+pad(d.getMinutes(),2)+":"+pad(d.getSeconds(),2)+"Z";
+        $(".notes .datetime:last").val(s);
+        return true;
+    });
+});
+</script>

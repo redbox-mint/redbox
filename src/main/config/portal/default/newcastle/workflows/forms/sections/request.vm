@@ -1,4 +1,5 @@
-<div>
+<h3 class="request"><a href="#request">Request</a></h3>
+<div id="request" class="inputscreen request">
     <h2>Submission Request</h2>
     <p>This record was created from the following submission request details.</p>
     <fieldset>

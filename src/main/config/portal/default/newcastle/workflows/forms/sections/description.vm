@@ -1,11 +1,7 @@
-<div>
-    <h2>
-        <label for="dc:description">Description <span class="required" title="required">(*)</span></label>
-        <span class="helpWidget" data-help-content-id="help-description-content">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div id="help-description-content" class="help-content">
+<h3><a href="#description">Description</a></h3>
+<div id="description" class="inputscreen">
+    #fieldTitle("dc:description" "Description" true)
+    <div class="help-content" id="help-dc:description">
         <p>
             Description of the research dataset/collection, registry/repository,
             catalogue or index.
@@ -15,113 +11,47 @@
             <li>
                 information about the research dataset/collection,
                 registry/repository, catalogue or index, including its
-                characteristics and features  e.g. This dataset contains
+                characteristics and features, eg. This dataset contains
                 observational data, calibration files and catalogue information
                 collected from the Mount Stromlo Observatory Facility.
             </li>
             <li>
-                If applicable: the scope; details of entities being studied or
+                if applicable: the scope; details of entities being studied or
                 recorded; methodologies used.
             </li>
         </ul>
     </div>
     <p>
         <textarea rows="12" cols="80" id="dc:description" style="vertical-align: text-top;"
-                placeholder="description of the research dataset"></textarea>
-        <label class="validation-err-msg" for="dc:description"
-            data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty and lenlt(4001));">
-            A description is required and must not exceed 4000 characters!
-        </label>
+                placeholder="eg. This dataset contains observational data and calibration files."></textarea>
+        #requiredValidation("dc:description" "A description is required!")
+        <script type="text/javascript">
+        $(function(){
+            $("#dc\\:description").jqEasyCounter({
+                maxChars: 4000,
+                maxCharsWarning: 3990,
+                msgTextAlign: 'left'
+            });
+        });
+        </script>
     </p>
     
-    <h2>
-        <label for="citations">Related Publications</label>
-        <span class="helpWidget" data-help-content-id="help-publications">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div id="help-publications" class="help-content">
+    #fieldTitle("citations" "Related Publications" false)
+    <div class="help-content" id="help-citations">
         Include URL/s to any publications underpinning the research
         dataset/collection, registry/repository, catalogue or index.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add publication" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td>
-                    <input type="text" size="60" placeholder="publication url" id="citations.0" />
-                </td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
+    #inputList("citations" "publication url" "Add publication" "")
 
-    <h2>
-        <label for="data">Related Data</label>
-        <span class="helpWidget" data-help-content-id="help-rel-data">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div id="help-rel-data" class="help-content">
+    #fieldTitle("data" "Related Data" false)
+    <div class="help-content" id="help-data">
         Include a URL to any sources of third party data used/re-used.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add data" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td>
-                    <input type="text" size="60" placeholder="data url" id="data.0" />
-                </td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
+    #inputList("data" "data url" "Add data" "")
 
-    <h2>
-        <label for="website">Related Website</label>
-        <span class="helpWidget" data-help-content-id="help-rel-website">
-            <img src="../images/icons/help.png"/>
-        </span>
-    </h2>
-    <div id="help-rel-website" class="help-content">
+    #fieldTitle("website" "Related Website" false)
+    <div id="help-website" class="help-content">
         Include URL/s for the relevant website.
     </div>
-    <table class="input-list">
-        <tfoot>
-            <tr>
-                <td></td>
-                <td><input type="button" class="add-another-item" value="Add website" /></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <tr class="item-input-display sortable-item">
-                <td class="sort-number"></td>
-                <td>
-                    <input type="text" size="60" placeholder="website url" id="website.0" />
-                </td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;" />
-            </tr>
-        </tbody>
-    </table>
+    #inputList("website" "website url" "Add website" "")
 </div>

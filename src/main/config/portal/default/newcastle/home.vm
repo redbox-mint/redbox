@@ -8,8 +8,10 @@
 #parseTemplate("menus/home-main-menu.vm")
 
 <div class="grid_12">
-    ##parseTemplate("dialogs/view-delete.vm")
-    ##parseTemplate("dialogs/view-reharvest.vm")
+    #if($page.authentication.is_admin())
+        #parseTemplate("dialogs/view-reharvest.vm")
+        #parseTemplate("dialogs/view-delete.vm")
+    #end
     #parseTemplate("dialogs/basic-search-form.vm")
 </div>
 <div class="clear"></div>
@@ -24,7 +26,6 @@
     </div>
     <div class="grid_6">
         #parseTemplate("home/alerts.vm")
-        ##parseTemplate("home/submissions.vm")
     </div>
     <div class="clear"></div>
 #end
