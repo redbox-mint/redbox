@@ -88,7 +88,7 @@ class SubmissionData(object):
             formFields = self.__formData.getFormFields()
             for formField in formFields:
                 data.put(formField, self.__formData.get(formField))
-            description = self.__formData.get("description", "[No description]")
+            description = self.__formData.get("submitDescription", "[No description]")
             data.put("title", truncate(description, 25))
             self.__updatePayload(self.__object.getSourceId(), data)
 

@@ -23,12 +23,7 @@
                     <textarea cols="80" rows="4" placeholder="description" id="notes.0.description" class="vnote"></textarea>
                 </td>
                 <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
-                <td style="vertical-align:middle;width:100%;">
-                    <label for="notes.0.text" class="validation-err-msg"
-                        data-validation-rule="test(notEmpty);when(blur,change,submit);liveFor(.vnote);">
-                        A note description is required!
-                    </label>
-                </td>
+                <td style="width:100%;"></td>
             </tr>
         </tbody>
         <tfoot>

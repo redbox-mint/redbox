@@ -1,14 +1,38 @@
+#set($canProgress = ($stage != "live" and $stage != "retired"))
+#set($isPublished = ($stage == "live"))
 <h3><a href="#submit">Submit</a></h3>
 <div id="submit" class="inputscreen">
-    <h2>Progress</h2>
+    #fieldTitle("agreement" "Progress" false)
+    <div class="help-content" id="help-agreement">
+        Progress the record through the workflow as required.
+    </div>
     <p>
+        #if($canProgress)
         <input id="agreement" type="checkbox" />
+        #end
         <label id="agreementLabel" for="agreement"></label>
+        #if($canProgress)
         <input type="submit" disabled="disabled" id="update-package" value="Proceed" class="button form-fields-submit" />
         <input type="hidden" class="submit-result-func" value="submitted_ok" />
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
-
-        <div style="color:red; padding:1em;" id="validation-summary">
+        #end
+    </p>
+    #if($isPublished)
+    #fieldTitle("retire" "Retire" false)
+    <div class="help-content" id="help-retire">
+        Retire the record so that updates to the record will no longer be
+        published to VITAL.
+    </div>
+    <p>
+        <input id="retire" type="checkbox" />
+        <label id="retireLabel" for="retire">I understand that retiring this record will no longer update the published record.</label>
+        <input type="submit" disabled="disabled" id="update-package" value="Retire" class="button form-fields-submit" />
+        <input type="hidden" class="submit-result-func" value="submitted_ok" />
+        <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
+    </p>
+    #end
+    <p>
+        <div style="color:red;" id="validation-summary">
            <div id="not-valid-for-submitting"  class="validation-err-msg"
                     style="display:none;color:darkred;">
                 You must fixup all fields with missing required data or invalid data before
@@ -66,7 +90,12 @@
            </div>
         </div>
     </p>
-    <h2>Delete</h2>
+
+    #fieldTitle("deleteAgreement" "Delete" false)
+    <div class="help-content" id="help-deleteAgreement">
+        Remove the record completely from ReDBox. Note that any records already
+        published to VITAL will remain in VITAL.
+    </div>
     <p>
         <input id="deleteAgreement" type="checkbox" />
         <label id="deleteAgreementLabel" for="deleteAgreement">
@@ -81,10 +110,10 @@
 $(function() {
     $("#agreementLabel").html(packageData.nextStageMessage);
     if (packageData.stage == "live") {
-        $("#agreement").hide();
+        $("#agreement,#retire").hide();
         $("#update-package").hide();
     } else {
-        $("#agreement").click(function() {
+        $("#agreement,#retire").click(function() {
             $("#not-valid-for-submitting").hide();
             if ($(this).is(":checked")) {
                 if(widgets.forms[0].validator.isOkToSubmit()==false){
@@ -108,19 +137,11 @@ $(function() {
 
     $("#delete-record").click(function(){
         jQuery.ajax({
-            type : "POST",
-            url : "$portalPath/actions/delete.ajax",
-            success:
-                function (data, status) {
-                    window.location.href = "$portalPath/home";
-                },
-            error:
-                function (req, status, e) {
-                    $("#delete-record-error").html(req.responseText);
-                },
-            data: {
-                record: "$oid"
-            }
+            type: "POST",
+            url: "$portalPath/actions/delete.ajax",
+            success: function(data, status){ window.location.href = "$portalPath/home"; },
+            error: function(req, status, e){ $("#delete-record-error").html(req.responseText);  },
+            data: { record: "$oid" }
         });
     });
 

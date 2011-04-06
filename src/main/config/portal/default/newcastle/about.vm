@@ -1,0 +1,80 @@
+#macro(pluginList $plugins $type)
+    #foreach($plugin in $plugins)
+        <div class="pluginAbout" id="$plugin.id">
+            <h3>$plugin.name</h3>
+            $self.getAboutPage($plugin.id, $type)
+        </div>
+    #end
+#end
+#set($pageTitle = "About")
+<h2 id="page-heading"><span>About</span></h2>
+<div class="grid_16">
+    #set($contentTitle = "Description")
+    #parseTemplate("wrapping/content-block-open.vm")
+    <div class="article first">
+        <p>ReDBox is web based metadata registry application, similar to an
+        institutional repository, for describing research data. It is being
+        developed for use at the University of Newcastle, and subsequent
+        deployment at USQ, Swinburne and other universities. It is designed to
+        be used at any research institution which needs to record details of
+        research data holdings for a variety of reasons, including both
+        compliance with codes of practice and to make data discoverable via
+        services such as Research Data Australia. A key principle underlying
+        ReDBox is that as much metadata (eg about parties such as people,
+        grants and project, and subject codes) as possible will follow Linked
+        Data principles, and we are designing the application to make that as
+        easy as possible. Unlike the VIVO application, it is built on a
+        repository (Fedora Commons) which is capable or storing data if needed
+        (though that is not the case with the initial version), and it uses the
+        high performance Apache Solr text indexer to drive the portal interface
+        rather than an RDF triple store.</p>
+        <p>Please see the <a href="https://fascinator.usq.edu.au/trac/wiki/Projects/ReDBox">ReDBox project page</a>
+        for more information.</p>
+    </div>
+    <p/>
+    #if($page.authentication.is_admin())
+    #parseTemplate("wrapping/content-block-close.vm")
+    #set($contentTitle = "Plugins")
+    #parseTemplate("wrapping/content-block-open.vm")
+    <div id="plugin-tabs">
+        <ul>
+            <li><a href="#indexer">Indexer</a></li>
+            <li><a href="#storage">Storage</a></li>
+            <li><a href="#harvester">Harvester</a></li>
+            <li><a href="#transformer">Transformer</a></li>
+            <li><a href="#access-control">Access control</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+            <li><a href="#roles">Roles</a></li>
+            <li><a href="#subscriber">Subscriber</a></li>
+        </ul>
+        <div id="indexer">
+            #pluginList($self.indexerPlugins, "indexer")
+        </div>
+        <div id="storage">
+            #pluginList($self.storagePlugins, "storage")
+        </div>
+        <div id="harvester">
+            #pluginList($self.harvesterPlugins, "harvester")
+        </div>
+        <div id="transformer">
+            #pluginList($self.transformerPlugins, "transformer")
+        </div>
+        <div id="access-control">
+            #pluginList($self.accessControlPlugins, "access")
+        </div>
+        <div id="authentication">
+            #pluginList($self.authenticationPlugins, "authentication")
+        </div>
+        <div id="roles">
+            #pluginList($self.rolesPlugins, "roles")
+        </div>
+        <div id="subscriber">
+            #pluginList($self.subscriberPlugins, "subscriber")
+        </div>
+    </div>
+    #parseTemplate("wrapping/content-block-close.vm")
+    <script type="text/javascript">
+    $(function(){ $("#plugin-tabs").tabs(); });
+    </script>
+    #end
+</div>

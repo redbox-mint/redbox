@@ -19,7 +19,7 @@ label.validation, .validation label { color: red; display: block; }
 #submitLabel { color: green; }
 </style>
 <div class="grid_16 widget-form"
-    data-form-fields="submitted,workflow_source,submitDate,description,contactName,emailAddress,phoneNumber"
+    data-form-fields="submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
     data-form-fields-readonly="submit"
     data-submit-url="$portalPath/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
     data-submit-result-func="afterSubmit">
@@ -38,9 +38,9 @@ label.validation, .validation label { color: red; display: block; }
             <input id="submitDate" type="text" size="40" value="$!self.getSubmitDate()" readonly="readonly" />
         </p>
         <p>
-            <label for="description">Description <span class="required">*</span></label>
-            <label class="validation" for="description" data-validation-rule="test(notEmpty);when(blur,submit);">A description is required!</label>
-            <textarea id="description" cols="40" rows="10" $disabled>$!self.getRequestData("description")</textarea>
+            <label for="submitDescription">Description <span class="required">*</span></label>
+            <label class="validation" for="submitDescription" data-validation-rule="test(notEmpty);when(blur,submit);">A description is required!</label>
+            <textarea id="submitDescription" cols="40" rows="10" $disabled>$!self.getRequestData("submitDescription")</textarea>
         </p>
         <p>
             <label for="contactName">Contact Name <span class="required">*</span></label>

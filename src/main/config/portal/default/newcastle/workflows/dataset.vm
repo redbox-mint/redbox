@@ -63,8 +63,7 @@ var packageData = {
                     portalPath: "$portalPath",
                     stage: "$self.getCurrentStep()",
                     stageLabel: "$self.getCurrentStepLabel()",
-                    nextStageMessage: "$self.getNextStepAcceptMessage()",
-                    nextStageErrorMessage: "$self.getNextStepAcceptValidationErrorMessage()"
+                    nextStageMessage: "$self.getNextStepAcceptMessage()"
                 },
                 onContentLoaded);
     });

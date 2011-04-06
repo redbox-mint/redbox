@@ -109,7 +109,6 @@
 #set($stage = $self.getFormData("stage"))
 #set($stageLabel = $self.getFormData("stageLabel"))
 #set($nextStageMessage = $self.getFormData("nextStageMessage"))
-#set($nextStageErrorMessage = $self.getFormData("nextStageErrorMessage"))
 
 <div class="widget-form" id="main-form"
     data-pre-save-func="preSave"
@@ -198,7 +197,7 @@
         ## submission request
         submitted,
         submitDate,
-        description,
+        submitDescription,
         contactName,
         phoneNumber,
         emailAddress
@@ -208,6 +207,7 @@
     <input type="hidden" id="xmlns:dc" value="http://dublincore.org/documents/2008/01/14/dcmi-terms/" />
     <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
     <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
+    <input type="hidden" id="submitted" value="$self.getFormData('submitted')"/>
     <div class="clear"></div>
     <div id="form-heading">
         <a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>

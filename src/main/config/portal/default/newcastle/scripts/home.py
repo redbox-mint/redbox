@@ -104,7 +104,7 @@ class HomeData:
         indexer.search(req, out)
         self.__alerts = SolrResult(ByteArrayInputStream(out.toByteArray()))
 
-        req = SearchRequest("last_modified:[NOW-1MONTH TO *]")
+        req = SearchRequest("last_modified:[NOW-1MONTH TO *] AND workflow_step:live")
         req.setParam("fq", 'item_type:"object"')
         if portalQuery:
             req.addParam("fq", portalQuery)

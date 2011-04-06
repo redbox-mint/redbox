@@ -124,6 +124,8 @@ class DatasetData(object):
             msg = "This record is ready to be <strong>Published</strong>."
         elif step == "live":
             msg = "This record has already been <strong>Published</strong>."
+        elif step == "retired":
+            msg = "This record has been <strong>Retired</strong>."
         return msg
 
     ### Supports form rendering, not involved in AJAX

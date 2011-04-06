@@ -156,26 +156,6 @@
             </tr>
             <tr>
                 <td>
-                    <label class="validation-err-msg"
-                        for="primaryContact.foaf:givenName"
-                        data-validation-rule="test(notEmpty);when(blur,change,submit);
-                                                jsTest(
-                                                    var fid, gid, f, g;
-                                                    fid=id.replace('given', 'family');
-                                                    gid=id.replace('family', 'given');
-                                                    f=ctx.find('input[id='+fid+']').val();
-                                                    g=ctx.find('input[id='+gid+']').val();
-                                                    f=jQ.trim(f); g=jQ.trim(g);
-                                                    r=(g=='')&&(f=='');
-                                                    id=gid;
-                                                );
-                                                liveFor(.pcName);">
-                        The primary contact's given name or family name is required!
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <label for="primaryContact.foaf:email">Email address:</label>
                     <input type="text" id="primaryContact.foaf:email" size="60" />
                 </td>
@@ -215,26 +195,6 @@
                                         <input type="hidden" id="supervisor.0.dc:identifier"
                                                class="nl nl-rdf:about" value="" />
                                     </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="validation-err-msg"
-                                        for="supervisor.0.foaf:givenName"
-                                        data-validation-rule="test(notEmpty);when(blur,change,submit);
-                                                                jsTest(
-                                                                    var fid, gid, f, g;
-                                                                    fid=id.replace('given', 'family');
-                                                                    gid=id.replace('family', 'given');
-                                                                    f=ctx.find('input[id='+fid+']').val();
-                                                                    g=ctx.find('input[id='+gid+']').val();
-                                                                    f=jQ.trim(f); g=jQ.trim(g);
-                                                                    r=(g=='')&&(f=='');
-                                                                    id=gid;
-                                                                );
-                                                                liveFor(.supName);">
-                                        The supervisor's given name or family name is required!
-                                    </label>
                                 </td>
                             </tr>
                         </tbody>

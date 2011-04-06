@@ -283,6 +283,11 @@ table.lookup td {
     font-size: 110%;
 }
 
+fieldset p textarea {
+    display: block;
+    width: 98%;
+}
+
 /*
 input.button, .inputscreens button {
     -moz-border-radius: 4px;

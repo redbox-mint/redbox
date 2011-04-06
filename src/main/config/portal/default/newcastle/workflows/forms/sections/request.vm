@@ -8,8 +8,8 @@
             <input id="submitDate" type="text" size="40" readonly="readonly" />
         </p>
         <p>
-            <label for="description">Description</label>
-            <textarea id="description" cols="40" rows="10" readonly="readonly"></textarea>
+            <label for="submitDescription">Description</label>
+            <textarea id="submitDescription" cols="40" rows="10" readonly="readonly"></textarea>
         </p>
         <p>
             <label for="contactName">Contact Name</label>
