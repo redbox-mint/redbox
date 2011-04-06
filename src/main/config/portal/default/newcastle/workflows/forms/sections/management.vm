@@ -1,36 +1,45 @@
 <h3><a href="#management">Management</a></h3>
 <div id="management" class="inputscreen">
-    <fieldset>
-        <h2>Location</h2>
-        #fieldTitle("url" "Identifier or URL" true)
+    #fieldTitle("location_group" "Location" true)
+    <div class="help-content" id="help-location_group">
+        Record the location of the research data. At least one of the
+        'Identifier or URL' or 'Stored At' fields must be entered. The 'Notes'
+        field is optional.
+    </div>
+    <div class="location-group">
+        <label class="validation-err-msg"
+            for="url"
+            data-validation-rule="test(notEmpty);when(blur,change,submit);
+                                    jsTest(
+                                        var i=ctx.find('input[id=url]').val();
+                                        var s=ctx.find('input[id=physical_storage]').val();
+                                        i=jQ.trim(i); s=jQ.trim(s);
+                                        r=(i=='')&&(s=='');
+                                    );
+                                    liveFor(.vlocation);">
+            The 'Identifier or URL' and/or 'Stored At' field is required!
+        </label>
+        #fieldTitle("url" "Identifier or URL" false)
         <div class="help-content" id="help-url">
             For example: a persistent URI representing the location of the research
             dataset/collection, registry/repository, catalogue or index.
         </div>
-        <p>
-            <input type="text" size="60" placeholder="persistent identifier or url" id="url" />
-            #requiredValidation("url" "An identifier or URL is required!")
-        </p>
+        <p><input type="text" size="60" placeholder="persistent identifier or url" id="url" class="vlocation" /></p>
 
-        <h2>
-            <label for="physical_storage">Stored at <span class="required" title="required">(*)</span></label>
-            <span class="helpWidget" data-help-content-id="help-stored-at">
-                <img src="../images/icons/help.png"/>
-            </span>
-        </h2>
-        <div class="help-content" id="help-stored-at">
+        #fieldTitle("physical_storage" "Stored At" false)
+        <div class="help-content" id="help-physical_storage">
             Record physical location of the research dataset/collection,
-            registry/repository, catalogue or index, if applicable. For example:
+            registry/repository, catalogue or index, if applicable, eg.
             University of X.
         </div>
-        <p>
-            <input type="text" size="60" placeholder="physical location" id="physical_storage" />
-            <label class="validation-err-msg" for="physical_storage"
-                data-validation-rule="when(onChange, onSubmit, onBlur);test(notEmpty);">
-                A physical location is required!
-            </label>
-        </p>
-    </fieldset>
+        <p><input type="text" size="60" placeholder="eg. University of X" id="physical_storage" class="vlocation" /></p>
+
+        #fieldTitle("location_notes" "Notes" false)
+        <div class="help-content" id="help-location_notes">
+           Record additional notes regarding the location of the data if applicable.
+        </div>
+        <p><input type="text" size="60" placeholder="additional notes" id="location_notes" /></p>
+    </div>
 
     #fieldTitle("retention_period" "Retention Period" true)
     <div class="help-content" id="help-retention_period">
@@ -104,7 +113,7 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td colspan="2"><input type="button" class="add-another-item" value="Add funding body" /></td>
+                <td colspan="2"><input type="button" class="button add-another-item" value="Add funding body" /></td>
             </tr>
         </tfoot>
     </table>
@@ -148,7 +157,7 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td colspan="3"><input type="button" class="add-another-item" value="Add grant" /></td>
+                <td colspan="3"><input type="button" class="button add-another-item" value="Add grant" /></td>
             </tr>
         </tfoot>
     </table>

@@ -4,7 +4,7 @@
     <p>
         <input id="agreement" type="checkbox" />
         <label id="agreementLabel" for="agreement"></label>
-        <input type="submit" disabled="disabled" id="update-package" value="Proceed" class="form-fields-submit" />
+        <input type="submit" disabled="disabled" id="update-package" value="Proceed" class="button form-fields-submit" />
         <input type="hidden" class="submit-result-func" value="submitted_ok" />
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
 
@@ -50,8 +50,8 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="physical_storage">
-                    Stored at, is required!
+                <label class="validation-err-msg" for="url">
+                    A location is required!
                 </label>
            </div>
            <div>
@@ -72,7 +72,7 @@
         <label id="deleteAgreementLabel" for="deleteAgreement">
             I understand that deleting this record is <strong>permanent</strong> and cannot be undone.
         </label>
-        <input type="button" id="delete-record" disabled="disabled" value="Delete" />
+        <input type="button" class="button" id="delete-record" disabled="disabled" value="Delete" />
         <p id="delete-record-error"></p>
     </p>
 </div>

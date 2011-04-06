@@ -33,7 +33,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td><input type="button" class="add-another-item add-note" value="Add note" /></td>
+                <td><input type="button" class="button add-another-item add-note" value="Add note" /></td>
                 <td colspan="4"></td>
             </tr>
         </tfoot>

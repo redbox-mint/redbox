@@ -74,7 +74,7 @@
 #end
 
 #macro(inputList $id $placeholder $addLabel $requiredLabel)
-    #set($vid = $id.replaceAll(":", "").replaceAll(".", ""))
+    #set($vid = $self.getCleanId($id))
     <table class="input-list">
         <tbody>
             <tr class="item-input-display sortable-item">
@@ -96,7 +96,7 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><input type="button" class="add-another-item" value="$addLabel" /></td>
+                <td><input type="button" class="button add-another-item" value="$addLabel" /></td>
                 <td colspan="2"></td>
             </tr>
         </tfoot>
@@ -233,8 +233,8 @@
         <span class="go-next-tab">
             <img src="../images/icons/arrow_right.png" height="30" alt="Go to the next section of the form" />
         </span>
-        <input type="button" class="form-fields-save" value="Save" />
-        <input type="button" class="form-fields-save-close" value="Save and close" />
+        <input type="button" class="button form-fields-save" value="Save" />
+        <input type="button" class="button form-fields-save-close" value="Save and close" />
         <span class="saved-result"></span>
     </div>
 </div>

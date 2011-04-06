@@ -68,7 +68,7 @@
                                 <td>
                                     <label class="validation-err-msg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
-                                        data-validation-rule="test(notEmpty);when(onChange, onBlur, onSubmit);
+                                        data-validation-rule="test(notEmpty);when(blur,change,submit);
                                                                 jsTest(
                                                                     var fid, gid, f, g;
                                                                     fid=id.replace('given', 'family');
@@ -118,7 +118,7 @@
             <tr>
                 <td colspan="3"></td>
                 <td colspan="6">
-                    <input class="add-another-item" type="button" value="Add person" />
+                    <input type="button" class="button add-another-item" value="Add person" />
                 </td>
             </tr>
         </tfoot>
@@ -240,13 +240,14 @@
                         </tbody>
                     </table>
                 </td>
+                <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td></td>
-                <td>
-                    <input class="add-another-item" type="button" value="Add supervisor" />
+                <td colspan="3">
+                    <input type="button" class="button add-another-item" value="Add supervisor" />
                 </td>
             </tr>
         </tfoot>
