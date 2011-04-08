@@ -54,6 +54,9 @@
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
                                     <span class="lookup-show">
+                                        <span class="nameLookup-progress hidden">
+                                            <img src="$portalPath/images/icons/loading.gif" />
+                                        </span>
                                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
                                         <span class="identified-as-name"></span>
                                         <input id="dc:creator.foaf:Person.0.dc:title"
@@ -144,6 +147,9 @@
                            class="nameLookup-name pcFamilyName pcName"
                            id="primaryContact.foaf:familyName" />
                     <span class="lookup-show">
+                        <span class="nameLookup-progress hidden">
+                            <img src="$portalPath/images/icons/loading.gif" />
+                        </span>
                         <a href="#" class="nameLookup-lookup" data-selected-func="pcLookupDone">lookup</a>
                         <span class="identified-as-name"></span>
                         <input id="primaryContact.dc:title"
@@ -187,6 +193,9 @@
                                            class="nameLookup-name supFamilyName supName"
                                            id="supervisor.0.foaf:familyName" />
                                     <span class="lookup-show">
+                                        <span class="nameLookup-progress hidden">
+                                            <img src="$portalPath/images/icons/loading.gif" />
+                                        </span>
                                         <a href="#" class="nameLookup-lookup" data-selected-func="supLookupDone">lookup</a>
                                         <span class="identified-as-name"></span>
                                         <input id="supervisor.0.dc:title"
