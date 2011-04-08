@@ -178,7 +178,7 @@
         affiliation.0,
         affiliation.0.skos:prefLabel,
         grant.0.uon:internal,
-        grant.0.rdf:resource,
+        grant.0.grantNumber,
         grant.0.dc:identifier,
         grant.0.skos:prefLabel,
         funding.0.skos:prefLabel,

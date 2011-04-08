@@ -139,9 +139,9 @@
                     <table class="inner-table">
                         <tr>
                             <td>
-                                <input type="text" size="20" id="grant.0.dc:identifier"
+                                <input type="text" size="20" id="grant.0.grantNumber"
                                     placeholder="grant number" class="autocomplete-grant" />
-                                <input type="hidden" id="grant.0.rdf:resource" />
+                                <input type="hidden" id="grant.0.dc:identifier" />
                             </td>
                             <td style="width:100%">
                                 <input type="text" size="60" id="grant.0.skos:prefLabel"
@@ -169,7 +169,7 @@
     </div>
     <p><input type="text" size="60" placeholder="title" id="project_title" /></p>
 
-    #fieldTitle("depositor" "Depository" false)
+    #fieldTitle("depositor" "Depositor" false)
     <div class="help-content" id="help-depositor">
         Record the name of the depositor.
     </div>
@@ -203,12 +203,13 @@
 $(function() {
     function splitGrantData(row) {
         var items = row[0].split("::");
-        var id = items[0].replace(ARC_NS, "");
+        var id = items[0];
+        var uri = items[3];
         var label = items[1];
-        var source = items[2].replace(ADFI_NS, "");
+        var source = items[2];
         return {
             id: id,
-            uri: items[0],
+            uri: uri,
             label: label,
             source: source,
             display: "[" + id + "] (" + source + ") " + label
@@ -217,7 +218,7 @@ $(function() {
 
     function addAutocompleteGrant(elem) {
         elem.autocomplete(
-            "$portalPath/proxyGet?ns=Activities&autocomplete=true&fields=rdf:about,skos:prefLabel,skos:broader",
+            "$portalPath/proxyGet?ns=Activities&autocomplete=true&fields=grant_number,dc:title,repository_name,dc:identifier",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
@@ -240,9 +241,9 @@ $(function() {
     $(".internal-grant").live("click", function() {
         var checked = $(this).is(":checked");
         var baseId = $(this).attr("id").replace(".uon:internal", "");
-        var idElem = $("input[id=" + baseId + ".dc:identifier]");
+        var idElem = $("input[id=" + baseId + ".grantNumber]");
         var labelElem = $("input[id=" + baseId + ".skos:prefLabel]");
-        var uriElem = $("input[id=" + baseId + ".rdf:resource]");
+        var uriElem = $("input[id=" + baseId + ".dc:identifier]");
         var uri = uriElem.val();
         if (uri == UON_NS) {
             if (labelElem.val() == "" ||
@@ -273,7 +274,7 @@ $(function() {
 
 
     $(".autocomplete-grant").live("focus", function() {
-        var baseId = $(this).attr("id").replace(".dc:identifier", "");
+        var baseId = $(this).attr("id").replace(".grantNumber", "");
         if (!$("input[id=" + baseId + ".uon:internal]").is(":checked")) {
             $(this).unautocomplete();
             addAutocompleteGrant($(this));
@@ -292,7 +293,7 @@ $(function() {
         var elem = $(this);
         $(this).unautocomplete();
         $(this).autocomplete(
-            "$portalPath/proxyGet?ns=Funding_Bodies&autocomplete=true&fields=rdf:about,rdfs:label",
+            "$portalPath/proxyGet?ns=Funding_Bodies&autocomplete=true&fields=dc:identifier,dc:title",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }

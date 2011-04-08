@@ -1,6 +1,7 @@
 from json2 import read as jsonReader, write as jsonWriter                       ##
 from urllib2 import urlopen, build_opener, ProxyHandler
 import socket
+import types
 
 socket.setdefaulttimeout(4)        # set the default timeout to 4 seconds
 noProxyHandler = ProxyHandler({})
@@ -46,7 +47,16 @@ class ProxyGetData:
                     for field in fields:
                         if row != "":
                             row += "::"
-                        row += result.get(field)
+                        value = result.get(field)
+                        if value is None:
+                            value = result["result-metadata"]["all"].get(field)
+                            if type(value) == types.ListType:
+                                value = ",".join(value)
+                            #print " *** value from all:", value
+                        if value:
+                            row += value
+                        else:
+                            row += "*"
                     rows.append(row)
                 if len(rows) > 0:
                     data = "\n".join(rows)
@@ -54,6 +64,7 @@ class ProxyGetData:
                     data = ""
             #print "JSON ok"
         except Exception, e:
+            data = {"error":str(e)}
             print "Error to valid JSON: %s" % str(e)
 
         #print "-- sending json response"
