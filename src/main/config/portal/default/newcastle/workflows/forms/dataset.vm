@@ -21,12 +21,13 @@
     </label>
 #end
 
-#macro(mintSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey)
+#macro(mintSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey $defaultValue)
     <span class="data-source-drop-down"
           data-json-source-url="$sourceUrl"
           data-id-key="$idKey"
           data-label-key="$labelKey"
-          data-list-key="$listKey">
+          data-list-key="$listKey"
+          data-default-value="$!defaultValue">
         <span class="selection-added">
             <input type="hidden" class="selection-added-id" id="$id" name="$id" />
             <input type="text" class="selection-added-label" size="30" readonly="readonly" id="$labelId" name="$labelId" />

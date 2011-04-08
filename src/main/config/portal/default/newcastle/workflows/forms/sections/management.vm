@@ -91,7 +91,8 @@
                          "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
                          "rdf:about"
                          "rdfs:label"
-                         "results")
+                         "results"
+                         "")
     </p>
 
     #fieldTitle("funding_bodies" "Funding Body/s" false)

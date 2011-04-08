@@ -87,6 +87,7 @@
                          "$portalPath/proxyGet?ns=Languages&qs=count%3D9999"
                          "dc:identifier"
                          "dc:title"
-                         "results")
+                         "results"
+                         "http://id.loc.gov/vocabulary/iso639-2/eng")
     </p>
 </div>
