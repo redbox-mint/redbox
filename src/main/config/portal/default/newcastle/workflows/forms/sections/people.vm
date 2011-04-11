@@ -26,7 +26,9 @@
                 <th></th>
                 <th>CI</th>
                 <th>PI</th>
-                <th colspan="3">Person</th>
+                <th>Display Name</th>
+                <th>Name Authority</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -46,25 +48,19 @@
                             <tr>
                                 <td>
                                     <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
+                                </td>
+                                <td>
                                     <input type="text" placeholder="given name" size="30"
                                            class="nameLookup-name creatorGivenName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
+                                </td>
+                                <td>
                                     <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name:</label>
+                                </td>
+                                <td>
                                     <input type="text" placeholder="family name" size="30"
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
-                                    <span class="lookup-show">
-                                        <span class="nameLookup-progress hidden">
-                                            <img src="$portalPath/images/icons/loading.gif" />
-                                        </span>
-                                        <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone">lookup</a>
-                                        <span class="identified-as-name"></span>
-                                        <input id="dc:creator.foaf:Person.0.dc:title"
-                                               type="hidden"
-                                               class="nl nl-rdfs:label" readonly="readonly"/>
-                                        <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
-                                               class="nl nl-rdf:about" />
-                                    </span>
                                 </td>
                             </tr>
                             <tr>
@@ -88,8 +84,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>
+                                    <label for="dc:creator.foaf:Person.0.association">Affiliation:</label>
+                                </td>
                                 <td colspan="3">
-                                    Affiliation:
                                     <span class="data-source-drop-down"
                                           data-delay="1"
                                           data-json-source-url="$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
@@ -114,6 +112,21 @@
                         </tbody>
                     </table>
                 </td>
+                <td>
+                    <span class="lookup-show">
+                        <span class="identified-as-name"></span>
+                        <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone"
+                            data-cleared-func="lookupCleared">lookup</a>
+                        <span class="nameLookup-progress hidden">
+                            <img src="$portalPath/images/icons/loading.gif" />
+                        </span>
+                        <input id="dc:creator.foaf:Person.0.dc:title"
+                               type="hidden"
+                               class="nl nl-rdfs:label" readonly="readonly"/>
+                        <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
+                               class="nl nl-rdf:about" />
+                    </span>
+                </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
@@ -135,23 +148,38 @@
         select the name authority record.
     </div>
     <table class="lookup">
+        <thead>
+            <tr>
+                <th colspan="4">Display Name</th>
+                <th>Name Authority</th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
                 <td>
                     <label for="primaryContact.foaf:givenName">Given name:</label>
+                </td>
+                <td>
                     <input type="text" placeholder="given name" size="30"
                            class="nameLookup-name pcGivenName pcName"
                            id="primaryContact.foaf:givenName" />
+                </td>
+                <td>
                     <label for="primaryContact.foaf:familyName">Family name:</label>
+                </td>
+                <td>
                     <input type="text" placeholder="family name" size="30"
                            class="nameLookup-name pcFamilyName pcName"
                            id="primaryContact.foaf:familyName" />
+                </td>
+                <td>
                     <span class="lookup-show">
+                        <span class="identified-as-name"></span>
+                        <a href="#" class="nameLookup-lookup" data-selected-func="pcLookupDone"
+                            data-cleared-func="pcLookupCleared">lookup</a>
                         <span class="nameLookup-progress hidden">
                             <img src="$portalPath/images/icons/loading.gif" />
                         </span>
-                        <a href="#" class="nameLookup-lookup" data-selected-func="pcLookupDone">lookup</a>
-                        <span class="identified-as-name"></span>
                         <input id="primaryContact.dc:title"
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
@@ -163,6 +191,8 @@
             <tr>
                 <td>
                     <label for="primaryContact.foaf:email">Email address:</label>
+                </td>
+                <td colspan="4">
                     <input type="text" id="primaryContact.foaf:email" size="60"
                         placeholder="eg. primary.contact@example.edu.au" />
                 </td>
@@ -177,6 +207,14 @@
         search and select the name authority record.
     </div>
     <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Display Name</th>
+                <th>Name Authority</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
@@ -186,29 +224,38 @@
                             <tr>
                                 <td>
                                     <label for="supervisor.0.foaf:givenName">Given name:</label>
+                                </td>
+                                <td>
                                     <input type="text" placeholder="given name" size="30"
                                            class="nameLookup-name supGivenName supName"
                                            id="supervisor.0.foaf:givenName" />
+                                </td>
+                                <td>
                                     <label for="supervisor.0.foaf:familyName">Family name:</label>
+                                </td>
+                                <td>
                                     <input type="text" placeholder="family name" size="30"
                                            class="nameLookup-name supFamilyName supName"
                                            id="supervisor.0.foaf:familyName" />
-                                    <span class="lookup-show">
-                                        <span class="nameLookup-progress hidden">
-                                            <img src="$portalPath/images/icons/loading.gif" />
-                                        </span>
-                                        <a href="#" class="nameLookup-lookup" data-selected-func="supLookupDone">lookup</a>
-                                        <span class="identified-as-name"></span>
-                                        <input id="supervisor.0.dc:title"
-                                               type="hidden"
-                                               class="nl nl-rdfs:label" readonly="readonly"/>
-                                        <input type="hidden" id="supervisor.0.dc:identifier"
-                                               class="nl nl-rdf:about" value="" />
-                                    </span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </td>
+                <td>
+                    <span class="lookup-show">
+                        <span class="identified-as-name"></span>
+                        <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone"
+                            data-cleared-func="lookupCleared">lookup</a>
+                        <span class="nameLookup-progress hidden">
+                            <img src="$portalPath/images/icons/loading.gif" />
+                        </span>
+                        <input id="supervisor.0.dc:title"
+                               type="hidden"
+                               class="nl nl-rdfs:label" readonly="readonly"/>
+                        <input type="hidden" id="supervisor.0.dc:identifier"
+                               class="nl nl-rdf:about" value="" />
+                    </span>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
             </tr>
@@ -233,8 +280,15 @@
 <script type="text/javascript">
 function lookupDone(target,data){
     var p=target.parent();
-    target.text("identified as:");
+    target.text(" | change");
     p.find(".identified-as-name").text(p.find("input.nl").val());
+}
+
+function lookupCleared(target,data){
+    var p=target.parent();
+    target.text("lookup");
+    p.find(".identified-as-name").text("");
+    p.find("input.nl").val("");
 }
 
 function pcLookupDone(target,data){
@@ -242,7 +296,8 @@ function pcLookupDone(target,data){
     $("#primaryContact\\.foaf\\:email").val(data["result-metadata"].all["Email"]);
 }
 
-function supLookupDone(target,data){
-    lookupDone(target,data);
+function pcLookupCleared(target,data){
+    lookupCleared(target,data);
+    $("#primaryContact\\.foaf\\:email").val("");
 }
 </script>

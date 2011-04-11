@@ -37,7 +37,7 @@ var packageData = {
                         function(ctx){
                             ctx.findx(".lookup-show").each(function(){
                                 var e=$(this);
-                                e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?"identified as:":"lookup");
+                                e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?" | change":"lookup");
                                 e.find(".identified-as-name").text(e.find("input.nl").val());
                             });
                             nameLookup.init();

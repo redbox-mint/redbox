@@ -30,7 +30,7 @@
           #if("$!defaultValue"!="")data-default-value="$!defaultValue"#end>
         <span class="selection-added">
             <input type="hidden" class="selection-added-id" id="$id" name="$id" />
-            <input type="text" class="selection-added-label" size="30" readonly="readonly" id="$labelId" name="$labelId" />
+            <input type="text" class="selection-added-label" readonly="readonly" id="$labelId" name="$labelId" />
             <a href="#" class="clear-item">change</a>
         </span>
         <span class="drop-down-location">
