@@ -134,8 +134,11 @@
         ## description
         dc:description,
         citations.0,
+        citations.0.notes,
         data.0,
+        data.0.notes,
         website.0,
+        website.0.notes,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.dc:title,

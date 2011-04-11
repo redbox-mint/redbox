@@ -1,3 +1,37 @@
+#macro(relatedField $id $placeholder $addLabel)
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>URL</th>
+                <th>Notes</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="$placeholder" id="${id}.0" />
+                </td>
+                <td>
+                    <input type="text" size="60" placeholder="notes" id="${id}.0.notes" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="$addLabel" /></td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+#end
+
 <h3><a href="#description">Description</a></h3>
 <div id="description" class="inputscreen">
     #fieldTitle("dc:description" "Description" true)
@@ -41,17 +75,17 @@
         Include URL/s to any publications underpinning the research
         dataset/collection, registry/repository, catalogue or index.
     </div>
-    #inputList("citations" "publication url" "Add publication" "")
+    #relatedField("citations" "publication url" "Add publication")
 
     #fieldTitle("data" "Related Data" false)
     <div class="help-content" id="help-data">
         Include a URL to any sources of third party data used/re-used.
     </div>
-    #inputList("data" "data url" "Add data" "")
+    #relatedField("data" "data url" "Add data")
 
     #fieldTitle("website" "Related Website" false)
     <div id="help-website" class="help-content">
         Include URL/s for the relevant website.
     </div>
-    #inputList("website" "website url" "Add website" "")
+    #relatedField("website" "website url" "Add website")
 </div>
