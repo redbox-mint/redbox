@@ -49,14 +49,13 @@
     </div>
     #requiredValidation("dc:type" "The type is required!")
     <p>
-        <select id="dc:type" name="dc:type">
-            <option>Please select one...</option>
-            <option value="catalogueOrIndex">Catalogue or Index</option>
-            <option value="collection">Collection</option>
-            <option value="registry">Registry</option>
-            <option value="repository">Repository</option>
-            <option value="dataset">Dataset</option>
-        </select>
+        #mintSelectField("dc:type"
+                         "dc:type.skos:prefLabel"
+                         "$portalPath/workflows/forms/data/types.json"
+                         "id"
+                         "label"
+                         "results"
+                         "")
     </p>
 
     #fieldTitle("dc:created" "Date Record Created" false)

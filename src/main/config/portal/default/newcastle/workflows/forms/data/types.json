@@ -1,0 +1,24 @@
+{
+    "results": [
+        {
+            "id": "catalogueOrIndex",
+            "label": "Catalogue or Index"
+        },
+        {
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "id": "registry",
+            "label": "Registry"
+        },
+        {
+            "id": "repository",
+            "label": "Repository"
+        },
+        {
+            "id": "dataset",
+            "label": "Dataset"
+        }
+    ]
+}

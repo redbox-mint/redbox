@@ -29,15 +29,13 @@
              </a>
     </div>
     <p>
-        <select name="license_cc">
-            <option>Please select one...</option>
-            <option value="http://creativecommons.org/licenses/by/3.0/au">CC BY: Attribution</option>
-            <option value="http://creativecommons.org/licenses/by-sa/3.0/au">CC BY-SA: Attribution-Share Alike</option>
-            <option value="http://creativecommons.org/licenses/by-nd/3.0/au">CC BY-ND: Attribution-No Derivative Works</option>
-            <option value="http://creativecommons.org/licenses/by-nc/3.0/au">CC BY-NC: Attribution-Noncommerical</option>
-            <option value="http://creativecommons.org/licenses/by-nc-sa/3.0/au">CC BY-NC-SA: Attribution-Noncommerical-Share Alike</option>
-            <option value="http://creativecommons.org/licenses/by-nc-nd/3.0/au">CC BY-NC-ND: Attribution-Noncommerical-No Derivatives</option>
-        </select>
+        #mintSelectField("license_cc"
+                         "license_cc.skos:prefLabel"
+                         "$portalPath/workflows/forms/data/ccLicences.json"
+                         "id"
+                         "label"
+                         "results"
+                         "")
     </p>
 
     #fieldTitle("license_other" "License - Other" false)
@@ -47,5 +45,11 @@
             http://www.opendefinition.org/licenses
         </a>
     </div>
-    <p><input type="text" size="60" placeholder="other license" id="license_other" /></p>
+    <div class="group">
+        <label for="license_other_name">Name:</label>
+        <input type="text" size="60" placeholder="license name" id="license_other_name" />
+        <br />
+        <label for="license_other_url">URL:</label>
+        <input type="text" size="60" placeholder="license url" id="license_other_url" />
+    </div>
 </div>

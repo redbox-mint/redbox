@@ -11,10 +11,7 @@
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
-var ARC_NS = "http://example.com/arc/";
-var ADFI_NS = "http://namespace.adfi.usq.edu.au/grants#";
 var UON_NS = "urn:uon:internal";
-
 var widgetTabs;
 var packageData = {
     metaData: $self.getJsonMetadata(),

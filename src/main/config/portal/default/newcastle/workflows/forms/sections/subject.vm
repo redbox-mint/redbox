@@ -64,12 +64,12 @@
         </p>
     </div>
     <p>
-        <select id="research_activity" name="research_activity">
-            <option>Please select one...</option>
-            <option value="pure">Pure basic research</option>
-            <option value="strategic">Strategic basic research</option>
-            <option value="applied">Applied research</option>
-            <option value="experimental">Experimental development</option>
-        </select>
+        #mintSelectField("research_activity"
+                         "research_activity.skos:prefLabel"
+                         "$portalPath/workflows/forms/data/researchTypes.json"
+                         "id"
+                         "label"
+                         "results"
+                         "")
     </p>
 </div>

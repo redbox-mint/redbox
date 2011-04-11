@@ -55,7 +55,7 @@
             <tr class="item-input-display">
                 <td class="sort-number"></td>
                 <td>
-                    <select name="location.0.type">
+                    <select id="location.0.type">
                         <option value="gml">OpenGIS Geography Markup Language</option>
                         <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
                         <option value="gpx">GPS Exchange Format</option>

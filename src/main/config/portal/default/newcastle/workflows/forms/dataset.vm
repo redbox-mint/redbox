@@ -27,7 +27,7 @@
           data-id-key="$idKey"
           data-label-key="$labelKey"
           data-list-key="$listKey"
-          data-default-value="$!defaultValue">
+          #if("$!defaultValue"!="")data-default-value="$!defaultValue"#end>
         <span class="selection-added">
             <input type="hidden" class="selection-added-id" id="$id" name="$id" />
             <input type="text" class="selection-added-label" size="30" readonly="readonly" id="$labelId" name="$labelId" />
@@ -121,6 +121,7 @@
         ## general
         dc:title,
         dc:type,
+        dc:type.skos:prefLabel,
         dc:coverage.from,
         dc:coverage.to,
         dc:created,
@@ -161,6 +162,7 @@
         dc:subject.anzsrc:for.0.rdf:resource,
         dc:subject.keywords.0,
         research_activity,
+        research_activity.skos:prefLabel,
         ## provenance
         sources_used,
         access_conditions,
@@ -168,7 +170,9 @@
         embargo_expiry,
         restrictions,
         license_cc,
-        license_other,
+        license_cc.skos:prefLabel,
+        license_other_name,
+        license_other_url,
         ## management
         url,
         physical_storage,
@@ -295,14 +299,6 @@ $(function(){
             alert("Error in save-click - "+e.message);
         }
     });
-
-    // HACK - a work around for a BUG in Chrome - where the help stops working on the
-    //      'General' tab page after navigating away and back again!
-    setTimeout(function(){
-      jQ("a[href=#screen1]").click(function(){
-        setTimeout(function(){jQ("#screen1").hide().show();}, 10);
-      });
-    }, 100);
 });
 
 function preSave(widgetForm, data){

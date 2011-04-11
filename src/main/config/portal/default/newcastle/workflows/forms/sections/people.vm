@@ -163,7 +163,8 @@
             <tr>
                 <td>
                     <label for="primaryContact.foaf:email">Email address:</label>
-                    <input type="text" id="primaryContact.foaf:email" size="60" />
+                    <input type="text" id="primaryContact.foaf:email" size="60"
+                        placeholder="eg. primary.contact@example.edu.au" />
                 </td>
             </tr>
         </tbody>

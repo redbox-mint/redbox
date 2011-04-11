@@ -6,7 +6,7 @@
         'Identifier or URL' or 'Stored At' fields must be entered. The 'Notes'
         field is optional.
     </div>
-    <div class="location-group">
+    <div class="group">
         <label class="validation-err-msg"
             for="url"
             data-validation-rule="test(notEmpty);when(blur,change,submit);
