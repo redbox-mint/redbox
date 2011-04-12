@@ -47,8 +47,7 @@
                 <th></th>
                 <th>Type</th>
                 <th>Value</th>
-                <th></th>
-                <th></th>
+                <th colspan="3"></th>
             </tr>
         </thead>
         <tbody>
@@ -69,8 +68,11 @@
                     </select>
                 </td>
                 <td>
-                    <input type="text" size="60" placeholder="eg. coordinates or placename" id="location.0" />
+                    <input type="text" size="60" placeholder="eg. coordinates or placename"
+                        id="location.0" class="autocomplete-geonames" />
+                    <input type="hidden" id="location.0.dc:identifier" />
                 </td>
+                <td><a class="hidden geonames-map-link" target="_blank" href="">map</a></td>
                 <td class="delete-item"><a href="#">delete</a></td>
                 <td style="width: 100%;" />
             </tr>
@@ -79,8 +81,47 @@
             <tr>
                 <td></td>
                 <td><input type="button" class="button add-another-item" value="Add location" /></td>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
             </tr>
         </tfoot>
     </table>
 </div>
+<script type="text/javascript">
+$(function(){
+    function splitGeonamesData(row) {
+        var items = row[0].split("::");
+        return {
+            id: items[0],
+            uri: items[1],
+            display: items[2],
+            latitude: items[3],
+            longitude: items[4]
+        };
+    }
+
+    $(".autocomplete-geonames").live("focus", function(){
+        var elem = $(this);
+        $(this).unautocomplete();
+        $(this).autocomplete(
+            "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+            {
+                extraParams: {
+                    qs: function() { return "func=search&format=json&rows=25&q=" + escape(elem.val()); }
+                },
+                formatItem: function(row) { return splitGeonamesData(row).display; },
+                formatResult: function(row) { return splitGeonamesData(row).display; },
+                width: "40em"
+            }).result(function(event, row) {
+                var uriElem = $(this).next();
+                if (row) {
+                    var uri = splitGeonamesData(row).uri;
+                    uriElem.val(uri);
+                    var mapElem = $(this).parent().parent().find(".geonames-map-link");
+                    mapElem.attr("href", uri).show();
+                }
+            })
+        }).live("blur", function(){
+            $(this).search();
+        });
+});
+</script>

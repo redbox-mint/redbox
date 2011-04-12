@@ -35,23 +35,35 @@ var packageData = {
                 try{
                     widgets.formsById["main-form"].addListener("postOnRestore",
                         function(ctx){
+                            nameLookup.init();
+                            // people
                             ctx.findx(".lookup-show").each(function(){
                                 var e=$(this);
                                 e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?" | change":"lookup");
                                 e.find(".identified-as-name").text(e.find("input.nl").val());
                             });
-                            nameLookup.init();
+                            // grant numbers
+                            $(".internal-grant:checked").each(function() {
+                                var baseId = $(this).attr("id").replace(".uon:internal", "");
+                                $("input[id="+baseId+".dc:identifier]").unautocomplete();
+                                $("input[id="+baseId+".skos:prefLabel]").removeAttr("readonly").removeClass("label");
+                            });
+                            // geonames
+                            $(".autocomplete-geonames").each(function() {
+                                var baseId = $(this).attr("id");
+                                var uri = $("input[id="+baseId+".dc:identifier]").val().trim();
+                                $(this).unautocomplete();
+                                if(uri){
+                                    var mapElem = $(this).parent().parent().find(".geonames-map-link");
+                                    mapElem.attr("href", uri).show();
+                                }
+                            });
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
                 }catch(e){
                     alert(e);
                 }
-                $(".internal-grant:checked").each(function() {
-                    var baseId = $(this).attr("id").replace(".uon:internal", "");
-                    $("input[id=" + baseId + ".dc:identifier]").unautocomplete();
-                    $("input[id=" + baseId + ".skos:prefLabel]").removeAttr("readonly").removeClass("label");
-                });
             });
         }
         $("#inputForms").load("$portalPath/workflows/forms/dataset.ajax",

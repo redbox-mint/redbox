@@ -17,7 +17,8 @@
         <amq.port>9101</amq.port>
         <amq.stomp.port>9102</amq.stomp.port>
         <server.url.base>http://localhost:${server.port}/redbox/</server.url.base>
-        <mint.proxy.url>http://localhost:9001/mint</mint.proxy.url>
+        <mint.proxy.server>http://localhost:9001</mint.proxy.server>
+        <mint.proxy.url>${mint.proxy.server}/mint</mint.proxy.url>
         <dir.home>${project.home}/home</dir.home>
         <dir.portal>${project.home}/portal</dir.portal>
         <dir.server>${project.home}/server</dir.server>
@@ -154,7 +155,7 @@
             </activation>
             <properties>
                 <server.url.base>http://novadev1.newcastle.usq.edu.au/redbox/</server.url.base>
-                <mint.proxy.url>http://novadev1.newcastle.edu.au/mint</mint.proxy.url>
+                <mint.proxy.server>http://novadev1.newcastle.edu.au</mint.proxy.server>
             </properties>
         </profile>
         <profile>
@@ -167,7 +168,7 @@
             </activation>
             <properties>
                 <server.url.base>http://novadev2.newcastle.usq.edu.au/redbox/</server.url.base>
-                <mint.proxy.url>http://novadev2.newcastle.edu.au/mint</mint.proxy.url>
+                <mint.proxy.server>http://novadev2.newcastle.edu.au</mint.proxy.server>
             </properties>
         </profile>
         <profile>
@@ -210,7 +211,7 @@
                 <amq.port>19101</amq.port>
                 <amq.stomp.port>19102</amq.stomp.port>
                 <server.url.base>http://${ip.address}:${server.port}/redbox/</server.url.base>
-                <mint.proxy.url>http://${ip.address}:19001/mint</mint.proxy.url>
+                <mint.proxy.server>http://${ip.address}:19001</mint.proxy.server>
             </properties>
         </profile>
     </profiles>

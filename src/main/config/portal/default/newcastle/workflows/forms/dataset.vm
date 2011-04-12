@@ -129,6 +129,7 @@
         time_period,
         location.0,
         location.0.type,
+        location.0.dc:identifier,
         dc:language,
         dc:language.skos:prefLabel,
         ## description

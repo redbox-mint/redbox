@@ -285,7 +285,8 @@
         "Languages": "${mint.proxy.url}/Languages/opensearch/lookup",
         "Funding_Bodies": "${mint.proxy.url}/Funding_Bodies/opensearch/lookup",
         "Parties_Groups": "${mint.proxy.url}/Parties_Groups/opensearch/lookup",
-        "Parties_People": "${mint.proxy.url}/Parties_People/opensearch/lookup"
+        "Parties_People": "${mint.proxy.url}/Parties_People/opensearch/lookup",
+        "Geonames": "${mint.proxy.server}/geonames/search"
     },
     "watcher": {
         "path": "${watcher.home}"

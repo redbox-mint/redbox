@@ -48,7 +48,7 @@ SOLR_OPTS="-Dsolr.solr.home=${dir.solr} -Djava.util.logging.config.file=${dir.so
 CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=${dir.portal} -Dstorage.home=${dir.storage}"
 
 # additional settings
-EXTRA_OPTS="-Dserver.url.base=${server.url.base} -Dmint.proxy.url=${mint.proxy.url} -Damq.port=${amq.port} -Damq.stomp.port=${amq.stomp.port}"
+EXTRA_OPTS="-Dserver.url.base=${server.url.base} -Dmint.proxy.server=${mint.proxy.server} -Dmint.proxy.url=${mint.proxy.url} -Damq.port=${amq.port} -Damq.stomp.port=${amq.stomp.port}"
 
 # set options for maven to use
 export JAVA_OPTS="$JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS $EXTRA_OPTS"
