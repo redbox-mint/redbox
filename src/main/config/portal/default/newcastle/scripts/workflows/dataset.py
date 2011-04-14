@@ -15,7 +15,7 @@ from java.lang import String
 from org.apache.commons.lang import StringEscapeUtils
 from org.json.simple import JSONArray
 
-class DatasetData(object):
+class DatasetData:
     def __init__(self):
         self.messaging = MessagingServices.getInstance()
 
@@ -26,7 +26,7 @@ class DatasetData(object):
 
         # We use these here in __activate__()
         formData = self.vc("formData")
-        print "context=%s" % formData
+        #print "context=%s" % formData
         #self.log.debug("formData: {}", repr(formData))
         response = self.vc("response")
         request = self.vc("request")
@@ -155,8 +155,7 @@ class DatasetData(object):
         json = package.getJsonObject()
         json.put("dc:title", title)
         json.put("dc:abstract", description)
-        #TODO: v0.7.3 JSON Library can't handle null nodes in "toString(True)"
-        return package.toString()
+        return package.toString(True)
 
     ### Supports form rendering, not involved in AJAX
     def getAttachedFiles(self):
@@ -181,7 +180,7 @@ class DatasetData(object):
     ### Supports form rendering, not involved in AJAX
     def getFormData(self, field):
         formData = self.vc("formData")
-        print "********** getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
+        #print "********** getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
         return StringEscapeUtils.escapeHtml(formData.get(field, ""))
 
     ### Supports form rendering, not involved in AJAX
@@ -235,8 +234,7 @@ class DatasetData(object):
     # Save the provided package to disk
     def _saveTFPackage(self, tfpackage):
         object = self._getObject()
-        ## TODO: JSON Library v0.7.3 has a bug with null nodes in "toString(True)"
-        jsonString = String(tfpackage.toString())
+        jsonString = String(tfpackage.toString(True))
         jsonData = jsonString.getBytes("UTF-8")
         object.updatePayload(object.getSourceId(), ByteArrayInputStream(jsonData))
 
@@ -270,8 +268,7 @@ class DatasetData(object):
     # Save the workflow metadata provided to disk
     def _saveWorkflowMetadata(self, wfMetadata):
         object = self._getObject()
-        ## TODO: JSON Library for v0.7.3 has a bug with null nodes in "toString(True)"
-        jsonString = String(wfMetadata.toString())
+        jsonString = String(wfMetadata.toString(True))
         jsonData = jsonString.getBytes("UTF-8")
         object.updatePayload("workflow.metadata", ByteArrayInputStream(jsonData))
 
@@ -289,8 +286,7 @@ class DatasetData(object):
         try:
             # Find our workflow configuraion
             systemConfig = self.vc("systemConfig")
-            jsonConfigFile = systemConfig.getMap(
-                    "portal/packageTypes/dataset").get("jsonconfig")
+            jsonConfigFile = systemConfig.getObject(["portal", "packageTypes", "dataset"]).get("jsonconfig")
             jsonConfigFile = FascinatorHome.getPathFile(
                     "harvest/workflows/" + jsonConfigFile)
             config = JsonSimple()
@@ -365,7 +361,7 @@ class DatasetData(object):
         packageJson = tfpackage.getJsonObject()
         try:
             # Update all of our data fields
-            metaList = list(formData.getValues("metaList[]"))
+            metaList = list(formData.getValues("metaList"))
             storedList = tfpackage.getStringList(["metaList"])
             if storedList is None:
                 # Use with care... this is no longer a Java List

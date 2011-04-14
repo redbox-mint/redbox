@@ -114,9 +114,9 @@
 <div class="widget-form" id="main-form"
     data-pre-save-func="preSave"
     data-save-result-func="saveSuccess"
-    data-save-url="$portalPath/workflow.ajax?func=update-package-meta&amp;oid=$oid"
+    data-save-url="$portalPath/actions/workflow.ajax?func=update-package-meta&oid=$oid"
     data-submit-result-func="submitSuccess"
-    data-submit-url="$portalPath/workflow.ajax?func=update-package-meta-deposit&amp;oid=$oid">
+    data-submit-url="$portalPath/actions/workflow.ajax?func=update-package-meta-deposit&oid=$oid">
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,

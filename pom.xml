@@ -141,7 +141,7 @@
         <dependency>
             <groupId>au.edu.usq.fascinator.plugins</groupId>
             <artifactId>plugin-transformer-jsonVelocity</artifactId>
-            <version>0.7.5-SNAPSHOT</version>
+            <version>${fascinator.version}-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <profiles>

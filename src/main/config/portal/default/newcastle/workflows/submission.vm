@@ -21,7 +21,7 @@ label.validation, .validation label { color: red; display: block; }
 <div class="grid_16 widget-form"
     data-form-fields="submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
     data-form-fields-readonly="submit"
-    data-submit-url="$portalPath/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
+    data-submit-url="$portalPath/actions/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
     data-submit-result-func="afterSubmit">
     <input type="hidden" name="submitted" value="true" />
     <input type="hidden" name="workflow_source" value="Submission Request" />
@@ -102,7 +102,7 @@ $(function(){
     });
 });
 
-function afterSubmit() {
+function afterSubmit(widgets,data){
 #if($dataEntryMode)
     alert("Your request has been submitted and you will be contacted shortly.");
     window.location.href = "$portalPath/home";

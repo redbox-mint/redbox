@@ -1,3 +1,5 @@
+from au.edu.usq.fascinator.common import JsonObject, JsonSimple
+from org.json.simple import JSONArray
 from json2 import read as jsonReader, write as jsonWriter                       ##
 from urllib2 import urlopen, build_opener, ProxyHandler
 import socket
@@ -13,14 +15,13 @@ class ProxyGetData:
     def __activate__(self, context):
         self.velocityContext = context
         formData = self.vc("formData")
-        response = self.vc("response")
-        config = self.vc("systemConfig")
-        proxyUrls = config.getMap("proxy-urls")
+
+        # build the URL and query parameters to retrieve
+        proxyUrls = JsonSimple(self.vc("systemConfig").getObject("proxy-urls"))
         url = ""
         key = formData.get("ns", "")
-        #print " ********", proxyUrls
-        if proxyUrls.containsKey(key):
-            url = proxyUrls.get(key)
+        if proxyUrls.getJsonObject().containsKey(key):
+            url = proxyUrls.getString("", [key])
         queryStr = formData.get("qs")
         if queryStr == "searchTerms={searchTerms}":
             queryStr = None
@@ -32,16 +33,15 @@ class ProxyGetData:
         try:
             data = self._wget(url)
         except Exception, e:
-            data = {"error":str(e)}
-            data = jsonWriter(data)
+            data = '{"error":"%s"}' % str(e)
             print "ERROR: %s" % str(e)
         try:
-            tdata = jsonReader(data)
+            json = JsonSimple(data).getJsonObject()
             # format for jquery.autocomplete
             if formData.get("autocomplete", "false") == "true":
                 rows = []
                 fields = formData.get("fields", "").split(",")
-                results = tdata["results"]
+                results = json["results"]
                 for result in results:
                     row = ""
                     for field in fields:
@@ -50,7 +50,7 @@ class ProxyGetData:
                         value = result.get(field)
                         if value is None:
                             value = result["result-metadata"]["all"].get(field)
-                            if type(value) == types.ListType:
+                            if isinstance(value, JSONArray):
                                 value = ",".join(value)
                             #print " *** value from all:", value
                         if value:
@@ -64,11 +64,11 @@ class ProxyGetData:
                     data = ""
             #print "JSON ok"
         except Exception, e:
-            data = {"error":str(e)}
-            print "Error to valid JSON: %s" % str(e)
+            data = '{"error":"%s"}' % str(e)
+            print "ERROR invalid JSON: %s" % str(e)
 
         #print "-- sending json response"
-        writer = response.getPrintWriter("text/plain; charset=UTF-8")
+        writer = self.vc("response").getPrintWriter("text/plain; charset=UTF-8")
         writer.print(data);
         writer.close()
         #print "-- done"

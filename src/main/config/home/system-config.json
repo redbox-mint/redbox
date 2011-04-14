@@ -1,5 +1,5 @@
 {
-    "version": "0.7.14",
+    "version": "0.7.17",
     "configured": true,
     "urlBase": "${server.url.base}",
     "email": "dave.huthnance@newcastle.edu.au",
@@ -7,7 +7,7 @@
         "plugins": [],
         "urlExclusions": {
             "startsWith": ["css/", "feed/", "images/", "js/", "flowplayer/"],
-            "endsWidth": [".ico"],
+            "endsWith": [".ico"],
             "equals": ["css"]
         },
         "trustTokens": {
@@ -16,7 +16,6 @@
     "accesscontrol": {
         "type": "derby",
         "derby": {
-            "derbyHome": "${fascinator.home}/database"
         }
     },
     "authentication": {
@@ -57,26 +56,10 @@
             },
             {
                 "id": "render",
-                "description": "Render queue for objects that are only using high speed transformers.",
-                "priority": "6",
-                "config": {
-                    "name": "renderHigh"
-                }
-            },
-            {
-                "id": "render",
-                "description": "Render queue for most standard documents. External calls to ICE Service are performed.",
+                "description": "Render queue for most standard documents.",
                 "priority": "5",
                 "config": {
                     "name": "renderNormal"
-                }
-            },
-            {
-                "id": "render",
-                "description": "Render queue for objects requiring FFmpeg transcoding and optionally calls to the ICE Service.",
-                "priority": "3",
-                "config": {
-                    "name": "renderLow"
                 }
             },
             {
@@ -191,23 +174,21 @@
             "screen-label": "Basic Upload",
             "security": ["registered", "metadata", "editor", "admin"],
             "upload-path": "${fascinator.home}/uploads/workflow-harvester",
-            "json-config": "${fascinator.home}/harvest/workflows/workflow-harvester.json"
+            "json-config": "${fascinator.home}/harvest/workflows/workflow-harvester-basic.json",
+            "upload-template": "workflows/basicUpload"
         },
         "attachment-upload":{
             "screen-label": "Attachment Upload",
             "security": ["registered", "metadata", "editor", "admin"],
             "upload-path": "${fascinator.home}/uploads/attachments",
             "json-config": "${fascinator.home}/harvest/workflows/attachment.json"
-        },
-        "submission-upload":{
-            "screen-label": "Submission Request",
-            "security": ["guest"],
-            "upload-path": "${fascinator.home}/uploads/submissions",
-            "json-config": "${fascinator.home}/harvest/workflows/submission.json"
         }
     },
     "mime-types": {
         "tfpackage": "application/x-fascinator-package"
+    },
+    "database-service": {
+        "derbyHome": "${fascinator.home}/database"
     },
     "portal": {
         "home": "${portal.home}",
@@ -218,7 +199,66 @@
             "default": "default",
             "order": [ "newcastle" ]
         },
-        "cachingLevel": "dynamic",
+        "caching": {
+            "caches": {
+                "scriptObjects": {
+                    "label": "Cache for Jython scripts",
+                    "profile": "dynamic",
+                    "lastModifiedCheck": true
+                },
+                "pathLookup": {
+                    "label": "Cache for path lookups",
+                    "profile": "full"
+                }
+            },
+            "profiles": {
+                "default": {
+                    "label": "Factory defaults",
+                    "refreshIntervalSeconds": 30,
+                    "maxElementsInMemory": 10000,
+                    "eternal": false,
+                    "timeToIdleSeconds": 120,
+                    "timeToLiveSeconds": 120,
+                    "overflowToDisk": false,
+                    "maxElementsOnDisk": 10000,
+                    "diskPersistent": false,
+                    "memoryStoreEvictionPolicy": "LRU"
+                },
+                "off": {
+                    "label": "Disabled",
+                    "maxElementsInMemory": 1,
+                    "eternal": false,
+                    "timeToIdleSeconds": 0,
+                    "timeToLiveSeconds": 0,
+                    "overflowToDisk": false,
+                    "maxElementsOnDisk": 1,
+                    "diskPersistent": false,
+                    "memoryStoreEvictionPolicy": "LRU"
+                },
+                "dynamic": {
+                    "label": "Dynamic - Caches are refreshed periodically",
+                    "maxElementsInMemory": 25000,
+                    "eternal": false,
+                    "timeToIdleSeconds": 120,
+                    "timeToLiveSeconds": 300,
+                    "overflowToDisk": false,
+                    "maxElementsOnDisk": 25000,
+                    "diskPersistent": false,
+                    "memoryStoreEvictionPolicy": "LRU"
+                },
+                "full": {
+                    "label": "Full - Caches never expire",
+                    "maxElementsInMemory": 100000,
+                    "eternal": true,
+                    "timeToIdleSeconds": 0,
+                    "timeToLiveSeconds": 0,
+                    "overflowToDisk": true,
+                    "maxElementsOnDisk": 100000,
+                    "diskPersistent": false,
+                    "memoryStoreEvictionPolicy": "LRU"
+                }
+            }
+        },
         "layout": "layout",
         "nativeJython": true,
         "packageTypes": {
@@ -234,7 +274,6 @@
         "harvestFiles": "${fascinator.home}/harvest",
         "houseKeeping": {
             "config": {
-                "derbyHome": "${fascinator.home}/database",
                 "quartzConfig": "${fascinator.home}/quartz.properties",
                 "desktop": true,
                 "frequency": "3600",

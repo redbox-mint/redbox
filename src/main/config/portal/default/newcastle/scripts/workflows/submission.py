@@ -7,7 +7,7 @@ from org.apache.commons.lang import StringEscapeUtils
 def truncate(s, maxLength):
     return s[:maxLength] + (s[maxLength:] and "...")
 
-class SubmissionData(object):
+class SubmissionData:
     def __activate__(self, context):
         self.__services = context["Services"]
         self.__formData = context["formData"]
@@ -24,7 +24,7 @@ class SubmissionData(object):
 
         if self.__formData.get("func") == "update-package-meta-deposit":
             result = self.__update()
-            writer = response.getPrintWriter("application/json; charset=UTF-8")
+            writer = context["response"].getPrintWriter("application/json; charset=UTF-8")
             writer.println(result)
             writer.close()
         if self.__errorMessage:

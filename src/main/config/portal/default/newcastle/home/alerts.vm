@@ -69,7 +69,7 @@
         var me = $(this);
         jQuery.ajax({
             type: "POST",
-            url: "$portalPath/workflow.ajax",
+            url: "$portalPath/actions/workflow.ajax",
             success:
                 function (data, status) {
                     if (!data.error) {
@@ -82,7 +82,7 @@
                         alert("Failed to accept inbox record!\nReason: " + data.error);
                     }
                 },
-            error: function(req, status, e) { alert(req.responseText); },
+            error: function(req, status, e) { alert("Error:\n" + req.responseText); },
             data: {
                 ajax: true,
                 func: "update-package-meta-deposit",

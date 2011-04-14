@@ -1,22 +1,13 @@
+import time
+
 from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import FascinatorHome, JsonConfigHelper
+from au.edu.usq.fascinator.common import JsonSimple
 from au.edu.usq.fascinator.common.storage import StorageUtils
-from java.io import ByteArrayInputStream, StringWriter
-from java.lang import String
 from java.util import HashSet
 from org.apache.commons.io import IOUtils
 
-import sys
-import time
-pathToWorkflows = FascinatorHome.getPath("harvest/workflows")
-if sys.path.count(pathToWorkflows) == 0:
-    sys.path.append(pathToWorkflows)
-from json2 import read as jsonReader
-
 class IndexData:
     def __activate__(self, context):
-        print " * Running dataset-rules.py..."
-
         # Prepare variables
         self.index = context["fields"]
         self.object = context["object"]
@@ -24,6 +15,9 @@ class IndexData:
         self.params = context["params"]
         self.utils = context["pyUtils"]
         self.config = context["jsonConfig"]
+
+        print "Indexing Metadata Record '%s' '%s'" % \
+                (self.object.getId(), self.payload.getId())
 
         # Common data
         self.__newDoc()
@@ -171,7 +165,7 @@ class IndexData:
         wfChanged = False
         workflow_security = []
         self.message_list = None
-        stages = self.config.getJsonList("stages")
+        stages = self.config.getJsonSimpleList(["stages"])
         if self.owner == "guest":
             pageTitle = "Submission Request"
             displayType = "submission-request"
@@ -181,81 +175,79 @@ class IndexData:
             displayType = "package-dataset"
             initialStep = 1
         try:
-            wfPayload = self.object.getPayload("workflow.metadata")
-            wfMeta = JsonConfigHelper(wfPayload.open())
-            wfPayload.close()
-            wfMeta.set("pageTitle", pageTitle)
+            wfMeta = self.__getJsonPayload("workflow.metadata")
+            wfMeta.getJsonObject().put("pageTitle", pageTitle)
+
             # Are we indexing because of a workflow progression?
-            targetStep = wfMeta.get("targetStep")
-            if targetStep is not None and targetStep != wfMeta.get("step"):
+            targetStep = wfMeta.getString(None, ["targetStep"])
+            if targetStep is not None and targetStep != wfMeta.getString(None, ["step"]):
                 wfChanged = True
                 # Step change
-                wfMeta.set("step", targetStep)
-                wfMeta.removePath("targetStep")
+                wfMeta.getJsonObject().put("step", targetStep)
+                wfMeta.getJsonObject().remove("targetStep")
             # This must be a re-index then
             else:
-                targetStep = wfMeta.get("step")
+                targetStep = wfMeta.getString(None, ["step"])
+
             # Security change
             for stage in stages:
-                if stage.get("name") == targetStep:
-                    wfMeta.set("label", stage.get("label"))
-                    self.item_security = stage.getList("visibility")
-                    workflow_security = stage.getList("security")
+                if stage.getString(None, ["name"]) == targetStep:
+                    wfMeta.getJsonObject().put("label", stage.getString(None, ["label"]))
+                    self.item_security = stage.getStringList(["visibility"])
+                    workflow_security = stage.getStringList(["security"])
                     if wfChanged == True:
-                        self.message_list = stage.getList("message")
-
+                        self.message_list = stage.getStringList(["message"])
         except StorageException:
             # No workflow payload, time to create
-            initialStage = stages.get(initialStep).get("name")
+            initialStage = stages.get(initialStep).getString(None, ["name"])
             wfChanged = True
-            wfMeta = JsonConfigHelper()
-            wfMeta.set("id", WORKFLOW_ID)
-            wfMeta.set("step", initialStage)
-            wfMeta.set("pageTitle", pageTitle)
+            wfMeta = JsonSimple()
+            wfMetaObj = wfMeta.getJsonObject()
+            wfMetaObj.put("id", WORKFLOW_ID)
+            wfMetaObj.put("step", initialStage)
+            wfMetaObj.put("pageTitle", pageTitle)
+            stages = self.config.getJsonSimpleList(["stages"])
             for stage in stages:
-                if stage.get("name") == initialStage:
-                    wfMeta.set("label", stage.get("label"))
-                    self.item_security = stage.getList("visibility")
-                    workflow_security = stage.getList("security")
-                    self.message_list = stage.getList("message")
+                if stage.getString(None, ["name"]) == initialStage:
+                    wfMetaObj.put("label", stage.getString(None, ["label"]))
+                    self.item_security = stage.getStringList(["visibility"])
+                    workflow_security = stage.getStringList(["security"])
+                    self.message_list = stage.getStringList(["message"])
 
         # Has the workflow metadata changed?
         if wfChanged == True:
-            jsonString = String(wfMeta.toString())
-            inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+            inStream = IOUtils.toInputStream(wfMeta.toString(True), "UTF-8")
             try:
                 StorageUtils.createOrUpdatePayload(self.object, "workflow.metadata", inStream)
             except StorageException:
-                print " * ERROR updating dataset payload!"
+                print " ERROR updating dataset payload"
 
         # Form processing
-        formData = wfMeta.getJsonList("formData")
-        if formData.size() > 0:
-            formData = formData[0]
-        else:
-            formData = None
         coreFields = ["title", "description", "manifest", "metaList"]
+        formData = wfMeta.getObject(["formData"])
         if formData is not None:
+            formData = JsonSimple(formData)
             # Core fields
-            title = formData.getList("title")
+            title = formData.getStringList(["title"])
             if title:
                 self.titleList = title
-            description = formData.getList("description")
+            description = formData.getStringList(["description"])
             if description:
                 self.descriptionList = description
             # Non-core fields
-            data = formData.getMap("/")
+            data = formData.getJsonObject()
             for field in data.keySet():
                 if field not in coreFields:
-                    self.customFields[field] = formData.getList(field)
+                    self.customFields[field] = formData.getStringList([field])
 
-        # Manifest processing (formData is not present in wfMeta)
-        manifest = self.__getManifest()
-        self.titleList = [manifest.get("title", "[Untitled]")]
-        self.descriptionList = [manifest.get("description", "")]
-        for field in manifest.iterkeys():
+        # Manifest processing (formData not present in wfMeta)
+        manifest = self.__getJsonPayload(self.object.getSourceId())
+        self.titleList = [manifest.getString("[Untitled]", ["title"])]
+        self.descriptionList = [manifest.getString("", ["description"])]
+        formData = manifest.getJsonObject()
+        for field in formData.keySet():
             if field not in coreFields:
-                value = manifest.get(field)
+                value = formData.get(field)
                 if value is not None and value.strip() != "":
                     self.utils.add(self.index, field, value)
                     # try to extract some common fields for faceting
@@ -274,9 +266,9 @@ class IndexData:
         self.utils.add(self.index, "display_type", displayType)
 
         # Workflow processing
-        self.utils.add(self.index, "workflow_id", wfMeta.get("id"))
-        self.utils.add(self.index, "workflow_step", wfMeta.get("step"))
-        self.utils.add(self.index, "workflow_step_label", wfMeta.get("label"))
+        self.utils.add(self.index, "workflow_id", wfMeta.getString(None, ["id"]))
+        self.utils.add(self.index, "workflow_step", wfMeta.getString(None, ["step"]))
+        self.utils.add(self.index, "workflow_step_label", wfMeta.getString(None, ["label"]))
         for group in workflow_security:
             self.utils.add(self.index, "workflow_security", group)
             if self.owner is not None:
@@ -290,14 +282,8 @@ class IndexData:
             for target in self.message_list:
                 self.utils.sendMessage(target, message)
 
-    def __getManifest(self):
-        return self.__getJsonPayload(self.object.getSourceId())
-
     def __getJsonPayload(self, pid):
         payload = self.object.getPayload(pid)
-        writer = StringWriter()
-        IOUtils.copy(payload.open(), writer)
-        dataDict = jsonReader(writer.toString())
+        json = self.utils.getJsonObject(payload.open())
         payload.close()
-        return dataDict
-
+        return json
