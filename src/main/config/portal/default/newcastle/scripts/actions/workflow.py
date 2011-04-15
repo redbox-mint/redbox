@@ -38,7 +38,7 @@ class WorkflowData(DefaultWorkflowData):
                     result = '{"ok":"Processed Form Data"}'
                 else:
                     result = self.__updateWorkflow()
-            writer = context["response"].getPrintWriter("application/json; charset=UTF-8")
+            writer = context["response"].getPrintWriter("text/plain; charset=UTF-8")
             writer.println(result)
             writer.close()
         else:
