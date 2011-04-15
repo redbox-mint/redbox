@@ -3,8 +3,10 @@ from workflow import WorkflowData as DefaultWorkflowData
 from au.edu.usq.fascinator.api.indexer import SearchRequest
 from au.edu.usq.fascinator.api.storage import StorageException
 from au.edu.usq.fascinator.common import JsonObject, JsonSimple, MessagingServices
+from au.edu.usq.fascinator.common.storage import StorageUtils
 from au.edu.usq.fascinator.common.solr import SolrResult
 
+from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception
 
 class WorkflowData(DefaultWorkflowData):
@@ -16,6 +18,7 @@ class WorkflowData(DefaultWorkflowData):
         self.log = context["log"]
         self.formData = context["formData"]
         self.Services = context["Services"]
+        #self.log.debug("formData='%s'" % self.formData)
 
         result = None
         isAjax = bool(self.formData.get("ajax")) or context["request"].isXHR()
@@ -62,26 +65,28 @@ class WorkflowData(DefaultWorkflowData):
             uploadFile = uploadFile.replace("C:\\fakepath\\", "")
             fileDetails = self.vc("sessionState").get(uploadFile)
 
+            #self.log.debug("fileDetails:%s" % fileDetails)
             errorDetails = fileDetails.get("error")
             if errorDetails:
                 self.log.error("ERROR: %s" % errorDetails)
-                return JsonSimple({"error": errorDetails})
+                return self.__toJson({"error": errorDetails})
 
-            oid = self.getObject().getId()
+            jsonFormData = JsonSimple(self.formData.get("json"))
+            oid = jsonFormData.getString(None, "oid")
             fname = fileDetails.get("name")
             foid = fileDetails.get("oid")
-            self.log.debug("attach filename='%s', foid='%s'" % (fname, oid))
+            #self.log.debug("attach oid='%s', filename='%s', foid='%s'" % (oid, fname, foid))
             try:
                 attachObj = self.Services.getStorage().getObject(foid)
             except StorageException, e:
                 return JsonSimple({"error":"Attached file - '%s'" % str(e)})
 
-            attachFormData = JsonSimple(formData.get("json", "{}"))
+            attachFormData = JsonSimple(self.formData.get("json", "{}"))
             attachMetadata = {
                 "type": "attachment",
                 "created_by": "workflow.py",
                 "formData": {
-                    "id": foid,
+                    "oid": foid,
                     "attached_to": oid,
                     "filename": fname,
                     "access_rights": attachFormData.getString("private", ["accessRights"]),
@@ -91,7 +96,7 @@ class WorkflowData(DefaultWorkflowData):
             attachedFiles = self.__getAttachedFiles(oid)
             attachedFiles.append(dict(attachMetadata["formData"]))
             try:
-                jsonMetadata = JsonSimple(attachMetadata)
+                jsonMetadata = self.__toJson(attachMetadata)
                 jsonIn = ByteArrayInputStream(jsonMetadata.toString())
                 StorageUtils.createOrUpdatePayload(attachObj, "workflow.metadata", jsonIn)
             except StorageException, e:
@@ -106,7 +111,7 @@ class WorkflowData(DefaultWorkflowData):
 
             return self.__toJson({
                 "ok": "Completed OK",
-                "oid": oid,
+                "oid": foid,
                 "attachedFiles": attachedFiles
             })
         except Exception, e:
@@ -129,7 +134,7 @@ class WorkflowData(DefaultWorkflowData):
                     indexer.commit()
                     # Notify our subscribers
                     self.sendMessage(oid, "Delete")
-                    Services.storage.removeObject(foid)
+                    self.Services.storage.removeObject(foid)
                 except Exception, e:
                     self.log.error("Failed to delete attachment '%s'" % str(e))
             return self.__toJson({"ok":"Deleted OK", "attachedFiles":attachedFiles})

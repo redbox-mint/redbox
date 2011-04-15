@@ -5,7 +5,7 @@
         The list of files currently attached to this metadatarecord.
     </div>
     <fieldset id="add-a-file" class="widget-form"
-        data-submit-url="$portalPath/workflow.ajax?ajax=1&amp;oid=$oid&amp;func=attach-file"
+        data-submit-url="$portalPath/actions/workflow.ajax?ajax=true&func=attach-file&oid=$oid"
         data-pre-submit-func="uploadPreSave"
         data-submit-func="fileUploadFunc"
         data-submit-result-func="uploadCompletedFunc"
@@ -77,14 +77,15 @@ function uploadCompletedFunc(widgetForm, rData){
 function uploadErrorFunc(widgetForm, rData){
     if(/already exists in storage/.test(rData.error)){
         alert("This file already exists in the storage!\n Please select another file.")
-        jQ("#add-file").attr("disabled", false);
+        jQ("#add-file").show();
+        jQ("#add-a-file .submit-result").html("");
         return false;
     }
 }
 
 function updateAttachedFiles(attachedFiles){
     var h, a, tr, tbody=jQ("#attached-files");
-    var url="$portalPath/workflow.ajax?ajax=1&oid=$oid&func=delete-attach-file";
+    var url="$portalPath/actions/workflow.ajax?ajax=true&func=delete-attach-file&oid=$oid";
     tbody.html("");
     function format(s){
         return s.replace("-", " ").replace(/\b\w/g,
