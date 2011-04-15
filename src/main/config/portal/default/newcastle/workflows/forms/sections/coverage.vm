@@ -106,7 +106,15 @@ $(function(){
             "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
             {
                 extraParams: {
-                    qs: function() { return "func=search&format=json&rows=25&q=" + escape(elem.val()); }
+                    qs: function() {
+                        var userInput = elem.val();
+                        var commaPos = userInput.indexOf(",");
+                        console.log(commaPos);
+                        if(commaPos!=-1){
+                            userInput = userInput.substring(0,commaPos);
+                        }
+                        return "func=search&format=json&rows=25&q=" + escape(userInput);
+                    }
                 },
                 formatItem: function(row) { return splitGeonamesData(row).display; },
                 formatResult: function(row) { return splitGeonamesData(row).display; },
