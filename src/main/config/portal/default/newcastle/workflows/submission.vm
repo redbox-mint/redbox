@@ -59,11 +59,13 @@ label.validation, .validation label { color: red; display: block; }
         </p>
         #if($reviewMode)
             #set($submitLabel = "Accept")
+            #set($deleteLabel = "Delete")
         #else
             #set($submitLabel = "Submit")
+            #set($deleteLabel = "Cancel")
         #end
         <input class="button form-fields-submit" id="submitButton" type="submit" value="$submitLabel" />
-        <button id="deleteButton">Cancel</button>
+        <button id="deleteButton">$deleteLabel</button>
         <span class="hidden" id="loading">
             <img src="$portalPath/images/icons/loading.gif" />
         </span>

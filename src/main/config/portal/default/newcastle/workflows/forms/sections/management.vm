@@ -189,16 +189,23 @@
     </div>
     <p><input type="text" size="60" placeholder="title, version number and date of policy" id="policy" /></p>
 
-    #fieldTitle("management_plan" "Data Management Plan" false)
-    <div class="help-content" id="help-management_plan">
-        Indicates existence of a data management plan.
+    <div class="group">
+        #fieldTitle("management_plan" "Data Management Plan" false)
+        <div class="help-content" id="help-management_plan">
+            Indicates existence of a data management plan.
+        </div>
+        <p>
+            <input type="radio" id="management_plan_yes" name="management_plan" value="yes" />
+            <label for="management_plan_yes">Yes</label>
+            <input type="radio" name="management_plan" value="no" />
+            <label for="management_plan_no">No</label>
+        </p>
+        #fieldTitle("management_plan_notes" "Notes" false)
+        <div class="help-content" id="help-management_plan_notes">
+            Record optional notes about the data management plan.
+        </div>
+        <p><input type="text" size="60" placeholder="notes" id="management_plan_notes" /></p>
     </div>
-    <p>
-        <input type="radio" id="management_plan_yes" name="management_plan" value="yes" />
-        <label for="management_plan_yes">Yes</label>
-        <input type="radio" name="management_plan" value="no" />
-        <label for="management_plan_no">No</label>
-    </p>
 </div>
 <script type="text/javascript">
 $(function() {

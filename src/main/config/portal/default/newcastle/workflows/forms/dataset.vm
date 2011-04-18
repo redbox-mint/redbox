@@ -180,6 +180,7 @@
         ## management
         url,
         physical_storage,
+        location_notes,
         retention_period,
         disposal_date,
         data_owner,
@@ -199,6 +200,7 @@
         policy,
         contracts,
         management_plan,
+        management_plan_notes,
         ## notes
         notes.0.date,
         notes.0.username,

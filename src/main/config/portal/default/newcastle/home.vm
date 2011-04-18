@@ -22,7 +22,7 @@
 #if($page.authentication.is_logged_in())
     <div class="grid_6">
         #parseTemplate("home/stages.vm")
-        #parseTemplate("menus/home-new-items.vm")
+        ##parseTemplate("menus/home-new-items.vm")
     </div>
     <div class="grid_6">
         #parseTemplate("home/alerts.vm")
