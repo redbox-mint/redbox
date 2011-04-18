@@ -266,13 +266,17 @@ class IndexData:
         self.utils.add(self.index, "display_type", displayType)
 
         # Workflow processing
+        wfStep = wfMeta.getString(None, ["step"])
         self.utils.add(self.index, "workflow_id", wfMeta.getString(None, ["id"]))
-        self.utils.add(self.index, "workflow_step", wfMeta.getString(None, ["step"]))
+        self.utils.add(self.index, "workflow_step", wfStep)
         self.utils.add(self.index, "workflow_step_label", wfMeta.getString(None, ["label"]))
         for group in workflow_security:
             self.utils.add(self.index, "workflow_security", group)
             if self.owner is not None:
                 self.utils.add(self.index, "workflow_security", self.owner)
+        # set OAI-PMH status to deleted
+        if wfStep == "retired":
+            self.utils.add(self.index, "oai_deleted", "true")
 
     def __messages(self):
         if self.message_list is not None and len(self.message_list) > 0:
