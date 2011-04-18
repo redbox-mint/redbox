@@ -428,12 +428,12 @@ class DatasetData:
         object = self._getObject()
 
         # Transform the object to other datastream e.g. dublin core, rif-cs and vitro
-        try:
-            jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
-            jsonVelocityTransformer.init(JsonSimpleConfig.getSystemFile())
-            jsonVelocityTransformer.transform(object, "{}")
-        except Exception, e:
-            self.log.error("Fail to transform object : ", e)
+        #try:
+        #    jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
+        #    jsonVelocityTransformer.init(JsonSimpleConfig.getSystemFile())
+        #    jsonVelocityTransformer.transform(object, "{}")
+        #except Exception, e:
+        #    self.log.error("Fail to transform object : ", e)
 
         # Index the object
         oid = object.getId()

@@ -276,11 +276,17 @@ class IndexData:
 
     def __messages(self):
         if self.message_list is not None and len(self.message_list) > 0:
-            msg = JsonConfigHelper()
-            msg.set("oid", self.oid)
+            msg = JsonSimple()
+            msg.getJsonObject().put("oid", self.oid)
             message = msg.toString()
             for target in self.message_list:
                 self.utils.sendMessage(target, message)
+        # Transform metadata
+        msg = JsonSimple()
+        msg.getJsonObject().put("oid", self.oid)
+        msg.getJsonObject().put("transform", "true")
+        message = msg.toString()
+        self.utils.sendMessage("indexer", message)
 
     def __getJsonPayload(self, pid):
         payload = self.object.getPayload(pid)

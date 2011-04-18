@@ -22,9 +22,14 @@ import au.edu.usq.fascinator.api.PluginException;
 import au.edu.usq.fascinator.api.PluginManager;
 import au.edu.usq.fascinator.api.indexer.Indexer;
 import au.edu.usq.fascinator.api.indexer.IndexerException;
+import au.edu.usq.fascinator.api.storage.DigitalObject;
+import au.edu.usq.fascinator.api.storage.Storage;
+import au.edu.usq.fascinator.api.transformer.Transformer;
+import au.edu.usq.fascinator.api.transformer.TransformerException;
 import au.edu.usq.fascinator.common.GenericListener;
 import au.edu.usq.fascinator.common.JsonSimple;
 import au.edu.usq.fascinator.common.JsonSimpleConfig;
+import au.edu.usq.fascinator.common.storage.StorageUtils;
 
 import java.io.IOException;
 import javax.jms.Connection;
@@ -69,6 +74,9 @@ public class IndexQueueConsumer implements GenericListener {
 
     /** Indexer object */
     private Indexer indexer;
+
+    /** Storage object */
+    private Storage storage;
 
     /** Message Consumer instance */
     private MessageConsumer consumer;
@@ -130,6 +138,9 @@ public class IndexQueueConsumer implements GenericListener {
             indexer = PluginManager.getIndexer(
                     globalConfig.getString("solr", "indexer", "type"));
             indexer.init(JsonSimpleConfig.getSystemFile());
+            storage = PluginManager.getStorage(
+                    globalConfig.getString("file-system", "storage", "type"));
+            storage.init(JsonSimpleConfig.getSystemFile());
         } catch (IOException ioe) {
             log.error("Failed to read configuration: {}", ioe.getMessage());
             throw ioe;
@@ -169,6 +180,14 @@ public class IndexQueueConsumer implements GenericListener {
                 indexer.shutdown();
             } catch (PluginException pe) {
                 log.error("Failed to shutdown indexer: {}", pe.getMessage());
+                throw pe;
+            }
+        }
+        if (storage != null) {
+            try {
+                storage.shutdown();
+            } catch (PluginException pe) {
+                log.error("Failed to shutdown storage: {}", pe.getMessage());
                 throw pe;
             }
         }
@@ -217,18 +236,32 @@ public class IndexQueueConsumer implements GenericListener {
             String oid = config.getString(null, "oid");
             log.info("Received job, object id={}", oid);
 
-            // Index the object
-            log.info("Indexing object...");
-            indexer.index(oid);
-            if (config.getBoolean(false, "commit")) {
-                indexer.commit();
+            if (config.getBoolean(false, "transform")) {
+                // Transform the object, to update our payloads
+                log.info("Transforming object '{}'...", oid);
+                DigitalObject object = StorageUtils.getDigitalObject(storage, oid);
+                Transformer transformer = PluginManager.getTransformer("jsonVelocity");
+                transformer.init(JsonSimpleConfig.getSystemFile());
+                transformer.transform(object, "{}");
+                object.close();
+            } else {
+                // Index the object
+                log.info("Indexing object '{}'...", oid);
+                indexer.index(oid);
+                if (config.getBoolean(false, "commit")) {
+                    indexer.commit();
+                }
             }
-        } catch (JMSException jmse) {
+    } catch (JMSException jmse) {
             log.error("Failed to send/receive message: {}", jmse.getMessage());
         } catch (IOException ioe) {
             log.error("Failed to parse message: {}", ioe.getMessage());
+        } catch (TransformerException te) {
+            log.error("Failed to transform object: {}", te.getMessage());
         } catch (IndexerException ie) {
             log.error("Failed to index object: {}", ie.getMessage());
+        } catch (Exception e) {
+            log.error("Unknown error: {}", e.getMessage());
         }
     }
 

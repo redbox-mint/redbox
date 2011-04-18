@@ -91,9 +91,9 @@ class VitalData:
             object.close()
 
             # Transform the object, to update our payloads
-            transformer = PluginManager.getTransformer("jsonVelocity")
-            transformer.init(JsonSimpleConfig.getSystemFile())
-            transformer.transform(object, "{}")
+            #transformer = PluginManager.getTransformer("jsonVelocity")
+            #transformer.init(JsonSimpleConfig.getSystemFile())
+            #transformer.transform(object, "{}")
 
             # Re-index... avoids showing up in this script again
             self.services.getIndexer().index(id)
@@ -169,10 +169,10 @@ class VitalData:
     # Connect to fedora and test access before returning
     def fedora_connect(self):
         # Read our configuration
-        self.fedoraUrl = self.config.get("subscriber/vital/server/url")
-        fedoraUsername = self.config.get("subscriber/vital/server/username")
-        fedoraPassword = self.config.get("subscriber/vital/server/password")
-        fedoraTimeout = int(self.config.get("subscriber/vital/server/timeout", "15"))
+        self.fedoraUrl = self.config.getString(None, ["subscriber", "vital", "server", "url"])
+        fedoraUsername = self.config.getString(None, ["subscriber", "vital", "server", "username"])
+        fedoraPassword = self.config.getString(None, ["subscriber", "vital", "server", "password"])
+        fedoraTimeout = self.config.getInteger(15, ["subscriber", "vital", "server", "timeout"])
         if (self.fedoraUrl is None) or \
                 (fedoraUsername is None) or (fedoraPassword is None):
             self.log.error("Invalid VITAL configuration!")
