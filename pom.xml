@@ -27,7 +27,7 @@
     </properties>
     <modules>
         <module>parent</module>
-        <module>safe-api</module>
+        <module>secure-api</module>
         <module>plugins/vitalsubscriber</module>
     </modules>
     <dependencies>
@@ -82,7 +82,7 @@
         <!-- ReDBox Project Plugins -->
         <dependency>
             <groupId>au.edu.usq.fascinator.redbox</groupId>
-            <artifactId>redbox-safe-api</artifactId>
+            <artifactId>redbox-secure-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

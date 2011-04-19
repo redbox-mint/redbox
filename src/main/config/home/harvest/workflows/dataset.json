@@ -67,7 +67,7 @@
             "description": "Records that have been retired.",
             "label": "Retired",
             "security": ["admin"],
-            "visibility": ["admin"],
+            "visibility": ["guest"],
             "template": "workflows/dataset"
         }
     ]
