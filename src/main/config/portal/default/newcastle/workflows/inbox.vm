@@ -1,0 +1,97 @@
+#set($pageTitle = "Notify us about a dataset")
+<style type="text/css">
+fieldset p textarea { display:block; width: 98%; }
+</style>
+<div class="grid_16 widget-form"
+    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
+    data-form-fields-readonly="metaList"
+    data-submit-func="srSubmitFunc">
+    <input type="hidden" name="submitted" value="true" />
+    <input type="hidden" name="workflow_source" value="Submission Request" />
+    <input type="hidden" name="metaList" value="[]" />
+    <p>Please review the submission request and action as appropriate.</p>
+    <fieldset>
+        <p>
+            <label for="submitDate">Date Submitted</label>
+            <input id="submitDate" type="text" size="40" value="$!self.getRequestData('submitDate')" readonly="readonly" />
+        </p>
+        <p>
+            <label for="submitDescription">Description</label>
+            <textarea id="submitDescription" cols="40" rows="10" readonly="readonly">$!self.getRequestData("submitDescription")</textarea>
+        </p>
+        <p>
+            <label for="contactName">Contact Name</label>
+            <input id="contactName" type="text" size="40" value="$!self.getRequestData('contactName')" readonly="readonly" />
+        </p>
+        <p>
+            <label for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" size="40" value="$!self.getRequestData('phoneNumber')" readonly="readonly" />
+        </p>
+        <p>
+            <label for="emailAddress">Email Address</label>
+            <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" readonly="readonly" />
+        </p>
+        <button class="button form-fields-submit" id="submitButton">Accept</button>
+        <button class="button form-fields-cancel" id="deleteButton">Delete</button>
+        <span class="hidden" id="loading">
+            Please wait while processing <img src="$portalPath/images/icons/loading.gif" />
+        </span>
+    </fieldset>
+</div>
+<div class="clear"></div>
+<script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
+<script type="text/javascript">
+(function($){
+    $(function(){
+        widgets.contentLoaded();
+        $("#deleteButton").click(function(){
+            $(this).attr("disabled", "disabled");
+            jQuery.ajax({
+                type: "POST",
+                url: "$portalPath/actions/delete.ajax",
+                data: { record: "$self.oid" },
+                success: function(){ window.location.href="$portalPath/home"; },
+                error: function(req){
+                    widgets.messageBox(req.responseText, jQuery.noop, "Error");
+                    $("#deleteButton").removeAttr("disabled");
+                }
+            });
+        });
+    });
+})(jQuery);
+
+function srSubmitFunc(widgetForm,formData){
+    $("#submitButton").attr("disabled", "disabled");
+    $("#loading").show();
+    function failed(msg){
+        widgets.messageBox(
+            "Sorry, an error occurred processing your request. Please try again.\n"+msg,
+            function(){
+                $("#submitButton,#deleteButton").removeAttr("disabled");
+                $("#loading").hide();
+            },
+            "Error");
+    }
+    jQuery.ajax({
+        type: "POST",
+        url: "$portalPath/actions/workflow.ajax",
+        data: jQuery.extend(formData,{
+            ajax: true,
+            func: "update-package-meta-deposit",
+            oid: "$self.oid"
+        }),
+        success: function(workflowData){
+            if(workflowData.ok){
+                $("#submitButton,#deleteButton").removeAttr("disabled");
+                $("#loading").hide();
+                window.location.reload();
+            }else{
+                failed(workflowData.error);
+            }
+        },
+        error: function(req){
+            failed(req.responseText);
+        }
+    });
+}
+</script>

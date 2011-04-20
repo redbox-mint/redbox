@@ -9,16 +9,17 @@
         <li><a id="delete-view" href="#" rel="$portalId">Delete view...</a></li>
         #end
         #end
-        <li><a id="new-record" href="#">
+        <li>
             #if($page.authentication.is_logged_in())
-                Add a new dataset
+            <a id="new-record" href="#">Add a new dataset</a>
             #else
-                Notify us about a dataset
+            <a id="notify-record" href="$portalPath/workflows/submission">Notify us about a dataset</a>
             #end
-        </a></li>
+        </li>
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")
 </div>
+#if($page.authentication.is_logged_in())
 <script type="text/javascript">
 $(function() {
     var jQ = $;
@@ -57,3 +58,4 @@ $(function() {
     });
 });
 </script>
+#end

@@ -36,7 +36,7 @@
             "description": "Records under investigation.",
             "security": ["librarian", "reviewer", "admin"],
             "visibility": ["librarian", "reviewer", "admin"],
-            "template": "workflows/submission"
+            "template": "workflows/inbox"
         },
         {
             "name": "metadata-review",

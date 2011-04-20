@@ -1,37 +1,18 @@
-#set($pageTitle = "Submission Request")
-#set($loggedIn = $page.authentication.is_logged_in())
-#set($dataEntryMode = !$page.authentication.is_logged_in() && !$self.isSubmitted())
-#set($reviewMode = $page.authentication.is_logged_in() && $self.isSubmitted())
-#set($disabled = "")
-#if($reviewMode)
-    #set($disabled = 'readonly="readonly"')
-#end
+#set($pageTitle = "Notify us about a dataset")
 <style type="text/css">
 fieldset p textarea { display:block; width: 98%; }
-.required {
-#if($reviewMode)
-    display: none;
-#else
-    color: red;
-#end
-}
+.required { color: red; }
 label.validation, .validation label { color: red; display: block; }
-#submitLabel { color: green; }
 </style>
+<h2 id="page-heading"><span>$pageTitle</span></h2>
 <div class="grid_16 widget-form"
-    data-form-fields="submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
-    data-form-fields-readonly="submit"
-    data-submit-url="$portalPath/actions/workflow.ajax?ajax=true&func=update-package-meta-deposit&oid=$self.oid"
-    data-submit-result-func="afterSubmit">
+    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
+    data-form-fields-readonly="metaList"
+    data-submit-func="srSubmitFunc">
     <input type="hidden" name="submitted" value="true" />
     <input type="hidden" name="workflow_source" value="Submission Request" />
-    <p id="userPrompt">
-    #if($reviewMode)
-    Please review the submission request and action as appropriate.
-    #else
-    Please provide a brief overview of your research data and how to contact you.
-    #end
-    </p>
+    <input type="hidden" name="metaList" value="[]" />
+    <p>Please provide a brief overview of your research data and how to contact you.</p>
     <fieldset>
         <p>
             <label for="submitDate">Date Submitted</label>
@@ -39,77 +20,117 @@ label.validation, .validation label { color: red; display: block; }
         </p>
         <p>
             <label for="submitDescription">Description <span class="required">*</span></label>
-            <label class="validation" for="submitDescription" data-validation-rule="test(notEmpty);when(blur,submit);">A description is required!</label>
-            <textarea id="submitDescription" cols="40" rows="10" $disabled>$!self.getRequestData("submitDescription")</textarea>
+            <label class="validation" for="submitDescription" data-validation-rule="test(notEmpty);when(submit);">A description is required!</label>
+            <textarea id="submitDescription" cols="40" rows="10"></textarea>
         </p>
         <p>
             <label for="contactName">Contact Name <span class="required">*</span></label>
-            <label class="validation" for="contactName" data-validation-rule="test(notEmpty);when(blur,submit);">A contact name is required!</label>
-            <input id="contactName" type="text" size="40" value="$!self.getRequestData('contactName')" $disabled />
+            <label class="validation" for="contactName" data-validation-rule="test(notEmpty);when(submit);">A contact name is required!</label>
+            <input id="contactName" type="text" size="40" />
         </p>
         <p>
             <label for="phoneNumber">Phone Number <span class="required">*</span></label>
-            <label class="validation" for="phoneNumber" data-validation-rule="test(notEmpty);when(blur,submit);">A phone number is required!</label>
-            <input id="phoneNumber" type="text" size="40" value="$!self.getRequestData('phoneNumber')" $disabled/>
+            <label class="validation" for="phoneNumber" data-validation-rule="test(notEmpty);when(submit);">A phone number is required!</label>
+            <input id="phoneNumber" type="text" size="40" />
         </p>
         <p>
             <label for="emailAddress">Email Address <span class="required">*</span></label>
-            <label class="validation" for="emailAddress" data-validation-rule="test(email);when(blur,submit);">A valid email address is required!</label>
-            <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" $disabled/>
+            <label class="validation" for="emailAddress" data-validation-rule="test(email);when(submit);">A valid email address is required!</label>
+            <input id="emailAddress" type="text" size="40" />
         </p>
-        #if($reviewMode)
-            #set($submitLabel = "Accept")
-            #set($deleteLabel = "Delete")
-        #else
-            #set($submitLabel = "Submit")
-            #set($deleteLabel = "Cancel")
-        #end
-        <input class="button form-fields-submit" id="submitButton" type="submit" value="$submitLabel" />
-        <button id="deleteButton">$deleteLabel</button>
+        <button class="button form-fields-submit" id="submitButton">Submit</button>
+        <button class="button form-fields-cancel" id="cancelButton">Cancel</button>
         <span class="hidden" id="loading">
-            <img src="$portalPath/images/icons/loading.gif" />
+            Please wait while submitting <img src="$portalPath/images/icons/loading.gif" />
         </span>
     </fieldset>
 </div>
 <div class="clear"></div>
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript">
-$(function(){
-    widgets.contentLoaded();
-
-    $("#submitButton").click(function(){
-        $(this).attr("disabled", "disabled");
-        $("#loading").show();
-        return true;
-    });
-
-    $("#deleteButton").click(function(){
-        $(this).attr("disabled", "disabled");
-        jQuery.ajax({
-            type : "POST",
-            url : "$portalPath/actions/delete.ajax",
-            success:
-                function (data, status) {
-                    window.location.href = "$portalPath/home";
-                },
-            error:
-                function (req, status, e) {
-                    alert(req.responseText);
-                    $("#deleteButton").removeAttr("disabled");
-                },
-            data: {
-                record: "$self.oid"
-            }
+(function($){
+    $(function(){
+        widgets.contentLoaded();
+        $("#cancelButton").click(function(){
+            window.location.href = "$portalPath/home";
         });
     });
-});
+})(jQuery);
 
-function afterSubmit(widgets,data){
-#if($dataEntryMode)
-    alert("Your request has been submitted and you will be contacted shortly.");
-    window.location.href = "$portalPath/home";
-#else
-    window.location.reload();
-#end
+function truncate(text, length, ellipsis) {
+    length=length||25;
+    if(text.length<length){ return text; }
+    for(var i=length-1;text.charAt(i)!=" ";i--){ length--; }
+    return text.substr(0,length)+(ellipsis||"...");
+}
+
+function srSubmitFunc(widgetForm,formData){
+    function failed(msg){
+        widgets.messageBox(
+            "Sorry, an error occurred processing your request. Please try again."+(msg?"\n"+msg:""),
+            function(){
+                $("#submitButton,#cancelButton").removeAttr("disabled");
+                $("#loading").hide();
+            },
+            "Error");
+    }
+    if(widgetForm.validator.isOkToSubmit()){
+        $("#submitButton,#cancelButton").attr("disabled", "disabled");
+        $("#loading").show();
+        var title = truncate(formData.submitDescription);
+        var description = formData.submitDescription;
+        var postData = jQuery.extend(formData,{
+            ajax: true,
+            func: "create-new",
+            packageType: "dataset",
+            title: title,
+            description: description
+        })
+        jQuery.ajax({
+            type: "POST",
+            url: "$portalPath/actions/packaging.ajax",
+            data: postData,
+            dataType: "json",
+            success: function(packageData){
+                function updateWorkflow(){
+                    if(packageData.status=="ok"){
+                        var oid=packageData.url||"";
+                        oid=oid.replace("$portalPath/workflow/", "");
+                        var postData2 = jQuery.extend(postData,{
+                            func: "update-package-meta-deposit",
+                            oid: oid
+                        });
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "$portalPath/actions/workflow.ajax",
+                            data: postData2,
+                            dataType: "json",
+                            success: function(workflowData){
+                                if(workflowData.ok){
+                                    $("#submitButton,#cancelButton").removeAttr("disabled");
+                                    $("#loading").hide();
+                                    widgets.messageBox(
+                                        "Your request has been submitted and you will be contacted shortly.",
+                                        function(){ window.location.href="$portalPath/home"; },
+                                        "Submitted");
+                                }else{
+                                    failed(workflowData.error);
+                                }
+                            },
+                            error: function(req){
+                                failed(req.responseText);
+                            }
+                        });
+                    }else{
+                        failed();
+                    }
+                }
+                setTimeout(updateWorkflow, 1500);
+            },
+            error: function(req){
+                failed(req.responseText);
+            }
+        });
+    }
 }
 </script>

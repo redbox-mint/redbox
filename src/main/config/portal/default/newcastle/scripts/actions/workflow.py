@@ -161,6 +161,7 @@ class WorkflowData(DefaultWorkflowData):
         return files
 
     def __updateWorkflow(self):
+        result = { "error":"An unknown error has occurred" }
         # execute the workflow step templates, disregarding the resulting html
         if self.prepareTemplate():
             # renderTemplate requires all formData, not just local
@@ -168,10 +169,14 @@ class WorkflowData(DefaultWorkflowData):
             self.localFormData = self.formData
             self.renderTemplate()
             self.localFormData = tempFormData
-        # Notify our subscribers
-        oid = self.getOid()
-        self.sendMessage(oid, "Save")
-        return self.__toJson({ "ok":"Submitted OK", "oid": oid })
+            # Notify our subscribers
+            oid = self.getOid()
+            self.sendMessage(oid, "Save")
+            result = { "ok":"Workflow updated", "oid":oid }
+        else:
+            self.log.debug(self.errorMsg)
+            result = { "error": self.errorMsg }
+        return self.__toJson(result)
 
     def __toJson(self, dataDict):
         return JsonSimple(JsonObject(dataDict))
