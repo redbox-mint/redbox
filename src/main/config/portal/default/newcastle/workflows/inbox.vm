@@ -72,14 +72,16 @@ function srSubmitFunc(widgetForm,formData){
             },
             "Error");
     }
+    var postData = jQuery.extend(formData,{
+        ajax: true,
+        func: "update-package-meta-deposit",
+        oid: "$self.oid"
+    });
+    delete postData.metaList;
     jQuery.ajax({
         type: "POST",
         url: "$portalPath/actions/workflow.ajax",
-        data: jQuery.extend(formData,{
-            ajax: true,
-            func: "update-package-meta-deposit",
-            oid: "$self.oid"
-        }),
+        data: postData,
         success: function(workflowData){
             if(workflowData.ok){
                 $("#submitButton,#deleteButton").removeAttr("disabled");

@@ -85,7 +85,7 @@ function srSubmitFunc(widgetForm,formData){
             packageType: "dataset",
             title: title,
             description: description
-        })
+        });
         jQuery.ajax({
             type: "POST",
             url: "$portalPath/actions/packaging.ajax",
@@ -100,6 +100,7 @@ function srSubmitFunc(widgetForm,formData){
                             func: "update-package-meta-deposit",
                             oid: oid
                         });
+                        delete postData2.metaList;
                         jQuery.ajax({
                             type: "POST",
                             url: "$portalPath/actions/workflow.ajax",
