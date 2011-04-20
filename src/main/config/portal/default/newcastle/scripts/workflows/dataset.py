@@ -155,7 +155,17 @@ class DatasetData:
         json = package.getJsonObject()
         json.put("dc:title", title)
         json.put("dc:abstract", description)
-        return package.toString(True)
+        ## fix newlines
+        for key in json:
+            if key != "metaList":
+                value = json.get(key)
+                if value and value.find("\n"):
+                    value = value.replace("\n", "\\n")
+                    json.put(key, value)
+                    ##self.log.info("****** %s=%s" % (key,value))
+        jsonStr = package.toString(True)
+        ##self.log.info(" ******** jsonStr: %s" % jsonStr)
+        return jsonStr
 
     ### Supports form rendering, not involved in AJAX
     def getAttachedFiles(self):
