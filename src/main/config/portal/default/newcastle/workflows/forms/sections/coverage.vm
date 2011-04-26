@@ -109,7 +109,6 @@ $(function(){
                     qs: function() {
                         var userInput = elem.val();
                         var commaPos = userInput.indexOf(",");
-                        console.log(commaPos);
                         if(commaPos!=-1){
                             userInput = userInput.substring(0,commaPos);
                         }
