@@ -58,6 +58,14 @@ var packageData = {
                                     mapElem.attr("href", uri).show();
                                 }
                             });
+                            // use handle
+                            $("#url\\.useRecordId:checked").each(function() {
+                                var vitalHandle = "$!self.handleUri";
+                                if(vitalHandle!=""){
+                                    $("#url").val(vitalHandle);
+                                }
+                                $("#url").attr("readonly", "readonly");
+                            });
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);

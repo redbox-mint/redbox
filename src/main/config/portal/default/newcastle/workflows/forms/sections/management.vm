@@ -21,10 +21,19 @@
         </label>
         #fieldTitle("url" "Identifier or URL" false)
         <div class="help-content" id="help-url">
-            For example: a persistent URI representing the location of the research
-            dataset/collection, registry/repository, catalogue or index.
+            <p>
+                For example: a persistent URI representing the location of the
+                research dataset/collection, registry/repository, catalogue or
+                index. If the "Data stored in this record" option is checked,
+                then the Identifier or URL field will be populated with the
+                Handle of the record retrieved from VITAL.
+            </p>
         </div>
-        <p><input type="text" size="60" placeholder="persistent identifier or url" id="url" class="vlocation" /></p>
+        <p>
+            <input type="text" size="60" placeholder="persistent identifier or url" id="url" class="vlocation" />
+            <input type="checkbox" id="url.useRecordId" />
+            <label for="url.useRecordId">Data stored in this record</label>
+        </p>
 
         #fieldTitle("physical_storage" "Stored At" false)
         <div class="help-content" id="help-physical_storage">
@@ -320,5 +329,14 @@ $(function() {
         }).live("blur", function() {
             $(this).search();
         });
+
+    $("#url\\.useRecordId").change(function(){
+        var checked = $(this).is(":checked");
+        if(checked){
+            $("#url").attr("readonly", "readonly");
+        }else{
+            $("#url").removeAttr("readonly");
+        }
+    });
 });
 </script>

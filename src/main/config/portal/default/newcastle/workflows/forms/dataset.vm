@@ -179,6 +179,7 @@
         license_other_url,
         ## management
         url,
+        url.useRecordId,
         physical_storage,
         location_notes,
         retention_period,
