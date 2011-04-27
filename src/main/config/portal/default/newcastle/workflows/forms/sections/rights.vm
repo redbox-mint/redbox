@@ -1,25 +1,35 @@
 <h3><a href="#rights">Rights</a></h3>
 <div id="rights" class="inputscreen">
-    #fieldTitle("access_conditions" "Access Conditions" true)
+    #fieldTitle("access_conditions" "Access Rights/Conditions" true)
     <div class="help-content" id="help-access_conditions">
-        Describe any conditions associated with granting access, eg.
-        Contact Chief Investigator to negotiate access to the data.
+        <p>
+            Information about access to the colleciton or service, including
+            access restrictions or embargoes based on privacy, security or
+            other policies.
+        </p>
+        <p>eg. Contact Chief Investigator to negotiate access to the data.</p>
+        <p>eg. Embargoed until 1 year after publication of the research.</p>
     </div>
     <p>
         <input type="text" size="60" id="access_conditions"
             placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
-        #requiredValidation("access_conditions" "Access conditions are required!")
+        #requiredValidation("access_conditions" "Access Rights/Conditions is required!")
     </p>
 
-    #fieldTitle("restrictions" "Restrictions, Embargoes or Usage Contraints" true)
+    #fieldTitle("restrictions" "Rights" true)
     <div class="help-content" id="help-restrictions">
-        Describe any access restrictions, eg. Embargoed until 1 year
-        after publication of the research.
+        Information about rights head in and over the collection such as
+        copyright, licences and other intellectual property rights, eg. This
+        dataset is made available under the Public Domain Dedication and
+        License v1.0 whose full text can be found at:
+        <a target="_blank" href="http://www.opendatacommons.org/licences/pddl/1.0/">
+            http://www.opendatacommons.org/licences/pddl/1.0/
+        </a>
     </div>
     <p>
         <input type="text" size="60" id="restrictions"
-            placeholder="eg. Embargoed until 1 year after publication of the research." />
-        #requiredValidation("restrictions" "Restrictions, Embargoes or Usage Constraints are required!")
+            placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" />
+        #requiredValidation("restrictions" "Rights is required!")
     </p>
 
     #fieldTitle("license_cc" "License - Creative Commons" false)
@@ -45,11 +55,14 @@
             http://www.opendefinition.org/licenses
         </a>
     </div>
-    <div class="group">
-        <label for="license_other_name">Name:</label>
-        <input type="text" size="60" placeholder="license name" id="license_other_name" />
-        <br />
-        <label for="license_other_url">URL:</label>
-        <input type="text" size="60" placeholder="license url" id="license_other_url" />
-    </div>
+    <table class="group">
+        <tr>
+            <th width="10%"><label for="license_other_name">Name:</label></th>
+            <td><input type="text" size="60" placeholder="license name" id="license_other_name" /></td>
+        </tr>
+        <tr>
+            <th><label for="license_other_url">URL:</label></th>
+            <td><input type="text" size="60" placeholder="license url" id="license_other_url" /></td>
+        </tr>
+    </table>
 </div>
