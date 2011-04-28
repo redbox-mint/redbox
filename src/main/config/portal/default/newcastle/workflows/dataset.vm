@@ -51,7 +51,7 @@ var packageData = {
                             // geonames
                             $(".autocomplete-geonames").each(function() {
                                 var baseId = $(this).attr("id");
-                                var uri = $("input[id="+baseId+".dc:identifier]").val().trim();
+                                var uri = jQuery.trim($("input[id="+baseId+".dc:identifier]").val());
                                 $(this).unautocomplete();
                                 if(uri){
                                     var mapElem = $(this).parent().parent().find(".geonames-map-link");

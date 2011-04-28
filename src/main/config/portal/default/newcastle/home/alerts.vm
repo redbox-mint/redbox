@@ -40,7 +40,7 @@
         var updatedCount = currentCount + added;
         countElem.text(updatedCount);
         var titleElem = stageElem.find(".titleText");
-        var label = titleElem.text().trim();
+        var label = jQuery.trim(titleElem.text());
         if (updatedCount == 0) {
             titleElem.html("<em>" + label + "</em>");
         } else {
