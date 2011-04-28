@@ -16,14 +16,15 @@
         <server.port>9000</server.port>
         <amq.port>9101</amq.port>
         <amq.stomp.port>9102</amq.stomp.port>
-        <server.url.base>http://localhost:${server.port}/redbox/</server.url.base>
+        <server.url.base>http://${ip.address}:${server.port}/redbox/</server.url.base>
         <mint.proxy.server>http://localhost:9001</mint.proxy.server>
-        <mint.proxy.url>${mint.proxy.server}/mint</mint.proxy.url>
         <dir.home>${project.home}/home</dir.home>
         <dir.portal>${project.home}/portal</dir.portal>
         <dir.server>${project.home}/server</dir.server>
         <dir.solr>${project.home}/solr</dir.solr>
         <dir.storage>${project.home}/storage</dir.storage>
+        <smtp.host>localhost</smtp.host>
+        <admin.email>admin@localhost</admin.email>
     </properties>
     <modules>
         <module>parent</module>
@@ -156,6 +157,8 @@
             <properties>
                 <server.url.base>http://novadev1.newcastle.usq.edu.au/redbox/</server.url.base>
                 <mint.proxy.server>http://novadev1.newcastle.edu.au</mint.proxy.server>
+                <smtp.host>smtp.newcastle.edu.aut</smtp.host>
+                <admin.email>dave.huthnance@newcastle.edu.au</admin.email>
             </properties>
         </profile>
         <profile>
@@ -169,37 +172,29 @@
             <properties>
                 <server.url.base>http://novadev2.newcastle.usq.edu.au/redbox/</server.url.base>
                 <mint.proxy.server>http://novadev2.newcastle.edu.au</mint.proxy.server>
+                <smtp.host>smtp.newcastle.edu.aut</smtp.host>
+                <admin.email>dave.huthnance@newcastle.edu.au</admin.email>
             </properties>
         </profile>
         <profile>
-            <!-- Greg's dev laptop -->
-            <id>greglaptop</id>
-            <activation>
-                <property>
-                    <!-- Windows doesn't use HOSTNAME -->
-                    <name>env.COMPUTERNAME</name>
-                    <value>AA09-00860</value>
-                </property>
-            </activation>
+            <id>no-config</id>
+            <!-- Used for creating an install - omits local build system settings -->
             <build>
                 <plugins>
-                    <!-- Get the machine's IP adress, Laptops move around -->
                     <plugin>
-                        <groupId>org.codehaus.groovy.maven</groupId>
-                        <artifactId>gmaven-plugin</artifactId>
-                        <version>1.0</version>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>validate</phase>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
                                 <goals>
-                                    <goal>execute</goal>
+                                    <goal>single</goal>
                                 </goals>
                                 <configuration>
-                                    <source>
-                                        java.net.InetAddress address = InetAddress.getByName("${env.COMPUTERNAME}");
-                                        project.properties["ip.address"] = address.getHostAddress();
-                                        println "Computer IP Address: " + project.properties["ip.address"];
-                                    </source>
+                                    <descriptors>
+                                        <descriptor>package.xml</descriptor>
+                                    </descriptors>
                                 </configuration>
                             </execution>
                         </executions>
@@ -207,11 +202,7 @@
                 </plugins>
             </build>
             <properties>
-                <server.port>19000</server.port>
-                <amq.port>19101</amq.port>
-                <amq.stomp.port>19102</amq.stomp.port>
-                <server.url.base>http://${ip.address}:${server.port}/redbox/</server.url.base>
-                <mint.proxy.server>http://${ip.address}:19001</mint.proxy.server>
+                <server.url.base>http://localhost:${server.port}/redbox/</server.url.base>
             </properties>
         </profile>
     </profiles>

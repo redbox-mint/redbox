@@ -2,7 +2,7 @@
     "version": "0.7.17",
     "configured": true,
     "urlBase": "${server.url.base}",
-    "email": "dave.huthnance@newcastle.edu.au",
+    "email": "DO_NOT_CHANGE",
     "sso": {
         "plugins": [],
         "urlExclusions": {
@@ -119,11 +119,11 @@
                     "name": "emailnotification",
                     "debug": false,
                     "from": {
-                        "email": "dave.huthnance@newcastle.edu.au",
+                        "email": "${admin.email}",
                         "name": "ReDBox"
                     },
                     "smtp": {
-                        "host": "smtp.newcastle.edu.au"
+                        "host": "${smtp.host}"
                     },
                     "defaults": {
                         "subject": "Notification",
