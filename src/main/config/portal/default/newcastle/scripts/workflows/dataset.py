@@ -1,9 +1,7 @@
-from au.edu.usq.fascinator.api import PluginManager
 from au.edu.usq.fascinator.api.indexer import SearchRequest
 from au.edu.usq.fascinator.common import FascinatorHome
 from au.edu.usq.fascinator.common import JsonObject
 from au.edu.usq.fascinator.common import JsonSimple
-from au.edu.usq.fascinator.common import JsonSimpleConfig
 from au.edu.usq.fascinator.common import MessagingServices
 from au.edu.usq.fascinator.common.solr import SolrResult
 
@@ -109,6 +107,16 @@ class DatasetData:
 
     def getCurrentStepLabel(self):
         return self._getWorkflowMetadata().getString("", ["label"])
+
+    ### Supports form rendering, not involved in AJAX
+    def getHandleUri(self):
+        vitalHandle = None
+        try:
+            vitalHandle = self._getObject().getMetadata().getProperty("vitalHandle")
+            #self.log.info("**** vitalHandle=%s" % vitalHandle)
+        except Exception,e:
+            self.log.warn("Failed to get vitalHandle! %s" % e.getMessage())
+        return vitalHandle or ""
 
     ### Supports form rendering, not involved in AJAX
     def getNextStepAcceptMessage(self):
