@@ -44,6 +44,11 @@
                 </label>
            </div>
            <div>
+                <label class="validation-err-msg" for="dc:type">
+                    A Type is required!
+                </label>
+           </div>
+           <div>
                 <label class="validation-err-msg" for="location">
                     A Location is required!
                 </label>

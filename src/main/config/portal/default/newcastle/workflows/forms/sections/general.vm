@@ -47,7 +47,6 @@
             </dd>
         </dl>
     </div>
-    #requiredValidation("dc:type" "The type is required!")
     <p>
         #mintSelectField("dc:type"
                          "dc:type.skos:prefLabel"
@@ -56,6 +55,7 @@
                          "label"
                          "results"
                          "")
+        #requiredValidation("dc:type" "The type is required!")
     </p>
 
     #fieldTitle("dc:created" "Date Record Created" false)
