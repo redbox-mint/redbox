@@ -64,7 +64,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td colspan="4">
                                     <label class="validation-err-msg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(blur,change,submit);
