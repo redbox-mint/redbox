@@ -282,6 +282,22 @@ function lookupDone(target,data){
     var p=target.parent();
     target.text(" | change");
     p.find(".identified-as-name").text(p.find("input.nl").val());
+
+    // fill in the fields
+    var lookupData=data["result-metadata"].all;
+    var baseId=p.find("input[id$=\\.dc\\:title]").attr("id").replace(".dc:title", "");
+    $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given Name"]);
+    $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family Name"]);
+    $("input[id='"+baseId+".association']").parents("td").find("option").each(function(c,e){
+        var option=$(e);
+        if(jQuery.trim(option.text())==lookupData["Division"]){
+            $("input[id='"+baseId+".association']")
+                .val(option.val()).trigger("onDataChanged");
+            $("input[id='"+baseId+".association.skos:prefLabel']")
+                .val(option.text()).trigger("onDataChanged");
+            return;
+        }
+    });
 }
 
 function lookupCleared(target,data){
