@@ -63,7 +63,7 @@ var packageData = {
                                 }
                             });
                             // use handle
-                            $("#url\\.useRecordId:checked").each(function() {
+                            $("#url_useRecordId:checked").each(function() {
                                 var vitalHandle = "$!self.handleUri";
                                 if(vitalHandle!=""){
                                     $("#url").val(vitalHandle);

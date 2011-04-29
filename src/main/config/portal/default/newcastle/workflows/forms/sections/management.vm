@@ -13,8 +13,9 @@
                                     jsTest(
                                         var i=ctx.find('input[id=url]').val();
                                         var s=ctx.find('input[id=physical_storage]').val();
+                                        var c=ctx.find('input[id=url_useRecordId]').is(':checked');
                                         i=jQ.trim(i); s=jQ.trim(s);
-                                        r=(i=='')&&(s=='');
+                                        r=(i=='')&&(s=='')&&(c==false);
                                     );
                                     liveFor(.vlocation);">
             The 'Identifier or URL' and/or 'Stored At' field is required!
@@ -31,8 +32,8 @@
         </div>
         <p>
             <input type="text" size="60" placeholder="persistent identifier or url" id="url" class="vlocation" />
-            <input type="checkbox" id="url.useRecordId" />
-            <label for="url.useRecordId">Data stored in this record</label>
+            <input type="checkbox" id="url_useRecordId" class="vlocation" />
+            <label for="url_useRecordId">Data stored in this record</label>
         </p>
 
         #fieldTitle("physical_storage" "Stored At" false)
@@ -330,7 +331,7 @@ $(function() {
             $(this).search();
         });
 
-    $("#url\\.useRecordId").change(function(){
+    $("#url_useRecordId").change(function(){
         var checked = $(this).is(":checked");
         if(checked){
             $("#url").attr("readonly", "readonly");
