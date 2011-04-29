@@ -10,7 +10,7 @@ export AMQ_PORT="${amq.port}"
 export AMQ_STOMP_PORT="${amq.stomp.port}"
 export SMTP_HOST="${smtp.host}"
 export ADMIN_EMAIL="${admin.email}"
-export MINT_SERVER="${mint.proxy.server}""
+export MINT_SERVER="${mint.proxy.server}"
 
 # set fascinator home directory
 if [ -z "$TF_HOME" ]; then
@@ -54,7 +54,7 @@ JETTY_OPTS="-Djetty.port=$LOCAL_PORT -Djetty.logs=$JETTY_LOGS -Djetty.home=$PROJ
 SOLR_OPTS="-Dsolr.solr.home=$PROJECT_HOME/solr -Djava.util.logging.config.file=$PROJECT_HOME/solr/logging.properties"
 
 # directories
-CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=$PROJECT_HOME/home/portal -Dstorage.home=$PROJECT_HOME/storage"
+CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=$PROJECT_HOME/portal -Dstorage.home=$PROJECT_HOME/storage"
 
 # additional settings
 EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT"
