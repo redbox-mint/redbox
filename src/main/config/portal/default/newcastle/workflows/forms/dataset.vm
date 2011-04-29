@@ -127,9 +127,11 @@
         dc:created,
         dc:modified,
         time_period,
-        location.0,
         location.0.type,
-        location.0.dc:identifier,
+        location.0.dcmi:name,
+        location.0.dcmi:east,
+        location.0.dcmi:north,
+        location.0.geonames:uri,
         dc:language,
         dc:language.skos:prefLabel,
         ## description

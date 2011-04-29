@@ -54,7 +54,7 @@
             <tr class="item-input-display">
                 <td class="sort-number"></td>
                 <td>
-                    <select id="location.0.type">
+                    <select class="locationType" id="location.0.type">
                         <option value="gml">OpenGIS Geography Markup Language</option>
                         <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
                         <option value="gpx">GPS Exchange Format</option>
@@ -69,10 +69,17 @@
                 </td>
                 <td>
                     <input type="text" size="60" placeholder="eg. coordinates or placename"
-                        id="location.0" class="autocomplete-geonames" />
-                    <input type="hidden" id="location.0.dc:identifier" />
+                        id="location.0.dcmi:name" class="autocomplete-geonames" />
+                    <input type="hidden" id="location.0.geonames:uri" />
+                    <input type="hidden" id="location.0.dcmi:east" />
+                    <input type="hidden" id="location.0.dcmi:north" />
+                    <div class="hidden coords" id="location.0.coords">
+                        <a class="map-link" target="_blank" href="">map</a>
+                        @ longitude: <span class="east"> </span>
+                        , latitude: <span class="north"> </span>
+                        | <a class="clear-link" href="#">clear</a>
+                    </div>
                 </td>
-                <td><a class="hidden geonames-map-link" target="_blank" href="">map</a></td>
                 <td class="delete-item"><a href="#">delete</a></td>
                 <td style="width: 100%;" />
             </tr>
@@ -80,8 +87,8 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><input type="button" class="button add-another-item" value="Add location" /></td>
-                <td colspan="4"></td>
+                <td><input type="button" class="button add-another-item" id="add-location" value="Add location" /></td>
+                <td colspan="3"></td>
             </tr>
         </tfoot>
     </table>
@@ -94,41 +101,75 @@ $(function(){
             id: items[0],
             uri: items[1],
             display: items[2],
-            latitude: items[3],
-            longitude: items[4]
+            north: items[3],
+            east: items[4]
         };
     }
 
+    $("#add-location").click(function(){
+        $("#location\\.0\\.coords").hide();
+    });
+
     $(".autocomplete-geonames").live("focus", function(){
         var elem = $(this);
-        $(this).unautocomplete();
-        $(this).autocomplete(
-            "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
-            {
-                extraParams: {
-                    qs: function() {
-                        var userInput = elem.val();
-                        var commaPos = userInput.indexOf(",");
-                        if(commaPos!=-1){
-                            userInput = userInput.substring(0,commaPos);
+        var baseId = elem.attr("id").replace(".dcmi:name", "");
+        elem.unautocomplete();
+        if($("select[id='"+baseId+".type']").val()=="text"){
+            elem.autocomplete(
+                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+                {
+                    extraParams: {
+                        qs: function() {
+                            var userInput = elem.val();
+                            var commaPos = userInput.indexOf(",");
+                            if(commaPos!=-1){
+                                userInput = userInput.substring(0,commaPos);
+                            }
+                            return "func=search&format=json&rows=25&q=" + escape(userInput);
                         }
-                        return "func=search&format=json&rows=25&q=" + escape(userInput);
+                    },
+                    formatItem: function(row) { return splitGeonamesData(row).display; },
+                    formatResult: function(row) { return splitGeonamesData(row).display; },
+                    width: "40em"
+                }).result(function(event, row) {
+                    if (row) {
+                        var data = splitGeonamesData(row);
+                        var coordsElem = $("div[id='"+baseId+".coords']");
+                        $("input[id='"+baseId+".geonames:uri']").val(data.uri);
+                        $("input[id='"+baseId+".dcmi:east']").val(data.east);
+                        $("input[id='"+baseId+".dcmi:north']").val(data.north);
+                        coordsElem.find(".east").text(data.east);
+                        coordsElem.find(".north").text(data.north);
+                        coordsElem.find(".map-link").attr("href", data.uri);
+                        coordsElem.show();
                     }
-                },
-                formatItem: function(row) { return splitGeonamesData(row).display; },
-                formatResult: function(row) { return splitGeonamesData(row).display; },
-                width: "40em"
-            }).result(function(event, row) {
-                var uriElem = $(this).next();
-                if (row) {
-                    var uri = splitGeonamesData(row).uri;
-                    uriElem.val(uri);
-                    var mapElem = $(this).parent().parent().find(".geonames-map-link");
-                    mapElem.attr("href", uri).show();
-                }
-            })
+                })
+            }
         }).live("blur", function(){
             $(this).search();
         });
+
+    $(".clear-link").live("click", function(){
+        var p = $(this).parent();
+        var baseId = p.attr("id").replace(".coords", "");
+        $("input[id='"+baseId+".geonames:uri']").removeAttr("value");
+        $("input[id='"+baseId+".dcmi:east']").removeAttr("value");
+        $("input[id='"+baseId+".dcmi:north']").removeAttr("value");
+        p.hide();
+    });
+
+    $(".locationType").live("change", function(e){
+        var elem=$(this);
+        var baseId = elem.attr("id").replace(".type", "");
+        var uriElem=$("input[id='"+baseId+".geonames:uri']");
+        if(elem.val()!="text" && uriElem.val()!=""){
+            if(confirm("Are you sure you want to clear the Geonames linked location?")){
+                $("input[id='"+baseId+".dcmi:name']").val("");
+                $("div[id='"+baseId+".coords'] .clear-link").click();
+            }else{
+                $(this).val("text");
+            }
+        }
+    });
 });
 </script>

@@ -50,12 +50,16 @@ var packageData = {
                             });
                             // geonames
                             $(".autocomplete-geonames").each(function() {
-                                var baseId = $(this).attr("id");
-                                var uri = jQuery.trim($("input[id="+baseId+".dc:identifier]").val());
-                                $(this).unautocomplete();
-                                if(uri){
-                                    var mapElem = $(this).parent().parent().find(".geonames-map-link");
-                                    mapElem.attr("href", uri).show();
+                                var baseId = $(this).attr("id").replace(".dcmi:name", "");
+                                var uri = $("input[id='"+baseId+".geonames:uri']").val();
+                                if(uri!=""){
+                                    var east = $("input[id='"+baseId+".dcmi:east']").val();
+                                    var north = $("input[id='"+baseId+".dcmi:north']").val();
+                                    var coordsElem = $("div[id='"+baseId+".coords']");
+                                    coordsElem.find(".east").text(east);
+                                    coordsElem.find(".north").text(north);
+                                    coordsElem.find(".map-link").attr("href", uri);
+                                    coordsElem.show();
                                 }
                             });
                             // use handle
