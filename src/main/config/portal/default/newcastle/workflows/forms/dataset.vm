@@ -317,6 +317,6 @@ function saveSuccess(){
 }
 
 function submitSuccess(){
-    window.location.href = "$portalPath/detail/$oid";
+    setTimeout(function(){ window.location.href = "$portalPath/detail/$oid"; }, 500);
 }
 </script>
