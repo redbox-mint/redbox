@@ -60,6 +60,7 @@ var jQ=$;
 function fileUploadFunc(widgetForm, data){
     if(!data.uploadFile){
         widgets.messageBox("Please select a file to be attached first!");
+        jQ("#add-a-file .submit-result").html("");
         return false;
     }
     data.oid="$oid";
@@ -97,7 +98,7 @@ function updateAttachedFiles(attachedFiles){
     }
     jQ.each(attachedFiles, function(c, d){
         tr=jQ("<tr/>");
-        h = "$portalPath/detail/"+d.id+"/"+d.filename+"?preview=true";
+        h = "$portalPath/detail/"+d.oid+"/"+d.filename+"?preview=true";
         tr.append("<td><a href='"+h+"' target='_blank'>"+d.filename+"</a></td>");
         tr.append("<td>"+format(d.attachment_type)+"</td>");
         tr.append("<td>"+format(d.access_rights)+"</td>");
@@ -107,7 +108,7 @@ function updateAttachedFiles(attachedFiles){
             var s=jQ('<td><span style="color:darkgreen;">deleting <img src="$portalPath/images/icons/loading.gif" /></span></td>');
             t.replaceWith(s);
             jQ.ajax({
-                url:url, data:{foid:d.id}, type:"POST", dataType:"json", timeout:5000,
+                url:url, data:{foid:d.oid}, type:"POST", dataType:"json", timeout:5000,
                 success:function(rJson, status){
                     if(rJson.ok){ updateAttachedFiles(rJson.attachedFiles); }
                     else{ s.replaceWith(t); }

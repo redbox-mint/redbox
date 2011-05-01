@@ -1,8 +1,0 @@
-#sectionHeading("Rights")
-<table class="meta">
-    #display("sources_used" "Third Party Data Sources")
-    #display("access_conditions" "Access Conditions")
-    #display("restrictions" "Restrictions, Embargoes or Usage Constraints")
-    #display("license_cc" "License - Creative Commons")
-    #display("license_other" "License - Other")
-</table>

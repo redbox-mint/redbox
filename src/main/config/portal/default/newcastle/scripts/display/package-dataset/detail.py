@@ -1,7 +1,12 @@
-from org.apache.commons.lang import StringEscapeUtils
-from org.apache.commons.io import IOUtils
-from java.io import StringWriter
-from java.util import LinkedHashMap
+from au.edu.usq.fascinator.api.indexer import SearchRequest
+from au.edu.usq.fascinator.common import JsonObject
+from au.edu.usq.fascinator.common.solr import SolrResult
+
+from java.io import ByteArrayInputStream, ByteArrayOutputStream
+from java.util import TreeMap, TreeSet
+
+from org.apache.commons.lang import StringEscapeUtils, WordUtils
+from org.json.simple import JSONArray
 
 class DetailData:
     def __init__(self):
@@ -10,8 +15,8 @@ class DetailData:
     def __activate__(self, context):
         self.page = context["page"]
         self.metadata = context["metadata"]
-        self.Services = context.get("Services")
-        self.formData = context.get("formData")
+        self.Services = context["Services"]
+        self.formData = context["formData"]
 
     def hasWorkflow(self):
         self.__workflowStep = self.metadata.getList("workflow_step_label")
@@ -30,39 +35,60 @@ class DetailData:
     def getWorkflowStep(self):
         return self.__workflowStep[0]
 
-    def getJsonMetadata(self, oid):
-        # get the TF package manifest
-        object = self.Services.storage.getObject(oid)
-        sourceId = object.getSourceId()
-        payload = object.getPayload(sourceId)
-        writer = StringWriter()
-        IOUtils.copy(payload.open(), writer)
-        json = writer.toString()
-        payload.close()
-        return json
+    def getFirst(self, field):
+        return self.escapeHtml(self.metadata.getFirst(field))
 
     def getList(self, baseKey):
         if baseKey[-1:] != ".":
             baseKey = baseKey + "."
-        valueMap = LinkedHashMap()
+        valueMap = TreeMap()
         metadata = self.metadata.getJsonObject()
         for key in [k for k in metadata.keySet() if k.startswith(baseKey)]:
             value = metadata.get(key)
             field = key[len(baseKey):]
             index = field[:field.find(".")]
-            #print "%s. '%s' = '%s'" % (index, key, value)
-            data = valueMap.get(index)
+            if index == "":
+                valueMapIndex = field[:key.rfind(".")]
+                dataIndex = "value"
+            else:
+                valueMapIndex = index
+                dataIndex = field[field.find(".")+1:]
+            #print "%s. '%s'='%s' ('%s','%s')" % (index, key, value, valueMapIndex, dataIndex)
+            data = valueMap.get(valueMapIndex)
+            #print "**** ", data
             if not data:
-                data = LinkedHashMap()
-                valueMap.put(index, data)
+                data = TreeMap()
+                valueMap.put(valueMapIndex, data)
             if len(value) == 1:
                 value = value.get(0)
-            data.put(field[field.find(".")+1:], value)
+            data.put(dataIndex, value)
         return valueMap
 
-    def escape(self, value):
-        return StringEscapeUtils.escapeHtml(value)
+    def getSortedKeySet(self):
+        return TreeSet(self.metadata.getJsonObject().keySet())
 
-    def test(self):
-        return "-test() scripts/display/default/detail.py-"
+    def escapeHtml(self, value):
+        if value:
+            return StringEscapeUtils.escapeHtml(value) or ""
+        return ""
 
+    def getAttachedFiles(self):
+        # Build a query
+        req = SearchRequest("attached_to:%s" % self.metadata.get("oid"))
+        req.setParam("rows", "1000")
+        # Run a search
+        out = ByteArrayOutputStream()
+        self.Services.getIndexer().search(req, out)
+        result = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        # Process results
+        docs = JSONArray()
+        for doc in result.getResults():
+            attachmentType = self.escapeHtml(WordUtils.capitalizeFully(doc.getFirst("attachment_type").replace("-", " ")))
+            accessRights = self.escapeHtml(WordUtils.capitalizeFully(doc.getFirst("access_rights")))
+            entry = JsonObject()
+            entry.put("filename",        self.escapeHtml(doc.getFirst("filename")))
+            entry.put("attachment_type", attachmentType)
+            entry.put("access_rights",   accessRights)
+            entry.put("id",              self.escapeHtml(doc.getFirst("id")))
+            docs.add(entry)
+        return docs

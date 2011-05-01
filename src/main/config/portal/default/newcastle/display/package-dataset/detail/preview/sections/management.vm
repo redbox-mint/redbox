@@ -1,21 +1,92 @@
 #sectionHeading("Management")
-<table class="meta">
+<div class="meta">
+    <dl>
+        <dt>Location</dt>
+        <div class="group">
+            #set($useRecordId = $self.getFirst("url_useRecordId"))
+            #if("$!useRecordId"!="")<em>The data stored in this record.</em>#end
+            #displayFirst("url" "Identifier or URL")
+            #displayFirst("physical_storage" "Stored At")
+            #displayFirst("location_notes" "Notes")
+        </div>
+        #displayFirst("retention_period" "Retention Period")
+        #displayFirst("extent" "Extent or Quantity")
+        #displayFirst("disposal_date" "Disposal Date")
+        #displayList("data_owner" "Data Owner (IP)")
+        #displayFirst("data_custodian" "Data Custodian")
+        #displayFirst("data_affiliation.skos:prefLabel" "Data Affiliation")
+        #displayUrlList("funding" "Funding Body/s" "rdf:resource" "skos:prefLabel")
+        <dt>Grant Numbers</dt>
+        <dd>
+            #set($grantList = $self.getList("grant"))
+            <ol>
+            #foreach($key in $grantList.keySet())
+                #set($grant = $grantList.get($key))
+                #set($internal = $grant.get("uon:internal"))
+                <li>
+                    $self.escapeHtml($grant.get("grantNumber")),
+                    $self.escapeHtml($grant.get("skos:prefLabel"))
+                    #if("$!internal"!="")(Internal)#end
+                </li>
+            #end
+            </ol>
+        </dd>
+        #displayFirst("project_title" "Project Title")
+        #displayFirst("depositor" "Depositor")
+        #displayFirst("data_size" "Data Size")
+        #displayFirst("policy" "Institutional Data Management Policy")
+        <div class="group">
+            #displayFirst("management_plan" "Data Management Plan")
+            #displayFirst("management_plan_notes" "Notes")
+        </div>
+    </dl>
+</div>
+#*
+        ## management
+        url,
+        url_useRecordId,
+        physical_storage,
+        location_notes,
+        retention_period,
+        disposal_date,
+        extent,
+        data_owner.0,
+        data_custodian,
+        affiliation,
+        affiliation.skos:prefLabel,
+        grant.0.uon:internal,
+        grant.0.grantNumber,
+        grant.0.dc:identifier,
+        grant.0.skos:prefLabel,
+        funding.0.skos:prefLabel,
+        funding.0.rdf:resource,
+        project_title,
+        depositor,
+        data_size,
+        policy,
+        contracts,
+        management_plan,
+        management_plan_notes,
+
+#*
     #display("url" "Identifier or URL")
     #display("physical_storage" "Physical Storage")
     #display("retention_period" "Retention Period")
     #display("disposal_date" "Disposal Date")
-    #display("data_owner" "Data Owner (IP)")
+    #displayList("data_owner" "Data Owners (IP)")
     #display("data_custodian" "Data Custodian")
-    #display("affiliation.0.skos:prefLabel" "Affiliation")
+    #display("affiliation.skos:prefLabel" "Affiliation")
     <tr>
         <th>Grant Numbers</th>
         <td>
             #set($grantList = $self.getList("grant"))
             #foreach($key in $grantList.keySet())
                 #set($grant = $grantList.get($key))
-                <span>[$grant.get("dc:identifier")] $grant.get("skos:prefLabel")</span><br/>
                 #set($internal = $grant.get("uon:internal"))
-                #if("$!internal" != "") (<em>Internally Funded</em>)#end
+                <span>
+                    #if("$!internal" != "")[Internal]#end
+                    $grant.get("grantNumber") | $grant.get("skos:prefLabel")
+                </span>
             #end
         </td>
     </tr>
@@ -28,25 +99,4 @@
     #display("contracts" "Contracts Associated with the Data or Project")
     #display("management_plan" "Location of Data Management Plan")
 </table>
-#*
-        url,
-        physical_storage,
-        retention_period,
-        disposal_date,
-        data_owner,
-        data_custodian,
-        affiliation.0,
-        affiliation.0.skos:prefLabel,
-        grant.0.uon:internal,
-        grant.0.rdf:resource,
-        grant.0.dc:identifier,
-        grant.0.skos:prefLabel,
-        funding.0,
-        project_title,
-        depositor,
-        data_size,
-        extent,
-        policy,
-        contracts,
-        management_plan
 *#

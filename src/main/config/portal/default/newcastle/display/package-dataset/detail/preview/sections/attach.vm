@@ -1,0 +1,22 @@
+#sectionHeading("Attachments")
+<div class="meta">
+    <dl>
+        <dd>
+            #set($attachedFiles = $self.getAttachedFiles())
+            #if($attachedFiles.isEmpty())
+            No files currently attached.
+            #else
+                <ol>
+                #foreach($file in $attachedFiles)
+                    #set($filename = $file.get("filename"))
+                    <li>
+                        <a href="$portalPath/detail/$file.get('id')/$filename?preview=true" target="_blank">$filename</a>
+                        ($file.get("attachment_type"), $file.get("access_rights"))
+                    </li>
+                #end
+                </ol>
+            #end
+        </dd>
+    </dl>
+</div>
+##[{"filename":"Pensive Parakeet.jpg","attachment_type":"data-file","access_rights":"public","id":"d968b3d3f87e2a7f623071e5a4a6ad2c"}]

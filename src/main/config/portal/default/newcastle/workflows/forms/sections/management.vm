@@ -96,8 +96,8 @@
         Centre for Clean Coal Technology, or School of Engineering.
     </div>
     <p>
-        #mintSelectField("affiliation.0"
-                         "affiliation.0.skos:prefLabel"
+        #mintSelectField("affiliation"
+                         "affiliation.skos:prefLabel"
                          "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
                          "rdf:about"
                          "rdfs:label"

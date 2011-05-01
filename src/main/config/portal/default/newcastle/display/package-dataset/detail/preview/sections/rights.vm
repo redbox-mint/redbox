@@ -1,0 +1,9 @@
+#sectionHeading("Rights")
+<div class="meta">
+    <dl>
+        #displayFirst("access_conditions" "Access Rights/Conditions")
+        #displayFirst("restrictions" "Rights")
+        #displayUrl("License - Creative Commons" "license_cc" "license_cc.skos:prefLabel")
+        #displayUrl("License - Other" "license_other_url" "license_other_name")
+    </dl>
+</div>

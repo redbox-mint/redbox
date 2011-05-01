@@ -1,35 +1,48 @@
 #macro(sectionHeading $heading)
 <span class="accordion-header">$heading</span>
 #end
-#macro(display $key $name)
-    <tr>
-        <th>$name</th>
-        <td>#displayValue($key)</td>
-    </tr>
+#macro(displayFirst $key $name)
+    <dt>$name</dt>
+    <dd>$self.getFirst($key)</dd>
 #end
-#macro(displayList $key $name)
-    <tr>
-        <th>$name</th>
-        <td>#displayValueList($key)</td>
-    </tr>
+#macro(displayUrl $name $hrefField $labelField)
+    <dt>$name</dt>
+    <dd><a href="$self.getFirst($hrefField)" target="_blank">$self.getFirst($labelField)</a></dd>
 #end
-#macro(displayValue $key)
-    #set($value = $metaMap.get($key))
-    #if($value.size())
-        #foreach($item in $value)
-            <span class="meta-value">$!page.escapeHtml($item)</span><br/>
+#macro(displayList $baseKey $name)
+    <dt>$name</dt>
+    <dd>
+        #set($prefixList = $self.getList($baseKey))
+        <ol>
+        #foreach($key in $prefixList.keySet())
+            #foreach($value in $prefixList.get($key))
+            <li>$self.escapeHtml($value)</li>
+            #end
         #end
-    #else
-        $!page.escapeHtml($value)
-    #end
+        </ol>
+    </dd>
 #end
-#macro(displayValueList $prefix)
-    #set($prefixList = $self.getList($prefix))
-    #foreach($key in $prefixList.keySet())
-        #foreach($value in $prefixList.get($key))
-            <span class="meta-value">$!page.escapeHtml($value)</span><br/>
+#macro(displayUrlList $key $name $hrefField $labelField)
+    <dt>$name</dt>
+    <dd>
+        #set($urlList = $self.getList($key))
+        <ol>
+        #foreach($key in $urlList.keySet())
+            #set($url = $urlList.get($key))
+            #set($href = $url.get($hrefField))
+            #set($label = $url.get($labelField))
+            #if("$!label"!="")
+                <li>
+                #if("$!href"!="")
+                    <a href="$self.escapeHtml($!href)">$self.escapeHtml($!label)</a>
+                #else
+                    $self.escapeHtml($!label)
+                #end
+                </li>
+            #end
         #end
-    #end
+        </ol>
+    </dd>
 #end
 #if($page.authentication.is_logged_in())
     #set ($vPid = $parent.getProperty("vitalPid"))
@@ -51,18 +64,25 @@
 </div>
 <div class="accordion">
     #parseDisplayTemplate("detail/preview/sections/general.vm")
+    #parseDisplayTemplate("detail/preview/sections/coverage.vm")
     #parseDisplayTemplate("detail/preview/sections/description.vm")
     #parseDisplayTemplate("detail/preview/sections/people.vm")
     #parseDisplayTemplate("detail/preview/sections/subject.vm")
-    #parseDisplayTemplate("detail/preview/sections/provenance.vm")
+    #parseDisplayTemplate("detail/preview/sections/rights.vm")
     #parseDisplayTemplate("detail/preview/sections/management.vm")
-    #parseDisplayTemplate("detail/preview/sections/admin.vm")
+    #parseDisplayTemplate("detail/preview/sections/attach.vm")
+    #if($page.authentication.is_logged_in())
+        #parseDisplayTemplate("detail/preview/sections/notes.vm")
+        #parseDisplayTemplate("detail/preview/sections/request.vm")
+    #end
+    #if($page.authentication.is_admin())
+        #parseDisplayTemplate("detail/preview/sections/admin.vm")
+    #end
 </div>
 <script type="text/javascript">
 $(function(){
     function addAccordion() {
         $(".accordion").accordion({
-            active:1,
             autoHeight:false,
             clearStyle:true,
             collapsible:false,

@@ -1,8 +1,9 @@
-#if($page.authentication.is_admin())
-    #sectionHeading("Admin")
-    <table class="meta admin">
-        #foreach($key in $metaMap.keySet())
-            #display($key $key)
-        #end
-    </table>
-#end
+#sectionHeading("Admin")
+<div class="meta">
+    <dl>
+    #foreach($key in $self.getSortedKeySet())
+        <dt>$self.escapeHtml($key)</dt>
+        <dd>$self.escapeHtml($self.metadata.get($key))</dd>
+    #end
+    </dl>
+</div>

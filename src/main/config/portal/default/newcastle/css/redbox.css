@@ -84,20 +84,11 @@ ul.main li ul li.selected-view a {
     padding: 0;
 }
 
-#content .general h2 {
-    background: #EEEEEE;
-    border-top: 1px solid silver;
-    font-size: 1.25em;
-    font-weight: bold;
-    padding-left: 0.7em;
-    margin-bottom: 0;
-}
-
 .ui-accordion .ui-accordion-content {
     margin-bottom: 0;
 }
 
-table.meta {
+table.meta, table.meta tbody {
     margin-top: 0;
     width: 100%;
 }
@@ -142,6 +133,11 @@ th.header h3 {
     font-size: 1.15em;
     padding-bottom: 0;
     padding-left: 1em;
+}
+
+.accordion-reset:hover {
+    background-color: #500005;
+    border: 1px solid #500005;
 }
 
 #delete-record-error {
@@ -303,3 +299,22 @@ input.button:hover, .inputscreens button:hover {
     background-color: #CCC;
 }
 */
+
+div.meta dl {
+    margin-bottom: 0;
+    padding: 8px;
+}
+
+div.meta dt {
+    font-weight: bold;
+}
+
+div.meta dd {
+    margin-bottom: 4px;
+    padding-left: 20px;
+}
+
+div.meta ol, div.meta ul {
+    margin-bottom: 4px;
+    padding: 0;
+}

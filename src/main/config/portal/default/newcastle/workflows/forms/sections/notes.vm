@@ -7,17 +7,15 @@
     <table class="input-list">
         <thead>
             <tr>
-                <th>Date/Username</th>
+                <th>Info</th>
                 <th colspan=3">Note</th>
             </tr>
         </thead>
         <tbody>
             <tr class="item-input-display notes">
                 <td style="vertical-align:middle;">
-                    <input type="text" id="notes.0.date" class="datetime" readonly="readonly"
-                        value="$self.getCurrentTime()" size="25" />
-                    <input type="text" id="notes.0.username" readonly="readonly"
-                        value="$page.authentication.get_username()" size="25" />
+                    <input type="text" id="notes.0.date" class="datetime" placeholder="date" readonly="readonly" size="25" />
+                    <input type="text" id="notes.0.username" class="username" placeholder="username" readonly="readonly" size="25" />
                 </td>
                 <td>
                     <textarea cols="80" rows="4" placeholder="description" id="notes.0.description" class="vnote"></textarea>
@@ -42,13 +40,20 @@ $(function(){
         while(ps.length<len){ ps = c + ps; }
         return ps;
     }
-
-    $(".add-note").live("click", function(){
+    function getDateTime(){
         var d = new Date();
-        var s = d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2)+"T"+
-                pad(d.getHours(),2)+":"+pad(d.getMinutes(),2)+":"+pad(d.getSeconds(),2)+"Z";
-        $(".notes .datetime:last").val(s);
-        return true;
+        var s = d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2)+" "+
+                pad(d.getHours(),2)+":"+pad(d.getMinutes(),2)+":"+pad(d.getSeconds(),2);
+        return s;
+    }
+    $(".vnote").live("change keydown", function(){
+        var baseId=$(this).attr("id").replace(".description","");
+        if($("input[id='"+baseId+".date']").val()==""){
+            $("input[id='"+baseId+".date']").val(getDateTime());
+        }
+        if($("input[id='"+baseId+".username']").val()==""){
+            $("input[id='"+baseId+".username']").val("$page.authentication.get_username()");
+        }
     });
 });
 </script>

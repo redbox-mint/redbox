@@ -1,0 +1,25 @@
+#sectionHeading("Notes")
+<div class="meta">
+    <dl>
+        <dd>
+            #set($noteList = $self.getList("notes"))
+            #if($noteList.isEmpty())
+                There are no notes for this record.
+            #else
+                <ul>
+                #foreach($key in $noteList.keySet())
+                    #set($note = $noteList.get($key))
+                    #set($noteDescription = $note.get("description"))
+                    #if("$!noteDescription"!="")
+                    <li>
+                        $self.escapeHtml($note.get("date")),
+                        ($self.escapeHtml($note.get("username")))
+                        $self.escapeHtml($noteDescription)
+                    </li>
+                    #end
+                #end
+                </ul>
+            #end
+        </dd>
+    </dl>
+</div>

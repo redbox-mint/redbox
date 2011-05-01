@@ -1,0 +1,11 @@
+#sectionHeading("Coverage")
+<div class="meta">
+    <dl>
+        <dt>Date Coverage</dt>
+        #set($dcCoverageFrom = $self.getFirst("dc:coverage.from"))
+        #set($dcCoverageTo = $self.getFirst("dc:coverage.to"))
+        <dd>$!dcCoverageFrom#if("$!dcCoverageTo"!="") to $dcCoverageTo#end</dd>
+        #displayFirst("time_period" "Time Period")
+        #displayUrlList("location" "Geospatial Location" "geonames:uri" "dcmi:name")
+    </dl>
+</div>

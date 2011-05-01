@@ -1,27 +1,43 @@
 #sectionHeading("People")
-<table class="meta">
-    <tr>
-        <th>Creators</th>
-        <td>
+<div class="meta">
+    <dl>
+        <dt>Creators</dt>
+        <dd>
             #set($creatorList = $self.getList("dc:creator.foaf:Person"))
+            <ol>
             #foreach($key in $creatorList.keySet())
                 #set($dcCreator = $creatorList.get($key))
-                <span>$dcCreator.get("foaf:givenName")&nbsp;$dcCreator.get("foaf:familyName")</span>
-                #if($dcCreator.get("pi") == 1), <em>Principal Investigator</em>#end
-                #if($dcCreator.get("coPi") == 1), <em>Co-Principal Investigator</em>#end
-                #set($association = $dcCreator.get("association.skos:prefLabel"))
-                #if($association), <em>$association</em>#end
-                <br/>
+                #set($dcCreatorAssociation = $dcCreator.get("association.skos:prefLabel"))
+                <li>
+                    $self.escapeHtml($dcCreator.get("foaf:givenName"))
+                    $self.escapeHtml($dcCreator.get("foaf:familyName"))#if("$!dcCreatorAssociation"!=""),#end
+                    $self.escapeHtml($!dcCreatorAssociation)
+                    #if($dcCreator.get("ci"))[CI]#end
+                    #if($dcCreator.get("pi"))[PI]#end
+                </li>
             #end
-        </td>
-    </tr>
-    <tr>
-        <th>Primary Contact</th>
-        <td>
-            <em>Name</em>: #displayValue("primary_contact_name")
-            <em>Email</em>: #displayValue("primary_contact_email")
-        </td>
-    </tr>
-    #display("supervisor" "Supervisor")
-    #displayList("collaborators" "Collaborators")
-</table>
+            </ol>
+        </dd>
+        <dt>Primary Contact</dt>
+        <dd>
+            #set($foafEmail = $self.getFirst("primaryContact.foaf:email"))
+            $self.getFirst("primaryContact.foaf:givenName")
+            $self.getFirst("primaryContact.foaf:familyName")#if("$!foafEmail"!=""),#end
+            $!foafEmail
+        </dd>
+        <dt>Supervisors</dt>
+        <dd>
+            #set($supervisorList = $self.getList("supervisor"))
+            <ol>
+            #foreach($key in $supervisorList.keySet())
+                #set($supervisor = $supervisorList.get($key))
+                <li>
+                    $self.escapeHtml($supervisor.get("foaf:givenName"))
+                    $self.escapeHtml($supervisor.get("foaf:familyName"))
+                </li>
+            #end
+            </ol>
+        </dd>
+        #displayList("collaborators" "Collaborators")
+    </dl>
+</div>

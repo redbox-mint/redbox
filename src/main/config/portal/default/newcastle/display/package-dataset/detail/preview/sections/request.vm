@@ -1,0 +1,12 @@
+#if("$!self.getFirst('submitted')"!="")
+    #sectionHeading("Request")
+    <div class="meta">
+        <dl>
+            #displayFirst("submitDate" "Date Submitted")
+            #displayFirst("submitDescription" "Description")
+            #displayFirst("contactName" "Contact Name")
+            #displayFirst("phoneNumber" "Phone Number")
+            #displayFirst("emailAddress" "Email Address")
+        </dl>
+    </div>
+#end

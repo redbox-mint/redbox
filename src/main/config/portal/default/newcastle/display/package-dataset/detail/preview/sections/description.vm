@@ -1,7 +1,9 @@
-#sectionHeading("Description and Relations")
-<table class="meta">
-    #display("dc:description" "Description")
-    #display("citations" "Publications")
-    #display("data" "Data")
-    #display("website" "Website")
-</table>
+#sectionHeading("Description")
+<div class="meta">
+    <dl>
+        #displayFirst("dc:description" "Description")
+        #displayUrlList("citations" "Related Publications" "value" "notes")
+        #displayUrlList("data" "Related Data" "value" "notes")
+        #displayUrlList("website" "Related Websites" "value" "notes")
+    </dl>
+</div>

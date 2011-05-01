@@ -20,7 +20,7 @@ class DatasetData:
     def __activate__(self, context):
         self.velocityContext = context
         self.log = self.vc("log")
-        self.log.debug("**** dataset.py")
+        ##self.log.debug("**** dataset.py")
 
         # We use these here in __activate__()
         formData = self.vc("formData")
@@ -56,7 +56,7 @@ class DatasetData:
         self.log.debug("func='%s', oid='%s', id='%s'" % (func, self.__oid, id))
         try:
             if func == "file-upload":
-                self.log.debug("**************\n  file-upload\n**************")
+                ##self.log.debug("**************\n  file-upload\n**************")
                 result = JsonObject()
                 result.put("ok", "file-upload")
                 result.put("oid", self.__oid)
@@ -191,7 +191,7 @@ class DatasetData:
             entry.put("filename",        doc.getFirst("filename"))
             entry.put("attachment_type", doc.getFirst("attachment_type"))
             entry.put("access_rights",   doc.getFirst("access_rights"))
-            entry.put("id",              doc.getFirst("id"))
+            entry.put("oid",             doc.getFirst("id"))
             docs.add(entry)
         return docs.toString()
 
