@@ -7,7 +7,7 @@
             <ol>
             #foreach($key in $forList.keySet())
                 #set($code = $forList.get($key))
-                <li>$self.escapeHtml($code.get("skos:prefLabel"))</li>
+                <li>$self.escapeHtml($code.get("skos:prefLabel")) ($self.getAnzsrcCode($code))</li>
             #end
             </ol>
         </dd>
@@ -17,7 +17,7 @@
             <ol>
             #foreach($key in $seoList.keySet())
                 #set($code = $seoList.get($key))
-                <li>$self.escapeHtml($code.get("skos:prefLabel"))</li>
+                <li>$self.escapeHtml($code.get("skos:prefLabel")) ($self.getAnzsrcCode($code))</li>
             #end
             </ol>
         </dd>

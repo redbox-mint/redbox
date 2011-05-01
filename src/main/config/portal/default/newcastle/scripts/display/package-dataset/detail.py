@@ -92,3 +92,7 @@ class DetailData:
             entry.put("id",              self.escapeHtml(doc.getFirst("id")))
             docs.add(entry)
         return docs
+
+    def getAnzsrcCode(self, code):
+        uri = code.get("rdf:resource")
+        return uri[uri.rfind("/")+1:]
