@@ -96,19 +96,21 @@
         </div>
     </p>
 
-    #fieldTitle("deleteAgreement" "Delete" false)
-    <div class="help-content" id="help-deleteAgreement">
-        Remove the record completely from ReDBox. Note that any records already
-        published to VITAL will remain in VITAL.
-    </div>
-    <p>
-        <input id="deleteAgreement" type="checkbox" />
-        <label id="deleteAgreementLabel" for="deleteAgreement">
-            I understand that deleting this record is <strong>permanent</strong> and cannot be undone.
-        </label>
-        <input type="button" class="button" id="delete-record" disabled="disabled" value="Delete" />
-        <p id="delete-record-error"></p>
-    </p>
+    #if($stage != "live")
+        #fieldTitle("deleteAgreement" "Delete" false)
+        <div class="help-content" id="help-deleteAgreement">
+            Remove the record completely from ReDBox. Note that any records already
+            published to VITAL will remain in VITAL.
+        </div>
+        <p>
+            <input id="deleteAgreement" type="checkbox" />
+            <label id="deleteAgreementLabel" for="deleteAgreement">
+                I understand that deleting this record is <strong>permanent</strong> and cannot be undone.
+            </label>
+            <input type="button" class="button" id="delete-record" disabled="disabled" value="Delete" />
+            <p id="delete-record-error"></p>
+        </p>
+    #end
 </div>
 
 <script type="text/javascript">
