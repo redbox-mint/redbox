@@ -80,11 +80,19 @@ class InboxData:
         result = '{"ok":"Updated OK"}'
 
         if self.__formData.get("acceptOnly", "false") == "false":
+            requestFields = ["submitted",
+                             "workflow_source",
+                             "submitDate",
+                             "submitDescription",
+                             "contactName",
+                             "phoneNumber",
+                             "emailAddress"]
             # update from form data
             data = self.__requestData.getJsonObject()
             formFields = self.__formData.getFormFields()
             for formField in formFields:
-                data.put(formField, self.__formData.get(formField))
+                if formField in requestFields:
+                    data.put(formField, self.__formData.get(formField))
             description = self.__formData.get("submitDescription", "[No description]")
             data.put("title", truncate(description, 25))
             self.__updatePayload(self.__object.getSourceId(), data)
