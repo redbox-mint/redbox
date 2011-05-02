@@ -243,7 +243,6 @@ public class IndexQueueConsumer implements GenericListener {
                 Transformer transformer = PluginManager.getTransformer("jsonVelocity");
                 transformer.init(JsonSimpleConfig.getSystemFile());
                 transformer.transform(object, "{}");
-                object.close();
             } else {
                 // Index the object
                 log.info("Indexing object '{}'...", oid);
