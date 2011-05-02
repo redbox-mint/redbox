@@ -1,14 +1,26 @@
 #macro(dc1 $tag)
-<dc:${tag}>$util.encodeXml($util.get($item, "dc:${tag}"))</dc:${tag}>
+    #set ($value = $util.get($item, "dc:${tag}"))
+    #if ("$!value" != "")
+<dc:${tag}>$util.encodeXml($value)</dc:${tag}>
+    #end
 #end
 #macro(dc2 $tag $field)
-<dc:${tag}>$util.encodeXml($util.get($item, $field))</dc:${tag}>
+    #set ($value = $util.get($item, $field))
+    #if ("$!value" != "")
+<dc:${tag}>$util.encodeXml($value)</dc:${tag}>
+    #end
 #end
 #macro(dc3 $data $tag $field)
-<dc:${tag}>$util.encodeXml($data.get($field))</dc:${tag}>
+    #set ($value = $data.get($field))
+    #if ("$!value" != "")
+<dc:${tag}>$util.encodeXml($value)</dc:${tag}>
+    #end
+#end
+#macro(dcData $tag $data)
+<dc:${tag}>$util.encodeXml($data)</dc:${tag}>
 #end
 #macro(dcList $tag $baseKey $label)
-    #set($valueMap = $util.getList($item, "dc:${tag}.${baseKey}"))
+    #set($valueMap = $util.getList($item, $baseKey))
     #foreach($key in $valueMap.keySet())
         #set($values = $valueMap.get($key))
         #if("$!label" == "")
@@ -25,27 +37,49 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
 #set($handle = $util.getMetadata($object, "vitalHandle"))
-#if("!$handle" != "")
+#if("$!handle" != "")
 <dc:identifier>$handle</dc:identifier>
 #end
 #dc1("title")
-#dc1("description")
 #dc1("type")
-#dc1("created")
-#dc1("modified")
+#dc2("date", "dc:created")
 #dc1("language")
-#dc2("language" "dc:language.skos:prefLabel")
-#set($creatorList = $util.getList($item, "dc:creator.foaf:Person"))
-#foreach($key in $creatorList.keySet())
-    #set($creator = $creatorList.get($key))
-    #set($givenName = $creator.get("foaf:givenName").trim())
-    #set($familyName = $creator.get("foaf:familyName").trim())
-    <dc:creator>$util.encodeXml("${givenName} ${familyName}")</dc:creator>
-    #dc3($creator "relation" "dc:identifier")
-    #dc3($creator "relation" "association")
-    #dc3($creator "relation" "association.skos:prefLabel")
+
+## Coverage
+#set ($covFrom = $util.get($item, "dc:coverage.from"))
+#set ($covTo = $util.get($item, "dc:coverage.to"))
+#if ("$!covFrom" != "" || "$!covTo" != "")
+    #if ("$!covFrom" != "")
+        #if ("$!covTo" != "" && $covTo != $covFrom)
+            #set ($coverage = "${covFrom} to ${covTo}")
+        #else
+            #set ($coverage = "${covTo}")
+        #end
+    #else
+        #set ($coverage = "Until ${covTo}")
+    #end
+
+    #dcData("subject", $coverage)
 #end
-#dcList("subject" "keywords" "")
-#dcList("subject" "anzsrc:for" "skos:prefLabel")
-#dcList("subject" "anzsrc:seo" "skos:prefLabel")
+#dc2("subject", "time_period")
+
+## Description tab
+#dc1("description")
+#dcList("relation" "citations" "")
+#dcList("relation" "data" "")
+#dcList("relation" "website" "")
+
+## People
+#dc2("creator", "dc:creator.foaf:Person.1.dc:title")
+
+#dcList("subject" "dc:subject.anzsrc:for" "skos:prefLabel")
+#dcList("subject" "dc:subject.anzsrc:seo" "skos:prefLabel")
+#dcList("subject" "dc:subject.keywords" "")
+
+#dc2("rights", "access_conditions")
+#dc2("rights", "restrictions")
+#dc2("rights", "license_cc")
+#dc2("rights", "license_other_url")
+
+#dc2("contributor", "affiliation.0.skos:prefLabel")
 </oai_dc:dc>

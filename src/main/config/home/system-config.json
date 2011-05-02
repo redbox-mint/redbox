@@ -302,7 +302,7 @@
                     "schema": "urn:isbn:1-931666-33-4 http://eac.staatsbibliothek-berlin.de/schema/cpf.xsd",
                     "metadataNamespace": "urn:isbn:1-931666-33-4"
                 },
-                "rif_cs": {
+                "rif": {
                     "enabledInAllViews": false,
                     "enabledViews": ["default"],
                     "schema": "http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/registryObjects.xsd",
@@ -368,7 +368,7 @@
                     "versionable": true,
                     "retainIds": true
                 },
-                "rif_cs.xml": {
+                "rif.xml": {
                     "dsID": "RIF",
                     "label": "RIF-CS Metadata",
                     "status": "A",

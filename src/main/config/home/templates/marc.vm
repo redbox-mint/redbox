@@ -1,120 +1,110 @@
+#macro (openField $tag $ind1 $ind2)
+        <marc:datafield tag="$tag" ind1="$ind1" ind2="$ind2">
+#end
+
+#macro (closeField)
+        </marc:datafield>
+#end
+
+#macro (subField $code $value)
+            <marc:subfield code="$code">$value</marc:subfield>
+#end
 
 #macro (showElementMarc $field $tagNumber $ind1 $ind2 $code $label $anzsrc)
-#set($valueMap = $util.getList($item, $field))
-#foreach($key in $valueMap.keySet())
-#set($value = $valueMap.get($key))
-#if ($label != "")
-#set($labelVal = $value.get($label))
-#if ($anzsrc == "anzsrc")
-#set($labelVal = $labelVal.split("-").get(0).trim())
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key))
+        #if ($label != "")
+            #set($labelVal = $value.get($label))
+            #if ($anzsrc == "anzsrc")
+                #set($labelVal = $labelVal.split("-").get(0).trim())
+            #end
+        #else
+            #set($labelVal = $value.get($key))
+        #end
+
+        #if ("$!value" == "")
+        #else
+            #openField($tagNumber, $ind1, $ind2)
+            #subField($code, $labelVal)
+            #closeField()
+        #end
+    #end
 #end
-#else
-#set($labelVal = $value.get($key))
-#end
-        <marc:datafield tag="$tagNumber" ind1="$ind1" ind2="$ind2">
-            <marc:subfield code="$code">$labelVal</marc:subfield>
-        </marc:datafield>
-        
-#end
+
+#macro (basicField $tag $ind1 $ind2 $subfield $index)
+    #set ($value = $util.get($item, $index))
+    #if ("$!value" != "")
+        #openField($tag, $ind1, $ind2)
+        #subField($subfield, $value)
+        #closeField()
+    #end
 #end
 
 <marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim
 http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
     <marc:record>
-##Collection type
-        <marc:datafield tag="655" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("dc:type")</marc:subfield>
-        </marc:datafield>
-        
-##Primary Title
-        <marc:datafield tag="245" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("dc:title")</marc:subfield>
-        </marc:datafield>
-        
-##Electronic location
-        <marc:datafield tag="856" ind1=" " ind2=" ">
-            <marc:subfield code="u">$urlBase/detail/$oid</marc:subfield>
-        </marc:datafield>
-    
-##Description full
-        <marc:datafield tag="520" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("dc:description")</marc:subfield>
-        </marc:datafield>
-    
-## <description type='rights'>
-##AccessRight
-        <marc:datafield tag="506" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("access_conditions")</marc:subfield>
-        </marc:datafield>
-        
-##Keywords
-        #showElementMarc("dc:subject.keywords", "653", " ", " ", "a", "", "")
-##for
-        #showElementMarc("dc:subject.anzsrc:for", "654", " ", " ", "a", "skos:prefLabel", "anzsrc")
-##seo
-        #showElementMarc("dc:subject.anzsrc:seo", "654", " ", " ", "a", "skos:prefLabel", "anzsrc")
-        
-##Quantity
-        <marc:datafield tag="300" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("extent")</marc:subfield>
-        </marc:datafield>
-        
-##Website
-        <marc:datafield tag="856" ind1=" " ind2=" ">
-            <marc:subfield code="u">$item.get("website")</marc:subfield>
-        </marc:datafield>
-        
-##Publication
-        #showElementMarc("citations", "856", " ", " ", "u", "", "")
-        
-##Data size
-        <marc:datafield tag="300" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("data_size")</marc:subfield>
-        </marc:datafield>
-        
-##Date created
-        <marc:datafield tag="260" ind1=" " ind2=" ">
-            <marc:subfield code="c">$item.get("dc:created")</marc:subfield>
-        </marc:datafield>
-        
-##External sources
-        <marc:datafield tag="787" ind1=" " ind2=" ">
-            <marc:subfield code="t">$item.get("sources_used")</marc:subfield>
-        </marc:datafield>
-        
-##Language
-        <marc:datafield tag="546" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("dc:language")</marc:subfield>
-        </marc:datafield>
-        
-##Retention Period
-        <marc:datafield tag="540" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("retention_period")</marc:subfield>
-        </marc:datafield>
-        
-##Temporal coverage
-        <marc:datafield tag="653" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("time_period")</marc:subfield>
-        </marc:datafield>
-        
-##Principal Investigator
-#set($creatorList = $util.getList($item, "dc:creator.foaf:Person"))
-#foreach($key in $creatorList.keySet())
-#set($creator = $creatorList.get($key))
-#if($creator.get("pi") == 1)
-        <marc:datafield tag="100" ind1=" " ind2=" ">
-            <marc:subfield code="a">$creator.get("foaf:givenName")&amp;nbsp;$creator.get("foaf:familyName")</marc:subfield>
-        </marc:datafield>
-#end
-#end
+        #basicField("245", "0", "0", "a", "dc:title")
+        #basicField("655", "#", "4", "a", "dc:type")
+        #basicField("260", "#", "#", "c", "dc:created")
 
-##Supervisor
-        <marc:datafield tag="720" ind1=" " ind2=" ">
-            <marc:subfield code="a">$item.get("supervisor")</marc:subfield>
-        </marc:datafield>
-        
-##Collaborators
-        #showElementMarc("collaborators", "500", " ", " ", "a", "", "")
+        ## Language. Set Source to ISO639-2
+        #set ($language = $util.get($item, "dc:language"))
+        #if ("$!language" != "")
+            #openField("041", "#", "7")
+            #subField("a", $value)
+            #subField("2", "iso639-2b")
+            #closeField()
+        #end
+
+        ## Coverage
+        #set ($covFrom = $util.get($item, "dc:coverage.from"))
+        #set ($covTo = $util.get($item, "dc:coverage.to"))
+        #if ("$!covFrom" != "" || "$!covTo" != "")
+            #if ("$!covFrom" != "")
+                #if ("$!covTo" != "" && $covTo != $covFrom)
+                    #set ($coverage = "${covFrom} to ${covTo}")
+                #else
+                    #set ($coverage = "${covTo}")
+                #end
+            #else
+                #set ($coverage = "Until ${covTo}")
+            #end
+
+            #openField("653", "0", "4")
+            #subField("a", $coverage)
+            #closeField()
+        #end
+        #basicField("653", "0", "4", "a", "time_period")
+
+        ## Description tab
+        #basicField("520", "#", "#", "a", "dc:description")
+        #showElementMarc("citations", "856", "4", "2", "u", "", "")
+        #showElementMarc("data", "856", "4", "2", "u", "", "")
+        #showElementMarc("website", "856", "4", "2", "u", "", "")
+
+        ## People
+        #basicField("100", "1", "#", "a", "dc:creator.foaf:Person.1.dc:title")
+        #basicField("720", "1", "#", "a", "supervisor.1.dc:title")
+
+        ## Subjects
+        #showElementMarc("dc:subject.anzsrc:for", "654", "0", "0", "a", "skos:prefLabel", "anzsrc")
+        #showElementMarc("dc:subject.anzsrc:seo", "654", "0", "0", "a", "skos:prefLabel", "anzsrc")
+        #showElementMarc("dc:subject.keywords", "653", "0", "0", "a", "", "")
+
+        ## Rights
+        #basicField("506", "#", "#", "a", "access_conditions")
+        #basicField("540", "#", "#", "a", "restrictions")
+        #basicField("540", "#", "#", "a", "license_cc")
+        #basicField("540", "#", "#", "a", "license_other_url")
+
+        ## Management
+        #openField("710", "1", "#")
+            #subField("a", "University of Newcastle")
+            #set ($affiliation = $util.get($item, "affiliation.0.skos:prefLabel"))
+            #if ("$!affiliation" != "")
+            #subField("b", $affiliation)
+            #end
+        #closeField()
     </marc:record>
-    
 </marc:collection>
