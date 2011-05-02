@@ -73,6 +73,18 @@ var packageData = {
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
+                    #if($self.getCurrentStep()=="retired")
+                    $(".inputscreens").find("input,select,textarea").each(function(c,e){
+                        if($(e).parents("#notes,#submit").length==0){
+                            $(e).attr("disabled", "disabled");
+                        }
+                    });
+                    $(".inputscreens").find(".input-list tfoot,.delete-item,.selection-add,.clear-item,.clear-link,.nameLookup-lookup,.add-attachment,.delete-attachment").each(function(c,e){
+                        if($(e).parents("#notes,#submit").length==0){
+                            $(e).hide();
+                        }
+                    });
+                    #end
                 }catch(e){
                     alert(e);
                 }

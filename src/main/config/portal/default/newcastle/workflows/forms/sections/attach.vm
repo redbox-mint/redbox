@@ -30,7 +30,7 @@
             </thead>
             <tbody id="attached-files">
             </tbody>
-            <tfoot>
+            <tfoot class="add-attachment">
                 <tr>
                     <td><input type="file" id="uploadFile" name="uploadFile" size="40" /></td>
                     <td>
@@ -46,7 +46,7 @@
                             <option value="private">Private</option>
                         </select>
                     </td>
-                    <td>
+                    <td >
                         <a href="#" id="add-file" class="form-fields-submit">attach</a>
                         <span class="submit-result"></span>
                     </td>
@@ -103,7 +103,7 @@ function updateAttachedFiles(attachedFiles){
         tr.append("<td>"+format(d.attachment_type)+"</td>");
         tr.append("<td>"+format(d.access_rights)+"</td>");
         // Delete link
-        var t=jQ('<td><a href="#">delete</a></td>');
+        var t=jQ('<td><a class="delete-attachment" href="#">delete</a></td>');
         t.find("a").click(function(){
             var s=jQ('<td><span style="color:darkgreen;">deleting <img src="$portalPath/images/icons/loading.gif" /></span></td>');
             t.replaceWith(s);
