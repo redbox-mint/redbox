@@ -14,7 +14,7 @@ export MINT_SERVER="${mint.proxy.server}"
 
 # set fascinator home directory
 if [ -z "$TF_HOME" ]; then
-	export TF_HOME="${dir.home}"
+	export TF_HOME="$PROJECT_HOME/home"
 fi
 
 # java class path
