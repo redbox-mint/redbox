@@ -79,7 +79,7 @@ var packageData = {
                             $(e).attr("disabled", "disabled");
                         }
                     });
-                    $(".inputscreens").find(".input-list tfoot,.delete-item,.selection-add,.clear-item,.clear-link,.nameLookup-lookup,.add-attachment,.delete-attachment").each(function(c,e){
+                    $(".inputscreens").find(".input-list tfoot,.drop-down-location,.delete-item,.selection-add,.clear-item,.clear-link,.nameLookup-lookup,.add-attachment,.delete-attachment").each(function(c,e){
                         if($(e).parents("#notes,#submit").length==0){
                             $(e).hide();
                         }
