@@ -197,7 +197,7 @@
         "sessionTimeout": "60",
         "skins": {
             "default": "default",
-            "order": [ "newcastle" ]
+            "order": [ "local", "redbox" ]
         },
         "caching": {
             "caches": {
