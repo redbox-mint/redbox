@@ -239,7 +239,7 @@ $(function() {
             "$portalPath/proxyGet?ns=Activities&autocomplete=true&fields=grant_number,dc:title,repository_name,dc:identifier",
             {
                 extraParams: {
-                    qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
+                    qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
                 },
                 formatItem: function(row) { return splitGrantData(row).display; },
                 formatResult: function(row) { return splitGrantData(row).id; },
@@ -267,7 +267,7 @@ $(function() {
             if (labelElem.val() == "" ||
                     confirm("The selected grant will be cleared.\nAre you sure you want to change it to an external grant?")) {
                 idElem.val("");
-                addAutocomplete(idElem);
+                addAutocompleteGrant(idElem);
                 labelElem
                     .addClass("label")
                     .attr("readonly", "readonly")
@@ -314,7 +314,7 @@ $(function() {
             "$portalPath/proxyGet?ns=Funding_Bodies&autocomplete=true&fields=dc:identifier,dc:title",
             {
                 extraParams: {
-                    qs: function() { return "count=25&searchTerms=" + escape(elem.val()); }
+                    qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
                 },
                 formatItem: function(row) { return splitFundingData(row).label; },
                 formatResult: function(row) { return splitFundingData(row).label; },
