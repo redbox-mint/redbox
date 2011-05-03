@@ -179,6 +179,7 @@ public class SecureStorage implements Storage {
                     if (now - lastUpdated > DEFAULT_EXPIRY) {
                         log.debug("Cache entry {} expired!", key);
                         entry = new CacheEntry();
+                        accessCache.put(key, entry);
                     } else {
                         log.debug("Cached entry {}={}", key, entry.isAllowed());
                         return entry.isAllowed();
