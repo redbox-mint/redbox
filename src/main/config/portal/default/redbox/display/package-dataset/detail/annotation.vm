@@ -1,0 +1,10 @@
+#if($page.authentication.is_logged_in())
+    #parseDisplayTemplate("detail/annotation/common.vm")
+    #parseDisplayTemplate("detail/annotation/comments.vm")
+    #parseDisplayTemplate("detail/annotation/tags.vm")
+    #if($page.authentication.is_admin())
+        #parseDisplayTemplate("detail/annotation/delete.vm")
+    #end
+    #parseDisplayTemplate("detail/annotation/setup.vm")
+    #parseDisplayTemplate("detail/annotation/custom.vm")
+#end
