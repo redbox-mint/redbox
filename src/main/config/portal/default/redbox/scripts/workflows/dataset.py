@@ -1,4 +1,5 @@
 from au.edu.usq.fascinator.api.indexer import SearchRequest
+from au.edu.usq.fascinator.api.storage import PayloadType
 from au.edu.usq.fascinator.common import FascinatorHome
 from au.edu.usq.fascinator.common import JsonObject
 from au.edu.usq.fascinator.common import JsonSimple
@@ -225,7 +226,15 @@ class DatasetData:
             try:
                 object = self._getObject()
                 sourceId = object.getSourceId()
-                payload = object.getPayload(sourceId)
+                payload = None
+                if sourceId is None:
+                    # HACK for objects that lose a Source payload
+                    for pid in object.getPayloadIdList():
+                        if pid.endswith(".tfpackage"):
+                            payload = object.getPayload(pid)
+                            payload.setType(PayloadType.Source)
+                else:
+                    payload = object.getPayload(sourceId)
                 inStream = payload.open()
             except Exception, e:
                 self.log.error("Error during package access", e)
