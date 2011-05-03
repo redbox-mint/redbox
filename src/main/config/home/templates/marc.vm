@@ -52,7 +52,7 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #set ($language = $util.get($item, "dc:language"))
         #if ("$!language" != "")
             #openField("041", "#", "7")
-            #subField("a", $value)
+            #subField("a", $language)
             #subField("2", "iso639-2b")
             #closeField()
         #end

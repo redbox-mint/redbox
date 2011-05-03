@@ -23,90 +23,126 @@
 #end
 
 #set($quote='"')
-#set($lang = "xml:lang=${quote}$item.get('dc:language')${quote}")
+#set($lang = "xml:lang=${quote}$util.get($item, 'dc:language')${quote}")
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd"> 
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd">
     <rif:registryObject group="University of Newcastle">
         <rif:key>$urlBase/detail/$oid</rif:key>
         <rif:originatingSource type="authoritative">$urlBase/detail/$oid</rif:originatingSource>
-        
-        #set($dateModified="")
-        #if ($item.get("dc:modified")!="")
-            #set($dateModified="dateModified=${quote}$util.getW3CDateTime($item.get('dc:modified'))$quote")
+
+        #set($dateModified = "")
+        #if ($util.get($item, 'dc:modified') != "")
+            #set($dateModified = "dateModified=${quote}$util.getW3CDateTime($util.get($item, 'dc:modified'))${quote}")
         #end
 
-        #set($dateAccessioned="")
-        #if ($item.get("dc:created")!="")
-            #set($dateAccessioned="dateAccessioned=${quote}$util.getW3CDateTime($item.get('dc:created'))$quote")
+        #set($dateAccessioned = "")
+        #if ($util.get($item, "dc:created") != "")
+            #set($dateAccessioned = "dateAccessioned=${quote}$util.getW3CDateTime($util.get($item, 'dc:created'))${quote}")
         #end
 
-        <rif:collection type="$item.get("dc:type")" $dateModified $dateAccessioned>
+        <rif:collection type="$util.get($item, "dc:type")" $dateModified $dateAccessioned>
 
             #set ($handle = $util.getMetadata($object, "vitalHandle"))
             #if ($handle != "")
             <rif:identifier type="uri">$handle</rif:identifier>
             #end
             <rif:name type="primary" $lang>
-                <rif:namePart type="full">$item.get("dc:title")</rif:namePart>
+                <rif:namePart type="full">$util.get($item, "dc:title")</rif:namePart>
             </rif:name>
-            
-            <rif:description type="full" $lang>$item.get("dc:description")</rif:description>
-            <rif:description type="accessRights" $lang>$item.get("access_conditions")</rif:description>
-            <rif:description type="rights" $lang>$item.get("restrictions")</rif:description>
+
+        #set ($value = $util.get($item, "dc:description"))
+        #if ("$!value" != "")
+            <rif:description type="full" $lang>$value</rif:description>
+        #end
+
+        #set ($value = $util.get($item, "access_conditions"))
+        #if ("$!value" != "")
+            <rif:description type="accessRights" $lang>$value</rif:description>
+        #end
+
+        #set ($value = $util.get($item, "restrictions"))
+        #if ("$!value" != "")
+            <rif:description type="rights" $lang>$value</rif:description>
+        #end
+
             ##<rif:location>
             ##    <rif:address>
             ##        <rif:electronic type="url">
-            ##            <rif:value>$item.get("url")</rif:value>
+            ##            <rif:value>$util.get($item, "url")</rif:value>
             ##        </rif:electronic>
             ##    </rif:address>
             ##</rif:location>
+
+        #set ($covFrom = $util.get($item, "dc:coverage.from"))
+        #set ($covTo = $util.get($item, "dc:coverage.to"))
+        #set ($covPeriod = $util.get($item, "time_period"))
+        #if ("$!covFrom" != "" || "$!covTo" != "" || "$!covPeriod" != "")
             <rif:coverage>
-                 #set($coverageFrom="")
-                 #if ($item.get("dc:coverage.from")!="")
-                    #set($coverageFrom=$util.getW3CDateTime($item.get("dc:coverage.from")))
-                 #end
-
-                 #set($coverageTo="")
-                 #if ($item.get("dc:coverage.to")!="")
-                    #set($coverageTo=$util.getW3CDateTime($item.get("dc:coverage.to")))
-                 #end
+                #if ("$!covFrom" != "" || "$!covTo" != "")
                 <rif:temporal>
-                    <rif:date type="dateFrom" dateFormat="W3CDTF">$coverageFrom</rif:date>
-                    <rif:date type="dateTo" dateFormat="W3CDTF">$coverageTo</rif:date>
+                    #if ("$!covFrom" != "")
+                    <rif:date type="dateFrom" dateFormat="W3CDTF">$util.getW3CDateTime($covFrom)</rif:date>
+                    #end
+                    #if ("$!covTo" != "")
+                    <rif:date type="dateTo" dateFormat="W3CDTF">$util.getW3CDateTime($covTo)</rif:date>
+                    #end
                 </rif:temporal>
+                #end
 
+                #if ("$!covPeriod" != "")
                 <rif:temporal>
-                    <rif:text>$item.get("time_period")</rif:text>
+                    <rif:text>$covPeriod</rif:text>
                 </rif:temporal>
+                #end
 ##                <rif:spatial type="{}" $lang>
 ##                    {co-ords}
 ##                </rif:spatial>
             </rif:coverage>
-            
+        #end
+
             #showElementRifCS("rif:subject" "dc:subject.keywords", " type=${quote}local${quote} $lang", "", "")
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "skos:prefLabel", "anzsrc")
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "skos:prefLabel", "anzsrc")
-            <rif:subject type="anzsrc-toa">$item.get("research_activity")</rif:subject>
-            
+
+        #set ($value = $util.get($item, "research_activity"))
+        #if ("$!value" != "")
+            <rif:subject type="anzsrc-toa">$value</rif:subject>
+        #end
+
             #showRelatedInfo("citations", "publication", "local")
-            <rif:relatedInfo type="website"><rif:identifier type="local">$item.get("website")</rif:identifier></rif:relatedInfo>
-            
+
+        #set ($value = $util.get($item, "website"))
+        #if ("$!value" != "")
+            <rif:relatedInfo type="website">
+                <rif:identifier type="local">$value</rif:identifier>
+            </rif:relatedInfo>
+        #end
+
+        #set ($value = $util.get($item, "data_owner"))
+        #if ("$!value" != "")
             <rif:relatedObject>
-                <rif:key>$item.get("data_owner")</rif:key>
+                <rif:key>$value</rif:key>
                 <rif:relation type="isOwnedBy"/>
             </rif:relatedObject>
-            
+        #end
+
+        #set ($value = $util.get($item, "data_custodian"))
+        #if ("$!value" != "")
             <rif:relatedObject>
-                <rif:key>$item.get("data_custodian")</rif:key>
+                <rif:key>$value</rif:key>
                 <rif:relation type="isCustodianOf"/>
             </rif:relatedObject>
-            
+        #end
+
+        #set ($value = $util.get($item, "primary_contact_name"))
+        #if ("$!value" != "")
             <rif:relatedObject>
-                <rif:key>$item.get("primary_contact_name")</rif:key>
+                <rif:key>$value</rif:key>
                 <rif:relation type="isPrimaryContactFor"/>
             </rif:relatedObject>
-            
+        #end
+
         </rif:collection>
-    </rif:registryObject> 
+    </rif:registryObject>
 </rif:registryObjects>
