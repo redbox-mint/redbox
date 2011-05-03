@@ -21,7 +21,7 @@
                     #if($count == 0)
                         <em>$stage.label</em>
                     #else
-                        <a class="stagelink" href="$portalPath/search" rel="$stage.label">$stage.label</a>
+                        <a class="stagelink" href="$portalPath/stage?stage=$stage.label" rel="$stage.label">$stage.label</a>
                     #end
                     </span>
                     <br/>
@@ -34,13 +34,3 @@
     </table>
 </div>
 #parseTemplate("wrapping/info-box-close.vm")
-<script type="text/javascript">
-$(function(){
-    $(".stagelink").live("click", function(){
-        var fq = 'workflow_step_label:"' + $(this).attr("rel") + '"';
-        setActionUri($(this).attr("href"));
-        doAction("add_fq", fq);
-        return false;
-    });
-});
-</script>

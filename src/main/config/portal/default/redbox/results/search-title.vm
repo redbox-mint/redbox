@@ -1,0 +1,20 @@
+#parseTemplate("elements/atom-link.vm")
+<div class="page-heading">
+    <div class="paging right">#parseTemplate("results/search-paging.vm")</div>
+    <div class="right">#parseTemplate("results/sorting.vm")</div>
+    <h2 id="page-heading">
+        <span id="search-title">Everything</span>
+        <span>$atomHtml</span>
+    </h2>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+$(function(){
+    var selectedStage = $(".facet-list a.selected[rel^=workflow_step_label]");
+    if(selectedStage.length>0){
+        var firstChild = $(selectedStage[0].firstChild);
+        $("#search-title").text(jQuery.trim(firstChild.text()));
+        selectedStage = $(selectedStage[0]);
+    }
+});
+</script>
