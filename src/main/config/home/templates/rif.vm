@@ -2,15 +2,16 @@
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key))
-    #if ($label != "")
-    #set($labelVal = $value.get($label))
-    #if ($anzsrc == "anzsrc")
-        #set($labelVal = $labelVal.split("-").get(0).trim())
-    #end
+        #if ($label != "")
+            #set($labelVal = $value.get($label))
+            #if ($anzsrc == "anzsrc")
+                #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
+                #set($labelVal = $labelVal.substring($lastIndex) )
+            #end
     <$tag$attr>$labelVal</$tag>
-    #else
+        #else
     <$tag$attr>$value.get($key)</$tag>
-    #end
+        #end
     #end
 #end
 
@@ -53,6 +54,25 @@
             <relation type="$relatedObjectType"/>
         </rif:relatedObject>
         #end
+    #end
+#end
+
+#macro(geoSpatial $field)
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        <rif:coverage>
+        #set($geoMap = $valueMap.get($key))
+        #set($type = $geoMap.get("type"))
+        #set($name = $geoMap.get("dcmi:name"))
+            <rif:spatial type="$type" $lang>$name</rif:spatial>
+        #if($type == "text")
+            #set($east = $geoMap.get("dcmi:east"))
+            #set($north = $geoMap.get("dcmi:north"))
+            #if ("$!east" != "" &&"$!north" != "")
+            <rif:spatial type="dcmiPoint" $lang>name=$name; east=$east; north=$north</rif:spatial>
+            #end
+        #end
+        </rif:coverage>
     #end
 #end
 
@@ -171,18 +191,11 @@
             </rif:coverage>
         #end
 
-##        #set ($spatialList = $util.getList($item, ""))
-##        #if ($spatialList.size() != 0)
-##            <rif:coverage>
-##                <rif:spatial type="{}" $lang>
-##                    {co-ords}
-##                </rif:spatial>
-##            </rif:coverage>
-##        #end
+            #geoSpatial("location")
 
             #showElementRifCS("rif:subject" "dc:subject.keywords", " type=${quote}local${quote} $lang", "", "")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "skos:prefLabel", "anzsrc")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "skos:prefLabel", "anzsrc")
+            #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
+            #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "rdf:resource", "anzsrc")
 
         #set ($value = $util.get($item, "research_activity"))
         #if ("$!value" != "")
