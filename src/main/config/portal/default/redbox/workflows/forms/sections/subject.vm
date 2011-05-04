@@ -73,3 +73,12 @@
                          "")
     </p>
 </div>
+<script type="text/javascript">
+$(function(){
+    $(".vdcsubjectkeywords").live("focus", function(){
+        var elem=$(this);
+        elem.unautocomplete();
+        elem.autocomplete("$portalPath/actions/keywords.ajax", { width: "32em" });
+    });
+});
+</script>

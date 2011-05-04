@@ -262,6 +262,9 @@ class IndexData:
                             facetField = facetField[:dot]
                         #print "Indexing DC field '%s':'%s'" % (field, facetField)
                         self.utils.add(self.index, facetField, value)
+                        # index keywords for lookup
+                        if field.startswith("dc:subject.keywords."):
+                            self.utils.add(self.index, "keywords", value)
 
         self.utils.add(self.index, "display_type", displayType)
 
