@@ -394,7 +394,8 @@
                 },
                 "labelField": "attachment_type",
                 "label": {
-                    "research-data": "Research Data",
+                    "data-file": "Data File",
+                    "readme": "Readme",
                     "supporting-material": "Supporting Material"
                 },
                 "controlGroup": "M",

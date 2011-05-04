@@ -17,8 +17,10 @@
 #macro(showRelatedInfo $field $relatedInfoType $identifierType)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key))
-        <rif:relatedInfo type="$relatedInfoType"><rif:identifier type="$identifierType">$value.get($key)</rif:identifier></rif:relatedInfo>
+        #set($value = $valueMap.get($key).get($key))
+        #if ("$!value" != "")
+        <rif:relatedInfo type="$relatedInfoType"><rif:identifier type="$identifierType">$value</rif:identifier></rif:relatedInfo>
+        #end
     #end
 #end
 
@@ -44,9 +46,8 @@
 #macro(findRelatedIdentifiers $field $relatedObjectType)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        <debug>$key</debug>
-        #if ($key.endsWith("dc:identifier"))
-            #set($value = $valueMap.get($key))
+        #set($value = $valueMap.get($key).get("dc:identifier"))
+        #if ("$!value" != "")
         <rif:relatedObject>
             <rif:key>$value</rif:key>
             <relation type="$relatedObjectType"/>
@@ -106,10 +107,20 @@
 
         #set ($value = $util.get($item, "access_conditions"))
         #if ("$!value" != "")
-            <rif:description type="rights" $lang>$value</rif:description>
+            <rif:description type="accessRights" $lang>$value</rif:description>
         #end
 
         #set ($value = $util.get($item, "restrictions"))
+        #if ("$!value" != "")
+            <rif:description type="rights" $lang>$value</rif:description>
+        #end
+
+        #set ($value = $util.get($item, "license_cc.skos:prefLabel"))
+        #if ("$!value" != "")
+            <rif:description type="rights" $lang>$value</rif:description>
+        #end
+
+        #set ($value = $util.get($item, "license_other_name"))
         #if ("$!value" != "")
             <rif:description type="rights" $lang>$value</rif:description>
         #end
@@ -181,12 +192,16 @@
             #showRelatedInfo("citations", "publication", "url")
             #showRelatedInfo("website", "website", "url")
 
-            ###findRelatedIdentifiers("dc:creator.foaf:Person", "hasCollector")
-            #findRelatedObject("dc:creator.foaf:Person.1.dc:identifier", "hasCollector")
+            #findRelatedIdentifiers("dc:creator.foaf:Person", "hasCollector")
             #findRelatedObject("primaryContact.dc:identifier", "isPrimaryContactFor")
             #findRelatedObject("data_owner.1", "isOwnedBy")
             #findRelatedObject("data_custodian", "isCustodianOf")
             #findRelatedObject("affiliation", "isManagedBy")
+
+            #set($valueMap = $util.getList($item, "data_owner"))
+            #foreach($key in $valueMap.keySet())
+                #outputRelatedObject($valueMap.get($key).get($key), "isOwnedBy")
+            #end
 
         </rif:collection>
     </rif:registryObject>

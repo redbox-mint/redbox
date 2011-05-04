@@ -708,7 +708,11 @@ public class VitalSubscriber implements Subscriber {
             String isActive = metadata.getProperty("vitalActive");
             if (isActive == null) {
                 log.info("Activating object in fedora: '{}'", oid);
-                fedora.getAPIM().modifyObject(vitalPid, "A", null, null,
+                String cutTitle = title;
+                if (cutTitle.length() > 250) {
+                    cutTitle = cutTitle.substring(0, 250) + "...";
+                }
+                fedora.getAPIM().modifyObject(vitalPid, "A", cutTitle, null,
                         "ReDBox activating object: '" + oid + "'");
                 // Record this so we don't do it again
                 metadata.setProperty("vitalActive", "true");
