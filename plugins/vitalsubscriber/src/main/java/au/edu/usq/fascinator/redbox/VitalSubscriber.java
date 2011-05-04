@@ -29,10 +29,9 @@ import au.edu.usq.fascinator.api.storage.Storage;
 import au.edu.usq.fascinator.api.storage.StorageException;
 import au.edu.usq.fascinator.api.subscriber.Subscriber;
 import au.edu.usq.fascinator.api.subscriber.SubscriberException;
-import au.edu.usq.fascinator.common.JsonConfig;
-import au.edu.usq.fascinator.common.JsonConfigHelper;
 import au.edu.usq.fascinator.common.JsonObject;
 import au.edu.usq.fascinator.common.JsonSimple;
+import au.edu.usq.fascinator.common.JsonSimpleConfig;
 import au.edu.usq.fascinator.common.MessagingServices;
 import au.edu.usq.fascinator.common.solr.SolrDoc;
 import au.edu.usq.fascinator.common.solr.SolrResult;
@@ -114,7 +113,7 @@ public class VitalSubscriber implements Subscriber {
     boolean valid = false;
 
     /** VITAL integration config */
-    private Map<String, JsonConfigHelper> pids;
+    private Map<String, JsonSimple> pids;
     private String attachDs;
     private String attachStatusField;
     private Map<String, String> attachStatuses;
@@ -172,7 +171,7 @@ public class VitalSubscriber implements Subscriber {
     @Override
     public void init(String jsonString) throws SubscriberException {
         try {
-            setConfig(new JsonConfigHelper(jsonString));
+            setConfig(new JsonSimpleConfig(jsonString));
         } catch (IOException e) {
             throw new SubscriberException(e);
         }
@@ -187,7 +186,7 @@ public class VitalSubscriber implements Subscriber {
     @Override
     public void init(File jsonFile) throws SubscriberException {
         try {
-            setConfig(new JsonConfigHelper(jsonFile));
+            setConfig(new JsonSimpleConfig(jsonFile));
         } catch (IOException ioe) {
             throw new SubscriberException(ioe);
         }
@@ -199,14 +198,18 @@ public class VitalSubscriber implements Subscriber {
      * @param config The configuration to use
      * @throws SubscriberException if fails to initialize
      */
-    private void setConfig(JsonConfigHelper config) throws SubscriberException {
+    private void setConfig(JsonSimpleConfig config) throws SubscriberException {
         // Test our Fedora connection... things are kind of useless without it
-        fedoraUrl = config.get("subscriber/vital/server/url");
-        fedoraNamespace = config.get("subscriber/vital/server/namespace");
-        fedoraUsername = config.get("subscriber/vital/server/username");
-        fedoraPassword = config.get("subscriber/vital/server/password");
-        String timeout = config.get("subscriber/vital/server/timeout", "15");
-        fedoraTimeout = Integer.parseInt(timeout);
+        fedoraUrl = config.getString(null,
+                "subscriber", "vital", "server", "url");
+        fedoraNamespace = config.getString(null,
+                "subscriber", "vital", "server", "namespace");
+        fedoraUsername = config.getString(null,
+                "subscriber", "vital", "server", "username");
+        fedoraPassword = config.getString(null,
+                "subscriber", "vital", "server", "password");
+        fedoraTimeout = config.getInteger(15,
+                "subscriber", "vital", "server", "timeout");
         if (fedoraUrl == null || fedoraNamespace == null ||
                 fedoraUsername == null || fedoraPassword == null) {
             throw new SubscriberException("VITAL Subscriber:" +
@@ -215,13 +218,13 @@ public class VitalSubscriber implements Subscriber {
         // This will throw the SubscriberException for
         //  us if there's something wrong
         fedoraConnect(true);
-        fedoraMessageTemplate = config.get("subscriber/vital/server/message",
-                DEFAULT_VITAL_MESSAGE);
+        fedoraMessageTemplate = config.getString(DEFAULT_VITAL_MESSAGE,
+                "subscriber", "vital", "server", "message");
 
         // Temp space
         boolean success = false;
-        String tempPath = config.get("subscriber/vital/tempDir",
-                System.getProperty("java.io.tmpdir"));
+        String tempPath = config.getString(System.getProperty("java.io.tmpdir"),
+                "subscriber", "vital", "tempDir");
         if (tempPath != null) {
             tmpDir = new File(tempPath);
 
@@ -251,14 +254,15 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Get the list of pids we are sending to VITAL
-        pids = config.getJsonMap("subscriber/vital/dataStreams");
+        pids = config.getJsonSimpleMap("subscriber", "vital", "dataStreams");
         if (pids == null || pids.isEmpty()) {
             throw new SubscriberException("VITAL Subscriber:" +
                     " No datastreams configured to export!");
         }
         // And attachment handling
-        String path = "subscriber/vital/attachments/";
-        attachDs = config.get(path + "dsID", "ATTACHMENT%02d");
+        JsonSimple attachmentsConfig = new JsonSimple(
+                config.getObject("subscriber", "vital", "attachments"));
+        attachDs = attachmentsConfig.getString("ATTACHMENT%02d", "dsID");
         Pattern p = Pattern.compile("%\\d*d");
         Matcher m = p.matcher(attachDs);
         if (!m.find()) {
@@ -267,15 +271,13 @@ public class VitalSubscriber implements Subscriber {
                     "incrementing integer, eg. '%d' or '%02d'. The value " +
                     "provided ('" + attachDs + "') is invalid");
         }
-        attachStatusField = config.get(path + "statusField");
-        attachStatuses = getStringMap(config, path + "status");
-        attachLabelField = config.get(path + "labelField");
-        attachLabels = getStringMap(config, path + "label");
-        attachControlGroup = config.get(path + "controlGroup");
-        String versionable = config.get(path + "versionable");
-        attachVersionable = Boolean.parseBoolean(versionable);
-        String retainIds = config.get(path + "retainIds", "true");
-        attachRetainIds = Boolean.parseBoolean(retainIds);
+        attachStatusField = attachmentsConfig.getString(null, "statusField");
+        attachStatuses = getStringMap(attachmentsConfig, "status");
+        attachLabelField = attachmentsConfig.getString(null, "labelField");
+        attachLabels = getStringMap(attachmentsConfig, "label");
+        attachControlGroup = attachmentsConfig.getString(null, "controlGroup");
+        attachVersionable = attachmentsConfig.getBoolean(false, "versionable");
+        attachRetainIds = attachmentsConfig.getBoolean(true, "retainIds");
         // To make life easier we're going to use the new JSON Library here
         attachAltIds = new LinkedHashMap();
         JsonSimple json;
@@ -305,23 +307,16 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Are we sending emails on errors?
-        emailQueue = config.get("subscriber/vital/failure/emailQueue");
+        emailQueue = config.getString(null,
+                "subscriber", "vital", "failure", "emailQueue");
         if (emailQueue != null) {
-            List<Object> emails = config.getList(
-                    "subscriber/vital/failure/emailAddress");
-            emailAddresses = new ArrayList();
-            for (Object email : emails) {
-                if (email instanceof String) {
-                    emailAddresses.add((String) email);
-                }
-            }
+            emailAddresses = config.getStringList(
+                    "subscriber", "vital", "failure", "emailAddress");
             if (emailQueue != null) {
-                emailSubject = config.get(
-                        "subscriber/vital/failure/emailSubject",
-                        DEFAULT_EMAIL_SUBJECT);
-                emailTemplate = config.get(
-                        "subscriber/vital/failure/emailTemplate",
-                        DEFAULT_EMAIL_TEMPLATE);
+                emailSubject = config.getString(DEFAULT_EMAIL_SUBJECT,
+                        "subscriber", "vital", "failure", "emailSubject");
+                emailTemplate = config.getString(DEFAULT_EMAIL_TEMPLATE,
+                        "subscriber", "vital", "failure", "emailTemplate");
             } else {
                 log.error("No email address provided!" +
                         " Reverting to errors using log files");
@@ -344,7 +339,7 @@ public class VitalSubscriber implements Subscriber {
         // Need our config file to instantiate plugins
         File sysFile = null;
         try {
-            sysFile = JsonConfig.getSystemFile();
+            sysFile = JsonSimpleConfig.getSystemFile();
         } catch (IOException ioe) {
             log.error("Failed to read configuration: {}", ioe.getMessage());
             throw new SubscriberException("VITAL Subscriber:" +
@@ -354,7 +349,7 @@ public class VitalSubscriber implements Subscriber {
         // Start our storage layer
         try {
             storage = PluginManager.getStorage(
-                    config.get("storage/type", "file-system"));
+                    config.getString("file-system", "storage", "type"));
             storage.init(sysFile);
         } catch (PluginException pe) {
             log.error("Failed to initialise plugin: {}", pe.getMessage());
@@ -365,7 +360,7 @@ public class VitalSubscriber implements Subscriber {
         // Instantiate an indexer for searching
         try {
             indexer = PluginManager.getIndexer(
-                    config.get("indexer/type", "solr"));
+                    config.getString("solr", "indexer", "type"));
             indexer.init(sysFile);
         } catch (PluginException pe) {
             log.error("Failed to initialise plugin: {}", pe.getMessage());
@@ -374,7 +369,8 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Do we have a template?
-        String templatePath = config.get("subscriber/vital/foxmlTemplate");
+        String templatePath = config.getString(null,
+                "subscriber", "vital", "foxmlTemplate");
         if (templatePath != null) {
             foxmlTemplate = new File(templatePath);
             if (!foxmlTemplate.exists()) {
@@ -388,7 +384,7 @@ public class VitalSubscriber implements Subscriber {
         // Wait conditions
         waitProperties = new ArrayList();
         Map<String, String> waitConditions = getStringMap(config,
-                "subscriber/vital/waitConditions");
+                "subscriber", "vital", "waitConditions");
         for (String type : waitConditions.keySet()) {
             String value = waitConditions.get(type);
             if (value == null) {
@@ -412,14 +408,13 @@ public class VitalSubscriber implements Subscriber {
      * @param path : The path on which the map is found.
      * @return Map<String, String>: The object map cast to Strings
      */
-    private Map<String, String> getStringMap(JsonConfigHelper json,
-            String path) {
-        Map<String, String> response = new HashMap();
-        Map<String, Object> objects = json.getMap(path);
-        for (String key : objects.keySet()) {
-            Object value = objects.get(key);
+    private Map<String, String> getStringMap(JsonSimple json, String... path) {
+        Map<String, String> response = new LinkedHashMap();
+        JsonObject object = json.getObject((Object[]) path);
+        for (Object key : object.keySet()) {
+            Object value = object.get(key);
             if (value instanceof String) {
-                response.put(key, (String) value);
+                response.put((String) key, (String) value);
             }
         }
         return response;
@@ -577,10 +572,10 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Workflow payload
-        JsonConfigHelper workflow;
+        JsonSimple workflow;
         try {
             Payload workflowPayload = object.getPayload("workflow.metadata");
-            workflow = new JsonConfigHelper(workflowPayload.open());
+            workflow = new JsonSimple(workflowPayload.open());
             workflowPayload.close();
         } catch (StorageException ex) {
             error("Error accessing workflow data from Object!\nOID: '"
@@ -595,7 +590,7 @@ public class VitalSubscriber implements Subscriber {
         // And for reindex calls... make sure it's live
         String type = param.get("eventType");
         if (type.equals("ReIndex")) {
-            String step = workflow.get("step");
+            String step = workflow.getString(null, "step");
             if (step == null || !step.equals("live")) {
                 // This is a 'quiet' fail, it's just not live
                 return;
@@ -603,7 +598,7 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Make sure we have a title
-        String title = workflow.get("formData/title");
+        String title = workflow.getString(null, "formData", "title");
         if (title == null) {
             error("No title provided in Object form data!\nOID: '" +
                     object.getId() + "'");
@@ -632,10 +627,10 @@ public class VitalSubscriber implements Subscriber {
      * @param workflow : The workflow data for the object
      * @param metadata : The Object's metadata
      */
-    private void processObject(DigitalObject object, JsonConfigHelper workflow,
+    private void processObject(DigitalObject object, JsonSimple workflow,
             Properties metadata) {
         String oid = object.getId();
-        String title = workflow.get("formData/title");
+        String title = workflow.getString(null, "formData", "title");
         FedoraClient fedora;
 
         try {
@@ -791,15 +786,13 @@ public class VitalSubscriber implements Subscriber {
             log.info("Processing PID to send to VITAL: '{}'", ourPid);
 
             // Get our configuration
-            JsonConfigHelper thisPid = pids.get(ourPid);
-            String dsId = thisPid.get("dsID", realPid);
-            String label = thisPid.get("label", dsId);
-            String status = thisPid.get("status", "A");
-            String controlGroup = thisPid.get("controlGroup", "X");
-            String strVersionable = thisPid.get("versionable", "true");
-            boolean versionable = Boolean.parseBoolean(strVersionable);
-            String strRetainIds = thisPid.get("retainIds", "true");
-            boolean retainIds = Boolean.parseBoolean(strRetainIds);
+            JsonSimple thisPid = pids.get(ourPid);
+            String dsId = thisPid.getString(realPid, "dsID");
+            String label = thisPid.getString(dsId, "label");
+            String status = thisPid.getString("A", "status");
+            String controlGroup = thisPid.getString("X", "controlGroup");
+            boolean versionable = thisPid.getBoolean(true, "versionable");
+            boolean retainIds = thisPid.getBoolean(true, "retainIds");
             String[] altIds = {};
             if (retainIds && datastreamExists(fedora, vitalPid, dsId)) {
                 altIds = getAltIds(fedora, vitalPid, dsId);
@@ -944,9 +937,9 @@ public class VitalSubscriber implements Subscriber {
 
             // Find our workflow/form data
             Payload wfPayload = attachment.getPayload("workflow.metadata");
-            JsonConfigHelper workflow = null;
+            JsonSimple workflow = null;
             try {
-                workflow = new JsonConfigHelper(wfPayload.open());
+                workflow = new JsonSimple(wfPayload.open());
             } catch (Exception ex) {
                 throw ex;
             } finally {
@@ -954,8 +947,8 @@ public class VitalSubscriber implements Subscriber {
             }
 
             // Find our payload
-            String pid = workflow.get("formData/filename",
-                    attachment.getSourceId());
+            String pid = workflow.getString(attachment.getSourceId(),
+                    "formData", "filename");
             log.info(" === Attachment PID: '{}'", pid);
             Payload payload = attachment.getPayload(pid);
 
@@ -969,13 +962,15 @@ public class VitalSubscriber implements Subscriber {
             String dsId = idMap.get(aOid).get("vitalDsId");
             String vitalOrder = idMap.get(aOid).get("vitalOrder");
             String label = dsId; // Default
-            String labelData = workflow.get("formData/" + attachLabelField);
+            String labelData = workflow.getString(null,
+                    "formData", attachLabelField);
             if (attachLabels.containsKey(labelData)) {
                 // We found a real value
                 label = attachLabels.get(labelData);
             }
             String status = "A"; // Default
-            String statusData = workflow.get("formData/" + attachStatusField);
+            String statusData = workflow.getString(null,
+                    "formData", attachStatusField);
             if (attachStatuses.containsKey(statusData)) {
                 // We found a real value
                 status = attachStatuses.get(statusData);
