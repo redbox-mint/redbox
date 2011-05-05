@@ -1,36 +1,54 @@
 <h3><a href="#rights">Rights</a></h3>
 <div id="rights" class="inputscreen">
-    #fieldTitle("access_conditions" "Access Rights/Conditions" true)
-    <div class="help-content" id="help-access_conditions">
-        <p>
-            Information about access to the collection or service, including
-            access restrictions or embargoes based on privacy, security or
-            other policies.
-        </p>
-        <p>eg. Contact Chief Investigator to negotiate access to the data.</p>
-        <p>eg. Embargoed until 1 year after publication of the research.</p>
+    #fieldTitle("rights_group" "Access/Rights" true)
+    <div class="help-content" id="help-rights_group">
+        Information about access and rights of the collection. One of these
+        fields must be filled in.
     </div>
-    <p>
-        <input type="text" size="60" id="access_conditions"
-            placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
-        #requiredValidation("access_conditions" "Access Rights/Conditions is required!")
-    </p>
+    <div class="group">
+        <label class="validation-err-msg"
+            for="url"
+            data-validation-rule="test(notEmpty);when(blur,change,submit);
+                                    jsTest(
+                                        var a=ctx.find('input[id=access_conditions]').val();
+                                        var b=ctx.find('input[id=restrictions]').val();
+                                        a=jQ.trim(a); b=jQ.trim(b);
+                                        r=(a=='')&&(b=='');
+                                    );
+                                    liveFor(.vrights);">
+            The 'Access Rights/Conditions' and/or 'Rights' field is required!
+        </label>
 
-    #fieldTitle("restrictions" "Rights" true)
-    <div class="help-content" id="help-restrictions">
-        Information about rights held in and over the collection such as
-        copyright, licences and other intellectual property rights, eg. This
-        dataset is made available under the Public Domain Dedication and
-        License v1.0 whose full text can be found at:
-        <a target="_blank" href="http://www.opendatacommons.org/licences/pddl/1.0/">
-            http://www.opendatacommons.org/licences/pddl/1.0/
-        </a>
+        #fieldTitle("access_conditions" "Access Rights/Conditions" false)
+        <div class="help-content" id="help-access_conditions">
+            <p>
+                Information about access to the collection or service, including
+                access restrictions or embargoes based on privacy, security or
+                other policies.
+            </p>
+            <p>eg. Contact Chief Investigator to negotiate access to the data.</p>
+            <p>eg. Embargoed until 1 year after publication of the research.</p>
+        </div>
+        <p>
+            <input type="text" size="60" id="access_conditions" class="vrights"
+                placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
+        </p>
+
+        #fieldTitle("restrictions" "Rights" false)
+        <div class="help-content" id="help-restrictions">
+            Information about rights held in and over the collection such as
+            copyright, licences and other intellectual property rights, eg. This
+            dataset is made available under the Public Domain Dedication and
+            License v1.0 whose full text can be found at:
+            <a target="_blank" href="http://www.opendatacommons.org/licences/pddl/1.0/">
+                http://www.opendatacommons.org/licences/pddl/1.0/
+            </a>
+        </div>
+        <p>
+            <input type="text" size="60" id="restrictions" class="vrights"
+                placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" />
+        </p>
     </div>
-    <p>
-        <input type="text" size="60" id="restrictions"
-            placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" />
-        #requiredValidation("restrictions" "Rights is required!")
-    </p>
 
     #fieldTitle("license_cc" "License - Creative Commons" false)
     <div class="help-content" id="help-license_cc">
