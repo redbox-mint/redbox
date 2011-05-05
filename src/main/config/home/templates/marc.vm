@@ -57,9 +57,60 @@
     #end
 #end
 
+#macro (creators $field)
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key).get("dc:title"))
+        #if ($velocityCount == 1)
+            #openField("100", "1", "#")
+        #else
+            #openField("700", "1", "#")
+        #end
+        #subField("a", $value)
+        #closeField()
+    #end
+#end
+
+#macro (supervisors $field)
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key).get("dc:title"))
+        #openField("720", "1", "#")
+        #subField("a", $value)
+        #closeField()
+    #end
+#end
+
+#macro (control008)
+    #set ($leader = "")
+    #set ($date = $util.get($item, "dc:created"))
+    #foreach($part in $date.split("-"))
+        #if ($velocityCount == 1)
+            #set ($part = $part.substring(2))
+            #set ($leader = "${leader}${part}")
+        #else
+            #set ($leader = "${leader}${part}")
+        #end
+    #end
+    #set ($langUri = $util.get($item, "dc:language"))
+    #if ("$!langUri" != "")
+        #set($lastIndex = $langUri.lastIndexOf('/') + 1 )
+        #set($lang = $langUri.substring($lastIndex) )
+    #else
+        #set($lang = "eng")
+    #end
+    ## http://www.loc.gov/marc/bibliographic/bd008a.html (All)
+    ## http://www.loc.gov/marc/bibliographic/bd008x.html (Mixed materials)
+    #set ($hash = '#')
+    #set ($leader = "${leader}|||||||||xx${hash}${hash}${hash}${hash}${hash}${hash}|${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${lang}${hash}|")
+    <marc:controlfield tag="008">$leader</marc:controlfield>
+#end
+
 <marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim
 http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
     <marc:record>
+        <marc:leader>00000nmi#a22000004u#4500</marc:leader>
+        #control008()
         #basicField("245", "0", "0", "a", "dc:title")
         #basicField("655", "#", "4", "a", "dc:type")
         #basicField("260", "#", "#", "c", "dc:created")
@@ -75,24 +126,6 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
             #closeField()
         #end
 
-        ## Coverage
-        #set ($covFrom = $util.get($item, "dc:coverage.from"))
-        #set ($covTo = $util.get($item, "dc:coverage.to"))
-        #if ("$!covFrom" != "" || "$!covTo" != "")
-            #if ("$!covFrom" != "")
-                #if ("$!covTo" != "" && $covTo != $covFrom)
-                    #set ($coverage = "${covFrom} to ${covTo}")
-                #else
-                    #set ($coverage = "${covTo}")
-                #end
-            #else
-                #set ($coverage = "Until ${covTo}")
-            #end
-
-            #openField("653", "0", "4")
-            #subField("a", $coverage)
-            #closeField()
-        #end
         #basicField("653", "0", "4", "a", "time_period")
 
         ## Description tab
@@ -102,8 +135,9 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #showElementMarc("website", "856", "4", "2", "u", "", "")
 
         ## People
-        #basicField("100", "1", "#", "a", "dc:creator.foaf:Person.1.dc:title")
-        #basicField("720", "1", "#", "a", "supervisor.1.dc:title")
+        ##basicField("100", "1", "#", "a", "dc:creator.foaf:Person.1.dc:title")
+        #creators("dc:creator.foaf:Person")
+        #supervisors("supervisor")
 
         ## Subjects
         #anzsrc("dc:subject.anzsrc:for", "FOR")

@@ -42,31 +42,22 @@
 #end
 #dc1("title")
 #dc1("type")
-#dc2("date", "dc:created")
+### Date
+#set ($dateFull = $util.get($item, "dc:created"))
+#if ("$!dateFull" != "")
+    #set($index = $dateFull.indexOf('-'))
+    #set($date = $dateFull.substring(0, $index))
+<dc:date>$util.encodeXml($date)</dc:date>
+#end
+
 ### Language
 #set ($langUri = $util.get($item, "dc:language"))
 #if ("$!langUri" != "")
-    #set($lastIndex = $langUri.lastIndexOf('/') + 1 )
-    #set($lang = $langUri.substring($lastIndex) )
+    #set($lastIndex = $langUri.lastIndexOf('/') + 1)
+    #set($lang = $langUri.substring($lastIndex))
 <dc:language>$util.encodeXml($lang)</dc:language>
 #end
 
-## Coverage
-#set ($covFrom = $util.get($item, "dc:coverage.from"))
-#set ($covTo = $util.get($item, "dc:coverage.to"))
-#if ("$!covFrom" != "" || "$!covTo" != "")
-    #if ("$!covFrom" != "")
-        #if ("$!covTo" != "" && $covTo != $covFrom)
-            #set ($coverage = "${covFrom} to ${covTo}")
-        #else
-            #set ($coverage = "${covTo}")
-        #end
-    #else
-        #set ($coverage = "Until ${covTo}")
-    #end
-
-    #dcData("subject", $coverage)
-#end
 #dc2("subject", "time_period")
 
 ## Description tab
