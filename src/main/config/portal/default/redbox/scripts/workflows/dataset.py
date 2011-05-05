@@ -1,8 +1,10 @@
+from au.edu.usq.fascinator.api import PluginManager
 from au.edu.usq.fascinator.api.indexer import SearchRequest
 from au.edu.usq.fascinator.api.storage import PayloadType
 from au.edu.usq.fascinator.common import FascinatorHome
 from au.edu.usq.fascinator.common import JsonObject
 from au.edu.usq.fascinator.common import JsonSimple
+from au.edu.usq.fascinator.common import JsonSimpleConfig
 from au.edu.usq.fascinator.common import MessagingServices
 from au.edu.usq.fascinator.common.solr import SolrResult
 
