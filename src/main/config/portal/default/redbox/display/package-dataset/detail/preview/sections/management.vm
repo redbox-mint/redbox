@@ -14,7 +14,7 @@
         #displayFirst("disposal_date" "Disposal Date")
         #displayList("data_owner" "Data Owner (IP)")
         #displayFirst("data_custodian" "Data Custodian")
-        #displayFirst("data_affiliation.skos:prefLabel" "Data Affiliation")
+        #displayFirst("affiliation.skos:prefLabel" "Data Affiliation")
         #displayUrlList("funding" "Funding Body/s" "rdf:resource" "skos:prefLabel")
         <dt>Grant Numbers</dt>
         <dd>
