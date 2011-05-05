@@ -236,20 +236,18 @@ public class IndexQueueConsumer implements GenericListener {
             String oid = config.getString(null, "oid");
             log.info("Received job, object id={}", oid);
 
-            if (config.getBoolean(false, "transform")) {
-                // Transform the object, to update our payloads
-                log.info("Transforming object '{}'...", oid);
-                DigitalObject object = StorageUtils.getDigitalObject(storage, oid);
-                Transformer transformer = PluginManager.getTransformer("jsonVelocity");
-                transformer.init(JsonSimpleConfig.getSystemFile());
-                transformer.transform(object, "{}");
-            } else {
-                // Index the object
-                log.info("Indexing object '{}'...", oid);
-                indexer.index(oid);
-                if (config.getBoolean(false, "commit")) {
-                    indexer.commit();
-                }
+            // Transform the object, to update our payloads
+            log.info("Transforming object '{}'...", oid);
+            DigitalObject object = StorageUtils.getDigitalObject(storage, oid);
+            Transformer transformer = PluginManager.getTransformer("jsonVelocity");
+            transformer.init(JsonSimpleConfig.getSystemFile());
+            transformer.transform(object, "{}");
+
+            // Index the object
+            log.info("Indexing object '{}'...", oid);
+            indexer.index(oid);
+            if (config.getBoolean(true, "commit")) {
+                indexer.commit();
             }
     } catch (JMSException jmse) {
             log.error("Failed to send/receive message: {}", jmse.getMessage());

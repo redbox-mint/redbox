@@ -43,7 +43,13 @@
 #dc1("title")
 #dc1("type")
 #dc2("date", "dc:created")
-#dc1("language")
+### Language
+#set ($langUri = $util.get($item, "dc:language"))
+#if ("$!langUri" != "")
+    #set($lastIndex = $langUri.lastIndexOf('/') + 1 )
+    #set($lang = $langUri.substring($lastIndex) )
+<dc:language>$util.encodeXml($lang)</dc:language>
+#end
 
 ## Coverage
 #set ($covFrom = $util.get($item, "dc:coverage.from"))

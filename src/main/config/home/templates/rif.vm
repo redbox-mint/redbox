@@ -20,27 +20,27 @@
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key).get($key))
         #if ("$!value" != "")
-        <rif:relatedInfo type="$relatedInfoType"><rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier></rif:relatedInfo>
+        <relatedInfo type="$relatedInfoType"><identifier type="$identifierType">$util.encodeXml($value)</identifier></relatedInfo>
         #end
     #end
 #end
 
 #macro(outputRelatedObject $data $relatedObjectType)
     #if ("$!data" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($data)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
-        </rif:relatedObject>
+        <relatedObject>
+            <key>$util.encodeXml($data)</key>
+            <relation type="$relatedObjectType"/>
+        </relatedObject>
     #end
 #end
 
 #macro(findRelatedObject $field $relatedObjectType)
     #set($value = $util.get($item, $field))
     #if ("$!value" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($value)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
-        </rif:relatedObject>
+        <relatedObject>
+            <key>$util.encodeXml($value)</key>
+            <relation type="$relatedObjectType"/>
+        </relatedObject>
     #end
 #end
 
@@ -49,10 +49,10 @@
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key).get("dc:identifier"))
         #if ("$!value" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($value)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
-        </rif:relatedObject>
+        <relatedObject>
+            <key>$util.encodeXml($value)</key>
+            <relation type="$relatedObjectType"/>
+        </relatedObject>
         #end
     #end
 #end
@@ -60,19 +60,19 @@
 #macro(geoSpatial $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        <rif:coverage>
+        <coverage>
         #set($geoMap = $valueMap.get($key))
         #set($type = $geoMap.get("type"))
         #set($name = $geoMap.get("dcmi:name"))
-            <rif:spatial type="$type" $lang>$util.encodeXml($name)</rif:spatial>
+            <spatial type="$type" $lang>$util.encodeXml($name)</spatial>
         #if($type == "text")
             #set($east = $geoMap.get("dcmi:east"))
             #set($north = $geoMap.get("dcmi:north"))
             #if ("$!east" != "" &&"$!north" != "")
-            <rif:spatial type="dcmiPoint" $lang>name=$util.encodeXml($name); east=$east; north=$north</rif:spatial>
+            <spatial type="dcmiPoint" $lang>name=$util.encodeXml($name); east=$east; north=$north</spatial>
             #end
         #end
-        </rif:coverage>
+        </coverage>
     #end
 #end
 
@@ -81,19 +81,19 @@
 #set ($handle = $util.getMetadata($object, "vitalHandle"))
 ####set($lang = "xml:lang=${quote}$util.get($item, 'dc:language')${quote}")
 #set($lang = "xml:lang=${quote}en${quote}")
-<rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
+<registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd">
-    <rif:registryObject group="University of Newcastle">
+    <registryObject group="University of Newcastle, Australia">
 
     ## Use handle if exists
     #if ($handle != "")
-        <rif:key>$handle</rif:key>
+        <key>$handle</key>
     #else
-        <rif:key>$urlBase/detail/$oid</rif:key>
+        <key>$urlBase/detail/$oid</key>
     #end
 
-        <rif:originatingSource type="authoritative">$urlBase/detail/$oid</rif:originatingSource>
+        <originatingSource>$urlBase</originatingSource>
 
         #set($dateModified = "")
         #if ($util.get($item, 'dc:modified') != "")
@@ -122,114 +122,107 @@
         ##
         ##  http://services.ands.org.au/documentation/rifcs/1.2.0/schemadocs/registryObjects.html
         #################
-        <rif:collection type="$util.get($item, "dc:type")" $dateModified $dateAccessioned>
+        <collection type="$util.get($item, "dc:type")" $dateModified $dateAccessioned>
 
         #set ($value = $util.get($item, "url_useRecordId"))
         #if ($value == "on" && $handle != "")
-            <rif:identifier>$handle</rif:identifier>
+            <identifier type="url">$handle</identifier>
         #else
-            <rif:identifier>$util.get($item, "url")</rif:identifier>
+            <identifier type="url">$util.get($item, "url")</identifier>
         #end
 
-            <rif:name type="primary" $lang>
-                <rif:namePart type="full">$util.encodeXml($util.get($item, "dc:title"))</rif:namePart>
-            </rif:name>
+            <name type="primary" $lang>
+                <namePart>$util.encodeXml($util.get($item, "dc:title"))</namePart>
+            </name>
 
         ## Location, use Handle as priority if requested
-            <rif:location>
-                <rif:address>
-                    <rif:electronic type="url">
+            <location>
+                <address>
+                    <electronic type="url">
         #set ($value = $util.get($item, "url_useRecordId"))
         #if ($value == "on" && $handle != "")
-                        <rif:value>$handle</rif:value>
+                        <value>$handle</value>
         #else
-                        <rif:value>$util.get($item, "url")</rif:value>
+                        <value>$util.get($item, "url")</value>
         #end
-                    </rif:electronic>
-                </rif:address>
+                    </electronic>
+                </address>
         #set ($value = $util.get($item, "physical_storage"))
         #if ("$!value" != "")
-                <rif:address>
-                    <rif:physical>
-                        <rif:addressPart type="text">$util.encodeXml($value)</rif:addressPart>
-                    </rif:physical>
-                </rif:address>
+                <address>
+                    <physical>
+                        <addressPart type="text">$util.encodeXml($value)</addressPart>
+                    </physical>
+                </address>
         #end
-            </rif:location>
+            </location>
 
         #set ($covFrom = $util.get($item, "dc:coverage.from"))
         #set ($covTo = $util.get($item, "dc:coverage.to"))
         #set ($covPeriod = $util.get($item, "time_period"))
         #if ("$!covFrom" != "" || "$!covTo" != "" || "$!covPeriod" != "")
-            <rif:coverage>
+            <coverage>
                 #if ("$!covFrom" != "" || "$!covTo" != "")
-                <rif:temporal>
+                <temporal>
                     #if ("$!covFrom" != "")
-                    <rif:date type="dateFrom" dateFormat="W3CDTF">$util.getDateTime($covFrom, $dateFormat)Z</rif:date>
+                    <date type="dateFrom" dateFormat="W3CDTF">$util.getDateTime($covFrom, $dateFormat)Z</date>
                     #end
                     #if ("$!covTo" != "")
-                    <rif:date type="dateTo" dateFormat="W3CDTF">$util.getDateTime($covTo, $dateFormat)Z</rif:date>
+                    <date type="dateTo" dateFormat="W3CDTF">$util.getDateTime($covTo, $dateFormat)Z</date>
                     #end
-                </rif:temporal>
+                </temporal>
                 #end
 
                 #if ("$!covPeriod" != "")
-                <rif:temporal>
-                    <rif:text>$util.encodeXml($covPeriod)</rif:text>
-                </rif:temporal>
+                <temporal>
+                    <text>$util.encodeXml($covPeriod)</text>
+                </temporal>
                 #end
-            </rif:coverage>
+            </coverage>
         #end
 
-            #geoSpatial("location")
+            ###geoSpatial("location")
 
             #findRelatedIdentifiers("dc:creator.foaf:Person", "hasCollector")
             #findRelatedObject("primaryContact.dc:identifier", "isPrimaryContactFor")
-            #findRelatedObject("data_owner.1", "isOwnedBy")
-            #findRelatedObject("data_custodian", "isCustodianOf")
             #findRelatedObject("affiliation", "isManagedBy")
 
-            #set($valueMap = $util.getList($item, "data_owner"))
-            #foreach($key in $valueMap.keySet())
-                #outputRelatedObject($valueMap.get($key).get($key), "isOwnedBy")
-            #end
-
-            #showElementRifCS("rif:subject" "dc:subject.keywords", " type=${quote}local${quote} $lang", "", "")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "rdf:resource", "anzsrc")
+            #showElementRifCS("subject" "dc:subject.keywords", " type=${quote}local${quote} $lang", "", "")
+            #showElementRifCS("subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
+            #showElementRifCS("subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "rdf:resource", "anzsrc")
 
         #set ($value = $util.get($item, "research_activity"))
         #if ("$!value" != "")
-            <rif:subject type="anzsrc-toa">$util.encodeXml($value)</rif:subject>
+            <subject type="anzsrc-toa">$util.encodeXml($value)</subject>
         #end
 
         #set ($value = $util.get($item, "dc:description"))
         #if ("$!value" != "")
-            <rif:description type="full" $lang>$util.encodeXml($value)</rif:description>
+            <description type="full" $lang>$util.encodeXml($value)</description>
         #end
 
         #set ($value = $util.get($item, "access_conditions"))
         #if ("$!value" != "")
-            <rif:description type="accessRights" $lang>$util.encodeXml($value)</rif:description>
+            <description type="accessRights" $lang>$util.encodeXml($value)</description>
         #end
 
         #set ($value = $util.get($item, "restrictions"))
         #if ("$!value" != "")
-            <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
+            <description type="rights" $lang>$util.encodeXml($value)</description>
         #end
 
         #set ($value = $util.get($item, "license_cc.skos:prefLabel"))
         #if ("$!value" != "")
-            <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
+            <description type="rights" $lang>$util.encodeXml($value)</description>
         #end
 
         #set ($value = $util.get($item, "license_other_name"))
         #if ("$!value" != "")
-            <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
+            <description type="rights" $lang>$util.encodeXml($value)</description>
         #end
 
             #showRelatedInfo("citations", "publication", "url")
             #showRelatedInfo("website", "website", "url")
-        </rif:collection>
-    </rif:registryObject>
-</rif:registryObjects>
+        </collection>
+    </registryObject>
+</registryObjects>

@@ -32,6 +32,22 @@
     #end
 #end
 
+#macro (anzsrc $field $anzsrc)
+    #set($valueMap = $util.getList($item, $field))
+    #foreach($key in $valueMap.keySet())
+        #set($map = $valueMap.get($key))
+        #set($label = $map.get("skos:prefLabel"))
+        #set($uri = $map.get("rdf:resource"))
+        #set($lastIndex = $uri.lastIndexOf('/') + 1 )
+        #set($code = $uri.substring($lastIndex) )
+
+        #openField("654", "0", "0")
+        #subField("a", "${code} - ${label}")
+        #subField("2", "ANZSRC-${anzsrc}")
+        #closeField()
+    #end
+#end
+
 #macro (basicField $tag $ind1 $ind2 $subfield $index)
     #set ($value = $util.get($item, $index))
     #if ("$!value" != "")
@@ -49,10 +65,12 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("260", "#", "#", "c", "dc:created")
 
         ## Language. Set Source to ISO639-2
-        #set ($language = $util.get($item, "dc:language"))
-        #if ("$!language" != "")
+        #set ($langUri = $util.get($item, "dc:language"))
+        #if ("$!langUri" != "")
+            #set($lastIndex = $langUri.lastIndexOf('/') + 1 )
+            #set($lang = $langUri.substring($lastIndex) )
             #openField("041", "#", "7")
-            #subField("a", $language)
+            #subField("a", $lang)
             #subField("2", "iso639-2b")
             #closeField()
         #end
@@ -88,8 +106,8 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("720", "1", "#", "a", "supervisor.1.dc:title")
 
         ## Subjects
-        #showElementMarc("dc:subject.anzsrc:for", "654", "0", "0", "a", "skos:prefLabel", "anzsrc")
-        #showElementMarc("dc:subject.anzsrc:seo", "654", "0", "0", "a", "skos:prefLabel", "anzsrc")
+        #anzsrc("dc:subject.anzsrc:for", "FOR")
+        #anzsrc("dc:subject.anzsrc:seo", "SEO")
         #showElementMarc("dc:subject.keywords", "653", "0", "0", "a", "", "")
 
         ## Rights
