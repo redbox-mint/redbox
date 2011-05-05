@@ -1,5 +1,6 @@
 from au.edu.usq.fascinator.api.indexer import SearchRequest
 from au.edu.usq.fascinator.common import JsonObject
+from au.edu.usq.fascinator.common import JsonSimple
 from au.edu.usq.fascinator.common import MessagingServices
 from au.edu.usq.fascinator.common.solr import SolrResult
 
@@ -92,6 +93,6 @@ class ReharvestData:
     # Send an indexer notification
     def sendMessage(self, oid):
         msg = JsonSimple()
-        msg.getJsonObject().put("oid", self.oid)
+        msg.getJsonObject().put("oid", oid)
         message = msg.toString()
-        self.messaging.sendMessage("indexer", message)
+        self.messaging.queueMessage("indexer", message)
