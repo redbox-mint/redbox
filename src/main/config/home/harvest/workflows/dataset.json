@@ -52,14 +52,14 @@
             "label": "Final Review",
             "description": "Completed records ready for publication and approval into the repository.",
             "security": ["reviewer", "admin"],
-            "visibility": ["reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"],
             "template": "workflows/dataset"
         },
         {
             "name": "live",
             "description": "Records already published in the repository.",
             "label": "Published",
-            "security": ["admin"],
+            "security": ["reviewer", "admin"],
             "visibility": ["guest"],
             "template": "workflows/dataset"
         },
