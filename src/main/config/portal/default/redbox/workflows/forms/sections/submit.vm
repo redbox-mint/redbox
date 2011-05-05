@@ -70,12 +70,12 @@
            </div>
            <div>
                 <label class="validation-err-msg" for="access_conditions">
-                    Access Conditions is required!
+                    Access Rights/Conditions is required!
                 </label>
            </div>
            <div>
                 <label class="validation-err-msg" for="restrictions">
-                    Restrictions, Embargoes or Usage Constraints is required!
+                    Rights is required!
                 </label>
            </div>
            <div>
