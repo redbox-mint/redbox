@@ -34,18 +34,6 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    function pad(s,len,c){
-        c = c || "0";
-        var ps = s.toString();
-        while(ps.length<len){ ps = c + ps; }
-        return ps;
-    }
-    function getDateTime(){
-        var d = new Date();
-        var s = d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2)+" "+
-                pad(d.getHours(),2)+":"+pad(d.getMinutes(),2)+":"+pad(d.getSeconds(),2);
-        return s;
-    }
     $(".vnote").live("change keydown", function(){
         var baseId=$(this).attr("id").replace(".description","");
         if($("input[id='"+baseId+".date']").val()==""){

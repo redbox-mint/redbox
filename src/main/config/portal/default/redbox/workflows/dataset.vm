@@ -19,6 +19,23 @@ var packageData = {
     nextStageMessage: "$self.getNextStepAcceptMessage()"
 };
 
+function pad(s,len,c){
+    c = c || "0";
+    var ps = s.toString();
+    while(ps.length<len){ ps = c + ps; }
+    return ps;
+}
+function getDate(){
+    var d = new Date();
+    var s = d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2);
+    return s;
+}
+function getDateTime(){
+    var d = new Date();
+    var s = getDate()+" "+pad(d.getHours(),2)+":"+pad(d.getMinutes(),2)+":"+pad(d.getSeconds(),2);
+    return s;
+}
+
 (function($){
     $(function(){
         function onContentLoaded(){
@@ -70,6 +87,11 @@ var packageData = {
                                 }
                                 $("#url").attr("readonly", "readonly");
                             });
+                            // insert date created if not exist
+                            var dcCreated = $("#dc\\:created");
+                            if(jQuery.trim(dcCreated.val())==""){
+                                dcCreated.val(getDate());
+                            }
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
