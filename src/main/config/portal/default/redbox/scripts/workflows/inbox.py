@@ -94,7 +94,8 @@ class InboxData:
                 if formField in requestFields:
                     data.put(formField, self.__formData.get(formField))
             description = self.__formData.get("submitDescription", "[No description]")
-            data.put("title", truncate(description, 25))
+            #data.put("title", truncate(description, 25))
+            data.put("title", description)
             self.__updatePayload(self.__object.getSourceId(), data)
 
         # update workflow metadata

@@ -77,7 +77,8 @@ function srSubmitFunc(widgetForm,formData){
     if(widgetForm.validator.isOkToSubmit()){
         $("#submitButton,#cancelButton").attr("disabled", "disabled");
         $("#loading").show();
-        var title = truncate(formData.submitDescription);
+        //var title = truncate(formData.submitDescription);
+        var title = formData.submitDescription;
         var description = formData.submitDescription;
         var postData = jQuery.extend(formData,{
             ajax: true,
