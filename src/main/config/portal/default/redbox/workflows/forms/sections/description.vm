@@ -79,7 +79,7 @@
 
     #fieldTitle("data" "Related Data" false)
     <div class="help-content" id="help-data">
-        Include a URL to any sources of third party data used/re-used.
+        Include URL/s to any sources of third party data used/re-used.
     </div>
     #relatedField("data" "data url" "Add data")
 

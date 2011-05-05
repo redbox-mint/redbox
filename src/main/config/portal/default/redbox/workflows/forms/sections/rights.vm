@@ -3,7 +3,7 @@
     #fieldTitle("access_conditions" "Access Rights/Conditions" true)
     <div class="help-content" id="help-access_conditions">
         <p>
-            Information about access to the colleciton or service, including
+            Information about access to the collection or service, including
             access restrictions or embargoes based on privacy, security or
             other policies.
         </p>
@@ -18,7 +18,7 @@
 
     #fieldTitle("restrictions" "Rights" true)
     <div class="help-content" id="help-restrictions">
-        Information about rights head in and over the collection such as
+        Information about rights held in and over the collection such as
         copyright, licences and other intellectual property rights, eg. This
         dataset is made available under the Public Domain Dedication and
         License v1.0 whose full text can be found at:
