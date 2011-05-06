@@ -92,6 +92,9 @@ function getDateTime(){
                             if(jQuery.trim(dcCreated.val())==""){
                                 dcCreated.val(getDate());
                             }
+                            // extra submission request fields
+                            if(packageData.metaData.submitTitle){$(".submitTitle").removeClass("hidden");}
+                            if(packageData.metaData.submitNotes){$(".submitNotes").removeClass("hidden");}
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);

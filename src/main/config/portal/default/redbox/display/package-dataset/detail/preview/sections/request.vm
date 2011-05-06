@@ -4,9 +4,15 @@
         <dl>
             #displayFirst("submitDate" "Date Submitted")
             #displayFirst("submitDescription" "Description")
+            #if("$!self.getFirst('submitTitle')"!="")
+                #displayFirst("submitTitle" "Title")
+            #end
             #displayFirst("contactName" "Contact Name")
             #displayFirst("phoneNumber" "Phone Number")
             #displayFirst("emailAddress" "Email Address")
+            #if("$!self.getFirst('submitNotes')"!="")
+                #displayFirst("submitNotes" "Notes")
+            #end
         </dl>
     </div>
 #end

@@ -7,6 +7,10 @@
             <label for="submitDate">Date Submitted</label>
             <input id="submitDate" type="text" size="40" readonly="readonly" />
         </p>
+        <p class="submitTitle hidden">
+            <label for="submitTitle">Title</label>
+            <textarea id="submitTitle" cols="40" rows="2" readonly="readonly"></textarea>
+        </p>
         <p>
             <label for="submitDescription">Description</label>
             <textarea id="submitDescription" cols="40" rows="10" readonly="readonly"></textarea>
@@ -22,6 +26,10 @@
         <p>
             <label for="emailAddress">Email Address</label>
             <input id="emailAddress" type="text" size="40" readonly="readonly" />
+        </p>
+        <p class="submitNotes hidden">
+            <label for="submitNotes">Notes</label>
+            <textarea id="submitNotes" cols="40" rows="5" readonly="readonly"></textarea>
         </p>
     </fieldset>
 </div>

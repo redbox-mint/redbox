@@ -86,7 +86,9 @@ class InboxData:
                              "submitDescription",
                              "contactName",
                              "phoneNumber",
-                             "emailAddress"]
+                             "emailAddress",
+                             "submitTitle",
+                             "submitNotes"]
             # update from form data
             data = self.__requestData.getJsonObject()
             formFields = self.__formData.getFormFields()
@@ -94,8 +96,12 @@ class InboxData:
                 if formField in requestFields:
                     data.put(formField, self.__formData.get(formField))
             description = self.__formData.get("submitDescription", "[No description]")
-            #data.put("title", truncate(description, 25))
-            data.put("title", description)
+            submitTitle = self.__formData.get("submitTitle", None)
+            if submitTitle:
+                data.put("title", submitTitle)
+            else:
+                #data.put("title", truncate(description, 25))
+                data.put("title", description)
             self.__updatePayload(self.__object.getSourceId(), data)
 
         # update workflow metadata

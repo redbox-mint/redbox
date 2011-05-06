@@ -3,11 +3,15 @@
 fieldset p textarea { display:block; width: 98%; }
 </style>
 <div class="grid_16 widget-form"
-    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
+    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber,submitTitle,submitNotes"
     data-form-fields-readonly="metaList"
     data-submit-func="srSubmitFunc">
     <input type="hidden" name="submitted" value="true" />
-    <input type="hidden" name="workflow_source" value="Submission Request" />
+    #set($source = $self.getRequestData("workflow_source"))
+    #if("$!source" == "")
+        #set($source = "Submission Request")
+    #end
+    <input type="hidden" name="workflow_source" value="$!source" />
     <input type="hidden" name="metaList" value="[]" />
     <p>Please review the submission request and action as appropriate.</p>
     <fieldset>
@@ -15,6 +19,13 @@ fieldset p textarea { display:block; width: 98%; }
             <label for="submitDate">Date Submitted</label>
             <input id="submitDate" type="text" size="40" value="$!self.getRequestData('submitDate')" readonly="readonly" />
         </p>
+        #if("$!self.getRequestData('submitTitle')"!="")
+        <input type="hidden" name="title" value="$!self.getRequestData('submitTitle')">
+        <p>
+            <label for="submitTitle">Title</label>
+            <textarea id="submitTitle" cols="40" rows="2" readonly="readonly">$!self.getRequestData("submitTitle")</textarea>
+        </p>
+        #end
         <p>
             <label for="submitDescription">Description</label>
             <textarea id="submitDescription" cols="40" rows="10" readonly="readonly">$!self.getRequestData("submitDescription")</textarea>
@@ -31,6 +42,12 @@ fieldset p textarea { display:block; width: 98%; }
             <label for="emailAddress">Email Address</label>
             <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" readonly="readonly" />
         </p>
+        #if("$!self.getRequestData('submitNotes')"!="")
+        <p>
+            <label for="submitNotes">Notes</label>
+            <textarea id="submitNotes" cols="40" rows="5" readonly="readonly">$!self.getRequestData("submitNotes")</textarea>
+        </p>
+        #end
         <button class="button form-fields-submit" id="submitButton">Accept</button>
         <button class="button form-fields-cancel" id="deleteButton">Delete</button>
         <span class="hidden" id="loading">

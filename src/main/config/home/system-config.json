@@ -283,7 +283,13 @@
                         "type": "external",
                         "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/vital.script",
                         "timing": "0 0/15 * * * ?"
-                    }
+                    },
+                    {
+                        "name": "alerts-poll",
+                        "type": "external",
+                        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/alerts.script",
+                        "timing": "0 0/15 * * * ?"
+                    },
                 ]
             }
         },
@@ -326,6 +332,9 @@
         "Parties_Groups": "${mint.proxy.url}/Parties_Groups/opensearch/lookup",
         "Parties_People": "${mint.proxy.url}/Parties_People/opensearch/lookup",
         "Geonames": "${mint.proxy.server}/geonames/search"
+    },
+    "alerts": {
+        "path": "${fascinator.home}/alerts"
     },
     "watcher": {
         "path": "${watcher.home}"

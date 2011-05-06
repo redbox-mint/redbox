@@ -210,7 +210,9 @@
         submitDescription,
         contactName,
         phoneNumber,
-        emailAddress
+        emailAddress,
+        submitTitle,
+        submitNotes
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />

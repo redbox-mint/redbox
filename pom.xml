@@ -562,4 +562,25 @@
             </plugin>
         </plugins>
     </build>
+    <scm>
+        <url>http://redbox-mint.googlecode.com/svn/redbox/trunk</url>
+        <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/trunk</connection>
+        <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox/trunk</developerConnection>
+    </scm>
+   <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>ReDBox Releases</name>
+            <url>https://fascinator.usq.edu.au/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>ReDBox Snapshots</name>
+            <url>https://fascinator.usq.edu.au/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <site>
+            <id>mint</id>
+            <url>file:///var/www/hudson/the-fascinator-full/redbox</url>
+        </site>
+    </distributionManagement>
 </project>
