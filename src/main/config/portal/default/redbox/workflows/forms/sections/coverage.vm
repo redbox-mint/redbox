@@ -35,11 +35,113 @@
 
     #fieldTitle("location" "Geospatial Location" false)
     <div class="help-content" id="help-location">
-        Geospatial location relevant to the research dataset/collection,
-        registry/repository, catalogue or index. This may describe a
-        geographical area where data was collected, a place which is the subject
-        of a collection, or a location which is the focus of an activity, eg.
-        coordinates or placename.
+        <p>
+            Geospatial location relevant to the research dataset/collection,
+            registry/repository, catalogue or index. This may describe a
+            geographical area where data was collected, a place which is the
+            subject of a collection, or a location which is the focus of an
+            activity, eg. coordinates or placename.
+        </p>
+        <p>
+            You must enter a correctly formatted set of coordinates or a value
+            supported by a standard such as a country code, a URL pointing to
+            an XML based description of spatial coverage or free text describing
+            a location.
+        </p>
+        <p>
+            The following standards and formats are available:
+        </p>
+        <p>
+            If you wish to generate a map display in Research Data Australia,
+            you will need to enter valid, correctly formatted spatial data
+            against either of the following standards/formats: iso19139dcmiBox,
+            gmlKmlPolyCoords or kmlPolyCoords.
+        </p>
+        <ul>
+            <li>
+                <a href="http://www.opengeospatial.org/standards/gml">GML</a>
+                - OpenGIS Geography Markup Language (GML) Encoding Standard
+            </li>
+            <li>
+                <a href="http://code.google.com/apis/kml/">gmlKmlPolyCoords</a>
+                - A set of KML long/lat co-ordinates derived from GML defining a
+                polygon as described by the KML coordinates element but without
+                the altitude component
+            </li>
+            <li>
+                <a href="http://www.topografix.com/gpx.asp">GPX</a>
+                - the GPS Exchange Format
+            </li>
+            <li>
+                <a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm">ISO3166</a>
+                - ISO 3166-1 Codes for the representation of names of countries
+                and their subdivisions - Part 1: Country codes
+            </li>
+            <li>
+                <a href="http://www.iso.org/iso/country-codes/background_on_iso_3166/iso_3166-2.htm">ISO31662</a>
+                - 
+            </li>
+            <li>
+                <a href="http://dublincore.org/documents/dcmi-box">ISO19319dcmiBox</a>
+                - 
+            </li>
+            <li>
+                <a href="http://code.google.com/apis/kml/">KML</a>
+                - Keyhole Markup Language developed for use with Google Earth
+                <div class="group">
+                    Using the <a href="http://www.anzlic.org.au/">ANZLIC GEN register</a>
+                    to retrieve the polygon coordinates
+                    <ol>
+                        <li>
+                            Go to the list of locations at
+                            <a href="http://www.anzlic.org.au/genlist/anzlic-allgens.txt">
+                                http://www.anzlic.org.au/genlist/anzlic-allgens.txt
+                            </a>
+                        </li>
+                        <li>
+                            Use your browser search function to find your
+                            location eg. Great Barrier Reef. The coordinates
+                            will be displayed in this order:
+                            <ul>
+                                <li><strong>N</strong> = North Bounding Latitude,</li>
+                                <li><strong>S</strong> = South Bounding Latitude,</li>
+                                <li><strong>E</strong> = East Bounding Longitude,</li>
+                                <li><strong>W</strong> = West Bounding Longitude</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Copy and paste the coordinates into a notepad file eg. -9|-24|153|141
+                        </li>
+                        <li>
+                            Format the coordinates as shown below
+                            <p>northlimit=-9; southlimit=-24; westlimit=153; eastLimit=141; projection=WGS84</p>
+                        </li>
+                        <li>
+                            Copy this into the Geospatial Location field in ReDBox.
+                        </li>
+                    </ol>
+                    This will produce a map display in Research Data Australia.
+                </div>
+            </li>
+            <li>
+                <a href="http://code.google.com/apis/kml/">kmlPolyCoords</a>
+                - A set of KML long/lat co-ordinates defining a polygon as
+                described by the KML coordinates element
+            </li>
+            <li>
+                <a href="http://dublincore.org/documents/dcmi-point">DCMIPoint</a>
+                - spatial location information specified in DCMI Point notation
+            </li>
+            <li>
+                <strong>Text</strong> - free-text representation of spatial
+                location. Use this to record place or region names where
+                geospatial notation is not available. In ReDBox this will
+                search against the Geonames database and return a latitude and
+                longitude value if selected. This will store as a DCMIPoint
+                which in future will display as a point on a Google Map in
+                Research Data Australia.
+            </li>
+        </ul>
     </div>
     <table class="input-list">
         <thead>
