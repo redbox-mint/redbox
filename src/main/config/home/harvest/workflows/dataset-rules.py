@@ -48,7 +48,7 @@ class IndexData:
         self.utils.add(self.index, "id", self.oid)
         self.utils.add(self.index, "storage_id", self.oid)
         self.utils.add(self.index, "item_type", self.itemType)
-        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
 

@@ -67,7 +67,7 @@ class IndexData:
         self.__index("item_type", self.itemType)
         ## always set to 'datastream' so that it does not show up in search results etc.
         #self.__index("item_type", "datastream")
-        self.__index("last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        self.__index("last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         self.__index("harvest_config", self.params.getProperty("jsonConfigOid"))
         self.__index("harvest_rules",  self.params.getProperty("rulesOid"))
         self.__index("display_type", "attachment")
