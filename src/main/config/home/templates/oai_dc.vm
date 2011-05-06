@@ -78,5 +78,12 @@
 #dc2("rights", "license_cc")
 #dc2("rights", "license_other_url")
 
-#dc2("contributor", "affiliation.0.skos:prefLabel")
+## Management
+#set ($affiliation = $util.get($item, "affiliation.skos:prefLabel"))
+#if ("$!affiliation" != "")
+    #set ($contributor = "University of Newcastle. ${affiliation}")
+#else
+    #set ($contributor = "University of Newcastle.")
+#end
+<dc:contributor>$util.encodeXml($contributor)</dc:contributor>
 </oai_dc:dc>
