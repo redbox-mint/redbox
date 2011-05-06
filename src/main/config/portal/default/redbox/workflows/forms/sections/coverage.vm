@@ -157,7 +157,7 @@
                 <td class="sort-number"></td>
                 <td>
                     <select class="locationType" id="location.0.type">
-                        <option selected>Please select one...</option>
+                        <option value="" selected="selected">Please select one...</option>
                         <option value="gml">OpenGIS Geography Markup Language</option>
                         <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
                         <option value="gpx">GPS Exchange Format</option>
