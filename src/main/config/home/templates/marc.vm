@@ -150,7 +150,7 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("540", " ", " ", "a", "license_other_url")
 
         ## Management
-        #openField("710", "1", "#")
+        #openField("710", "1", " ")
             #subField("a", "University of Newcastle")
             #set ($affiliation = $util.get($item, "affiliation.skos:prefLabel"))
             #if ("$!affiliation" != "")
