@@ -99,7 +99,7 @@
         #mintSelectField("affiliation"
                          "affiliation.skos:prefLabel"
                          "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
-                         "rdf:about"
+                         "dc:identifier"
                          "rdfs:label"
                          "results"
                          "")

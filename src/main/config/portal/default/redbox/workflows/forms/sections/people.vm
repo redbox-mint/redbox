@@ -91,7 +91,7 @@
                                     <span class="data-source-drop-down"
                                           data-delay="1"
                                           data-json-source-url="$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
-                                          data-id-key="rdf:about"
+                                          data-id-key="dc:identifier"
                                           data-label-key="rdfs:label"
                                           data-list-key="results">
                                         <span class="selection-added">
@@ -124,7 +124,7 @@
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
-                               class="nl nl-rdf:about" />
+                               class="nl nl-dc:identifier" />
                     </span>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
@@ -184,7 +184,7 @@
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
                         <input type="hidden" id="primaryContact.dc:identifier"
-                               class="nl nl-rdf:about" value="" />
+                               class="nl nl-dc:identifier" value="" />
                     </span>
                 </td>
             </tr>
@@ -254,7 +254,7 @@
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
                         <input type="hidden" id="supervisor.0.dc:identifier"
-                               class="nl nl-rdf:about" value="" />
+                               class="nl nl-dc:identifier" value="" />
                     </span>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
