@@ -19,6 +19,15 @@
 #macro(dcData $tag $data)
 <dc:${tag}>$util.encodeXml($data)</dc:${tag}>
 #end
+#macro(relations $baseKey)
+    #set($valueMap = $util.getList($item, $baseKey))
+    #foreach($key in $valueMap.keySet())
+        #set($value = $valueMap.get($key).get($key))
+        #if ("$!value" != "")
+        <dc:relation>$util.encodeXml($value)</dc:relation>
+        #end
+    #end
+#end
 #macro(dcList $tag $baseKey $label)
     #set($valueMap = $util.getList($item, $baseKey))
     #foreach($key in $valueMap.keySet())
@@ -62,12 +71,16 @@
 
 ## Description tab
 #dc1("description")
-#dcList("relation" "citations" "")
-#dcList("relation" "data" "")
-#dcList("relation" "website" "")
+#relations("citations")
+#relations("data")
+#relations("website")
 
 ## People
-#dc2("creator", "dc:creator.foaf:Person.1.dc:title")
+#set($valueMap = $util.getList($item, "dc:creator.foaf:Person"))
+#foreach($key in $valueMap.keySet())
+    #set($value = $valueMap.get($key).get("dc:title"))
+    <dc:creator>$util.encodeXml($value)</dc:creator>
+#end
 
 #dcList("subject" "dc:subject.anzsrc:for" "skos:prefLabel")
 #dcList("subject" "dc:subject.anzsrc:seo" "skos:prefLabel")

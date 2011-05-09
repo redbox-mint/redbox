@@ -62,9 +62,9 @@
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key).get("dc:title"))
         #if ($velocityCount == 1)
-            #openField("100", "1", "#")
+            #openField("100", "1", " ")
         #else
-            #openField("700", "1", "#")
+            #openField("700", "1", " ")
         #end
         #subField("a", $value)
         #closeField()
@@ -75,7 +75,7 @@
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key).get("dc:title"))
-        #openField("720", "1", "#")
+        #openField("720", "1", " ")
         #subField("a", $value)
         #closeField()
     #end
@@ -101,26 +101,25 @@
     #end
     ## http://www.loc.gov/marc/bibliographic/bd008a.html (All)
     ## http://www.loc.gov/marc/bibliographic/bd008x.html (Mixed materials)
-    #set ($hash = '#')
-    #set ($leader = "${leader}|||||||||xx${hash}${hash}${hash}${hash}${hash}${hash}|${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${hash}${lang}${hash}|")
+    #set ($leader = "${leader}|||||||||xx      |           ${lang} |")
     <marc:controlfield tag="008">$leader</marc:controlfield>
 #end
 
 <marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim
 http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
     <marc:record>
-        <marc:leader>00000nmi#a22000004u#4500</marc:leader>
+        <marc:leader>00000nmi a22000004u 4500</marc:leader>
         #control008()
         #basicField("245", "0", "0", "a", "dc:title")
-        #basicField("655", "#", "4", "a", "dc:type")
-        #basicField("260", "#", "#", "c", "dc:created")
+        #basicField("655", " ", "4", "a", "dc:type")
+        #basicField("260", " ", " ", "c", "dc:created")
 
         ## Language. Set Source to ISO639-2
         #set ($langUri = $util.get($item, "dc:language"))
         #if ("$!langUri" != "")
             #set($lastIndex = $langUri.lastIndexOf('/') + 1 )
             #set($lang = $langUri.substring($lastIndex) )
-            #openField("041", "#", "7")
+            #openField("041", " ", "7")
             #subField("a", $lang)
             #subField("2", "iso639-2b")
             #closeField()
@@ -129,13 +128,13 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("653", "0", "4", "a", "time_period")
 
         ## Description tab
-        #basicField("520", "#", "#", "a", "dc:description")
+        #basicField("520", " ", " ", "a", "dc:description")
         #showElementMarc("citations", "856", "4", "2", "u", "", "")
         #showElementMarc("data", "856", "4", "2", "u", "", "")
         #showElementMarc("website", "856", "4", "2", "u", "", "")
 
         ## People
-        ##basicField("100", "1", "#", "a", "dc:creator.foaf:Person.1.dc:title")
+        ##basicField("100", "1", " ", "a", "dc:creator.foaf:Person.1.dc:title")
         #creators("dc:creator.foaf:Person")
         #supervisors("supervisor")
 
@@ -145,10 +144,10 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #showElementMarc("dc:subject.keywords", "653", "0", "0", "a", "", "")
 
         ## Rights
-        #basicField("506", "#", "#", "a", "access_conditions")
-        #basicField("540", "#", "#", "a", "restrictions")
-        #basicField("540", "#", "#", "a", "license_cc")
-        #basicField("540", "#", "#", "a", "license_other_url")
+        #basicField("506", " ", " ", "a", "access_conditions")
+        #basicField("540", " ", " ", "a", "restrictions")
+        #basicField("540", " ", " ", "a", "license_cc")
+        #basicField("540", " ", " ", "a", "license_other_url")
 
         ## Management
         #openField("710", "1", "#")
