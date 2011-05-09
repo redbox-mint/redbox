@@ -289,7 +289,7 @@
                         "type": "external",
                         "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/alerts.script",
                         "timing": "0 0/15 * * * ?"
-                    },
+                    }
                 ]
             }
         },
