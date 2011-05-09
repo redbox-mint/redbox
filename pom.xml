@@ -82,12 +82,12 @@
         </dependency>
         <!-- ReDBox Project Plugins -->
         <dependency>
-            <groupId>au.edu.usq.fascinator.redbox</groupId>
+            <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-secure-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.redbox</groupId>
+            <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-vital-subscriber</artifactId>
             <version>${project.version}</version>
         </dependency>
