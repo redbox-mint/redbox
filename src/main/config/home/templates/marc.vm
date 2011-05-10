@@ -37,12 +37,8 @@
     #foreach($key in $valueMap.keySet())
         #set($map = $valueMap.get($key))
         #set($label = $map.get("skos:prefLabel"))
-        #set($uri = $map.get("rdf:resource"))
-        #set($lastIndex = $uri.lastIndexOf('/') + 1 )
-        #set($code = $uri.substring($lastIndex) )
-
         #openField("654", "0", "0")
-        #subField("a", "${code} - ${label}")
+        #subField("a", "${label}")
         #subField("2", "ANZSRC-${anzsrc}")
         #closeField()
     #end
