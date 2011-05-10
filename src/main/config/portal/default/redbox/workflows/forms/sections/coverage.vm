@@ -54,8 +54,9 @@
         <p>
             If you wish to generate a map display in Research Data Australia,
             you will need to enter valid, correctly formatted spatial data
-            against either of the following standards/formats: iso19139dcmiBox,
-            gmlKmlPolyCoords or kmlPolyCoords.
+            against either of the following standards/formats:
+            <b>iso19139dcmiBox</b>, <b>gmlKmlPolyCoords</b> or
+            <b>kmlPolyCoords</b>.
         </p>
         <ul>
             <li>
@@ -79,15 +80,13 @@
             </li>
             <li>
                 <a href="http://www.iso.org/iso/country-codes/background_on_iso_3166/iso_3166-2.htm">ISO31662</a>
-                - 
+                - Codes for the representation of names of countries and their
+                subdivisions - Part 2: Country subdivision codes
             </li>
             <li>
                 <a href="http://dublincore.org/documents/dcmi-box">ISO19319dcmiBox</a>
-                - 
-            </li>
-            <li>
-                <a href="http://code.google.com/apis/kml/">KML</a>
-                - Keyhole Markup Language developed for use with Google Earth
+                - DCMI Box notation derived from bounding box metadata
+                conformant with the iso19139 schema
                 <div class="group">
                     Using the <a href="http://www.anzlic.org.au/">ANZLIC GEN register</a>
                     to retrieve the polygon coordinates
@@ -122,6 +121,10 @@
                     </ol>
                     This will produce a map display in Research Data Australia.
                 </div>
+            </li>
+            <li>
+                <a href="http://code.google.com/apis/kml/">KML</a>
+                - Keyhole Markup Language developed for use with Google Earth
             </li>
             <li>
                 <a href="http://code.google.com/apis/kml/">kmlPolyCoords</a>
