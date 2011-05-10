@@ -60,40 +60,40 @@
         </p>
         <ul>
             <li>
-                <a href="http://www.opengeospatial.org/standards/gml">GML</a>
+                <a href="http://www.opengeospatial.org/standards/gml" target="_blank">GML</a>
                 - OpenGIS Geography Markup Language (GML) Encoding Standard
             </li>
             <li>
-                <a href="http://code.google.com/apis/kml/">gmlKmlPolyCoords</a>
+                <a href="http://code.google.com/apis/kml/" target="_blank">gmlKmlPolyCoords</a>
                 - A set of KML long/lat co-ordinates derived from GML defining a
                 polygon as described by the KML coordinates element but without
                 the altitude component
             </li>
             <li>
-                <a href="http://www.topografix.com/gpx.asp">GPX</a>
+                <a href="http://www.topografix.com/gpx.asp" target="_blank">GPX</a>
                 - the GPS Exchange Format
             </li>
             <li>
-                <a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm">ISO3166</a>
+                <a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" target="_blank">ISO3166</a>
                 - ISO 3166-1 Codes for the representation of names of countries
                 and their subdivisions - Part 1: Country codes
             </li>
             <li>
-                <a href="http://www.iso.org/iso/country-codes/background_on_iso_3166/iso_3166-2.htm">ISO31662</a>
+                <a href="http://www.iso.org/iso/country-codes/background_on_iso_3166/iso_3166-2.htm" target="_blank">ISO31662</a>
                 - Codes for the representation of names of countries and their
                 subdivisions - Part 2: Country subdivision codes
             </li>
             <li>
-                <a href="http://dublincore.org/documents/dcmi-box">ISO19319dcmiBox</a>
+                <a href="http://dublincore.org/documents/dcmi-box" target="_blank">ISO19319dcmiBox</a>
                 - DCMI Box notation derived from bounding box metadata
                 conformant with the iso19139 schema
                 <div class="group">
-                    Using the <a href="http://www.anzlic.org.au/">ANZLIC GEN register</a>
+                    Using the <a href="http://www.anzlic.org.au/" target="_blank">ANZLIC GEN register</a>
                     to retrieve the polygon coordinates
                     <ol>
                         <li>
                             Go to the list of locations at
-                            <a href="http://www.anzlic.org.au/genlist/anzlic-allgens.txt">
+                            <a href="http://www.anzlic.org.au/genlist/anzlic-allgens.txt" target="_blank">
                                 http://www.anzlic.org.au/genlist/anzlic-allgens.txt
                             </a>
                         </li>
@@ -123,16 +123,16 @@
                 </div>
             </li>
             <li>
-                <a href="http://code.google.com/apis/kml/">KML</a>
+                <a href="http://code.google.com/apis/kml/" target="_blank">KML</a>
                 - Keyhole Markup Language developed for use with Google Earth
             </li>
             <li>
-                <a href="http://code.google.com/apis/kml/">kmlPolyCoords</a>
+                <a href="http://code.google.com/apis/kml/" target="_blank">kmlPolyCoords</a>
                 - A set of KML long/lat co-ordinates defining a polygon as
                 described by the KML coordinates element
             </li>
             <li>
-                <a href="http://dublincore.org/documents/dcmi-point">DCMIPoint</a>
+                <a href="http://dublincore.org/documents/dcmi-point" target="_blank">DCMIPoint</a>
                 - spatial location information specified in DCMI Point notation
             </li>
             <li>
