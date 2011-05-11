@@ -92,7 +92,8 @@ function srSubmitFunc(widgetForm,formData){
     var postData = jQuery.extend(formData,{
         ajax: true,
         func: "update-package-meta-deposit",
-        oid: "$self.oid"
+        oid: "$self.oid",
+        acceptOnly: true
     });
     delete postData.metaList;
     jQuery.ajax({
