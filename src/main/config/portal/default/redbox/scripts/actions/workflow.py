@@ -65,6 +65,14 @@ class WorkflowData(DefaultWorkflowData):
             uploadFile = uploadFile.replace("C:\\fakepath\\", "")
             fileDetails = self.vc("sessionState").get(uploadFile)
 
+            if fileDetails is None:
+                uploadFile = uploadFile.rsplit("\\", 1)[-1]
+                fileDetails = self.vc("sessionState").get(uploadFile)
+            if fileDetails is None:
+                print "**** fileDetails is None!!! ***"
+                return self.__toJson({
+                    "error": "fileDetails is None (no upload file!)"
+                })
             #self.log.debug("fileDetails:%s" % fileDetails)
             errorDetails = fileDetails.get("error")
             if errorDetails:
