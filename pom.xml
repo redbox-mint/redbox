@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>ReDBox</name>
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>0.9.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>parent/pom.xml</relativePath>
     </parent>
     <properties>
@@ -563,8 +563,8 @@
         </plugins>
     </build>
     <scm>
-        <url>http://redbox-mint.googlecode.com/svn/redbox/trunk</url>
-        <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/trunk</connection>
-        <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox/trunk</developerConnection>
+        <url>http://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.0.0</url>
+        <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.0.0</connection>
+        <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.0.0</developerConnection>
     </scm>
 </project>
