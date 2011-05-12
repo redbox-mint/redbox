@@ -162,7 +162,6 @@
         #set ($covPeriod = $util.get($item, "time_period"))
         #if ("$!covFrom" != "" || "$!covTo" != "" || "$!covPeriod" != "")
             <rif:coverage>
-                #if ("$!covFrom" != "" || "$!covTo" != "")
                 <rif:temporal>
                     #if ("$!covFrom" != "")
                     <rif:date type="dateFrom" dateFormat="W3CDTF">$util.getDateTime($covFrom, $dateFormat)Z</rif:date>
@@ -170,14 +169,10 @@
                     #if ("$!covTo" != "")
                     <rif:date type="dateTo" dateFormat="W3CDTF">$util.getDateTime($covTo, $dateFormat)Z</rif:date>
                     #end
-                </rif:temporal>
-                #end
-
-                #if ("$!covPeriod" != "")
-                <rif:temporal>
+                    #if ("$!covPeriod" != "")
                     <rif:text>$util.encodeXml($covPeriod)</rif:text>
+                    #end
                 </rif:temporal>
-                #end
             </rif:coverage>
         #end
 
