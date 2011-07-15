@@ -1,8 +1,8 @@
 import time
 
-from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import JsonSimple
-from au.edu.usq.fascinator.common.storage import StorageUtils
+from com.googlecode.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import JsonSimple
+from com.googlecode.fascinator.common.storage import StorageUtils
 from java.util import HashSet
 from org.apache.commons.io import IOUtils
 
@@ -125,7 +125,8 @@ class IndexData:
         self.utils.removeAccessSchema(schema, "derby")
 
     def __metadata(self):
-        self.titleList = ["New Dataset"]
+        self.title = None
+        self.dcType = None
         self.descriptionList = []
         self.creatorList = []
         self.creationDate = []
@@ -140,14 +141,16 @@ class IndexData:
         self.__workflow()
 
         # Some defaults if the above failed
-        if self.titleList == []:
-           self.titleList.append(self.object.getSourceId())
+        if self.title is None:
+           self.title = "New Dataset"
         if self.formatList == []:
             source = self.object.getPayload(self.object.getSourceId())
             self.formatList.append(source.getContentType())
 
         # Index our metadata finally
-        self.__indexList("dc_title", self.titleList)
+        self.utils.add(self.index, "dc_title", self.title)
+        if self.dcType is not None:
+            self.utils.add(self.index, "dc_type", self.dcType)
         self.__indexList("dc_creator", self.creatorList)  #no dc_author in schema.xml, need to check
         self.__indexList("dc_contributor", self.contributorList)
         self.__indexList("dc_description", self.descriptionList)
@@ -228,9 +231,6 @@ class IndexData:
         if formData is not None:
             formData = JsonSimple(formData)
             # Core fields
-            title = formData.getStringList(["title"])
-            if title:
-                self.titleList = title
             description = formData.getStringList(["description"])
             if description:
                 self.descriptionList = description
@@ -242,7 +242,11 @@ class IndexData:
 
         # Manifest processing (formData not present in wfMeta)
         manifest = self.__getJsonPayload(self.object.getSourceId())
-        self.titleList = [manifest.getString("[Untitled]", ["title"])]
+        formTitles = manifest.getStringList(["title"])
+        if formTitles:
+            for formTitle in formTitles:
+                if self.title is None:
+                    self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
         formData = manifest.getJsonObject()
         for field in formData.keySet():
@@ -261,7 +265,14 @@ class IndexData:
                         if dot > 0:
                             facetField = facetField[:dot]
                         #print "Indexing DC field '%s':'%s'" % (field, facetField)
-                        self.utils.add(self.index, facetField, value)
+                        if facetField == "dc_title":
+                            if self.title is None:
+                                self.title = value
+                        elif facetField == "dc_type":
+                            if self.dcType is None:
+                                self.dcType = value
+                        else:
+                            self.utils.add(self.index, facetField, value)
                         # index keywords for lookup
                         if field.startswith("dc:subject.keywords."):
                             self.utils.add(self.index, "keywords", value)

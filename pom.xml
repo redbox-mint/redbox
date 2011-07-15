@@ -34,7 +34,7 @@
     <dependencies>
         <!-- Fascinator Portal Web App -->
         <dependency>
-            <groupId>au.edu.usq.fascinator</groupId>
+            <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-portal</artifactId>
             <type>war</type>
             <classifier>skinny</classifier>
@@ -42,22 +42,22 @@
         </dependency>
         <!-- Fascinator Portal Dependencies -->
         <dependency>
-            <groupId>au.edu.usq.fascinator</groupId>
+            <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-portal</artifactId>
             <type>warpath</type>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator</groupId>
+            <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-common</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <!-- Solr Web App -->
         <dependency>
             <groupId>org.apache.solr</groupId>
-            <artifactId>solr-webapp</artifactId>
+            <artifactId>solr</artifactId>
             <type>war</type>
-            <version>1.4.0</version>
+            <version>3.3.0</version>
         </dependency>
         <!-- Jetty Web Server -->
         <dependency>
@@ -93,54 +93,54 @@
         </dependency>
         <!-- Fascinator Plugins -->
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-access-derby</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-authentication-internal</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-harvester-oai-pmh</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-harvester-workflow</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-indexer-solr</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-roles-internal</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-storage-filesystem</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <!--
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.fascinator.plugins</groupId>
             <artifactId>plugin-storage-fedora3</artifactId>
             <version>${fascinator.version}-SNAPSHOT</version>
         </dependency>
         -->
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-subscriber-solrEventLog</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
         <dependency>
-            <groupId>au.edu.usq.fascinator.plugins</groupId>
+            <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-transformer-jsonVelocity</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
@@ -298,7 +298,7 @@
                             <outputDirectory>${dir.home}/harvest</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>au.edu.usq.fascinator</groupId>
+                                    <groupId>com.googlecode.the-fascinator</groupId>
                                     <artifactId>fascinator-common</artifactId>
                                 </artifactItem>
                             </artifactItems>
@@ -315,7 +315,7 @@
                             <outputDirectory>${dir.server}/webapps</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>au.edu.usq.fascinator</groupId>
+                                    <groupId>com.googlecode.the-fascinator</groupId>
                                     <artifactId>fascinator-portal</artifactId>
                                     <type>war</type>
                                     <classifier>skinny</classifier>
@@ -323,7 +323,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.solr</groupId>
-                                    <artifactId>solr-webapp</artifactId>
+                                    <artifactId>solr</artifactId>
                                     <type>war</type>
                                     <destFileName>solr.war</destFileName>
                                 </artifactItem>
@@ -342,7 +342,7 @@
                             <outputDirectory>${project.home}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>au.edu.usq.fascinator.plugins</groupId>
+                                    <groupId>com.googlecode.the-fascinator.plugins</groupId>
                                     <artifactId>plugin-indexer-solr</artifactId>
                                 </artifactItem>
                             </artifactItems>
@@ -360,7 +360,7 @@
                             <outputDirectory>${project.home}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>au.edu.usq.fascinator</groupId>
+                                    <groupId>com.googlecode.the-fascinator</groupId>
                                     <artifactId>fascinator-portal</artifactId>
                                     <type>war</type>
                                     <classifier>skinny</classifier>
@@ -376,7 +376,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeGroupIds>au.edu.usq.fascinator.plugins</includeGroupIds>
+                            <includeGroupIds>com.googlecode.the-fascinator.plugins</includeGroupIds>
                             <outputDirectory>${dir.server}/plugins</outputDirectory>
                             <excludeTransitive>true</excludeTransitive>
                         </configuration>
@@ -390,7 +390,7 @@
                         </goals>
                         <configuration>
                             <excludeTypes>war,warpath</excludeTypes>
-                            <excludeGroupIds>au.edu.usq.fascinator.plugins,org.mortbay.jetty</excludeGroupIds>
+                            <excludeGroupIds>com.googlecode.the-fascinator.plugins,org.mortbay.jetty</excludeGroupIds>
                             <outputDirectory>${dir.server}/lib</outputDirectory>
                         </configuration>
                     </execution>

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.edu.usq.fascinator.redbox;
+package com.googlecode.fascinator.redbox;
 
 /**
  *

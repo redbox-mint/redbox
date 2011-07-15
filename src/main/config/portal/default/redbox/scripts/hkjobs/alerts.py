@@ -3,8 +3,8 @@ import os
 import shutil
 import time
 
-from au.edu.usq.fascinator import HarvestClient
-from au.edu.usq.fascinator.common import FascinatorHome, JsonObject, JsonSimple
+from com.googlecode.fascinator import HarvestClient
+from com.googlecode.fascinator.common import FascinatorHome, JsonObject, JsonSimple
 
 from java.io import File
 from java.lang import Exception

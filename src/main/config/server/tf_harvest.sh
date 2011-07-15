@@ -53,7 +53,7 @@ if running; then
 	echo " * Starting harvest with: $JSON_FILE"
 	if [ -f $JSON_FILE ]; then
 		LOG_FILE=$TF_HOME/logs/harvest.out
-		java $JAVA_OPTS -cp $CLASSPATH au.edu.usq.fascinator.HarvestClient $JSON_FILE $ARGS > $LOG_FILE 2>&1
+		java $JAVA_OPTS -cp $CLASSPATH com.googlecode.fascinator.HarvestClient $JSON_FILE $ARGS > $LOG_FILE 2>&1
 		echo "   - Finished on `date`"
 		echo "   - Log file: $LOG_FILE"
 	else

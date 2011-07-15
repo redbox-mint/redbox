@@ -59,5 +59,8 @@ CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=$PROJECT_HOME/portal -Dsto
 # additional settings
 EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT"
 
+# Logging fix. commons-logging 1.1.1 and Axis 1.4 (for Fedora) have some disagreements
+COMMONS_LOGGING="-Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl"
+
 # set options for maven to use
-export JAVA_OPTS="$JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS $EXTRA_OPTS"
+export JAVA_OPTS="$COMMONS_LOGGING $JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS $EXTRA_OPTS"

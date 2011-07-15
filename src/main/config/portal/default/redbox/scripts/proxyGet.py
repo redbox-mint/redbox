@@ -1,4 +1,4 @@
-from au.edu.usq.fascinator.common import BasicHttpClient, JsonSimple
+from com.googlecode.fascinator.common import BasicHttpClient, JsonSimple
 from java.lang import Exception
 from org.apache.commons.httpclient.methods import GetMethod
 from org.apache.commons.io import IOUtils

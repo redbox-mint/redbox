@@ -1,6 +1,6 @@
-from au.edu.usq.fascinator.api.indexer import SearchRequest
-from au.edu.usq.fascinator.common import FascinatorHome, JsonSimple
-from au.edu.usq.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.api.indexer import SearchRequest
+from com.googlecode.fascinator.common import FascinatorHome, JsonSimple
+from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 
 class WorkflowStage:

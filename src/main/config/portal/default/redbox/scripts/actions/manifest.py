@@ -1,6 +1,6 @@
 import md5, uuid
 
-from au.edu.usq.fascinator.common import Manifest
+from com.googlecode.fascinator.common import Manifest
 
 from java.io import ByteArrayInputStream
 from java.lang import String

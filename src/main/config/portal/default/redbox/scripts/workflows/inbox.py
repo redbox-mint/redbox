@@ -1,6 +1,6 @@
 import time
-from au.edu.usq.fascinator.common import JsonSimple
-from au.edu.usq.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import JsonSimple
+from com.googlecode.fascinator.api.storage import StorageException
 from java.io import ByteArrayInputStream
 from org.apache.commons.lang import StringEscapeUtils
 

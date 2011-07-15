@@ -16,25 +16,25 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package au.edu.usq.fascinator.redbox;
+package com.googlecode.fascinator.redbox;
 
-import au.edu.usq.fascinator.api.PluginDescription;
-import au.edu.usq.fascinator.api.PluginException;
-import au.edu.usq.fascinator.api.PluginManager;
-import au.edu.usq.fascinator.api.indexer.Indexer;
-import au.edu.usq.fascinator.api.indexer.SearchRequest;
-import au.edu.usq.fascinator.api.storage.DigitalObject;
-import au.edu.usq.fascinator.api.storage.Payload;
-import au.edu.usq.fascinator.api.storage.Storage;
-import au.edu.usq.fascinator.api.storage.StorageException;
-import au.edu.usq.fascinator.api.subscriber.Subscriber;
-import au.edu.usq.fascinator.api.subscriber.SubscriberException;
-import au.edu.usq.fascinator.common.JsonObject;
-import au.edu.usq.fascinator.common.JsonSimple;
-import au.edu.usq.fascinator.common.JsonSimpleConfig;
-import au.edu.usq.fascinator.common.MessagingServices;
-import au.edu.usq.fascinator.common.solr.SolrDoc;
-import au.edu.usq.fascinator.common.solr.SolrResult;
+import com.googlecode.fascinator.api.PluginDescription;
+import com.googlecode.fascinator.api.PluginException;
+import com.googlecode.fascinator.api.PluginManager;
+import com.googlecode.fascinator.api.indexer.Indexer;
+import com.googlecode.fascinator.api.indexer.SearchRequest;
+import com.googlecode.fascinator.api.storage.DigitalObject;
+import com.googlecode.fascinator.api.storage.Payload;
+import com.googlecode.fascinator.api.storage.Storage;
+import com.googlecode.fascinator.api.storage.StorageException;
+import com.googlecode.fascinator.api.subscriber.Subscriber;
+import com.googlecode.fascinator.api.subscriber.SubscriberException;
+import com.googlecode.fascinator.common.JsonObject;
+import com.googlecode.fascinator.common.JsonSimple;
+import com.googlecode.fascinator.common.JsonSimpleConfig;
+import com.googlecode.fascinator.common.MessagingServices;
+import com.googlecode.fascinator.common.solr.SolrDoc;
+import com.googlecode.fascinator.common.solr.SolrResult;
 
 import fedora.client.FedoraClient;
 import fedora.server.management.FedoraAPIM;
@@ -385,15 +385,17 @@ public class VitalSubscriber implements Subscriber {
         waitProperties = new ArrayList();
         Map<String, String> waitConditions = getStringMap(config,
                 "subscriber", "vital", "waitConditions");
-        for (String type : waitConditions.keySet()) {
-            String value = waitConditions.get(type);
-            if (value == null) {
-                continue;
-            }
-            // We only support properties at this stage
-            if (type.equals("property")) {
-                log.info("New wait condition: Property '{}'.", value);
-                waitProperties.add(value);
+        if (waitConditions != null) {
+            for (String type : waitConditions.keySet()) {
+                String value = waitConditions.get(type);
+                if (value == null) {
+                    continue;
+                }
+                // We only support properties at this stage
+                if (type.equals("property")) {
+                    log.info("New wait condition: Property '{}'.", value);
+                    waitProperties.add(value);
+                }
             }
         }
 
@@ -411,6 +413,9 @@ public class VitalSubscriber implements Subscriber {
     private Map<String, String> getStringMap(JsonSimple json, String... path) {
         Map<String, String> response = new LinkedHashMap();
         JsonObject object = json.getObject((Object[]) path);
+        if (object == null) {
+            return null;
+        }
         for (Object key : object.keySet()) {
             Object value = object.get(key);
             if (value instanceof String) {

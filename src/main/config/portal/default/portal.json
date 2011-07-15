@@ -35,8 +35,7 @@
     "sort-field-default-order" : "desc",
     "sort-fields" : {
       "last_modified" : "Last modified",
-      "f_dc_title" : "Title",
-      "f_dc_creator" : "Date Created"
+      "f_dc_title" : "Title"
     }
   }
 }

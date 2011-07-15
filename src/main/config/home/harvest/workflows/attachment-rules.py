@@ -1,6 +1,6 @@
-from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import FascinatorHome, JsonConfigHelper
-from au.edu.usq.fascinator.common.storage import StorageUtils
+from com.googlecode.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import FascinatorHome, JsonConfigHelper
+from com.googlecode.fascinator.common.storage import StorageUtils
 from java.io import ByteArrayInputStream, StringWriter
 from java.lang import String
 from org.apache.commons.io import IOUtils

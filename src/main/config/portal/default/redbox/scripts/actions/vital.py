@@ -1,5 +1,5 @@
-from au.edu.usq.fascinator.common import JsonConfigHelper
-from au.edu.usq.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common import JsonConfigHelper
+from com.googlecode.fascinator.common import MessagingServices
 
 class VitalData:
     def __init__(self):

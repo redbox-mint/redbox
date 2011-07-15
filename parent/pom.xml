@@ -12,24 +12,24 @@
         <version>1.1</version>
     </parent>
     <properties>
-        <fascinator.version>1.0.2</fascinator.version>
+        <fascinator.version>1.0.3</fascinator.version>
         <jetty.version>6.1.24</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>au.edu.usq.fascinator</groupId>
+                <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-common</artifactId>
                 <version>${fascinator.version}</version>
             </dependency>
             <dependency>
-                <groupId>au.edu.usq.fascinator</groupId>
+                <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-core</artifactId>
                 <version>${fascinator.version}</version>
             </dependency>
             <dependency>
-                <groupId>au.edu.usq.fascinator</groupId>
+                <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-plugin-api</artifactId>
                 <version>${fascinator.version}</version>
             </dependency>
@@ -56,26 +56,4 @@
             </plugins>
         </pluginManagement>
     </build>
-        <repositories>
-        <repository>
-            <id>fascinator-releases</id>
-            <url>https://fascinator.usq.edu.au/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>fascinator-snapshots</id>
-            <url>https://fascinator.usq.edu.au/nexus/content/groups/public-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>

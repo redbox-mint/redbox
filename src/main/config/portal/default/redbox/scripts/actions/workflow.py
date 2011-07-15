@@ -1,10 +1,10 @@
 from workflow import WorkflowData as DefaultWorkflowData
 
-from au.edu.usq.fascinator.api.indexer import SearchRequest
-from au.edu.usq.fascinator.api.storage import StorageException
-from au.edu.usq.fascinator.common import JsonObject, JsonSimple, MessagingServices
-from au.edu.usq.fascinator.common.storage import StorageUtils
-from au.edu.usq.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.api.indexer import SearchRequest
+from com.googlecode.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import JsonObject, JsonSimple, MessagingServices
+from com.googlecode.fascinator.common.storage import StorageUtils
+from com.googlecode.fascinator.common.solr import SolrResult
 
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception

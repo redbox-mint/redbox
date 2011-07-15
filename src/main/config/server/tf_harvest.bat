@@ -21,7 +21,7 @@ goto end
 if exist "%JSON_FILE%" (set BASE_FILE=%JSON_FILE%) else (set BASE_FILE=%HARVEST_DIR%\%JSON_FILE%.json)
 if not exist "%BASE_FILE%" goto notfound
 echo %JAVA_OPTS%
-call java %JAVA_OPTS% -cp %CLASSPATH% au.edu.usq.fascinator.HarvestClient "%BASE_FILE%" > "%FASCINATOR_HOME%/logs/harvest.out"
+call java %JAVA_OPTS% -cp %CLASSPATH% com.googlecode.fascinator.HarvestClient "%BASE_FILE%" > "%FASCINATOR_HOME%/logs/harvest.out"
 goto end
 
 :notfound

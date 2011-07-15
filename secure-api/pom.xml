@@ -15,7 +15,7 @@
     <dependencies>
         <!-- Fascinator Portal Dependencies -->
         <dependency>
-            <groupId>au.edu.usq.fascinator</groupId>
+            <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-portal</artifactId>
             <type>jar</type>
             <classifier>classes</classifier>
@@ -32,7 +32,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Tapestry-Module-Classes>au.edu.usq.fascinator.redbox.PortalModule</Tapestry-Module-Classes>
+                            <Tapestry-Module-Classes>com.googlecode.fascinator.redbox.PortalModule</Tapestry-Module-Classes>
                         </manifestEntries>
                     </archive>
                 </configuration>

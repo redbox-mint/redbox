@@ -1,12 +1,12 @@
-from au.edu.usq.fascinator.api import PluginManager
-from au.edu.usq.fascinator.api.indexer import SearchRequest
-from au.edu.usq.fascinator.api.storage import PayloadType
-from au.edu.usq.fascinator.common import FascinatorHome
-from au.edu.usq.fascinator.common import JsonObject
-from au.edu.usq.fascinator.common import JsonSimple
-from au.edu.usq.fascinator.common import JsonSimpleConfig
-from au.edu.usq.fascinator.common import MessagingServices
-from au.edu.usq.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.api import PluginManager
+from com.googlecode.fascinator.api.indexer import SearchRequest
+from com.googlecode.fascinator.api.storage import PayloadType
+from com.googlecode.fascinator.common import FascinatorHome
+from com.googlecode.fascinator.common import JsonObject
+from com.googlecode.fascinator.common import JsonSimple
+from com.googlecode.fascinator.common import JsonSimpleConfig
+from com.googlecode.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common.solr import SolrResult
 
 from java.io import ByteArrayInputStream
 from java.io import ByteArrayOutputStream
@@ -329,6 +329,9 @@ class DatasetData:
 
             # Currently indexed metadata
             solr = self.__getSolrData()
+            if solr is None:
+                result.put("error", "Solr document unavailable!")
+                return result
 
             # Find were we are in the workflow
             currentStage = None
