@@ -38,7 +38,7 @@
         </dependency>
         <!-- Fedora client -->
         <dependency>
-            <groupId>org.fcrepo</groupId>
+            <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>fcrepo-client</artifactId>
             <version>2.2.4</version>
         </dependency>
