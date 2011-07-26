@@ -77,7 +77,7 @@ class ReharvestData:
                     print "Reindexing object '%s'" % oid
                     self.sendMessage(oid)
                     result.put("status", "ok")
-                    result.put("message", "Object '%s' queued for reindex" % portalId)
+                    result.put("message", "Object '%s' queued for reindex" % oid)
                 else:
                     response.setStatus(500)
                     result.put("message", "No object specified to reindex")

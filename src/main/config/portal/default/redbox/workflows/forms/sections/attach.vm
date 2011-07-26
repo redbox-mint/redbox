@@ -134,7 +134,9 @@ $(function(){
     var but=jQ("#add-file"), uploadFile=jQ("#uploadFile");
     but.attr("disabled", true);
     uploadFile.change(function(){
-        but.attr("disabled", !uploadFile.val());
+        // uploadFile.val() will fail after first upload in IE
+        //but.attr("disabled", !uploadFile.val());
+        but.attr("disabled", false);
     });
     updateAttachedFiles(packageData.attachedFiles);
 });
