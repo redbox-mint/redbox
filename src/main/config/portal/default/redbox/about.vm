@@ -28,7 +28,7 @@
         (though that is not the case with the initial version), and it uses the
         high performance Apache Solr text indexer to drive the portal interface
         rather than an RDF triple store.</p>
-        <p>Please see the <a href="https://fascinator.usq.edu.au/trac/wiki/Projects/ReDBox">ReDBox project page</a>
+        <p>Please see the <a href="http://sites.google.com/site/redboxmint/">ReDBox project page</a>
         for more information.</p>
     </div>
     <p/>
