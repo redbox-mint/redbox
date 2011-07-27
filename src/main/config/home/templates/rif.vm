@@ -176,7 +176,7 @@
             </rif:coverage>
         #end
 
-            ###geoSpatial("location")
+            #geoSpatial("location")
 
             #findRelatedIdentifiers("dc:creator.foaf:Person", "hasCollector")
             #findRelatedObject("primaryContact.dc:identifier", "isPrimaryContactFor")
