@@ -403,9 +403,9 @@
                 },
                 "labelField": "attachment_type",
                 "label": {
-                    "data-file": "Data File",
-                    "readme": "Readme",
-                    "supporting-material": "Supporting Material"
+                    "data-file": "Data file",
+                    "readme": "Read me",
+                    "supporting-material": "Supporting material"
                 },
                 "controlGroup": "M",
                 "versionable": false,
