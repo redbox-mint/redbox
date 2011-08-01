@@ -69,9 +69,9 @@
     #parseDisplayTemplate("detail/preview/sections/people.vm")
     #parseDisplayTemplate("detail/preview/sections/subject.vm")
     #parseDisplayTemplate("detail/preview/sections/rights.vm")
-    #parseDisplayTemplate("detail/preview/sections/management.vm")
     #parseDisplayTemplate("detail/preview/sections/attach.vm")
     #if($page.authentication.is_logged_in())
+        #parseDisplayTemplate("detail/preview/sections/management.vm")
         #parseDisplayTemplate("detail/preview/sections/notes.vm")
         #parseDisplayTemplate("detail/preview/sections/request.vm")
     #end
