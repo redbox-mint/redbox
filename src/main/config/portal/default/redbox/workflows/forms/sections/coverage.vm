@@ -92,10 +92,10 @@
                     to retrieve the polygon coordinates
                     <ol>
                         <li>
-                            Go to the list of locations at
-                            <a href="http://www.anzlic.org.au/genlist/anzlic-allgens.txt" target="_blank">
-                                http://www.anzlic.org.au/genlist/anzlic-allgens.txt
-                            </a>
+                            Download the list of locations at
+                            <a href="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-allgens.xml" target="_blank">
+                                http://asdd.ga.gov.au/asdd/profileinfo/anzlic-allgens.xml
+                            </a> (7.6mb)
                         </li>
                         <li>
                             Use your browser search function to find your
