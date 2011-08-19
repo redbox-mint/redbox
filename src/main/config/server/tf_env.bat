@@ -46,7 +46,7 @@ REM jetty settings
 set JETTY_OPTS=-Djetty.port=%LOCAL_PORT% -Djetty.logs=%JETTY_LOGS% -Djetty.home=%PROJECT_HOME%/server/jetty
 
 REM solr settings
-set SOLR_OPTS=-Dsolr.solr.home="%PROJECT_HOME%/solr" -Djava.util.logging.config.file="%PROJECT_HOME%/home/solr/logging.properties"
+set SOLR_OPTS=-Dsolr.solr.home="%PROJECT_HOME%/solr"
 
 REM proxy data
 set PROXY_OPTS=-Dhttp.proxyHost=%PROXY_HOST% -Dhttp.proxyPort=%PROXY_PORT% -Dhttp.nonProxyHosts="*.newcastle.edu.au^|localhost"
@@ -56,8 +56,5 @@ set CONFIG_DIRS=-Dfascinator.home="%FASCINATOR_HOME%" -Dportal.home="%PROJECT_HO
 
 REM additional settings
 set EXTRA_OPTS=-Dserver.url.base="%SERVER_URL%" -Dmint.proxy.server="%MINT_SERVER%" -Dmint.proxy.url="%MINT_SERVER%/mint" -Damq.port=%AMQ_PORT% -Damq.stomp.port=%AMQ_STOMP_PORT% -Dsmtp.host="%SMTP_HOST%" -Dadmin.email="%ADMIN_EMAIL%"
-
-REM Logging fix. commons-logging 1.1.1 and Axis 1.4 (for Fedora) have some disagreements
-set COMMONS_LOGGING=-Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
 
 set JAVA_OPTS=%COMMONS_LOGGING% %JVM_OPTS% %SOLR_OPTS% %PROXY_OPTS% %JETTY_OPTS% %CONFIG_DIRS% %EXTRA_OPTS%

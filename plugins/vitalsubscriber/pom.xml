@@ -16,12 +16,10 @@
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-common</artifactId>
-            <version>${fascinator.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-plugin-api</artifactId>
-            <version>${fascinator.version}</version>
         </dependency>
         <!-- Unit testing -->
         <dependency>
@@ -34,7 +32,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.8</version>
+            <version>1.6.1</version>
         </dependency>
         <!-- Fedora client -->
         <dependency>
@@ -57,6 +55,12 @@
             <groupId>axis</groupId>
             <artifactId>axis</artifactId>
             <version>1.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
