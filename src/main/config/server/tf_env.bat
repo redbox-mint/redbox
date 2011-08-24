@@ -57,4 +57,7 @@ set CONFIG_DIRS=-Dfascinator.home="%FASCINATOR_HOME%" -Dportal.home="%PROJECT_HO
 REM additional settings
 set EXTRA_OPTS=-Dserver.url.base="%SERVER_URL%" -Dmint.proxy.server="%MINT_SERVER%" -Dmint.proxy.url="%MINT_SERVER%/mint" -Damq.port=%AMQ_PORT% -Damq.stomp.port=%AMQ_STOMP_PORT% -Dsmtp.host="%SMTP_HOST%" -Dadmin.email="%ADMIN_EMAIL%"
 
+REM Logging fix. Axis 1.4 (for Fedora) needs to know about the SLF4J Implementation
+set COMMONS_LOGGING=-Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.SLF4JLogFactory
+
 set JAVA_OPTS=%COMMONS_LOGGING% %JVM_OPTS% %SOLR_OPTS% %PROXY_OPTS% %JETTY_OPTS% %CONFIG_DIRS% %EXTRA_OPTS%
