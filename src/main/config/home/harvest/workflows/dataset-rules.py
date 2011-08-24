@@ -260,10 +260,12 @@ class IndexData:
                               or field.endswith(".rdf:resource") \
                               or field.endswith(".association")):
                         # index dublin core fields for faceting
-                        facetField = field.replace("dc:", "dc_")
+                        basicField = field.replace("dc:", "dc_")
                         dot = field.find(".")
                         if dot > 0:
-                            facetField = facetField[:dot]
+                            facetField = basicField[:dot]
+                        else:
+                            facetField = basicField
                         #print "Indexing DC field '%s':'%s'" % (field, facetField)
                         if facetField == "dc_title":
                             if self.title is None:
@@ -271,6 +273,11 @@ class IndexData:
                         elif facetField == "dc_type":
                             if self.dcType is None:
                                 self.dcType = value
+                        elif facetField == "dc_creator":
+                            # dc:title should not be used here... but
+                            # it is resolving this is another ticket
+                            if basicField.endswith("dc_title"):
+                                self.utils.add(self.index, "dc_creator", value)
                         else:
                             self.utils.add(self.index, facetField, value)
                         # index keywords for lookup
