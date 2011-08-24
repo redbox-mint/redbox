@@ -100,7 +100,7 @@
                 "priority": "7",
                 "config": {
                     "name": "subscriber",
-                    "subscribers": ["vital"]
+                    "subscribers": ["vital", "solr-event-log"]
                 }
             },
             {
@@ -432,6 +432,22 @@
                     ]
                 },
                 "retainIds": true
+            }
+        },
+        "solr-event-log": {
+            "uri": "http://localhost:${jetty.port}/solr/eventlog",
+            "buffer": {
+                "docLimit": "200",
+                "sizeLimit": "204800",
+                "timeLimit": "30"
+            }
+        },
+        "solr": {
+            "uri": "http://localhost:${jetty.port}/solr/eventlog",
+            "buffer": {
+                "docLimit": "200",
+                "sizeLimit": "204800",
+                "timeLimit": "30"
             }
         }
     }
