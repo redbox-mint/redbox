@@ -12,6 +12,7 @@
     #set($contentTitle = "Description")
     #parseTemplate("wrapping/content-block-open.vm")
     <div class="article first">
+        <p><b>ReDBox/Mint version:</b> $systemConfig.getString("Unknown", "redbox.version.string")</p>
         <p>ReDBox is web based metadata registry application, similar to an
         institutional repository, for describing research data. It is being
         developed for use at the University of Newcastle, and subsequent

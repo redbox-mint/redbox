@@ -16,6 +16,7 @@ export MINT_SERVER="${mint.proxy.server}"
 if [ -z "$TF_HOME" ]; then
 	export TF_HOME="$PROJECT_HOME/home"
 fi
+export REDBOX_VERSION="${project.version}"
 
 # java class path
 export CLASSPATH="plugins/*:lib/*"
@@ -57,7 +58,7 @@ SOLR_OPTS="-Dsolr.solr.home=$PROJECT_HOME/solr
 CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=$PROJECT_HOME/portal -Dstorage.home=$PROJECT_HOME/storage"
 
 # additional settings
-EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT"
+EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT -Dredbox.version=$REDBOX_VERSION"
 
 # Logging fix. Axis 1.4 (for Fedora) needs to know about the SLF4J Implementation
 COMMONS_LOGGING="-Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.SLF4JLogFactory"

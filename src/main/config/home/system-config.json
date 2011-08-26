@@ -1,5 +1,6 @@
 {
     "version": "0.7.17",
+    "redbox.version.string": "${redbox.version}",
     "configured": true,
     "urlBase": "${server.url.base}",
     "email": "DO_NOT_CHANGE",
