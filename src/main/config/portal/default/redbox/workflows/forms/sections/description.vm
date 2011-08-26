@@ -1,11 +1,11 @@
-#macro(relatedField $id $placeholder $addLabel)
+#macro(relatedInfoField $id $placeholder $addLabel)
     <table class="input-list">
         <thead>
             <tr>
                 <th>#</th>
                 <th>URL</th>
+                <th>Title</th>
                 <th>Notes</th>
-                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -16,10 +16,12 @@
                     <input type="text" size="60" placeholder="$placeholder" id="${id}.0" />
                 </td>
                 <td>
+                    <input type="text" size="60" placeholder="title" id="${id}.0.title" />
+                </td>
+                <td>
                     <input type="text" size="60" placeholder="notes" id="${id}.0.notes" />
                 </td>
-                <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;"></td>
+                <td class="delete-item" style="width: 100%;"><a href="#">delete</a></td>
             </tr>
         </tbody>
         <tfoot>
@@ -75,17 +77,17 @@
         Include URL/s to any publications underpinning the research
         dataset/collection, registry/repository, catalogue or index.
     </div>
-    #relatedField("citations" "publication url" "Add publication")
-
-    #fieldTitle("data" "Related Data" false)
-    <div class="help-content" id="help-data">
-        Include URL/s to any sources of third party data used/re-used.
-    </div>
-    #relatedField("data" "data url" "Add data")
+    #relatedInfoField("citations" "publication url" "Add publication")
 
     #fieldTitle("website" "Related Website" false)
     <div id="help-website" class="help-content">
         Include URL/s for the relevant website.
     </div>
-    #relatedField("website" "website url" "Add website")
+    #relatedInfoField("website" "website url" "Add website")
+
+    #fieldTitle("data" "Related Data" false)
+    <div class="help-content" id="help-data">
+        Include URL/s to any sources of third party data used/re-used.
+    </div>
+    #relatedInfoField("data" "data url" "Add data")
 </div>

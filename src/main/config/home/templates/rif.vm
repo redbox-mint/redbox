@@ -18,9 +18,20 @@
 #macro(showRelatedInfo $field $relatedInfoType $identifierType)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key).get($key))
+        #set ($row = $valueMap.get($key))
+        #set ($value = $row.get($key))
         #if ("$!value" != "")
-        <rif:relatedInfo type="$relatedInfoType"><rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier></rif:relatedInfo>
+            #set ($title = $row.get("title"))
+            #if ("$!title" != "")
+        <rif:relatedInfo type="$relatedInfoType">
+            <rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier>
+            <rif:title>$util.encodeXml($title)</rif:title>
+        </rif:relatedInfo>
+            #else
+        <rif:relatedInfo type="$relatedInfoType">
+            <rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier>
+        </rif:relatedInfo>
+            #end
         #end
     #end
 #end
@@ -78,7 +89,27 @@
 
 #set($quote='"')
 #set($dateFormat = "yyyy-MM-dd'T'HH:mm:ss")
+
+### Resolve the identifier
+#set ($formId = $util.get($item, 'dc:identifier'))
+#set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
+#set ($formType = $util.get($item, 'dc:identifier.dc:type'))
 #set ($handle = $util.getMetadata($object, "vitalHandle"))
+#set ($identifier = "")
+#set ($identifierType = "")
+#if ($formOrigin == "internal")
+    #if ($handle != "")
+        #set ($identifier = $handle)
+        #set ($identifierType = "handle")
+    #else
+        #set ($identifier = "$urlBase/detail/$oid")
+        #set ($identifierType = "uri")
+    #end
+#else
+    #set ($identifier = $formId)
+    #set ($identifierType = $formType)
+#end
+
 ####set($lang = "xml:lang=${quote}$util.get($item, 'dc:language')${quote}")
 #set($lang = "xml:lang=${quote}en${quote}")
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
@@ -86,13 +117,7 @@
             xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd">
     <rif:registryObject group="University of Newcastle, Australia">
 
-    ## Use handle if exists
-    #if ($handle != "")
-        <rif:key>$handle</rif:key>
-    #else
-        <rif:key>$urlBase/detail/$oid</rif:key>
-    #end
-
+        <rif:key>$util.encodeXml($identifier)</rif:key>
         <rif:originatingSource>$urlBase</rif:originatingSource>
 
         #set($dateModified = "")
@@ -123,13 +148,7 @@
         ##  http://services.ands.org.au/documentation/rifcs/1.2.0/schemadocs/registryObjects.html
         #################
         <rif:collection type="$util.get($item, "dc:type")" $dateModified $dateAccessioned>
-
-        #set ($value = $util.get($item, "url_useRecordId"))
-        #if ($value == "on" && $handle != "")
-            <rif:identifier type="url">$handle</rif:identifier>
-        #else
-            <rif:identifier type="url">$util.get($item, "url")</rif:identifier>
-        #end
+            <rif:identifier type="$identifierType">$identifier</rif:identifier>
 
             <rif:name type="primary" $lang>
                 <rif:namePart>$util.encodeXml($util.get($item, "dc:title"))</rif:namePart>
@@ -137,16 +156,19 @@
 
         ## Location, use Handle as priority if requested
             <rif:location>
+        #set($valueMap = $util.getList($item, "url"))
+        #foreach($key in $valueMap.keySet())
+            #set ($value = $valueMap.get($key).get($key))
+            #if ("$!value" != "")
                 <rif:address>
                     <rif:electronic type="url">
-        #set ($value = $util.get($item, "url_useRecordId"))
-        #if ($value == "on" && $handle != "")
-                        <rif:value>$handle</rif:value>
-        #else
-                        <rif:value>$util.get($item, "url")</rif:value>
-        #end
+                        <rif:value>$util.encodeXml($value)</rif:value>
                     </rif:electronic>
                 </rif:address>
+            #end
+        #end
+
+        #### Physical location
         #set ($value = $util.get($item, "physical_storage"))
         #if ("$!value" != "")
                 <rif:address>
@@ -216,8 +238,8 @@
             <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
         #end
 
-            #showRelatedInfo("citations", "publication", "url")
-            #showRelatedInfo("website", "website", "url")
+            #showRelatedInfo("citations", "publication", "uri")
+            #showRelatedInfo("website", "website", "uri")
         </rif:collection>
     </rif:registryObject>
 </rif:registryObjects>

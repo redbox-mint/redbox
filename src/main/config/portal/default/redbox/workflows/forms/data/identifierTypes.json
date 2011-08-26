@@ -1,0 +1,48 @@
+{
+    "results": [
+        {
+            "id": "abn",
+            "label": "Australian Business Number"
+        },
+        {
+            "id": "arc",
+            "label": "Australian Research Council identifier"
+        },
+        {
+            "id": "ark",
+            "label": "ARK Persistent Identifier Scheme"
+        },
+        {
+            "id": "doi",
+            "label": "Digital Object Identifier"
+        },
+        {
+            "id": "handle",
+            "label": "HANDLE System Identifier"
+        },
+        {
+            "id": "infouri",
+            "label": "'info' URI scheme"
+        },
+        {
+            "id": "isil",
+            "label": "International Standard Identifier for Libraries"
+        },
+        {
+            "id": "local",
+            "label": "Local Identifier"
+        },
+        {
+            "id": "nla",
+            "label": "National Library of Australia identifier"
+        },
+        {
+            "id": "purl",
+            "label": "Persistent Uniform Resource Locator"
+        },
+        {
+            "id": "uri",
+            "label": "Uniform Resource Identifier"
+        }
+    ]
+}

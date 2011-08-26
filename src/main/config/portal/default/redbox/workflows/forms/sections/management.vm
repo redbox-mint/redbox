@@ -1,9 +1,53 @@
 <h3><a href="#management">Management</a></h3>
 <div id="management" class="inputscreen">
+    #fieldTitle("dc:identifier" "Identifier" true)
+    <label class="validation-err-msg"
+        for="dc:identifier"
+        data-validation-rule="test(notEmpty); when(blur, change, submit);
+                                jsTest(
+                                    var value = ctx.find('input[id=dc:identifier]').val();
+                                    var type = ctx.find('input[id=dc:identifier.dc:type]').val();
+                                    var checked = ctx.find('input[id=dc:identifier.checkbox]').is(':checked');
+                                    value = jQ.trim(value);
+                                    type = jQ.trim(type);
+                                    if (checked) {
+                                        r = false;
+                                    } else {
+                                        r = (value == '') || (type == '');
+                                    }
+                                );
+                                liveFor(.videntifier);">
+        An identifier is required!
+    </label>
+    <div class="help-content" id="help-dc:identifier">
+        <p>
+            The identifier for this collection. Can be determined by the system if desired.
+        </p>
+    </div>
+    <div class="group">
+        <p>
+            <label for="dc:identifier.dc:type">Type of identifier:</label>
+            #mintSelectField("dc:identifier.dc:type"
+                             "dc:identifier.dc:type.skos:prefLabel"
+                             "$portalPath/workflows/forms/data/identifierTypes.json"
+                             "id"
+                             "label"
+                             "results"
+                             "handle")
+        </p>
+        <p>
+            <label for="dc:identifier">Identifier:</label>
+            <input type="text" size="60" placeholder="persistent identifier" id="dc:identifier" class="videntifier" />
+            <input type="hidden" id="dc:identifier.redbox:origin" />
+            <input type="checkbox" id="dc:identifier.checkbox" class="videntifier" />
+            <label for="dc:identifier.checkbox">Use this record's ID</label>
+        </p>
+    </div>
+
     #fieldTitle("location_group" "Location" true)
     <div class="help-content" id="help-location_group">
         Record the location of the research data. At least one of the
-        'Identifier or URL' or 'Stored At' fields must be entered. The 'Notes'
+        'URL' or 'Stored At' fields must be entered. The 'Notes'
         field is optional.
     </div>
     <div class="group">
@@ -11,29 +55,32 @@
             for="url"
             data-validation-rule="test(notEmpty);when(blur,change,submit);
                                     jsTest(
-                                        var i=ctx.find('input[id=url]').val();
-                                        var s=ctx.find('input[id=physical_storage]').val();
-                                        var c=ctx.find('input[id=url_useRecordId]').is(':checked');
-                                        i=jQ.trim(i); s=jQ.trim(s);
-                                        r=(i=='')&&(s=='')&&(c==false);
+                                        var url = ctx.find('input[id=url.1]').val();
+                                        var stored = ctx.find('input[id=physical_storage]').val();
+                                        url = jQ.trim(url); stored = jQ.trim(stored);
+                                        r = (url == '') && (stored == '');
                                     );
                                     liveFor(.vlocation);">
-            The 'Identifier or URL' and/or 'Stored At' field is required!
+            At least one 'URL' or 'Stored At' value is required!
         </label>
-        #fieldTitle("url" "Identifier or URL" false)
+        #fieldTitle("url" "URL(s)" false)
         <div class="help-content" id="help-url">
             <p>
-                For example: a persistent URI representing the location of the
-                research dataset/collection, registry/repository, catalogue or
-                index. If the "Data stored in this record" option is checked,
-                then the Identifier or URL field will be populated with the
-                Handle of the record retrieved from VITAL.
+                A web address(es) where the research dataset/collection,
+                registry/repository, catalogue or index can be found.
             </p>
         </div>
         <p>
-            <input type="text" size="60" placeholder="persistent identifier or url" id="url" class="vlocation" />
-            <input type="checkbox" id="url_useRecordId" class="vlocation" />
-            <label for="url_useRecordId">Data stored in this record</label>
+            <div class="input-list">
+                <div class="item-input-display">
+                    <span class="sort-number"></span>&nbsp;&nbsp;&nbsp;
+                    <input type="text" size="60" placeholder="url" id="url.0" class="vlocation" />
+                    <span class="delete-item"><a href="#">delete</a></span>
+                </div>
+                <div>
+                    <input type="button" class="button add-another-item" value="Add url" />
+                </div>
+            </div>
         </p>
 
         #fieldTitle("physical_storage" "Stored At" false)
@@ -331,13 +378,35 @@ $(function() {
             $(this).search();
         });
 
-    $("#url_useRecordId").change(function(){
-        var checked = $(this).is(":checked");
-        if(checked){
-            $("#url").attr("readonly", "readonly");
-        }else{
-            $("#url").removeAttr("readonly");
+    function styleIdentifier(isChecked, idInput, originInput) {
+        if (isChecked) {
+            idInput.attr("readonly", "readonly");
+            idInput.addClass("strike");
+            originInput.val("internal");
+        } else {
+            idInput.removeAttr("readonly");
+            idInput.removeClass("strike");
+            originInput.val("external");
         }
+    }
+
+    $("input[id=dc:identifier.checkbox]").change(function() {
+        styleIdentifier(
+            $(this).is(":checked"),
+            $("input[id=dc:identifier]"),
+            $("input[id=dc:identifier.redbox:origin]"));
+    });
+
+    $("input[id=dc:identifier.redbox:origin]").live("onDataChanged", function() {
+        var value = $(this).val();
+        var checked = true;
+        if (value == "internal" || value == "") {
+            $("input[id=dc:identifier.checkbox]").attr('checked','checked');
+        } else {
+            $("input[id=dc:identifier.checkbox]").removeAttr('checked');
+            checked = false;
+        }
+        styleIdentifier(checked, $("input[id=dc:identifier]"), $(this));
     });
 });
 </script>

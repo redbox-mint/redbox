@@ -284,6 +284,14 @@ fieldset p textarea {
     width: 98%;
 }
 
+.input-list a.advanced {
+    cursor: pointer;
+}
+
+.strike {
+    text-decoration: line-through;
+}
+
 /*
 input.button, .inputscreens button {
     -moz-border-radius: 4px;

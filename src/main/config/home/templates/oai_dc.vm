@@ -60,10 +60,23 @@
     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-#set($handle = $util.getMetadata($object, "vitalHandle"))
-#if("$!handle" != "")
-<dc:identifier>$handle</dc:identifier>
+
+### Resolve the identifier
+#set ($formId = $util.get($item, 'dc:identifier'))
+#set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
+#set ($handle = $util.getMetadata($object, "vitalHandle"))
+#set ($identifier = "")
+#if ($formOrigin == "internal")
+    #if ($handle != "")
+        #set ($identifier = $handle)
+    #else
+        #set ($identifier = "$urlBase/detail/$oid")
+    #end
+#else
+    #set ($identifier = $formId)
 #end
+
+<dc:identifier>$util.encodeXml($identifier)</dc:identifier>
 #dc1("title")
 #dc1("type")
 ### Date

@@ -2,8 +2,8 @@
 <div class="meta">
     <dl>
         #displayFirst("dc:description" "Description")
-        #displayUrlList("citations" "Related Publications" "value" "notes")
-        #displayUrlList("data" "Related Data" "value" "notes")
-        #displayUrlList("website" "Related Websites" "value" "notes")
+        #displayUrlList("citations" "Related Publications" "value" "title")
+        #displayUrlList("data" "Related Data" "value" "title")
+        #displayUrlList("website" "Related Websites" "value" "title")
     </dl>
 </div>

@@ -1,11 +1,19 @@
 #sectionHeading("Management")
 <div class="meta">
     <dl>
+        <dt>Identifier</dt>
+        <div class="group">
+            #set($origin = $self.getFirst("dc:identifier.redbox:origin"))
+            #if($origin == "internal")
+                <i>Using this record's ID.</i>
+            #else
+                #displayFirst("dc:identifier" "Identifier")
+                #displayFirst("dc:identifier.dc:type.skos:prefLabel" "Type of Identifier")
+            #end
+        </div>
         <dt>Location</dt>
         <div class="group">
-            #set($useRecordId = $self.getFirst("url_useRecordId"))
-            #if("$!useRecordId"!="")<em>The data stored in this record.</em>#end
-            #displayFirst("url" "Identifier or URL")
+            #displayList("url" "URL")
             #displayFirst("physical_storage" "Stored At")
             #displayFirst("location_notes" "Notes")
         </div>

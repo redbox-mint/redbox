@@ -1,0 +1,32 @@
+{
+    "results": [
+        {
+            "id": "hasAssociationWith",
+            "label": "Has association with:"
+        },
+        {
+            "id": "describes",
+            "label": "Describes:"
+        },
+        {
+            "id": "isDescribedBy",
+            "label": "Described by:"
+        },
+        {
+            "id": "hasPart",
+            "label": "Has part:"
+        },
+        {
+            "id": "isPartOf",
+            "label": "Part of:"
+        },
+        {
+            "id": "isDerivedFrom",
+            "label": "Derived from:"
+        },
+        {
+            "id": "hasDerivedCollection",
+            "label": "Has derivation:"
+        }
+    ]
+}

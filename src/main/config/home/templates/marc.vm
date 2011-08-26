@@ -101,10 +101,29 @@
     <marc:controlfield tag="008">$leader</marc:controlfield>
 #end
 
+#macro (control001)
+    ### Resolve the identifier
+    #set ($formId = $util.get($item, 'dc:identifier'))
+    #set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
+    #set ($handle = $util.getMetadata($object, "vitalHandle"))
+    #set ($identifier = "")
+    #if ($formOrigin == "internal")
+        #if ($handle != "")
+            #set ($identifier = $handle)
+        #else
+            #set ($identifier = "$urlBase/detail/$oid")
+        #end
+    #else
+        #set ($identifier = $formId)
+    #end
+    <marc:controlfield tag="001">$util.encodeXml($identifier)</marc:controlfield>
+#end
+
 <marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim
 http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
     <marc:record>
         <marc:leader>00000nmi a22000004u 4500</marc:leader>
+        #control001()
         #control008()
         #basicField("245", "0", "0", "a", "dc:title")
         #basicField("655", " ", "4", "a", "dc:type")
