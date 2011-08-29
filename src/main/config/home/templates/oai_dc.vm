@@ -40,14 +40,14 @@
         <dc:${tag}>$util.encodeXml($value)</dc:${tag}>
     #end
 #end
-#macro(anzsrc $tag $baseKey $label)
+#macro(dcAnzsrc $tag $baseKey $data $label)
     #set($valueMap = $util.getList($item, $baseKey))
     #foreach($key in $valueMap.keySet())
         #set($values = $valueMap.get($key))
-        #if("$!label" == "")
-            #set($value = $values.get($key))
-        #else
+        #if("$!label" != "")
             #set($value = $values.get($label))
+        #else
+            #set($value = $values.get($data))
         #end
         #set($lastIndex = $value.lastIndexOf('-') + 1 )
         #set($text = $value.substring($lastIndex).trim() )
@@ -107,11 +107,13 @@
 #set($valueMap = $util.getList($item, "dc:creator.foaf:Person"))
 #foreach($key in $valueMap.keySet())
     #set($value = $valueMap.get($key).get("dc:title"))
+    #if ("$!value" != "")
     <dc:creator>$util.encodeXml($value)</dc:creator>
+    #end
 #end
 
-#anzsrc("subject" "dc:subject.anzsrc:for" "skos:prefLabel")
-#anzsrc("subject" "dc:subject.anzsrc:seo" "skos:prefLabel")
+#dcAnzsrc("subject" "dc:subject.anzsrc:for" "rdf:resource" "skos:prefLabel")
+#dcAnzsrc("subject" "dc:subject.anzsrc:seo" "rdf:resource" "skos:prefLabel")
 #dcList("subject" "dc:subject.keywords" "")
 
 #dc2("rights", "access_conditions")
