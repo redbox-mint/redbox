@@ -1,9 +1,15 @@
 #sectionHeading("Subject")
 <div class="meta">
     <dl>
+        #######################################
         <dt>Fields of Research</dt>
+        #set($forList = $self.getList("dc:subject.anzsrc:for"))
+        #if ($forList.isEmpty())
         <dd>
-            #set($forList = $self.getList("dc:subject.anzsrc:for"))
+        #noInformation()
+        </dd>
+        #else
+        <dd>
             <ol>
             #foreach($key in $forList.keySet())
                 #set($code = $forList.get($key))
@@ -11,9 +17,17 @@
             #end
             </ol>
         </dd>
+        #end
+
+        #######################################
         <dt>Socio-Economic Objective</dt>
+        #set($seoList = $self.getList("dc:subject.anzsrc:seo"))
+        #if ($seoList.isEmpty())
         <dd>
-            #set($seoList = $self.getList("dc:subject.anzsrc:seo"))
+        #noInformation()
+        </dd>
+        #else
+        <dd>
             <ol>
             #foreach($key in $seoList.keySet())
                 #set($code = $seoList.get($key))
@@ -21,6 +35,8 @@
             #end
             </ol>
         </dd>
+        #end
+
         #displayList("dc:subject.keywords" "Keywords")
         #displayFirst("research_activity.skos:prefLabel" "Research Activity")
     </dl>

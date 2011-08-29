@@ -1,18 +1,48 @@
+#macro(missing $value)
+<i>{missing: '$self.escapeHtml("$value")'}</i>
+#end
+#macro(noInformation)
+<i>(no information)</i>
+#end
 #macro(sectionHeading $heading)
 <span class="accordion-header">$heading</span>
 #end
 #macro(displayFirst $key $name)
     <dt>$name</dt>
-    <dd>$self.getFirst($key)</dd>
+    #set ($value = $self.getFirst($key))
+    #if ("$!value" != "")
+    <dd>$value</dd>
+    #else
+    <dd>
+    #noInformation()
+    </dd>
+    #end
 #end
 #macro(displayUrl $name $hrefField $labelField)
     <dt>$name</dt>
-    <dd><a href="$self.getFirst($hrefField)" target="_blank">$self.getFirst($labelField)</a></dd>
+    #set ($link = $self.getFirst($hrefField))
+    #set ($label = $self.getFirst($labelField))
+    #if ("$!link" != "")
+        #if ("$!label" != "")
+    <dd><a href="$link" target="_blank">$label</a></dd>
+        #else
+    <dd><a href="$link" target="_blank">$link</a></dd>
+        #end
+    #else
+    <dd>
+    #noInformation()
+    </dd>
+    #end
 #end
 #macro(displayList $baseKey $name)
     <dt>$name</dt>
+    #set($prefixList = $self.getList($baseKey))
+    #if ($prefixList.isEmpty())
     <dd>
-        #set($prefixList = $self.getList($baseKey))
+    #noInformation()
+    </dd>
+    #else
+    <dd>
         <ol>
         #foreach($key in $prefixList.keySet())
             #foreach($value in $prefixList.get($key))
@@ -21,29 +51,55 @@
         #end
         </ol>
     </dd>
+    #end
 #end
 #macro(displayUrlList $key $name $hrefField $labelField)
     <dt>$name</dt>
+    #set($urlList = $self.getList($key))
+    #if ($urlList.isEmpty())
     <dd>
-        #set($urlList = $self.getList($key))
+    #noInformation()
+    </dd>
+    #else
+    <dd>
         <ol>
         #foreach($key in $urlList.keySet())
             #set($url = $urlList.get($key))
             #set($href = $url.get($hrefField))
             #set($label = $url.get($labelField))
-            #if("$!label"!="")
+            #if("$!href"!="")
                 <li>
-                #if("$!href"!="")
-                    <a href="$self.escapeHtml($!href)">$self.escapeHtml($!label)</a>
+                #if("$!label"!="")
+                    <a href="$self.escapeHtml($href)">$self.escapeHtml($label)</a>
                 #else
-                    $self.escapeHtml($!label)
+                    <a href="$self.escapeHtml($href)">$self.escapeHtml($href)</a>
                 #end
                 </li>
             #end
         #end
         </ol>
     </dd>
+    #end
 #end
+#macro(displayKey $map $key $required)
+    #set ($value = $map.get($key))
+    #if ("$!value" != "")
+$self.escapeHtml($value)
+    #else
+        #if ($required)
+#missing($key)
+        #end
+    #end
+#end
+
+#macro(displayOptionalKey $map $key)
+    #displayKey($map $key false)
+#end
+
+#macro(displayRequiredKey $map $key)
+    #displayKey($map $key true)
+#end
+
 #if($page.authentication.is_logged_in())
     #set ($vPid = $parent.getProperty("vitalPid"))
     #set ($vHandle = $parent.getProperty("vitalHandle"))
