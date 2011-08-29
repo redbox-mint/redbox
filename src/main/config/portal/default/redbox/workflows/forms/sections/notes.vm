@@ -14,8 +14,12 @@
         <tbody>
             <tr class="item-input-display notes">
                 <td style="vertical-align:middle;">
-                    <input type="text" id="notes.0.date" class="datetime" placeholder="date" readonly="readonly" size="25" />
-                    <input type="text" id="notes.0.username" class="username" placeholder="username" readonly="readonly" size="25" />
+                    <div class="group">
+                        Auto-generated values:
+                        <input type="text" id="notes.0.date" class="datetime" placeholder="date" readonly="readonly" size="25" />
+                        <input type="text" id="notes.0.username" class="username" placeholder="username" readonly="readonly" size="25" />
+                        <a id="notes.0.clear" class="clear-note" href="#">&lt; clear this note &gt;</a>
+                    </div>
                 </td>
                 <td>
                     <textarea cols="80" rows="4" placeholder="description" id="notes.0.description" class="vnote"></textarea>
@@ -35,13 +39,20 @@
 <script type="text/javascript">
 $(function(){
     $(".vnote").live("change keydown", function(){
-        var baseId=$(this).attr("id").replace(".description","");
-        if($("input[id='"+baseId+".date']").val()==""){
+        var baseId = $(this).attr("id").replace(".description", "");
+        if($("input[id='"+baseId+".date']").val() == ""){
             $("input[id='"+baseId+".date']").val(getDateTime());
         }
-        if($("input[id='"+baseId+".username']").val()==""){
+        if($("input[id='"+baseId+".username']").val() == ""){
             $("input[id='"+baseId+".username']").val("$page.authentication.get_username()");
         }
+    });
+    $(".clear-note").live("click", function(){
+        var baseId = $(this).attr("id").replace(".clear", "");
+        $("input[id='"+baseId+".date']").val("");
+        $("input[id='"+baseId+".username']").val("");
+        $("textarea[id='"+baseId+".description']").val("");
+        return false;
     });
 });
 </script>
