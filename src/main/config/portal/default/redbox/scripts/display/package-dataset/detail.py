@@ -72,9 +72,9 @@ class DetailData:
             return StringEscapeUtils.escapeHtml(value) or ""
         return ""
 
-    def getAttachedFiles(self):
+    def getAttachedFiles(self, oid):
         # Build a query
-        req = SearchRequest("attached_to:%s" % self.metadata.get("oid"))
+        req = SearchRequest("attached_to:%s" % oid)
         req.setParam("rows", "1000")
         # Run a search
         out = ByteArrayOutputStream()

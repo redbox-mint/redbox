@@ -2,7 +2,7 @@
 <div class="meta">
     <dl>
         <dd>
-            #set($attachedFiles = $self.getAttachedFiles())
+            #set($attachedFiles = $self.getAttachedFiles($oid))
             #if($attachedFiles.isEmpty())
             No files currently attached.
             #else
