@@ -19,9 +19,6 @@ running() {
 	return 0
 }
 
-# check script arguments
-[ $# -gt 0 ] || usage
-
 if running; then
 	echo " * Starting reindexer"
         LOG_FILE=$TF_HOME/logs/reindex.out
