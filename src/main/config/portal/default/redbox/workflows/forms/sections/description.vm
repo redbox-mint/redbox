@@ -18,10 +18,11 @@
                 <td>
                     <input type="text" size="60" placeholder="title" id="${id}.0.title" />
                 </td>
-                <td>
-                    <input type="text" size="60" placeholder="notes" id="${id}.0.notes" />
+                <td style="width: 100%;">
+                    <a id="${id}.0.showNotes" class="showRelatedNotes" href="#">&lt; add note &gt;</a>
+                    <input type="text" size="60" placeholder="notes" id="${id}.0.notes" class="relatedNotes hidden" />
                 </td>
-                <td class="delete-item" style="width: 100%;"><a href="#">delete</a></td>
+                <td class="delete-item"><a href="#">delete</a></td>
             </tr>
         </tbody>
         <tfoot>
@@ -91,3 +92,24 @@
     </div>
     #relatedInfoField("data" "data url" "Add data")
 </div>
+<script type="text/javascript">
+$(function() {
+    $(".showRelatedNotes").live("click", function() {
+        var baseId = $(this).attr("id").replace(".showNotes", "");
+        var input = $("input[id=" + baseId + ".notes]");
+        input.show();
+        $(this).hide();
+        return false;
+    });
+
+    $(".relatedNotes").live("onDataChanged", function() {
+        var value = $(this).val();
+        if (value != "") {
+            var baseId = $(this).attr("id").replace(".notes", "");
+            var link = $("a[id=" + baseId + ".showNotes]");
+            $(this).show();
+            link.hide();
+        }
+    });
+});
+</script>
