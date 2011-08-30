@@ -218,16 +218,20 @@
             <rif:description type="full" $lang>$util.encodeXml($value)</rif:description>
         #end
 
-        #set ($value = $util.get($item, "access_conditions"))
-        #if ("$!value" != "")
-            <rif:description type="accessRights" $lang>$util.encodeXml($value)</rif:description>
+        #set ($rights = $util.get($item, "restrictions"))
+        #if ("$!rights" != "")
+            <rif:description type="rights" $lang>$util.encodeXml($rights)</rif:description>
         #end
 
-        #set ($value = $util.get($item, "restrictions"))
-        #if ("$!value" != "")
-            <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
+        #### 'rights' is required, so send 'accessRights' as 'rights' if it was absent.
+        #set ($accessRights = $util.get($item, "access_conditions"))
+        #if ("$!accessRights" != "")
+            #if ("$!rights" != "")
+                <rif:description type="accessRights" $lang>$util.encodeXml($accessRights)</rif:description>
+            #else
+                <rif:description type="rights" $lang>$util.encodeXml($accessRights)</rif:description>
+            #end
         #end
-
         #set ($value = $util.get($item, "license_cc.skos:prefLabel"))
         #if ("$!value" != "")
             <rif:description type="rights" $lang>$util.encodeXml($value)</rif:description>
