@@ -21,17 +21,18 @@
         #set ($row = $valueMap.get($key))
         #set ($value = $row.get($key))
         #if ("$!value" != "")
+        <rif:relatedInfo type="$relatedInfoType">
+            <rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier>
             #set ($title = $row.get("title"))
             #if ("$!title" != "")
-        <rif:relatedInfo type="$relatedInfoType">
-            <rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier>
             <rif:title>$util.encodeXml($title)</rif:title>
-        </rif:relatedInfo>
-            #else
-        <rif:relatedInfo type="$relatedInfoType">
-            <rif:identifier type="$identifierType">$util.encodeXml($value)</rif:identifier>
-        </rif:relatedInfo>
             #end
+## Uncomment to map Notes as well
+##            #set ($notes = $row.get("notes"))
+##            #if ("$!notes" != "")
+##            <rif:notes>$util.encodeXml($notes)</rif:notes>
+##            #end
+        </rif:relatedInfo>
         #end
     #end
 #end
