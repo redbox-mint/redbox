@@ -42,7 +42,7 @@ class HomeData:
         if self.velocityContext[index] is not None:
             return self.velocityContext[index]
         else:
-            print "ERROR: Requested context entry '" + index + "' doesn't exist"
+            self.velocityContext["log"].error("ERROR: Requested context entry '{}' doesn't exist", index)
             return None
 
     def __search(self):

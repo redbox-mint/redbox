@@ -20,14 +20,15 @@ class ProxyGetData:
             queryStr = None
         if queryStr:
             url += "?%s" % queryStr
-        print "url='%s'" % url
+        self.vc("log").debug("Proxy URL = '{}'", url)
 
         data = None
         try:
             data = self.__wget(url)
         except Exception, e:
             data = '{"error":"%s"}' % str(e)
-            print "ERROR: %s" % str(e)
+            self.vc("log").error("ERROR accessing URL:", e)
+
         try:
             # parse json to check well-formedness
             json = JsonSimple(data).getJsonObject()
@@ -46,7 +47,7 @@ class ProxyGetData:
                             value = result["result-metadata"]["all"].get(field)
                             if isinstance(value, JSONArray):
                                 value = ",".join(value)
-                            #print " *** value from all:", value
+                            #self.vc("log").debug(" *** value from all: {}", value)
                         if value:
                             row += value
                         else:
@@ -58,7 +59,7 @@ class ProxyGetData:
                     data = ""
         except Exception, e:
             data = '{"error":"%s"}' % str(e)
-            print "ERROR invalid JSON: %s" % str(e)
+            self.vc("log").error("ERROR invalid JSON:", e)
 
         writer = self.vc("response").getPrintWriter("text/plain; charset=UTF-8")
         writer.print(data);
