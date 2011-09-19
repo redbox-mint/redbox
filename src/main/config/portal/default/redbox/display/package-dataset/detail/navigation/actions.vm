@@ -5,6 +5,7 @@
         #parseDisplayTemplate("detail/navigation/workflow.vm")
         #parseDisplayTemplate("detail/navigation/custom-actions.vm")
         #if($page.authentication.is_admin())
+            <li><a href="$portalPath/history/$oid/">Object History</a></li>
             #if(!$parent.isPending())
                 <li>
                     <a id="reharvest-this" href="$portalPath/detail/$oid">Reharvest</a>

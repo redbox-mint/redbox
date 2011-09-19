@@ -13,98 +13,59 @@
         </div>
         <dt>Location</dt>
         <div class="group">
-            #displayList("url" "URL")
-            #displayFirst("physical_storage" "Stored At")
-            #displayFirst("location_notes" "Notes")
+            #displayUrlList("vivo:Location" "URL" "dc:identifier" "")
+            #displayFirst("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At")
+            #displayFirst("vivo:Location.vivo:GeographicLocation.skos:note" "Notes")
         </div>
-        #displayFirst("retention_period" "Retention Period")
-        #displayFirst("extent" "Extent or Quantity")
-        #displayFirst("disposal_date" "Disposal Date")
-        #displayList("data_owner" "Data Owner (IP)")
-        #displayFirst("data_custodian" "Data Custodian")
-        #displayFirst("affiliation.skos:prefLabel" "Data Affiliation")
-        #displayUrlList("funding" "Funding Body/s" "rdf:resource" "skos:prefLabel")
+        #displayFirst("redbox:retentionPeriod" "Retention Period")
+        #displayFirst("dc:extent" "Extent or Quantity")
+        #displayFirst("redbox:disposalDate" "Disposal Date")
+        <dt>Data Owner (IP)</dt>
+        #set($ownerList = $self.getList("locrel:own.foaf:Agent"))
+        #if ($ownerList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($entry in $ownerList)
+                #set($owner = $entry.get("foaf:name"))
+                #if("$!owner"!="")
+                    <li>$self.escapeHtml($owner)</li>
+                #end
+            #end
+            </ol>
+        </dd>
+        #end
+
+        #displayFirst("locrel:dtm.foaf:Agent.foaf.name" "Data Custodian")
+        #displayFirst("foaf:Organization.skos:prefLabel" "Data Affiliation")
+        #displayUrlList("foaf:fundedBy.foaf:Agent" "Funding Body/s" "dc:identifier" "skos:prefLabel")
+
         <dt>Grant Numbers</dt>
         <dd>
-            #set($grantList = $self.getList("grant"))
+            #set($grantList = $self.getList("foaf:fundedBy.vivo:Grant"))
             <ol>
             #foreach($key in $grantList.keySet())
                 #set($grant = $grantList.get($key))
-                #set($internal = $grant.get("uon:internal"))
+                #set($internal = $grant.get("redbox:internalGrant"))
                 <li>
-                    $self.escapeHtml($grant.get("grantNumber")),
+                    $self.escapeHtml($grant.get("redbox:grantNumber")),
                     $self.escapeHtml($grant.get("skos:prefLabel"))
-                    #if("$!internal"!="")(Internal)#end
+                    #if("$!internal"!="")<em>(Internal)</em>#end
                 </li>
             #end
             </ol>
         </dd>
-        #displayFirst("project_title" "Project Title")
-        #displayFirst("depositor" "Depositor")
-        #displayFirst("data_size" "Data Size")
-        #displayFirst("policy" "Institutional Data Management Policy")
+
+        #displayFirst("swrc:ResearchProject.dc:title" "Project Title")
+        #displayFirst("locrel:dpt.foaf:Person.foaf:name" "Depositor")
+        #displayFirst("dc:SizeOrDuration" "Data Size")
+        #displayFirst("dc:Policy" "Institutional Data Management Policy")
         <div class="group">
-            #displayFirst("management_plan" "Data Management Plan")
-            #displayFirst("management_plan_notes" "Notes")
+            #displayFirst("redbox:ManagementPlan.redbox:hasPlan" "Data Management Plan")
+            #displayFirst("redbox:ManagementPlan.skos:note" "Notes")
         </div>
     </dl>
 </div>
-#*
-        ## management
-        url,
-        url_useRecordId,
-        physical_storage,
-        location_notes,
-        retention_period,
-        disposal_date,
-        extent,
-        data_owner.0,
-        data_custodian,
-        affiliation,
-        affiliation.skos:prefLabel,
-        grant.0.uon:internal,
-        grant.0.grantNumber,
-        grant.0.dc:identifier,
-        grant.0.skos:prefLabel,
-        funding.0.skos:prefLabel,
-        funding.0.rdf:resource,
-        project_title,
-        depositor,
-        data_size,
-        policy,
-        contracts,
-        management_plan,
-        management_plan_notes,
-
-#*
-    #display("url" "Identifier or URL")
-    #display("physical_storage" "Physical Storage")
-    #display("retention_period" "Retention Period")
-    #display("disposal_date" "Disposal Date")
-    #displayList("data_owner" "Data Owners (IP)")
-    #display("data_custodian" "Data Custodian")
-    #display("affiliation.skos:prefLabel" "Affiliation")
-    <tr>
-        <th>Grant Numbers</th>
-        <td>
-            #set($grantList = $self.getList("grant"))
-            #foreach($key in $grantList.keySet())
-                #set($grant = $grantList.get($key))
-                #set($internal = $grant.get("uon:internal"))
-                <span>
-                    #if("$!internal" != "")[Internal]#end
-                    $grant.get("grantNumber") | $grant.get("skos:prefLabel")
-                </span>
-            #end
-        </td>
-    </tr>
-    #displayList("funding" "Funding Bodies")
-    #display("project_title" "Project Title")
-    #display("depositor" "Depositor")
-    #display("data_size" "Data Size")
-    #display("extent" "Extent or Quantity")
-    #display("policy" "Institutional Data Management Policy")
-    #display("contracts" "Contracts Associated with the Data or Project")
-    #display("management_plan" "Location of Data Management Plan")
-</table>
-*#

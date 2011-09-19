@@ -13,13 +13,11 @@
             <ol>
             #foreach($key in $creatorList.keySet())
                 #set($dcCreator = $creatorList.get($key))
-                #set($firstName = $dcCreator.get("foaf:givenName"))
-                #set($familyName = $dcCreator.get("foaf:familyName"))
-                #set($dcCreatorAssociation = $dcCreator.get("association.skos:prefLabel"))
+                #set($dcCreatorAssociation = $dcCreator.get("foaf.Organization.skos:prefLabel"))
                 <li>
-                    $firstName $familyName#if("$!dcCreatorAssociation" != ""), $self.escapeHtml($dcCreatorAssociation)#end
-                    #if($dcCreator.get("ci"))[CI]#end
-                    #if($dcCreator.get("pi"))[PI]#end
+                    #displayOptionalKey($dcCreator "foaf:title") #displayRequiredKey($dcCreator "foaf:givenName") #displayRequiredKey($dcCreator "foaf:familyName")#if("$!dcCreatorAssociation" != ""), $self.escapeHtml($dcCreatorAssociation)#end
+                    #if($dcCreator.get("redbox:isCoPrimaryInvestigator"))[CI]#end
+                    #if($dcCreator.get("redbox:isPrimaryInvestigator"))[PI]#end
                 </li>
             #end
             </ol>
@@ -28,22 +26,20 @@
 
         #######################################
         <dt>Primary Contact</dt>
-            #set($firstName = $self.getFirst("primaryContact.foaf:givenName"))
-            #set($familyName = $self.getFirst("primaryContact.foaf:familyName"))
-            #set($foafEmail = $self.getFirst("primaryContact.foaf:email"))
-            #if ("$!firstName" != "")
+            #set($firstName = $self.getFirst("locrel:prc.foaf:Person.foaf:givenName"))
+            #set($familyName = $self.getFirst("locrel:prc.foaf:Person.foaf:familyName"))
+            #set($foafEmail = $self.getFirst("locrel:prc.foaf:Person.foaf:email"))
         <dd>
+        #if ("$!firstName" != "")
             $self.escapeHtml($firstName) $self.escapeHtml($familyName)#if("$!foafEmail"!=""), $self.escapeHtml($foafEmail)#end
-        </dd>
-            #else
-        <dd>
+        #else
             #noInformation()
-        </dd>
         #end
+        </dd>
 
         #######################################
         <dt>Supervisors</dt>
-        #set($supervisorList = $self.getList("supervisor"))
+        #set($supervisorList = $self.getList("swrc:supervisor.foaf:Person"))
         #if ($supervisorList.isEmpty())
         <dd>
         #noInformation()
@@ -54,6 +50,7 @@
             #foreach($key in $supervisorList.keySet())
                 #set($supervisor = $supervisorList.get($key))
                 <li>
+                    #displayOptionalKey($supervisor "foaf:title")
                     #displayRequiredKey($supervisor "foaf:givenName")
                     #displayRequiredKey($supervisor "foaf:familyName")
                 </li>
@@ -61,6 +58,6 @@
             </ol>
         </dd>
         #end
-        #displayList("collaborators" "Collaborators")
+        #displayList("dc:contributor.locrel:clb" "Collaborators")
     </dl>
 </div>

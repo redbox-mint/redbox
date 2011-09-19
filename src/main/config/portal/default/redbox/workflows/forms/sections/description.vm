@@ -13,16 +13,15 @@
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
                 <td>
-                    <input type="text" size="60" placeholder="$placeholder" id="${id}.0" />
+                    <input type="text" size="60" placeholder="$placeholder" id="${id}.0.dc:identifier" />
                 </td>
                 <td>
-                    <input type="text" size="60" placeholder="title" id="${id}.0.title" />
+                    <input type="text" size="60" placeholder="title" id="${id}.0.dc:title" />
                 </td>
-                <td style="width: 100%;">
-                    <a id="${id}.0.showNotes" class="showRelatedNotes" href="#">&lt; add note &gt;</a>
-                    <input type="text" size="60" placeholder="notes" id="${id}.0.notes" class="relatedNotes hidden" />
+                <td>
+                    <input type="text" size="60" placeholder="notes" id="${id}.0.skos:note" />
                 </td>
-                <td class="delete-item"><a href="#">delete</a></td>
+                <td class="delete-item" style="width: 100%;"><a href="#">delete</a></td>
             </tr>
         </tbody>
         <tfoot>
@@ -73,43 +72,99 @@
         </script>
     </p>
     
-    #fieldTitle("citations" "Related Publications" false)
-    <div class="help-content" id="help-citations">
+    #fieldTitle("dc:relation.swrc:Publication" "Related Publications" false)
+    <div class="help-content" id="help-dc:relation.swrc:Publication">
         Include URL/s to any publications underpinning the research
         dataset/collection, registry/repository, catalogue or index.
     </div>
-    #relatedInfoField("citations" "publication url" "Add publication")
+    #relatedInfoField("dc:relation.swrc:Publication" "publication url" "Add publication")
 
-    #fieldTitle("website" "Related Website" false)
-    <div id="help-website" class="help-content">
+    #fieldTitle("dc:relation.bibo:Website" "Related Website" false)
+    <div id="help-dc:relation.bibo:Website" class="help-content">
         Include URL/s for the relevant website.
     </div>
-    #relatedInfoField("website" "website url" "Add website")
+    #relatedInfoField("dc:relation.bibo:Website" "website url" "Add website")
 
-    #fieldTitle("data" "Related Data" false)
-    <div class="help-content" id="help-data">
+    #fieldTitle("dc:relation.vivo:Dataset" "Related Data" false)
+    <div class="help-content" id="help-dc:relation.vivo:Dataset">
         Include URL/s to any sources of third party data used/re-used.
     </div>
-    #relatedInfoField("data" "data url" "Add data")
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Relationship</th>
+                <th>Key / URL</th>
+                <th>Title</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody class="item-input-display sortable-item">
+            <tr>
+                <td class="sort-number" rowspan="2"></td>
+                <td>
+                    <span class="data-source-drop-down"
+                          data-delay="1"
+                          data-json-source-url="$portalPath/workflows/forms/data/collectionRelationTypes.json"
+                          data-id-key="id"
+                          data-label-key="label"
+                          data-list-key="results"
+                          data-default-value="hasAssociationWith">
+                        <span class="selection-added">
+                            <input type="hidden" class="selection-added-id" id="dc:relation.vivo:Dataset.0.vivo:Relationship.rdf:PlainLiteral" />
+                            <input type="text" class="selection-added-label" readonly="readonly" id="dc:relation.vivo:Dataset.0.vivo:Relationship.skos:prefLabel" />
+                            <a href="#" class="clear-item">change</a>
+                        </span>
+                        <span class="drop-down-location">
+                            <button class="selection-add add-unique-only" data-add-on-click="1">
+                                Select
+                            </button>
+                        </span>
+                    </span>
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="data url" id="dc:relation.vivo:Dataset.0.dc:identifier" />
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="title" id="dc:relation.vivo:Dataset.0.dc:title" />
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="notes" id="dc:relation.vivo:Dataset.0.skos:note" />
+                </td>
+            </tr>
+            <tr id="dc:relation.vivo:Dataset.0.advRow">
+                <td>
+                    <a id="dc:relation.vivo:Dataset.0.advanced" class="advanced">Advanced Selections &raquo;</a>
+                </td>
+                <td>
+                    <span class="advanced hidden">
+                    Local related data: <input type="checkbox" id="dc:relation.vivo:Dataset.0.redbox:origin" class="local-related-data" checked="checked"/>
+                    </span>
+                </td>
+                <td>
+                    <span class="advanced hidden">
+                    Publish to RDA: <input type="checkbox" id="dc:relation.vivo:Dataset.0.redbox:publish" class="publish-to-rda" checked="checked"/>
+                    </span>
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="Add Data" /></td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
 </div>
 <script type="text/javascript">
 $(function() {
-    $(".showRelatedNotes").live("click", function() {
-        var baseId = $(this).attr("id").replace(".showNotes", "");
-        var input = $("input[id=" + baseId + ".notes]");
-        input.show();
-        $(this).hide();
+    $("a.advanced").live("click", function() {
+        var baseId = $(this).attr("id").replace(".advanced", "");
+        var row = $("tr[id=" + baseId + ".advRow]");
+        row.find("span.advanced").each(function(c,e){$(e).toggle();});
         return false;
-    });
-
-    $(".relatedNotes").live("onDataChanged", function() {
-        var value = $(this).val();
-        if (value != "") {
-            var baseId = $(this).attr("id").replace(".notes", "");
-            var link = $("a[id=" + baseId + ".showNotes]");
-            $(this).show();
-            link.hide();
-        }
     });
 });
 </script>

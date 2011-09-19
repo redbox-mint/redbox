@@ -3,10 +3,12 @@
 fieldset p textarea { display:block; width: 98%; }
 </style>
 <div class="grid_16 widget-form"
-    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber,submitTitle,submitNotes"
+    data-form-fields="title,description,redbox:formVersion,redbox:newForm,redbox:submissionProcess.redbox:submitted,workflow_source,redbox:submissionProcess.dc:date,redbox:submissionProcess.dc:description,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone,redbox:submissionProcess.dc:title,redbox:submissionProcess.skos:note"
     data-form-fields-readonly="metaList"
     data-submit-func="srSubmitFunc">
-    <input type="hidden" name="submitted" value="true" />
+    <input type="hidden" id="redbox:formVersion" value="$systemConfig.getString("Unknown", "redbox.version.string")" />
+    <input type="hidden" id="redbox:newForm" value="true" />
+    <input type="hidden" name="redbox:submissionProcess.redbox:submitted" value="true" />
     #set($source = $self.getRequestData("workflow_source"))
     #if("$!source" == "")
         #set($source = "Submission Request")
@@ -16,36 +18,36 @@ fieldset p textarea { display:block; width: 98%; }
     <p>Please review the submission request and action as appropriate.</p>
     <fieldset>
         <p>
-            <label for="submitDate">Date Submitted</label>
-            <input id="submitDate" type="text" size="40" value="$!self.getRequestData('submitDate')" readonly="readonly" />
+            <label for="redbox:submissionProcess.dc:date">Date Submitted</label>
+            <input id="redbox:submissionProcess.dc:date" type="text" size="40" value="$!self.getRequestData('redbox:submissionProcess.dc:date')" readonly="readonly" />
         </p>
-        #if("$!self.getRequestData('submitTitle')"!="")
-        <input type="hidden" name="title" value="$!self.getRequestData('submitTitle')">
+        #if("$!self.getRequestData('redbox:submissionProcess.dc:title')"!="")
+        <input type="hidden" name="title" value="$!self.getRequestData('redbox:submissionProcess.dc:title')">
         <p>
-            <label for="submitTitle">Title</label>
-            <textarea id="submitTitle" cols="40" rows="2" readonly="readonly">$!self.getRequestData("submitTitle")</textarea>
+            <label for="redbox:submissionProcess.dc:title">Title</label>
+            <textarea id="redbox:submissionProcess.dc:title" cols="40" rows="2" readonly="readonly">$!self.getRequestData("redbox:submissionProcess.dc:title")</textarea>
         </p>
         #end
         <p>
-            <label for="submitDescription">Description</label>
-            <textarea id="submitDescription" cols="40" rows="10" readonly="readonly">$!self.getRequestData("submitDescription")</textarea>
+            <label for="redbox:submissionProcess.dc:description">Description</label>
+            <textarea id="redbox:submissionProcess.dc:description" cols="40" rows="10" readonly="readonly">$!self.getRequestData("redbox:submissionProcess.dc:description")</textarea>
         </p>
         <p>
-            <label for="contactName">Contact Name</label>
-            <input id="contactName" type="text" size="40" value="$!self.getRequestData('contactName')" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name">Contact Name</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name" type="text" size="40" value="$!self.getRequestData('redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name')" readonly="readonly" />
         </p>
         <p>
-            <label for="phoneNumber">Phone Number</label>
-            <input id="phoneNumber" type="text" size="40" value="$!self.getRequestData('phoneNumber')" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone">Phone Number</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone" type="text" size="40" value="$!self.getRequestData('redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone')" readonly="readonly" />
         </p>
         <p>
-            <label for="emailAddress">Email Address</label>
-            <input id="emailAddress" type="text" size="40" value="$!self.getRequestData('emailAddress')" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox">Email Address</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox" type="text" size="40" value="$!self.getRequestData('redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox')" readonly="readonly" />
         </p>
-        #if("$!self.getRequestData('submitNotes')"!="")
+        #if("$!self.getRequestData('redbox:submissionProcess.skos:note')"!="")
         <p>
-            <label for="submitNotes">Notes</label>
-            <textarea id="submitNotes" cols="40" rows="5" readonly="readonly">$!self.getRequestData("submitNotes")</textarea>
+            <label for="redbox:submissionProcess.skos:note">Notes</label>
+            <textarea id="redbox:submissionProcess.skos:note" cols="40" rows="5" readonly="readonly">$!self.getRequestData("redbox:submissionProcess.skos:note")</textarea>
         </p>
         #end
         <button class="button form-fields-submit" id="submitButton">Accept</button>

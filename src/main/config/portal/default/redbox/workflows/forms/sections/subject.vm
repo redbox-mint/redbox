@@ -24,14 +24,41 @@
                           "results"
                           "skos:narrower")
 
-    #fieldTitle("dc:subject" "Keywords" true)
+    #fieldTitle("dc:subject.vivo:keyword" "Keywords" true)
     <div class="help-content" id="help-dc:subject">
         Enter descriptive keywords as required.
     </div>
-    #inputList("dc:subject.keywords" "keyword" "Add keyword" "A keyword is required!")
+    <label for="dc:subject.vivo:keyword" class="validation-err-msg"
+        data-validation-rule="test(notEmpty);when(blur, change, submit);
+                                jsTest(
+                                    var value = getById('dc:subject.vivo:keyword.1.rdf:PlainLiteral').val();
+                                    value = jQ.trim(value); r = (value == '');
+                                );
+                                liveFor(.vkeyword);">
+        A keyword is required!
+    </label>
+    <table class="input-list">
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="keyword" id="dc:subject.vivo:keyword.0.rdf:PlainLiteral" class="vkeyword" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;"> </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="Add keyword" /></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
 
-    #fieldTitle("research_activity" "Type of Research Activity" false)
-    <div class="help-content" id="help-research_activity">
+    #fieldTitle("dc:subject.anzsrc:toa.rdf:resource" "Type of Research Activity" false)
+    <div class="help-content" id="help-dc:subject.anzsrc:toa.rdf:resource">
         <p>
             1297.0 Australian Standard Research Classification (ANZSRC) 2008.
         </p>
@@ -64,8 +91,8 @@
         </p>
     </div>
     <p>
-        #mintSelectField("research_activity"
-                         "research_activity.skos:prefLabel"
+        #mintSelectField("dc:subject.anzsrc:toa.rdf:resource"
+                         "dc:subject.anzsrc:toa.skos:prefLabel"
                          "$portalPath/workflows/forms/data/researchTypes.json"
                          "id"
                          "label"
@@ -75,7 +102,7 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    $(".vdcsubjectkeywords").live("focus", function(){
+    $(".vdcsubjectvivokeyword0rdfPlainLiteral").live("focus", function(){
         var elem=$(this);
         elem.unautocomplete();
         elem.autocomplete("$portalPath/actions/keywords.ajax", { width: "32em" });

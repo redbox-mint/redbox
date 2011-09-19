@@ -2,18 +2,18 @@
 <div class="meta">
     <dl>
         <dd>
-            #set($noteList = $self.getList("notes"))
+            #set($noteList = $self.getList("skos:note"))
             #if($noteList.isEmpty())
                 There are no notes for this record.
             #else
                 <ul>
                 #foreach($key in $noteList.keySet())
                     #set($note = $noteList.get($key))
-                    #set($noteDescription = $note.get("description"))
+                    #set($noteDescription = $note.get("dc:description"))
                     #if("$!noteDescription"!="")
                     <li>
-                        $self.escapeHtml($note.get("date")),
-                        ($self.escapeHtml($note.get("username")))
+                        $self.escapeHtml($note.get("dc:created")),
+                        ($self.escapeHtml($note.get("foaf:name")))
                         $self.escapeHtml($noteDescription)
                     </li>
                     #end

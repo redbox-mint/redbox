@@ -1,5 +1,5 @@
 {
-    "version": "0.7.17",
+    "version": "1.0.5.2",
     "redbox.version.string": "${redbox.version}",
     "configured": true,
     "urlBase": "${server.url.base}",
@@ -436,14 +436,6 @@
             }
         },
         "solr-event-log": {
-            "uri": "http://localhost:${jetty.port}/solr/eventlog",
-            "buffer": {
-                "docLimit": "200",
-                "sizeLimit": "204800",
-                "timeLimit": "30"
-            }
-        },
-        "solr": {
             "uri": "http://localhost:${jetty.port}/solr/eventlog",
             "buffer": {
                 "docLimit": "200",

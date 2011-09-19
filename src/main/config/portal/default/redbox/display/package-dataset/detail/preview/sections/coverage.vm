@@ -2,8 +2,8 @@
 <div class="meta">
     <dl>
         <dt>Date Coverage</dt>
-        #set($dcCoverageFrom = $self.getFirst("dc:coverage.from"))
-        #set($dcCoverageTo = $self.getFirst("dc:coverage.to"))
+        #set($dcCoverageFrom = $self.getFirst("dc:coverage.vivo:DateTimeInterval.vivo:start"))
+        #set($dcCoverageTo = $self.getFirst("dc:coverage.vivo:DateTimeInterval.vivo:end"))
         #if ("$!dcCoverageFrom" != "" || "$!dcCoverageTo" != "")
         <dd>$!dcCoverageFrom#if("$!dcCoverageTo"!="") to $dcCoverageTo#end</dd>
         #else
@@ -11,11 +11,11 @@
         #noInformation()
         </dd>
         #end
-        #displayFirst("time_period" "Time Period")
+        #displayFirst("dc:coverage.redbox:timePeriod" "Time Period")
 
         #######################################
         <dt>Geospatial Location</dt>
-        #set($geoList = $self.getList("location"))
+        #set($geoList = $self.getList("dc:coverage.vivo:GeographicLocation"))
         #if ($geoList.isEmpty())
         <dd>
         #noInformation()
@@ -25,16 +25,16 @@
             <ol>
             #foreach($key in $geoList.keySet())
                 #set($row = $geoList.get($key))
-                #set($type = $row.get("type"))
+                #set($type = $row.get("dc:type"))
                 #### Linked Geo Data
                 #if ($type == "text")
-                    #set($url = $row.get("geonames:uri"))
-                    #set($title = $row.get("dcmi:name"))
+                    #set($url = $row.get("dc:identifier"))
+                    #set($title = $row.get("gn:name"))
                     <li>Geonames: <a href="$self.escapeHtml($url)">$self.escapeHtml($title)</a></li>
 
                 #### Everything else
                 #else
-                    #set($value = $row.get("dcmi:name"))
+                    #set($value = $row.get("gn:name"))
                     <li>$self.escapeHtml($type): ($self.escapeHtml($value))
                 #end
             #end

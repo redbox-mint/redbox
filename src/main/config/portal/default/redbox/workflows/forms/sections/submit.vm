@@ -49,42 +49,42 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="location">
-                    A Location is required!
-                </label>
-           </div>
-           <div>
                 <label class="validation-err-msg" for="dc:description">
                     A Description is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:creator.foaf:Person.0.foaf:givenName">
+                <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:givenName">
                     A Creators Given or Family name' is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:subject.keywords.0">
+                <label class="validation-err-msg" for="dc:subject.vivo:keyword.0.rdf:PlainLiteral">
                     A Keyword is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="access_conditions">
+                <label class="validation-err-msg" for="dc:accessRights.rdf:PlainLiteral">
                     Access Rights/Conditions or Rights is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="url">
+                <label class="validation-err-msg" for="dc:identifier">
+                    An identifier is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="vivo:Location.1.dc:identifier">
                     A location is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="retention_period">
+                <label class="validation-err-msg" for="redbox:retentionPeriod">
                     Retention Period is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="extent">
+                <label class="validation-err-msg" for="dc:extent">
                      Extent or quantity is required!
                 </label>
            </div>
@@ -118,10 +118,10 @@ $(function() {
         $("#agreement,#retire").click(function() {
             $("#not-valid-for-submitting").hide();
             if ($(this).is(":checked")) {
-                if(widgets.forms[0].validator.isOkToSubmit()==false){
+                if (widgets.forms[0].validator.isOkToSubmit() == false) {
                     $(this).attr("checked", false);
                     $("#not-valid-for-submitting").show();
-                }else{
+                } else {
                     $("#update-package").removeAttr("disabled");
                 }
             } else {
@@ -137,42 +137,43 @@ $(function() {
         });
     }
 
-    $("#delete-record").click(function(){
+    $("#delete-record").click(function() {
         jQuery.ajax({
             type: "POST",
             url: "$portalPath/actions/delete.ajax",
-            success: function(data, status){ window.location.href = "$portalPath/home"; },
-            error: function(req, status, e){ $("#delete-record-error").html(req.responseText);  },
-            data: { record: "$oid" }
+            success: function(data, status) {window.location.href = "$portalPath/home";},
+            error: function(req, status, e) {$("#delete-record-error").html(req.responseText);},
+            data: {record: "$oid"}
         });
     });
 
-    $("#validation-summary label").click(function(){
+    $("#validation-summary label").click(function() {
         var i, id;
         try{
-            i=$(this);
-            id=i.attr("for");
-            i=$("*[id="+id+"]");
-            id=i.parents(".ui-tabs-panel").attr("id");
+            i = $(this);
+            id = i.attr("for");
+            i = getById(id);
+            id = i.parents(".ui-tabs-panel").attr("id");
             $("a[href=#"+id+"]").click();
             i.focus();
-        }catch(e){
+        } catch(e) {
+            alert(e);
         }
         return false;
     });
     try{
-        var vTimer=null;
-        function onValidation(r){
+        var vTimer = null;
+        function onValidation(r) {
             function cb(){
-                vTimer=null;
-                if($("#validation-summary label:visible").size()==0){
+                vTimer = null;
+                if ($("#validation-summary label:visible").size() == 0) {
                     $("#not-valid-for-submitting").hide();
                 }
             }
-            if(!vTimer) vTimer=setTimeout(cb, 200);
+            if (!vTimer) vTimer = setTimeout(cb, 200);
         }
-        setTimeout(function(){widgets.forms[0].validator.onValidationListeners.push(onValidation);},
+        setTimeout(function() {widgets.forms[0].validator.onValidationListeners.push(onValidation);},
                 500);
-    }catch(e){}
+    } catch(e) {}
 });
 </script>

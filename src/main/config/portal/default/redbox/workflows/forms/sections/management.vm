@@ -55,8 +55,8 @@
             for="url"
             data-validation-rule="test(notEmpty);when(blur,change,submit);
                                     jsTest(
-                                        var url = ctx.find('input[id=url.1]').val();
-                                        var stored = ctx.find('input[id=physical_storage]').val();
+                                        var url = ctx.find('input[id=vivo:Location.1.dc:identifier]').val();
+                                        var stored = ctx.find('input[id=vivo:Location.vivo:GeographicLocation.gn:name]').val();
                                         url = jQ.trim(url); stored = jQ.trim(stored);
                                         r = (url == '') && (stored == '');
                                     );
@@ -74,7 +74,7 @@
             <div class="input-list">
                 <div class="item-input-display">
                     <span class="sort-number"></span>&nbsp;&nbsp;&nbsp;
-                    <input type="text" size="60" placeholder="url" id="url.0" class="vlocation" />
+                    <input type="text" size="60" placeholder="url" id="vivo:Location.0.dc:identifier" class="vlocation" />
                     <span class="delete-item"><a href="#">delete</a></span>
                 </div>
                 <div>
@@ -83,68 +83,86 @@
             </div>
         </p>
 
-        #fieldTitle("physical_storage" "Stored At" false)
-        <div class="help-content" id="help-physical_storage">
+        #fieldTitle("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At" false)
+        <div class="help-content" id="help-vivo:Location.vivo:GeographicLocation.gn:name">
             Record physical location of the research dataset/collection,
             registry/repository, catalogue or index, if applicable, eg.
             University of X.
         </div>
-        <p><input type="text" size="60" placeholder="eg. University of X" id="physical_storage" class="vlocation" /></p>
+        <p><input type="text" size="60" placeholder="eg. University of X" id="vivo:Location.vivo:GeographicLocation.gn:name" class="vlocation" /></p>
 
-        #fieldTitle("location_notes" "Notes" false)
-        <div class="help-content" id="help-location_notes">
+        #fieldTitle("vivo:Location.vivo:GeographicLocation.skos:note" "Notes" false)
+        <div class="help-content" id="help-vivo:Location.vivo:GeographicLocation.skos:note">
            Record additional notes regarding the location of the data if applicable.
         </div>
-        <p><input type="text" size="60" placeholder="additional notes" id="location_notes" /></p>
+        <p><input type="text" size="60" placeholder="additional notes" id="vivo:Location.vivo:GeographicLocation.skos:note" /></p>
     </div>
 
-    #fieldTitle("retention_period" "Retention Period" true)
-    <div class="help-content" id="help-retention_period">
+    #fieldTitle("redbox:retentionPeriod" "Retention Period" true)
+    <div class="help-content" id="help-redbox:retentionPeriod">
         Record the period of time that the data must be kept
         in line with institutional/funding body retention policies.
     </div>
     <p>
-        <input type="text" size="60" placeholder="retention period" id="retention_period" />
-        #requiredValidation("retention_period" "Retention Period is required!")
+        <input type="text" size="60" placeholder="retention period" id="redbox:retentionPeriod" />
+        #requiredValidation("redbox:retentionPeriod" "Retention Period is required!")
     </p>
 
-    #fieldTitle("extent" "Extent or Quantity" true)
-    <div class="help-content" id="help-extent">
+    #fieldTitle("dc:extent" "Extent or Quantity" true)
+    <div class="help-content" id="help-dc:extent">
         Enter the number of files that comprise the research dataset/collection,
         registry/repository, catalogue or index (including supporting material),
         and the format.
     </div>
     <p>
-        <input type="text" size="60" placeholder="quantity" id="extent" />
-        #requiredValidation("extent" "Extent or quantity is required!")
+        <input type="text" size="60" placeholder="quantity" id="dc:extent" />
+        #requiredValidation("dc:extent" "Extent or quantity is required!")
     </p>
 
-    #fieldTitle("disposal_date" "Disposal Date" false)
-    <div class="help-content" id="help-disposal_date">
+    #fieldTitle("redbox:disposalDate" "Disposal Date" false)
+    <div class="help-content" id="help-redbox:disposalDate">
         Indicate disposal date for data.
     </div>
-    <p><input type="text" size="25" placeholder="disposal date" class="dateYMD" id="disposal_date" /></p>
+    <p><input type="text" size="25" placeholder="disposal date" class="dateYMD" id="redbox:disposalDate" /></p>
 
-    #fieldTitle("data_owner" "Data Owner (IP)" false)
-    <div class="help-content" id="help-data_owner">
+    #fieldTitle("locrel:own.foaf:Agent.0.foaf:name" "Data Owner (IP)" false)
+    <div class="help-content" id="help-locrel:own.foaf:Agent.0.foaf:name">
         Person/institution identified as intellectual property owners of the data.
     </div>
-    #inputList("data_owner" "data owner" "Add owner" "")
+    <table class="input-list">
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="data owner" id="locrel:own.foaf:Agent.0.foaf:name" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;"> </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="Add owner" /></td>
+                <td colspan="2"> </td>
+            </tr>
+        </tfoot>
+    </table>
 
-    #fieldTitle("data_custodian" "Data Custodian" false)
-    <div class="help-content" id="help-data_custodian">
+    #fieldTitle("locrel:dtm.foaf:Agent.foaf.name" "Data Custodian" false)
+    <div class="help-content" id="help-locrel:dtm.foaf:Agent.foaf.name">
         Person/institution identified as custodian of the data.
     </div>
-    <p><input type="text" size="60" placeholder="person or institution" id="data_custodian" /></p>
+    <p><input type="text" size="60" placeholder="person or institution" id="locrel:dtm.foaf:Agent.foaf.name" /></p>
 
-    #fieldTitle("affiliation" "Data Affiliation" false)
-    <div class="help-content" id="help-affiliation">
+    #fieldTitle("foaf:Organization" "Data Affiliation" false)
+    <div class="help-content" id="help-foaf:Organization">
         Select appropriate affiliation relevant to the data, eg. Research
         Centre for Clean Coal Technology, or School of Engineering.
     </div>
     <p>
-        #mintSelectField("affiliation"
-                         "affiliation.skos:prefLabel"
+        #mintSelectField("foaf:Organization.dc:identifier"
+                         "foaf:Organization.skos:prefLabel"
                          "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
                          "dc:identifier"
                          "rdfs:label"
@@ -162,8 +180,8 @@
                 <td class="sort-number"></td>
                 <td>
                     <input type="text" size="60" placeholder="Funding body"
-                        id="funding.0.skos:prefLabel" class="autocomplete-funding" />
-                    <input type="hidden" id="funding.0.rdf:resource" />
+                        id="foaf:fundedBy.foaf:Agent.0.skos:prefLabel" class="autocomplete-funding" />
+                    <input type="hidden" id="foaf:fundedBy.foaf:Agent.0.dc:identifier" />
                 </td>
                 <td width="100%"><a class="delete-item" href="#">delete</a></td>
             </tr>
@@ -192,17 +210,17 @@
         <tbody>
             <tr class="item-input-display sortable-item">
                 <td class="sort-number"></td>
-                <td><input type="checkbox" id="grant.0.uon:internal" class="internal-grant"/></td>
+                <td><input type="checkbox" id="foaf:fundedBy.vivo:Grant.0.redbox:internalGrant" class="internal-grant"/></td>
                 <td style="width:100%">
                     <table class="inner-table">
                         <tr>
                             <td>
-                                <input type="text" size="20" id="grant.0.grantNumber"
+                                <input type="text" size="20" id="foaf:fundedBy.vivo:Grant.0.redbox:grantNumber"
                                     placeholder="grant number" class="autocomplete-grant" />
-                                <input type="hidden" id="grant.0.dc:identifier" />
+                                <input type="hidden" id="foaf:fundedBy.vivo:Grant.0.dc:identifier" />
                             </td>
                             <td style="width:100%">
-                                <input type="text" size="60" id="grant.0.skos:prefLabel"
+                                <input type="text" size="60" id="foaf:fundedBy.vivo:Grant.0.skos:prefLabel"
                                     readonly="readonly" placeholder="grant description"
                                     class="autocomplete-grant-label label" style="width:100%" />
                             </td>
@@ -220,48 +238,48 @@
         </tfoot>
     </table>
 
-    #fieldTitle("project_title" "Project Title" false)
-    <div class="help-content" id="help-project_title">
+    #fieldTitle("swrc:ResearchProject.dc:title" "Project Title" false)
+    <div class="help-content" id="help-swrc:ResearchProject.dc:title">
         Enter title of the Research Project, if applicable. Note project titles
         will usually differ from the title of the associated Grant.
     </div>
-    <p><input type="text" size="60" placeholder="title" id="project_title" /></p>
+    <p><input type="text" size="60" placeholder="title" id="swrc:ResearchProject.dc:title" /></p>
 
-    #fieldTitle("depositor" "Depositor" false)
-    <div class="help-content" id="help-depositor">
+    #fieldTitle("locrel:dpt.foaf:Person.foaf:name" "Depositor" false)
+    <div class="help-content" id="help-locrel:dpt.foaf:Person.foaf:name">
         Record the name of the depositor.
     </div>
-    <p><input type="text" size="60" placeholder="depositor" id="depositor" /></p>
+    <p><input type="text" size="60" placeholder="depositor" id="locrel:dpt.foaf:Person.foaf:name" /></p>
 
-    #fieldTitle("data_size" "Data Size" false)
-    <div class="help-content" id="help-data_size">
+    #fieldTitle("dc:SizeOrDuration" "Data Size" false)
+    <div class="help-content" id="help-dc:SizeOrDuration">
         Record the size of the data in KB, MB, GB, TB etc.
     </div>
-    <p><input type="text" size="60" placeholder="size" id="data_size" /></p>
+    <p><input type="text" size="60" placeholder="size" id="dc:SizeOrDuration" /></p>
 
-    #fieldTitle("policy" "Institutional Data Management Policy" false)
-    <div class="help-content" id="help-policy">
+    #fieldTitle("dc:Policy" "Institutional Data Management Policy" false)
+    <div class="help-content" id="help-dc:Policy">
         Include the title, version number and date of an associated
         Institutional Policy, where a policy is available.
     </div>
-    <p><input type="text" size="60" placeholder="title, version number and date of policy" id="policy" /></p>
+    <p><input type="text" size="60" placeholder="title, version number and date of policy" id="dc:Policy" /></p>
 
     <div class="group">
-        #fieldTitle("management_plan" "Data Management Plan" false)
-        <div class="help-content" id="help-management_plan">
+        #fieldTitle("redbox:ManagementPlan" "Data Management Plan" false)
+        <div class="help-content" id="help-redbox:ManagementPlan">
             Indicates existence of a data management plan.
         </div>
         <p>
-            <input type="radio" id="management_plan_yes" name="management_plan" value="yes" />
-            <label for="management_plan_yes">Yes</label>
-            <input type="radio" name="management_plan" value="no" />
-            <label for="management_plan_no">No</label>
+            <input type="radio" id="redbox:ManagementPlan.yes" name="redbox:ManagementPlan.redbox:hasPlan" value="yes" />
+            <label for="redbox:ManagementPlan.yes">Yes</label>
+            <input type="radio" id="redbox:ManagementPlan.no" name="redbox:ManagementPlan.redbox:hasPlan" value="no" />
+            <label for="redbox:ManagementPlan.no">No</label>
         </p>
-        #fieldTitle("management_plan_notes" "Notes" false)
-        <div class="help-content" id="help-management_plan_notes">
+        #fieldTitle("redbox:ManagementPlan.skos:note" "Notes" false)
+        <div class="help-content" id="help-redbox:ManagementPlan.skos:note">
             Record optional notes about the data management plan.
         </div>
-        <p><input type="text" size="60" placeholder="notes" id="management_plan_notes" /></p>
+        <p><input type="text" size="60" placeholder="notes" id="redbox:ManagementPlan.skos:note" /></p>
     </div>
 </div>
 <script type="text/javascript">
@@ -305,8 +323,8 @@ $(function() {
 
     $(".internal-grant").live("click", function() {
         var checked = $(this).is(":checked");
-        var baseId = $(this).attr("id").replace(".uon:internal", "");
-        var idElem = $("input[id=" + baseId + ".grantNumber]");
+        var baseId = $(this).attr("id").replace(".redbox:internalGrant", "");
+        var idElem = $("input[id=" + baseId + ".redbox:grantNumber]");
         var labelElem = $("input[id=" + baseId + ".skos:prefLabel]");
         var uriElem = $("input[id=" + baseId + ".dc:identifier]");
         var uri = uriElem.val();
@@ -339,8 +357,8 @@ $(function() {
 
 
     $(".autocomplete-grant").live("focus", function() {
-        var baseId = $(this).attr("id").replace(".grantNumber", "");
-        if (!$("input[id=" + baseId + ".uon:internal]").is(":checked")) {
+        var baseId = $(this).attr("id").replace(".redbox:grantNumber", "");
+        if (!$("input[id=" + baseId + ".redbox:internalGrant]").is(":checked")) {
             $(this).unautocomplete();
             addAutocompleteGrant($(this));
         }

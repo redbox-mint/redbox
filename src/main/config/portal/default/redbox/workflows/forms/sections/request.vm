@@ -4,32 +4,32 @@
     <p>This record was created from the following submission request details.</p>
     <fieldset>
         <p>
-            <label for="submitDate">Date Submitted</label>
-            <input id="submitDate" type="text" size="40" readonly="readonly" />
+            <label for="redbox:submissionProcess.dc:date">Date Submitted</label>
+            <input id="redbox:submissionProcess.dc:date" type="text" size="40" readonly="readonly" />
         </p>
         <p class="submitTitle hidden">
-            <label for="submitTitle">Title</label>
-            <textarea id="submitTitle" cols="40" rows="2" readonly="readonly"></textarea>
+            <label for="redbox:submissionProcess.dc:title">Title</label>
+            <textarea id="redbox:submissionProcess.dc:title" cols="40" rows="2" readonly="readonly"></textarea>
         </p>
         <p>
-            <label for="submitDescription">Description</label>
-            <textarea id="submitDescription" cols="40" rows="10" readonly="readonly"></textarea>
+            <label for="redbox:submissionProcess.dc:description">Description</label>
+            <textarea id="redbox:submissionProcess.dc:description" cols="40" rows="10" readonly="readonly"></textarea>
         </p>
         <p>
-            <label for="contactName">Contact Name</label>
-            <input id="contactName" type="text" size="40" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name">Contact Name</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name" type="text" size="40" readonly="readonly" />
         </p>
         <p>
-            <label for="phoneNumber">Phone Number</label>
-            <input id="phoneNumber" type="text" size="40" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone">Phone Number</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone" type="text" size="40" readonly="readonly" />
         </p>
         <p>
-            <label for="emailAddress">Email Address</label>
-            <input id="emailAddress" type="text" size="40" readonly="readonly" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox">Email Address</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox" type="text" size="40" readonly="readonly" />
         </p>
         <p class="submitNotes hidden">
-            <label for="submitNotes">Notes</label>
-            <textarea id="submitNotes" cols="40" rows="5" readonly="readonly"></textarea>
+            <label for="redbox:submissionProcess.skos:note">Notes</label>
+            <textarea id="redbox:submissionProcess.skos:note" cols="40" rows="5" readonly="readonly"></textarea>
         </p>
     </fieldset>
 </div>

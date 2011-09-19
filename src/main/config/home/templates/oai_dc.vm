@@ -22,7 +22,7 @@
 #macro(relations $baseKey)
     #set($valueMap = $util.getList($item, $baseKey))
     #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key).get($key))
+        #set($value = $valueMap.get($key).get("dc:identifier"))
         #if ("$!value" != "")
         <dc:relation>$util.encodeXml($value)</dc:relation>
         #end
@@ -88,25 +88,24 @@
 #end
 
 ### Language
-#set ($langUri = $util.get($item, "dc:language"))
+#set ($langUri = $util.get($item, "dc:language.dc:identifier"))
 #if ("$!langUri" != "")
     #set($lastIndex = $langUri.lastIndexOf('/') + 1)
     #set($lang = $langUri.substring($lastIndex))
 <dc:language>$util.encodeXml($lang)</dc:language>
 #end
 
-#dc2("subject", "time_period")
+#dc2("subject", "dc:coverage.redbox:timePeriod")
 
 ## Description tab
 #dc1("description")
-#relations("citations")
-#relations("data")
-#relations("website")
+#relations("dc:relation.swrc:Publication")
+#relations("dc:relation.bibo:Website")
 
 ## People
 #set($valueMap = $util.getList($item, "dc:creator.foaf:Person"))
 #foreach($key in $valueMap.keySet())
-    #set($value = $valueMap.get($key).get("dc:title"))
+    #set($value = $valueMap.get($key).get("foaf:name"))
     #if ("$!value" != "")
     <dc:creator>$util.encodeXml($value)</dc:creator>
     #end
@@ -114,15 +113,15 @@
 
 #dcAnzsrc("subject" "dc:subject.anzsrc:for" "rdf:resource" "skos:prefLabel")
 #dcAnzsrc("subject" "dc:subject.anzsrc:seo" "rdf:resource" "skos:prefLabel")
-#dcList("subject" "dc:subject.keywords" "")
+#dcList("subject" "dc:subject.vivo:keyword" "rdf:PlainLiteral")
 
-#dc2("rights", "access_conditions")
-#dc2("rights", "restrictions")
-#dc2("rights", "license_cc")
-#dc2("rights", "license_other_url")
+#dc2("rights", "dc:accessRights.rdf:PlainLiteral")
+#dc2("rights", "dc:accessRights.dc:RightsStatement")
+#dc2("rights", "redbox:creativeCommonsLicense.dc:identifier")
+#dc2("rights", "dc:license.dc:identifier")
 
 ## Management
-#set ($affiliation = $util.get($item, "affiliation.skos:prefLabel"))
+#set ($affiliation = $util.get($item, "foaf:Organization.skos:prefLabel"))
 #if ("$!affiliation" != "")
     #set ($contributor = "University of Newcastle. ${affiliation}")
 #else

@@ -37,20 +37,27 @@
                     <img class="facets-grip" src="$portalPath/images/icons/grippy.png" />
                 </td>
                 <td class="valign-middle">
-                    <input type="checkbox" id="dc:creator.foaf:Person.0.ci" />
+                    <input type="checkbox" id="dc:creator.foaf:Person.0.redbox:isCoPrimaryInvestigator" />
                 </td>
                 <td class="valign-middle">
-                    <input type="checkbox" id="dc:creator.foaf:Person.0.pi" />
+                    <input type="checkbox" id="dc:creator.foaf:Person.0.redbox:isPrimaryInvestigator" />
                 </td>
                 <td>
                     <table class="lookup">
                         <tbody>
                             <tr>
                                 <td>
+                                    <label for="dc:creator.foaf:Person.0.foaf:title">Title:</label>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="title" size="5"
+                                           id="dc:creator.foaf:Person.0.foaf:title" />
+                                </td>
+                                <td>
                                     <label for="dc:creator.foaf:Person.0.foaf:givenName">Given name:</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="given name" size="30"
+                                    <input type="text" placeholder="given name" size="25"
                                            class="nameLookup-name creatorGivenName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
                                 </td>
@@ -58,13 +65,13 @@
                                     <label for="dc:creator.foaf:Person.0.foaf:familyName">Family name:</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="family name" size="30"
+                                    <input type="text" placeholder="family name" size="25"
                                            class="nameLookup-name creatorFamilyName creatorName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="6">
                                     <label class="validation-err-msg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(blur,change,submit);
@@ -85,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="dc:creator.foaf:Person.0.association">Affiliation:</label>
+                                    <label for="dc:creator.foaf:Person.0.foaf.Organization.dc:identifier">Affiliation:</label>
                                 </td>
                                 <td colspan="3">
                                     <span class="data-source-drop-down"
@@ -96,9 +103,9 @@
                                           data-list-key="results">
                                         <span class="selection-added">
                                             <input type="hidden" class="selection-added-id"
-                                                   id="dc:creator.foaf:Person.0.association" value="" />
+                                                   id="dc:creator.foaf:Person.0.foaf.Organization.dc:identifier" value="" />
                                             <input type="text" class="selection-added-label" readonly="readonly" size="60"
-                                                   id="dc:creator.foaf:Person.0.association.skos:prefLabel" value="" />
+                                                   id="dc:creator.foaf:Person.0.foaf.Organization.skos:prefLabel" value="" />
                                             <a href="#" class="clear-item">change</a>
                                         </span>
                                         <span class="drop-down-location">
@@ -120,7 +127,7 @@
                         <span class="nameLookup-progress hidden">
                             <img src="$portalPath/images/icons/loading.gif" />
                         </span>
-                        <input id="dc:creator.foaf:Person.0.dc:title"
+                        <input id="dc:creator.foaf:Person.0.foaf:name"
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
@@ -140,8 +147,8 @@
         </tfoot>
     </table>
 
-    #fieldTitle("primaryContact" "Primary Contact" false)
-    <div class="help-content" id="help-primaryContact">
+    #fieldTitle("locrel:prc.foaf:Person" "Primary Contact" false)
+    <div class="help-content" id="help-locrel:prc.foaf:Person">
         Record the details of person nominated as 'primary contact' for the
         research dataset/collection, registry/repository, catalogue or index.
         Enter a given name and/or family name and click 'lookup' to search and
@@ -150,27 +157,34 @@
     <table class="lookup">
         <thead>
             <tr>
-                <th colspan="4">Display Name</th>
+                <th colspan="6">Display Name</th>
                 <th>Name Authority</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    <label for="primaryContact.foaf:givenName">Given name:</label>
+                    <label for="locrel:prc.foaf:Person.foaf:title">Title:</label>
                 </td>
                 <td>
-                    <input type="text" placeholder="given name" size="30"
+                    <input type="text" placeholder="title" size="5"
+                           id="locrel:prc.foaf:Person.foaf:title" />
+                </td>
+                <td>
+                    <label for="locrel:prc.foaf:Person.foaf:givenName">Given name:</label>
+                </td>
+                <td>
+                    <input type="text" placeholder="given name" size="25"
                            class="nameLookup-name pcGivenName pcName"
-                           id="primaryContact.foaf:givenName" />
+                           id="locrel:prc.foaf:Person.foaf:givenName" />
                 </td>
                 <td>
-                    <label for="primaryContact.foaf:familyName">Family name:</label>
+                    <label for="locrel:prc.foaf:Person.foaf:familyName">Family name:</label>
                 </td>
                 <td>
-                    <input type="text" placeholder="family name" size="30"
+                    <input type="text" placeholder="family name" size="25"
                            class="nameLookup-name pcFamilyName pcName"
-                           id="primaryContact.foaf:familyName" />
+                           id="locrel:prc.foaf:Person.foaf:familyName" />
                 </td>
                 <td>
                     <span class="lookup-show">
@@ -180,28 +194,28 @@
                         <span class="nameLookup-progress hidden">
                             <img src="$portalPath/images/icons/loading.gif" />
                         </span>
-                        <input id="primaryContact.dc:title"
+                        <input id="locrel:prc.foaf:Person.foaf:name"
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
-                        <input type="hidden" id="primaryContact.dc:identifier"
+                        <input type="hidden" id="locrel:prc.foaf:Person.dc:identifier"
                                class="nl nl-dc:identifier" value="" />
                     </span>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="primaryContact.foaf:email">Email address:</label>
+                    <label for="locrel:prc.foaf:Person.foaf:email">Email address:</label>
                 </td>
-                <td colspan="4">
-                    <input type="text" id="primaryContact.foaf:email" size="60"
+                <td colspan="6">
+                    <input type="text" id="locrel:prc.foaf:Person.foaf:email" size="60"
                         placeholder="eg. primary.contact@example.edu.au" />
                 </td>
             </tr>
         </tbody>
     </table>
 
-    #fieldTitle("supervisor" "Supervisors" false)
-    <div class="help-content" id="help-supervisor">
+    #fieldTitle("swrc:supervisor.foaf:Person" "Supervisors" false)
+    <div class="help-content" id="help-swrc:supervisor.foaf:Person">
         Record name of supervisor associated with the data creation if
         applicable. Enter a given name and/or family name and click 'lookup' to
         search and select the name authority record.
@@ -223,20 +237,27 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <label for="supervisor.0.foaf:givenName">Given name:</label>
+                                    <label for="swrc:supervisor.foaf:Person.0.foaf:title">Title:</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="given name" size="30"
+                                    <input type="text" placeholder="title" size="5"
+                                           id="swrc:supervisor.foaf:Person.0.foaf:title" />
+                                </td>
+                                <td>
+                                    <label for="swrc:supervisor.foaf:Person.0.foaf:givenName">Given name:</label>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="given name" size="25"
                                            class="nameLookup-name supGivenName supName"
-                                           id="supervisor.0.foaf:givenName" />
+                                           id="swrc:supervisor.foaf:Person.0.foaf:givenName" />
                                 </td>
                                 <td>
-                                    <label for="supervisor.0.foaf:familyName">Family name:</label>
+                                    <label for="swrc:supervisor.foaf:Person.0.foaf:familyName">Family name:</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="family name" size="30"
+                                    <input type="text" placeholder="family name" size="25"
                                            class="nameLookup-name supFamilyName supName"
-                                           id="supervisor.0.foaf:familyName" />
+                                           id="swrc:supervisor.foaf:Person.0.foaf:familyName" />
                                 </td>
                             </tr>
                         </tbody>
@@ -250,10 +271,10 @@
                         <span class="nameLookup-progress hidden">
                             <img src="$portalPath/images/icons/loading.gif" />
                         </span>
-                        <input id="supervisor.0.dc:title"
+                        <input id="swrc:supervisor.foaf:Person.0.foaf:name"
                                type="hidden"
                                class="nl nl-rdfs:label" readonly="readonly"/>
-                        <input type="hidden" id="supervisor.0.dc:identifier"
+                        <input type="hidden" id="swrc:supervisor.foaf:Person.0.dc:identifier"
                                class="nl nl-dc:identifier" value="" />
                     </span>
                 </td>
@@ -270,12 +291,30 @@
         </tfoot>
     </table>
 
-    #fieldTitle("collaborators" "Collaborators" false)
-    <div class="help-content" id="help-collaborators">
+    #fieldTitle("dc:contributor.locrel:clb" "Collaborators" false)
+    <div class="help-content" id="help-dc:contributor.locrel:clb">
         Names of other collaborators in the research project, if applicable,
         eg. CSIRO, University of X, Prof. Jim Bloggs, etc.
     </div>
-    #inputList("collaborators" "eg. CSIRO, University of X, Prof. Jim Bloggs, etc." "Add collaborator")
+    <table class="input-list">
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="eg. CSIRO, University of X, Prof. Jim Bloggs, etc." id="dc:contributor.locrel:clb.0.foaf:Agent" />
+                </td>
+                <td class="delete-item"><a href="#">delete</a></td>
+                <td style="width: 100%;"> </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="Add collaborator" /></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
 </div>
 <script type="text/javascript">
 function lookupDone(target,data){
@@ -285,15 +324,16 @@ function lookupDone(target,data){
 
     // fill in the fields
     var lookupData=data["result-metadata"].all;
-    var baseId=p.find("input[id$=\\.dc\\:title]").attr("id").replace(".dc:title", "");
+    var baseId=p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
+    $("input[id='"+baseId+".foaf:title']").val(lookupData["Honorific"]);
     $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given Name"]);
     $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family Name"]);
-    $("input[id='"+baseId+".association']").parents("td").find("option").each(function(c,e){
+    $("input[id='"+baseId+".foaf.Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
         var option=$(e);
         if(jQuery.trim(option.text())==lookupData["Division"]){
-            $("input[id='"+baseId+".association']")
+            $("input[id='"+baseId+".foaf.Organization.dc:identifier']")
                 .val(option.val()).trigger("onDataChanged");
-            $("input[id='"+baseId+".association.skos:prefLabel']")
+            $("input[id='"+baseId+".foaf.Organization.skos:prefLabel']")
                 .val(option.text()).trigger("onDataChanged");
             return;
         }
@@ -309,11 +349,11 @@ function lookupCleared(target,data){
 
 function pcLookupDone(target,data){
     lookupDone(target,data);
-    $("#primaryContact\\.foaf\\:email").val(data["result-metadata"].all["Email"]);
+    $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val(data["result-metadata"].all["Email"]);
 }
 
 function pcLookupCleared(target,data){
     lookupCleared(target,data);
-    $("#primaryContact\\.foaf\\:email").val("");
+    $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val("");
 }
 </script>

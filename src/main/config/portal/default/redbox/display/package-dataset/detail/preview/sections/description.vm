@@ -1,9 +1,80 @@
+#macro(relatedURLs $key $name)
+    <dt>$name</dt>
+    #set($urlList = $self.getList($key))
+    #if ($urlList.isEmpty())
+    <dd>
+    #noInformation()
+    </dd>
+    #else
+    <dd>
+        <ol>
+        #foreach($key in $urlList.keySet())
+            #set($url = $urlList.get($key))
+            #set($href = $url.get("dc:identifier"))
+            #if("$!href"!="")
+                #set($label = $url.get("dc:title"))
+                <li>
+                #if("$!label"!="")
+                    <a href="$self.escapeHtml($href)">$self.escapeHtml($label)</a>
+                #else
+                    <a href="$self.escapeHtml($href)">$self.escapeHtml($href)</a>
+                #end
+                #set($notes = $url.get("skos:note"))
+                #if("$!label"!="")
+                    <br/><em>$self.escapeHtml($notes)</em>
+                #end
+                </li>
+            #end
+        #end
+        </ol>
+    </dd>
+    #end
+#end
 #sectionHeading("Description")
 <div class="meta">
     <dl>
         #displayFirst("dc:description" "Description")
-        #displayUrlList("citations" "Related Publications" "value" "title")
-        #displayUrlList("data" "Related Data" "value" "title")
-        #displayUrlList("website" "Related Websites" "value" "title")
+        #relatedURLs("dc:relation.swrc:Publication" "Related Publications" "value" "title")
+        #relatedURLs("dc:relation.bibo:Website" "Related Websites" "value" "title")
+
+        <dt>Related Data</dt>
+        #set($dataList = $self.getList("dc:relation.vivo:Dataset"))
+        #if ($dataList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($key in $dataList.keySet())
+                #set($data = $dataList.get($key))
+                #set($origin = $data.get("redbox:origin"))
+                #if ($origin == "on")
+                    #set($origin = "")
+                #else
+                    #set($origin = " (EXTERNAL)")
+                #end
+                #set($publish = $data.get("redbox:publish"))
+                #if ($publish == "on")
+                    #set($publish = "")
+                #else
+                    #set($publish = "<li><b>Publish to RDA</b>: <em>This related object (and relationship) is <b>NOT</b> being published to RDA.</em></li>")
+                #end
+                <li>
+                    <b>#displayRequiredKey($data "vivo:Relationship.skos:prefLabel")</b>
+                    &gt;&gt; <em>#displayRequiredKey($data "dc:title")</em>
+                    <ul>
+                        <li><b>ID</b>: #displayRequiredKey($data "dc:identifier")$origin</li>
+                    #set($note = $data.get("skos:note"))
+                    #if("$!note"!="")
+                        <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+                    #end
+                        $publish
+                    </ul>
+                </li>
+            #end
+            </ol>
+        </dd>
+        #end
     </dl>
 </div>

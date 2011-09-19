@@ -122,109 +122,126 @@
         dc:title,
         dc:type,
         dc:type.skos:prefLabel,
-        dc:coverage.from,
-        dc:coverage.to,
         dc:created,
         dc:modified,
-        time_period,
-        location.0.type,
-        location.0.dcmi:name,
-        location.0.dcmi:east,
-        location.0.dcmi:north,
-        location.0.geonames:uri,
-        dc:language,
+        dc:language.dc:identifier,
         dc:language.skos:prefLabel,
+        redbox:formVersion,
+        redbox:newForm,
+        ## coverage
+        dc:coverage.vivo:DateTimeInterval.vivo:start,
+        dc:coverage.vivo:DateTimeInterval.vivo:end,
+        dc:coverage.redbox:timePeriod,
+        dc:coverage.vivo:GeographicLocation.0.dc:type,
+        dc:coverage.vivo:GeographicLocation.0.gn:name,
+        dc:coverage.vivo:GeographicLocation.0.geo:long,
+        dc:coverage.vivo:GeographicLocation.0.geo:lat,
+        dc:coverage.vivo:GeographicLocation.0.dc:identifier,
         ## description
         dc:description,
-        citations.0,
-        citations.0.title,
-        citations.0.notes,
-        website.0,
-        website.0.title,
-        website.0.notes,
-        data.0,
-        data.0.title,
-        data.0.notes,
+        dc:relation.swrc:Publication.0.dc:identifier,
+        dc:relation.swrc:Publication.0.dc:title,
+        dc:relation.swrc:Publication.0.skos:note,
+        dc:relation.bibo:Website.0.dc:identifier,
+        dc:relation.bibo:Website.0.dc:title,
+        dc:relation.bibo:Website.0.skos:note,
+        dc:relation.vivo:Dataset.0.dc:identifier,
+        dc:relation.vivo:Dataset.0.vivo:Relationship.rdf:PlainLiteral,
+        dc:relation.vivo:Dataset.0.vivo:Relationship.skos:prefLabel,
+        dc:relation.vivo:Dataset.0.dc:title,
+        dc:relation.vivo:Dataset.0.skos:note,
+        dc:relation.vivo:Dataset.0.redbox:origin,
+        dc:relation.vivo:Dataset.0.redbox:publish,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
-        dc:creator.foaf:Person.0.dc:title,
-        dc:creator.foaf:Person.0.ci,
-        dc:creator.foaf:Person.0.pi,
+        dc:creator.foaf:Person.0.foaf:name,
+        dc:creator.foaf:Person.0.foaf:title,
+        dc:creator.foaf:Person.0.redbox:isCoPrimaryInvestigator,
+        dc:creator.foaf:Person.0.redbox:isPrimaryInvestigator,
         dc:creator.foaf:Person.0.foaf:givenName,
         dc:creator.foaf:Person.0.foaf:familyName,
-        dc:creator.foaf:Person.0.association,
-        dc:creator.foaf:Person.0.association.skos:prefLabel,
-        primaryContact.dc:identifier,
-        primaryContact.dc:title,
-        primaryContact.foaf:givenName
-        primaryContact.foaf:familyName
-        primaryContact.foaf:email,
-        supervisor.0.dc:identifier,
-        supervisor.0.dc:title,
-        supervisor.0.foaf:givenName,
-        supervisor.0.foaf:familyName,
-        collaborators.0,
+        dc:creator.foaf:Person.0.foaf.Organization.dc:identifier,
+        dc:creator.foaf:Person.0.foaf.Organization.skos:prefLabel,
+        locrel:prc.foaf:Person.dc:identifier,
+        locrel:prc.foaf:Person.foaf:name,
+        locrel:prc.foaf:Person.foaf:title,
+        locrel:prc.foaf:Person.foaf:givenName,
+        locrel:prc.foaf:Person.foaf:familyName,
+        locrel:prc.foaf:Person.foaf:email,
+        swrc:supervisor.foaf:Person.0.dc:identifier,
+        swrc:supervisor.foaf:Person.0.foaf:name,
+        swrc:supervisor.foaf:Person.0.foaf:title,
+        swrc:supervisor.foaf:Person.0.foaf:givenName,
+        swrc:supervisor.foaf:Person.0.foaf:familyName,
+        dc:contributor.locrel:clb.0.foaf:Agent,
         ## subject
         dc:subject.anzsrc:seo.0.skos:prefLabel,
         dc:subject.anzsrc:seo.0.rdf:resource,
         dc:subject.anzsrc:for.0.skos:prefLabel,
         dc:subject.anzsrc:for.0.rdf:resource,
-        dc:subject.keywords.0,
-        research_activity,
-        research_activity.skos:prefLabel,
-        ## provenance
-        access_conditions,
-        restrictions,
-        license_cc,
-        license_cc.skos:prefLabel,
-        license_other_name,
-        license_other_url,
+        dc:subject.vivo:keyword.0.rdf:PlainLiteral,
+        dc:subject.anzsrc:toa.rdf:resource,
+        dc:subject.anzsrc:toa.skos:prefLabel,
+        ## rights
+        dc:accessRights.rdf:PlainLiteral,
+        dc:accessRights.dc:RightsStatement,
+        redbox:creativeCommonsLicense.dc:identifier,
+        redbox:creativeCommonsLicense.skos:prefLabel,
+        dc:license.skos:prefLabel,
+        dc:license.dc:identifier,
         ## management
         dc:identifier,
         dc:identifier.dc:type,
         dc:identifier.dc:type.skos:prefLabel,
         dc:identifier.redbox:origin,
-        url.0,
-        physical_storage,
-        location_notes,
-        retention_period,
-        extent,
-        disposal_date,
-        data_owner.0,
-        data_custodian,
-        affiliation,
-        affiliation.skos:prefLabel,
-        funding.0.skos:prefLabel,
-        funding.0.rdf:resource,
-        grant.0.uon:internal,
-        grant.0.grantNumber,
-        grant.0.dc:identifier,
-        grant.0.skos:prefLabel,
-        project_title,
-        depositor,
-        data_size,
-        policy,
-        management_plan,
-        management_plan_notes,
+        vivo:Location.0.dc:identifier,
+        vivo:Location.vivo:GeographicLocation.gn:name,
+        vivo:Location.vivo:GeographicLocation.skos:note,
+        redbox:retentionPeriod,
+        dc:extent,
+        redbox:disposalDate,
+        locrel:own.foaf:Agent.0.foaf:name,
+        locrel:dtm.foaf:Agent.foaf.name,
+        foaf:Organization.dc:identifier,
+        foaf:Organization.skos:prefLabel,
+        foaf:fundedBy.foaf:Agent.0.skos:prefLabel,
+        foaf:fundedBy.foaf:Agent.0.dc:identifier,
+        foaf:fundedBy.vivo:Grant.0.redbox:internalGrant,
+        foaf:fundedBy.vivo:Grant.0.redbox:grantNumber,
+        foaf:fundedBy.vivo:Grant.0.dc:identifier,
+        foaf:fundedBy.vivo:Grant.0.skos:prefLabel,
+        swrc:ResearchProject.dc:title,
+        locrel:dpt.foaf:Person.foaf:name,
+        dc:SizeOrDuration,
+        dc:Policy,
+        redbox:ManagementPlan.redbox:hasPlan,
+        redbox:ManagementPlan.skos:note,
         ## notes
-        notes.0.date,
-        notes.0.username,
-        notes.0.description,
+        skos:note.0.dc:created,
+        skos:note.0.foaf:name,
+        skos:note.0.dc:description,
         ## submission request
-        submitted,
-        submitDate,
-        submitDescription,
-        contactName,
-        phoneNumber,
-        emailAddress,
-        submitTitle,
-        submitNotes
+        redbox:submissionProcess.redbox:submitted,
+        redbox:submissionProcess.dc:date,
+        redbox:submissionProcess.dc:description,
+        redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name,
+        redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone,
+        redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,
+        redbox:submissionProcess.dc:title,
+        redbox:submissionProcess.skos:note
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />
+    <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
     <input type="hidden" id="xmlns:dc" value="http://dublincore.org/documents/2008/01/14/dcmi-terms/" />
     <input type="hidden" id="xmlns:foaf" value="http://xmlns.com/foaf/spec/" />
-    <input type="hidden" id="xmlns:anzsrc" value="http://purl.org/anzsrc/" />
+    <input type="hidden" id="xmlns:geo" value="http://www.w3.org/2003/01/geo/wgs84_pos#" />
+    <input type="hidden" id="xmlns:gn" value="http://www.geonames.org/ontology#" />
+    <input type="hidden" id="xmlns:locrel" value="http://id.loc.gov/vocabulary/relators" />
+    <input type="hidden" id="xmlns:rdf" value="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+    <input type="hidden" id="xmlns:skos" value="http://www.w3.org/2004/02/skos/core#" />
+    <input type="hidden" id="xmlns:swrc" value="http://swrc.ontoware.org/ontology#" />
+    <input type="hidden" id="xmlns:vivo" value="http://vivoweb.org/ontology/core#" />
     <input type="hidden" id="submitted" value="$self.getFormData('submitted')"/>
     <div class="clear"></div>
     <div id="form-heading">
@@ -258,73 +275,88 @@
 </div>
 <script type="text/javascript">
 var saveAndClose = false;
+function cleanRdfToJs(input) {
+    var output = input.replace(/\./g, "\\.");
+    return output.replace(/\:/g, "\\:");
+}
+
+function getById(id) {
+    var cleanId = cleanRdfToJs(id);
+    return $("#" + cleanId);
+}
+
+function getByClass(class) {
+    var cleanClass = cleanRdfToJs(class);
+    return $("." + cleanClass);
+}
+
 $(function(){
-    $("#view-record-link").click(function(){
-        if(widgets.forms[0].hasChanges()){
+    $("#view-record-link").click(function() {
+        if (widgets.forms[0].hasChanges()) {
             return confirm("The record has been modified.\nAre you sure you want to leave this page?");
         }
     });
 
-    $(".go-prev-tab").click(function(){
+    $(".go-prev-tab").click(function() {
         var selected = widgetTabs.tabs("option", "selected");
         var last = widgetTabs.tabs("length");
-        if(selected==0){
-            widgetTabs.tabs("select", last-1);
-        }else{
-            widgetTabs.tabs("select", selected-1);
+        if (selected == 0) {
+            widgetTabs.tabs("select", last - 1);
+        } else {
+            widgetTabs.tabs("select", selected - 1);
         }
     });
 
-    $(".go-next-tab").click(function(){
+    $(".go-next-tab").click(function() {
         var selected = widgetTabs.tabs("option", "selected");
         var last = widgetTabs.tabs("length");
-        if(selected==last-1){
+        if (selected == last - 1) {
             widgetTabs.tabs("select", 0);
-        }else{
+        } else {
             widgetTabs.tabs("select", selected+1);
         }
     });
 
-    $(".form-fields-save-close").click(function(){
+    $(".form-fields-save-close").click(function() {
         saveAndClose = true;
         $(".form-fields-save").click();
     });
 
     $(".form-fields-save").click(function(){
-        var t, id, title, v=widgets.forms[0].validator;
-        try{
-            if(v.isOkToSave()==false){
-                t=jQ("textarea[id=dc:title]");
+        var t, id, title, v = widgets.forms[0].validator;
+        try {
+            if (v.isOkToSave() == false){
+                t = jQ("textarea[id=dc:title]");
                 title = jQ.trim(t.val());
-                if(title=="" || title=="[Untitled]"){
+                if (title == "" || title == "[Untitled]") {
                     widgets.messageBox("A 'Title' is required!",
-                        function(){
-                            id=t.parents(".ui-tabs-panel").attr("id");
+                        function() {
+                            id = t.parents(".ui-tabs-panel").attr("id");
                             jQ("a[href=#"+id+"]").click();
                             t.focus();
                         });
                     t.focus();
-                }else{
+                } else {
                     widgets.messageBox("Cannot save! Please check and fill in required fields!");
                 }
             }
-        }catch(e){
+        } catch(e) {
             alert("Error in save-click - "+e.message);
         }
     });
 });
 
-function preSave(widgetForm, data){
+function preSave(widgetForm, data) {
     $(".saved-result").html('<img src="$portalPath/images/icons/loading.gif" />').show();
 }
 
-function saveSuccess(){
-    if(saveAndClose){
+function saveSuccess() {
+    if (saveAndClose) {
         window.location.href = "$portalPath/home";
     }
 }
 
-function submitSuccess(){
-    setTimeout(function(){ window.location.href = "$portalPath/detail/$oid"; }, 500);
+function submitSuccess() {
+    setTimeout(function() { window.location.href = "$portalPath/detail/$oid"; }, 500);
 }
 </script>

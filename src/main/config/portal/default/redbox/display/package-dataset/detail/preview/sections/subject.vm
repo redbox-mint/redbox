@@ -37,7 +37,27 @@
         </dd>
         #end
 
-        #displayList("dc:subject.keywords" "Keywords")
-        #displayFirst("research_activity.skos:prefLabel" "Research Activity")
+        #######################################
+        <dt>Keywords</dt>
+        #set($keywordList = $self.getList("dc:subject.vivo:keyword"))
+        #if ($keywordList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($entry in $keywordList)
+                #set($keyword = $entry.get("rdf:PlainLiteral"))
+                #if("$!keyword"!="")
+                    <li>$self.escapeHtml($keyword)</li>
+                #end
+            #end
+            </ol>
+        </dd>
+        #end
+
+        #######################################
+        #displayFirst("dc:subject.anzsrc:toa.skos:prefLabel" "Research Activity")
     </dl>
 </div>

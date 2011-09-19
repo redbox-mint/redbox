@@ -39,7 +39,9 @@ function getDateTime(){
 (function($){
     $(function(){
         function onContentLoaded(){
-            if (packageData.metaData.submitted!="true"){ $(".request").remove(); }
+            if (packageData.metaData["redbox:submissionProcess.redbox:submitted"] != "true"){
+                $(".request").remove();
+            }
             widgetTabs = widgets.changeToTabLayout($(".inputscreens"));
             widgetTabs.tabs({
                 select: function(event, ui){
@@ -61,17 +63,17 @@ function getDateTime(){
                             });
                             // grant numbers
                             $(".internal-grant:checked").each(function() {
-                                var baseId = $(this).attr("id").replace(".uon:internal", "");
+                                var baseId = $(this).attr("id").replace(".redbox:internalGrant", "");
                                 $("input[id="+baseId+".dc:identifier]").unautocomplete();
                                 $("input[id="+baseId+".skos:prefLabel]").removeAttr("readonly").removeClass("label");
                             });
                             // geonames
                             $(".autocomplete-geonames").each(function() {
-                                var baseId = $(this).attr("id").replace(".dcmi:name", "");
-                                var uri = $("input[id='"+baseId+".geonames:uri']").val();
+                                var baseId = $(this).attr("id").replace(".gn:name", "");
+                                var uri = $("input[id='"+baseId+".dc:identifier']").val();
                                 if(uri!=""){
-                                    var east = $("input[id='"+baseId+".dcmi:east']").val();
-                                    var north = $("input[id='"+baseId+".dcmi:north']").val();
+                                    var east = $("input[id='"+baseId+".geo:long']").val();
+                                    var north = $("input[id='"+baseId+".geo:lat']").val();
                                     var coordsElem = $("div[id='"+baseId+".coords']");
                                     coordsElem.find(".east").text(east);
                                     coordsElem.find(".north").text(north);
@@ -79,22 +81,14 @@ function getDateTime(){
                                     coordsElem.show();
                                 }
                             });
-                            // use handle
-                            $("#url_useRecordId:checked").each(function() {
-                                var vitalHandle = "$!self.handleUri";
-                                if(vitalHandle!=""){
-                                    $("#url").val(vitalHandle);
-                                }
-                                $("#url").attr("readonly", "readonly");
-                            });
                             // insert date created if not exist
                             var dcCreated = $("#dc\\:created");
                             if(jQuery.trim(dcCreated.val())==""){
                                 dcCreated.val(getDate());
                             }
                             // extra submission request fields
-                            if(packageData.metaData.submitTitle){$(".submitTitle").removeClass("hidden");}
-                            if(packageData.metaData.submitNotes){$(".submitNotes").removeClass("hidden");}
+                            if(packageData.metaData["redbox:submissionProcess.dc:title"]){$(".submitTitle").removeClass("hidden");}
+                            if(packageData.metaData["redbox:submissionProcess.skos:note"]){$(".submitNotes").removeClass("hidden");}
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
@@ -115,14 +109,43 @@ function getDateTime(){
                 }
             });
         }
-        $("#inputForms").load("$portalPath/workflows/forms/dataset.ajax",
-                {   oid: "$oid",
-                    portalPath: "$portalPath",
-                    stage: "$self.getCurrentStep()",
-                    stageLabel: "$self.getCurrentStepLabel()",
-                    nextStageMessage: "$self.getNextStepAcceptMessage()"
-                },
-                onContentLoaded);
+
+        ## Do some version validation before we load the form
+        var newForm = packageData.metaData["redbox:newForm"];
+        var formVersion = packageData.metaData["redbox:formVersion"];
+        var currentVersion = "$systemConfig.getString("Unknown", "redbox.version.string")";
+        var loadForm = false;
+        var loadFormError = "Unknown error loading form. Please contact a System Administrator";
+        if (newForm == "true") {
+            ## First time loading
+            loadForm = true;
+        } else {
+            if (formVersion != currentVersion) {
+                ## Version mismatch, do not load
+                if (formVersion == null) {
+                    formVersion = "{NOT FOUND}";
+                }
+                loadForm = false;
+                loadFormError = "<p>This record appears to be from an older version of ReDBox. Please contact a System Administrator.</p>";
+                loadFormError += "<p>Expected version '"+currentVersion+"', but this record is '"+formVersion+"'.</p>";
+            } else {
+                ## Valid form load of existing data
+                loadForm = true;
+            }
+        }
+
+        if (loadForm) {
+            $("#inputForms").load("$portalPath/workflows/forms/dataset.ajax",
+                    {   oid: "$oid",
+                        portalPath: "$portalPath",
+                        stage: "$self.getCurrentStep()",
+                        stageLabel: "$self.getCurrentStepLabel()",
+                        nextStageMessage: "$self.getNextStepAcceptMessage()"
+                    },
+                    onContentLoaded);
+        } else {
+            $("#inputForms").html("<div class='box'><div class='block'><div class='login-error'>"+loadFormError+"</div></div></div>");
+        }
     });
 })(jQuery);
 </script>

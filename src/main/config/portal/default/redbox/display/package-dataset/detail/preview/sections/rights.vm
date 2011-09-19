@@ -1,9 +1,9 @@
 #sectionHeading("Rights")
 <div class="meta">
     <dl>
-        #displayFirst("access_conditions" "Access Rights/Conditions")
-        #displayFirst("restrictions" "Rights")
-        #displayUrl("License - Creative Commons" "license_cc" "license_cc.skos:prefLabel")
-        #displayUrl("License - Other" "license_other_url" "license_other_name")
+        #displayFirst("dc:accessRights.rdf:PlainLiteral" "Access Rights/Conditions")
+        #displayFirst("dc:accessRights.dc:RightsStatement" "Rights")
+        #displayUrl("License - Creative Commons" "redbox:creativeCommonsLicense.dc:identifier" "redbox:creativeCommonsLicense.skos:prefLabel")
+        #displayUrl("License - Other" "dc:license.dc:identifier" "dc:license.skos:prefLabel")
     </dl>
 </div>

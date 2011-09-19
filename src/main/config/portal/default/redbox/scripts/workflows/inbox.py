@@ -43,7 +43,7 @@ class InboxData:
         return self.__workflowData.getString(None, ["step"])
 
     def isSubmitted(self):
-        return self.__requestData.getBoolean(False, ["submitted"])
+        return self.__requestData.getBoolean(False, ["redbox:submissionProcess.redbox:submitted"])
 
     def getErrorMessage(self):
         return self.__errorMessage
@@ -80,23 +80,23 @@ class InboxData:
         result = '{"ok":"Updated OK"}'
 
         if self.__formData.get("acceptOnly", "false") == "false":
-            requestFields = ["submitted",
+            requestFields = ["redbox:submissionProcess.redbox:submitted",
                              "workflow_source",
-                             "submitDate",
-                             "submitDescription",
-                             "contactName",
-                             "phoneNumber",
-                             "emailAddress",
-                             "submitTitle",
-                             "submitNotes"]
+                             "redbox:submissionProcess.dc:date",
+                             "redbox:submissionProcess.dc:description",
+                             "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+                             "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+                             "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+                             "redbox:submissionProcess.dc:title",
+                             "redbox:submissionProcess.skos:note"]
             # update from form data
             data = self.__requestData.getJsonObject()
             formFields = self.__formData.getFormFields()
             for formField in formFields:
                 if formField in requestFields:
                     data.put(formField, self.__formData.get(formField))
-            description = self.__formData.get("submitDescription", "[No description]")
-            submitTitle = self.__formData.get("submitTitle", None)
+            description = self.__formData.get("redbox:submissionProcess.dc:description", "[No description]")
+            submitTitle = self.__formData.get("redbox:submissionProcess.dc:title", None)
             if submitTitle:
                 data.put("title", submitTitle)
             else:

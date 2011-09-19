@@ -6,37 +6,39 @@ label.validation, .validation label { color: red; display: block; }
 </style>
 <h2 id="page-heading"><span>$pageTitle</span></h2>
 <div class="grid_16 widget-form"
-    data-form-fields="title,description,submitted,workflow_source,submitDate,submitDescription,contactName,emailAddress,phoneNumber"
+    data-form-fields="title,description,redbox:formVersion,redbox:newForm,redbox:submissionProcess.redbox:submitted,workflow_source,redbox:submissionProcess.dc:date,redbox:submissionProcess.dc:description,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone"
     data-form-fields-readonly="metaList"
     data-submit-func="srSubmitFunc">
-    <input type="hidden" name="submitted" value="true" />
+    <input type="hidden" id="redbox:formVersion" value="$systemConfig.getString("Unknown", "redbox.version.string")" />
+    <input type="hidden" id="redbox:newForm" value="true" />
+    <input type="hidden" name="redbox:submissionProcess.redbox:submitted" value="true" />
     <input type="hidden" name="workflow_source" value="Submission Request" />
     <input type="hidden" name="metaList" value="[]" />
     <p>Please provide a brief overview of your research data and how to contact you.</p>
     <fieldset>
         <p>
-            <label for="submitDate">Date Submitted</label>
-            <input id="submitDate" type="text" size="40" value="$!self.getSubmitDate()" readonly="readonly" />
+            <label for="redbox:submissionProcess.dc:date">Date Submitted</label>
+            <input id="redbox:submissionProcess.dc:date" type="text" size="40" value="$!self.getSubmitDate()" readonly="readonly" />
         </p>
         <p>
-            <label for="submitDescription">Description <span class="required">*</span></label>
-            <label class="validation" for="submitDescription" data-validation-rule="test(notEmpty);when(submit);">A description is required!</label>
-            <textarea id="submitDescription" cols="40" rows="10"></textarea>
+            <label for="redbox:submissionProcess.dc:description">Description <span class="required">*</span></label>
+            <label class="validation" for="redbox:submissionProcess.dc:description" data-validation-rule="test(notEmpty);when(submit);">A description is required!</label>
+            <textarea id="redbox:submissionProcess.dc:description" cols="40" rows="10"></textarea>
         </p>
         <p>
-            <label for="contactName">Contact Name <span class="required">*</span></label>
-            <label class="validation" for="contactName" data-validation-rule="test(notEmpty);when(submit);">A contact name is required!</label>
-            <input id="contactName" type="text" size="40" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name">Contact Name <span class="required">*</span></label>
+            <label class="validation" for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name" data-validation-rule="test(notEmpty);when(submit);">A contact name is required!</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name" type="text" size="40" />
         </p>
         <p>
-            <label for="phoneNumber">Phone Number <span class="required">*</span></label>
-            <label class="validation" for="phoneNumber" data-validation-rule="test(notEmpty);when(submit);">A phone number is required!</label>
-            <input id="phoneNumber" type="text" size="40" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone">Phone Number <span class="required">*</span></label>
+            <label class="validation" for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone" data-validation-rule="test(notEmpty);when(submit);">A phone number is required!</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone" type="text" size="40" />
         </p>
         <p>
-            <label for="emailAddress">Email Address <span class="required">*</span></label>
-            <label class="validation" for="emailAddress" data-validation-rule="test(email);when(submit);">A valid email address is required!</label>
-            <input id="emailAddress" type="text" size="40" />
+            <label for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox">Email Address <span class="required">*</span></label>
+            <label class="validation" for="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox" data-validation-rule="test(email);when(submit);">A valid email address is required!</label>
+            <input id="redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox" type="text" size="40" />
         </p>
         <button class="button form-fields-submit" id="submitButton">Submit</button>
         <button class="button form-fields-cancel" id="cancelButton">Cancel</button>
@@ -77,9 +79,8 @@ function srSubmitFunc(widgetForm,formData){
     if(widgetForm.validator.isOkToSubmit()){
         $("#submitButton,#cancelButton").attr("disabled", "disabled");
         $("#loading").show();
-        //var title = truncate(formData.submitDescription);
-        var title = formData.submitDescription;
-        var description = formData.submitDescription;
+        var title = formData["redbox:submissionProcess.dc:description"];
+        var description = formData["redbox:submissionProcess.dc:description"];
         var postData = jQuery.extend(formData,{
             ajax: true,
             func: "create-new",

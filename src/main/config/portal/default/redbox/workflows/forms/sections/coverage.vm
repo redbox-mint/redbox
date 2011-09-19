@@ -1,40 +1,40 @@
 <h3><a href="#coverage">Coverage</a></h3>
 <div id="coverage" class="inputscreen">
-    #fieldTitle("dc:coverage" "Date Coverage" false)
-    <div class="help-content" id="help-dc:coverage">
+    #fieldTitle("dc:coverage.vivo:DateTimeInterval" "Date Coverage" false)
+    <div class="help-content" id="help-dc:coverage.vivo:DateTimeInterval">
         Use this to indicate a date range relevant to the research
         dataset/collection, registry/repository, catalogue or index. Year format
         requires manual entry, eg. 1990 to 2010
     </div>
     <p>
-        <input type="text" placeholder="eg. 1990" class="dateYMD" id="dc:coverage.from" />
-        <label for="dc:coverage.to">to</label>
-        <input type="text" placeholder="eg. 2010" class="dateYMD" id="dc:coverage.to" />
-        <label class="validation-err-msg" for="dc:coverage.from"
+        <input type="text" placeholder="eg. 1990" class="dateYMD" id="dc:coverage.vivo:DateTimeInterval.vivo:start" />
+        <label for="dc:coverage.vivo:DateTimeInterval.vivo:end">to</label>
+        <input type="text" placeholder="eg. 2010" class="dateYMD" id="dc:coverage.vivo:DateTimeInterval.vivo:end" />
+        <label class="validation-err-msg" for="dc:coverage.vivo:DateTimeInterval.vivo:start"
             data-validation-rule="when(blur,change,submit);name(testCoverageFrom);
                     test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid from date or year is required!
         </label>
-        <label class="validation-err-msg" for="dc:coverage.to"
+        <label class="validation-err-msg" for="dc:coverage.vivo:DateTimeInterval.vivo:end"
             data-validation-rule="when(blur,change,submit);name(testCoverageTo);
                     test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid to date or year is required!
         </label>
     </p>
 
-    #fieldTitle("time_period" "Time Period" false)
-    <div class="help-content" id="help-time_period">
+    #fieldTitle("dc:coverage.redbox:timePeriod" "Time Period" false)
+    <div class="help-content" id="help-dc:coverage.redbox:timePeriod">
         A text description of a time period relating to the coverage of the
         research dataset/collection, registry/repository, catalogue or index, if
         applicable, eg. 21st Century, WWII, The Depression, etc.
     </div>
     <p>
-        <input type="text" id="time_period" size="60"
+        <input type="text" id="dc:coverage.redbox:timePeriod" size="60"
             placeholder="eg. 21st Century, WWII, The Depression, etc." />
     </p>
 
-    #fieldTitle("location" "Geospatial Location" false)
-    <div class="help-content" id="help-location">
+    #fieldTitle("dc:coverage.vivo:GeographicLocation" "Geospatial Location" false)
+    <div class="help-content" id="help-dc:coverage.vivo:GeographicLocation">
         <p>
             Geospatial location relevant to the research dataset/collection,
             registry/repository, catalogue or index. This may describe a
@@ -159,7 +159,7 @@
             <tr class="item-input-display">
                 <td class="sort-number"></td>
                 <td>
-                    <select class="locationType" id="location.0.type">
+                    <select class="locationType" id="dc:coverage.vivo:GeographicLocation.0.dc:type">
                         <option value="" selected="selected">Please select one...</option>
                         <option value="gml">OpenGIS Geography Markup Language</option>
                         <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
@@ -175,11 +175,11 @@
                 </td>
                 <td>
                     <input type="text" size="60" placeholder="eg. coordinates or placename"
-                        id="location.0.dcmi:name" class="autocomplete-geonames" />
-                    <input type="hidden" id="location.0.geonames:uri" />
-                    <input type="hidden" id="location.0.dcmi:east" />
-                    <input type="hidden" id="location.0.dcmi:north" />
-                    <div class="hidden coords" id="location.0.coords">
+                        id="dc:coverage.vivo:GeographicLocation.0.gn:name" class="autocomplete-geonames" />
+                    <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.dc:identifier" />
+                    <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.geo:long" />
+                    <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.geo:lat" />
+                    <div class="hidden coords" id="dc:coverage.vivo:GeographicLocation.0.coords">
                         <a class="map-link" target="_blank" href="">map</a>
                         @ longitude: <span class="east"> </span>
                         , latitude: <span class="north"> </span>
@@ -213,14 +213,14 @@ $(function(){
     }
 
     $("#add-location").click(function(){
-        $("#location\\.0\\.coords").hide();
+        getById("dc:coverage.vivo:GeographicLocation.0.coords").hide();
     });
 
     $(".autocomplete-geonames").live("focus", function(){
         var elem = $(this);
-        var baseId = elem.attr("id").replace(".dcmi:name", "");
+        var baseId = elem.attr("id").replace(".gn:name", "");
         elem.unautocomplete();
-        if($("select[id='"+baseId+".type']").val()=="text"){
+        if(getById(baseId+".dc:type").val()=="text"){
             elem.autocomplete(
                 "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
                 {
@@ -240,10 +240,10 @@ $(function(){
                 }).result(function(event, row) {
                     if (row) {
                         var data = splitGeonamesData(row);
-                        var coordsElem = $("div[id='"+baseId+".coords']");
-                        $("input[id='"+baseId+".geonames:uri']").val(data.uri);
-                        $("input[id='"+baseId+".dcmi:east']").val(data.east);
-                        $("input[id='"+baseId+".dcmi:north']").val(data.north);
+                        var coordsElem = getById(baseId+".coords");
+                        getById(baseId+".dc:identifier").val(data.uri);
+                        getById(baseId+".geo:long").val(data.east);
+                        getById(baseId+".geo:lat").val(data.north);
                         coordsElem.find(".east").text(data.east);
                         coordsElem.find(".north").text(data.north);
                         coordsElem.find(".map-link").attr("href", data.uri);
@@ -258,19 +258,19 @@ $(function(){
     $(".clear-link").live("click", function(){
         var p = $(this).parent();
         var baseId = p.attr("id").replace(".coords", "");
-        $("input[id='"+baseId+".geonames:uri']").removeAttr("value");
-        $("input[id='"+baseId+".dcmi:east']").removeAttr("value");
-        $("input[id='"+baseId+".dcmi:north']").removeAttr("value");
+        getById(baseId+".dc:identifier").removeAttr("value");
+        getById(baseId+".geo:long").removeAttr("value");
+        getById(baseId+".geo:lat").removeAttr("value");
         p.hide();
     });
 
     $(".locationType").live("change", function(e){
         var elem=$(this);
-        var baseId = elem.attr("id").replace(".type", "");
-        var uriElem=$("input[id='"+baseId+".geonames:uri']");
-        if(elem.val()!="text" && uriElem.val()!=""){
+        var baseId = elem.attr("id").replace(".dc:type", "");
+        var uriElem = getById(baseId+".dc:identifier");
+        if(elem.val() != "text" && uriElem.val() != ""){
             if(confirm("Are you sure you want to clear the Geonames linked location?")){
-                $("input[id='"+baseId+".dcmi:name']").val("");
+                getById(baseId+".gn:name").val("");
                 $("div[id='"+baseId+".coords'] .clear-link").click();
             }else{
                 $(this).val("text");

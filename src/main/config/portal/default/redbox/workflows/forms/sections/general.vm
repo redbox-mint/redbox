@@ -1,5 +1,8 @@
 <h3><a href="#general">General</a></h3>
 <div id="general" class="inputscreen">
+    <input type="hidden" id="redbox:formVersion" />
+    <input type="hidden" id="redbox:newForm" />
+
     #fieldTitle("dc:title" "Title" true)
     <div class="help-content" id="help-dc:title">
         The title for the research dataset/collection, registry/repository,
@@ -76,12 +79,12 @@
         #dateValidation("dc:modified")
     </p>
 
-    #fieldTitle("dc:language" "Language" false)
-    <div class="help-content" id="help-dc:language">
+    #fieldTitle("dc:language.dc:identifier" "Language" false)
+    <div class="help-content" id="help-dc:language.dc:identifier">
         Language of the metadata record, eg. English, French etc. (ISO 639.2)
     </div>
     <p>
-        #mintSelectField("dc:language"
+        #mintSelectField("dc:language.dc:identifier"
                          "dc:language.skos:prefLabel"
                          "$portalPath/proxyGet?ns=Languages&qs=count%3D9999"
                          "dc:identifier"
@@ -90,3 +93,11 @@
                          "http://id.loc.gov/vocabulary/iso639-2/eng")
     </p>
 </div>
+
+<script type="text/javascript">
+$(function() {
+    getById("redbox:newForm").live("onDataChanged", function() {
+        $(this).val("false");
+    });
+});
+</script>

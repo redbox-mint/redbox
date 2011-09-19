@@ -257,8 +257,7 @@ class IndexData:
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier") \
-                              or field.endswith(".rdf:resource") \
-                              or field.endswith(".association")):
+                              or field.endswith(".rdf:resource")):
                         # index dublin core fields for faceting
                         basicField = field.replace("dc:", "dc_")
                         dot = field.find(".")
@@ -274,14 +273,12 @@ class IndexData:
                             if self.dcType is None:
                                 self.dcType = value
                         elif facetField == "dc_creator":
-                            # dc:title should not be used here... but
-                            # it is resolving this is another ticket
-                            if basicField.endswith("dc_title"):
+                            if basicField.endswith("foaf_name"):
                                 self.utils.add(self.index, "dc_creator", value)
                         else:
                             self.utils.add(self.index, facetField, value)
                         # index keywords for lookup
-                        if field.startswith("dc:subject.keywords."):
+                        if field.startswith("dc:subject.vivo:keywords."):
                             self.utils.add(self.index, "keywords", value)
 
         self.utils.add(self.index, "display_type", displayType)

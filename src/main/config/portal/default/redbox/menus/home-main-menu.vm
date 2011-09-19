@@ -35,9 +35,11 @@ $(function() {
                 ajax: 1,
                 func: "create-new",
                 packageType: "dataset",
-                metaList: ["title", "description"],
+                metaList: ["title", "description", "redbox:newForm", "redbox:formVersion"],
                 title: "[Untitled]",
-                description: ""
+                description: "",
+                "redbox:newForm": "true",
+                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")"
             },
             success: function(data) {
                 if (data.status == "ok") {
