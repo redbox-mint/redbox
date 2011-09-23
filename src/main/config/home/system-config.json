@@ -443,5 +443,13 @@
                 "timeLimit": "30"
             }
         }
+    },
+    "restoreTool": {
+        "harvestRemap": {
+            "enabled": false,
+            "allowOlder": false,
+            "failOnMissing": false
+        },
+        "migrationScript": "${fascinator.home}/restore/redboxMigration1.2.py"
     }
 }
