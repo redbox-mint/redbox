@@ -39,7 +39,7 @@
         </dd>
         #end
 
-        #displayFirst("locrel:dtm.foaf:Agent.foaf.name" "Data Custodian")
+        #displayFirst("locrel:dtm.foaf:Agent.foaf:name" "Data Custodian")
         #displayFirst("foaf:Organization.skos:prefLabel" "Data Affiliation")
         #displayUrlList("foaf:fundedBy.foaf:Agent" "Funding Body/s" "dc:identifier" "skos:prefLabel")
 

@@ -149,11 +149,11 @@
         </tfoot>
     </table>
 
-    #fieldTitle("locrel:dtm.foaf:Agent.foaf.name" "Data Custodian" false)
-    <div class="help-content" id="help-locrel:dtm.foaf:Agent.foaf.name">
+    #fieldTitle("locrel:dtm.foaf:Agent.foaf:name" "Data Custodian" false)
+    <div class="help-content" id="help-locrel:dtm.foaf:Agent.foaf:name">
         Person/institution identified as custodian of the data.
     </div>
-    <p><input type="text" size="60" placeholder="person or institution" id="locrel:dtm.foaf:Agent.foaf.name" /></p>
+    <p><input type="text" size="60" placeholder="person or institution" id="locrel:dtm.foaf:Agent.foaf:name" /></p>
 
     #fieldTitle("foaf:Organization" "Data Affiliation" false)
     <div class="help-content" id="help-foaf:Organization">

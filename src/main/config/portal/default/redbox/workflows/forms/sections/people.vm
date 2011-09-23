@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="dc:creator.foaf:Person.0.foaf.Organization.dc:identifier">Affiliation:</label>
+                                    <label for="dc:creator.foaf:Person.0.foaf:Organization.dc:identifier">Affiliation:</label>
                                 </td>
                                 <td colspan="3">
                                     <span class="data-source-drop-down"
@@ -103,9 +103,9 @@
                                           data-list-key="results">
                                         <span class="selection-added">
                                             <input type="hidden" class="selection-added-id"
-                                                   id="dc:creator.foaf:Person.0.foaf.Organization.dc:identifier" value="" />
+                                                   id="dc:creator.foaf:Person.0.foaf:Organization.dc:identifier" value="" />
                                             <input type="text" class="selection-added-label" readonly="readonly" size="60"
-                                                   id="dc:creator.foaf:Person.0.foaf.Organization.skos:prefLabel" value="" />
+                                                   id="dc:creator.foaf:Person.0.foaf:Organization.skos:prefLabel" value="" />
                                             <a href="#" class="clear-item">change</a>
                                         </span>
                                         <span class="drop-down-location">
@@ -328,12 +328,12 @@ function lookupDone(target,data){
     $("input[id='"+baseId+".foaf:title']").val(lookupData["Honorific"]);
     $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given Name"]);
     $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family Name"]);
-    $("input[id='"+baseId+".foaf.Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
+    $("input[id='"+baseId+".foaf:Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
         var option=$(e);
         if(jQuery.trim(option.text())==lookupData["Division"]){
-            $("input[id='"+baseId+".foaf.Organization.dc:identifier']")
+            $("input[id='"+baseId+".foaf:Organization.dc:identifier']")
                 .val(option.val()).trigger("onDataChanged");
-            $("input[id='"+baseId+".foaf.Organization.skos:prefLabel']")
+            $("input[id='"+baseId+".foaf:Organization.skos:prefLabel']")
                 .val(option.text()).trigger("onDataChanged");
             return;
         }

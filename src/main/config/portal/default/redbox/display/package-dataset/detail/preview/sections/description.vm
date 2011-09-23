@@ -20,7 +20,7 @@
                     <a href="$self.escapeHtml($href)">$self.escapeHtml($href)</a>
                 #end
                 #set($notes = $url.get("skos:note"))
-                #if("$!label"!="")
+                #if("$!notes"!="")
                     <br/><em>$self.escapeHtml($notes)</em>
                 #end
                 </li>
