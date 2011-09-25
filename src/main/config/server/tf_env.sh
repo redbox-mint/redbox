@@ -27,6 +27,11 @@ JVM_OPTS="-XX:MaxPermSize=512m -Xmx512m"
 # logging directories
 export SOLR_LOGS=$TF_HOME/logs/solr
 export JETTY_LOGS=$TF_HOME/logs/jetty
+export ARCHIVES=$TF_HOME/logs/archives
+if [ ! -d $ARCHIVES ]
+then
+    mkdir -p $ARCHIVES
+fi
 if [ ! -d $JETTY_LOGS ]
 then
     mkdir -p $JETTY_LOGS

@@ -43,7 +43,7 @@ appender("SIFT", GSiftingAppender) {
       append = true
       file = "${logHome}/logs/${name}.log"
       rollingPolicy(TimeBasedRollingPolicy) {
-        fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}/${name}.zip"
+        fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_${name}.zip"
         maxHistory = 30
       }
       encoder(PatternLayoutEncoder) {
@@ -55,7 +55,7 @@ appender("SIFT", GSiftingAppender) {
 appender("AMQ", RollingFileAppender) {
   file = "${logHome}/logs/amq/amq.log"
   rollingPolicy(TimeBasedRollingPolicy) {
-    fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}/amq/amq.zip"
+    fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_amq.zip"
     maxHistory = 30
   }
   encoder(PatternLayoutEncoder) {
@@ -66,7 +66,7 @@ appender("AMQ", RollingFileAppender) {
 appender("SOLR", RollingFileAppender) {
   file = "${logHome}/logs/solr/solr.log"
   rollingPolicy(TimeBasedRollingPolicy) {
-    fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}/solr/solr.zip"
+    fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_solr.zip"
     maxHistory = 30
   }
   encoder(PatternLayoutEncoder) {

@@ -17,6 +17,10 @@ set CLASSPATH=plugins/*;lib/*
 REM Logging directories
 set SOLR_LOGS=%FASCINATOR_HOME%\logs\solr
 set JETTY_LOGS=%FASCINATOR_HOME%\logs\jetty
+set ARCHIVES=%FASCINATOR_HOME%\logs\archives
+if exist "%ARCHIVES%" goto skiparchives
+mkdir "%ARCHIVES%"
+:skiparchives
 if exist "%JETTY_LOGS%" goto skipjetty
 mkdir "%JETTY_LOGS%"
 :skipjetty
