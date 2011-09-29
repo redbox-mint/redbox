@@ -15,7 +15,12 @@ class InboxData:
         self.__oid = self.__formData.get("oid")
         self.__object = self.__getObject()
         self.__errorMessage = None
-        self.__requestData = self.__getJsonData(self.__object.getSourceId())
+        self.packagePid = None
+        pidList = self.__object.getPayloadIdList()
+        for pid in pidList:
+            if pid.endswith(".tfpackage"):
+                self.packagePid = pid
+        self.__requestData = self.__getJsonData(self.packagePid)
         self.__workflowData = self.__getJsonData("workflow.metadata")
 
         #print " ***** formData:", self.__formData
@@ -102,7 +107,7 @@ class InboxData:
             else:
                 #data.put("title", truncate(description, 25))
                 data.put("title", description)
-            self.__updatePayload(self.__object.getSourceId(), data)
+            self.__updatePayload(self.packagePid, data)
 
         # update workflow metadata
         if self.__auth.is_logged_in():

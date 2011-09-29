@@ -119,6 +119,9 @@ $self.escapeHtml($value)
     <span id="toggle-accordion-text">Show all sections</span>
 </div>
 <div class="accordion">
+    #if($page.authentication.is_admin())
+        #parseDisplayTemplate("detail/preview/sections/curation.vm")
+    #end
     #parseDisplayTemplate("detail/preview/sections/general.vm")
     #parseDisplayTemplate("detail/preview/sections/coverage.vm")
     #parseDisplayTemplate("detail/preview/sections/description.vm")

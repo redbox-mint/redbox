@@ -15,12 +15,17 @@ class IndexData:
         self.params = context["params"]
         self.utils = context["pyUtils"]
         self.config = context["jsonConfig"]
+        self.log = context["log"]
 
-        print "Indexing Metadata Record '%s' '%s'" % \
-                (self.object.getId(), self.payload.getId())
+        self.log.debug("Indexing Metadata Record '{}' '{}'", self.object.getId(), self.payload.getId())
 
         # Common data
         self.__newDoc()
+        self.packagePid = None
+        pidList = self.object.getPayloadIdList()
+        for pid in pidList:
+            if pid.endswith(".tfpackage"):
+                self.packagePid = pid
 
         # Real metadata
         if self.itemType == "object":
@@ -38,6 +43,7 @@ class IndexData:
         self.pid = self.payload.getId()
         metadataPid = self.params.getProperty("metaPid", "DC")
 
+        self.utils.add(self.index, "storage_id", self.oid)
         if self.pid == metadataPid:
             self.itemType = "object"
         else:
@@ -46,7 +52,6 @@ class IndexData:
             self.utils.add(self.index, "identifier", self.pid)
 
         self.utils.add(self.index, "id", self.oid)
-        self.utils.add(self.index, "storage_id", self.oid)
         self.utils.add(self.index, "item_type", self.itemType)
         self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
@@ -67,6 +72,10 @@ class IndexData:
             self.utils.add(self.index, "vitalHandle", vitalHandle)
             self.utils.add(self.index, "oai_identifier", vitalHandle)
         self.utils.add(self.index, "oai_set", "default")
+        # Publication
+        published = self.params["published"]
+        if published is not None:
+            self.utils.add(self.index, "published", "true")
 
     def __security(self):
         # Security
@@ -144,7 +153,7 @@ class IndexData:
         if self.title is None:
            self.title = "New Dataset"
         if self.formatList == []:
-            source = self.object.getPayload(self.object.getSourceId())
+            source = self.object.getPayload(self.packagePid)
             self.formatList.append(source.getContentType())
 
         # Index our metadata finally
@@ -226,7 +235,7 @@ class IndexData:
                 print " ERROR updating dataset payload"
 
         # Form processing
-        coreFields = ["title", "description", "manifest", "metaList"]
+        coreFields = ["title", "description", "manifest", "metaList", "relationships", "responses"]
         formData = wfMeta.getObject(["formData"])
         if formData is not None:
             formData = JsonSimple(formData)
@@ -241,7 +250,7 @@ class IndexData:
                     self.customFields[field] = formData.getStringList([field])
 
         # Manifest processing (formData not present in wfMeta)
-        manifest = self.__getJsonPayload(self.object.getSourceId())
+        manifest = self.__getJsonPayload(self.packagePid)
         formTitles = manifest.getStringList(["title"])
         if formTitles:
             for formTitle in formTitles:

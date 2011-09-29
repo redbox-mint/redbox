@@ -326,8 +326,8 @@ function lookupDone(target,data){
     var lookupData=data["result-metadata"].all;
     var baseId=p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
     $("input[id='"+baseId+".foaf:title']").val(lookupData["Honorific"]);
-    $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given Name"]);
-    $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family Name"]);
+    $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given_Name"]);
+    $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family_Name"]);
     $("input[id='"+baseId+".foaf:Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
         var option=$(e);
         if(jQuery.trim(option.text())==lookupData["Division"]){

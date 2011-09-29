@@ -2,9 +2,11 @@ from workflow import WorkflowData as DefaultWorkflowData
 
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.api.storage import StorageException
-from com.googlecode.fascinator.common import JsonObject, JsonSimple, MessagingServices
+from com.googlecode.fascinator.common import JsonObject, JsonSimple
+from com.googlecode.fascinator.common.messaging import MessagingServices
 from com.googlecode.fascinator.common.storage import StorageUtils
 from com.googlecode.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception
@@ -51,12 +53,15 @@ class WorkflowData(DefaultWorkflowData):
         self.sendMessage(self.getOid(), "Update")
 
     def sendMessage(self, oid, eventType):
-        self.messaging.onEvent({
-            "oid": oid,
-            "eventType": eventType,
-            "username": self.vc("page").authentication.get_username(),
-            "context": "Workflow"
-        })
+        message = JsonObject()
+        message.put("oid", oid)
+        message.put("eventType", eventType)
+        message.put("username", self.vc("page").authentication.get_username())
+        message.put("context", "Workflow")
+        message.put("task", "workflow")
+        self.messaging.queueMessage(
+                TransactionManagerQueueConsumer.LISTENER_ID,
+                message.toString())
 
     def __attachFile(self):
         try:
@@ -69,7 +74,7 @@ class WorkflowData(DefaultWorkflowData):
                 uploadFile = uploadFile.rsplit("\\", 1)[-1]
                 fileDetails = self.vc("sessionState").get(uploadFile)
             if fileDetails is None:
-                print "**** fileDetails is None!!! ***"
+                self.log.error("**** fileDetails is None!!! ***")
                 return self.__toJson({
                     "error": "fileDetails is None (no upload file!)"
                 })

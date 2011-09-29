@@ -1,5 +1,7 @@
 from com.googlecode.fascinator.common import JsonConfigHelper
-from com.googlecode.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common import JsonObject
+from com.googlecode.fascinator.common.messaging import MessagingServices
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 class VitalData:
     def __init__(self):
@@ -46,9 +48,12 @@ class VitalData:
     def sendMessage(self, oid):
         # Fake a workflow reindex. ReDBox doesn't need to reindex,
         #  the VITAL subscriber just needs to think we did.
-        param = {}
-        param["oid"] = oid
-        param["eventType"] = "ReIndex"
-        param["username"] = self.auth.get_username()
-        param["context"] = "Workflow"
-        self.messaging.onEvent(param)
+        message = JsonObject()
+        message.put("oid", oid)
+        message.put("eventType", "ReIndex")
+        message.put("username", self.auth.get_username())
+        message.put("context", "Workflow")
+        message.put("task", "workflow")
+        self.messaging.queueMessage(
+                TransactionManagerQueueConsumer.LISTENER_ID,
+                message.toString())

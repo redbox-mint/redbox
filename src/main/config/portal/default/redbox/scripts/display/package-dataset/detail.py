@@ -1,8 +1,10 @@
 from com.googlecode.fascinator.api.indexer import SearchRequest
-from com.googlecode.fascinator.common import JsonObject
+from com.googlecode.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import JsonObject, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
 
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
+from java.lang import Exception
 from java.util import TreeMap, TreeSet
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
@@ -17,6 +19,7 @@ class DetailData:
         self.metadata = context["metadata"]
         self.Services = context["Services"]
         self.formData = context["formData"]
+        self.log = context["log"]
 
     def hasWorkflow(self):
         self.__workflowStep = self.metadata.getList("workflow_step_label")
@@ -71,6 +74,42 @@ class DetailData:
         if value:
             return StringEscapeUtils.escapeHtml(value) or ""
         return ""
+
+    def getCurationData(self, oid):
+        json = JsonObject()
+        try:
+            # Get the object from storage
+            storage = self.Services.getStorage()
+            object = storage.getObject(oid)
+
+            # Find the package payload
+            payload = None
+            pidList = object.getPayloadIdList()
+            for pid in pidList:
+                if (pid.endswith(".tfpackage")):
+                    payload = object.getPayload(pid)
+            # Not found?
+            if payload is None:
+                self.log.error(" * detail.py => Can't find package data!")
+                json.put("error", True)
+                return json
+
+            # Parse the data
+            data = JsonSimple(payload.open())
+            payload.close()
+
+            # Return it
+            json.put("error", False)
+            json.put("relationships", data.writeArray("relationships"))
+            return json
+        except StorageException, ex:
+            self.log.error(" * detail.py => Storage Error accessing data: ", ex)
+            json.put("error", True)
+            return json
+        except Exception, ex:
+            self.log.error(" * detail.py => Error accessing data: ", ex)
+            json.put("error", True)
+            return json
 
     def getAttachedFiles(self, oid):
         # Build a query

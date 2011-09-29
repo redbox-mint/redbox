@@ -1,12 +1,12 @@
-from com.googlecode.fascinator.api import PluginManager
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.api.storage import PayloadType
+from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import FascinatorHome
 from com.googlecode.fascinator.common import JsonObject
 from com.googlecode.fascinator.common import JsonSimple
-from com.googlecode.fascinator.common import JsonSimpleConfig
-from com.googlecode.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common.messaging import MessagingServices
 from com.googlecode.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 from java.io import ByteArrayInputStream
 from java.io import ByteArrayOutputStream
@@ -167,8 +167,9 @@ class DatasetData:
         json.put("dc:title", title)
         json.put("dc:abstract", description)
         ## fix newlines
+        ignoreFields = ["metaList", "relationships"]
         for key in json:
-            if key != "metaList":
+            if key not in ignoreFields:
                 value = json.get(key)
                 if value and value.find("\n"):
                     value = value.replace("\n", "\\n")
@@ -265,7 +266,12 @@ class DatasetData:
         object = self._getObject()
         jsonString = String(tfpackage.toString(True))
         jsonData = jsonString.getBytes("UTF-8")
-        object.updatePayload(object.getSourceId(), ByteArrayInputStream(jsonData))
+        self.packagePid = None
+        pidList = self.__object.getPayloadIdList()
+        for pid in pidList:
+            if pid.endswith(".tfpackage"):
+                self.packagePid = pid
+        object.updatePayload(self.packagePid, ByteArrayInputStream(jsonData))
 
     # Save the current package
     def _savePackage(self):
@@ -354,10 +360,10 @@ class DatasetData:
             owner = solr.getFirst("owner")
 
             # Print some debug data
-            self.log.debug(" === username = '%s'" % username)
-            self.log.debug(" === userRoles = '%s'" % userRoles)
-            self.log.debug(" === nextStep = '%s'" % nextStep)
-            self.log.debug(" === owner = '%s'" % owner)
+            #self.log.debug(" === username = '%s'" % username)
+            #self.log.debug(" === userRoles = '%s'" % userRoles)
+            #self.log.debug(" === nextStep = '%s'" % nextStep)
+            #self.log.debug(" === owner = '%s'" % owner)
 
             # Now do the security check
             workflowSecurity = solr.getList("workflow_security")
@@ -410,7 +416,8 @@ class DatasetData:
                 tfMetaList.addAll(metaList)
                 # Remove any old data
                 for metaName in removedSet:
-                    packageJson.remove(metaName)
+                    if metaName != "relationships":
+                        packageJson.remove(metaName)
             except Exception, e:
                 self.log.error("Error updating package data", e)
                 result.put("error", "Error updating package data")
@@ -458,22 +465,22 @@ class DatasetData:
     # Re-index the current object
     def _reIndex(self, step):
         object = self._getObject()
+        oid = object.getId()
 
         # Transform the object to other datastream e.g. dublin core, rif-cs and vitro
-        try:
-            jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
-            jsonVelocityTransformer.init(JsonSimpleConfig.getSystemFile())
-            jsonVelocityTransformer.transform(object, "{}")
-        except Exception, e:
-            self.log.error("Fail to transform object : ", e)
+        #try:
+        #    jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
+        #    jsonVelocityTransformer.init(JsonSimpleConfig.getSystemFile())
+        #    jsonVelocityTransformer.transform(object, "{}")
+        #except Exception, e:
+        #    self.log.error("Fail to transform object : ", e)
 
         # Index the object
-        oid = object.getId()
-        try:
-            self.Services.indexer.index(oid)
-            self.Services.indexer.commit()
-        except Exception, e:
-            self.log.error("Fail to transform object : ", e)
+        #try:
+        #    self.Services.indexer.index(oid)
+        #    self.Services.indexer.commit()
+        #except Exception, e:
+        #    self.log.error("Fail to transform object : ", e)
 
         # Notify subscribers (like VITAL)
         self.sendMessage(oid, step)
@@ -509,12 +516,16 @@ class DatasetData:
 
     # Send an event notification, used for VITAL integration
     def sendMessage(self, oid, step):
-        param = {}
-        param["oid"] = oid
+        message = JsonObject()
+        message.put("oid", oid)
         if step is None:
-            param["eventType"] = "ReIndex"
+            message.put("eventType", "ReIndex")
         else:
-            param["eventType"] = "NewStep : %s" % step
-        param["username"] = self.vc("page").authentication.get_username()
-        param["context"] = "Workflow"
-        self.messaging.onEvent(param)
+            message.put("eventType", "NewStep : %s" % step)
+            message.put("newStep", step)
+        message.put("username", self.vc("page").authentication.get_username())
+        message.put("context", "Workflow")
+        message.put("task", "workflow")
+        self.messaging.queueMessage(
+                TransactionManagerQueueConsumer.LISTENER_ID,
+                message.toString())

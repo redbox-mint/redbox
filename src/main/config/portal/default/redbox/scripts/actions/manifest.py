@@ -21,8 +21,12 @@ class ManifestData:
         oid = self.fd("oid")
 
         self.__object = Services.getStorage().getObject(oid)
-        sourceId = self.__object.getSourceId()
-        payload = self.__object.getPayload(sourceId)
+        self.packagePid = None
+        pidList = self.__object.getPayloadIdList()
+        for pid in pidList:
+            if pid.endswith(".tfpackage"):
+                self.packagePid = pid
+        payload = self.__object.getPayload(self.packagePid)
         self.__manifest = Manifest(payload.open())
         payload.close()
 
@@ -104,5 +108,5 @@ class ManifestData:
 
     def __saveManifest(self):
         manifestStr = String(self.__manifest.toString(True))
-        self.__object.updatePayload(self.__object.getSourceId(),
-                                    ByteArrayInputStream(manifestStr.getBytes("UTF-8")))
+        self.__object.updatePayload(self.packagePid,
+                        ByteArrayInputStream(manifestStr.getBytes("UTF-8")))

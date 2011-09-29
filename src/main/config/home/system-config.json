@@ -1,5 +1,5 @@
 {
-    "version": "1.0.5.2",
+    "version": "1.0.5.3",
     "redbox.version.string": "${redbox.version}",
     "configured": true,
     "urlBase": "${server.url.base}",
@@ -35,64 +35,29 @@
         "type": "file-system",
         "file-system": {
             "home": "${storage.home}"
-        },
-        "fedora3": {
-            "url": "http://localhost:8080/fedora",
-            "username": "fedoraAdmin",
-            "password": "fedoraAdmin"
         }
     },
     "messaging": {
         "url": "tcp://localhost:${amq.port}",
         "stompUrl": "stomp://localhost:${amq.stomp.port}",
         "home": "${fascinator.home}/activemq-data",
+        "startup": {
+            "delay": "5000",
+            "timer": "15000"
+        },
+        "statistics": {
+            "enabled": true,
+            "destination": "houseKeeping"
+        },
+        "toolChainQueue": "transactionManager",
         "threads": [
             {
-                "id": "render",
-                "description": "Render queue for priority objects requested by the user.",
-                "priority": "8",
-                "config": {
-                    "name": "renderUser"
-                }
-            },
-            {
-                "id": "render",
-                "description": "Render queue for most standard documents.",
+                "id": "transactionManager",
+                "description": "Transaction Manager Queue for complicated tool chains.",
                 "priority": "5",
                 "config": {
-                    "name": "renderNormal"
-                }
-            },
-            {
-                "id": "harvest",
-                "description": "Priority queue for user actions, allows access to the render queues faster.",
-                "priority": "8",
-                "config": {
-                    "name": "harvestUser",
-                    "normal-renderers": {
-                        "default": "renderNormal"
-                    },
-                    "user-renderer": "renderUser"
-                }
-            },
-            {
-                "id": "harvest",
-                "description": "Standard harvest queue for new object. May optionally run some fast transformers and an index before routing to the render queues.",
-                "priority": "7",
-                "config": {
-                    "name": "harvest",
-                    "normal-renderers": {
-                        "default": "renderNormal"
-                    },
-                    "user-renderer": "renderUser"
-                }
-            },
-            {
-                "id": "ingest",
-                "description": "Ingest queue for objects posted from external source.",
-                "priority": "3",
-                "config": {
-                    "name": "ingest"
+                    "name": "transactionManager",
+                    "transactionManagerPlugin": "curation-redbox"
                 }
             },
             {
@@ -101,7 +66,7 @@
                 "priority": "7",
                 "config": {
                     "name": "subscriber",
-                    "subscribers": ["vital", "solr-event-log"]
+                    "subscribers": ["solr-event-log"]
                 }
             },
             {
@@ -131,16 +96,29 @@
                         "body": "Default email message"
                     }
                 }
-            },
-            {
-                "id": "indexer",
-                "description": "An indexer accessible via messages",
-                "priority": "5",
-                "config": {
-                    "name": "indexer"
-                }
             }
         ]
+    },
+    "curation": {
+        "curationEmailAddress": "${admin.email}",
+        "curationRequiresConfirmation": false,
+        "pidProperty": "vitalHandle",
+        "mintBroker": "${mint.amq.broker}",
+        "relations": {
+            "dc:relation.vivo:Dataset.0.dc:identifier": {
+                "system": "redbox",
+                "optional": true
+            },
+            "dc:creator.foaf:Person.0.dc:identifier": {},
+            "locrel:prc.foaf:Person.dc:identifier": {},
+            "swrc:supervisor.foaf:Person.0.dc:identifier": {},
+            "foaf:Organization.dc:identifier": {}
+        },
+        "defaultRelations": {
+            "system": "mint",
+            "optional": false,
+            "reverseRelation": "hasAssociationWith"
+        }
     },
     "indexer": {
         "type": "solr",
@@ -164,6 +142,101 @@
         }
     },
     "transformerDefaults": {
+        "vital": {
+            "id": "vital",
+            "tempDir": "${java.io.tmpdir}/rbvital",
+            "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
+            "waitConditions": {
+                "property": "published"
+            },
+            "failure": {
+                "emailQueue": "emailnotification",
+                "emailAddress": ["${admin.email}"],
+                "emailSubject": "VITAL Integration Failed",
+                "emailTemplate": "This is an automated message from ReDBox.\n\nThe record titled: '[[TITLE]]' has had an error occur during transmission to VITAL.\n\nThe record's detail page is here: ${server.url.base}default/detail/[[OID]]\n\nError details are below:\n[[MESSAGE]]\n\n====================\n\n[[ERROR]]"
+            },
+            "server": {
+                "url": "http://localhost:8888/fedora/",
+                "username": "fedoraAdmin",
+                "password": "fedoraAdmin",
+                "namespace": "redbox",
+                "message": "Datastream update from ReDBox '[[OID]]'",
+                "timeout": "15"
+            },
+            "dataStreams": {
+                "marc.xml": {
+                    "dsID": "MARC",
+                    "label": "MARC",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true,
+                    "retainIds": true
+                },
+                "oai_dc.xml": {
+                    "dsID": "DC",
+                    "label": "Dublin Core Metadata",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true,
+                    "retainIds": true
+                },
+                "rif.xml": {
+                    "dsID": "RIF",
+                    "label": "RIF-CS Metadata",
+                    "status": "A",
+                    "controlGroup": "X",
+                    "versionable": true,
+                    "retainIds": true
+                },
+                ".tfpackage": {
+                    "dsID": "REDBOX",
+                    "label": "ReDBox Form Data",
+                    "status": "I",
+                    "controlGroup": "M",
+                    "versionable": true,
+                    "retainIds": true
+                }
+            },
+            "attachments": {
+                "dsID": "ATTACHMENT%02d",
+                "statusField": "access_rights",
+                "status": {
+                    "private": "I",
+                    "public": "A"
+                },
+                "labelField": "attachment_type",
+                "label": {
+                    "data-file": "Data file",
+                    "readme": "Read me",
+                    "supporting-material": "Supporting material"
+                },
+                "controlGroup": "M",
+                "versionable": false,
+                "altIds": {
+                    "application/pdf": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/fulltext#FULLTEXT%d",
+                        "info:vital/synchronize/thumbnail#THUMBNAIL"
+                    ],
+                    "image/": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/thumbnail#THUMBNAIL"
+                    ],
+                    "text/": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d",
+                        "info:vital/synchronize/fulltext#FULLTEXT%d"
+                    ],
+                    "default": [
+                        "info:vital/synchronize/jhove#JHOVE%d",
+                        "info:vital/synchronize/premis#PREMIS%d"
+                    ]
+                },
+                "retainIds": true
+            }
+        },
         "jsonVelocity": {
             "id": "jsonVelocity",
             "sourcePayload": ".tfpackage",
@@ -299,25 +372,25 @@
             "metadataFormats": {
                 "oai_dc": {
                     "enabledInAllViews": false,
-                    "enabledViews": ["default"],
+                    "enabledViews": ["published"],
                     "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
                     "metadataNamespace": "http://www.openarchives.org/OAI/2.0/oai_dc/"
                 },
                 "eac_cpf": {
                     "enabledInAllViews": false,
-                    "enabledViews": ["default"],
+                    "enabledViews": ["published"],
                     "schema": "urn:isbn:1-931666-33-4 http://eac.staatsbibliothek-berlin.de/schema/cpf.xsd",
                     "metadataNamespace": "urn:isbn:1-931666-33-4"
                 },
                 "rif": {
                     "enabledInAllViews": false,
-                    "enabledViews": ["default"],
+                    "enabledViews": ["published"],
                     "schema": "http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/registryObjects.xsd",
                     "metadataNamespace": "http://ands.org.au/standards/rif-cs/registryObjects"
                 },
                 "marc": {
                     "enabledInAllViews": false,
-                    "enabledViews": ["default"],
+                    "enabledViews": ["published"],
                     "schema": "http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd",
                     "metadataNamespace": "http://www.loc.gov/MARC21/slim"
                 }
@@ -341,100 +414,6 @@
         "path": "${watcher.home}"
     },
     "subscriber": {
-        "vital": {
-            "tempDir": "${java.io.tmpdir}/rbvital",
-            "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
-            "waitConditions": {
-                "property": "vitalHandle"
-            },
-            "failure": {
-                "emailQueue": "emailnotification",
-                "emailAddress": ["pendlebu@usq.edu.au", "dave.huthnance@newcastle.edu.au"],
-                "emailSubject": "VITAL Integration Failed",
-                "emailTemplate": "This is an automated message from ReDBox.\n\nThe record titled: '[[TITLE]]' has had an error occur during transmission to VITAL.\n\nThe record's detail page is here: ${server.url.base}default/detail/[[OID]]\n\nError details are below:\n[[MESSAGE]]\n\n====================\n\n[[ERROR]]"
-            },
-            "server": {
-                "url": "http://novadev0.newcastle.edu.au:8080/fedora/",
-                "username": "username",
-                "password": "password",
-                "namespace": "uon",
-                "message": "Datastream update from ReDBox '[[OID]]'",
-                "timeout": "15"
-            },
-            "dataStreams": {
-                "marc.xml": {
-                    "dsID": "MARC",
-                    "label": "MARC",
-                    "status": "A",
-                    "controlGroup": "X",
-                    "versionable": true,
-                    "retainIds": true
-                },
-                "oai_dc.xml": {
-                    "dsID": "DC",
-                    "label": "Dublin Core Metadata",
-                    "status": "A",
-                    "controlGroup": "X",
-                    "versionable": true,
-                    "retainIds": true
-                },
-                "rif.xml": {
-                    "dsID": "RIF",
-                    "label": "RIF-CS Metadata",
-                    "status": "A",
-                    "controlGroup": "X",
-                    "versionable": true,
-                    "retainIds": true
-                },
-                ".tfpackage": {
-                    "dsID": "REDBOX",
-                    "label": "ReDBox Form Data",
-                    "status": "I",
-                    "controlGroup": "M",
-                    "versionable": true,
-                    "retainIds": true
-                }
-            },
-            "attachments": {
-                "dsID": "ATTACHMENT%02d",
-                "statusField": "access_rights",
-                "status": {
-                    "private": "I",
-                    "public": "A"
-                },
-                "labelField": "attachment_type",
-                "label": {
-                    "data-file": "Data file",
-                    "readme": "Read me",
-                    "supporting-material": "Supporting material"
-                },
-                "controlGroup": "M",
-                "versionable": false,
-                "altIds": {
-                    "application/pdf": [
-                        "info:vital/synchronize/jhove#JHOVE%d",
-                        "info:vital/synchronize/premis#PREMIS%d",
-                        "info:vital/synchronize/fulltext#FULLTEXT%d",
-                        "info:vital/synchronize/thumbnail#THUMBNAIL"
-                    ],
-                    "image/": [
-                        "info:vital/synchronize/jhove#JHOVE%d",
-                        "info:vital/synchronize/premis#PREMIS%d",
-                        "info:vital/synchronize/thumbnail#THUMBNAIL"
-                    ],
-                    "text/": [
-                        "info:vital/synchronize/jhove#JHOVE%d",
-                        "info:vital/synchronize/premis#PREMIS%d",
-                        "info:vital/synchronize/fulltext#FULLTEXT%d"
-                    ],
-                    "default": [
-                        "info:vital/synchronize/jhove#JHOVE%d",
-                        "info:vital/synchronize/premis#PREMIS%d"
-                    ]
-                },
-                "retainIds": true
-            }
-        },
         "solr-event-log": {
             "uri": "http://localhost:${jetty.port}/solr/eventlog",
             "buffer": {

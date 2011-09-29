@@ -1,6 +1,7 @@
 /*
- * ReDBox - VITAL Subscriber
+ * ReDBox - VITAL Transformer
  * Copyright (C) 2011 University of Southern Queensland
+ * Copyright (C) 2011 Queensland Cyber Infrastructure Foundation (http://www.qcif.edu.au/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +28,13 @@ import com.googlecode.fascinator.api.storage.DigitalObject;
 import com.googlecode.fascinator.api.storage.Payload;
 import com.googlecode.fascinator.api.storage.Storage;
 import com.googlecode.fascinator.api.storage.StorageException;
-import com.googlecode.fascinator.api.subscriber.Subscriber;
-import com.googlecode.fascinator.api.subscriber.SubscriberException;
+import com.googlecode.fascinator.api.transformer.Transformer;
+import com.googlecode.fascinator.api.transformer.TransformerException;
 import com.googlecode.fascinator.common.JsonObject;
 import com.googlecode.fascinator.common.JsonSimple;
 import com.googlecode.fascinator.common.JsonSimpleConfig;
-import com.googlecode.fascinator.common.MessagingServices;
+import com.googlecode.fascinator.common.messaging.MessagingException;
+import com.googlecode.fascinator.common.messaging.MessagingServices;
 import com.googlecode.fascinator.common.solr.SolrDoc;
 import com.googlecode.fascinator.common.solr.SolrResult;
 
@@ -62,32 +64,30 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.jms.JMSException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A subscriber to notify VITAL of completed objects in ReDBox.
+ * A Transformer to notify VITAL of completed objects in ReDBox.
  *
  * @author Greg Pendlebury
  */
 
-public class VitalSubscriber implements Subscriber {
+public class VitalTransformer implements Transformer {
 
-    private static String DEFAULT_EMAIL_SUBJECT = "VITAL Subscriber error";
+    private static String DEFAULT_EMAIL_SUBJECT = "VITAL Transformer error";
     private static String DEFAULT_EMAIL_TEMPLATE =
-            "VITAL Subscriber error: [[MESSAGE]]\n\n====\n\n[[ERROR]]";
+            "VITAL Transformer error: [[MESSAGE]]\n\n====\n\n[[ERROR]]";
     private static String DEFAULT_VITAL_MESSAGE =
             "Datastream update from ReDBox '[[OID]]' => '[[PID]]'";
     private static String VITAL_PROPERTY_KEY = "vitalPid";
 
     /** Logging */
     private final Logger log = LoggerFactory
-            .getLogger(VitalSubscriber.class);
+            .getLogger(VitalTransformer.class);
 
     /** Messaging */
     private MessagingServices messaging;
@@ -149,7 +149,7 @@ public class VitalSubscriber implements Subscriber {
      */
     @Override
     public String getName() {
-        return "VITAL Subscriber";
+        return "VITAL Transformer";
     }
 
     /**
@@ -166,14 +166,14 @@ public class VitalSubscriber implements Subscriber {
      * Initializes the plugin using the specified JSON String
      *
      * @param jsonString JSON configuration string
-     * @throws SubscriberException if there was an error in initialization
+     * @throws TransformerException if there was an error in initialization
      */
     @Override
-    public void init(String jsonString) throws SubscriberException {
+    public void init(String jsonString) throws TransformerException {
         try {
             setConfig(new JsonSimpleConfig(jsonString));
         } catch (IOException e) {
-            throw new SubscriberException(e);
+            throw new TransformerException(e);
         }
     }
 
@@ -181,14 +181,14 @@ public class VitalSubscriber implements Subscriber {
      * Initializes the plugin using the specified JSON configuration
      *
      * @param jsonFile JSON configuration file
-     * @throws SubscriberException if there was an error in initialization
+     * @throws TransformerException if there was an error in initialization
      */
     @Override
-    public void init(File jsonFile) throws SubscriberException {
+    public void init(File jsonFile) throws TransformerException {
         try {
             setConfig(new JsonSimpleConfig(jsonFile));
         } catch (IOException ioe) {
-            throw new SubscriberException(ioe);
+            throw new TransformerException(ioe);
         }
     }
 
@@ -196,35 +196,30 @@ public class VitalSubscriber implements Subscriber {
      * Initialization of plugin
      *
      * @param config The configuration to use
-     * @throws SubscriberException if fails to initialize
+     * @throws TransformerException if fails to initialize
      */
-    private void setConfig(JsonSimpleConfig config) throws SubscriberException {
+    private void setConfig(JsonSimpleConfig config) throws TransformerException {
         // Test our Fedora connection... things are kind of useless without it
-        fedoraUrl = config.getString(null,
-                "subscriber", "vital", "server", "url");
-        fedoraNamespace = config.getString(null,
-                "subscriber", "vital", "server", "namespace");
-        fedoraUsername = config.getString(null,
-                "subscriber", "vital", "server", "username");
-        fedoraPassword = config.getString(null,
-                "subscriber", "vital", "server", "password");
-        fedoraTimeout = config.getInteger(15,
-                "subscriber", "vital", "server", "timeout");
+        fedoraUrl = config.getString(null, "server", "url");
+        fedoraNamespace = config.getString(null, "server", "namespace");
+        fedoraUsername = config.getString(null, "server", "username");
+        fedoraPassword = config.getString(null, "server", "password");
+        fedoraTimeout = config.getInteger(15, "server", "timeout");
         if (fedoraUrl == null || fedoraNamespace == null ||
                 fedoraUsername == null || fedoraPassword == null) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Valid fedora configuration is mising!");
         }
-        // This will throw the SubscriberException for
+        // This will throw the TransformerException for
         //  us if there's something wrong
         fedoraConnect(true);
         fedoraMessageTemplate = config.getString(DEFAULT_VITAL_MESSAGE,
-                "subscriber", "vital", "server", "message");
+                "server", "message");
 
         // Temp space
         boolean success = false;
         String tempPath = config.getString(System.getProperty("java.io.tmpdir"),
-                "subscriber", "vital", "tempDir");
+                "tempDir");
         if (tempPath != null) {
             tmpDir = new File(tempPath);
 
@@ -249,24 +244,24 @@ public class VitalSubscriber implements Subscriber {
             }
         }
         if (tmpDir == null || !success) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Cannot find a valid (and writable) TEMP directory!");
         }
 
         // Get the list of pids we are sending to VITAL
-        pids = config.getJsonSimpleMap("subscriber", "vital", "dataStreams");
+        pids = config.getJsonSimpleMap("dataStreams");
         if (pids == null || pids.isEmpty()) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " No datastreams configured to export!");
         }
         // And attachment handling
         JsonSimple attachmentsConfig = new JsonSimple(
-                config.getObject("subscriber", "vital", "attachments"));
+                config.getObject("attachments"));
         attachDs = attachmentsConfig.getString("ATTACHMENT%02d", "dsID");
         Pattern p = Pattern.compile("%\\d*d");
         Matcher m = p.matcher(attachDs);
         if (!m.find()) {
-            throw new SubscriberException("VITAL Subscriber: " +
+            throw new TransformerException("VITAL Transformer: " +
                     "'*/attachments/dsId' must have a format placeholder for " +
                     "incrementing integer, eg. '%d' or '%02d'. The value " +
                     "provided ('" + attachDs + "') is invalid");
@@ -284,12 +279,11 @@ public class VitalSubscriber implements Subscriber {
         try {
             json = new JsonSimple(config.toString());
         } catch (IOException ex) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Error parsing attachment JSON", ex);
         }
         // Use the base object for iteration
-        JsonObject objAltIds = json.getObject(
-                "subscriber", "vital", "attachments", "altIds");
+        JsonObject objAltIds = json.getObject("attachments", "altIds");
         // And the library for access methods
         JsonSimple altIds = new JsonSimple(objAltIds);
         for (Object oKey : objAltIds.keySet()) {
@@ -307,16 +301,14 @@ public class VitalSubscriber implements Subscriber {
         }
 
         // Are we sending emails on errors?
-        emailQueue = config.getString(null,
-                "subscriber", "vital", "failure", "emailQueue");
+        emailQueue = config.getString(null, "failure", "emailQueue");
         if (emailQueue != null) {
-            emailAddresses = config.getStringList(
-                    "subscriber", "vital", "failure", "emailAddress");
+            emailAddresses = config.getStringList("failure", "emailAddress");
             if (emailQueue != null) {
                 emailSubject = config.getString(DEFAULT_EMAIL_SUBJECT,
-                        "subscriber", "vital", "failure", "emailSubject");
+                        "failure", "emailSubject");
                 emailTemplate = config.getString(DEFAULT_EMAIL_TEMPLATE,
-                        "subscriber", "vital", "failure", "emailTemplate");
+                        "failure", "emailTemplate");
             } else {
                 log.error("No email address provided!" +
                         " Reverting to errors using log files");
@@ -330,8 +322,8 @@ public class VitalSubscriber implements Subscriber {
         if (emailQueue != null) {
             try {
                 messaging = MessagingServices.getInstance();
-            } catch (JMSException ex) {
-                throw new SubscriberException("VITAL Subscriber:" +
+            } catch (MessagingException ex) {
+                throw new TransformerException("VITAL Transformer:" +
                         " Error starting Messaging Services", ex);
             }
         }
@@ -342,7 +334,7 @@ public class VitalSubscriber implements Subscriber {
             sysFile = JsonSimpleConfig.getSystemFile();
         } catch (IOException ioe) {
             log.error("Failed to read configuration: {}", ioe.getMessage());
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Failed to read configuration", ioe);
         }
 
@@ -353,7 +345,7 @@ public class VitalSubscriber implements Subscriber {
             storage.init(sysFile);
         } catch (PluginException pe) {
             log.error("Failed to initialise plugin: {}", pe.getMessage());
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Failed to initialise storage", pe);
         }
 
@@ -364,18 +356,17 @@ public class VitalSubscriber implements Subscriber {
             indexer.init(sysFile);
         } catch (PluginException pe) {
             log.error("Failed to initialise plugin: {}", pe.getMessage());
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Failed to initialise indexer", pe);
         }
 
         // Do we have a template?
-        String templatePath = config.getString(null,
-                "subscriber", "vital", "foxmlTemplate");
+        String templatePath = config.getString(null, "foxmlTemplate");
         if (templatePath != null) {
             foxmlTemplate = new File(templatePath);
             if (!foxmlTemplate.exists()) {
                 foxmlTemplate = null;
-                throw new SubscriberException("VITAL Subscriber:" +
+                throw new TransformerException("VITAL Transformer:" +
                         " The new object template provided does not exist: '" +
                         templatePath + "'");
             }
@@ -384,7 +375,7 @@ public class VitalSubscriber implements Subscriber {
         // Wait conditions
         waitProperties = new ArrayList();
         Map<String, String> waitConditions = getStringMap(config,
-                "subscriber", "vital", "waitConditions");
+                "waitConditions");
         if (waitConditions != null) {
             for (String type : waitConditions.keySet()) {
                 String value = waitConditions.get(type);
@@ -434,13 +425,13 @@ public class VitalSubscriber implements Subscriber {
      * call will be triggered to test genuine connectivity with regards to the
      * network and the credentials supplied.
      * @return FedoraClient : The client used to connect to the API
-     * @throws SubscriberException if there was an error
+     * @throws TransformerException if there was an error
      */
-    private FedoraClient fedoraConnect() throws SubscriberException {
+    private FedoraClient fedoraConnect() throws TransformerException {
         return fedoraConnect(false);
     }
     private FedoraClient fedoraConnect(boolean firstConnection)
-            throws SubscriberException {
+            throws TransformerException {
         FedoraClient fedora = null;
         try {
             // Connect to the server
@@ -464,13 +455,13 @@ public class VitalSubscriber implements Subscriber {
                         fedoraUsername, user.getId());
             }
         } catch (MalformedURLException ex) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Server URL is Invalid (?) : ", ex);
         } catch (IOException ex) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Error connecting to VITAL! : ", ex);
         } catch (Exception ex) {
-            throw new SubscriberException("VITAL Subscriber:" +
+            throw new TransformerException("VITAL Transformer:" +
                     " Error accesing management API! : ", ex);
         }
         return fedora;
@@ -479,16 +470,16 @@ public class VitalSubscriber implements Subscriber {
     /**
      * Shuts down the plugin
      *
-     * @throws SubscriberException if there was an error during shutdown
+     * @throws TransformerException if there was an error during shutdown
      */
     @Override
-    public void shutdown() throws SubscriberException {
+    public void shutdown() throws TransformerException {
         if (storage != null) {
             try {
                 storage.shutdown();
             } catch (PluginException pe) {
                 log.error("Failed to shutdown storage: {}", pe.getMessage());
-                throw new SubscriberException("VITAL Subscriber:" +
+                throw new TransformerException("VITAL Transformer:" +
                         " Failed to shutdown storage", pe);
             }
         }
@@ -497,57 +488,28 @@ public class VitalSubscriber implements Subscriber {
                 indexer.shutdown();
             } catch (PluginException pe) {
                 log.error("Failed to shutdown indexer: {}", pe.getMessage());
-                throw new SubscriberException("VITAL Subscriber:" +
+                throw new TransformerException("VITAL Transformer:" +
                         " Failed to shutdown indexer", pe);
             }
         }
     }
 
     /**
-     * Method to fire for incoming events
+     * Transform method
      *
-     * @param param : Map of key/value pairs to add to the index
-     * @throws SubscriberException if there was an error
+     * @param object : DigitalObject to be transformed
+     * @param jsonConfig : String containing configuration for this item
+     * @return DigitalObject The object after being transformed
+     * @throws TransformerException
      */
     @Override
-    public void onEvent(Map<String, String> param) throws SubscriberException {
+    public DigitalObject transform(DigitalObject in, String jsonConfig)
+            throws TransformerException {
         if (!valid) {
-            error("VITAL Subscriber: Instantiation did not complete.");
+            error("VITAL Transformer: Instantiation did not complete.");
         }
-
-        // We only want workflow events
-        String context = param.get("context");
-        if (context == null || !context.equals("Workflow")) {
-            return;
-        }
-
-        // What type of event is it?
-        String type = param.get("eventType");
-        if (type == null) {
-            return;
-        }
-
-        // ReIndex events need special attention,
-        // check if we have to send VITAL an update
-        if (type.equals("ReIndex")) {
-            process(param);
-            return;
-        }
-
-        // If it's a new workflow step, we
-        // are looking for the last step
-        if (type.startsWith("NewStep")) {
-            String[] parts = StringUtils.split(type, " : ");
-            if (parts.length != 2) {
-                error("Invalid event type received, expected " +
-                        "'NewStep : {step}', received: '" + type + "'!");
-            }
-            String step = parts[1];
-            if (step.equals("live")) {
-                process(param);
-                return;
-            }
-        }
+        log.debug("VITAL Transformer: Received OID '{}'", in.getId());
+        return process(in, jsonConfig);
     }
 
     /**
@@ -559,68 +521,47 @@ public class VitalSubscriber implements Subscriber {
      *
      * @param param : Map of key/value pairs to add to the index
      */
-    private void process(Map<String, String> param) {
-        // What object is this about?
-        String oid = param.get("oid");
-        if (oid == null) {
-            error("No Object Identifier received with message!");
-        }
-
-        // Get the object
-        DigitalObject object;
-        try {
-            object = storage.getObject(oid);
-        } catch (StorageException ex) {
-            error("Error whilst accessing Object in storage!\nOID: '"
-                    + oid + "'", ex);
-            return;
-        }
+    private DigitalObject process(DigitalObject in, String jsonConfig)
+            throws TransformerException {
+        String oid = in.getId();
 
         // Workflow payload
-        JsonSimple workflow;
+        JsonSimple workflow = null;
         try {
-            Payload workflowPayload = object.getPayload("workflow.metadata");
+            Payload workflowPayload = in.getPayload("workflow.metadata");
             workflow = new JsonSimple(workflowPayload.open());
             workflowPayload.close();
         } catch (StorageException ex) {
             error("Error accessing workflow data from Object!\nOID: '"
                     + oid + "'", ex);
-            return;
         } catch (IOException ex) {
             error("Error parsing workflow data from Object!\nOID: '"
                     + oid + "'", ex);
-            return;
         }
 
-        // And for reindex calls... make sure it's live
-        String type = param.get("eventType");
-        if (type.equals("ReIndex")) {
-            String step = workflow.getString(null, "step");
-            if (step == null || !step.equals("live")) {
-                // This is a 'quiet' fail, it's just not live
-                return;
-            }
+        // Make sure it is live
+        String step = workflow.getString(null, "step");
+        if (step == null || !step.equals("live")) {
+            log.warn("VITAL Transformer: Object is not live! '{}'", oid);
+            return in;
         }
 
         // Make sure we have a title
         String title = workflow.getString(null, "formData", "title");
         if (title == null) {
-            error("No title provided in Object form data!\nOID: '" +
-                    object.getId() + "'");
-            return;
+            error("No title provided in Object form data!\nOID: '" + oid + "'");
         }
 
         // Object metadata
-        Properties metadata;
+        Properties metadata = null;
         try {
-            metadata = object.getMetadata();
+            metadata = in.getMetadata();
         } catch (StorageException ex) {
             error("Error reading Object metadata!\nOID: '" + oid + "'", ex);
-            return;
         }
 
         // Now that we have all the data we need, go do the real work
-        processObject(object, workflow, metadata);
+        return processObject(in, workflow, metadata);
     }
 
     /**
@@ -632,17 +573,17 @@ public class VitalSubscriber implements Subscriber {
      * @param workflow : The workflow data for the object
      * @param metadata : The Object's metadata
      */
-    private void processObject(DigitalObject object, JsonSimple workflow,
-            Properties metadata) {
+    private DigitalObject processObject(DigitalObject object,
+            JsonSimple workflow, Properties metadata)
+            throws TransformerException {
         String oid = object.getId();
         String title = workflow.getString(null, "formData", "title");
-        FedoraClient fedora;
+        FedoraClient fedora = null;
 
         try {
             fedora = fedoraConnect();
-        } catch (SubscriberException ex) {
+        } catch (TransformerException ex) {
             error("Error connecting to VITAL", ex, oid, title);
-            return;
         }
 
         // Find out if we've sent it to VITAL before
@@ -681,7 +622,6 @@ public class VitalSubscriber implements Subscriber {
                 }
             } catch (Exception ex) {
                 error("Failed to create object in VITAL", ex, oid, title);
-                return;
             }
         }
 
@@ -699,7 +639,7 @@ public class VitalSubscriber implements Subscriber {
             // Are we continuing?
             if (!process) {
                 log.info("No wait conditions have been met, processing halted");
-                return;
+                return object;
             }
         }
 
@@ -720,7 +660,6 @@ public class VitalSubscriber implements Subscriber {
             }
         } catch (Exception ex) {
             error("Failed to activate object in VITAL", ex, oid, title);
-            return;
         }
 
         // Submit all the payloads to VITAL now
@@ -728,8 +667,8 @@ public class VitalSubscriber implements Subscriber {
             processDatastreams(fedora, object, vitalPid);
         } catch (Exception ex) {
             error("Failed to send object to VITAL", ex, oid, title);
-            return;
         }
+        return object;
     }
 
     /**
@@ -769,8 +708,8 @@ public class VitalSubscriber implements Subscriber {
      * @param vitalPid : The VITAL PID to use
      * @throws Exception on any errors
      */
-    private void processDatastreams(FedoraClient fedora, DigitalObject object,
-            String vitalPid) throws Exception {
+    private void processDatastreams(FedoraClient fedora,
+            DigitalObject object, String vitalPid) throws Exception {
         int sent = 0;
 
         // Each payload we care about needs to be sent
@@ -1433,13 +1372,15 @@ public class VitalSubscriber implements Subscriber {
      * @param oid : The OID of our Object (OPTIONAL)
      * @param title : The title of our Object (OPTIONAL)
      */
-    private void error(String message) {
+    private void error(String message) throws TransformerException {
         error(message, null, null, null);
     }
-    private void error(String message, Exception ex) {
+    private void error(String message, Exception ex)
+            throws TransformerException {
         error(message, ex, null, null);
     }
-    private void error(String message, Exception ex, String oid, String title) {
+    private void error(String message, Exception ex, String oid, String title)
+            throws TransformerException {
         // We are only sending emails when we are configured to
         if (emailQueue != null) {
             // And when a complete and correct document fails to go to VITAL
@@ -1476,16 +1417,22 @@ public class VitalSubscriber implements Subscriber {
                 // Send the message
                 log.debug("Error, sending email:\n{}",
                         messageJson.toString(true));
-                messaging.queueMessage(emailQueue, messageJson.toString());
+                try {
+                    messaging.queueMessage(emailQueue, messageJson.toString());
+                } catch (MessagingException mex) {
+                    log.error("Cannot access message system to send email!!", mex);
+                }
             }
         }
 
         // Always log errors at least
         if (ex != null) {
-            log.error("VITAL Subscriber Error: {}", message, ex);
+            log.error("VITAL Transformer Error: {}", message, ex);
             log.error("STACK TRACE:\n", ex);
         } else {
-            log.error("VITAL Subscriber Error: {}", message);
+            log.error("VITAL Transformer Error: {}", message);
         }
+
+        throw new TransformerException(message);
     }
 }

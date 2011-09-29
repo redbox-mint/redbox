@@ -1,8 +1,8 @@
-from com.googlecode.fascinator.api import PluginManager
 from com.googlecode.fascinator.api.indexer import SearchRequest
-from com.googlecode.fascinator.common import JsonSimpleConfig
-from com.googlecode.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common import JsonObject
+from com.googlecode.fascinator.common.messaging import MessagingServices
 from com.googlecode.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 from fedora.client import FedoraClient
 
@@ -96,8 +96,8 @@ class VitalData:
             #transformer.transform(object, "{}")
 
             # Re-index... avoids showing up in this script again
-            self.services.getIndexer().index(id)
-            self.services.getIndexer().commit()
+            #self.services.getIndexer().index(id)
+            #self.services.getIndexer().commit()
 
             # Finally send a message to the VITAL subscriber
             self.send_message(id)
@@ -114,12 +114,16 @@ class VitalData:
 
     # Send an event notification
     def send_message(self, oid):
-        param = {}
-        param["oid"] = oid
-        param["eventType"] = "ReIndex"
-        param["username"] = "system"
-        param["context"] = "Workflow"
-        self.messaging.onEvent(param)
+        message = JsonObject()
+        message.put("oid", oid)
+        message.put("eventType", "ReIndex")
+        message.put("username", "system")
+        message.put("context", "Workflow")
+        message.put("task", "workflow")
+        message.put("quickIndex", True)
+        self.messaging.queueMessage(
+                TransactionManagerQueueConsumer.LISTENER_ID,
+                message.toString())
 
     # Get the handle for the PID from VITAL, if set
     def get_handle(self, fedora, vitalPid):
@@ -169,10 +173,10 @@ class VitalData:
     # Connect to fedora and test access before returning
     def fedora_connect(self):
         # Read our configuration
-        self.fedoraUrl = self.config.getString(None, ["subscriber", "vital", "server", "url"])
-        fedoraUsername = self.config.getString(None, ["subscriber", "vital", "server", "username"])
-        fedoraPassword = self.config.getString(None, ["subscriber", "vital", "server", "password"])
-        fedoraTimeout = self.config.getInteger(15, ["subscriber", "vital", "server", "timeout"])
+        self.fedoraUrl = self.config.getString(None, ["transformerDefaults", "vital", "server", "url"])
+        fedoraUsername = self.config.getString(None, ["transformerDefaults", "vital", "server", "username"])
+        fedoraPassword = self.config.getString(None, ["transformerDefaults", "vital", "server", "password"])
+        fedoraTimeout = self.config.getInteger(15, ["transformerDefaults", "vital", "server", "timeout"])
         if (self.fedoraUrl is None) or \
                 (fedoraUsername is None) or (fedoraPassword is None):
             self.log.error("Invalid VITAL configuration!")

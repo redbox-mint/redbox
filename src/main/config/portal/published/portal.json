@@ -1,0 +1,41 @@
+{
+  "portal" : {
+    "name" : "published",
+    "description" : "Published Objects",
+    "query" : "published:\"true\"",
+    "records-per-page" : "25",
+    "facet-count" : "100",
+    "facet-sort-by-count" : "false",
+    "debug" : "true",
+    "use-session-navigation" : "true",
+    "facet-displays" : {
+      "list" : "List menu",
+      "tree" : "Dynamic tree"
+    },
+    "facet-fields" : {
+      "workflow_step_label" : {
+        "label" : "Stage",
+        "display" : "list"
+      },
+      "workflow_source" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "f_dc_creator" : {
+        "label" : "Creator",
+        "display" : "list"
+      },
+      "f_dc_subject" : {
+        "label" : "Keyword",
+        "display" : "list"
+      }
+    },
+    "facet-display" : "9",
+    "sort-field-default" : "last_modified",
+    "sort-field-default-order" : "desc",
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

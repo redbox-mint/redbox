@@ -326,3 +326,17 @@ div.meta ol, div.meta ul {
     margin-bottom: 4px;
     padding: 0;
 }
+
+.ticked {
+    background-image: url(../images/icons/tick.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 20px;
+}
+
+.waiting {
+    background-image: url(../images/icons/hourglass.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 20px;
+}

@@ -1,0 +1,31 @@
+#set($curationData = $self.getCurationData($oid))
+#if ($curationData.get("error"))
+#sectionHeading("Curation")
+<div class="meta">
+    <dl>
+        <dt>Error</dt>
+        <dd class="stop-error">Error accessing curation data. Please see system logs.</dd>
+    </dl>
+</div>
+
+#else
+#sectionHeading("Curation")
+<div class="meta">
+    <dl>
+        #foreach ($relation in $curationData.get("relationships"))
+            #set($field = $relation.get("field"))
+            #set($isCurated = $relation.get("isCurated"))
+            <dt>$field</dt>
+            <dd>
+                #if ($isCurated)
+                    #set($curatedPid = $relation.get("curatedPid"))
+                    <span class="ticked">$curatedPid</span> (curated)
+                #else
+                    #set($identifier = $relation.get("identifier"))
+                    <span class="waiting">$identifier</span> (waiting on curation)
+                #end
+            </dd>
+        #end
+    </dl>
+</div>
+#end

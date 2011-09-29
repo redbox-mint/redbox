@@ -7,9 +7,12 @@
     },
 
     "transformer": {
-        "harvestQueue": [],
-        "indexOnHarvest": false,
-        "renderQueue": []
+        "curation": ["vital"],
+        "metadata": ["jsonVelocity"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
     },
 
     "indexer": {

@@ -26,7 +26,7 @@ import com.googlecode.fascinator.api.storage.DigitalObject;
 import com.googlecode.fascinator.api.storage.Storage;
 import com.googlecode.fascinator.api.transformer.Transformer;
 import com.googlecode.fascinator.api.transformer.TransformerException;
-import com.googlecode.fascinator.common.GenericListener;
+import com.googlecode.fascinator.common.messaging.GenericListener;
 import com.googlecode.fascinator.common.JsonSimple;
 import com.googlecode.fascinator.common.JsonSimpleConfig;
 import com.googlecode.fascinator.common.storage.StorageUtils;

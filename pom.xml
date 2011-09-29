@@ -18,6 +18,7 @@
         <amq.stomp.port>9102</amq.stomp.port>
         <server.url.base>http://${ip.address}:${server.port}/redbox/</server.url.base>
         <mint.proxy.server>http://localhost:9001</mint.proxy.server>
+        <mint.amq.broker>tcp://localhost:9201</mint.amq.broker>
         <dir.home>${project.home}/home</dir.home>
         <dir.portal>${project.home}/portal</dir.portal>
         <dir.server>${project.home}/server</dir.server>
@@ -30,6 +31,7 @@
         <module>parent</module>
         <module>secure-api</module>
         <module>plugins/vitalsubscriber</module>
+        <module>plugins/transaction/curation</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -94,7 +96,12 @@
         </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>redbox-vital-subscriber</artifactId>
+            <artifactId>redbox-vital-transformer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.redbox-mint</groupId>
+            <artifactId>plugin-transaction-curation-redbox</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Fascinator Plugins -->

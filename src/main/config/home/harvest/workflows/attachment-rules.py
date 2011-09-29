@@ -56,6 +56,8 @@ class IndexData:
         self.pid = self.payload.getId()
         metadataPid = self.params.getProperty("metaPid", "DC")
         #print "  pid='%s'" % (self.pid)
+
+        self.utils.add(self.index, "storage_id", self.oid)
         if self.pid == metadataPid:
             self.itemType = "object"
         else:
@@ -63,7 +65,6 @@ class IndexData:
             self.itemType = "datastream"
             self.__index("identifier", self.pid)
         self.__index("id", self.oid)
-        self.__index("storage_id", self.oid)
         self.__index("item_type", self.itemType)
         ## always set to 'datastream' so that it does not show up in search results etc.
         #self.__index("item_type", "datastream")

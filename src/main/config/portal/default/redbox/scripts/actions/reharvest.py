@@ -1,8 +1,9 @@
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.common import JsonObject
 from com.googlecode.fascinator.common import JsonSimple
-from com.googlecode.fascinator.common import MessagingServices
+from com.googlecode.fascinator.common.messaging import MessagingServices
 from com.googlecode.fascinator.common.solr import SolrResult
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.util import HashSet
@@ -12,6 +13,8 @@ class ReharvestData:
         self.messaging = MessagingServices.getInstance()
 
     def __activate__(self, context):
+        self.log = context["log"]
+
         response = context["response"]
         writer = response.getPrintWriter("text/plain; charset=UTF-8")
         auth = context["page"].authentication
@@ -28,12 +31,12 @@ class ReharvestData:
             portalManager = services.portalManager
             if func == "reharvest":
                 if oid:
-                    print "Reharvesting object '%s'" % oid
+                    self.log.debug("Reharvesting object '{}'", oid)
                     self.sendMessage(oid)
                     result.put("status", "ok")
                     result.put("message", "Object '%s' queued for reharvest")
                 elif portalId:
-                    print " Reharvesting view '%s'" % portalId
+                    self.log.debug("Reharvesting view '{}'", portalId)
                     sessionState.set("reharvest/running/" + portalId, "true")
                     # TODO security filter - not necessary because this requires admin anyway?
                     portal = portalManager.get(portalId)
@@ -64,7 +67,7 @@ class ReharvestData:
                                 self.sendMessage(oid)
                         count = count + rows
                         total = json.getNumFound()
-                        print "Queued %s of %s..." % (min(count, total), total)
+                        self.log.debug("Queued {} of {}...", min(count, total), total)
                         done = (count >= total)
                     sessionState.remove("reharvest/running/" + portalId)
                     result.put("status", "ok")
@@ -74,7 +77,7 @@ class ReharvestData:
                     result.put("message", "No object or view specified for reharvest")
             elif func == "reindex":
                 if oid:
-                    print "Reindexing object '%s'" % oid
+                    self.log.debug("Reindexing object '{}'", oid)
                     self.sendMessage(oid)
                     result.put("status", "ok")
                     result.put("message", "Object '%s' queued for reindex" % oid)
@@ -92,7 +95,9 @@ class ReharvestData:
 
     # Send an indexer notification
     def sendMessage(self, oid):
-        msg = JsonSimple()
-        msg.getJsonObject().put("oid", oid)
-        message = msg.toString()
-        self.messaging.queueMessage("indexer", message)
+        message = JsonObject()
+        message.put("oid", oid)
+        message.put("task", "reharvest")
+        self.messaging.queueMessage(
+                TransactionManagerQueueConsumer.LISTENER_ID,
+                message.toString())

@@ -11,6 +11,7 @@ export AMQ_STOMP_PORT="${amq.stomp.port}"
 export SMTP_HOST="${smtp.host}"
 export ADMIN_EMAIL="${admin.email}"
 export MINT_SERVER="${mint.proxy.server}"
+export MINT_AMQ="${mint.amq.broker}"
 
 # set fascinator home directory
 if [ -z "$TF_HOME" ]; then
@@ -62,11 +63,14 @@ SOLR_OPTS="-Dsolr.solr.home=$PROJECT_HOME/solr"
 # directories
 CONFIG_DIRS="-Dfascinator.home=$TF_HOME -Dportal.home=$PROJECT_HOME/portal -Dstorage.home=$PROJECT_HOME/storage"
 
+# mint integration
+MINT_OPTS="-Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Dmint.amq.broker=$MINT_AMQ"
+
 # additional settings
-EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Dmint.proxy.server=$MINT_SERVER -Dmint.proxy.url=$MINT_SERVER/mint -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT -Dredbox.version=$REDBOX_VERSION"
+EXTRA_OPTS="-Dserver.url.base=$SERVER_URL -Damq.port=$AMQ_PORT -Damq.stomp.port=$AMQ_STOMP_PORT -Dsmtp.host=$SMTP_HOST -Dadmin.email=$ADMIN_EMAIL -Dredbox.version=$REDBOX_VERSION"
 
 # Logging fix. Axis 1.4 (for Fedora) needs to know about the SLF4J Implementation
 COMMONS_LOGGING="-Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.SLF4JLogFactory"
 
 # set options for maven to use
-export JAVA_OPTS="$COMMONS_LOGGING $JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS $EXTRA_OPTS"
+export JAVA_OPTS="$COMMONS_LOGGING $JVM_OPTS $JETTY_OPTS $SOLR_OPTS $PROXY_OPTS $CONFIG_DIRS $EXTRA_OPTS $MINT_OPTS"
