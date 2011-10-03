@@ -346,6 +346,7 @@ public class CurationManager extends GenericTransactionManager {
         json.put("broker", broker);
         json.put("optional", optional);
         json.put("reverseRelation", relation);
+        json.put("authority", true);
         relations.add(json);
     }
 
@@ -432,8 +433,10 @@ public class CurationManager extends GenericTransactionManager {
         boolean errors = false;
 
         // Can we already see this PID?
+        String thisPid = null;
         if (metadata.containsKey(pidProperty)) {
             curated = true;
+            thisPid = metadata.getProperty(pidProperty) ;
 
         // Or does it claim to have one from pre-ingest curation?
         } else {
@@ -489,12 +492,7 @@ public class CurationManager extends GenericTransactionManager {
 
             // Happy ending
             if (task.equals("curation-response")) {
-                // Do any local logging / emails / auditting
                 log.info("Confirmation of curated object '{}'.", oid);
-                emailObjectLink(response, oid,
-                        "This email is confirming that the object linked" +
-                        " below has completed curation.");
-                audit(response, oid, "Curation completed.");
 
                 // Send out upstream responses to objects waiting
                 JSONArray responses = data.writeArray("responses");
@@ -507,8 +505,7 @@ public class CurationManager extends GenericTransactionManager {
                             responseOid, responseTask);
                     // Don't forget to tell them where it came from
                     responseObj.put("originOid", oid);
-                    responseObj.put("curatedId",
-                            metadata.getProperty(pidProperty));
+                    responseObj.put("curatedPid", thisPid);
                 }
 
                 // Set a flag to let publish events that may come in later
@@ -531,11 +528,20 @@ public class CurationManager extends GenericTransactionManager {
                                 + " error occured writing to storage. Please"
                                 + " see the system log");
                     }
-                }
 
-                // Schedule a followup to re-index and transform
-                createTask(response, oid, "reharvest");
-                createTask(response, oid, "publish");
+                    // Since the flag hasn't been set we also know this is the
+                    //   first time through, so generate some notifications
+                    emailObjectLink(response, oid,
+                            "This email is confirming that the object linked" +
+                            " below has completed curation.");
+                    audit(response, oid, "Curation completed.");
+
+                    // Schedule a followup to re-index and transform
+                    createTask(response, oid, "reharvest");
+                    // And make sure we automate the sending of this
+                    // message more then once... endless loop == bad
+                    createTask(response, oid, "publish");
+                }
                 return response;
             }
 
@@ -543,14 +549,14 @@ public class CurationManager extends GenericTransactionManager {
             if (task.equals("curation-pending")) {
                 String childOid = message.getString(null, "originOid");
                 String childId = message.getString(null, "originId");
-                String curatedId = message.getString(null, "curatedId");
+                String curatedPid = message.getString(null, "curatedPid");
 
                 boolean isReady = false;
                 try {
                     // False here will make sure we aren't sending out a bunch
                     //  of requests again.
-                    isReady = checkChildren(response, data, oid, false,
-                            childOid, childId, curatedId);
+                    isReady = checkChildren(response, data, oid, thisPid,
+                            false, childOid, childId, curatedPid);
                 } catch (TransactionException ex) {
                     log.error("Error updating related objects '{}': ",
                             oid, ex);
@@ -573,7 +579,7 @@ public class CurationManager extends GenericTransactionManager {
             if (task.equals("curation-confirm")) {
                 boolean isReady = false;
                 try {
-                    isReady = checkChildren(response, data, oid, true);
+                    isReady = checkChildren(response, data, oid, thisPid, true);
                 } catch (TransactionException ex) {
                     log.error("Error processing related objects '{}': ",
                             oid, ex);
@@ -597,9 +603,10 @@ public class CurationManager extends GenericTransactionManager {
                 return response;
             }
 
-            // We can ignore this, it is already curated
-            if (task.equals("curation-request")) {
-                alreadyCurated = message.getBoolean(false, "alreadyCurated");
+            // Since it is already curated, we are just storing any new
+            //  relationships / responses and passing things along
+            if (task.equals("curation-request") ||
+                    task.equals("curation-query")) {
                 try {
                     storeRequestData(message, oid);
                 } catch (TransactionException ex) {
@@ -611,15 +618,31 @@ public class CurationManager extends GenericTransactionManager {
                     audit(response, oid, "Errors during curation; aborted.");
                     return response;
                 }
-                JsonObject taskObj = createTask(response, oid, "curation");
-                taskObj.put("alreadyCurated", true);
+                // Requests
+                if (task.equals("curation-request")) {
+                    JsonObject taskObj = createTask(response, oid, "curation");
+                    taskObj.put("alreadyCurated", true);
+                // Queries
+                } else {
+                    // Rather then push to 'curation-response' we are just
+                    // sending a single response to the querying object
+                    JsonSimple respond = new JsonSimple(
+                            message.getObject("respond"));
+                    String broker = respond.getString(brokerUrl, "broker");
+                    String responseOid = respond.getString(null, "oid");
+                    String responseTask = respond.getString(null, "task");
+                    JsonObject responseObj = createTask(response, broker,
+                            responseOid, responseTask);
+                    // Don't forget to tell them where it came from
+                    responseObj.put("originOid", oid);
+                    responseObj.put("curatedPid", thisPid);
+                }
                 return response;
             }
 
             // Same as above, but this is a second stage request, let's be a
             //   little sterner in case log filtering is occurring
             if (task.equals("curation")) {
-                alreadyCurated = message.getBoolean(false, "alreadyCurated");
                 log.info("Request to curate ignored. This object '{}' has"
                         + " already been curated.", oid);
                 JsonObject taskObj = createTask(response, oid,
@@ -664,6 +687,22 @@ public class CurationManager extends GenericTransactionManager {
                     audit(response, oid, "Curation request received. Pending");
                 } else {
                     createTask(response, oid, "curation");
+                }
+                return response;
+            }
+
+            // We can't do much here, just store the response address
+            if (task.equals("curation-query")) {
+                try {
+                    storeRequestData(message, oid);
+                } catch (TransactionException ex) {
+                    log.error("Error storing request data '{}': ", oid, ex);
+                    emailObjectLink(response, oid,
+                            "An error occurred curating this object, some"
+                            + " manual intervention may be required; please see"
+                            + " the system logs.");
+                    audit(response, oid, "Errors during curation; aborted.");
+                    return response;
                 }
                 return response;
             }
@@ -717,8 +756,9 @@ public class CurationManager extends GenericTransactionManager {
      * @throws TransactionException If an error occurs
      */
     private boolean checkChildren(JsonSimple response, JsonSimple data,
-            String oid, boolean sendRequests) throws TransactionException {
-        return checkChildren(response, data, oid, sendRequests,
+            String thisOid, String thisPid, boolean sendRequests)
+            throws TransactionException {
+        return checkChildren(response, data, thisOid, thisPid, sendRequests,
                 null, null, null);
     }
 
@@ -736,17 +776,18 @@ public class CurationManager extends GenericTransactionManager {
      * @throws TransactionException If an error occurs
      */
     private boolean checkChildren(JsonSimple response, JsonSimple data,
-            String oid, boolean sendRequests, String childOid, String childId,
-            String curatedId) throws TransactionException {
+            String thisOid, String thisPid, boolean sendRequests,
+            String childOid, String childId, String curatedPid)
+            throws TransactionException {
 
         boolean isReady = true;
         boolean saveData = false;
-        log.debug("Checking Children of '{}'", oid);
+        log.debug("Checking Children of '{}'", thisOid);
 
         JSONArray relations = data.writeArray("relationships");
         for (Object relation : relations) {
             JsonSimple json = new JsonSimple((JsonObject) relation);
-            String broker = json.getString(null, "broker");
+            String broker = json.getString(brokerUrl, "broker");
             boolean localRecord = broker.equals(brokerUrl);
             String relatedId = json.getString(null, "identifier");
 
@@ -768,10 +809,14 @@ public class CurationManager extends GenericTransactionManager {
             }
 
             // Are we updating a relationship... and is it this one?
-            if (curatedId != null && childId.equals(relatedId)) {
+            boolean updatingById =
+                    (childId != null && childId.equals(relatedId));
+            boolean updatingByOid =
+                    (childOid != null && childOid.equals(relatedOid));
+            if (curatedPid != null && (updatingById || updatingByOid)) {
                 log.debug("Updating...");
                 ((JsonObject) relation).put("isCurated", true);
-                ((JsonObject) relation).put("curatedPid", curatedId);
+                ((JsonObject) relation).put("curatedPid", curatedPid);
                 saveData = true;
             }
 
@@ -789,19 +834,44 @@ public class CurationManager extends GenericTransactionManager {
                     // It is a local object
                     if (localRecord) {
                         task = createTask(response, relatedOid,
-                                "curation-request");
+                                "curation-query");
                     // Or remote
                     } else {
                         task = createTask(response, broker, relatedOid,
-                                "curation-request");
+                                "curation-query");
                         // We won't know OIDs for remote systems
                         task.remove("oid") ;
                         task.put("identifier", relatedId);
                     }
 
+                    // If this record is the authority on the relationship
+                    //  make sure we tell the other object what its relationship
+                    //  back to us should be.
+                    boolean authority = json.getBoolean(false, "authority");
+                    if (authority) {
+                        // Send a full request rather then a query, we need it
+                        //  to propogate through children
+                        task.put("task", "curation-request");
+
+                        // Let the other object know its reverse relationship
+                        //   with us and that we've already been curated.
+                        String reverseRelationship = json.getString(
+                                "hasAssociationWith", "reverseRelationship");
+                        JsonObject relObject = new JsonObject();
+                        relObject.put("identifier", thisPid);
+                        relObject.put("curatedPid", thisPid);
+                        relObject.put("broker", brokerUrl);
+                        relObject.put("isCurated", true);
+                        relObject.put("relationship", reverseRelationship);
+                        JSONArray newRelations = new JSONArray();
+                        newRelations.add(relObject);
+                        task.put("relationships", newRelations);
+                    }
+
+                    // And make sure it knows how to send us curated PIDs
                     JsonObject msgResponse = new JsonObject();
                     msgResponse.put("broker", brokerUrl);
-                    msgResponse.put("oid", oid);
+                    msgResponse.put("oid", thisOid);
                     msgResponse.put("task", "curation-pending");
                     task.put("respond", msgResponse);
                 }
@@ -812,7 +882,7 @@ public class CurationManager extends GenericTransactionManager {
 
         // Save our data if we changed it
         if (saveData) {
-            saveObjectData(data, oid);
+            saveObjectData(data, thisOid);
         }
 
         return isReady;
@@ -931,13 +1001,13 @@ public class CurationManager extends GenericTransactionManager {
                 // Store new entries
                 if (!duplicate) {
                     log.debug("New relationship added to '{}'", oid);
-                    relations.add((Object) newRelation.getJsonObject());
+                    relations.add(newRelation.getJsonObject());
                 }
             }
         }
 
         // Store modifications
-        if (toRespond == null || newRelations == null) {
+        if (toRespond != null || newRelations != null) {
             log.info("Updating object in storage '{}'", oid);
             String jsonString = metadata.toString(true);
             try {
@@ -1043,25 +1113,30 @@ public class CurationManager extends GenericTransactionManager {
                 }
             }
 
-            // Is this relationship using a curated ID?
-            boolean isCurated = json.getBoolean(false, "isCurated");
-            if (isCurated) {
-                log.debug(" * Publishing '{}'", relatedId);
-                JsonObject task;
-                // It is a local object
-                if (localRecord) {
-                    task = createTask(response, relatedOid, "publish");
+            // We only publish downstream relations (ie. we are their authority)
+            boolean authority = json.getBoolean(false, "authority");
+            if (authority) {
+                // Is this relationship using a curated ID?
+                boolean isCurated = json.getBoolean(false, "isCurated");
+                if (isCurated) {
+                    log.debug(" * Publishing '{}'", relatedId);
+                    JsonObject task;
+                    // It is a local object
+                    if (localRecord) {
+                        task = createTask(response, relatedOid, "publish");
 
-                // Or remote
+                    // Or remote
+                    } else {
+                        task = createTask(response, broker, relatedOid,
+                                "publish");
+                        // We won't know OIDs for remote systems
+                        task.remove("oid") ;
+                        task.put("identifier", relatedId);
+                    }
                 } else {
-                    task = createTask(response, broker, relatedOid, "publish");
-                    // We won't know OIDs for remote systems
-                    task.remove("oid") ;
-                    task.put("identifier", relatedId);
+                    log.debug(" * Ignoring non-curated relationship '{}'",
+                            relatedId);
                 }
-            } else {
-                log.debug(" * Ignoring non-curated relationship '{}'",
-                        relatedId);
             }
         }
     }
@@ -1090,7 +1165,8 @@ public class CurationManager extends GenericTransactionManager {
                 scheduleTransformers(message, response);
 
                 // Solr Index
-                newIndex(response, oid);
+                JsonObject order = newIndex(response, oid);
+                order.put("forceCommit", true);
 
                 // Send a message back here
                 createTask(response, oid, "clear-render-flag");
@@ -1123,7 +1199,8 @@ public class CurationManager extends GenericTransactionManager {
                     //   Solr index fairly speedily
                     boolean quickIndex = message.getBoolean(false, "quickIndex");
                     if (quickIndex) {
-                        newIndex(response, oid);
+                        JsonObject order = newIndex(response, oid);
+                        order.put("forceCommit", true);
                     }
 
                     // send a copy to the audit log
@@ -1172,7 +1249,8 @@ public class CurationManager extends GenericTransactionManager {
                         JsonSimple response = curation(message, task, oid);
 
                         // We should always index afterwards
-                        newIndex(response, oid);
+                        JsonObject order = newIndex(response, oid);
+                        order.put("forceCommit", true);
                         return response;
 
                     } else {
@@ -1206,7 +1284,7 @@ public class CurationManager extends GenericTransactionManager {
                         return response;
 
                     } else {
-                        log.error("We need an OID to curate!");
+                        log.error("We need an OID to publish!");
                     }
                 } catch (Exception ex) {
                     JsonSimple response = new JsonSimple();
@@ -1247,7 +1325,8 @@ public class CurationManager extends GenericTransactionManager {
 
                 // Tool chain
                 scheduleTransformers(itemConfig, response);
-                newIndex(response, oid);
+                JsonObject order = newIndex(response, oid);
+                order.put("forceCommit", true);
                 createTask(response, oid, "clear-render-flag");
             } else {
                 log.error("Cannot reharvest without an OID!");

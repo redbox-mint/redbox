@@ -330,7 +330,7 @@ function lookupDone(target,data){
     $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family_Name"]);
     $("input[id='"+baseId+".foaf:Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
         var option=$(e);
-        if(jQuery.trim(option.text())==lookupData["Division"]){
+        if (jQuery.trim(option.val()) == lookupData["primary_group_id"]){
             $("input[id='"+baseId+".foaf:Organization.dc:identifier']")
                 .val(option.val()).trigger("onDataChanged");
             $("input[id='"+baseId+".foaf:Organization.skos:prefLabel']")

@@ -111,6 +111,10 @@ $self.escapeHtml($value)
     #else
     (INACTIVE, waiting for handle)
     #end
+    #set ($published = $parent.getProperty("published"))
+    #if ($published != $nullValue)
+    (PUBLISHED)
+    #end
 </div>
     #end
 #end

@@ -1,11 +1,12 @@
 #set($hasWorkflow = $self.hasWorkflow())
 #set($hasWorkflowAccess = $self.hasWorkflowAccess())
+#set ($published = $parent.getProperty("published"))
 #if($hasWorkflow && $hasWorkflowAccess)
     #set($workflowStep = $self.getWorkflowStep())
     <li>
         <a href="$portalPath/workflow/$oid" title="$workflowStep">Edit record (<em>$workflowStep</em>)</a>
     </li>
-    #if ($page.authentication.is_admin() && $workflowStep == 'Published')
+    #if ($page.authentication.is_admin() && $published != $nullValue)
     <li>
         <a id="vital-refresh" href="#">Refresh in VITAL</a>
         <script type="text/javascript">

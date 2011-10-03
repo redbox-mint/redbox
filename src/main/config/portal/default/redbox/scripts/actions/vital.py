@@ -50,10 +50,7 @@ class VitalData:
         #  the VITAL subscriber just needs to think we did.
         message = JsonObject()
         message.put("oid", oid)
-        message.put("eventType", "ReIndex")
-        message.put("username", self.auth.get_username())
-        message.put("context", "Workflow")
-        message.put("task", "workflow")
+        message.put("task", "publish")
         self.messaging.queueMessage(
                 TransactionManagerQueueConsumer.LISTENER_ID,
                 message.toString())
