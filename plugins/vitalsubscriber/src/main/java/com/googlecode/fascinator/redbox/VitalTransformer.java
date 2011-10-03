@@ -609,17 +609,6 @@ public class VitalTransformer implements Transformer {
                 metadata.setProperty(VITAL_PROPERTY_KEY, vitalPid);
                 // Trigger a save on the object's metadata
                 object.close();
-
-                // We have just created a new object,
-                //   do we have wait conditions?
-                if (!waitProperties.isEmpty()) {
-                    // We need to re-index this object, so that
-                    //  the new PID can be found by others
-                    JsonObject message = new JsonObject();
-                    message.put("oid", oid);
-                    message.put("commit", "true");
-                    messaging.queueMessage("indexer", message.toString());
-                }
             } catch (Exception ex) {
                 error("Failed to create object in VITAL", ex, oid, title);
             }
