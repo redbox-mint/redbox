@@ -248,6 +248,24 @@
         <a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>
         <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
     </div>
+
+    <script type="text/javascript">
+    function cleanRdfToJs(input) {
+        var output = input.replace(/\./g, "\\.");
+        return output.replace(/\:/g, "\\:");
+    }
+
+    function getReDBoxById(redboxId) {
+        var cleanId = cleanRdfToJs(redboxId);
+        return $("#" + cleanId);
+    }
+
+    function getReDBoxByClass(redboxClass) {
+        var cleanClass = cleanRdfToJs(redboxClass);
+        return $("." + cleanClass);
+    }
+    </script>
+
     <div class="inputscreens">
         #parseTemplate("workflows/forms/sections/general.vm")
         #parseTemplate("workflows/forms/sections/coverage.vm")
@@ -275,21 +293,6 @@
 </div>
 <script type="text/javascript">
 var saveAndClose = false;
-function cleanRdfToJs(input) {
-    var output = input.replace(/\./g, "\\.");
-    return output.replace(/\:/g, "\\:");
-}
-
-function getById(id) {
-    var cleanId = cleanRdfToJs(id);
-    return $("#" + cleanId);
-}
-
-function getByClass(class) {
-    var cleanClass = cleanRdfToJs(class);
-    return $("." + cleanClass);
-}
-
 $(function(){
     $("#view-record-link").click(function() {
         if (widgets.forms[0].hasChanges()) {

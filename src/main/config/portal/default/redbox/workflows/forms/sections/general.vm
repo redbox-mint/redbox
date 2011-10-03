@@ -96,7 +96,7 @@
 
 <script type="text/javascript">
 $(function() {
-    getById("redbox:newForm").live("onDataChanged", function() {
+    getReDBoxById("redbox:newForm").live("onDataChanged", function() {
         $(this).val("false");
     });
 });

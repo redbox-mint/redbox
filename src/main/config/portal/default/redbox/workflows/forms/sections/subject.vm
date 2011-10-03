@@ -31,7 +31,7 @@
     <label for="dc:subject.vivo:keyword" class="validation-err-msg"
         data-validation-rule="test(notEmpty);when(blur, change, submit);
                                 jsTest(
-                                    var value = getById('dc:subject.vivo:keyword.1.rdf:PlainLiteral').val();
+                                    var value = getReDBoxById('dc:subject.vivo:keyword.1.rdf:PlainLiteral').val();
                                     value = jQ.trim(value); r = (value == '');
                                 );
                                 liveFor(.vkeyword);">

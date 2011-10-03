@@ -152,7 +152,7 @@ $(function() {
         try{
             i = $(this);
             id = i.attr("for");
-            i = getById(id);
+            i = getReDBoxById(id);
             id = i.parents(".ui-tabs-panel").attr("id");
             $("a[href=#"+id+"]").click();
             i.focus();
