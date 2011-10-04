@@ -46,25 +46,43 @@
     #end
 #end
 
-#macro(findRelatedObject $field $relatedObjectType)
-    #set($value = $util.get($item, $field))
-    #if ("$!value" != "")
+#macro(findCuratedIdentifier $relationships $originalId $type)
+    ### Look through all relations
+    #if($relationships)
+        #foreach($relation in $relationships)
+
+            ## We only wanted curated IDs
+            #if ($relation.getBoolean(false, "isCurated"))
+                #set($id = $relation.getString("empty", "identifier"))
+                #set($key = $relation.getString("empty", "curatedPid"))
+
+                ### Is this the relationship we want?
+                #if ($key != "empty" && $id != "empty" && $id == $originalId)
         <rif:relatedObject>
-            <rif:key>$util.encodeXml($value)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
+            <rif:key>$util.encodeXml($key)</rif:key>
+            <rif:relation type="$util.encodeXml($type)"/>
         </rif:relatedObject>
+                #end
+            #end
+        #end
     #end
 #end
 
-#macro(findRelatedIdentifiers $field $relatedObjectType)
+#macro(findRelatedObject $relationships $field $relatedObjectType)
+    #set($value = $util.get($item, $field))
+    #if ("$!value" != "")
+        ### Only output curated values
+        #findCuratedIdentifier($relationships, $value, $relatedObjectType)
+    #end
+#end
+
+#macro(findRelatedIdentifiers $relationships $field $relatedObjectType)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key).get("dc:identifier"))
         #if ("$!value" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($value)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
-        </rif:relatedObject>
+            ### Only output curated values
+            #findCuratedIdentifier($relationships, $value, $relatedObjectType)
         #end
     #end
 #end
@@ -110,6 +128,9 @@
     #set ($identifier = $formId)
     #set ($identifierType = $formType)
 #end
+
+### Relationships
+#set($relationships = $item.getJsonSimpleList("relationships"))
 
 ####set($lang = "xml:lang=${quote}$util.get($item, 'dc:language.dc:identifier')${quote}")
 #set($lang = "xml:lang=${quote}en${quote}")
@@ -201,9 +222,9 @@
 
             #geoSpatial("dc:coverage.vivo:GeographicLocation")
 
-            #findRelatedIdentifiers("dc:creator.foaf:Person", "hasCollector")
-            #findRelatedObject("locrel:prc.foaf:Person.dc:identifier", "isPrimaryContactFor")
-            #findRelatedObject("foaf:Organization.dc:identifier", "isManagedBy")
+            #findRelatedIdentifiers($relationships, "dc:creator.foaf:Person", "hasCollector")
+            #findRelatedObject($relationships, "locrel:prc.foaf:Person.dc:identifier", "isPrimaryContactFor")
+            #findRelatedObject($relationships, "foaf:Organization.dc:identifier", "isManagedBy")
 
             #showElementRifCS("rif:subject" "dc:subject.vivo:keyword", " type=${quote}local${quote} $lang", "rdf:PlainLiteral", "")
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
