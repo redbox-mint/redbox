@@ -120,7 +120,7 @@
     <input type="hidden" class="form-fields" value="
         ## general
         dc:title,
-        dc:type,
+        dc:type.rdf:PlainLiteral,
         dc:type.skos:prefLabel,
         dc:created,
         dc:modified,
@@ -190,11 +190,11 @@
         dc:license.skos:prefLabel,
         dc:license.dc:identifier,
         ## management
-        dc:identifier,
-        dc:identifier.dc:type,
+        dc:identifier.rdf:PlainLiteral,
+        dc:identifier.dc:type.rdf:PlainLiteral,
         dc:identifier.dc:type.skos:prefLabel,
         dc:identifier.redbox:origin,
-        vivo:Location.0.dc:identifier,
+        bibo:Website.0.dc:identifier,
         vivo:Location.vivo:GeographicLocation.gn:name,
         vivo:Location.vivo:GeographicLocation.skos:note,
         redbox:retentionPeriod,

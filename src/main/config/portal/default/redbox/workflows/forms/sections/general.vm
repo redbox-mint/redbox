@@ -19,8 +19,8 @@
         </label>
     </p>
 
-    #fieldTitle("dc:type" "Type" true)
-    <div class="help-content" id="help-dc:type">
+    #fieldTitle("dc:type.rdf:PlainLiteral" "Type" true)
+    <div class="help-content" id="help-dc:type.rdf:PlainLiteral">
         <dl>
             <dt>Catalogue or Index</dt>
             <dd>
@@ -51,14 +51,14 @@
         </dl>
     </div>
     <p>
-        #mintSelectField("dc:type"
+        #mintSelectField("dc:type.rdf:PlainLiteral"
                          "dc:type.skos:prefLabel"
                          "$portalPath/workflows/forms/data/types.json"
                          "id"
                          "label"
                          "results"
                          "")
-        #requiredValidation("dc:type" "The type is required!")
+        #requiredValidation("dc:type.rdf:PlainLiteral" "The type is required!")
     </p>
 
     #fieldTitle("dc:created" "Date Record Created" false)

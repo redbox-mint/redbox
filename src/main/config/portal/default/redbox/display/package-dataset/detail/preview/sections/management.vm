@@ -7,13 +7,13 @@
             #if($origin == "internal")
                 <i>Using this record's ID.</i>
             #else
-                #displayFirst("dc:identifier" "Identifier")
+                #displayFirst("dc:identifier.rdf:PlainLiteral" "Identifier")
                 #displayFirst("dc:identifier.dc:type.skos:prefLabel" "Type of Identifier")
             #end
         </div>
         <dt>Location</dt>
         <div class="group">
-            #displayUrlList("vivo:Location" "URL" "dc:identifier" "")
+            #displayUrlList("bibo:Website" "URL" "dc:identifier" "")
             #displayFirst("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At")
             #displayFirst("vivo:Location.vivo:GeographicLocation.skos:note" "Notes")
         </div>

@@ -1,12 +1,12 @@
 <h3><a href="#management">Management</a></h3>
 <div id="management" class="inputscreen">
-    #fieldTitle("dc:identifier" "Identifier" true)
+    #fieldTitle("dc:identifier.rdf:PlainLiteral" "Identifier" true)
     <label class="validation-err-msg"
-        for="dc:identifier"
+        for="dc:identifier.rdf:PlainLiteral"
         data-validation-rule="test(notEmpty); when(blur, change, submit);
                                 jsTest(
-                                    var value = ctx.find('input[id=dc:identifier]').val();
-                                    var type = ctx.find('input[id=dc:identifier.dc:type]').val();
+                                    var value = ctx.find('input[id=dc:identifier.rdf:PlainLiteral]').val();
+                                    var type = ctx.find('input[id=dc:identifier.dc:type.rdf:PlainLiteral]').val();
                                     var checked = ctx.find('input[id=dc:identifier.checkbox]').is(':checked');
                                     value = jQ.trim(value);
                                     type = jQ.trim(type);
@@ -19,15 +19,15 @@
                                 liveFor(.videntifier);">
         An identifier is required!
     </label>
-    <div class="help-content" id="help-dc:identifier">
+    <div class="help-content" id="help-dc:identifier.rdf:PlainLiteral">
         <p>
             The identifier for this collection. Can be determined by the system if desired.
         </p>
     </div>
     <div class="group">
         <p>
-            <label for="dc:identifier.dc:type">Type of identifier:</label>
-            #mintSelectField("dc:identifier.dc:type"
+            <label for="dc:identifier.dc:type.rdf:PlainLiteral">Type of identifier:</label>
+            #mintSelectField("dc:identifier.dc:type.rdf:PlainLiteral"
                              "dc:identifier.dc:type.skos:prefLabel"
                              "$portalPath/workflows/forms/data/identifierTypes.json"
                              "id"
@@ -36,8 +36,8 @@
                              "handle")
         </p>
         <p>
-            <label for="dc:identifier">Identifier:</label>
-            <input type="text" size="60" placeholder="persistent identifier" id="dc:identifier" class="videntifier" />
+            <label for="dc:identifier.rdf:PlainLiteral">Identifier:</label>
+            <input type="text" size="60" placeholder="persistent identifier" id="dc:identifier.rdf:PlainLiteral" class="videntifier" />
             <input type="hidden" id="dc:identifier.redbox:origin" />
             <input type="checkbox" id="dc:identifier.checkbox" class="videntifier" />
             <label for="dc:identifier.checkbox">Use this record's ID</label>
@@ -55,7 +55,7 @@
             for="url"
             data-validation-rule="test(notEmpty);when(blur,change,submit);
                                     jsTest(
-                                        var url = ctx.find('input[id=vivo:Location.1.dc:identifier]').val();
+                                        var url = ctx.find('input[id=bibo:Website.1.dc:identifier]').val();
                                         var stored = ctx.find('input[id=vivo:Location.vivo:GeographicLocation.gn:name]').val();
                                         url = jQ.trim(url); stored = jQ.trim(stored);
                                         r = (url == '') && (stored == '');
@@ -74,7 +74,7 @@
             <div class="input-list">
                 <div class="item-input-display">
                     <span class="sort-number"></span>&nbsp;&nbsp;&nbsp;
-                    <input type="text" size="60" placeholder="url" id="vivo:Location.0.dc:identifier" class="vlocation" />
+                    <input type="text" size="60" placeholder="url" id="bibo:Website.0.dc:identifier" class="vlocation" />
                     <span class="delete-item"><a href="#">delete</a></span>
                 </div>
                 <div>
@@ -411,7 +411,7 @@ $(function() {
     $("input[id=dc:identifier.checkbox]").change(function() {
         styleIdentifier(
             $(this).is(":checked"),
-            $("input[id=dc:identifier]"),
+            $("input[id=dc:identifier.rdf:PlainLiteral]"),
             $("input[id=dc:identifier.redbox:origin]"));
     });
 
@@ -424,7 +424,7 @@ $(function() {
             $("input[id=dc:identifier.checkbox]").removeAttr('checked');
             checked = false;
         }
-        styleIdentifier(checked, $("input[id=dc:identifier]"), $(this));
+        styleIdentifier(checked, $("input[id=dc:identifier.rdf:PlainLiteral]"), $(this));
     });
 });
 </script>

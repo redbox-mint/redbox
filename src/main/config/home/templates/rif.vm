@@ -37,56 +37,6 @@
     #end
 #end
 
-#macro(outputRelatedObject $data $relatedObjectType)
-    #if ("$!data" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($data)</rif:key>
-            <rif:relation type="$relatedObjectType"/>
-        </rif:relatedObject>
-    #end
-#end
-
-#macro(findCuratedIdentifier $relationships $originalId $type)
-    ### Look through all relations
-    #if($relationships)
-        #foreach($relation in $relationships)
-
-            ## We only wanted curated IDs
-            #if ($relation.getBoolean(false, "isCurated"))
-                #set($id = $relation.getString("empty", "identifier"))
-                #set($key = $relation.getString("empty", "curatedPid"))
-
-                ### Is this the relationship we want?
-                #if ($key != "empty" && $id != "empty" && $id == $originalId)
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($key)</rif:key>
-            <rif:relation type="$util.encodeXml($type)"/>
-        </rif:relatedObject>
-                #end
-            #end
-        #end
-    #end
-#end
-
-#macro(findRelatedObject $relationships $field $relatedObjectType)
-    #set($value = $util.get($item, $field))
-    #if ("$!value" != "")
-        ### Only output curated values
-        #findCuratedIdentifier($relationships, $value, $relatedObjectType)
-    #end
-#end
-
-#macro(findRelatedIdentifiers $relationships $field $relatedObjectType)
-    #set($valueMap = $util.getList($item, $field))
-    #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key).get("dc:identifier"))
-        #if ("$!value" != "")
-            ### Only output curated values
-            #findCuratedIdentifier($relationships, $value, $relatedObjectType)
-        #end
-    #end
-#end
-
 #macro(geoSpatial $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
@@ -110,9 +60,9 @@
 #set($dateFormat = "yyyy-MM-dd'T'HH:mm:ss")
 
 ### Resolve the identifier
-#set ($formId = $util.get($item, 'dc:identifier'))
+#set ($formId = $util.get($item, 'dc:identifier.rdf:PlainLiteral'))
 #set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
-#set ($formType = $util.get($item, 'dc:identifier.dc:type'))
+#set ($formType = $util.get($item, 'dc:identifier.dc:type.rdf:PlainLiteral'))
 #set ($handle = $util.getMetadata($object, "vitalHandle"))
 #set ($identifier = "")
 #set ($identifierType = "")
@@ -169,7 +119,7 @@
         ##
         ##  http://services.ands.org.au/documentation/rifcs/1.2.0/schemadocs/registryObjects.html
         #################
-        <rif:collection type="$util.get($item, "dc:type")" $dateModified $dateAccessioned>
+        <rif:collection type="$util.get($item, "dc:type.rdf:PlainLiteral")" $dateModified $dateAccessioned>
             <rif:identifier type="$identifierType">$identifier</rif:identifier>
 
             <rif:name type="primary" $lang>
@@ -178,7 +128,7 @@
 
         ## Location, use Handle as priority if requested
             <rif:location>
-        #set($valueMap = $util.getList($item, "vivo:Location"))
+        #set($valueMap = $util.getList($item, "bibo:Website"))
         #foreach($key in $valueMap.keySet())
             #set ($value = $valueMap.get($key).get("dc:identifier"))
             #if ("$!value" != "")
@@ -222,9 +172,29 @@
 
             #geoSpatial("dc:coverage.vivo:GeographicLocation")
 
-            #findRelatedIdentifiers($relationships, "dc:creator.foaf:Person", "hasCollector")
-            #findRelatedObject($relationships, "locrel:prc.foaf:Person.dc:identifier", "isPrimaryContactFor")
-            #findRelatedObject($relationships, "foaf:Organization.dc:identifier", "isManagedBy")
+            ### Relations
+            #set($valueList = $item.getJsonSimpleList("relationships"))
+            #if($valueList)
+                #foreach($value in $valueList)
+                    #if ($value.getBoolean(false, "isCurated"))
+                        #set($key = $value.getString("empty", "curatedPid"))
+                        #set($rel = $value.getString("hasAssociationWith", "relationship"))
+                        #set($desc = $value.getString("empty", "description"))
+                        #if ($key != "empty")
+            <relatedObject>
+                <key>$util.encodeXml($key)</key>
+                            #if ($desc != "empty")
+                <relation type="$util.encodeXml($rel)">
+                    <description>$util.encodeXml($desc)</description>
+                </relation>
+                            #else
+                <relation type="$util.encodeXml($rel)"/>
+                            #end
+            </relatedObject>
+                        #end
+                    #end
+                #end
+            #end
 
             #showElementRifCS("rif:subject" "dc:subject.vivo:keyword", " type=${quote}local${quote} $lang", "rdf:PlainLiteral", "")
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
@@ -266,6 +236,7 @@
 
             #showRelatedInfo("dc:relation.swrc:Publication", "publication", "uri")
             #showRelatedInfo("dc:relation.bibo:Website", "website", "uri")
+
         </rif:collection>
     </rif:registryObject>
 </rif:registryObjects>

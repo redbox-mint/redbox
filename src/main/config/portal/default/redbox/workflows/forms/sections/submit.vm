@@ -44,7 +44,7 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:type">
+                <label class="validation-err-msg" for="dc:type.rdf:PlainLiteral">
                     A Type is required!
                 </label>
            </div>
@@ -69,12 +69,12 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:identifier">
+                <label class="validation-err-msg" for="dc:identifier.rdf:PlainLiteral">
                     An identifier is required!
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="vivo:Location.1.dc:identifier">
+                <label class="validation-err-msg" for="bibo:Website.1.dc:identifier">
                     A location is required!
                 </label>
            </div>

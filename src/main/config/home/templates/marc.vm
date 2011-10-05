@@ -103,7 +103,7 @@
 
 #macro (control001)
     ### Resolve the identifier
-    #set ($formId = $util.get($item, 'dc:identifier'))
+    #set ($formId = $util.get($item, 'dc:identifier.rdf:PlainLiteral'))
     #set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
     #set ($handle = $util.getMetadata($object, "vitalHandle"))
     #set ($identifier = "")
@@ -126,7 +126,7 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #control001()
         #control008()
         #basicField("245", "0", "0", "a", "dc:title")
-        #basicField("655", " ", "4", "a", "dc:type")
+        #basicField("655", " ", "4", "a", "dc:type.rdf:PlainLiteral")
         #basicField("260", " ", " ", "c", "dc:created")
 
         ## Language. Set Source to ISO639-2

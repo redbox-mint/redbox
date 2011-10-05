@@ -72,6 +72,9 @@ public class CurationManager extends GenericTransactionManager {
     /** Logging **/
     private static Logger log = LoggerFactory.getLogger(CurationManager.class);
 
+    /** System configuration */
+    private JsonSimpleConfig systemConfig;
+
     /** Storage */
     private Storage storage;
 
@@ -99,11 +102,6 @@ public class CurationManager extends GenericTransactionManager {
     /** Relationship maps */
     private Map<String, JsonSimple> relationFields;
 
-    /** Relationship defaults */
-    private String defaultRelation;
-    private String defaultRelationSystem;
-    private boolean defaultRelationOptional;
-
     /**
      * Base constructor
      * 
@@ -119,10 +117,11 @@ public class CurationManager extends GenericTransactionManager {
      */
     @Override
     public void init() throws TransactionException {
-        JsonSimpleConfig config = getJsonConfig();
+        systemConfig = getJsonConfig();
 
         // Load the storage plugin
-        String storageId = config.getString("file-system", "storage", "type");
+        String storageId = systemConfig.getString("file-system",
+                "storage", "type");
         if (storageId == null) {
             throw new TransactionException("No Storage ID provided");
         }
@@ -132,14 +131,14 @@ public class CurationManager extends GenericTransactionManager {
                     + storageId + "'");
         }
         try {
-            storage.init(config.toString());
+            storage.init(systemConfig.toString());
         } catch (PluginException ex) {
             log.error("Unable to initialise storage layer!", ex);
             throw new TransactionException(ex);
         }
 
         // Load the indexer plugin
-        String indexerId = config.getString("solr", "indexer", "type");
+        String indexerId = systemConfig.getString("solr", "indexer", "type");
         if (indexerId == null) {
             throw new TransactionException("No Indexer ID provided");
         }
@@ -149,62 +148,54 @@ public class CurationManager extends GenericTransactionManager {
                     + indexerId + "'");
         }
         try {
-            indexer.init(config.toString());
+            indexer.init(systemConfig.toString());
         } catch (PluginException ex) {
             log.error("Unable to initialise indexer!", ex);
             throw new TransactionException(ex);
         }
 
         // External facing URL
-        urlBase = config.getString(null, "urlBase");
+        urlBase = systemConfig.getString(null, "urlBase");
         if (urlBase == null) {
             throw new TransactionException("URL Base in config cannot be null");
         }
 
         // Where should emails be sent?
-        emailAddress = config.getString(null,
+        emailAddress = systemConfig.getString(null,
                 "curation", "curationEmailAddress");
         if (emailAddress == null) {
             throw new TransactionException("An admin email is required!");
         }
 
         // Where are PIDs stored?
-        pidProperty = config.getString(null, "curation", "pidProperty");
+        pidProperty = systemConfig.getString(null, "curation", "pidProperty");
         if (pidProperty == null) {
             throw new TransactionException("An admin email is required!");
         }
 
         // Do admin staff want to confirm each curation?
-        manualConfirmation = config.getBoolean(false,
+        manualConfirmation = systemConfig.getBoolean(false,
                 "curation", "curationRequiresConfirmation");
 
         // Find the address of our broker
-        brokerUrl = config.getString(null, "messaging", "url");
+        brokerUrl = systemConfig.getString(null, "messaging", "url");
         if (brokerUrl == null) {
             throw new TransactionException("Cannot find the message broker.");
         }
 
         // We also need Mint's AMQ url
-        mintBroker = config.getString(null, "curation", "mintBroker");
+        mintBroker = systemConfig.getString(null, "curation", "mintBroker");
         if (mintBroker == null) {
             throw new TransactionException(
                     "Cannot find Mint's message broker.");
         }
 
         /** Relationship mapping */
-        relationFields = config.getJsonSimpleMap("curation", "relations");
+        relationFields = systemConfig.getJsonSimpleMap("curation", "relations");
         if (relationFields == null) {
             log.warn("Curation configuration has no relationships");
             relationFields = new HashMap();
         }
-
-        /** Relationship defaults */
-        defaultRelation = config.getString("hasAssociationWith",
-                "curation", "defaultRelations", "reverseRelation");
-        defaultRelationSystem = config.getString("mint",
-                "curation", "defaultRelations", "system");
-        defaultRelationOptional = config.getBoolean(false,
-                "curation", "defaultRelations", "optional");
     }
 
     /**
@@ -253,15 +244,20 @@ public class CurationManager extends GenericTransactionManager {
         }
 
         // Resolve relationships before we continue
-        JSONArray relations = mapRelations(oid);
-
-        // Unless there was an error, we should be good to go
-        if (relations != null) {
-            JsonObject request = createTask(response, oid, "curation-request");
-            if (!relations.isEmpty()) {
-                request.put("relationships", relations);
+        try {
+            JSONArray relations = mapRelations(oid);
+            // Unless there was an error, we should be good to go
+            if (relations != null) {
+                JsonObject request = createTask(response, oid, "curation-request");
+                if (!relations.isEmpty()) {
+                    request.put("relationships", relations);
+                }
             }
+        } catch (Exception ex) {
+            log.error("Error processing relations: ", ex);
+            return;
         }
+
     }
 
     /**
@@ -271,32 +267,65 @@ public class CurationManager extends GenericTransactionManager {
      * @returns True is ready to proceed, otherwise False
      */
     private JSONArray mapRelations(String oid) {
-        // Get our object data
-        JsonSimple data = getDataFromStorage(oid);
-        if (data == null) {
+        // We want our parsed data for reading
+        JsonSimple formData = parsedFormData(oid);
+        if (formData == null) {
+            log.error("Error parsing form data");
+            return null;
+        }
+
+        // And raw data to see existing relations and write new ones
+        JsonSimple rawData = getDataFromStorage(oid);
+        if (rawData == null) {
             log.error("Error reading data from storage");
             return null;
         }
         // Existing relationship data
-        JSONArray relations = data.writeArray("relationships");
+        JSONArray relations = rawData.writeArray("relationships");
         boolean changed = false;
 
-        // For every field in our data
-        for (Object key : data.getJsonObject().keySet()) {
-            // Strip list digits
-            String rawField = (String) key;
-            String field = cleanField(rawField);
-            // Do we care about this field?
-            if (relationFields.containsKey(field)) {
-                // Make sure it has data
-                String value = data.getString(null, rawField);
-                if (value != null && !value.equals("")) {
-                    // And that we haven't mapped it previously
-                    if (!isKnownRelation(relations, field, value)) {
-                        addRelation(relations, field, value);
-                        changed = true;
-                    } else {
-                        log.debug("Known relation: '{}': ({})", field, value);
+        // For all configured relationships
+        for (String baseField : relationFields.keySet()) {
+            JsonSimple relationConfig = relationFields.get(baseField);
+
+            // Find the path we need to look under for our related object
+            List<String> basePath = relationConfig.getStringList("path");
+            if (basePath == null || basePath.isEmpty()) {
+                log.error("Ignoring invalid relationship '{}'. No 'path'"
+                        + " provided in configuration", baseField);
+                continue;
+            }
+
+            // Get our base object
+            Object object = formData.getPath(basePath.toArray());
+            if (object instanceof JsonObject) {
+                // And process it
+                JsonObject newRelation = lookForRelation(
+                        baseField, relationConfig,
+                        new JsonSimple((JsonObject) object));
+                if (newRelation != null &&
+                        !isKnownRelation(relations, newRelation)) {
+                    log.info("Adding relation: '{}' => '{}'",
+                            baseField, newRelation.get("identifier"));
+                    relations.add(newRelation);
+                    changed = true;
+                }
+            }
+            // If base path points at an array
+            if (object instanceof JSONArray) {
+                // Try every entry
+                for (Object loopObject : (JSONArray) object) {
+                    if (loopObject instanceof JsonObject) {
+                        JsonObject newRelation = lookForRelation(
+                                baseField, relationConfig,
+                                new JsonSimple((JsonObject) loopObject));
+                        if (newRelation != null &&
+                                !isKnownRelation(relations, newRelation)) {
+                            log.info("Adding relation: '{}' => '{}'",
+                                    baseField, newRelation.get("identifier"));
+                            relations.add(newRelation);
+                            changed = true;
+                        }
                     }
                 }
             }
@@ -305,7 +334,7 @@ public class CurationManager extends GenericTransactionManager {
         // Do we need to store our object again?
         if (changed) {
             try {
-                saveObjectData(data, oid);
+                saveObjectData(rawData, oid);
             } catch (TransactionException ex) {
                 log.error("Error updating object '{}' in storage: ", oid, ex);
                 return null;
@@ -316,38 +345,100 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Add a relationship to this object
+     * Look through part of the form data for a relationship.
      * 
-     * @param relations The list of current relationships
-     * @param cleanField The cleaned field to provide some context
-     * @param value The ID of the related object
+     * @param field The full field String to store for comparisons
+     * @param config The config relating to the relationship we are looking for
+     * @param baseNode The JSON node the relationship should be under
+     * @return JsonObject A relationship in JSON, or null if not found
      */
-    private void addRelation(JSONArray relations, String cleanField,
-            String value) {
-        log.info("Adding relationship: '{}' => '{}'", cleanField, value);
+    private JsonObject lookForRelation(String field, JsonSimple config,
+            JsonSimple baseNode) {
+        JsonObject newRelation = new JsonObject();
+        newRelation.put("field", field);
+        newRelation.put("authority", true);
 
-        // Configuration
-        JsonSimple thisField = relationFields.get(cleanField);
-        String relation = thisField.getString(
-                defaultRelation, "reverseRelation");
-        boolean optional = thisField.getBoolean(
-                defaultRelationOptional, "optional");
-        String system = thisField.getString(
-                defaultRelationSystem, "system");
-        String broker = brokerUrl;
-        if (system.equals("mint")) {
-            broker = mintBroker;
+        // ** -1- ** EXCLUSIONS
+        List<String> exPath = config.getStringList("excludeCondition", "path");
+        String exValue = config.getString(null, "excludeCondition", "value");
+        if (exPath != null && !exPath.isEmpty() && exValue != null) {
+            String value = baseNode.getString(null, exPath.toArray());
+            if (value != null && value.equals(exValue)) {
+                log.info("Excluding relationship '{}' based on config", field);
+                return null;
+            }
         }
 
-        // Now build the relationship
-        JsonObject json = new JsonObject();
-        json.put("identifier", value);
-        json.put("field", cleanField);
-        json.put("broker", broker);
-        json.put("optional", optional);
-        json.put("reverseRelation", relation);
-        json.put("authority", true);
-        relations.add(json);
+        // ** -2- ** IDENTIFIER
+        // Inside that object where can we find the identifier
+        List<String> idPath = config.getStringList("identifier");
+        if (idPath == null || idPath.isEmpty()) {
+            log.error("Ignoring invalid relationship '{}'. No 'identifier'"
+                    + " provided in configuration", field);
+            return null;
+        }
+        String id = baseNode.getString(null, idPath.toArray());
+        if (id != null && !id.equals("")) {
+            newRelation.put("identifier", id);
+        } else {
+            log.info("Relationship '{}' has no identifier, ignoring!", field);
+            return null;
+        }
+
+        // ** -3- ** RELATIONSHIP TYPE
+        // Relationship type, it may be static and provided for us...
+        String staticRelation = config.getString(null, "relationship");
+        List<String> relPath = null;
+        if (staticRelation == null) {
+            // ... or it could be found in the form data
+            relPath = config.getStringList("relationship");
+        }
+        // But we have to have one.
+        if (staticRelation == null &&
+                (relPath == null || relPath.isEmpty())) {
+            log.error("Ignoring invalid relationship '{}'. No relationship"
+                    + " String of path in configuration", field);
+            return null;
+        }
+        String relString = null;
+        if (staticRelation != null) {
+            relString = staticRelation;
+        } else {
+            relString = baseNode.getString("hasAssociationWith",
+                    relPath.toArray());
+        }
+        if (relString == null || relString.equals("")) {
+            log.info("Relationship '{}' has no type, ignoring!", field);
+            return null;
+        }
+        newRelation.put("relationship", relString);
+
+        // ** -4- ** REVERSE RELATIONS
+        String revRelation = systemConfig.getString("hasAssociationWith",
+                    "curation", "reverseMappings", relString);
+        newRelation.put("reverseRelationship", revRelation);
+
+        // ** -5- ** DESCRIPTION
+        String description = config.getString(null, "description");
+        if (description != null) {
+            newRelation.put("description", description);
+        }
+
+        // ** -6- ** SYSTEM / BROKER
+        String system = config.getString("mint", "system");
+        if (system != null && system.equals("mint")) {
+            newRelation.put("broker", mintBroker);
+        } else {
+            newRelation.put("broker", brokerUrl);
+        }
+
+        // ** -7- ** OPTIONAL
+        boolean optional = config.getBoolean(false, "optional");
+        if (optional) {
+            newRelation.put("optional", optional);
+        }
+
+        return newRelation;
     }
 
     /**
@@ -358,8 +449,8 @@ public class CurationManager extends GenericTransactionManager {
      * @param id The ID of the related object
      * @returns True is it is a known relationship
      */
-    private boolean isKnownRelation(JSONArray relations, String field,
-            String id) {
+    private boolean isKnownRelation(JSONArray relations,
+            JsonObject newRelation) {
         // Loop through all relations
         for (Object relation : relations) {
             JsonObject json = (JsonObject) relation;
@@ -367,8 +458,10 @@ public class CurationManager extends GenericTransactionManager {
             if (json.containsKey("identifier")) {
                 String knownId = (String) json.get("identifier");
                 String knownField = (String) json.get("field");
+                String newId = (String) newRelation.get("identifier");
+                String newField = (String) newRelation.get("field");
                 // And does the ID match?
-                if (knownId.equals(id) && knownField.equals(field)) {
+                if (knownId.equals(newId) && knownField.equals(newField)) {
                     return true;
                 }
             }
@@ -1568,6 +1661,39 @@ public class CurationManager extends GenericTransactionManager {
 
         // Something screwed the pooch
         return null;
+    }
+
+    /**
+     * Get the form data from storage for the indicated object and parse it into
+     * a JSON structure.
+     * 
+     * @param oid The object we want
+     */
+    private JsonSimple parsedFormData(String oid) {
+        // Get our data from Storage
+        Payload payload = null;
+        try {
+            DigitalObject object = storage.getObject(oid);
+            payload = getDataPayload(object);
+        } catch (StorageException ex) {
+            log.error("Error accessing object '{}' in storage: ", oid, ex);
+            return null;
+        }
+
+        // Parse the JSON
+        try {
+            try {
+                return FormDataParser.parse(payload.open());
+            } catch (IOException ex) {
+                log.error("Error parsing data '{}': ", oid, ex);
+                return null;
+            } finally {
+                payload.close();
+            }
+        } catch (StorageException ex) {
+            log.error("Error accessing data '{}' in storage: ", oid, ex);
+            return null;
+        }
     }
 
     /**

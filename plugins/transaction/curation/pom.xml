@@ -24,5 +24,10 @@
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-plugin-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

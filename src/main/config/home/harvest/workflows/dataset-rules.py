@@ -265,7 +265,8 @@ class IndexData:
                     self.utils.add(self.index, field, value)
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
-                            not (field.endswith(".dc:identifier") \
+                            not (field.endswith(".dc:identifier.rdf:PlainLiteral") \
+                              or field.endswith(".dc:identifier") \
                               or field.endswith(".rdf:resource")):
                         # index dublin core fields for faceting
                         basicField = field.replace("dc:", "dc_")

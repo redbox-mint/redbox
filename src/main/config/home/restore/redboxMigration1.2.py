@@ -165,7 +165,6 @@ class MigrateData:
             newJsonObject.put(newPublishField, "off")
             counter += 1
             newIdField = "%s.%s.dc:identifier" % (template, counter)
-            ## TODO - Check this works
 
         self.audit.add("Migration tool. Version upgrade performed '%s' => '%s'" % (version, self.redboxVersion))
         return newJsonSimple
@@ -319,9 +318,9 @@ class MigrateData:
 
         # MANAGEMENT tab
         elif oldBase == "url":
-            newField = "dc:identifier"
+            newField = "dc:identifier.rdf:PlainLiteral"
         elif oldBase == "url.0":
-            newField = "vivo:Location.0.dc:identifier"
+            newField = "bibo:Website.0.dc:identifier"
         elif oldBase == "physical_storage":
             newField = "vivo:Location.vivo:GeographicLocation.gn:name"
         elif oldBase == "location_notes":

@@ -62,7 +62,7 @@
     xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
 
 ### Resolve the identifier
-#set ($formId = $util.get($item, 'dc:identifier'))
+#set ($formId = $util.get($item, 'dc:identifier.rdf:PlainLiteral'))
 #set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
 #set ($handle = $util.getMetadata($object, "vitalHandle"))
 #set ($identifier = "")
@@ -78,7 +78,11 @@
 
 <dc:identifier>$util.encodeXml($identifier)</dc:identifier>
 #dc1("title")
-#dc1("type")
+## Type
+#set ($type = $util.get($item, "dc:type.rdf:PlainLiteral"))
+#if ("$!type" != "")
+    <dc:type>$util.encodeXml($type)</dc:type>
+#end
 ### Date
 #set ($dateFull = $util.get($item, "dc:created"))
 #if ("$!dateFull" != "")

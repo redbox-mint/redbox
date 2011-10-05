@@ -104,20 +104,67 @@
         "curationRequiresConfirmation": false,
         "pidProperty": "vitalHandle",
         "mintBroker": "${mint.amq.broker}",
+
         "relations": {
             "dc:relation.vivo:Dataset.0.dc:identifier": {
+                "path": ["dc:relation", "vivo:Dataset"],
+                "identifier": ["dc:identifier"],
+                "relationship": ["vivo:Relationship", "rdf:PlainLiteral"],
+                "excludeCondition": {
+                    "path": ["redbox:publish"],
+                    "value": ""
+                },
                 "system": "redbox",
                 "optional": true
             },
-            "dc:creator.foaf:Person.0.dc:identifier": {},
-            "locrel:prc.foaf:Person.dc:identifier": {},
-            "swrc:supervisor.foaf:Person.0.dc:identifier": {},
-            "foaf:Organization.dc:identifier": {}
+            "dc:creator.foaf:Person.0.dc:identifier": {
+                "path": ["dc:creator", "foaf:Person"],
+                "identifier": ["dc:identifier"],
+                "relationship": "hasCollector"
+            },
+            "locrel:prc.foaf:Person.dc:identifier": {
+                "path": ["locrel:prc", "foaf:Person"],
+                "identifier": ["dc:identifier"],
+                "relationship": "hasAssociationWith",
+                "description": "Primary Contact"
+            },
+            "swrc:supervisor.foaf:Person.0.dc:identifier": {
+                "path": ["swrc:supervisor", "foaf:Person"],
+                "identifier": ["dc:identifier"],
+                "relationship": "hasAssociationWith",
+                "description": "Supervisor"
+            },
+            "foaf:Organization.dc:identifier": {
+                "path": ["foaf:Organization"],
+                "identifier": ["dc:identifier"],
+                "relationship": "isManagedBy"
+            },
+            "foaf:fundedBy.vivo:Grant.0.dc:identifier": {
+                "path": ["foaf:fundedBy", "vivo:Grant"],
+                "identifier": ["dc:identifier"],
+                "relationship": "isOutputOf",
+                "excludeCondition": {
+                    "path": ["redbox:internalGrant"],
+                    "value": "on"
+                }
+            },
         },
-        "defaultRelations": {
-            "system": "mint",
-            "optional": false,
-            "reverseRelation": "hasAssociationWith"
+        "reverseMappings": {
+            "describes": "isDescribedBy",
+            "hasPart": "isPartOf",
+            "hasAssociationWith": "hasAssociationWith",
+            "hasCollector": "isCollectorOf",
+            "isDescribedBy": "describes",
+            "isLocatedIn": "isLocationFor",
+            "isLocationFor": "isLocatedIn",
+            "isManagedBy": "isManagerOf",
+            "isOutputOf": "hasOutput",
+            "isOwnedBy": "isOwnerOf",
+            "isPartOf": "hasPart",
+            "supports": "isSupportedBy",
+            "isEnrichedBy": "enriches",
+            "isDerivedFrom": "hasDerivedCollection",
+            "hasDerivedCollection": "isDerivedFrom"
         }
     },
     "indexer": {
