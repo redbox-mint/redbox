@@ -69,6 +69,7 @@ class IndexData:
             self.utils.add(self.index, "vitalPid", vitalPid)
         vitalHandle = self.params["vitalHandle"]
         if vitalHandle is not None:
+            self.utils.add(self.index, "known_ids", vitalHandle)
             self.utils.add(self.index, "vitalHandle", vitalHandle)
             self.utils.add(self.index, "oai_identifier", vitalHandle)
         self.utils.add(self.index, "oai_set", "default")
