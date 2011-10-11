@@ -147,7 +147,7 @@
                     "path": ["redbox:internalGrant"],
                     "value": "on"
                 }
-            },
+            }
         },
         "reverseMappings": {
             "describes": "isDescribedBy",
