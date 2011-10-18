@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is automatically created and modified by Microsoft InfoPath.
+Changes made to the file outside of InfoPath might be lost if the form template is modified in InfoPath.
+-->
+<xsf:xDocumentClass trustSetting="automatic" trustLevel="restricted" solutionFormatVersion="3.0.0.0" solutionVersion="1.0.0.37" productVersion="14.0.0" publishUrl="C:\dev\ReDBox\code\src\main\config\home\data\experimental\xml_ingest\Exported files\manifest.xsf" name="urn:schemas-microsoft-com:office:infopath:Exported-files:-myXSD-2011-09-26T07-17-47" xmlns:xsf="http://schemas.microsoft.com/office/infopath/2003/solutionDefinition" xmlns:xsf2="http://schemas.microsoft.com/office/infopath/2006/solutionDefinition/extensions" xmlns:xsf3="http://schemas.microsoft.com/office/infopath/2009/solutionDefinition/extensions" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xdUtil="http://schemas.microsoft.com/office/infopath/2003/xslt/Util" xmlns:xdXDocument="http://schemas.microsoft.com/office/infopath/2003/xslt/xDocument" xmlns:xdMath="http://schemas.microsoft.com/office/infopath/2003/xslt/Math" xmlns:xdDate="http://schemas.microsoft.com/office/infopath/2003/xslt/Date" xmlns:xdExtension="http://schemas.microsoft.com/office/infopath/2003/xslt/extension" xmlns:xdEnvironment="http://schemas.microsoft.com/office/infopath/2006/xslt/environment" xmlns:xdUser="http://schemas.microsoft.com/office/infopath/2006/xslt/User" xmlns:xdServerInfo="http://schemas.microsoft.com/office/infopath/2009/xslt/ServerInfo" xmlns:my="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47">
+	<xsf:package>
+		<xsf:files>
+			<xsf:file name="myschema.xsd">
+				<xsf:fileProperties>
+					<xsf:property name="namespace" type="string" value="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47"></xsf:property>
+					<xsf:property name="editability" type="string" value="full"></xsf:property>
+					<xsf:property name="rootElement" type="string" value="RedboxCollection"></xsf:property>
+					<xsf:property name="useOnDemandAlgorithm" type="string" value="yes"></xsf:property>
+				</xsf:fileProperties>
+			</xsf:file>
+			<xsf:file name="template.xml"></xsf:file>
+			<xsf:file name="sampledata.xml">
+				<xsf:fileProperties>
+					<xsf:property name="fileType" type="string" value="sampleData"></xsf:property>
+				</xsf:fileProperties>
+			</xsf:file>
+			<xsf:file name="view1.xsl">
+				<xsf:fileProperties>
+					<xsf:property name="lang" type="string" value="3081"></xsf:property>
+					<xsf:property name="componentId" type="string" value="119"></xsf:property>
+					<xsf:property name="xmlToEditName" type="string" value="316"></xsf:property>
+					<xsf:property name="viewWidth" type="string" value="900px"></xsf:property>
+					<xsf:property name="mode" type="string" value="6"></xsf:property>
+				</xsf:fileProperties>
+			</xsf:file>
+			<xsf:file name="upgrade.xsl"></xsf:file>
+		</xsf:files>
+	</xsf:package>
+	<xsf:importParameters enabled="yes"></xsf:importParameters>
+	<xsf:documentVersionUpgrade>
+		<xsf:useTransform transform="upgrade.xsl" minVersionToUpgrade="0.0.0.0" maxVersionToUpgrade="1.0.0.32"></xsf:useTransform>
+	</xsf:documentVersionUpgrade>
+	<xsf:extensions>
+		<xsf:extension name="SolutionDefinitionExtensions">
+			<xsf2:solutionDefinition runtimeCompatibility="client server" allowClientOnlyCode="no">
+				<xsf2:offline openIfQueryFails="yes" cacheQueries="yes"></xsf2:offline>
+				<xsf2:server formLocale="en-AU" isPreSubmitPostBackEnabled="no" isMobileEnabled="no"></xsf2:server>
+			</xsf2:solutionDefinition>
+		</xsf:extension>
+	</xsf:extensions>
+	<xsf:views default="View 1">
+		<xsf:view name="View 1" caption="View 1">
+			<xsf:mainpane transform="view1.xsl"></xsf:mainpane>
+			<xsf:editing>
+				<xsf:xmlToEdit name="DateCreated_6" item="/my:RedboxCollection/my:DateCreated">
+					<xsf:editWith proofing="no" autoComplete="no" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="dateModified_7" item="/my:RedboxCollection/my:DateModified">
+					<xsf:editWith proofing="no" autoComplete="no" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="Creator_8" item="/my:RedboxCollection/my:Creators/my:Creator" container="/my:RedboxCollection">
+					<xsf:editWith caption="Creator" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:Creators/my:Creator">
+								<my:Creators>
+									<my:Creator>
+										<my:CreatorTitle></my:CreatorTitle>
+										<my:CreatorGiven></my:CreatorGiven>
+										<my:CreatorFamily></my:CreatorFamily>
+										<my:CreatorID></my:CreatorID>
+										<my:CreatorAffiliation></my:CreatorAffiliation>
+										<my:CreatorAffiliationID></my:CreatorAffiliationID>
+										<my:CreatorPI>false</my:CreatorPI>
+										<my:CreatorCI>false</my:CreatorCI>
+									</my:Creator>
+								</my:Creators>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="Description_15" item="/my:RedboxCollection/my:Description">
+					<xsf:editWith type="plainMultiline" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="relatedPublication_16" item="/my:RedboxCollection/my:RelatedPublications/my:relatedPublication" container="/my:RedboxCollection">
+					<xsf:editWith caption="relatedPublication" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:RelatedPublications/my:relatedPublication">
+								<my:RelatedPublications>
+									<my:relatedPublication>
+										<my:RelatedPublicationURL></my:RelatedPublicationURL>
+										<my:RelatedPublicationTitle></my:RelatedPublicationTitle>
+										<my:RelatedPublicationNotes></my:RelatedPublicationNotes>
+									</my:relatedPublication>
+								</my:RelatedPublications>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group8_26" item="/my:RedboxCollection/my:RelatedData/my:RelatedDataItem" container="/my:RedboxCollection">
+					<xsf:editWith caption="RelatedDataItem" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:RelatedData/my:RelatedDataItem">
+								<my:RelatedData>
+									<my:RelatedDataItem>
+										<my:RelatedDataItemRelationship></my:RelatedDataItemRelationship>
+										<my:RelatedDataItemURL></my:RelatedDataItemURL>
+										<my:RelatedDataItemTitle></my:RelatedDataItemTitle>
+										<my:RelatedDataItemNotes></my:RelatedDataItemNotes>
+									</my:RelatedDataItem>
+								</my:RelatedData>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group6_22" item="/my:RedboxCollection/my:RelatedWebsites/my:RelatedWebsite" container="/my:RedboxCollection">
+					<xsf:editWith caption="RelatedWebsite" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:RelatedWebsites/my:RelatedWebsite">
+								<my:RelatedWebsites>
+									<my:RelatedWebsite>
+										<my:RelatedWebsiteURL></my:RelatedWebsiteURL>
+										<my:RelatedWebsiteTitle></my:RelatedWebsiteTitle>
+										<my:RelatedWebsiteNotes></my:RelatedWebsiteNotes>
+									</my:RelatedWebsite>
+								</my:RelatedWebsites>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group16_37" item="/my:RedboxCollection/my:Keywords/my:Keyword" container="/my:RedboxCollection">
+					<xsf:editWith caption="Keyword" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:Keywords/my:Keyword">
+								<my:Keywords>
+									<my:Keyword>
+										<my:KeywordValue></my:KeywordValue>
+									</my:Keyword>
+								</my:Keywords>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group14_40" item="/my:RedboxCollection/my:SEOCodes/my:SEOCode" container="/my:RedboxCollection">
+					<xsf:editWith caption="SEOCode" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:SEOCodes/my:SEOCode">
+								<my:SEOCodes>
+									<my:SEOCode>
+										<my:SEOCodeValue></my:SEOCodeValue>
+									</my:SEOCode>
+								</my:SEOCodes>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group12_38" item="/my:RedboxCollection/my:FORCodes/my:FORCode" container="/my:RedboxCollection">
+					<xsf:editWith caption="FORCode" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:FORCodes/my:FORCode">
+								<my:FORCodes>
+									<my:FORCode>
+										<my:FORCodeValue></my:FORCodeValue>
+									</my:FORCode>
+								</my:FORCodes>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group21_71" item="/my:RedboxCollection/my:Collaborators/my:Collaborator" container="/my:RedboxCollection">
+					<xsf:editWith caption="Collaborator" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:Collaborators/my:Collaborator">
+								<my:Collaborators>
+									<my:Collaborator>
+										<my:CollaboratorName></my:CollaboratorName>
+									</my:Collaborator>
+								</my:Collaborators>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group23_73" item="/my:RedboxCollection/my:Supervisors/my:Supervisor" container="/my:RedboxCollection">
+					<xsf:editWith caption="Supervisor" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:Supervisors/my:Supervisor">
+								<my:Supervisors>
+									<my:Supervisor>
+										<my:SupervisorTitle></my:SupervisorTitle>
+										<my:SupervisorFirstName></my:SupervisorFirstName>
+										<my:SupervisorFamilyName></my:SupervisorFamilyName>
+										<my:SupervisorID></my:SupervisorID>
+									</my:Supervisor>
+								</my:Supervisors>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group25_84" item="/my:RedboxCollection/my:DataOwners/my:DataOwner" container="/my:RedboxCollection">
+					<xsf:editWith caption="DataOwner" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:DataOwners/my:DataOwner">
+								<my:DataOwners>
+									<my:DataOwner>
+										<my:DataOwnerName></my:DataOwnerName>
+									</my:DataOwner>
+								</my:DataOwners>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="field52_88" item="/my:RedboxCollection/my:DisposalDate">
+					<xsf:editWith proofing="no" autoComplete="no" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group27_85" item="/my:RedboxCollection/my:FundingBodies/my:FundingBody" container="/my:RedboxCollection">
+					<xsf:editWith caption="FundingBody" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:FundingBodies/my:FundingBody">
+								<my:FundingBodies>
+									<my:FundingBody>
+										<my:FundingBodyName></my:FundingBodyName>
+									</my:FundingBody>
+								</my:FundingBodies>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group29_91" item="/my:RedboxCollection/my:GrantNumbers/my:GrantNumber" container="/my:RedboxCollection">
+					<xsf:editWith caption="GrantNumber" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:GrantNumbers/my:GrantNumber">
+								<my:GrantNumbers>
+									<my:GrantNumber>
+										<my:GrantNumberInternal>false</my:GrantNumberInternal>
+										<my:GrantNumberID></my:GrantNumberID>
+										<my:GrantNumberDescription></my:GrantNumberDescription>
+									</my:GrantNumber>
+								</my:GrantNumbers>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="group31_104" item="/my:RedboxCollection/my:Location/my:LocationURLs/my:LocationURL" container="/my:RedboxCollection">
+					<xsf:editWith caption="LocationURL" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:Location/my:LocationURLs/my:LocationURL">
+								<my:Location>
+									<my:LocationURLs>
+										<my:LocationURL>
+											<my:LocationURLValue></my:LocationURLValue>
+										</my:LocationURL>
+									</my:LocationURLs>
+								</my:Location>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="field76_113" item="/my:RedboxCollection/my:PrimaryContact/my:PrimaryContactTitle">
+					<xsf:editWith maxLength="4" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="DateFrom_185" item="/my:RedboxCollection/my:Coverage/my:DateFrom">
+					<xsf:editWith proofing="no" autoComplete="no" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="field63_178" item="/my:RedboxCollection/my:DataManagementPolicy">
+					<xsf:editWith type="plainMultiline" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="GeospatialLocation_188" item="/my:RedboxCollection/my:Coverage/my:GeospatialLocations/my:GeospatialLocation" container="/my:RedboxCollection/my:Coverage">
+					<xsf:editWith caption="GeospatialLocation" xd:autogeneration="template" component="xCollection">
+						<xsf:fragmentToInsert>
+							<xsf:chooseFragment innerFragment="my:GeospatialLocations/my:GeospatialLocation">
+								<my:GeospatialLocations>
+									<my:GeospatialLocation>
+										<my:GeospatialLocationType></my:GeospatialLocationType>
+										<my:GeospatialLocationValue></my:GeospatialLocationValue>
+									</my:GeospatialLocation>
+								</my:GeospatialLocations>
+							</xsf:chooseFragment>
+						</xsf:fragmentToInsert>
+					</xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="DateTo_186" item="/my:RedboxCollection/my:Coverage/my:DateTo">
+					<xsf:editWith proofing="no" autoComplete="no" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="SEOCodeValue_226" item="/my:RedboxCollection/my:SEOCodes/my:SEOCode/my:SEOCodeValue">
+					<xsf:editWith maxLength="6" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+				<xsf:xmlToEdit name="FORCodeValue_225" item="/my:RedboxCollection/my:FORCodes/my:FORCode/my:FORCodeValue">
+					<xsf:editWith maxLength="6" component="xField"></xsf:editWith>
+				</xsf:xmlToEdit>
+			</xsf:editing>
+			<xsf:menuArea name="msoStructuralEditingContextMenu">
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="Creator_8" caption="Insert Creator before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="relatedPublication_16" caption="Insert relatedPublication before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group6_22" caption="Insert RelatedWebsite before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group8_26" caption="Insert RelatedDataItem before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group16_37" caption="Insert Keyword before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group12_38" caption="Insert FORCode before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group14_40" caption="Insert SEOCode before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group21_71" caption="Insert Collaborator before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group23_73" caption="Insert Supervisor before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group25_84" caption="Insert DataOwner before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group27_85" caption="Insert FundingBody before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group29_91" caption="Insert GrantNumber before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="group31_104" caption="Insert LocationURL before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertBefore" xmlToEdit="GeospatialLocation_188" caption="Insert GeospatialLocation before" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="Creator_8" caption="Insert Creator after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="relatedPublication_16" caption="Insert relatedPublication after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group6_22" caption="Insert RelatedWebsite after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group8_26" caption="Insert RelatedDataItem after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group16_37" caption="Insert Keyword after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group12_38" caption="Insert FORCode after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group14_40" caption="Insert SEOCode after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group21_71" caption="Insert Collaborator after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group23_73" caption="Insert Supervisor after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group25_84" caption="Insert DataOwner after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group27_85" caption="Insert FundingBody after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group29_91" caption="Insert GrantNumber after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="group31_104" caption="Insert LocationURL after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insertAfter" xmlToEdit="GeospatialLocation_188" caption="Insert GeospatialLocation after" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="Creator_8" caption="Remove Creator" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="relatedPublication_16" caption="Remove relatedPublication" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group6_22" caption="Remove RelatedWebsite" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group8_26" caption="Remove RelatedDataItem" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group16_37" caption="Remove Keyword" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group12_38" caption="Remove FORCode" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group14_40" caption="Remove SEOCode" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group21_71" caption="Remove Collaborator" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group23_73" caption="Remove Supervisor" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group25_84" caption="Remove DataOwner" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group27_85" caption="Remove FundingBody" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group29_91" caption="Remove GrantNumber" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="group31_104" caption="Remove LocationURL" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::remove" xmlToEdit="GeospatialLocation_188" caption="Remove GeospatialLocation" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="Creator_8" caption="Insert Creator" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="relatedPublication_16" caption="Insert relatedPublication" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group6_22" caption="Insert RelatedWebsite" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group8_26" caption="Insert RelatedDataItem" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group16_37" caption="Insert Keyword" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group12_38" caption="Insert FORCode" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group14_40" caption="Insert SEOCode" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group21_71" caption="Insert Collaborator" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group23_73" caption="Insert Supervisor" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group25_84" caption="Insert DataOwner" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group27_85" caption="Insert FundingBody" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group29_91" caption="Insert GrantNumber" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="group31_104" caption="Insert LocationURL" showIf="immediate"></xsf:button>
+				<xsf:button action="xCollection::insert" xmlToEdit="GeospatialLocation_188" caption="Insert GeospatialLocation" showIf="immediate"></xsf:button>
+			</xsf:menuArea>
+		</xsf:view>
+	</xsf:views>
+	<xsf:applicationParameters application="InfoPath Design Mode">
+		<xsf:solutionProperties lastOpenView="view1.xsl" fullyEditableNamespace="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47" lastVersionNeedingTransform="1.0.0.32"></xsf:solutionProperties>
+	</xsf:applicationParameters>
+	<xsf:documentSchemas>
+		<xsf:documentSchema rootSchema="yes" location="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47 myschema.xsd"></xsf:documentSchema>
+	</xsf:documentSchemas>
+	<xsf:fileNew>
+		<xsf:initialXmlDocument caption="Exported files" href="template.xml"></xsf:initialXmlDocument>
+	</xsf:fileNew>
+</xsf:xDocumentClass>
