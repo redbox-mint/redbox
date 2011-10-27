@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject
+    xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+    <foxml:objectProperties>
+        <foxml:property
+            NAME="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+            VALUE="FedoraObject" />
+        <foxml:property NAME="info:fedora/fedora-system:def/model#state"
+            VALUE="I" />
+    </foxml:objectProperties>
+</foxml:digitalObject>
