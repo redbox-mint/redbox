@@ -38,12 +38,6 @@ import com.googlecode.fascinator.common.messaging.MessagingServices;
 import com.googlecode.fascinator.common.solr.SolrDoc;
 import com.googlecode.fascinator.common.solr.SolrResult;
 
-import fedora.client.FedoraClient;
-import fedora.server.management.FedoraAPIM;
-import fedora.server.types.gen.Datastream;
-import fedora.server.types.gen.DatastreamDef;
-import fedora.server.types.gen.UserInfo;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -66,6 +60,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.fcrepo.client.FedoraClient;
+import org.fcrepo.server.management.FedoraAPIM;
+import org.fcrepo.server.types.gen.Datastream;
+import org.fcrepo.server.types.gen.DatastreamDef;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,12 +75,20 @@ import org.slf4j.LoggerFactory;
  */
 
 public class VitalTransformer implements Transformer {
+    /** Test PID to retrieve from the server **/
+    private static final String FEDORA_TEST_PID =
+            "fedora-system:FedoraObject-3.0";
 
+    /** Email defaults **/
     private static String DEFAULT_EMAIL_SUBJECT = "VITAL Transformer error";
     private static String DEFAULT_EMAIL_TEMPLATE =
             "VITAL Transformer error: [[MESSAGE]]\n\n====\n\n[[ERROR]]";
+
+    /** Default Fedora Log message to use in VITAL **/
     private static String DEFAULT_VITAL_MESSAGE =
             "Datastream update from ReDBox '[[OID]]' => '[[PID]]'";
+
+    /** Fascinator Object property to store the PID in **/
     private static String VITAL_PROPERTY_KEY = "vitalPid";
 
     /** Logging */
@@ -442,6 +448,12 @@ public class VitalTransformer implements Transformer {
             }
             // Make sure we can get the server version
             String version = fedora.getServerVersion();
+            // Version cutout
+            if (!version.startsWith("3.")) {
+                throw new StorageException("Error; this plugin is designed"
+                        + " to work with Fedora versions 3.x");
+            }
+
             if (firstConnection) {
                 log.info("FEDORA version: '{}'", version);
             }
@@ -450,9 +462,14 @@ public class VitalTransformer implements Transformer {
             if (firstConnection) {
                 log.info("API-M access testing... {} second timeout",
                         fedoraTimeout);
-                UserInfo user = apim.describeUser(fedoraUsername);
-                log.info("API-M access confirmed: User '{}', ID: '{}'",
-                        fedoraUsername, user.getId());
+                byte[] data = apim.getObjectXML(FEDORA_TEST_PID);
+                if (data != null && data.length > 0) {
+                    log.info("API-M access confirmed: '{}' = {} bytes",
+                            FEDORA_TEST_PID, data.length);
+                } else {
+                    throw new StorageException("Error; could not retrieve "
+                            + FEDORA_TEST_PID);
+                }
             }
         } catch (MalformedURLException ex) {
             throw new TransformerException("VITAL Transformer:" +

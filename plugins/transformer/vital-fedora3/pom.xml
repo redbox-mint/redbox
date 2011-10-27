@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
-    <artifactId>redbox-vital-transformer</artifactId>
+    <artifactId>redbox-vital-transformer-fedora3</artifactId>
     <version>1.3-SNAPSHOT</version>
-    <name>ReDBox - VITAL Transformer</name>
+    <name>ReDBox - VITAL Transformer - Fedora 3.x</name>
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>1.2-SNAPSHOT</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <version>1.3-SNAPSHOT</version>
+        <relativePath>../../parent/pom.xml</relativePath>
     </parent>
     <dependencies>
         <!-- Fascinator -->
@@ -36,9 +36,9 @@
         </dependency>
         <!-- Fedora client -->
         <dependency>
-            <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>fcrepo-client</artifactId>
-            <version>2.2.4</version>
+            <groupId>org.fcrepo</groupId>
+            <artifactId>fcrepo-client-admin</artifactId>
+            <version>3.5</version>
         </dependency>
         <!-- Fedora Dependencies -->
         <dependency>

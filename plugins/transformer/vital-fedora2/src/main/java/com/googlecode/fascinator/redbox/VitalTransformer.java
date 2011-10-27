@@ -442,6 +442,12 @@ public class VitalTransformer implements Transformer {
             }
             // Make sure we can get the server version
             String version = fedora.getServerVersion();
+            // Version cutout
+            if (!version.startsWith("2.")) {
+                throw new StorageException("Error; this plugin is designed"
+                        + " to work with Fedora versions 2.x");
+            }
+
             if (firstConnection) {
                 log.info("FEDORA version: '{}'", version);
             }

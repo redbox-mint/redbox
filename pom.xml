@@ -30,8 +30,9 @@
     <modules>
         <module>parent</module>
         <module>secure-api</module>
-        <module>plugins/vitalsubscriber</module>
         <module>plugins/transaction/curation</module>
+        <module>plugins/transformer/vital-fedora2</module>
+        <module>plugins/transformer/vital-fedora3</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -96,9 +97,16 @@
         </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>redbox-vital-transformer</artifactId>
+            <artifactId>redbox-vital-transformer-fedora2</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Swap with the above dependency to use Fedora3
+        <dependency>
+            <groupId>com.googlecode.redbox-mint</groupId>
+            <artifactId>redbox-vital-transformer-fedora3</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>plugin-transaction-curation-redbox</artifactId>
