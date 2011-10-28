@@ -192,7 +192,7 @@
         "vital": {
             "id": "vital",
             "tempDir": "${java.io.tmpdir}/rbvital",
-            "foxmlTemplate": "${fascinator.home}/vital/foxml_template.xml",
+            "foxmlTemplate": "${fascinator.home}/vital/foxml_template_fedora2.xml",
             "waitConditions": {
                 "property": "published"
             },

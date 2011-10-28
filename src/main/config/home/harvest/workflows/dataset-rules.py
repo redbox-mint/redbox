@@ -314,14 +314,6 @@ class IndexData:
             message = msg.toString()
             for target in self.message_list:
                 self.utils.sendMessage(target, message)
-        ## CUT, now indexQueueConsumer is called
-        ##    directly by reharvest/reindex events
-        # Transform metadata
-        #msg = JsonSimple()
-        #msg.getJsonObject().put("oid", self.oid)
-        #msg.getJsonObject().put("transform", "true")
-        #message = msg.toString()
-        #self.utils.sendMessage("indexer", message)
 
     def __getJsonPayload(self, pid):
         payload = self.object.getPayload(pid)

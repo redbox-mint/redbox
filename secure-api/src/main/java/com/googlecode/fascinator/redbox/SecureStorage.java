@@ -27,7 +27,7 @@ import com.googlecode.fascinator.api.indexer.SearchRequest;
 import com.googlecode.fascinator.api.storage.DigitalObject;
 import com.googlecode.fascinator.api.storage.Storage;
 import com.googlecode.fascinator.api.storage.StorageException;
-import com.googlecode.fascinator.common.JsonConfigHelper;
+import com.googlecode.fascinator.common.JsonSimple;
 import com.googlecode.fascinator.portal.JsonSessionState;
 import com.googlecode.fascinator.portal.services.PortalSecurityManager;
 
@@ -196,9 +196,10 @@ public class SecureStorage implements Storage {
                         + StringUtils.join(rolesList, " OR ") + ")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
-                JsonConfigHelper json = new JsonConfigHelper(
+                JsonSimple json = new JsonSimple(
                         new ByteArrayInputStream(out.toByteArray()));
-                List<JsonConfigHelper> docs = json.getJsonList("response/docs");
+                List<JsonSimple> docs = json.getJsonSimpleList(
+                        "response", "docs");
                 if (docs.isEmpty()) {
                     entry.setAllowed(false);
                     Properties props = obj.getMetadata();

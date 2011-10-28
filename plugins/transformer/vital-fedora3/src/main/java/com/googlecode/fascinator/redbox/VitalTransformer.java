@@ -79,6 +79,9 @@ public class VitalTransformer implements Transformer {
     private static final String FEDORA_TEST_PID =
             "fedora-system:FedoraObject-3.0";
 
+    /** FOXML Version String to send to Fedora */
+    private static String FOXML_VERSION = "info:fedora/fedora-system:FOXML-1.1";
+
     /** Email defaults **/
     private static String DEFAULT_EMAIL_SUBJECT = "VITAL Transformer error";
     private static String DEFAULT_EMAIL_TEMPLATE =
@@ -699,7 +702,7 @@ public class VitalTransformer implements Transformer {
             template = IOUtils.toByteArray(in);
             in.close();
         }
-        String vitalPid = fedora.getAPIM().ingest(template, "foxml1.0",
+        String vitalPid = fedora.getAPIM().ingest(template, FOXML_VERSION,
                 "ReDBox creating new object: '" + oid + "'");
         log.info("New VITAL PID: '{}'", vitalPid);
         return vitalPid;

@@ -4,7 +4,11 @@ from com.googlecode.fascinator.common.messaging import MessagingServices
 from com.googlecode.fascinator.common.solr import SolrResult
 from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
+## Pick appropriately
+# Fedora 2
 from fedora.client import FedoraClient
+# Fedora 3
+#from org.fcrepo.client import FedoraClient
 
 from java.io import ByteArrayInputStream
 from java.io import ByteArrayOutputStream
@@ -187,8 +191,6 @@ class VitalData:
         try:
             fedora = FedoraClient(self.fedoraUrl, fedoraUsername, fedoraPassword)
             fedora.SOCKET_TIMEOUT_SECONDS = fedoraTimeout
-            apim = fedora.getAPIM()
-            apim.describeUser(fedoraUsername)
             return fedora
         except Exception, e:
             self.log.error("Error connecting to Fedora: ", e)
