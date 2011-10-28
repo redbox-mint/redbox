@@ -133,6 +133,8 @@ class VitalData:
     def get_handle(self, fedora, vitalPid):
         try:
             # Get and parse the XML
+            if not self.fedoraUrl.endswith("/"):
+                self.fedoraUrl += "/"
             url = self.fedoraUrl + "get/" + vitalPid + "/DC"
             self.log.debug("URL: '{}'", url)
             inStream = fedora.get(url, True)
