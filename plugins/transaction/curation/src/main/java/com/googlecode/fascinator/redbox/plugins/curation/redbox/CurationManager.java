@@ -822,6 +822,11 @@ public class CurationManager extends GenericTransactionManager {
                     log.warn("This object has no configured transformers!");
                 }
 
+                // Force an index update after the ID has been created,
+                //   but before "curation-confirm"
+                JsonObject order = newIndex(response, oid);
+                order.put("forceCommit", true);
+
                 // Don't forget to come back
                 createTask(response, oid, "curation-confirm");
                 return response;
