@@ -95,18 +95,24 @@
             <artifactId>redbox-secure-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Swap these 2 dependencies to go back to Fedora2 -->
+        <!--
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-vital-transformer-fedora2</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- Swap with the above dependency to use Fedora3
+        -->
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-vital-transformer-fedora3</artifactId>
             <version>${project.version}</version>
         </dependency>
-        -->
+        <dependency>
+            <groupId>com.googlecode.redbox-mint</groupId>
+            <artifactId>plugin-transformer-local</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>plugin-transaction-curation-redbox</artifactId>
@@ -148,13 +154,6 @@
             <artifactId>plugin-storage-filesystem</artifactId>
             <version>${fascinator.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.googlecode.fascinator.plugins</groupId>
-            <artifactId>plugin-storage-fedora3</artifactId>
-            <version>${fascinator.version}-SNAPSHOT</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-subscriber-solrEventLog</artifactId>

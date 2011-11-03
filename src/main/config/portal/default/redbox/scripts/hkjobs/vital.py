@@ -6,9 +6,9 @@ from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 ## Pick appropriately
 # Fedora 2
-from fedora.client import FedoraClient
+#from fedora.client import FedoraClient
 # Fedora 3
-#from org.fcrepo.client import FedoraClient
+from org.fcrepo.client import FedoraClient
 
 from java.io import ByteArrayInputStream
 from java.io import ByteArrayOutputStream
