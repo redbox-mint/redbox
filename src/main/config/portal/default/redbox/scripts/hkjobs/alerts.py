@@ -4,91 +4,324 @@ import shutil
 import time
 
 from com.googlecode.fascinator import HarvestClient
-from com.googlecode.fascinator.common import FascinatorHome, JsonObject, JsonSimple
+from com.googlecode.fascinator.common import FascinatorHome
+from com.googlecode.fascinator.common import JsonObject
+from com.googlecode.fascinator.common import JsonSimple
 
 from java.io import File
+from java.io import FileInputStream
+from java.io import InputStreamReader
 from java.lang import Exception
+from java.lang import String
+
+from org.dom4j import DocumentFactory
+from org.dom4j.io import SAXReader
 
 class AlertsData:
     def __activate__(self, context):
         self.log = context["log"]
-        config = context["systemConfig"]
+        self.config = context["systemConfig"]
         response = context["response"]
 
-        path = config.getString(FascinatorHome.getPath("alerts"), ["alerts", "path"])
-        (success, failed) = self.__processDir(path)
+        try:
+            ## Variable prep
+            defaultPath = FascinatorHome.getPath("alerts")
+            self.alertsPath = self.config.getString(defaultPath, ["alerts", "path"])
+            self.configFile = None # We'll allocate this later... if needed
+            self.redboxVersion = self.config.getString("", "redbox.version.string")
+            self.csvDialect = csv.excel
+            self.csvDialect.skipinitialspace = True
 
-        writer = response.getPrintWriter("text/plain; charset=UTF-8")
-        writer.println("%s successful, %s failed" % (success, failed))
-        writer.close()
+            ## XML Parsing
+            docFactory = DocumentFactory()
+            ##docFactory.setXPathNamespaceURIs(namespaces)
+            self.saxReader = SAXReader(docFactory)
 
-    def __processDir(self, path):
+            ## Do our job
+            (success, failed) = self.__processDir()
+
+            ## Send response to the client (if debugging in browser)
+            writer = response.getPrintWriter("text/plain; charset=UTF-8")
+            writer.println("%s successful, %s failed" % (success, failed))
+            writer.close()
+
+        except Exception,e:
+            response.setStatus(500)
+            writer = response.getPrintWriter("text/plain; charset=UTF-8")
+            writer.println("Unexpected error during script execution:\n%s" % str(e))
+            writer.close()
+
+    ## Process the file in the the alerts directory
+    def __processDir(self):
         successCount = 0
         failedCount = 0
-        names = os.listdir(path)
-        for name in names:
-            csvPath = os.path.join(path, name)
-            if os.path.isfile(csvPath):
-                try:
-                    jsonList = self.__csvToJson(csvPath)
-                except Exception,e:
-                    failedCount += 1
-                    jsonList = []
-                    shutil.move(csvPath, os.path.join(path, "failed", name))
-                    f = open(os.path.join(path, "failed", name+".errors"), "wb")
-                    f.write(str(e))
-                    f.close()
-                if len(jsonList) > 0:
-                    configFile = FascinatorHome.getPathFile("harvest/workflows/dataset.json")
-                    for json in jsonList:
-                        harvester = None
-                        try:
-                            ## requires .tfpackage extension due to jsonVelocity transformer
-                            jsonPath = os.path.join(path, "processed", name+".tfpackage")
-                            harvester = HarvestClient(configFile, File(jsonPath), "guest")
-                            jsonFile = open(jsonPath, "wb")
-                            jsonFile.write(json.toString(True))
-                            jsonFile.close()
-                            harvester.start()
-                            oid = harvester.getUploadOid()
-                            self.log.info("Harvested alert '%s' to '%s'" % (csvPath, oid))
-                            successCount += 1
-                            shutil.move(csvPath, os.path.join(path, "success", name))
-                        except Exception, e:
-                            failedCount +=1
-                            shutil.move(csvPath, os.path.join(path, "failed", name))
-                            f = open(os.path.join(path, "failed", name+".errors"), "ab")
-                            f.write("%s ERROR %s\n" % (time.ctime(), e.getMessage()))
-                            f.close()
-                        if harvester:
-                            harvester.shutdown()
+        files = os.listdir(self.alertsPath)
+        for file in files:
+        ## CSV Files
+            if file.endswith(".csv"):
+                (success, failed) = self.__processCSV(file)
+            else:
+        ## XML Files
+                if file.endswith(".xml"):
+                    mapPath = self.config.getString(None, ["alerts", "xmlMaps", "xml"])
+                    (success, failed) = self.__processXML(file, mapPath)
+                else:
+        ## Everything else... errors
+                    ## Except our directories of course
+                    filePath = self.pBase(file)
+                    if os.path.isfile(filePath):
+                        self.log.error("Unknown file extension in alerts directory: '{}'", file)
+                    success = 0
+                    failed = 0
+            successCount += success
+            failedCount += failed
         return successCount, failedCount
 
-    ## Create a package from a CSV
-    def __csvToJson(self, csvPath):
-        self.log.info("Converting '%s' to JSON..." % csvPath)
-        f = open(csvPath, "rb")
-        csvReader = csv.reader(f, delimiter=",", quotechar="\"")
-        headerRow = csvReader.next()
+    ## Processing method for a single XML File.
+    ## Each XML file is expected to contain only
+    ##  a single Collection
+    def __processXML(self, fileName, mapPath):
+        filePath = self.pBase(fileName)
+        if mapPath is None:
+            self.log.error("Error accessing XML mappings for '{}'", fileName)
+            return 0, 1
+
+        ## Make sure we can see our mappings
+        try:
+            self.log.info("Reading XML mapping file: '{}'", mapPath)
+            inStream = FileInputStream(File(mapPath))
+            xmlMappings = JsonSimple(inStream)
+        except Exception,e:
+            ## Move the CSV to the 'failed' directory
+            shutil.move(filePath, self.pFail(fileName))
+            ## And write our error data to disk beside it
+            self.writeError(fileName, e)
+            return 0, 1
+
+        jsonObject = None
+        try:
+            jsonObject = self.__xmlToJson(fileName, xmlMappings.getObject(["mappings"]))
+
+        except Exception,e:
+            ## Move the CSV to the 'failed' directory
+            shutil.move(filePath, self.pFail(fileName))
+            ## And write our error data to disk beside it
+            self.writeError(fileName, e)
+
+        ## Now ingested the JSON Object into the tool chain
+        if jsonObject is not None:
+            success = self.__ingestJson(fileName, jsonObject)
+            if success:
+                return 1, 0
+        return 0, 1
+
+    ## Processing method for a single CSV File.
+    ## Each CSV file may contain multiple rows
+    ##  which should become ReDBox Collections
+    def __processCSV(self, fileName):
+        ## Counters
+        successCount = 0
+        failedCount = 0
+
+        ## Here's the data parsing/processing,
+        ## should have a list of JSON objects
+        filePath = self.pBase(fileName)
+        try:
+            jsonList = self.__csvToJson(fileName)
+
+        except Exception,e:
+            ## Processing failed
+            failedCount += 1
+            jsonList = []
+            ## Move the CSV to the 'failed' directory
+            shutil.move(filePath, self.pFail(fileName))
+            ## And write our error data to disk beside it
+            self.writeError(fileName, e)
+
+        ## Now all of the JSON Objects need to
+        ##   be ingested into the tool chain
+        if len(jsonList) > 0:
+            for json in jsonList:
+                success = self.__ingestJson(fileName, json)
+                if success:
+                    successCount += 1;
+                else:
+                    failedCount += 1;
+
+        ## Return the counts we got from this file
+        return successCount, failedCount
+
+    ## Create packages from a CSV
+    def __csvToJson(self, fileName):
+        self.log.info("Converting '{}' to JSON...", fileName)
+        filePath = self.pBase(fileName)
+        timestamp = time.gmtime(os.path.getmtime(filePath))
+
+        ## Parse our CSV file
+        f = open(filePath, "rb")
+        csvReader = csv.reader(f, dialect=self.csvDialect)
+        ## We don't need the header row
+        try:
+            headerRow = csvReader.next()
+        except:
+            ## File has no data??
+            self.log.error("File '{}' contains no rows of data!", fileName)
+            return []
+
+        ## Process each row in turn
         data = None
         jsonList = []
         for row in csvReader:
             data = {
                 "viewId": "default",
-                "title": row[0],
-                "description": row[1],
-                "workflow_source": row[5],
-                "submitted": "true",
+                "title": row[0].strip(),
+                "description": row[1].strip(),
+                "workflow_source": row[5].strip(),
                 "packageType": "dataset",
-                "submitDate": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(os.path.getmtime(csvPath))),
-                "submitTitle": row[0],
-                "submitDescription": row[1],
-                "contactName": row[2],
-                "phoneNumber": row[3],
-                "emailAddress": row[4],
-                "submitNotes": row[6]
+                "redbox:formVersion": self.redboxVersion,
+                "redbox:newForm": "true",
+                "redbox:submissionProcess.redbox:submitted": "true",
+                "redbox:submissionProcess.dc:date": time.strftime("%Y-%m-%d %H:%M:%S", timestamp),
+                "redbox:submissionProcess.dc:title": row[0].strip(),
+                "redbox:submissionProcess.dc:description": row[1].strip(),
+                "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name": row[2].strip(),
+                "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone": row[3].strip(),
+                "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox": row[4].strip(),
+                "redbox:submissionProcess.skos:note": row[6].strip()
             }
             json = JsonSimple(JsonObject(data))
             jsonList.append(json)
         f.close()
         return jsonList
+
+    ## Create packages from a CSV
+    def __xmlToJson(self, fileName, xmlMappings):
+        self.log.info("Converting '{}' to JSON...", fileName)
+        filePath = self.pBase(fileName)
+        # TODO
+        timestamp = time.gmtime(os.path.getmtime(filePath))
+
+        # Run the XML through our parser
+        try:
+            inStream = FileInputStream(File(filePath))
+            reader = InputStreamReader(inStream, "UTF-8")
+            document = self.saxReader.read(reader)
+        # Parse fails
+        except Exception, e:
+            ## Move the XML to the 'failed' directory
+            shutil.move(filePath, self.pFail(fileName))
+            ## And write our error data to disk beside it
+            self.writeError(fileName, e)
+            return None
+        # Close our file access objects
+        finally:
+            if reader is not None:
+                reader.close()
+            if inStream is not None:
+                inStream.close()
+
+        # Now go looking for all our data
+        json = JsonObject()
+        json.put("workflow_source", "XML Ingest") # Default
+        self.__mapXpathToFields(document, xmlMappings, json)
+
+        # Operational fields
+        json.put("viewId", "default")
+        json.put("packageType", "dataset")
+        json.put("redbox:formVersion", self.redboxVersion)
+        json.put("redbox:newForm", "true")
+        return JsonSimple(json)
+
+    ## Used recursively
+    def __mapXpathToFields(self, sourceData, map, responseData, index = 1):
+        for xpath in map.keySet():
+            field = map.get(xpath)
+            if xpath == "":
+                self.log.debug("Ignoring unmapped field: '{}'", field)
+            else:
+                nodes = sourceData.selectNodes(xpath)
+                if isinstance(field, JsonObject):
+                    i = 1
+                    for node in nodes:
+                        self.__mapXpathToFields(node, field, responseData, i)
+                        i += 1
+                else:
+                    for node in nodes:
+                        fieldString = field.replace(".0.", ".%s."%index, 1)
+                        text = node.getTextTrim()
+                        if field != "" and text != "":
+                            responseData.put(fieldString, text)
+
+    def __ingestJson(self, fileName, jsonObject):
+        self.log.debug("\n{}", jsonObject.toString(True))
+        return;
+
+        if self.configFile is None:
+            self.configFile = FascinatorHome.getPathFile("harvest/workflows/dataset.json")
+
+        harvester = None
+        try:
+            ## Cache the file out to disk... although requires it
+            ## .tfpackage extension due to jsonVelocity transformer
+            jsonPath = self.pTemp(fileName)
+            jsonFile = open(jsonPath, "wb")
+            jsonFile.write(jsonObject.toString(True))
+            jsonFile.close()
+
+            ## Now instantiate a HarvestClient just for this File.
+            harvester = HarvestClient(configFile, File(jsonPath), "guest")
+            harvester.start()
+
+            ## And cleanup afterwards
+            oid = harvester.getUploadOid()
+            self.log.info("Harvested alert '{}' to '{}'", fileName, oid)
+            shutil.move(self.pBase(fileName), self.pDone(fileName))
+            return True
+
+        except Exception, e:
+            ## TODO: This block looks to just be a copy of the
+            ##  top-level one, yet it runs per ROW, not for the
+            ##  whole File. Just the JSON data should be stored
+
+            ## Move the CSV to the 'failed' directory
+            shutil.move(self.pBase(fileName), self.pFail(fileName))
+            ## And write our error data to disk beside it
+            self.writeError(fileName, e)
+            return False
+
+        ## Cleanup
+        if harvester is not None:
+            harvester.shutdown()
+
+    ## Wrapper for writing exception details to disk
+    def writeError(self, fileName, err):
+        errorString = "%s ERROR %s\n%s" % (time.ctime(), err.getMessage(), str(err))
+        self.log.error(errorString)
+        f = open(self.pErr(fileName), "ab")
+        f.write(errorString)
+        f.close()
+
+    ## Short nameed Wrappers for convention based file paths
+    def pBase(self, file):
+        # A base path file
+        return os.path.join(self.alertsPath, file)
+
+    def pErr(self, file):
+        # Error file to accompany failed data
+        return self.__alertsFilePath("failed", file+".errors")
+
+    def pFail(self, file):
+        # A failed attempt to ingest
+        return self.__alertsFilePath("failed", file)
+
+    def pTemp(self, file):
+        # Cache file for the HarvestClient... '.tfpackage' extension
+        #  required inside system due to jsonVelocity transformer
+        return self.__alertsFilePath("processed", file+".tfpackage")
+
+    def pDone(self, file):
+        # Archived originals
+        return self.__alertsFilePath("success", file)
+
+    def __alertsFilePath(self, subdirectory, file):
+        return os.path.join(self.alertsPath, subdirectory, file)

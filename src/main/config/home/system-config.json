@@ -455,7 +455,11 @@
         "Geonames": "${mint.proxy.server}/geonames/search"
     },
     "alerts": {
-        "path": "${fascinator.home}/alerts"
+        "path": "${fascinator.home}/alerts",
+        "xmlMaps": {
+            "xml": "${fascinator.home}/alerts/config/basicXmlMap.json",
+            "rif": "${fascinator.home}/alerts/config/rifXmlMap.json"
+        }
     },
     "watcher": {
         "path": "${watcher.home}"
