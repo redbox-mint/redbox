@@ -289,7 +289,7 @@ class IndexData:
                         else:
                             self.utils.add(self.index, facetField, value)
                         # index keywords for lookup
-                        if field.startswith("dc:subject.vivo:keywords."):
+                        if field.startswith("dc:subject.vivo:keyword."):
                             self.utils.add(self.index, "keywords", value)
 
         self.utils.add(self.index, "display_type", displayType)
