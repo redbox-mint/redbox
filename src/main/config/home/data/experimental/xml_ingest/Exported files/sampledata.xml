@@ -136,9 +136,29 @@
 		<my:DataManagementPlanExists>false</my:DataManagementPlanExists>
 		<my:DataManagementPlanNotes/>
 	</my:DataManagementPlan>
-	<xd:SchemaInfo LocalName="Redbox" NamespaceURI="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47">
+	<my:SubmissionDetails>
+		<my:WorkflowSource/>
+		<my:ContactPersonName/>
+		<my:ContactPersonEmail/>
+		<my:ContactPersonPhone/>
+	</my:SubmissionDetails>
+	<my:Language/>
+	<xd:SchemaInfo LocalName="RedboxCollection" NamespaceURI="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47">
 		<xd:Namespaces>
-			<xd:Namespace LocalName="Redbox" NamespaceURI="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47"/>
+			<xd:Namespace LocalName="RedboxCollection" NamespaceURI="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47"/>
 		</xd:Namespaces>
 	</xd:SchemaInfo>
+	<xd:DataConnection Name="Languages">
+		<languages xmlns:my="http://schemas.microsoft.com/office/infopath/2003/myXSD/2011-09-26T07:17:47" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003">
+			<language>
+				<key/>
+				<value/>
+			</language>
+			<xd:SchemaInfo LocalName="languages" NamespaceURI="">
+				<xd:Namespaces>
+					<xd:Namespace LocalName="languages" NamespaceURI=""/>
+				</xd:Namespaces>
+			</xd:SchemaInfo>
+		</languages>
+	</xd:DataConnection>
 </my:RedboxCollection>

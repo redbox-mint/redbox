@@ -36,6 +36,8 @@
 				<xsd:element ref="my:DataSize" minOccurs="0"/>
 				<xsd:element ref="my:DataManagementPolicy" minOccurs="0"/>
 				<xsd:element ref="my:DataManagementPlan" minOccurs="0"/>
+				<xsd:element ref="my:SubmissionDetails" minOccurs="0"/>
+				<xsd:element ref="my:Language" minOccurs="0"/>
 			</xsd:sequence>
 			<xsd:anyAttribute processContents="lax" namespace="http://www.w3.org/XML/1998/namespace"/>
 		</xsd:complexType>
@@ -383,6 +385,21 @@
 	</xsd:element>
 	<xsd:element name="DataManagementPlanExists" nillable="true" type="xsd:boolean"/>
 	<xsd:element name="DataManagementPlanNotes" type="xsd:string"/>
+	<xsd:element name="SubmissionDetails">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="my:WorkflowSource" minOccurs="0"/>
+				<xsd:element ref="my:ContactPersonName" minOccurs="0"/>
+				<xsd:element ref="my:ContactPersonEmail" minOccurs="0"/>
+				<xsd:element ref="my:ContactPersonPhone" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="WorkflowSource" type="xsd:string"/>
+	<xsd:element name="ContactPersonName" type="xsd:string"/>
+	<xsd:element name="ContactPersonEmail" type="xsd:string"/>
+	<xsd:element name="ContactPersonPhone" type="xsd:string"/>
+	<xsd:element name="Language" type="xsd:string"/>
 	<xsd:simpleType name="requiredString">
 		<xsd:restriction base="xsd:string">
 			<xsd:minLength value="1"/>

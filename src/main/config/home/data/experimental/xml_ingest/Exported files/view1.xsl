@@ -245,6 +245,66 @@ BODY {
 							<tr class="xdTableContentRow">
 								<td vAlign="top" class="xdTableContentCell">
 									<div>
+										<div>
+											<div> </div>
+										</div>
+										<div>
+											<table style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; WIDTH: 624px; BORDER-COLLAPSE: collapse; WORD-WRAP: break-word; BORDER-TOP-STYLE: none; TABLE-LAYOUT: fixed; BORDER-LEFT-STYLE: none" class="xdFormLayout xdTableStyleTwoCol">
+												<colgroup>
+													<col style="WIDTH: 192px"></col>
+													<col style="WIDTH: 432px"></col>
+												</colgroup>
+												<tbody vAlign="top">
+													<tr class="xdHeadingRow">
+														<td colSpan="2" class="xdHeadingCell">
+															<h2>Submission details</h2>
+														</td>
+													</tr>
+													<tr class="xdTableRow">
+														<td vAlign="top" class="xdTableCellLabel">
+															<h4>Data Source</h4>
+														</td>
+														<td vAlign="top" class="xdTableCellComponent"><span hideFocus="1" class="xdTextBox" title="" tabIndex="0" xd:binding="my:SubmissionDetails/my:WorkflowSource" xd:CtrlId="CTRL120" xd:xctname="PlainText" style="WIDTH: 100%">
+																<xsl:value-of select="my:SubmissionDetails/my:WorkflowSource"/>
+															</span>
+														</td>
+													</tr>
+													<tr class="xdTableRow">
+														<td vAlign="top" class="xdTableCellLabel">
+															<h4>Contact person</h4>
+														</td>
+														<td vAlign="top" class="xdTableCellComponent"><span hideFocus="1" class="xdTextBox" title="" tabIndex="0" xd:binding="my:SubmissionDetails/my:ContactPersonName" xd:CtrlId="CTRL121" xd:xctname="PlainText" style="WIDTH: 100%">
+																<xsl:value-of select="my:SubmissionDetails/my:ContactPersonName"/>
+															</span>
+														</td>
+													</tr>
+													<tr class="xdTableRow">
+														<td vAlign="top" class="xdTableCellLabel">
+															<h4>Contact person - email</h4>
+														</td>
+														<td vAlign="top" class="xdTableCellComponent"><span hideFocus="1" class="xdTextBox" title="" tabIndex="0" xd:binding="my:SubmissionDetails/my:ContactPersonEmail" xd:CtrlId="CTRL122" xd:xctname="PlainText" style="WIDTH: 100%">
+																<xsl:value-of select="my:SubmissionDetails/my:ContactPersonEmail"/>
+															</span>
+														</td>
+													</tr>
+													<tr class="xdTableRow">
+														<td vAlign="top" class="xdTableCellLabel">
+															<h4>Contact person - phone</h4>
+														</td>
+														<td vAlign="top" class="xdTableCellComponent">
+															<div><span hideFocus="1" class="xdTextBox" title="" tabIndex="0" xd:binding="my:SubmissionDetails/my:ContactPersonPhone" xd:CtrlId="CTRL123" xd:xctname="PlainText" style="WIDTH: 100%">
+																	<xsl:value-of select="my:SubmissionDetails/my:ContactPersonPhone"/>
+																</span>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div> </div>
+										<div>
+											<hr/>
+										</div>
 										<div> </div>
 									</div>
 									<div>
@@ -352,6 +412,50 @@ BODY {
 																	<img src="res://infopath.exe/calendar.gif"/>
 																</button>
 															</div>
+														</div>
+													</td>
+												</tr>
+												<tr style="MIN-HEIGHT: 30px" class="xdTableEmphasisRow">
+													<td vAlign="top" class="xdTableEmphasisCellLabel">
+														<h4>Language</h4>
+													</td>
+													<td vAlign="top" class="xdTableEmphasisCellComponent">
+														<div>
+															<select style="WIDTH: 100%" class="xdComboBox xdBehavior_Select" title="" size="1" xd:binding="my:Language" xd:CtrlId="CTRL124" xd:xctname="dropdown" value="" xd:boundProp="value" tabIndex="0">
+																<xsl:attribute name="value">
+																	<xsl:value-of select="my:Language"/>
+																</xsl:attribute>
+																<xsl:choose>
+																	<xsl:when test="function-available('xdXDocument:GetDOM')">
+																		<option/>
+																		<xsl:variable name="val" select="my:Language"/>
+																		<xsl:if test="not(xdXDocument:GetDOM(&quot;Languages&quot;)/languages/language[key=$val] or $val='')">
+																			<option selected="selected">
+																				<xsl:attribute name="value">
+																					<xsl:value-of select="$val"/>
+																				</xsl:attribute>
+																				<xsl:value-of select="$val"/>
+																			</option>
+																		</xsl:if>
+																		<xsl:for-each select="xdXDocument:GetDOM(&quot;Languages&quot;)/languages/language">
+																			<option>
+																				<xsl:attribute name="value">
+																					<xsl:value-of select="key"/>
+																				</xsl:attribute>
+																				<xsl:if test="$val=key">
+																					<xsl:attribute name="selected">selected</xsl:attribute>
+																				</xsl:if>
+																				<xsl:value-of select="value"/>
+																			</option>
+																		</xsl:for-each>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<option>
+																			<xsl:value-of select="my:Language"/>
+																		</option>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</select>
 														</div>
 													</td>
 												</tr>

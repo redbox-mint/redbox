@@ -528,6 +528,22 @@
 			</xsl:element>
 		</xsl:copy>
 	</xsl:template>
+	<xsl:template match="my:SubmissionDetails" mode="_35">
+		<xsl:copy>
+			<xsl:element name="my:WorkflowSource">
+				<xsl:copy-of select="my:WorkflowSource/text()[1]"/>
+			</xsl:element>
+			<xsl:element name="my:ContactPersonName">
+				<xsl:copy-of select="my:ContactPersonName/text()[1]"/>
+			</xsl:element>
+			<xsl:element name="my:ContactPersonEmail">
+				<xsl:copy-of select="my:ContactPersonEmail/text()[1]"/>
+			</xsl:element>
+			<xsl:element name="my:ContactPersonPhone">
+				<xsl:copy-of select="my:ContactPersonPhone/text()[1]"/>
+			</xsl:element>
+		</xsl:copy>
+	</xsl:template>
 	<xsl:template match="my:RedboxCollection" mode="_0">
 		<xsl:copy>
 			<xsl:element name="my:Title">
@@ -787,6 +803,20 @@
 					<xsl:apply-templates select="msxsl:node-set($var)/*" mode="_34"/>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="my:SubmissionDetails">
+					<xsl:apply-templates select="my:SubmissionDetails[1]" mode="_35"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="var">
+						<xsl:element name="my:SubmissionDetails"/>
+					</xsl:variable>
+					<xsl:apply-templates select="msxsl:node-set($var)/*" mode="_35"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:element name="my:Language">
+				<xsl:copy-of select="my:Language/text()[1]"/>
+			</xsl:element>
 		</xsl:copy>
 	</xsl:template>
 </xsl:stylesheet>

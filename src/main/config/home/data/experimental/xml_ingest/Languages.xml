@@ -1,0 +1,488 @@
+﻿<languages>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/eng</key><value>English</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/abk</key><value>Abkhazian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ace</key><value>Achinese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ach</key><value>Acoli</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ada</key><value>Adangme</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ady</key><value>Adyghe; Adygei</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/?aar</key><value>Afar</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/afh</key><value>Afrihili</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/afr</key><value>Afrikaans</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/afa</key><value>Afro-Asiatic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ain</key><value>Ainu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/aka</key><value>Akan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/akk</key><value>Akkadian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/alb</key><value>Albanian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ale</key><value>Aleut</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/alg</key><value>Algonquian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tut</key><value>Altaic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/amh</key><value>Amharic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/anp</key><value>Angika</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/apa</key><value>Apache languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ara</key><value>Arabic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arg</key><value>Aragonese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arp</key><value>Arapaho</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arw</key><value>Arawak</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arm</key><value>Armenian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rup</key><value>Aromanian; Arumanian; Macedo-Romanian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/art</key><value>Artificial languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/asm</key><value>Assamese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ast</key><value>Asturian; Bable; Leonese; Asturleonese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ath</key><value>Athapascan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/aus</key><value>Australian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/map</key><value>Austronesian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ava</key><value>Avaric</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ave</key><value>Avestan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/awa</key><value>Awadhi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/aym</key><value>Aymara</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/aze</key><value>Azerbaijani</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ban</key><value>Balinese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bat</key><value>Baltic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bal</key><value>Baluchi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bam</key><value>Bambara</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bai</key><value>Bamileke languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bad</key><value>Banda languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bnt</key><value>Bantu (Other)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bas</key><value>Basa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bak</key><value>Bashkir</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/baq</key><value>Basque</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/btk</key><value>Batak languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bej</key><value>Beja; Bedawiyet</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bel</key><value>Belarusian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bem</key><value>Bemba</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ben</key><value>Bengali</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ber</key><value>Berber languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bho</key><value>Bhojpuri</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bih</key><value>Bihari languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bik</key><value>Bikol</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bin</key><value>Bini; Edo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bis</key><value>Bislama</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/byn</key><value>Blin; Bilin</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zbl</key><value>Blissymbols; Blissymbolics; Bliss</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nob</key><value>Bokmål, Norwegian; Norwegian Bokmål</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bos</key><value>Bosnian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bra</key><value>Braj</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bre</key><value>Breton</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bug</key><value>Buginese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bul</key><value>Bulgarian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bua</key><value>Buriat</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bur</key><value>Burmese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cad</key><value>Caddo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cat</key><value>Catalan; Valencian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cau</key><value>Caucasian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ceb</key><value>Cebuano</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cel</key><value>Celtic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cai</key><value>Central American Indian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/khm</key><value>Central Khmer</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chg</key><value>Chagatai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cmc</key><value>Chamic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cha</key><value>Chamorro</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/che</key><value>Chechen</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chr</key><value>Cherokee</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chy</key><value>Cheyenne</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chb</key><value>Chibcha</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nya</key><value>Chichewa; Chewa; Nyanja</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chi</key><value>Chinese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chn</key><value>Chinook jargon</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chp</key><value>Chipewyan; Dene Suline</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cho</key><value>Choctaw</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chu</key><value>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chk</key><value>Chuukese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chv</key><value>Chuvash</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nwc</key><value>Classical Newari; Old Newari; Classical Nepal Bhasa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/syc</key><value>Classical Syriac</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cop</key><value>Coptic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cor</key><value>Cornish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cos</key><value>Corsican</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cre</key><value>Cree</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mus</key><value>Creek</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/crp</key><value>Creoles and pidgins</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cpe</key><value>Creoles and pidgins, English based</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cpf</key><value>Creoles and pidgins, French-based</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cpp</key><value>Creoles and pidgins, Portuguese-based</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/crh</key><value>Crimean Tatar; Crimean Turkish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hrv</key><value>Croatian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cus</key><value>Cushitic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/cze</key><value>Czech</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dak</key><value>Dakota</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dan</key><value>Danish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dar</key><value>Dargwa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/del</key><value>Delaware</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/din</key><value>Dinka</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/div</key><value>Divehi; Dhivehi; Maldivian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/doi</key><value>Dogri</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dgr</key><value>Dogrib</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dra</key><value>Dravidian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dua</key><value>Duala</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dum</key><value>Dutch, Middle (ca.1050-1350)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dut</key><value>Dutch; Flemish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dyu</key><value>Dyula</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dzo</key><value>Dzongkha</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/frs</key><value>Eastern Frisian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/efi</key><value>Efik</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/egy</key><value>Egyptian (Ancient)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/eka</key><value>Ekajuk</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/elx</key><value>Elamite</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/eng</key><value>English</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/enm</key><value>English, Middle (1100-1500)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ang</key><value>English, Old (ca.450-1100)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/myv</key><value>Erzya</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/epo</key><value>Esperanto</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/est</key><value>Estonian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ewe</key><value>Ewe</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ewo</key><value>Ewondo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fan</key><value>Fang</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fat</key><value>Fanti</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fao</key><value>Faroese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fij</key><value>Fijian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fil</key><value>Filipino; Pilipino</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fin</key><value>Finnish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fiu</key><value>Finno-Ugrian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fon</key><value>Fon</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fre</key><value>French</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/frm</key><value>French, Middle (ca.1400-1600)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fro</key><value>French, Old (842-ca.1400)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fur</key><value>Friulian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ful</key><value>Fulah</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gaa</key><value>Ga</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gla</key><value>Gaelic; Scottish Gaelic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/car</key><value>Galibi Carib</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/glg</key><value>Galician</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lug</key><value>Ganda</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gay</key><value>Gayo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gba</key><value>Gbaya</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gez</key><value>Geez</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/geo</key><value>Georgian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ger</key><value>German</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gmh</key><value>German, Middle High (ca.1050-1500)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/goh</key><value>German, Old High (ca.750-1050)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gem</key><value>Germanic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gil</key><value>Gilbertese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gon</key><value>Gondi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gor</key><value>Gorontalo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/got</key><value>Gothic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/grb</key><value>Grebo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/grc</key><value>Greek, Ancient (to 1453)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gre</key><value>Greek, Modern (1453-)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/grn</key><value>Guarani</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/guj</key><value>Gujarati</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gwi</key><value>Gwich'in</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hai</key><value>Haida</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hat</key><value>Haitian; Haitian Creole</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hau</key><value>Hausa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/haw</key><value>Hawaiian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/heb</key><value>Hebrew</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/her</key><value>Herero</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hil</key><value>Hiligaynon</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/him</key><value>Himachali languages; Western Pahari languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hin</key><value>Hindi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hmo</key><value>Hiri Motu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hit</key><value>Hittite</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hmn</key><value>Hmong; Mong</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hun</key><value>Hungarian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hup</key><value>Hupa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/iba</key><value>Iban</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ice</key><value>Icelandic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ido</key><value>Ido</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ibo</key><value>Igbo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ijo</key><value>Ijo languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ilo</key><value>Iloko</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/smn</key><value>Inari Sami</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/inc</key><value>Indic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ine</key><value>Indo-European languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ind</key><value>Indonesian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/inh</key><value>Ingush</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ina</key><value>Interlingua (International Auxiliary Language Association)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ile</key><value>Interlingue; Occidental</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/iku</key><value>Inuktitut</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ipk</key><value>Inupiaq</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ira</key><value>Iranian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gle</key><value>Irish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mga</key><value>Irish, Middle (900-1200)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sga</key><value>Irish, Old (to 900)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/iro</key><value>Iroquoian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ita</key><value>Italian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/jpn</key><value>Japanese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/jav</key><value>Javanese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/jrb</key><value>Judeo-Arabic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/jpr</key><value>Judeo-Persian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kbd</key><value>Kabardian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kab</key><value>Kabyle</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kac</key><value>Kachin; Jingpho</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kal</key><value>Kalaallisut; Greenlandic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/xal</key><value>Kalmyk; Oirat</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kam</key><value>Kamba</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kan</key><value>Kannada</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kau</key><value>Kanuri</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kaa</key><value>Kara-Kalpak</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/krc</key><value>Karachay-Balkar</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/krl</key><value>Karelian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kar</key><value>Karen languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kas</key><value>Kashmiri</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/csb</key><value>Kashubian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kaw</key><value>Kawi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kaz</key><value>Kazakh</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kha</key><value>Khasi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/khi</key><value>Khoisan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kho</key><value>Khotanese; Sakan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kik</key><value>Kikuyu; Gikuyu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kmb</key><value>Kimbundu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kin</key><value>Kinyarwanda</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kir</key><value>Kirghiz; Kyrgyz</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tlh</key><value>Klingon; tlhIngan-Hol</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kom</key><value>Komi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kon</key><value>Kongo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kok</key><value>Konkani</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kor</key><value>Korean</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kos</key><value>Kosraean</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kpe</key><value>Kpelle</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kro</key><value>Kru languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kua</key><value>Kuanyama; Kwanyama</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kum</key><value>Kumyk</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kur</key><value>Kurdish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kru</key><value>Kurukh</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/kut</key><value>Kutenai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lad</key><value>Ladino</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lah</key><value>Lahnda</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lam</key><value>Lamba</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/day</key><value>Land Dayak languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lao</key><value>Lao</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lat</key><value>Latin</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lav</key><value>Latvian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lez</key><value>Lezghian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lim</key><value>Limburgan; Limburger; Limburgish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lin</key><value>Lingala</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lit</key><value>Lithuanian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/jbo</key><value>Lojban</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nds</key><value>Low German; Low Saxon; German, Low; Saxon, Low</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/dsb</key><value>Lower Sorbian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/loz</key><value>Lozi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lub</key><value>Luba-Katanga</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lua</key><value>Luba-Lulua</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lui</key><value>Luiseno</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/smj</key><value>Lule Sami</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lun</key><value>Lunda</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/luo</key><value>Luo (Kenya and Tanzania)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lus</key><value>Lushai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ltz</key><value>Luxembourgish; Letzeburgesch</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mac</key><value>Macedonian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mad</key><value>Madurese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mag</key><value>Magahi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mai</key><value>Maithili</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mak</key><value>Makasar</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mlg</key><value>Malagasy</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/may</key><value>Malay</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mal</key><value>Malayalam</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mlt</key><value>Maltese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mnc</key><value>Manchu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mdr</key><value>Mandar</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/man</key><value>Mandingo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mni</key><value>Manipuri</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mno</key><value>Manobo languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/glv</key><value>Manx</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mao</key><value>Maori</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arn</key><value>Mapudungun; Mapuche</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mar</key><value>Marathi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/chm</key><value>Mari</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mah</key><value>Marshallese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mwr</key><value>Marwari</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mas</key><value>Masai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/myn</key><value>Mayan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/men</key><value>Mende</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mic</key><value>Mi'kmaq; Micmac</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/min</key><value>Minangkabau</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mwl</key><value>Mirandese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/moh</key><value>Mohawk</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mdf</key><value>Moksha</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mkh</key><value>Mon-Khmer languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/lol</key><value>Mongo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mon</key><value>Mongolian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mos</key><value>Mossi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mul</key><value>Multiple languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mun</key><value>Munda languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nqo</key><value>N'Ko</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nah</key><value>Nahuatl languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nau</key><value>Nauru</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nav</key><value>Navajo; Navaho</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nde</key><value>Ndebele, North; North Ndebele</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nbl</key><value>Ndebele, South; South Ndebele</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ndo</key><value>Ndonga</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nap</key><value>Neapolitan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/new</key><value>Nepal Bhasa; Newari</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nep</key><value>Nepali</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nia</key><value>Nias</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nic</key><value>Niger-Kordofanian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ssa</key><value>Nilo-Saharan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/niu</key><value>Niuean</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zxx</key><value>No linguistic content; Not applicable</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nog</key><value>Nogai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/non</key><value>Norse, Old</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nai</key><value>North American Indian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/frr</key><value>Northern Frisian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sme</key><value>Northern Sami</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nor</key><value>Norwegian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nno</key><value>Norwegian Nynorsk; Nynorsk, Norwegian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nub</key><value>Nubian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nym</key><value>Nyamwezi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nyn</key><value>Nyankole</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nyo</key><value>Nyoro</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nzi</key><value>Nzima</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/oci</key><value>Occitan (post 1500); Provençal</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/arc</key><value>Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/oji</key><value>Ojibwa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ori</key><value>Oriya</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/orm</key><value>Oromo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/osa</key><value>Osage</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/oss</key><value>Ossetian; Ossetic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/oto</key><value>Otomian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pal</key><value>Pahlavi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pau</key><value>Palauan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pli</key><value>Pali</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pam</key><value>Pampanga; Kapampangan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pag</key><value>Pangasinan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pan</key><value>Panjabi; Punjabi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pap</key><value>Papiamento</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/paa</key><value>Papuan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/nso</key><value>Pedi; Sepedi; Northern Sotho</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/per</key><value>Persian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/peo</key><value>Persian, Old (ca.600-400 B.C.)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/phi</key><value>Philippine languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/phn</key><value>Phoenician</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pon</key><value>Pohnpeian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pol</key><value>Polish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/por</key><value>Portuguese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pra</key><value>Prakrit languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pro</key><value>Provençal, Old (to 1500)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/pus</key><value>Pushto; Pashto</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/que</key><value>Quechua</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/raj</key><value>Rajasthani</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rap</key><value>Rapanui</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rar</key><value>Rarotongan; Cook Islands Maori</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/qaa-qtz</key><value>Reserved for local use</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/roa</key><value>Romance languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rum</key><value>Romanian; Moldavian; Moldovan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/roh</key><value>Romansh</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rom</key><value>Romany</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/run</key><value>Rundi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/rus</key><value>Russian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sal</key><value>Salishan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sam</key><value>Samaritan Aramaic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/smi</key><value>Sami languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/smo</key><value>Samoan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sad</key><value>Sandawe</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sag</key><value>Sango</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/san</key><value>Sanskrit</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sat</key><value>Santali</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/srd</key><value>Sardinian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sas</key><value>Sasak</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sco</key><value>Scots</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sel</key><value>Selkup</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sem</key><value>Semitic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/srp</key><value>Serbian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/srr</key><value>Serer</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/shn</key><value>Shan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sna</key><value>Shona</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/iii</key><value>Sichuan Yi; Nuosu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/scn</key><value>Sicilian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sid</key><value>Sidamo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sgn</key><value>Sign Languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/bla</key><value>Siksika</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/snd</key><value>Sindhi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sin</key><value>Sinhala; Sinhalese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sit</key><value>Sino-Tibetan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sio</key><value>Siouan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sms</key><value>Skolt Sami</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/den</key><value>Slave (Athapascan)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sla</key><value>Slavic languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/slo</key><value>Slovak</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/slv</key><value>Slovenian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sog</key><value>Sogdian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/som</key><value>Somali</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/son</key><value>Songhai languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/snk</key><value>Soninke</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wen</key><value>Sorbian languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sot</key><value>Sotho, Southern</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sai</key><value>South American Indian (Other)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/alt</key><value>Southern Altai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sma</key><value>Southern Sami</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/spa</key><value>Spanish; Castilian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/srn</key><value>Sranan Tongo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/suk</key><value>Sukuma</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sux</key><value>Sumerian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sun</key><value>Sundanese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sus</key><value>Susu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/swa</key><value>Swahili</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ssw</key><value>Swati</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/swe</key><value>Swedish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/gsw</key><value>Swiss German; Alemannic; Alsatian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/syr</key><value>Syriac</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tgl</key><value>Tagalog</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tah</key><value>Tahitian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tai</key><value>Tai languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tgk</key><value>Tajik</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tmh</key><value>Tamashek</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tam</key><value>Tamil</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tat</key><value>Tatar</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tel</key><value>Telugu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ter</key><value>Tereno</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tet</key><value>Tetum</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tha</key><value>Thai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tib</key><value>Tibetan</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tig</key><value>Tigre</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tir</key><value>Tigrinya</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tem</key><value>Timne</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tiv</key><value>Tiv</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tli</key><value>Tlingit</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tpi</key><value>Tok Pisin</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tkl</key><value>Tokelau</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tog</key><value>Tonga (Nyasa)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ton</key><value>Tonga (Tonga Islands)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tsi</key><value>Tsimshian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tso</key><value>Tsonga</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tsn</key><value>Tswana</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tum</key><value>Tumbuka</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tup</key><value>Tupi languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tur</key><value>Turkish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ota</key><value>Turkish, Ottoman (1500-1928)</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tuk</key><value>Turkmen</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tvl</key><value>Tuvalu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/tyv</key><value>Tuvinian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/twi</key><value>Twi</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/udm</key><value>Udmurt</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/uga</key><value>Ugaritic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/uig</key><value>Uighur; Uyghur</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ukr</key><value>Ukrainian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/umb</key><value>Umbundu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/mis</key><value>Uncoded languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/und</key><value>Undetermined</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/hsb</key><value>Upper Sorbian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/urd</key><value>Urdu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/uzb</key><value>Uzbek</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/vai</key><value>Vai</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ven</key><value>Venda</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/vie</key><value>Vietnamese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/vol</key><value>Volapük</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/vot</key><value>Votic</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wak</key><value>Wakashan languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wal</key><value>Walamo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wln</key><value>Walloon</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/war</key><value>Waray</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/was</key><value>Washo</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wel</key><value>Welsh</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/fry</key><value>Western Frisian</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/wol</key><value>Wolof</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/xho</key><value>Xhosa</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/sah</key><value>Yakut</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/yao</key><value>Yao</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/yap</key><value>Yapese</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/yid</key><value>Yiddish</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/yor</key><value>Yoruba</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/ypk</key><value>Yupik languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/znd</key><value>Zande languages</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zap</key><value>Zapotec</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zza</key><value>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zen</key><value>Zenaga</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zha</key><value>Zhuang; Chuang</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zul</key><value>Zulu</value></language>
+<language><key>http://id.loc.gov/vocabulary/iso639-2/zun</key><value>Zuni</value></language>
+</languages>
