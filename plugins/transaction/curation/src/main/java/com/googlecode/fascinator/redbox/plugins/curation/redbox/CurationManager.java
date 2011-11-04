@@ -231,15 +231,7 @@ public class CurationManager extends GenericTransactionManager {
      */
     private void workflowCuration(JsonSimple response, JsonSimple message) {
         String oid = message.getString(null, "oid");
-        JsonSimple workflow = getWorkflowData(oid);
-        if (workflow == null) {
-            log.error("Error accessing workflow data '{}'", oid);
-            return;
-        }
-
-        String step = workflow.getString(null, "step");
-        if (step == null || !step.equals("live")) {
-            log.debug("Workflow step '{}', ignoring.", step);
+        if (!workflowCompleted(oid)) {
             return;
         }
 
@@ -258,6 +250,22 @@ public class CurationManager extends GenericTransactionManager {
             return;
         }
 
+    }
+
+    private boolean workflowCompleted(String oid) {
+        JsonSimple workflow = getWorkflowData(oid);
+        if (workflow == null) {
+            log.error("Error accessing workflow data '{}'", oid);
+            return false;
+        }
+
+        String step = workflow.getString(null, "step");
+        if (step == null || !step.equals("live")) {
+            log.debug("Workflow step '{}', ignoring.", step);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -301,7 +309,7 @@ public class CurationManager extends GenericTransactionManager {
             if (object instanceof JsonObject) {
                 // And process it
                 JsonObject newRelation = lookForRelation(
-                        baseField, relationConfig,
+                        oid, baseField, relationConfig,
                         new JsonSimple((JsonObject) object));
                 if (newRelation != null &&
                         !isKnownRelation(relations, newRelation)) {
@@ -317,7 +325,7 @@ public class CurationManager extends GenericTransactionManager {
                 for (Object loopObject : (JSONArray) object) {
                     if (loopObject instanceof JsonObject) {
                         JsonObject newRelation = lookForRelation(
-                                baseField, relationConfig,
+                                oid, baseField, relationConfig,
                                 new JsonSimple((JsonObject) loopObject));
                         if (newRelation != null &&
                                 !isKnownRelation(relations, newRelation)) {
@@ -347,13 +355,14 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Look through part of the form data for a relationship.
      * 
+     * @param oid The object ID of the current object
      * @param field The full field String to store for comparisons
      * @param config The config relating to the relationship we are looking for
      * @param baseNode The JSON node the relationship should be under
      * @return JsonObject A relationship in JSON, or null if not found
      */
-    private JsonObject lookForRelation(String field, JsonSimple config,
-            JsonSimple baseNode) {
+    private JsonObject lookForRelation(String oid, String field,
+            JsonSimple config, JsonSimple baseNode) {
         JsonObject newRelation = new JsonObject();
         newRelation.put("field", field);
         newRelation.put("authority", true);
@@ -430,6 +439,8 @@ public class CurationManager extends GenericTransactionManager {
             newRelation.put("broker", mintBroker);
         } else {
             newRelation.put("broker", brokerUrl);
+            // ReDBox record's should also be told that the ID is an OID
+            newRelation.put("oid", id);
         }
 
         // ** -7- ** OPTIONAL
@@ -451,10 +462,27 @@ public class CurationManager extends GenericTransactionManager {
      */
     private boolean isKnownRelation(JSONArray relations,
             JsonObject newRelation) {
-        // Loop through all relations
+        // Does it have an OID? Highest priority. Avoids infinite loops
+        // between ReDBox collections pointing at each other, so strict
+        if (newRelation.containsKey("oid")) {
+            for (Object relation : relations) {
+                JsonObject json = (JsonObject) relation;
+                String knownOid = (String) json.get("oid");
+                String newOid = (String) newRelation.get("oid");
+                // Do they match?
+                if (knownOid.equals(newOid)) {
+                    log.debug("Known ReDBox linkage '{}'", knownOid);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Mint records we are less strict about and happy
+        //  to allow multiple links in differing fields.
         for (Object relation : relations) {
             JsonObject json = (JsonObject) relation;
-            // Does it have an ID?
+
             if (json.containsKey("identifier")) {
                 String knownId = (String) json.get("identifier");
                 String knownField = (String) json.get("field");
@@ -772,6 +800,13 @@ public class CurationManager extends GenericTransactionManager {
                     return response;
                 }
 
+                // ReDBox will only curate if the workflow is finished
+                if (!workflowCompleted(oid)) {
+                    log.warn("Curation request recieved, but object has"
+                            + " not finished workflow.");
+                    return response;
+                }
+
                 if (manualConfirmation) {
                     emailObjectLink(response, oid,
                             "A curation request has been recieved for this" +
@@ -961,6 +996,8 @@ public class CurationManager extends GenericTransactionManager {
                         relObject.put("broker", brokerUrl);
                         relObject.put("isCurated", true);
                         relObject.put("relationship", reverseRelationship);
+                        // Make sure we send OID to local records
+                        relObject.put("oid", thisOid) ;
                         JSONArray newRelations = new JSONArray();
                         newRelations.add(relObject);
                         task.put("relationships", newRelations);

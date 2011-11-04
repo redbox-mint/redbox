@@ -94,7 +94,7 @@
             <tr>
                 <th>#</th>
                 <th>Relationship</th>
-                <th>Key / URL</th>
+                <th class="relatedIdLabel">Key / URL</th>
                 <th>Title</th>
                 <th>Notes</th>
             </tr>
@@ -123,10 +123,10 @@
                     </span>
                 </td>
                 <td>
-                    <input type="text" size="40" placeholder="data url" id="dc:relation.vivo:Dataset.0.dc:identifier" />
+                    <input type="text" size="40" placeholder="data url" readonly="readonly" id="dc:relation.vivo:Dataset.0.dc:identifier" />
                 </td>
                 <td>
-                    <input type="text" size="40" placeholder="title" id="dc:relation.vivo:Dataset.0.dc:title" />
+                    <input type="text" size="40" placeholder="title" id="dc:relation.vivo:Dataset.0.dc:title" class="collectionTitleLookup" />
                 </td>
                 <td>
                     <input type="text" size="40" placeholder="notes" id="dc:relation.vivo:Dataset.0.skos:note" />
@@ -165,6 +165,52 @@ $(function() {
         var row = $("tr[id=" + baseId + ".advRow]");
         row.find("span.advanced").each(function(c,e){$(e).toggle();});
         return false;
+    });
+    $(".local-related-data").live("click", function() {
+        var baseId = $(this).attr("id").replace(".redbox:origin", "");
+        if ($(this).is(":checked")) {
+            $(".relatedIdLabel").text("ReDBox Object ID");
+            getReDBoxById(baseId+".dc:identifier").val("").attr("readonly", "readonly");
+        } else {
+            $(".relatedIdLabel").text("Identifier");
+            getReDBoxById(baseId+".dc:identifier").val("").removeAttr("readonly");
+        }
+        return true;
+    });
+
+    function splitData(row) {
+        var items = row[0].split("::");
+        return {
+            oid: items[0],
+            title: items[1]
+        };
+    }
+
+    $(".collectionTitleLookup").live("focus", function(){
+        var elem = $(this);
+        var baseId = elem.attr("id").replace(".dc:title", "");
+        elem.unautocomplete();
+        if (getReDBoxById(baseId+".redbox:origin").is(":checked")){
+            elem.autocomplete(
+                "$portalPath/actions/datasets.ajax?",
+                {
+                    extraParams: {
+                        qs: function() {
+                            return "$oid";
+                        }
+                    },
+                    formatItem: function(row) {return splitData(row).title;},
+                    formatResult: function(row) {return splitData(row).title;},
+                    width: "40em"
+                }).result(function(event, row) {
+                    if (row) {
+                        var data = splitData(row);
+                        getReDBoxById(baseId+".dc:identifier").val(data.oid);
+                    }
+                })
+        }
+    }).live("blur", function(){
+        $(this).search();
     });
 });
 </script>

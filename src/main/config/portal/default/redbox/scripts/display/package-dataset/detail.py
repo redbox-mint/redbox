@@ -98,9 +98,15 @@ class DetailData:
             data = JsonSimple(payload.open())
             payload.close()
 
+            # Some basic cosmetic fixes
+            relations = data.writeArray("relationships")
+            for relation in relations:
+                if not relation.containsKey("field"):
+                    relation.put("field", "From Object "+relation.get("oid"))
+
             # Return it
             json.put("error", False)
-            json.put("relationships", data.writeArray("relationships"))
+            json.put("relationships", relations)
             return json
         except StorageException, ex:
             self.log.error(" * detail.py => Storage Error accessing data: ", ex)

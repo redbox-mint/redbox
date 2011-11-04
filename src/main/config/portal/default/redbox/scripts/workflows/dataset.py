@@ -167,7 +167,7 @@ class DatasetData:
         json.put("dc:title", title)
         json.put("dc:abstract", description)
         ## fix newlines
-        ignoreFields = ["metaList", "relationships"]
+        ignoreFields = ["metaList", "relationships", "responses"]
         for key in json:
             if key not in ignoreFields:
                 value = json.get(key)
