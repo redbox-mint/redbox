@@ -12,10 +12,10 @@ from java.io import File
 from java.io import FileInputStream
 from java.io import InputStreamReader
 from java.lang import Exception
-from java.lang import String
 
 from org.dom4j import DocumentFactory
 from org.dom4j.io import SAXReader
+from org.json.simple import JSONArray
 
 class AlertsData:
     def __activate__(self, context):
@@ -100,7 +100,7 @@ class AlertsData:
 
         jsonObject = None
         try:
-            jsonObject = self.__xmlToJson(fileName, xmlMappings.getObject(["mappings"]))
+            jsonObject = self.__xmlToJson(fileName, xmlMappings.getObject(["mappings"]), xmlMappings.getObject(["exceptions"]))
 
         except Exception,e:
             ## Move the CSV to the 'failed' directory
@@ -110,7 +110,7 @@ class AlertsData:
 
         ## Now ingested the JSON Object into the tool chain
         if jsonObject is not None:
-            success = self.__ingestJson(fileName, jsonObject)
+            success = self.__ingestJson(fileName, jsonObject, True)
             if success:
                 return 1, 0
         return 0, 1
@@ -142,13 +142,14 @@ class AlertsData:
         ##   be ingested into the tool chain
         if len(jsonList) > 0:
             for json in jsonList:
-                success = self.__ingestJson(fileName, json)
+                success = self.__ingestJson("%s.%s"%(fileName,successCount), json, False)
                 if success:
                     successCount += 1;
                 else:
                     failedCount += 1;
 
         ## Return the counts we got from this file
+        shutil.move(self.pBase(fileName), self.pDone(fileName))
         return successCount, failedCount
 
     ## Create packages from a CSV
@@ -195,10 +196,9 @@ class AlertsData:
         return jsonList
 
     ## Create packages from a CSV
-    def __xmlToJson(self, fileName, xmlMappings):
+    def __xmlToJson(self, fileName, xmlMappings, xmlExceptions):
         self.log.info("Converting '{}' to JSON...", fileName)
         filePath = self.pBase(fileName)
-        # TODO
         timestamp = time.gmtime(os.path.getmtime(filePath))
 
         # Run the XML through our parser
@@ -223,17 +223,19 @@ class AlertsData:
         # Now go looking for all our data
         json = JsonObject()
         json.put("workflow_source", "XML Ingest") # Default
-        self.__mapXpathToFields(document, xmlMappings, json)
+        self.__mapXpathToFields(document, xmlMappings, xmlExceptions, json)
 
         # Operational fields
         json.put("viewId", "default")
         json.put("packageType", "dataset")
         json.put("redbox:formVersion", self.redboxVersion)
         json.put("redbox:newForm", "true")
+        json.put("redbox:submissionProcess.redbox:submitted", "true")
+        json.put("redbox:submissionProcess.dc:date", time.strftime("%Y-%m-%d %H:%M:%S", timestamp))
         return JsonSimple(json)
 
     ## Used recursively
-    def __mapXpathToFields(self, sourceData, map, responseData, index = 1):
+    def __mapXpathToFields(self, sourceData, map, exceptions, responseData, index = 1):
         for xpath in map.keySet():
             field = map.get(xpath)
             if xpath == "":
@@ -243,19 +245,39 @@ class AlertsData:
                 if isinstance(field, JsonObject):
                     i = 1
                     for node in nodes:
-                        self.__mapXpathToFields(node, field, responseData, i)
+                        self.__mapXpathToFields(node, field, exceptions, responseData, i)
                         i += 1
                 else:
-                    for node in nodes:
-                        fieldString = field.replace(".0.", ".%s."%index, 1)
-                        text = node.getTextTrim()
-                        if field != "" and text != "":
-                            responseData.put(fieldString, text)
+                    # Lists indicate we're copying the several fields
+                    if isinstance(field, JSONArray):
+                        for eachField in field:
+                            self.__insertFieldData(nodes, eachField, responseData, index, exceptions)
+                    # or just one field
+                    else:
+                        self.__insertFieldData(nodes, field, responseData, index, exceptions)
 
-    def __ingestJson(self, fileName, jsonObject):
-        self.log.debug("\n{}", jsonObject.toString(True))
-        return;
+    def __insertFieldData(self, xmlNodes, field, responseData, index, exceptions):
+        # Is this field an exception?
+        if exceptions["fields"].containsKey(field):
+            output = exceptions["output"]
+            self.log.warn("Redirecting excepted data: '{}' => '{}'", field, output)
+            fieldString = output.replace(".0.", ".%s."%index, 1)
+            excepted = True
+        # Nope, just normal
+        else:
+            fieldString = field.replace(".0.", ".%s."%index, 1)
+            excepted = False
 
+        for node in xmlNodes:
+            text = node.getTextTrim()
+            if fieldString != "" and text != "":
+                if excepted:
+                    exceptionString = "%s: '%s' (%s)" % (exceptions["fields"][field], text, field)
+                    responseData.put(fieldString, exceptionString)
+                else:
+                    responseData.put(fieldString, text)
+        
+    def __ingestJson(self, fileName, jsonObject, move):
         if self.configFile is None:
             self.configFile = FascinatorHome.getPathFile("harvest/workflows/dataset.json")
 
@@ -269,13 +291,14 @@ class AlertsData:
             jsonFile.close()
 
             ## Now instantiate a HarvestClient just for this File.
-            harvester = HarvestClient(configFile, File(jsonPath), "guest")
+            harvester = HarvestClient(self.configFile, File(jsonPath), "guest")
             harvester.start()
 
             ## And cleanup afterwards
             oid = harvester.getUploadOid()
             self.log.info("Harvested alert '{}' to '{}'", fileName, oid)
-            shutil.move(self.pBase(fileName), self.pDone(fileName))
+            if move:
+                shutil.move(self.pBase(fileName), self.pDone(fileName))
             return True
 
         except Exception, e:

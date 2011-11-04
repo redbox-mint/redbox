@@ -1,19 +1,17 @@
 {
     "comment": "This is a basic XML mapping file designed to ingest XML documents that largely mirror ReDBox's own internal data fields.",
     "mappings": {
-        "//my:Title": "title",
-        "//my:Description": "description",
-        "": "workflow_source",
+        "//my:Title": ["title", "dc:title", "redbox:submissionProcess.dc:title"],
+        "//my:Description": ["description", "dc:description", "redbox:submissionProcess.dc:description"],
+        "//my:SubmissionDetails/my:WorkflowSource": "workflow_source",
 
-        "//my:Title": "dc:title",
+
         "//my:Type": "dc:type.rdf:PlainLiteral",
         "": "dc:type.skos:prefLabel",
         "//my:DateCreated": "dc:created",
         "//my:DateModified": "dc:modified",
-        "": "dc:language.dc:identifier",
+        "//my:Language": "dc:language.dc:identifier",
         "": "dc:language.skos:prefLabel",
-        "": "redbox:formVersion",
-        "": "redbox:newForm",
 
 
         "//my:Coverage/my:DateFrom": "dc:coverage.vivo:DateTimeInterval.vivo:start",
@@ -28,7 +26,6 @@
         },
 
 
-        "//my:Description": "dc:description",
         "//my:RelatedPublications/my:relatedPublication": {
             "my:RelatedPublicationURL": "dc:relation.swrc:Publication.0.dc:identifier",
             "my:RelatedPublicationTitle": "dc:relation.swrc:Publication.0.dc:title",
@@ -143,13 +140,16 @@
         "": "skos:note.0.dc:description",
 
 
-        "": "redbox:submissionProcess.redbox:submitted",
-        "": "redbox:submissionProcess.dc:date",
-        "": "redbox:submissionProcess.dc:description",
-        "": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
-        "": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
-        "": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
-        "": "redbox:submissionProcess.dc:title",
+        "//my:SubmissionDetails/my:ContactPersonName": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+        "//my:SubmissionDetails/my:ContactPersonEmail": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+        "//my:SubmissionDetails/my:ContactPersonPhone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
         "": "redbox:submissionProcess.skos:note"
+    },
+    "exceptions": {
+        "output": "skos:note.0.dc:description",
+        "fields": {
+            "dc:subject.anzsrc:for.0.rdf:resource": "Cannot resolve ANZSRC (FOR) Codes",
+            "dc:subject.anzsrc:seo.0.rdf:resource": "Cannot resolve ANZSRC (SEO) Codes"
+        }
     }
 }
