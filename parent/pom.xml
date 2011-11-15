@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-project</artifactId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ReDBox - Project</name>
     <parent>
@@ -94,10 +94,4 @@
             </plugin>
         </plugins>
     </reporting>
-
-  <scm>
-    <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox-meta/tags/redbox-1.3/redbox-project</connection>
-    <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox-meta/tags/redbox-1.3/redbox-project</developerConnection>
-    <url>http://redbox-mint.googlecode.com/svn/redbox-meta/tags/redbox-1.3/redbox-project</url>
-  </scm>
 </project>
