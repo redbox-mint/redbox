@@ -110,11 +110,6 @@
         </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>plugin-transformer-local</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>plugin-transaction-curation-redbox</artifactId>
             <version>${project.version}</version>
         </dependency>
