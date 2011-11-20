@@ -181,16 +181,16 @@
                         #set($rel = $value.getString("hasAssociationWith", "relationship"))
                         #set($desc = $value.getString("empty", "description"))
                         #if ($key != "empty")
-            <relatedObject>
-                <key>$util.encodeXml($key)</key>
+            <rif:relatedObject>
+                <rif:key>$util.encodeXml($key)</rif:key>
                             #if ($desc != "empty")
-                <relation type="$util.encodeXml($rel)">
-                    <description>$util.encodeXml($desc)</description>
-                </relation>
+                <rif:relation type="$util.encodeXml($rel)">
+                    <rif:description>$util.encodeXml($desc)</rif:description>
+                </rif:relation>
                             #else
-                <relation type="$util.encodeXml($rel)"/>
+                <rif:relation type="$util.encodeXml($rel)"/>
                             #end
-            </relatedObject>
+            </rif:relatedObject>
                         #end
                     #end
                 #end
