@@ -659,8 +659,12 @@ public class CurationManager extends GenericTransactionManager {
 
                     // Schedule a followup to re-index and transform
                     createTask(response, oid, "reharvest");
-                    // And make sure we automate the sending of this
-                    // message more then once... endless loop == bad
+                    createTask(response, oid, "publish");
+
+                // This object was asked to curate again, so there may be
+                //   new 'children' who do need to publish, and external
+                //   updates required (like VITAL)
+                } else {
                     createTask(response, oid, "publish");
                 }
                 return response;
