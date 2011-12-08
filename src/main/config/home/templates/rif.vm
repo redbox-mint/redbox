@@ -87,7 +87,7 @@
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd">
-    <rif:registryObject group="University of Newcastle, Australia">
+    <rif:registryObject group="The University of Newcastle, Australia">
 
         <rif:key>$util.encodeXml($identifier)</rif:key>
         <rif:originatingSource>$urlBase</rif:originatingSource>
