@@ -23,6 +23,9 @@
                 #else
                     #set($identifier = $relation.get("identifier"))
                     <span class="waiting">$identifier</span> (waiting on curation)
+                    #if ($relation.get("optional"))
+                        (OPTIONAL)
+                    #end
                 #end
             </dd>
         #end
