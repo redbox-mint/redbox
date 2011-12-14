@@ -230,8 +230,8 @@ class DatasetData:
                 object = self._getObject()
                 sourceId = object.getSourceId()
                 payload = None
-                if sourceId is None:
-                    # HACK for objects that lose a Source payload
+                if sourceId is None or not sourceId.endswith(".tfpackage"):
+                    # The package is not the source... look for it
                     for pid in object.getPayloadIdList():
                         if pid.endswith(".tfpackage"):
                             payload = object.getPayload(pid)
@@ -247,7 +247,7 @@ class DatasetData:
             try:
                 self.__tfpackage = JsonSimple(inStream)
             except Exception, e:
-                self.log.error("Error during package access", e)
+                self.log.error("Error parsing package contents", e)
             payload.close()
         return self.__tfpackage
 
