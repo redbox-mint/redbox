@@ -148,9 +148,11 @@ class VitalData:
                 return "NONE"
 
             # Look for a handle
+            handleDomain = self.config.getString("hdl.handle.net",
+                ["transformerDefaults", "vital", "server", "publishedDomain"])
             for node in idNodes:
                 value = node.getText()
-                if value.find("handle.net") != -1:
+                if value.find(handleDomain) != -1:
                     return value
             return "NONE"
 
@@ -202,7 +204,8 @@ class VitalData:
     # Search solr for objects that have
     def search_solr(self):
         # Build our solr query
-        vitalPidExists = "vitalPid:uon*"
+        namespace = self.config.getString("changeme", ["transformerDefaults", "vital", "server", "namespace"])
+        vitalPidExists = "vitalPid:%s*" % namespace
         vitalHandleExists = "vitalHandle:http*"
         query = vitalPidExists + " AND NOT " + vitalHandleExists
         # Prepare the query

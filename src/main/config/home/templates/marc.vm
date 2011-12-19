@@ -164,8 +164,10 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("540", " ", " ", "a", "dc:license.dc:identifier")
 
         ## Management
+        #set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+        #set ($institution = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
         #openField("710", "1", " ")
-            #subField("a", "University of Newcastle")
+            #subField("a", $institution)
             #set ($affiliation = $util.get($item, "foaf:Organization.skos:prefLabel"))
             #if ("$!affiliation" != "")
             #subField("b", $affiliation)

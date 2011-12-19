@@ -26,6 +26,9 @@
         <dir.storage>${project.home}/storage</dir.storage>
         <smtp.host>localhost</smtp.host>
         <admin.email>admin@localhost</admin.email>
+        <!-- Control scripts try to auto-detect proxy. Use this value if you
+             want Java to specifically exclude certain hosts from proxying. -->
+        <non.proxy.hosts>localhost</non.proxy.hosts>
     </properties>
     <modules>
         <module>parent</module>
@@ -157,7 +160,8 @@
         <dependency>
             <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-transformer-jsonVelocity</artifactId>
-            <version>${fascinator.version}</version>
+            <version>1.0.6-SNAPSHOT</version>
+            <!--<version>${fascinator.version}</version>-->
         </dependency>
     </dependencies>
     <profiles>

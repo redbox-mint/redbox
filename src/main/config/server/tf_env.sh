@@ -12,6 +12,7 @@ export SMTP_HOST="${smtp.host}"
 export ADMIN_EMAIL="${admin.email}"
 export MINT_SERVER="${mint.proxy.server}"
 export MINT_AMQ="${mint.amq.broker}"
+export NON_PROXY_HOSTS="${non.proxy.hosts}"
 
 # set fascinator home directory
 if [ -z "$TF_HOME" ]; then
@@ -49,7 +50,7 @@ if [ -n "$http_proxy" ]; then
 	_TMP=${http_proxy##*:}
 	PROXY_PORT=${_TMP%/}
 	echo " * Detected HTTP proxy host:'$PROXY_HOST' port:'$PROXY_PORT'"
-	PROXY_OPTS="-Dhttp.proxyHost=$PROXY_HOST -Dhttp.proxyPort=$PROXY_PORT -Dhttp.nonProxyHosts=localhost"
+	PROXY_OPTS="-Dhttp.proxyHost=$PROXY_HOST -Dhttp.proxyPort=$PROXY_PORT -Dhttp.nonProxyHosts=$NON_PROXY_HOSTS"
 else
 	echo " * No HTTP proxy detected"
 fi

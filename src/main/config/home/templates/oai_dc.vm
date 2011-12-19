@@ -124,12 +124,15 @@
 #dc2("rights", "redbox:creativeCommonsLicense.dc:identifier")
 #dc2("rights", "dc:license.dc:identifier")
 
+
 ## Management
+#set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+#set ($institution = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
 #set ($affiliation = $util.get($item, "foaf:Organization.skos:prefLabel"))
 #if ("$!affiliation" != "")
-    #set ($contributor = "University of Newcastle. ${affiliation}")
+    #set ($contributor = "${institution}. ${affiliation}")
 #else
-    #set ($contributor = "University of Newcastle.")
+    #set ($contributor = "${institution}.")
 #end
 <dc:contributor>$util.encodeXml($contributor)</dc:contributor>
 </oai_dc:dc>

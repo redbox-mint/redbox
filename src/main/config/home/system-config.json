@@ -1,6 +1,10 @@
 {
     "version": "1.0.5.3",
     "redbox.version.string": "${redbox.version}",
+    "redbox.identity": {
+        "institution": "University of Newcastle",
+        "RIF-CS Group": "The University of Newcastle, Australia"
+    },
     "configured": true,
     "urlBase": "${server.url.base}",
     "email": "DO_NOT_CHANGE",
@@ -208,7 +212,8 @@
                 "password": "fedoraAdmin",
                 "namespace": "redbox",
                 "message": "Datastream update from ReDBox '[[OID]]'",
-                "timeout": "15"
+                "timeout": "15",
+                "publishedDomain": "hdl.handle.net"
             },
             "dataStreams": {
                 "marc.xml": {
