@@ -328,7 +328,7 @@ $(function() {
         var labelElem = $("input[id=" + baseId + ".skos:prefLabel]");
         var uriElem = $("input[id=" + baseId + ".dc:identifier]");
         var uri = uriElem.val();
-        if (uri == UON_NS) {
+        if (uri == INTERNAL_GRANT_ID) {
             if (labelElem.val() == "" ||
                     confirm("The selected grant will be cleared.\nAre you sure you want to change it to an external grant?")) {
                 idElem.val("");
@@ -348,7 +348,7 @@ $(function() {
                     .removeClass("label")
                     .removeAttr("readonly")
                     .val("");
-                uriElem.val(UON_NS);
+                uriElem.val(INTERNAL_GRANT_ID);
                 return true;
             }
         }

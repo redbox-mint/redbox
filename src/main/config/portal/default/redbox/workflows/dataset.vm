@@ -11,7 +11,9 @@
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
-var UON_NS = "urn:uon:internal";
+#set($defaultIternal = "internal:id")
+#set($iternalId = $systemConfig.getString($defaultIternal, "redbox.identity", "internalGrantString"))
+var INTERNAL_GRANT_ID = "$iternalId";
 var widgetTabs;
 var packageData = {
     metaData: $self.getJsonMetadata(),
