@@ -64,11 +64,20 @@
 ### Resolve the identifier
 #set ($formId = $util.get($item, 'dc:identifier.rdf:PlainLiteral'))
 #set ($formOrigin = $util.get($item, 'dc:identifier.redbox:origin'))
-#set ($handle = $util.getMetadata($object, "vitalHandle"))
+
+#set($pidProperty = $systemConfig.getString($defaultOnError, "curation", "pidProperty"))
+#set ($pid = $util.getMetadata($object, $pidProperty))
+#if ("$!pid" == "")
+    #set ($pid = $util.get($item, "metadata", "rdf:resource"))
+    #if ("$!pid" == "")
+        #set ($pid = $util.get($item, "metadata", "dc.identifier"))
+    #end
+#end
+
 #set ($identifier = "")
 #if ($formOrigin == "internal")
-    #if ($handle != "")
-        #set ($identifier = $handle)
+    #if ($pid != "")
+        #set ($identifier = $pid)
     #else
         #set ($identifier = "$urlBase/detail/$oid")
     #end

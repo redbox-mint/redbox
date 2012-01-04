@@ -67,11 +67,16 @@ class IndexData:
         vitalPid = self.params["vitalPid"]
         if vitalPid is not None:
             self.utils.add(self.index, "vitalPid", vitalPid)
-        vitalHandle = self.params["vitalHandle"]
-        if vitalHandle is not None:
-            self.utils.add(self.index, "known_ids", vitalHandle)
-            self.utils.add(self.index, "vitalHandle", vitalHandle)
-            self.utils.add(self.index, "oai_identifier", vitalHandle)
+        # Persistent Identifiers
+        pidProperty = self.config.getString(None, ["curation", "pidProperty"])
+        if pidProperty is None:
+            self.log.error("No configuration found for persistent IDs!")
+        else:
+            pid = self.params[pidProperty]
+            if pid is not None:
+                self.utils.add(self.index, "known_ids", pid)
+                self.utils.add(self.index, "pidProperty", pid)
+                self.utils.add(self.index, "oai_identifier", pid)
         self.utils.add(self.index, "oai_set", "default")
         # Publication
         published = self.params["published"]

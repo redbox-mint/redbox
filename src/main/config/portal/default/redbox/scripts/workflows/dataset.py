@@ -113,13 +113,17 @@ class DatasetData:
 
     ### Supports form rendering, not involved in AJAX
     def getHandleUri(self):
-        vitalHandle = None
-        try:
-            vitalHandle = self._getObject().getMetadata().getProperty("vitalHandle")
-            #self.log.info("**** vitalHandle=%s" % vitalHandle)
-        except Exception,e:
-            self.log.warn("Failed to get vitalHandle! %s" % e.getMessage())
-        return vitalHandle or ""
+        pid = None
+        pidProperty = self.vc("systemConfig").getString(None, ["curation", "pidProperty"])
+        if pidProperty is None:
+            self.log.error("No configuration found for persistent IDs!")
+        else:
+            try:
+                pid = self._getObject().getMetadata().getProperty(pidProperty)
+                #self.log.info("****Persistent ID = '{}'", pidProperty)
+            except Exception,e:
+                self.log.warn("Failed to get Persistent ID from storage!", e)
+        return pid or ""
 
     ### Supports form rendering, not involved in AJAX
     def getNextStepAcceptMessage(self):
@@ -467,22 +471,7 @@ class DatasetData:
         object = self._getObject()
         oid = object.getId()
 
-        # Transform the object to other datastream e.g. dublin core, rif-cs and vitro
-        #try:
-        #    jsonVelocityTransformer = PluginManager.getTransformer("jsonVelocity")
-        #    jsonVelocityTransformer.init(JsonSimpleConfig.getSystemFile())
-        #    jsonVelocityTransformer.transform(object, "{}")
-        #except Exception, e:
-        #    self.log.error("Fail to transform object : ", e)
-
-        # Index the object
-        #try:
-        #    self.Services.indexer.index(oid)
-        #    self.Services.indexer.commit()
-        #except Exception, e:
-        #    self.log.error("Fail to transform object : ", e)
-
-        # Notify subscribers (like VITAL)
+        # Notify the curation manager
         self.sendMessage(oid, step)
 
     # Get the solr document for this object
@@ -514,7 +503,7 @@ class DatasetData:
                 self.log.error("Error in __getSolrData(): ", e)
         return self.__solrMetadata
 
-    # Send an event notification, used for VITAL integration
+    # Send an event notification to the curation manager
     def sendMessage(self, oid, step):
         message = JsonObject()
         message.put("oid", oid)

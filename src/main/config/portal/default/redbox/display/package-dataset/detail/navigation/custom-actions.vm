@@ -1,0 +1,19 @@
+#set ($published = $parent.getProperty("published"))
+#if ($page.authentication.is_admin() && $published != $nullValue)
+<li>
+    <a id="vital-refresh" href="#">Refresh in VITAL</a>
+    <script type="text/javascript">
+    <!--
+        $(function() {
+            $("#vital-refresh").click(function() {
+                jQuery.post("$portalPath/actions/vital.ajax",
+                    { func: "refresh", oid: "$oid" },
+                    function(data) {}, "json");
+                alert("Refresh event sent, please check VITAL system and/or ReDBox logs.");
+                return false;
+            });
+        });
+    -->
+    </script>
+</li>
+#end

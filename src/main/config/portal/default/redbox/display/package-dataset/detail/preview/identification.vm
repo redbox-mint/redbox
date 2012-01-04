@@ -1,0 +1,19 @@
+#if($page.authentication.is_logged_in())
+    #set ($pidProperty = $systemConfig.getString("error", "curation", "pidProperty"))
+    #set ($vPid = $parent.getProperty("vitalPid"))
+    #set ($pId = $parent.getProperty($pidProperty))
+    #if ($vPid != $nullValue)
+<div class="pId">
+    This object has already been published to VITAL '<strong>$vPid</strong>'.
+    #if ($pId != $nullValue)
+    (ACTIVE, Handle: <a href="$pId">$pId</a>)
+    #else
+    (INACTIVE, waiting for handle)
+    #end
+    #set ($published = $parent.getProperty("published"))
+    #if ($published != $nullValue)
+    (PUBLISHED)
+    #end
+</div>
+    #end
+#end

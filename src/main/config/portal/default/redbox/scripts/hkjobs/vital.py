@@ -24,10 +24,12 @@ class VitalData:
 
     def __activate__(self, context):
         self.vc = context
-        self.config   = self.vc["systemConfig"]
         self.log      = self.vc["log"]
         self.services = self.vc["Services"]
         self.writer   = self.vc["response"].getPrintWriter("text/html; charset=UTF-8")
+        # We check config now for how to store this
+        self.config   = self.vc["systemConfig"]
+        self.pidProperty = self.config.getString("vitalHandle", ["curation", "pidProperty"])
 
         # Working variables
         self.fedoraUrl = None
@@ -91,7 +93,7 @@ class VitalData:
                 return True
 
             # We have a valid handle now, write to the object
-            metadata.setProperty("vitalHandle", vitalHandle)
+            metadata.setProperty(self.pidProperty, vitalHandle)
             object.close()
 
             # Transform the object, to update our payloads
@@ -206,7 +208,7 @@ class VitalData:
         # Build our solr query
         namespace = self.config.getString("changeme", ["transformerDefaults", "vital", "server", "namespace"])
         vitalPidExists = "vitalPid:%s*" % namespace
-        vitalHandleExists = "vitalHandle:http*"
+        vitalHandleExists = "pidProperty:http*"
         query = vitalPidExists + " AND NOT " + vitalHandleExists
         # Prepare the query
         req = SearchRequest(query)

@@ -21,7 +21,7 @@
     #fieldTitle("retire" "Retire" false)
     <div class="help-content" id="help-retire">
         Retire the record so that updates to the record will no longer be
-        published to VITAL.
+        published.
     </div>
     <p>
         <input id="retire" type="checkbox" />
@@ -95,7 +95,7 @@
         #fieldTitle("deleteAgreement" "Delete" false)
         <div class="help-content" id="help-deleteAgreement">
             Remove the record completely from ReDBox. Note that any records already
-            published to VITAL will remain in VITAL.
+            externally published will remain so.
         </div>
         <p>
             <input id="deleteAgreement" type="checkbox" />

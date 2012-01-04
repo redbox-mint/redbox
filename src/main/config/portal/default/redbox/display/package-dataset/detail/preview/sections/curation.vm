@@ -19,7 +19,7 @@
             <dd>
                 #if ($isCurated)
                     #set($curatedPid = $relation.get("curatedPid"))
-                    <span class="ticked">$curatedPid</span> (curated)
+                    <span class="ticked"><a href="$curatedPid">$curatedPid</a></span> (curated)
                 #else
                     #set($identifier = $relation.get("identifier"))
                     <span class="waiting">$identifier</span> (waiting on curation)
