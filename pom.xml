@@ -40,20 +40,14 @@
              want Java to specifically exclude certain hosts from proxying. -->
         <non.proxy.hosts>localhost</non.proxy.hosts>
     </properties>
+
     <dependencies>
-        <!-- Fascinator Portal Web App -->
+        <!-- Fascinator -->
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-portal</artifactId>
             <type>war</type>
             <classifier>skinny</classifier>
-            <version>${fascinator.version}</version>
-        </dependency>
-        <!-- Fascinator Portal Dependencies -->
-        <dependency>
-            <groupId>com.googlecode.the-fascinator</groupId>
-            <artifactId>fascinator-portal</artifactId>
-            <type>warpath</type>
             <version>${fascinator.version}</version>
         </dependency>
         <!-- Solr Web App -->
@@ -95,23 +89,15 @@
             <artifactId>start</artifactId>
             <version>${jetty.version}</version>
         </dependency>
-        <!-- ReDBox Project Plugins -->
+        <!-- ReDBox Content -->
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-secure-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- Swap these 2 dependencies to go back to Fedora2 -->
-        <!--
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>redbox-vital-transformer-fedora2</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>com.googlecode.redbox-mint</groupId>
-            <artifactId>redbox-vital-transformer-fedora3</artifactId>
+            <artifactId>redbox-config</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -167,83 +153,8 @@
             <!--<version>${fascinator.version}</version>-->
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>novadev1</id>
-            <activation>
-                <property>
-                    <name>env.HOSTNAME</name>
-                    <value>novadev1</value>
-                </property>
-            </activation>
-            <properties>
-                <server.url.base>http://novadev1.newcastle.usq.edu.au/redbox/</server.url.base>
-                <mint.proxy.server>http://novadev1.newcastle.edu.au</mint.proxy.server>
-                <smtp.host>smtp.newcastle.edu.aut</smtp.host>
-                <admin.email>dave.huthnance@newcastle.edu.au</admin.email>
-            </properties>
-        </profile>
-        <profile>
-            <id>novadev2</id>
-            <activation>
-                <property>
-                    <name>env.HOSTNAME</name>
-                    <value>novadev2</value>
-                </property>
-            </activation>
-            <properties>
-                <server.url.base>http://novadev2.newcastle.usq.edu.au/redbox/</server.url.base>
-                <mint.proxy.server>http://novadev2.newcastle.edu.au</mint.proxy.server>
-                <smtp.host>smtp.newcastle.edu.aut</smtp.host>
-                <admin.email>dave.huthnance@newcastle.edu.au</admin.email>
-            </properties>
-        </profile>
-        <profile>
-            <id>no-config</id>
-            <!-- Used for creating an install - omits local build system settings -->
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>make-assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <configuration>
-                                    <descriptors>
-                                        <descriptor>package.xml</descriptor>
-                                        <descriptor>externals.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <server.url.base>http://localhost:${server.port}/redbox/</server.url.base>
-            </properties>
-        </profile>
-    </profiles>
+
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/config/home</directory>
-            </resource>
-            <resource>
-                <directory>src/main/config/portal</directory>
-            </resource>
-            <resource>
-                <directory>src/main/config/server</directory>
-            </resource>
-            <resource>
-                <directory>src/main/config/solr</directory>
-            </resource>
-        </resources>
         <plugins>
             <!-- Use Groovy to define a clean path to the top level directory.
                  Windows pathing can be problematic, so we fix that here too -->
@@ -274,332 +185,261 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Support retrieving dependencies from WAR artifacts -->
-            <plugin>
-                <groupId>org.appfuse</groupId>
-                <artifactId>maven-warpath-plugin</artifactId>
-                <version>2.0.2</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>add-classes</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Remove previously deployed files -->
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${dir.server}</directory>
-                            <includes>
-                                <include>lib/*.jar</include>
-                                <include>plugins/*.jar</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            <!-- Copy dependencies and configuration resources -->
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <!-- Unpack common workflow configuration -->
-                    <execution>
-                        <id>unpack-workflows</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <includes>workflows/**</includes>
-                            <outputDirectory>${dir.home}/harvest</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.googlecode.the-fascinator</groupId>
-                                    <artifactId>fascinator-common</artifactId>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- Fascinator application -->
-                    <execution>
-                        <id>copy-webapp</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.server}/webapps</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.googlecode.the-fascinator</groupId>
-                                    <artifactId>fascinator-portal</artifactId>
-                                    <type>war</type>
-                                    <classifier>skinny</classifier>
-                                    <destFileName>portal.war</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- Unpack Solr WAR -->
-                    <execution>
-                        <id>unpack-solr-war</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Make sure we don't unpack the bundled logging JAR.
-                                 Fascinator will provide logback instead. -->
-                            <excludes>WEB-INF/lib/slf4j-jdk14-1.6.1.jar</excludes>
-                            <outputDirectory>${dir.server}/webapps/solr</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.apache.solr</groupId>
-                                    <artifactId>solr</artifactId>
-                                    <type>war</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- Unpack default Solr configuration -->
-                    <execution>
-                        <id>unpack-solr-config</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <includes>solr/**</includes>
-                            <outputDirectory>${project.home}</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.googlecode.the-fascinator.plugins</groupId>
-                                    <artifactId>plugin-indexer-solr</artifactId>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- Unpack default Fascinator portal -->
-                    <execution>
-                        <id>unpack-portal</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <includes>portal/**</includes>
-                            <outputDirectory>${project.home}</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.googlecode.the-fascinator</groupId>
-                                    <artifactId>fascinator-portal</artifactId>
-                                    <type>war</type>
-                                    <classifier>skinny</classifier>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- Fascinator plugins (without dependencies) -->
-                    <execution>
-                        <id>copy-plugins</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>com.googlecode.the-fascinator.plugins</includeGroupIds>
-                            <outputDirectory>${dir.server}/plugins</outputDirectory>
-                            <excludeTransitive>true</excludeTransitive>
-                        </configuration>
-                    </execution>
-                    <!-- Plugin dependencies -->
-                    <execution>
-                        <id>copy-plugin-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeTypes>war,warpath</excludeTypes>
-                            <excludeGroupIds>com.googlecode.the-fascinator.plugins,org.mortbay.jetty</excludeGroupIds>
-                            <outputDirectory>${dir.server}/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <!-- Jetty launcher -->
-                    <execution>
-                        <id>copy-jetty-start</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.mortbay.jetty</groupId>
-                                    <artifactId>start</artifactId>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${dir.server}/jetty</outputDirectory>
-                            <stripVersion>true</stripVersion>
-                        </configuration>
-                    </execution>
-                    <!-- Jetty dependencies -->
-                    <execution>
-                        <id>copy-jetty-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>org.mortbay.jetty</includeGroupIds>
-                            <excludeArtifactIds>start</excludeArtifactIds>
-                            <outputDirectory>${dir.server}/jetty/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Deploy ReDBox project over default Fascinator -->
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <!-- Workaround bug MRESOURCES-104 -->
-                    <delimiters>
-                        <delimiter>${*}</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
-                <executions>
-                    <!-- Configuration -->
-                    <execution>
-                        <id>copy-home</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.home}</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <!-- Most config copied first as is -->
-                                <resource>
-                                    <directory>src/main/config/home</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <!-- Web portal -->
-                    <execution>
-                        <id>copy-portal</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.portal}</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/config/portal</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <!-- Server files -->
-                    <execution>
-                        <id>copy-server</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.server}</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/config/server</directory>
-                                    <filtering>false</filtering>
-                                    <excludes>
-                                        <exclude>**/*.bat</exclude>
-                                        <exclude>**/*.sh</exclude>
-                                    </excludes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <!-- Control Scripts -->
-                    <execution>
-                        <id>copy-scripts</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.server}</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <!-- Resolve some paths in our control scripts -->
-                                <resource>
-                                    <directory>src/main/config/server</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>**/*.bat</include>
-                                        <include>**/*.sh</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <!-- Solr logging -->
-                    <execution>
-                        <id>copy-solr</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir.solr}</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/config/solr</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Set executable attribute for shell scripts -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <tasks>
-                                <chmod file="${dir.server}/*.sh" perm="740"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>deploy-server</id>
+
+            <!-- Allows downstream POMs to trigger this profile by
+                 adding a marker file to the project root -->
+            <activation>
+                <file>
+                    <exists>deploy.server</exists>
+                </file>
+            </activation>
+
+            <dependencies>
+                <!-- Needs the warpath plugin, so errors outside this build profile -->
+                <dependency>
+                    <groupId>com.googlecode.the-fascinator</groupId>
+                    <artifactId>fascinator-portal</artifactId>
+                    <type>warpath</type>
+                    <version>${fascinator.version}</version>
+                </dependency>
+            </dependencies>
+
+            <!-- The standard build/deploy process for making a server -->
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/config/home</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/config/portal</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/config/server</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/config/solr</directory>
+                    </resource>
+                </resources>
+
+                <plugins>
+                    <!-- Support retrieving dependencies from WAR artifacts -->
+                    <plugin>
+                        <groupId>org.appfuse</groupId>
+                        <artifactId>maven-warpath-plugin</artifactId>
+                        <version>2.0.2</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>add-classes</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Remove previously deployed files -->
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.4.1</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${dir.server}</directory>
+                                    <includes>
+                                        <include>lib/*.jar</include>
+                                        <include>plugins/*.jar</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Copy dependencies and configuration resources -->
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.1</version>
+                        <executions>
+                            <!-- Unpack SKOS harvest config -->
+                            <execution>
+                                <id>unpack-harvest-config</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>unpack-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeGroupIds>com.googlecode.the-fascinator.plugins</includeGroupIds>
+                                    <includeArtifactIds>plugin-harvester-skos</includeArtifactIds>
+                                    <includes>harvest/**,data/**</includes>
+                                    <outputDirectory>${dir.home}</outputDirectory>
+                                </configuration>
+                            </execution>
+                            <!-- Unpack common workflow configuration -->
+                            <execution>
+                                <id>unpack-workflows</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>workflows/**</includes>
+                                    <outputDirectory>${dir.home}/harvest</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.googlecode.the-fascinator</groupId>
+                                            <artifactId>fascinator-common</artifactId>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <!-- Fascinator application -->
+                            <execution>
+                                <id>copy-webapp</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${dir.server}/webapps</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.googlecode.the-fascinator</groupId>
+                                            <artifactId>fascinator-portal</artifactId>
+                                            <type>war</type>
+                                            <classifier>skinny</classifier>
+                                            <destFileName>portal.war</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <!-- Unpack Solr WAR -->
+                            <execution>
+                                <id>unpack-solr-war</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Make sure we don't unpack the bundled logging JAR.
+                                         Fascinator will provide logback instead. -->
+                                    <excludes>WEB-INF/lib/slf4j-jdk14-1.6.1.jar</excludes>
+                                    <outputDirectory>${dir.server}/webapps/solr</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.apache.solr</groupId>
+                                            <artifactId>solr</artifactId>
+                                            <type>war</type>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <!-- Unpack default Solr configuration -->
+                            <execution>
+                                <id>unpack-solr-config</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>solr/**</includes>
+                                    <outputDirectory>${project.home}</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.googlecode.the-fascinator.plugins</groupId>
+                                            <artifactId>plugin-indexer-solr</artifactId>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <!-- Unpack default Fascinator portal -->
+                            <execution>
+                                <id>unpack-portal</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>portal/**</includes>
+                                    <outputDirectory>${project.home}</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.googlecode.the-fascinator</groupId>
+                                            <artifactId>fascinator-portal</artifactId>
+                                            <type>war</type>
+                                            <classifier>skinny</classifier>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                            <!-- Fascinator plugins (without dependencies) -->
+                            <execution>
+                                <id>copy-plugins</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeGroupIds>com.googlecode.the-fascinator.plugins</includeGroupIds>
+                                    <outputDirectory>${dir.server}/plugins</outputDirectory>
+                                    <excludeTransitive>true</excludeTransitive>
+                                </configuration>
+                            </execution>
+                            <!-- Plugin dependencies -->
+                            <execution>
+                                <id>copy-plugin-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <excludeTypes>war,warpath</excludeTypes>
+                                    <excludeGroupIds>com.googlecode.the-fascinator.plugins,org.mortbay.jetty</excludeGroupIds>
+                                    <outputDirectory>${dir.server}/lib</outputDirectory>
+                                </configuration>
+                            </execution>
+                            <!-- Jetty launcher -->
+                            <execution>
+                                <id>copy-jetty-start</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.mortbay.jetty</groupId>
+                                            <artifactId>start</artifactId>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${dir.server}/jetty</outputDirectory>
+                                    <stripVersion>true</stripVersion>
+                                </configuration>
+                            </execution>
+                            <!-- Jetty dependencies -->
+                            <execution>
+                                <id>copy-jetty-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeGroupIds>org.mortbay.jetty</includeGroupIds>
+                                    <excludeArtifactIds>start</excludeArtifactIds>
+                                    <outputDirectory>${dir.server}/jetty/lib</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <scm>
         <url>http://redbox-mint.googlecode.com/svn/redbox/trunk</url>
         <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/trunk</connection>

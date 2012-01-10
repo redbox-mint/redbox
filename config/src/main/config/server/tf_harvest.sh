@@ -9,7 +9,7 @@ export PROG_DIR=`cd \`dirname $0\`; pwd`
 PID_FILE=$PROG_DIR/tf.pid
 
 # display program header
-echo "The Fascinator - Harvest Client - ${project.name} - ${project.version}"
+echo "The Fascinator - Harvest Client - ReDBox - $REDBOX_VERSION"
 
 # setup environment
 . $PROG_DIR/tf_env.sh
