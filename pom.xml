@@ -12,6 +12,16 @@
         <version>1.4-SNAPSHOT</version>
         <relativePath>parent/pom.xml</relativePath>
     </parent>
+    <modules>
+        <module>config</module>
+        <module>parent</module>
+        <module>plugins/transaction/curation</module>
+        <module>plugins/transformer/vital-fedora2</module>
+        <module>plugins/transformer/vital-fedora3</module>
+        <module>secure-api</module>
+    </modules>
+    <!-- Typically these would be provided by an institutional build, but
+         these are ok for fallback defaults and/or debugging values. -->
     <properties>
         <server.port>9000</server.port>
         <amq.port>9101</amq.port>
@@ -30,14 +40,6 @@
              want Java to specifically exclude certain hosts from proxying. -->
         <non.proxy.hosts>localhost</non.proxy.hosts>
     </properties>
-    <modules>
-        <module>config</module>
-        <module>parent</module>
-        <module>plugins/transaction/curation</module>
-        <module>plugins/transformer/vital-fedora2</module>
-        <module>plugins/transformer/vital-fedora3</module>
-        <module>secure-api</module>
-    </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
         <dependency>
