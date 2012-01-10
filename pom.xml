@@ -31,11 +31,12 @@
         <non.proxy.hosts>localhost</non.proxy.hosts>
     </properties>
     <modules>
+        <module>config</module>
         <module>parent</module>
-        <module>secure-api</module>
         <module>plugins/transaction/curation</module>
         <module>plugins/transformer/vital-fedora2</module>
         <module>plugins/transformer/vital-fedora3</module>
+        <module>secure-api</module>
     </modules>
     <dependencies>
         <!-- Fascinator Portal Web App -->
@@ -586,7 +587,7 @@
                         <phase>process-resources</phase>
                         <configuration>
                             <tasks>
-                                <chmod file="${dir.server}/*.sh" perm="740" />
+                                <chmod file="${dir.server}/*.sh" perm="740"/>
                             </tasks>
                         </configuration>
                         <goals>
