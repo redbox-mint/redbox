@@ -6,6 +6,12 @@
     <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ReDBox - Generic Configuration</name>
+    <parent>
+        <groupId>com.googlecode.redbox-mint</groupId>
+        <artifactId>redbox-project</artifactId>
+        <version>1.4-SNAPSHOT</version>
+        <relativePath>../parent/pom.xml</relativePath>
+    </parent>
     <build>
         <resources>
             <resource>
