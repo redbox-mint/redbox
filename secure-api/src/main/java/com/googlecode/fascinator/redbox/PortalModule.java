@@ -53,7 +53,8 @@ import org.slf4j.LoggerFactory;
  */
 public class PortalModule {
 
-    private Logger log = LoggerFactory.getLogger(PortalModule.class);
+    @SuppressWarnings("unused")
+	private Logger log = LoggerFactory.getLogger(PortalModule.class);
 
     @Match("ScriptingServices")
     public static void adviseSafe(final Logger log,

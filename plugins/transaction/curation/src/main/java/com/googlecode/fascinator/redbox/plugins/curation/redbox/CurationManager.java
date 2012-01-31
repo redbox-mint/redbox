@@ -194,7 +194,7 @@ public class CurationManager extends GenericTransactionManager {
         relationFields = systemConfig.getJsonSimpleMap("curation", "relations");
         if (relationFields == null) {
             log.warn("Curation configuration has no relationships");
-            relationFields = new HashMap();
+            relationFields = new HashMap<String, JsonSimple>();
         }
     }
 
@@ -505,7 +505,8 @@ public class CurationManager extends GenericTransactionManager {
      * @param field The field name to clean
      * @returns String a cleaned version of the field name
      */
-    private String cleanField(final String field) {
+    @SuppressWarnings("unused")
+	private String cleanField(final String field) {
         if (field == null) {
             return field;
         }
@@ -1801,10 +1802,9 @@ public class CurationManager extends GenericTransactionManager {
             throws TransactionException {
         // Get from storage
         DigitalObject object = null;
-        Payload payload = null;
         try {
             object = storage.getObject(oid);
-            payload = getDataPayload(object);
+            getDataPayload(object);
         } catch (StorageException ex) {
             log.error("Error accessing object '{}' in storage: ", oid, ex);
             throw new TransactionException(ex);

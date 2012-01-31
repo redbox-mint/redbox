@@ -283,7 +283,7 @@ public class VitalTransformer implements Transformer {
         attachVersionable = attachmentsConfig.getBoolean(false, "versionable");
         attachRetainIds = attachmentsConfig.getBoolean(true, "retainIds");
         // To make life easier we're going to use the new JSON Library here
-        attachAltIds = new LinkedHashMap();
+        attachAltIds = new LinkedHashMap<String, List<String>>();
         JsonSimple json;
         try {
             json = new JsonSimple(config.toString());
@@ -306,7 +306,7 @@ public class VitalTransformer implements Transformer {
         }
         // Make sure 'default' exists, even if empty
         if (!attachAltIds.containsKey("default")) {
-            attachAltIds.put("default", new ArrayList());
+            attachAltIds.put("default", new ArrayList<String>());
         }
 
         // Are we sending emails on errors?
@@ -382,7 +382,7 @@ public class VitalTransformer implements Transformer {
         }
 
         // Wait conditions
-        waitProperties = new ArrayList();
+        waitProperties = new ArrayList<String>();
         Map<String, String> waitConditions = getStringMap(config,
                 "waitConditions");
         if (waitConditions != null) {
@@ -411,7 +411,7 @@ public class VitalTransformer implements Transformer {
      * @return Map<String, String>: The object map cast to Strings
      */
     private Map<String, String> getStringMap(JsonSimple json, String... path) {
-        Map<String, String> response = new LinkedHashMap();
+        Map<String, String> response = new LinkedHashMap<String, String>();
         JsonObject object = json.getObject((Object[]) path);
         if (object == null) {
             return null;
@@ -832,8 +832,8 @@ public class VitalTransformer implements Transformer {
         }
 
         // Do a *first* pre-pass establishing which IDs to use
-        Map<String, Map<String, String>> idMap = new HashMap();
-        List<String> usedIds = new ArrayList();
+        Map<String, Map<String, String>> idMap = new HashMap<String, Map<String, String>>();
+        List<String> usedIds = new ArrayList<String>();
         for (SolrDoc item : result.getResults()) {
             // Has it been to VITAL before?
             String aOid = item.getFirst("id");
@@ -843,7 +843,7 @@ public class VitalTransformer implements Transformer {
             String vitalOrder = metadata.getProperty("vitalOrder");
 
             // Record what we know
-            Map<String, String> map = new HashMap();
+            Map<String, String> map = new HashMap<String, String>();
             if (vitalDsId != null) {
                 map.put("hasId", "true");
                 map.put("vitalDsId", vitalDsId);
@@ -1412,7 +1412,7 @@ public class VitalTransformer implements Transformer {
                 // Did we have a genuine exception?
                 if (ex != null) {
                     // Message
-                    String exception = ex.getMessage() + "\n";
+                    //String exception = ex.getMessage() + "\n";
                     // Stack trace
                     StringWriter sw = new StringWriter();
                     ex.printStackTrace(new PrintWriter(sw));

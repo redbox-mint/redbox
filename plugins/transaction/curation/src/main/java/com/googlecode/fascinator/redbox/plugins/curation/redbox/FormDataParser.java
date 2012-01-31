@@ -40,7 +40,8 @@ import org.slf4j.LoggerFactory;
  */
 public class FormDataParser {
     /** Logging **/
-    private static Logger log = LoggerFactory.getLogger(FormDataParser.class);
+    @SuppressWarnings("unused")
+	private static Logger log = LoggerFactory.getLogger(FormDataParser.class);
 
     /** Excluded top level nodes from parse */
     private static final List<String> EXCLUDED_FIELDS =

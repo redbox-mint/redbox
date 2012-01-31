@@ -88,7 +88,7 @@ public class SecureStorage implements Storage {
 
     @Override
     public void removeObject(String oid) throws StorageException {
-        DigitalObject obj = getObject(oid);
+        getObject(oid);
         storage.removeObject(oid);
     }
 
@@ -145,7 +145,7 @@ public class SecureStorage implements Storage {
 
     private void setGuestAccess() {
         username = "guest";
-        rolesList = new ArrayList();
+        rolesList = new ArrayList<String>();
         rolesList.add("guest");
     }
 
