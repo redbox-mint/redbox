@@ -499,21 +499,6 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Return a cleaned version of a form field with list numerals removed.
-     * eg. "field.12.list" => "field.0.list"
-     * 
-     * @param field The field name to clean
-     * @returns String a cleaned version of the field name
-     */
-    @SuppressWarnings("unused")
-	private String cleanField(final String field) {
-        if (field == null) {
-            return field;
-        }
-        return field.replaceAll("\\.[0-9]+\\.", ".0.");
-    }
-
-    /**
      * This method encapsulates the logic for curation in ReDBox
      * 
      * @param oid The object ID being curated
@@ -935,7 +920,7 @@ public class CurationManager extends GenericTransactionManager {
                 String identifier = json.getString(null, "identifier");
                 if (identifier == null) {
                     throw new TransactionException(
-                            "Cannot resolve identifer: " + identifier);
+                            "NULL identifer provided!");
                 }
                 relatedOid = idToOid(identifier);
                 if (relatedOid == null) {
@@ -1247,7 +1232,7 @@ public class CurationManager extends GenericTransactionManager {
             if (relatedOid == null && localRecord) {
                 String identifier = json.getString(null, "identifier");
                 if (identifier == null) {
-                    log.error("Cannot resolve identifer: '{}'", identifier);
+                    log.error("NULL identifer provided!");
                 }
                 relatedOid = idToOid(identifier);
                 if (relatedOid == null) {
@@ -1262,14 +1247,13 @@ public class CurationManager extends GenericTransactionManager {
                 boolean isCurated = json.getBoolean(false, "isCurated");
                 if (isCurated) {
                     log.debug(" * Publishing '{}'", relatedId);
-                    JsonObject task;
                     // It is a local object
                     if (localRecord) {
-                        task = createTask(response, relatedOid, "publish");
+                        createTask(response, relatedOid, "publish");
 
                     // Or remote
                     } else {
-                        task = createTask(response, broker, relatedOid,
+                    	JsonObject task = createTask(response, broker, relatedOid,
                                 "publish");
                         // We won't know OIDs for remote systems
                         task.remove("oid") ;

@@ -114,7 +114,7 @@ public class PortalModule {
                     JsonSessionState state = appStateManager.getIfExists(JsonSessionState.class);
 
                     String username = "guest";
-                    List<String> rolesList = new ArrayList<String>();
+                    List<String> rolesList = null;
                     if (state.containsKey("username")) {
                         username = state.get("username").toString();
                         try {
