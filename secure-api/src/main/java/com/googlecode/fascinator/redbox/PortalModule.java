@@ -52,6 +52,8 @@ import org.slf4j.LoggerFactory;
  * @author Oliver Lucido
  */
 public class PortalModule {
+	private static String GUEST_USER = "guest";
+	private static String GUEST_ROLE = "guest";
 
     @SuppressWarnings("unused")
 	private Logger log = LoggerFactory.getLogger(PortalModule.class);
@@ -113,7 +115,7 @@ public class PortalModule {
                     log.debug("Adding security to Solr request: {}", request);
                     JsonSessionState state = appStateManager.getIfExists(JsonSessionState.class);
 
-                    String username = "guest";
+                    String username = GUEST_USER;
                     List<String> rolesList = null;
                     if (state.containsKey("username")) {
                         username = state.get("username").toString();
@@ -122,14 +124,12 @@ public class PortalModule {
                             rolesList = Arrays.asList(securityManager.getRolesList(state, user));
                         } catch (AuthenticationException ae) {
                             log.error("Failed to get user access, assuming guest access", ae);
-                            username = "guest";
                             rolesList = new ArrayList<String>();
-                            rolesList.add("guest");
+                            rolesList.add(GUEST_ROLE);
                         }
                     } else {
-                        username = "guest";
                         rolesList = new ArrayList<String>();
-                        rolesList.add("guest");
+                        rolesList.add(GUEST_ROLE);
                     }
 
                     request.addParam("fq", "owner:" + username
