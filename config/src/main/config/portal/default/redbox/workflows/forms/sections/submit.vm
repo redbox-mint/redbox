@@ -54,6 +54,46 @@
                 </label>
            </div>
            <div>
+                <label class="validation-err-msg" for="${cite}.skos:prefLabel">
+                    A citation is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.dc:identifier.rdf:PlainLiteral">
+                    A citation identifier is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.locrel:ctb.1.foaf:givenName">
+                    A citation contributor's given name or family name is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.dc:title">
+                    A citation title is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral">
+                    A citation edition is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.vivo:Publisher.vivo:Location">
+                    A citation publication location is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.bibo:Website.dc:identifier">
+                    A citation URL is required!
+                </label>
+           </div>
+           <div>
+                <label class="validation-err-msg" for="${citePart}.skos:scopeNote">
+                    A citation context is required!
+                </label>
+           </div>
+           <div>
                 <label class="validation-err-msg" for="dc:creator.foaf:Person.1.foaf:givenName">
                     A Creators Given or Family name' is required!
                 </label>

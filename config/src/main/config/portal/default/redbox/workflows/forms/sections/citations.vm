@@ -1,0 +1,262 @@
+#set($cite = "dc:biblioGraphicCitation")
+#fieldTitle(${cite} "Citation Information" false)
+<div class="help-content" id="help-$cite">
+    Citation Help text goes here...
+</div>
+
+<label>I will provide a citation:</label>
+<input type="checkbox" id="${cite}.redbox:sendCitation" />
+
+<table class="hidden citation-block">
+    <thead>
+        <tr>
+            <th>Full Citation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <label class="validation-err-msg" for="${cite}.skos:prefLabel"
+                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${cite}.skos:prefLabel');); liveFor(.fullCitation);">
+                    A citation is required!
+                </label>
+                <p>
+                    <textarea rows="2" cols="80" id="${cite}.skos:prefLabel" style="vertical-align: text-top;"
+                            placeholder="A full citation string goes here." class="fullCitation"></textarea>
+                </p>
+                <label>Citation Style:</label>
+                #mintSelectField("${cite}.dc:type.rdf:PlainLiteral"
+                                 "${cite}.dc:type.skos:prefLabel"
+                                 "$portalPath/workflows/forms/data/citationStyles.json"
+                                 "id"
+                                 "label"
+                                 "results"
+                                 "Harvard")
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+#set($citePart = "${cite}.dc:hasPart")
+<table class="hidden citation-block">
+    <thead>
+        <tr>
+            <th>Citation Metadata</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Identifier:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Persistent Identifier" id="${citePart}.dc:identifier.rdf:PlainLiteral" class="citationIdentifier" />
+                                <label class="validation-err-msg" for="${citePart}.dc:identifier.rdf:PlainLiteral"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:identifier.rdf:PlainLiteral');); liveFor(.citationIdentifier);">
+                                    A citation identifier is required!
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><label>Type of ID:</label>
+                                #mintSelectField("${citePart}.dc:identifier.dc:type.rdf:PlainLiteral"
+                                                 "${citePart}.dc:identifier.dc:type.skos:prefLabel"
+                                                 "$portalPath/workflows/forms/data/citationIdTypes.json"
+                                                 "id"
+                                                 "label"
+                                                 "results"
+                                                 "handle")
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Contributors:</td>
+                            <td class="input-list sortable">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>Title</td>
+                                            <td>Given Name</td>
+                                            <td>Family Name</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr class="item-input-display sortable-item">
+                                            <td><img class="facets-grip" src="$portalPath/images/icons/grippy.png" /> <span class="sort-number"></span></td>
+                                            <td><input type="text" size="20" placeholder="Title" id="${citePart}.locrel:ctb.0.foaf:title" /></td>
+                                            <td><input type="text" size="30" placeholder="Given Name" id="${citePart}.locrel:ctb.0.foaf:givenName" class="citationContributors" /></td>
+                                            <td><input type="text" size="40" placeholder="Family Name" id="${citePart}.locrel:ctb.0.foaf:familyName" class="citationContributors" /></td>
+                                            <td><span class="delete-item"><a href="#">delete</a></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <input type="button" class="button add-another-item" value="Add Contributor" />
+                                    <label class="validation-err-msg"
+                                        for="dc:creator.foaf:Person.0.foaf:givenName"
+                                        data-validation-rule="test(notEmpty); when(blur,change,submit);
+                                                                jsTest(
+                                                                    var familyId, givenId, familyName, givenName;
+                                                                    familyId = id.replace('given', 'family');
+                                                                    givenId = id.replace('family', 'given');
+
+                                                                    familyName = ctx.find('input[id='+familyId+']').val();
+                                                                    givenName = ctx.find('input[id='+givenId+']').val();
+                                                                    familyName = jQ.trim(familyName);
+                                                                    givenName = jQ.trim(givenName);
+
+                                                                    r = (givenName == '') && (familyName == '');
+                                                                    id = givenId;
+                                                                );
+                                                                liveFor(.citationContributors);">
+                                        A citation contributor's given name or family name is required!
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Title" id="${citePart}.dc:title" class="citationTitle" />
+                                <label class="validation-err-msg" for="${citePart}.dc:title"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:title');); liveFor(.citationTitle);">
+                                    A citation title is required!
+                                </label>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Edition:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Edition" id="${citePart}.dc:hasVersion.rdf:PlainLiteral" class="citationEdition" />
+                                <label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:hasVersion.rdf:PlainLiteral');); liveFor(.citationEdition);">
+                                    A citation edition is required!
+                                </label>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Publisher:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Publisher" id="${citePart}.dc:publisher.rdf:PlainLiteral" />
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Place of Publication:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Place of Publication" id="${citePart}.vivo:Publisher.vivo:Location" class="citationPublicationLocation" />
+                                <label class="validation-err-msg" for="${citePart}.vivo:Publisher.vivo:Location"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.vivo:Publisher.vivo:Location');); liveFor(.citationPublicationLocation);">
+                                    A citation publication location is required!
+                                </label>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Date(s):</td>
+                            <td class="input-list sortable">
+                                <div class="item-input-display sortable-item">
+                                    <img class="facets-grip" src="$portalPath/images/icons/grippy.png" />&nbsp;&nbsp;
+                                    <input type="text" placeholder="YYYY-MM-DD" class="dateYMD" id="${citePart}.dc:date.0.rdf:PlainLiteral" />
+                                    <label>Date is:</label>
+                                    <span class="data-source-drop-down"
+                                          data-delay="1"
+                                          data-json-source-url="$portalPath/workflows/forms/data/citationDateType.json"
+                                          data-id-key="id"
+                                          data-label-key="label"
+                                          data-list-key="results">
+                                        <span class="selection-added">
+                                            <input type="hidden" class="selection-added-id"
+                                                   id="${citePart}.dc:date.0.dc:type.rdf:PlainLiteral" value="" />
+                                            <input type="text" class="selection-added-label" readonly="readonly" size="25"
+                                                   id="${citePart}.dc:date.0.dc:type.skos:prefLabel" value="" />
+                                            <a href="#" class="clear-item">change</a>
+                                        </span>
+                                        <span class="drop-down-location">
+                                            <button class="selection-add add-unique-only" data-add-on-click="1">
+                                                Select
+                                            </button>
+                                        </span>
+                                    </span>
+                                    <span class="delete-item">| <a href="#">delete</a></span>
+                                </div>
+                                <div>
+                                    <input type="button" class="button add-another-item" value="Add Date" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>URL:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="URL" id="${citePart}.bibo:Website.dc:identifier" class="citationUrl"/>
+                                <label class="validation-err-msg" for="${citePart}.bibo:Website.dc:identifier"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.bibo:Website.dc:identifier');); liveFor(.citationUrl);">
+                                    A citation URL is required!
+                                </label>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><hr/></td></tr>
+
+                        <tr>
+                            <td>Context:</td>
+                            <td>
+                                <input type="text" size="60" placeholder="Citation Context" id="${citePart}.skos:scopeNote" class="citationContext" />
+                                <label class="validation-err-msg" for="${citePart}.skos:scopeNote"
+                                    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.skos:scopeNote');); liveFor(.citationContext);">
+                                    A citation context is required!
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    ### Toggle Citations on/off - both on form load, or user click
+    var citationsCheckbox = getReDBoxById("${cite}.redbox:sendCitation");
+    function citationsDisabled() {
+        return !citationsCheckbox.is(":checked");
+    }
+    function toggleCitations() {
+        if (citationsDisabled()) {
+            $(".citation-block").hide();
+        } else {
+            $(".citation-block").show();
+        }
+    }
+    citationsCheckbox.live("click", function() {
+        toggleCitations($(this));
+    });
+    citationsCheckbox.live("onDataChanged", function() {
+        toggleCitations($(this));
+    });
+
+    ### Validation routines
+    function validSimpleCitationField(fieldId) {
+        if (!citationsDisabled()) {
+            var value = getReDBoxById(fieldId).val();
+            value = jQ.trim(value);
+            if (value == '') {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>

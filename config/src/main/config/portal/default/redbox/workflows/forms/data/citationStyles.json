@@ -1,0 +1,52 @@
+{
+    "results": [
+        {
+            "id": "Harvard",
+            "label": "Harvard"
+        },
+        {
+            "id": "APA",
+            "label": "American Psychological Association (APA)"
+        },
+        {
+            "id": "MLA",
+            "label": "Modern Language Association of America (MLA)"
+        },
+        {
+            "id": "Vancouver",
+            "label": "Vancouver"
+        },
+        {
+            "id": "IEEE",
+            "label": "Institute of Electrical and Electronic Engineers (IEEE)"
+        },
+        {
+            "id": "CSE",
+            "label": "Council of Science Editors (CSE)"
+        },
+        {
+            "id": "Chicago",
+            "label": "Chicago Manual of Style"
+        },
+        {
+            "id": "AMA",
+            "label": "American Medical Association (AMA)"
+        },
+        {
+            "id": "AGPS-AGIMO",
+            "label": "Australian Style Manual (AGPS-AGIMO)"
+        },
+        {
+            "id": "AGLC",
+            "label": "Australian Guide to Legal Citation (AGLC)"
+        },
+        {
+            "id": "ACS",
+            "label": "American Chemical Society (ACS)"
+        },
+        {
+            "id": "Datacite",
+            "label": "International Data Citation (Datacite)"
+        }
+    ]
+}

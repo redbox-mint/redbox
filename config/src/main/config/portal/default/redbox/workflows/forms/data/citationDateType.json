@@ -1,0 +1,48 @@
+{
+    "results": [
+        {
+            "id": "publicationDate",
+            "label": "Publication Date"
+        },
+        {
+            "id": "available",
+            "label": "Date Available"
+        },
+        {
+            "id": "created",
+            "label": "Date Created"
+        },
+        {
+            "id": "date",
+            "label": "Date (Other)"
+        },
+        {
+            "id": "dateAccepted",
+            "label": "Date Accepted"
+        },
+        {
+            "id": "dateSubmitted",
+            "label": "Date Submitted"
+        },
+        {
+            "id": "endPublicationDate",
+            "label": "Publication Date (End)"
+        },
+        {
+            "id": "issued",
+            "label": "Date Issued"
+        },
+        {
+            "id": "modified",
+            "label": "Date Modified"
+        },
+        {
+            "id": "startPublicationDate",
+            "label": "Publication Date (Start)"
+        },
+        {
+            "id": "valid",
+            "label": "Date Valid"
+        }
+    ]
+}
