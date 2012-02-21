@@ -10,8 +10,8 @@
             for="url"
             data-validation-rule="test(notEmpty);when(blur,change,submit);
                                     jsTest(
-                                        var a = ctx.find('input[id=dc:accessRights.rdf:PlainLiteral]').val();
-                                        var b = ctx.find('input[id=dc:accessRights.dc:RightsStatement]').val();
+                                        var a = ctx.find('input[id=dc:accessRights.skos:prefLabel]').val();
+                                        var b = ctx.find('input[id=dc:accessRights.dc:RightsStatement.skos:prefLabel]').val();
                                         a = jQ.trim(a); b = jQ.trim(b);
                                         r = (a == '') && (b == '');
                                     );
@@ -19,23 +19,25 @@
             The 'Access Rights/Conditions' and/or 'Rights' field is required!
         </label>
 
-        #fieldTitle("dc:accessRights.rdf:PlainLiteral" "Access Rights/Conditions" false)
-        <div class="help-content" id="help-dc:accessRights.rdf:PlainLiteral">
+        #fieldTitle("dc:accessRights.skos:prefLabel" "Access Rights/Conditions" false)
+        <div class="help-content" id="help-dc:accessRights.skos:prefLabel">
             <p>
                 Information about access to the collection or service, including
                 access restrictions or embargoes based on privacy, security or
-                other policies.
+                other policies. A URI is optional.
             </p>
             <p>eg. Contact Chief Investigator to negotiate access to the data.</p>
             <p>eg. Embargoed until 1 year after publication of the research.</p>
         </div>
         <p>
-            <input type="text" size="60" id="dc:accessRights.rdf:PlainLiteral" class="vrights"
+            <input type="text" size="60" id="dc:accessRights.skos:prefLabel" class="vrights"
                 placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
+            <label for="dc:license.dc:identifier">URI:</label>
+            <input type="text" size="60" id="dc:accessRights.dc:identifier" placeholder="Access Rights URI" />
         </p>
 
-        #fieldTitle("dc:accessRights.dc:RightsStatement" "Rights" false)
-        <div class="help-content" id="help-dc:accessRights.dc:RightsStatement">
+        #fieldTitle("dc:accessRights.dc:RightsStatement.skos:prefLabel" "Rights" false)
+        <div class="help-content" id="help-dc:accessRights.dc:RightsStatement.skos:prefLabel">
             Information about rights held in and over the collection such as
             copyright, licences and other intellectual property rights, eg. This
             dataset is made available under the Public Domain Dedication and
@@ -43,44 +45,57 @@
             <a target="_blank" href="http://www.opendatacommons.org/licences/pddl/1.0/">
                 http://www.opendatacommons.org/licences/pddl/1.0/
             </a>
+            <br/>A URI is optional.
         </div>
-        <p>
-            <input type="text" size="60" id="dc:accessRights.dc:RightsStatement" class="vrights"
+        <div>
+            <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.skos:prefLabel" class="vrights"
                 placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" />
-        </p>
+            <label for="dc:license.dc:RightsStatement.dc:identifier">URI:</label>
+            <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.dc:identifier" placeholder="Rights Statement URI" />
+        </div>
     </div>
 
-    #fieldTitle("redbox:creativeCommonsLicense.dc:identifier" "License - Creative Commons" false)
-    <div class="help-content" id="help-redbox:creativeCommonsLicense.dc:identifier">
-        See: <a href="http://creativecommons.org.au/learn-more/licences" target="blank">
-                http://creativecommons.org.au/learn-more/licences
-             </a>
-    </div>
-    <p>
-        #mintSelectField("redbox:creativeCommonsLicense.dc:identifier"
-                         "redbox:creativeCommonsLicense.skos:prefLabel"
-                         "$portalPath/workflows/forms/data/ccLicences.json"
-                         "id"
-                         "label"
-                         "results"
-                         "")
-    </p>
-
-    #fieldTitle("dc:license" "License - Other" false)
+    #fieldTitle("dc:license" "Licence" false)
     <div class="help-content" id="help-dc:license">
-        Examples of other licences:
-        <a href="http://www.opendefinition.org/licenses" target="blank">
-            http://www.opendefinition.org/licenses
-        </a>
+        This list contains data licences that this server has been configured with.
+        For more information about Creative Commons licences please
+        <a href="http://creativecommons.org.au/learn-more/licences" target="blank">&lt;see here&gt;</a>.
     </div>
-    <table class="group">
-        <tr>
-            <th width="10%"><label for="dc:license.skos:prefLabel">Name:</label></th>
-            <td><input type="text" size="60" placeholder="license name" id="dc:license.skos:prefLabel" /></td>
-        </tr>
-        <tr>
-            <th><label for="dc:license.dc:identifier">URL:</label></th>
-            <td><input type="text" size="60" placeholder="license url" id="dc:license.dc:identifier" /></td>
-        </tr>
-    </table>
+
+    <span class="data-source-drop-down"
+          data-json-source-url="$portalPath/workflows/forms/data/licences.json"
+          data-id-key="id"
+          data-label-key="label"
+          data-desc-key="description"
+          data-list-key="results" >
+        <table class="selection-added">
+            <tr>
+                <th width="10%"><label for="dc:license.skos:prefLabel">Name:</label></th>
+                <td><input type="text" size="80" readonly="readonly" class="selection-added-label"
+                     id="dc:license.skos:prefLabel" name="dc:license.skos:prefLabel" /></td>
+            </tr>
+            <tr>
+                <th><label for="dc:license.dc:identifier">URL:</label></th>
+                <td><input type="text" size="80" readonly="readonly" class="selection-added-id"
+                     id="dc:license.dc:identifier" name="dc:license.dc:identifier" /></td>
+            </tr>
+            <tr>
+                <th>Description:</th>
+                <td><textarea rows="5" cols="77" readonly="readonly" class="selection-added-desc"/></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td><a href="#" class="clear-item">change</a></td>
+            </tr>
+        </table>
+        <span class="drop-down-location">
+            <button class="selection-add add-unique-only" data-add-on-click="1">
+                Select
+            </button>
+            <div class="selection-add-more-info-holder">
+              Description:<blockquote class="selection-add-more-info"></blockquote>
+            </div>
+        </span>
+    </span>
+
 </div>

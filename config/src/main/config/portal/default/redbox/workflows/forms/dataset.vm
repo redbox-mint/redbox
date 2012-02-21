@@ -202,10 +202,10 @@
         dc:subject.anzsrc:toa.rdf:resource,
         dc:subject.anzsrc:toa.skos:prefLabel,
         ## rights
-        dc:accessRights.rdf:PlainLiteral,
-        dc:accessRights.dc:RightsStatement,
-        redbox:creativeCommonsLicense.dc:identifier,
-        redbox:creativeCommonsLicense.skos:prefLabel,
+        dc:accessRights.skos:prefLabel,
+        dc:accessRights.dc:identifier,
+        dc:accessRights.dc:RightsStatement.skos:prefLabel,
+        dc:accessRights.dc:RightsStatement.dc:identifier,
         dc:license.skos:prefLabel,
         dc:license.dc:identifier,
         ## management

@@ -340,3 +340,6 @@ div.meta ol, div.meta ul {
     background-position: right top;
     padding-right: 20px;
 }
+.selection-add-more-info {
+    font-style: italic;
+}
