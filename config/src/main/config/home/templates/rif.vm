@@ -99,7 +99,7 @@
 #set($lang = "xml:lang=${quote}en${quote}")
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.2.0/registryObjects.xsd">
+            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.3.0/registryObjects.xsd">
     <rif:registryObject group="$util.encodeXml($group)">
 
         <rif:key>$util.encodeXml($identifier)</rif:key>
@@ -250,6 +250,70 @@
             #showRelatedInfo("dc:relation.swrc:Publication", "publication", "uri")
             #showRelatedInfo("dc:relation.bibo:Website", "website", "uri")
 
+        #set($showCitation = $util.get($item, "dc:biblioGraphicCitation.redbox:sendCitation"))
+        #if ("$!showCitation" != "" && $showCitation == "on")
+            <rif:citationInfo>
+                #set($citationFull = $util.get($item, "dc:biblioGraphicCitation.skos:prefLabel"))
+                #set($citationStyle = $util.get($item, "dc:biblioGraphicCitation.dc:type.rdf:PlainLiteral"))
+                <rif:fullCitation style="$util.encodeXml($citationStyle)">$util.encodeXml($citationFull)</rif:fullCitation>
+
+                <rif:citationMetadata>
+                    #set($citationId = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:identifier.rdf:PlainLiteral"))
+                    #set($citationIdType = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.rdf:PlainLiteral"))
+                    <rif:identifier type="$util.encodeXml($citationIdType)">$util.encodeXml($citationId)</rif:identifier>
+
+                    #set($valueMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
+                    #foreach($key in $valueMap.keySet())
+                        #set ($row = $valueMap.get($key))
+                        #set ($title = $row.get("foaf:title"))
+                        #set ($given = $row.get("foaf:givenName"))
+                        #set ($family = $row.get("foaf:familyName"))
+                    <rif:contributor seq="$velocityCount">
+                        #if ("$!title" != "")
+                            <rif:namePart type="title">$util.encodeXml($title)</rif:namePart>
+                        #end
+                        #if ("$!given" != "")
+                            <rif:namePart type="given">$util.encodeXml($given)</rif:namePart>
+                        #end
+                        #if ("$!family" != "")
+                            <rif:namePart type="family">$util.encodeXml($family)</rif:namePart>
+                        #end
+                    </rif:contributor>
+                    #end
+
+                    #set($citationTitle = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:title"))
+                    <rif:title>$util.encodeXml($citationTitle)</rif:title>
+
+                    #set($citationEdition = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral"))
+                    <rif:edition>$util.encodeXml($citationEdition)</rif:edition>
+
+                    #set($citationPublisher = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral"))
+                    #if ("$!citationPublisher" != "")
+                    <rif:publisher>$util.encodeXml($citationPublisher)</rif:publisher>
+                    #end
+
+                    #set($citationPublishedLocation = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location"))
+                    <rif:placePublished>$util.encodeXml($citationPublishedLocation)</rif:placePublished>
+
+                    #set($valueMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.dc:date"))
+                    #foreach($key in $valueMap.keySet())
+                        #set ($row = $valueMap.get($key))
+                        #set ($date = $row.get("rdf:PlainLiteral"))
+                        #set ($dateType = $row.get("dc:type.rdf:PlainLiteral"))
+                        #if ("$!date" != "")
+                            #set($date = "$util.getDateTime($date, $dateFormat)Z")
+                    <rif:date type="$util.encodeXml($dateType)">$util.encodeXml($date)</rif:date>
+                        #end
+                    #end
+
+                    #set($citationUrl = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier"))
+                    <rif:url>$util.encodeXml($citationUrl)</rif:url>
+
+                    #set($citationContext = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote"))
+                    <rif:context>$util.encodeXml($citationContext)</rif:context>
+                </rif:citationMetadata>
+            </rif:citationInfo>
+        #end
         </rif:collection>
     </rif:registryObject>
 </rif:registryObjects>
