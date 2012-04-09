@@ -18,7 +18,8 @@ var widgetTabs;
 var packageData = {
     metaData: $self.getJsonMetadata().replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
     attachedFiles: $self.getAttachedFiles(),
-    nextStageMessage: "$self.getNextStepAcceptMessage()"
+    nextStageMessage: "$self.getNextStepAcceptMessage()",
+    andsDoiData: $self.getDoiMetadata()
 };
 
 function pad(s,len,c){

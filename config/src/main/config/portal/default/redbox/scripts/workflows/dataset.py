@@ -75,7 +75,7 @@ class DatasetData:
                     result = self._updatePackageMetadata(True)
 
         except Exception, e:
-            self.log.error("Failed to load manifest", e);
+            self.log.error("Failed to load manifest", e)
             result = JsonObject()
             result.put("status", "error")
             result.put("message", str(e))
@@ -124,6 +124,20 @@ class DatasetData:
             except Exception,e:
                 self.log.warn("Failed to get Persistent ID from storage!", e)
         return pid or ""
+
+    def getDoiMetadata(self):
+        propName = self.vc("systemConfig").getString(None, ["andsDoi", "doiProperty"])
+        try:
+            doi = self._getObject().getMetadata().getProperty(propName)
+            self.log.debug("Getting DOI from storage = '{}'", doi)
+        except Exception,e:
+            self.log.error("Failed to get DOI from storage!", e)
+            return "{\"error\": \"Error accessing DOI in storage, please see system logs.\"}"
+
+        if doi is not None:
+            return "{\"doi\": \""+doi+"\"}"
+        else:
+            return "{}"
 
     ### Supports form rendering, not involved in AJAX
     def getNextStepAcceptMessage(self):
@@ -498,7 +512,7 @@ class DatasetData:
                 if result.getNumFound() > 1:
                     self.log.warn("WARNING: Found {} solr documents for OID '{}', expected 0!", result.getNumFound(), oid)
                 # The first result is all we care about
-                self.__solrMetadata = result.getResults().get(0);
+                self.__solrMetadata = result.getResults().get(0)
             except Exception, e:
                 self.log.error("Error in __getSolrData(): ", e)
         return self.__solrMetadata

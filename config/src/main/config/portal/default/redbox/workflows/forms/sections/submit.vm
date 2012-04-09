@@ -53,16 +53,16 @@
                     A Description is required!
                 </label>
            </div>
-           <div>
-                <label class="validation-err-msg" for="${cite}.skos:prefLabel">
-                    A citation is required!
-                </label>
-           </div>
-           <div>
-                <label class="validation-err-msg" for="${citePart}.dc:identifier.rdf:PlainLiteral">
-                    A citation identifier is required!
-                </label>
-           </div>
+           ##<div>
+           ##     <label class="validation-err-msg" for="${cite}.skos:prefLabel">
+           ##         A citation is required!
+           ##     </label>
+           ##</div>
+           ##<div>
+           ##     <label class="validation-err-msg" for="${citePart}.dc:identifier.rdf:PlainLiteral">
+           ##         A citation identifier is required!
+           ##     </label>
+           ##</div>
            <div>
                 <label class="validation-err-msg" for="${citePart}.locrel:ctb.1.foaf:givenName">
                     A citation contributor's given name or family name is required!

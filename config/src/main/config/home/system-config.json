@@ -104,6 +104,15 @@
             }
         ]
     },
+    "andsDoi": {
+        "apiKey": "1234",
+        "apiBaseUrl": "https://test.ands.org.au/home/dois/",
+        "doiProperty": "andsDoi",
+        "security": {
+            "users": [],
+            "roles": ["admin"]
+        }
+    },
     "curation": {
         "curationEmailAddress": "${admin.email}",
         "curationRequiresConfirmation": false,

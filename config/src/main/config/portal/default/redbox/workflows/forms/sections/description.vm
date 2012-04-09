@@ -157,8 +157,6 @@
             </tr>
         </tfoot>
     </table>
-
-    #parseTemplate("workflows/forms/sections/citations.vm")
 </div>
 <script type="text/javascript">
 $(function() {

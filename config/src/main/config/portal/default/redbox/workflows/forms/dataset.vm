@@ -152,25 +152,6 @@
         dc:relation.vivo:Dataset.0.skos:note,
         dc:relation.vivo:Dataset.0.redbox:origin,
         dc:relation.vivo:Dataset.0.redbox:publish,
-        dc:biblioGraphicCitation.skos:prefLabel,
-        dc:biblioGraphicCitation.dc:type.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:type.skos:prefLabel,
-        dc:biblioGraphicCitation.redbox:sendCitation,
-        dc:biblioGraphicCitation.dc:hasPart.dc:identifier.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.skos:prefLabel,
-        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:title,
-        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:givenName,
-        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:familyName,
-        dc:biblioGraphicCitation.dc:hasPart.dc:title,
-        dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location,
-        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.dc:type.rdf:PlainLiteral,
-        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.dc:type.skos:prefLabel,
-        dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier,
-        dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote,
         ## people
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.foaf:name,
@@ -239,6 +220,26 @@
         skos:note.0.dc:created,
         skos:note.0.foaf:name,
         skos:note.0.dc:description,
+        ## citations
+        ##dc:biblioGraphicCitation.skos:prefLabel,
+        ##dc:biblioGraphicCitation.dc:type.rdf:PlainLiteral,
+        ##dc:biblioGraphicCitation.dc:type.skos:prefLabel,
+        dc:biblioGraphicCitation.redbox:sendCitation,
+        ##dc:biblioGraphicCitation.dc:hasPart.dc:identifier.rdf:PlainLiteral,
+        ##dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.rdf:PlainLiteral,
+        ##dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.skos:prefLabel,
+        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:title,
+        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:givenName,
+        dc:biblioGraphicCitation.dc:hasPart.locrel:ctb.0.foaf:familyName,
+        dc:biblioGraphicCitation.dc:hasPart.dc:title,
+        dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral,
+        dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral,
+        dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location,
+        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.rdf:PlainLiteral,
+        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.dc:type.rdf:PlainLiteral,
+        dc:biblioGraphicCitation.dc:hasPart.dc:date.0.dc:type.skos:prefLabel,
+        dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier,
+        dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote,
         ## submission request
         redbox:submissionProcess.redbox:submitted,
         redbox:submissionProcess.dc:date,
@@ -295,6 +296,7 @@
         #parseTemplate("workflows/forms/sections/management.vm")
         #parseTemplate("workflows/forms/sections/attach.vm")
         #parseTemplate("workflows/forms/sections/notes.vm")
+        #parseTemplate("workflows/forms/sections/citations.vm")
         #parseTemplate("workflows/forms/sections/request.vm")
         #parseTemplate("workflows/forms/sections/submit.vm")
     </div>
