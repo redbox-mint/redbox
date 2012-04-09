@@ -1,0 +1,36 @@
+{
+    "results": [
+        {
+            "id": "hasAssociationWith",
+            "label": "Has association with:"
+        },
+        {
+            "id": "isLocatedIn",
+            "label": "Is located in:"
+        },
+        {
+            "id": "supports",
+            "label": "Supporting service:"
+        },
+        {
+            "id": "isAvailableThrough",
+            "label": "Is available through:"
+        },
+        {
+            "id": "isProducedBy",
+            "label": "Is produced by:"
+        },
+        {
+            "id": "isPresentedBy",
+            "label": "Is presented by:"
+        },
+        {
+            "id": "hasValueAddedBy",
+            "label": "Has value added by:"
+        },
+        {
+            "id": "isOperatedOnBy",
+            "label": "Is operated on by:"
+        }
+    ]
+}

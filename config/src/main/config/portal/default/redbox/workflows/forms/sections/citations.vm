@@ -83,12 +83,12 @@
                                 <td>Identifier:</td>
                                 <td>
                                     <label for="useCuration">
-                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" id="useCuration" checked="checked" />
+                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" />
                                         Use the Identifier provided during curation
                                     </label>
                                     <strong>OR</strong>
                                     <label for="useDoi">
-                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" id="useDoi" />
+                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useDoi" />
                                         <span>Get me a DOI using ANDS 'Cite My Data'</span>
                                     </label>
                                 </td>
@@ -464,7 +464,7 @@
         }
 
         if (doiCreation) {
-            getReDBoxById("useDoi").live("click", function() {
+            $("label[for=\"useDoi\"]").live("click", function() {
                 ## Mandatory fields for ANDS
                 var title = getReDBoxById("${citePart}.dc:title").val();
                 if (title == null || title == "") {

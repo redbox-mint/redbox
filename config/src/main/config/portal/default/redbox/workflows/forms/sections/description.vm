@@ -157,6 +157,65 @@
             </tr>
         </tfoot>
     </table>
+
+    #fieldTitle("dc:relation.vivo:Service" "Related Services" false)
+    <div class="help-content" id="help-dc:relation.vivo:Service">
+        Indicate any related related Services to this Collection. A lookup works against Mint, or you can enter known information about remote Services.
+    </div>
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Relationship</th>
+                <th class="relatedIdLabel">Key / URL</th>
+                <th>Title</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody class="item-input-display sortable-item">
+            <tr>
+                <td class="sort-number"></td>
+                <td>
+                    <span class="data-source-drop-down"
+                          data-delay="1"
+                          data-json-source-url="$portalPath/workflows/forms/data/serviceRelationTypes.json"
+                          data-id-key="id"
+                          data-label-key="label"
+                          data-list-key="results"
+                          data-default-value="hasAssociationWith">
+                        <span class="selection-added">
+                            <input type="hidden" class="selection-added-id" id="dc:relation.vivo:Service.0.vivo:Relationship.rdf:PlainLiteral" />
+                            <input type="text" class="selection-added-label" readonly="readonly" id="dc:relation.vivo:Service.0.vivo:Relationship.skos:prefLabel" />
+                            <a href="#" class="clear-item">change</a>
+                        </span>
+                        <span class="drop-down-location">
+                            <button class="selection-add add-unique-only" data-add-on-click="1">
+                                Select
+                            </button>
+                        </span>
+                    </span>
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="service identifier" id="dc:relation.vivo:Service.0.dc:identifier" />
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="title" id="dc:relation.vivo:Service.0.dc:title" class="serviceTitleLookup" />
+                </td>
+                <td>
+                    <input type="text" size="40" placeholder="notes" id="dc:relation.vivo:Service.0.skos:note" />
+                    <span class="delete-item"><a href="#">delete</a></span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="Add Service" /></td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+
 </div>
 <script type="text/javascript">
 $(function() {
@@ -209,6 +268,37 @@ $(function() {
                     }
                 })
         }
+    }).live("blur", function(){
+        $(this).search();
+    });
+
+    function splitService(row) {
+        var items = row[0].split("::");
+        return {
+            title: items[0],
+            id: items[1]
+        };
+    }
+
+    $(".serviceTitleLookup").live("focus", function(){
+        var elem = $(this);
+        var baseId = elem.attr("id").replace(".dc:title", "");
+        elem.unautocomplete();
+        elem.autocomplete(
+            "$portalPath/proxyGet?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
+            {
+                extraParams: {
+                    qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
+                },
+                formatItem: function(row) { return splitService(row).title; },
+                formatResult: function(row) { return splitService(row).title; },
+                width: "40em"
+            }).result(function(event, row) {
+                if (row) {
+                    var data = splitService(row);
+                    getReDBoxById(baseId+".dc:identifier").val(data.id);
+                }
+            })
     }).live("blur", function(){
         $(this).search();
     });
