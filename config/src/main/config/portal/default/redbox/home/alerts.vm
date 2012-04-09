@@ -20,7 +20,7 @@
             #set($source = $alert.getFirst("workflow_source"))
             <tr>
                 <td>$velocityCount</td>
-                <td width="50%"><a class="titleText" href="$portalPath/workflow/$oid">$title</a></td>
+                <td width="50%"><a class="titleText" href="$portalPath/workflow/$oid">$page.escapeHtml($title)</a></td>
                 <td>$!source</td>
                 <td class="actions">
                     <img class="accept-record" rel="$oid" src="$portalPath/images/icons/accept.png" title="Accept this record" />

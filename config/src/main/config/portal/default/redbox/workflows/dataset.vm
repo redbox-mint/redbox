@@ -16,7 +16,7 @@
 var INTERNAL_GRANT_ID = "$iternalId";
 var widgetTabs;
 var packageData = {
-    metaData: $self.getJsonMetadata(),
+    metaData: $self.getJsonMetadata().replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
     attachedFiles: $self.getAttachedFiles(),
     nextStageMessage: "$self.getNextStepAcceptMessage()"
 };
