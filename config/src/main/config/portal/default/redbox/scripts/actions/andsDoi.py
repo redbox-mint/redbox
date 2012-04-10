@@ -54,8 +54,7 @@ class AndsDoiData:
 
         # Create = https://test.ands.org.au/home/dois/doi_mint.php?app_id=$app_id&url=$url
         if page == "create":
-            return baseUrl + "?verb=create&app_id=" + apiKey + "&url="
-            #return baseUrl + "doi_mint.php?app_id=" + apiKey + "&url="
+            return baseUrl + "doi_mint.php?app_id=" + apiKey + "&url="
 
         # Update = https://test.ands.org.au/home/dois/doi_update.php?app_id=$app_id&DOI=$DOI_id[&url=$url]
         if page == "update":
@@ -97,16 +96,12 @@ class AndsDoiData:
             url = json.getString(None, ["url"])
             if url is None or url == "":
                 return None
+            # We have to fake a DOI to get through the validator
+            xmlString += self.xml_id % ("10.5072/05/1111")
         else:
             ## Once we have a DOI it needs to go in the XML.
             ## URL is optional in this case, and still not in XML
             xmlString += self.xml_id % (doi)
-
-        title = json.getString(None, ["title"])
-        if title is None or title == "":
-            return None
-        else:
-            xmlString += self.xml_title % (title)
 
         creators = json.getStringList(["creators"])
         if creators is None or creators.isEmpty():
@@ -116,6 +111,12 @@ class AndsDoiData:
             for creator in creators:
                 creatorString += self.xml_creator % (creator)
             xmlString += self.xml_creatorWrapper % (creatorString)
+
+        title = json.getString(None, ["title"])
+        if title is None or title == "":
+            return None
+        else:
+            xmlString += self.xml_title % (title)
 
         publisher = json.getString(None, ["publisher"])
         if publisher is None or publisher == "":
@@ -152,6 +153,12 @@ class AndsDoiData:
             post.addParameter("xml", postBody) 
             #######
             code = client.executeMethod(post)
+            if str(code) == "302":
+                locationHeader = post.getResponseHeader("location");
+                if locationHeader is not None:
+                    redirectLocation = locationHeader.getValue();
+                    self.log.info("302 Redirection was requested: '{}'", redirectLocation)
+                    ##return self.urlPost(redirectLocation, postBody)
             body = post.getResponseBodyAsString().strip()
             return (str(code), body)
         except Exception, e:
@@ -178,11 +185,14 @@ class AndsDoiData:
         if xmlString is None:
             self.throwError("Error during XML creation")
             return
+        else:
+            self.log.debug("XML:\n", xmlString)
 
         andsUrl = self.getApiUrl("create")
         ourUrl = json.getString(None, ["url"])
         if (andsUrl is not None and ourUrl is not None):
-            andsUrl += ourUrl
+            #andsUrl += ourUrl
+            andsUrl += "http://www.example.org"
         self.log.debug("About to create DOI via URL: '{}'", andsUrl)
         (code, body) = self.urlPost(andsUrl, xmlString)
         self.log.debug("Response Code: '{}'", code)
