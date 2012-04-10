@@ -97,7 +97,7 @@ class AndsDoiData:
             if url is None or url == "":
                 return None
             # We have to fake a DOI to get through the validator
-            xmlString += self.xml_id % ("10.5072/05/1111")
+            xmlString += self.xml_id % ("10.0/0")
         else:
             ## Once we have a DOI it needs to go in the XML.
             ## URL is optional in this case, and still not in XML
@@ -186,7 +186,7 @@ class AndsDoiData:
             self.throwError("Error during XML creation")
             return
         else:
-            self.log.debug("XML:\n", xmlString)
+            self.log.debug("XML:\n{}", xmlString)
 
         andsUrl = self.getApiUrl("create")
         ourUrl = json.getString(None, ["url"])
@@ -204,7 +204,7 @@ class AndsDoiData:
         # Grab the DOI from their repsonse string
         words = body.split()
         if len(words) != 6:
-            self.throwError("We received a SUCCESS response from ANDS, but the format was not as expected. Response body: '"+body+"'")
+            self.throwError("We received a SUCCESS response from ANDS, but the format was not as expected. Response body: '"+body.replace("\n", "\\n")+"'")
             return
         doi = words[2]
         stored = self.storeDoi(doi, oid)
@@ -213,7 +213,7 @@ class AndsDoiData:
             return
 
         self.responseJson.getJsonObject().put("doi", doi)
-        self.writer.println(self.responseJson.toString(True))
+        self.writer.println(self.responseJson.toString(True).replace("\n", "\\n"))
         self.writer.close()
 
     def getDoiFromStorage(self, oid):

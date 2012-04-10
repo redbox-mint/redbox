@@ -1,0 +1,55 @@
+#sectionHeading("Citation")
+<div class="meta">
+    <dl>
+        #displayFirst("dc:biblioGraphicCitation.redbox:sendCitation" "Sending Citation?")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:identifier.skos:note" "Identifier Type")
+
+        <dt>Creators</dt>
+        #set($creatorList = $self.getList("dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
+        #if ($creatorList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($key in $creatorList.keySet())
+                #set($dcCreator = $creatorList.get($key))
+                <li>
+                    #displayOptionalKey($dcCreator "foaf:title") #displayRequiredKey($dcCreator "foaf:givenName") #displayRequiredKey($dcCreator "foaf:familyName")
+                </li>
+            #end
+            </ol>
+        </dd>
+        #end
+
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:title" "Title")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral" "Edition")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral" "Publisher")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location" "Place of Publication")
+
+        <dt>Dates</dt>
+        #set($dateList = $self.getList("dc:biblioGraphicCitation.dc:hasPart.dc:date"))
+        #if ($dateList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($key in $dateList.keySet())
+                #set($date = $dateList.get($key))
+                <li>
+                    #displayRequiredKey($date "rdf:PlainLiteral") #displayRequiredKey($date "dc:type.skos:prefLabel")
+                </li>
+            #end
+            </ol>
+        </dd>
+        #end
+
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier" "URL")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote" "Context")
+        ,
+        ,
+    </dl>
+</div>

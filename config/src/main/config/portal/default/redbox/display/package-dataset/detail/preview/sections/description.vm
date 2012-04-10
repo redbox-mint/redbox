@@ -76,5 +76,32 @@
             </ol>
         </dd>
         #end
+
+        <dt>Related Services</dt>
+        #set($serviceList = $self.getList("dc:relation.vivo:Service"))
+        #if ($serviceList.isEmpty())
+        <dd>
+        #noInformation()
+        </dd>
+        #else
+        <dd>
+            <ol>
+            #foreach($key in $serviceList.keySet())
+                #set($service = $serviceList.get($key))
+                <li>
+                    <b>#displayRequiredKey($service "vivo:Relationship.skos:prefLabel")</b>
+                    &gt;&gt; <em>#displayRequiredKey($service "dc:title")</em>
+                    <ul>
+                        <li><b>ID</b>: #displayRequiredKey($service "dc:identifier")</li>
+                    #set($note = $service.get("skos:note"))
+                    #if("$!note"!="")
+                        <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+                    #end
+                    </ul>
+                </li>
+            #end
+            </ol>
+        </dd>
+        #end
     </dl>
 </div>

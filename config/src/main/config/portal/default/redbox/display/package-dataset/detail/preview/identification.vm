@@ -10,4 +10,12 @@
         #end
     </div>
     #end
+
+    #set ($doiProperty = $systemConfig.getString("andsDoi", "doiProperty"))
+    #set ($doi = $parent.getProperty($doiProperty))
+    #if ($doi != $nullValue)
+    <div class="pId">
+        This object has a DOI: '<a href="http://dx.doi.org/$doi">$doi</a>'.
+    </div>
+    #end
 #end

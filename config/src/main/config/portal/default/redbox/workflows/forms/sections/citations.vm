@@ -89,7 +89,7 @@
                                     <strong>OR</strong>
                                     <label for="useDoi">
                                         <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useDoi" />
-                                        <span>Get me a DOI using ANDS 'Cite My Data'</span>
+                                        <span><button>Get me a DOI using ANDS 'Cite My Data'</button></span>
                                     </label>
                                 </td>
                             </tr>
