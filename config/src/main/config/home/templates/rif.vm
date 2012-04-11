@@ -214,7 +214,7 @@
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
             #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "rdf:resource", "anzsrc")
 
-        #set ($value = $util.get($item, "dc:subject.anzsrc:toa.rdf:resource"))
+        #set ($value = $util.get($item, "dc:subject.anzsrc:toa.skos:prefLabel"))
         #if ("$!value" != "")
             <rif:subject type="anzsrc-toa">$util.encodeXml($value)</rif:subject>
         #end
