@@ -120,15 +120,15 @@
         #################
         ## The order of child codes under <collection> is important, don't
         ## change the order or the XML will not validate:
-        ##  1) <rif:identifier>
-        ##  2) <rif:name>
-        ##  3) <rif:location>
-        ##  4) <rif:coverage>
-        ##  5) <rif:relatedObject>
-        ##  6) <rif:subject>
-        ##  7) <rif:description>
-        ##  8) <rif:rights>
-        ##  9) <rif:relatedInfo>
+        ##  1)  <rif:identifier>
+        ##  2)  <rif:name>
+        ##  3)  <rif:location>
+        ##  4)  <rif:coverage>
+        ##  5)  <rif:relatedObject>
+        ##  6)  <rif:subject>
+        ##  7)  <rif:description>
+        ##  8)  <rif:rights>
+        ##  9)  <rif:relatedInfo>
         ##  10) <rif:citationInfo>
         ##
         ##  http://services.ands.org.au/documentation/rifcs/1.3/schemadocs/registryObjects.html
@@ -265,19 +265,48 @@
 
         #set($showCitation = $util.get($item, "dc:biblioGraphicCitation.redbox:sendCitation"))
         #if ("$!showCitation" != "" && $showCitation == "on")
+            #set($doiProperty = $systemConfig.getString($defaultOnError, "andsDoi", "doiProperty"))
+            #set ($doi = $util.getMetadata($object, $doiProperty))
+            ## Use the DOI by preference for a citation
+            #if ("$!doi" == "")
+                #set ($citeId = $pid)
+                #set ($citeIdType = $identifierType)
+            #else
+                #set ($citeId = "http://dx.doi.org/${doi}")
+                #set ($citeIdType = "doi")
+            #end
             <rif:citationInfo>
-                #set($citationFull = $util.get($item, "dc:biblioGraphicCitation.skos:prefLabel"))
-                #set($citationStyle = $util.get($item, "dc:biblioGraphicCitation.dc:type.rdf:PlainLiteral"))
-                <rif:fullCitation style="$util.encodeXml($citationStyle)">$util.encodeXml($citationFull)</rif:fullCitation>
+                #set($citationPublisher = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral"))
+                #set($citationTitle = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:title"))
+                #set($creatorMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
+                #set($creatorString = "")
+                #foreach($key in $creatorMap.keySet())
+                    #if ($velocityCount != 1)
+                        #set($creatorString = "${creatorString}; ")
+                    #end
+                    #set ($row = $creatorMap.get($key))
+                    #set ($given = $row.get("foaf:givenName"))
+                    #set ($family = $row.get("foaf:familyName"))
+                    #set($creatorString = "${creatorString}${family}, ${given}")
+                #end
+                #set($dateMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.dc:date"))
+                #foreach($key in $dateMap.keySet())
+                    #set ($row = $dateMap.get($key))
+                    #set ($date = $row.get("rdf:PlainLiteral"))
+                    #set ($dateType = $row.get("dc:type.rdf:PlainLiteral"))
+                    #if ($dateType == "publicationDate")
+                #set($citationDate = $date.substring(0, 4))
+                    #end
+                #end
+                #set($citationString = "$creatorString ($citationDate): $citationTitle. $citationPublisher. $citeId")
+                <rif:fullCitation style="Datacite">$util.encodeXml($citationString)</rif:fullCitation>
 
                 <rif:citationMetadata>
-                    #set($citationId = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:identifier.rdf:PlainLiteral"))
-                    #set($citationIdType = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:identifier.dc:type.rdf:PlainLiteral"))
-                    <rif:identifier type="$util.encodeXml($citationIdType)">$util.encodeXml($citationId)</rif:identifier>
+                    <rif:identifier type="$util.encodeXml($citeIdType)">$util.encodeXml($citeId)</rif:identifier>
 
-                    #set($valueMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
-                    #foreach($key in $valueMap.keySet())
-                        #set ($row = $valueMap.get($key))
+                    #set($creatorMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
+                    #foreach($key in $creatorMap.keySet())
+                        #set ($row = $creatorMap.get($key))
                         #set ($title = $row.get("foaf:title"))
                         #set ($given = $row.get("foaf:givenName"))
                         #set ($family = $row.get("foaf:familyName"))
@@ -294,13 +323,11 @@
                     </rif:contributor>
                     #end
 
-                    #set($citationTitle = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:title"))
                     <rif:title>$util.encodeXml($citationTitle)</rif:title>
 
                     #set($citationEdition = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral"))
                     <rif:edition>$util.encodeXml($citationEdition)</rif:edition>
 
-                    #set($citationPublisher = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral"))
                     #if ("$!citationPublisher" != "")
                     <rif:publisher>$util.encodeXml($citationPublisher)</rif:publisher>
                     #end
