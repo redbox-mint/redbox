@@ -327,7 +327,7 @@ class IndexData:
             count = 0
             for geoNode in geoNodes:
                 count += 1
-                data["dc:coverage.vivo:GeographicLocation.%s.gn:name" % (count)] = geoNode.getText()
+                data["dc:coverage.vivo:GeographicLocation.%s.rdf:PlainLiteral" % (count)] = geoNode.getText()
                 self.__store(data, "dc:coverage.vivo:GeographicLocation.%s.dc:type" % (count), geoNode, "@type", None)
         # Coverage - Temporal
         self.__store(data, "dc:coverage.vivo:DateTimeInterval.vivo:start", rif, "//rif:registryObject/rif:collection/rif:coverage/rif:temporal[1]/rif:date[@type='dateTo']", None)

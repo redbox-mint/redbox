@@ -4,6 +4,10 @@
 <div class="grid_16" id="inputForms">
     <p class="loading-data">Loading form data, please wait...</p>
 </div>
+<!-- Uncomment this line and add your API-KEY for Google Maps to work -->
+<!--<script id="google-api-key" src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={your-key-here}'></script>-->
+<script type="text/javascript" src="$portalPath/openlayers/OpenLayers.js"></script>
+<script type="text/javascript" src="$portalPath/openlayers/redbox.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.ajaxQueue.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/lib/jquery.bgiframe.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
@@ -40,8 +44,17 @@ function getDateTime(){
 }
 
 (function($){
+    // OpenLayers stylesheets
+    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss1">');
+    $('#openLayersCss1').attr('href', '$portalPath/openlayers/theme/default/style.css');
+    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss2">');
+    $('#openLayersCss2').attr('href', '$portalPath/openlayers/redbox.css');
+
     $(function(){
         function onContentLoaded(){
+            // OpenLayers init, store it globally so the Geonames lookup can hit it later
+            window["openLayersMap"] = loadOpenLayers();
+
             if (packageData.metaData["redbox:submissionProcess.redbox:submitted"] != "true"){
                 $(".request").remove();
             }
@@ -72,9 +85,9 @@ function getDateTime(){
                             });
                             // geonames
                             $(".autocomplete-geonames").each(function() {
-                                var baseId = $(this).attr("id").replace(".gn:name", "");
+                                var baseId = $(this).attr("id").replace(".rdf:PlainLiteral", "");
                                 var uri = $("input[id='"+baseId+".dc:identifier']").val();
-                                if(uri!=""){
+                                if (uri != "") {
                                     var east = $("input[id='"+baseId+".geo:long']").val();
                                     var north = $("input[id='"+baseId+".geo:lat']").val();
                                     var coordsElem = $("div[id='"+baseId+".coords']");
@@ -107,6 +120,10 @@ function getDateTime(){
                         }
                     });
                     #end
+
+                    // Form data is ready, load features on the map
+                    window["openLayersMap"].loadData();
+
                 }catch(e){
                     alert(e);
                 }

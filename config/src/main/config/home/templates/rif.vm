@@ -40,19 +40,35 @@
 #macro(geoSpatial $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        <rif:coverage>
         #set($geoMap = $valueMap.get($key))
+        #set($wkt = $geoMap.get("redbox:wktRaw"))
+        #set($literal = $geoMap.get("rdf:PlainLiteral"))
         #set($type = $geoMap.get("dc:type"))
-        #set($name = $geoMap.get("gn:name"))
-            <rif:spatial type="$type" $lang>$util.encodeXml($name)</rif:spatial>
-        #if($type == "text")
-            #set($east = $geoMap.get("geo:long"))
-            #set($north = $geoMap.get("geo:lat"))
-            #if ("$!east" != "" &&"$!north" != "")
-            <rif:spatial type="dcmiPoint" $lang>name=$util.encodeXml($name); east=$east; north=$north</rif:spatial>
+
+        #if($literal != "")
+            #### Non - OpenLayers data
+            #if($wkt == "")
+                <rif:coverage>
+                    <rif:spatial type="$type" $lang>$util.encodeXml($literal)</rif:spatial>
+                #if($type == "text")
+                    #set($east = $geoMap.get("geo:long"))
+                    #set($north = $geoMap.get("geo:lat"))
+                    #if ("$!east" != "" &&"$!north" != "")
+                    <rif:spatial type="dcmiPoint" $lang>name=$util.encodeXml($literal); east=$east; north=$north; projection=WGS84</rif:spatial>
+                    #end
+                #end
+                </rif:coverage>
+
+
+            #### OpenLayers data
+            #else
+                #if($type != "")
+                    <rif:coverage>
+                        <rif:spatial type="$type" $lang>$util.encodeXml($literal)</rif:spatial>
+                    </rif:coverage>
+                #end
             #end
         #end
-        </rif:coverage>
     #end
 #end
 

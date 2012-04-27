@@ -19,7 +19,7 @@
         "//my:Coverage/my:TimePeriod": "dc:coverage.redbox:timePeriod",
         "//my:Coverage/my:GeospatialLocations/my:GeospatialLocation": {
             "my:GeospatialLocationType": "dc:coverage.vivo:GeographicLocation.0.dc:type",
-            "my:GeospatialLocationValue": "dc:coverage.vivo:GeographicLocation.0.gn:name",
+            "my:GeospatialLocationValue": "dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral",
             "": "dc:coverage.vivo:GeographicLocation.0.geo:long",
             "": "dc:coverage.vivo:GeographicLocation.0.geo:lat",
             "": "dc:coverage.vivo:GeographicLocation.0.dc:identifier"

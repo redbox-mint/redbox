@@ -1,0 +1,82 @@
+/* Toolbar */
+.olControlEditingToolbar {
+    float: right;
+    width: 29px;
+    height: 120px;
+}
+.olControlEditingToolbar div {
+    float: right;
+}
+.olControlModifyFeatureItemActive {
+    background-position: -1px -24px;
+}
+.olControlModifyFeatureItemInactive {
+    background-position: -1px -1px;
+}
+.olControlDrawFeatureBoxItemActive {
+    background-position: -153px -24px;
+}
+.olControlDrawFeatureBoxItemInactive {
+    background-position: -153px -1px;
+}
+.olControlDrawFeatureCircleItemActive {
+    background-position: -178px -24px;
+}
+.olControlDrawFeatureCircleItemInactive {
+    background-position: -178px -1px;
+}
+/*** OpenLayers tools. The height/width of .trapClickDiv is  ***/
+/*** important. It is trapping clicking events from the cell ***/
+.redboxGeoData {
+    height: 100%; /* All table parents of .trapClickDiv need a height */
+}
+.redboxGeoDataRow {
+    height: 100%; /* All table parents of .trapClickDiv need a height */
+}
+.redboxGeoDataRow .delete-item {
+    padding: 0px; /* Remove the gap caused by the padding */
+}
+.redboxGeoDataRow .delete-item a {
+    margin: 0.2em 1em; /* Recreate the gap internally by changing it to a margin */
+}
+.delete-item .trapClickDiv {
+    width: 80px;  /* Provide room for two buttons */
+    height: 100%; /* This only works with the parents above */
+}
+.feature .delete {
+    display: inline-block;
+    background-image: url("lib/theme/default/img/close.gif");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 18px;
+    margin: 0px 2px;
+    width: 18px;
+}
+/*** ^^^^ ***/
+
+/* Outer styling */
+.openLayersHolder {
+    border: 1px solid #999999;
+    background-color: #FFFFFF;
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+.openLayersHolder .article {
+    border-top: 0px;
+    padding-top: 0px;
+    background-color: #DDDDDD;
+    padding: 5px;
+}
+.mapHolder {
+    width: 548px;
+}
+.olMap {
+    border: 1px solid #CCCCCC;
+    height: 256px;
+    width: 512px;
+}
+.openLayersHolder .lookupHolder {
+    padding-top: 5px;
+    padding-left: 10px;
+}

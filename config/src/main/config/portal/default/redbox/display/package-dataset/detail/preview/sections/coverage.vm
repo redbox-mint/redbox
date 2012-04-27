@@ -29,13 +29,17 @@
                 #### Linked Geo Data
                 #if ($type == "text")
                     #set($url = $row.get("dc:identifier"))
-                    #set($title = $row.get("gn:name"))
-                    <li>Geonames: <a href="$self.escapeHtml($url)">$self.escapeHtml($title)</a></li>
+                    #set($title = $row.get("rdf:PlainLiteral"))
+                    #if ("$!url" != "" || "$!url" != "")
+                        <li><b>Geonames</b>: <a href="$self.escapeHtml($url)">$self.escapeHtml($title)</a></li>
+                    #else
+                        <li><b>Text</b>: $self.escapeHtml($title)</li>
+                    #end
 
                 #### Everything else
                 #else
-                    #set($value = $row.get("gn:name"))
-                    <li>$self.escapeHtml($type): ($self.escapeHtml($value))
+                    #set($value = $row.get("rdf:PlainLiteral"))
+                    <li><b>$self.escapeHtml($type)</b>: ($self.escapeHtml($value))
                 #end
             #end
             </ol>

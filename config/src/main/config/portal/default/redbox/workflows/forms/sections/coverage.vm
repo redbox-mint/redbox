@@ -146,36 +146,53 @@
             </li>
         </ul>
     </div>
-    <table class="input-list">
+
+    <div class="openLayersHolder">
+        <div class="article">
+            <p class="meta attribution">Map Credits: <span id="attribution"></span></p>
+            <div class="mapHolder">
+                <div id="panel" class="olControlEditingToolbar"></div>
+                <div id="map" class="smallmap"></div>
+            </div>
+            <div class="lookupHolder">
+                <label for="geonamesLookup">Find location: </label>
+                <input type="text" size="40" placeholder="Place name" id="geonamesLookup" />
+            </div>
+        </div>
+    </div>
+
+    <table class="input-list redboxGeoData">
         <thead>
             <tr>
                 <th></th>
                 <th>Type</th>
                 <th>Value</th>
-                <th colspan="3"></th>
+                <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
-            <tr class="item-input-display">
+            <tr class="item-input-display redboxGeoDataRow">
                 <td class="sort-number"></td>
                 <td>
                     <select class="locationType" id="dc:coverage.vivo:GeographicLocation.0.dc:type">
                         <option value="" selected="selected">Please select one...</option>
                         <option value="gml">OpenGIS Geography Markup Language</option>
-                        <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
+                        <option value="kml">Keyhole Markup Language</option>
+                        <option value="iso19139dcmiBox">DCMI Box notation (iso19139)</option>
+                        <option value="dcmiPoint">DCMI Point notation</option>
                         <option value="gpx">GPS Exchange Format</option>
                         <option value="iso31661">Country code (iso31661)</option>
                         <option value="iso31662">Country subdivision code (iso31662)</option>
-                        <option value="iso19139dcmiBox">DCMI Box notation (iso19139)</option>
-                        <option value="kml">Keyhole Markup Language</option>
                         <option value="kmlPolyCoords">KML long/lat co-ordinates</option>
-                        <option value="dcmiPoint">DCMI Point notation</option>
+                        <option value="gmlKmlPolyCoords">KML long/lat co-ordinates derived from GML</option>
                         <option value="text">Free text</option>
                     </select>
                 </td>
                 <td>
-                    <input type="text" size="60" placeholder="eg. coordinates or placename"
-                        id="dc:coverage.vivo:GeographicLocation.0.gn:name" class="autocomplete-geonames" />
+                    <input type="hidden" class="redboxGeoDataFid" />
+                    <input type="hidden" class="redboxGeoDataWkt" id="dc:coverage.vivo:GeographicLocation.0.redbox:wktRaw" />
+                    <input type="text" class="redboxGeoDataOutput autocomplete-geonames" placeholder="eg. coordinates or placename"
+                        id="dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral" size="60" />
                     <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.dc:identifier" />
                     <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.geo:long" />
                     <input type="hidden" id="dc:coverage.vivo:GeographicLocation.0.geo:lat" />
@@ -216,11 +233,44 @@ $(function(){
         getReDBoxById("dc:coverage.vivo:GeographicLocation.0.coords").hide();
     });
 
+    $("#geonamesLookup").live("focus", function(){
+        var elem = $(this);
+        elem.unautocomplete();
+            elem.autocomplete(
+                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+                {
+                    extraParams: {
+                        qs: function() {
+                            var userInput = elem.val();
+                            var commaPos = userInput.indexOf(",");
+                            if(commaPos!=-1){
+                                userInput = userInput.substring(0,commaPos);
+                            }
+                            return "func=search&format=json&rows=25&q=" + escape(userInput);
+                        }
+                    },
+                    formatItem: function(row) { return splitGeonamesData(row).display; },
+                    formatResult: function(row) { return splitGeonamesData(row).display; },
+                    width: "40em"
+                }).result(function(event, row) {
+                    if (row) {
+                        var data = splitGeonamesData(row);
+                        // Pan OpenLayers Map
+                        if (window["openLayersMap"] != null) {
+                            window["openLayersMap"].panTo(data.east, data.north, 10);
+                        }
+                    }
+                })
+        }).live("blur", function(){
+            $(this).search();
+        });
+
     $(".autocomplete-geonames").live("focus", function(){
         var elem = $(this);
-        var baseId = elem.attr("id").replace(".gn:name", "");
+        var baseId = elem.attr("id").replace(".rdf:PlainLiteral", "");
+        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
         elem.unautocomplete();
-        if(getReDBoxById(baseId+".dc:type").val()=="text"){
+        if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
             elem.autocomplete(
                 "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
                 {
@@ -246,7 +296,6 @@ $(function(){
                         getReDBoxById(baseId+".geo:lat").val(data.north);
                         coordsElem.find(".east").text(data.east);
                         coordsElem.find(".north").text(data.north);
-                        coordsElem.find(".map-link").attr("href", data.uri);
                         coordsElem.show();
                     }
                 })
@@ -254,6 +303,15 @@ $(function(){
         }).live("blur", function(){
             $(this).search();
         });
+
+    $(".map-link").live("click", function(){
+        var p = $(this).parent();
+        var baseId = p.attr("id").replace(".coords", "");
+        var long = getReDBoxById(baseId+".geo:long").val();
+        var lat = getReDBoxById(baseId+".geo:lat").val();
+        window["openLayersMap"].panTo(long, lat, 10);
+        return false;
+    });
 
     $(".clear-link").live("click", function(){
         var p = $(this).parent();
@@ -264,16 +322,43 @@ $(function(){
         p.hide();
     });
 
-    $(".locationType").live("change", function(e){
-        var elem=$(this);
+    var lastTypeValue;
+    $(".locationType").live("focus", function() {
+        // This is only really useful on the first use of the drop-down
+        lastTypeValue = $(this).val();
+    }).live("change", function(e){
+        var elem = $(this);
         var baseId = elem.attr("id").replace(".dc:type", "");
-        var uriElem = getReDBoxById(baseId+".dc:identifier");
-        if(elem.val() != "text" && uriElem.val() != ""){
-            if(confirm("Are you sure you want to clear the Geonames linked location?")){
-                getReDBoxById(baseId+".gn:name").val("");
-                $("div[id='"+baseId+".coords'] .clear-link").click();
-            }else{
-                $(this).val("text");
+        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+        var wktString = wktElem.val();
+        // OpenLayers Row
+        if (wktString != "") {
+            var outElem = getReDBoxById(baseId+".rdf:PlainLiteral");
+            var type = elem.val();
+            // The alert window causes focus changes... use this temp variable instead
+            var lastType = lastTypeValue;
+            var output = window["openLayersMap"].mapWktData(wktString, type);
+            if (output != null) {
+                outElem.val(output);
+                // Fix the focus loss from the alert
+                lastTypeValue = type;
+            } else {
+                elem.val(lastType);
+                // Fix the focus loss from the alert
+                lastTypeValue = lastType;
+                return;
+            }
+
+        // Legacy input
+        } else {
+            var uriElem = getReDBoxById(baseId+".dc:identifier");
+            if(elem.val() != "text" && uriElem.val() != ""){
+                if (confirm("Are you sure you want to clear the Geonames linked location?")) {
+                    getReDBoxById(baseId+".rdf:PlainLiteral").val("");
+                    $("div[id='"+baseId+".coords'] .clear-link").click();
+                } else {
+                    $(this).val("text");
+                }
             }
         }
     });
