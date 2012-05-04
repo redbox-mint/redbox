@@ -105,8 +105,12 @@ class MigrateData:
             #   version number will change.
             newWorkflowData = self.__upgrade(version, workflowData)
         else:
-            self.log.debug("OID '{}' requires no work, skipping", self.oid)
-            return
+            newWorkflowData = self.__hotfix(workflowData)
+            if newWorkflowData is not None:
+                self.log.debug("OID '{}' was hotfixed for v1.2 'dc:type' bug", self.oid)
+            else:
+                self.log.debug("OID '{}' requires no work, skipping", self.oid)
+                return
 
         # Backup our data first
         backedUp = self.__backup(oldData)
@@ -121,6 +125,37 @@ class MigrateData:
             self.object.updatePayload(packagePid, inStream)
         except StorageException, e:
             self.log.error("Error updating workflow payload: ", e)
+
+    def __hotfix(self, formData):
+        oldType = formData.getString(None, ["dc:type"])
+        newType = formData.getString(None, ["dc:type.rdf:PlainLiteral"])
+        if oldType != newType or newType is None:
+            self.log.debug("Bugged Type?: v1.4: '{}', OLD: '{}'", newType, oldType)
+        else:
+            ## No fix required
+            return None
+
+        ## Get Backup data
+        ## NOTE: The only known production system affected by this bug
+        ## was caught during a v1.4 upgrade. Alter this line if required.
+        pid = "1.4.workflow.backup"
+        oldData = None
+        try:
+            payload = self.object.getPayload(pid)
+            try:
+                oldData = JsonSimple(payload.open())
+            except Exception:
+                self.log.error("Error parsing JSON '{}'", pid)
+            finally:
+                payload.close()
+        except StorageException:
+            self.log.error("Error accessing '{}'", pid)
+            return None
+
+        oldType = oldData.getString(None, ["dc:type"])
+        self.log.debug("Old Type: '{}' => 'dc:type.rdf:PlainLiteral'", oldType)
+        formData.getJsonObject().put("dc:type.rdf:PlainLiteral", oldType);
+        return formData
 
     def __upgrade(self, version, formData):
         # These fields are handled specially
@@ -215,6 +250,8 @@ class MigrateData:
         # GENERAL tab
         if oldBase == "dc:language":
             newField = "dc:language.dc:identifier"
+        if oldBase == "dc:type":
+            newField = "dc:type.rdf:PlainLiteral"
 
         # COVERAGE tab
         elif oldBase == "dc:coverage.from":
