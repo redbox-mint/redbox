@@ -11,12 +11,13 @@
         data-submit-result-func="uploadCompletedFunc"
         data-submit-err-result-func="uploadErrorFunc"
         data-form-fields="uploadFile, attachmentType, accessRights"
-        data-form-fields-readonly="ajax, oid, func, upload-file-workflow, metaDataList">
+        data-form-fields-readonly="ajax, oid, func, upload-file-workflow, metaDataList, upload-file-context">
 
         <input type="hidden" name="ajax" value="1"/>
         <input type="hidden" name="oid" value=""/>
         <input type="hidden" name="func" value="attach-file"/>
         <input type="hidden" name="upload-file-workflow" value="attachment-upload"/>
+        <input type="hidden" name="upload-file-context" value="$oid"/>
         <input type="hidden" name="metaDataList" value="[]" />
 
         <table>
