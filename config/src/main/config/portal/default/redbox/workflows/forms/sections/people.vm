@@ -1,6 +1,7 @@
 <h3><a href="#people">People</a></h3>
 <div id="people" class="inputscreen nameLookup-section">
     <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
+    <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet?ns=NLA_SRU&qs={searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
     #fieldTitle("dc:creator" "Creators" true)
@@ -58,7 +59,7 @@
                                 </td>
                                 <td>
                                     <input type="text" placeholder="given name" size="25"
-                                           class="nameLookup-name creatorGivenName creatorName"
+                                           class="nameLookup-name creatorGivenName creatorName givenName"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
                                 </td>
                                 <td>
@@ -66,7 +67,7 @@
                                 </td>
                                 <td>
                                     <input type="text" placeholder="family name" size="25"
-                                           class="nameLookup-name creatorFamilyName creatorName"
+                                           class="nameLookup-name creatorFamilyName creatorName familyName"
                                            id="dc:creator.foaf:Person.0.foaf:familyName" />
                                 </td>
                             </tr>
@@ -129,9 +130,9 @@
                         </span>
                         <input id="dc:creator.foaf:Person.0.foaf:name"
                                type="hidden"
-                               class="nl nl-rdfs:label" readonly="readonly"/>
+                               class="nl nl-rdfs:label nlLabel" readonly="readonly"/>
                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
-                               class="nl nl-dc:identifier" />
+                               class="nl nl-dc:identifier nlId" />
                     </span>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
@@ -175,7 +176,7 @@
                 </td>
                 <td>
                     <input type="text" placeholder="given name" size="25"
-                           class="nameLookup-name pcGivenName pcName"
+                           class="nameLookup-name pcGivenName pcName givenName"
                            id="locrel:prc.foaf:Person.foaf:givenName" />
                 </td>
                 <td>
@@ -183,7 +184,7 @@
                 </td>
                 <td>
                     <input type="text" placeholder="family name" size="25"
-                           class="nameLookup-name pcFamilyName pcName"
+                           class="nameLookup-name pcFamilyName pcName familyName"
                            id="locrel:prc.foaf:Person.foaf:familyName" />
                 </td>
                 <td>
@@ -196,9 +197,9 @@
                         </span>
                         <input id="locrel:prc.foaf:Person.foaf:name"
                                type="hidden"
-                               class="nl nl-rdfs:label" readonly="readonly"/>
+                               class="nl nl-rdfs:label nlLabel" readonly="readonly"/>
                         <input type="hidden" id="locrel:prc.foaf:Person.dc:identifier"
-                               class="nl nl-dc:identifier" value="" />
+                               class="nl nl-dc:identifier nlId" value="" />
                     </span>
                 </td>
             </tr>
@@ -248,7 +249,7 @@
                                 </td>
                                 <td>
                                     <input type="text" placeholder="given name" size="25"
-                                           class="nameLookup-name supGivenName supName"
+                                           class="nameLookup-name supGivenName supName givenName"
                                            id="swrc:supervisor.foaf:Person.0.foaf:givenName" />
                                 </td>
                                 <td>
@@ -256,7 +257,7 @@
                                 </td>
                                 <td>
                                     <input type="text" placeholder="family name" size="25"
-                                           class="nameLookup-name supFamilyName supName"
+                                           class="nameLookup-name supFamilyName supName familyName"
                                            id="swrc:supervisor.foaf:Person.0.foaf:familyName" />
                                 </td>
                             </tr>
@@ -273,9 +274,9 @@
                         </span>
                         <input id="swrc:supervisor.foaf:Person.0.foaf:name"
                                type="hidden"
-                               class="nl nl-rdfs:label" readonly="readonly"/>
+                               class="nl nl-rdfs:label nlLabel" readonly="readonly"/>
                         <input type="hidden" id="swrc:supervisor.foaf:Person.0.dc:identifier"
-                               class="nl nl-dc:identifier" value="" />
+                               class="nl nl-dc:identifier nlId" value="" />
                     </span>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
@@ -320,28 +321,41 @@
 function lookupDone(target,data){
     var p=target.parent();
     target.text(" | change");
-    p.find(".identified-as-name").text(p.find("input.nl").val());
+    var displayName = p.find(".identified-as-name");
+    displayName.text(p.find("input.nl").val());
 
     // fill in the fields
-    var lookupData=data["result-metadata"].all;
-    var baseId=p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
-    $("input[id='"+baseId+".foaf:title']").val(lookupData["Honorific"]);
-    $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given_Name"]);
-    $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family_Name"]);
-    $("input[id='"+baseId+".foaf:Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
-        var option=$(e);
-        if (jQuery.trim(option.val()) == lookupData["primary_group_id"]){
-            $("input[id='"+baseId+".foaf:Organization.dc:identifier']")
-                .val(option.val()).trigger("onDataChanged");
-            $("input[id='"+baseId+".foaf:Organization.skos:prefLabel']")
-                .val(option.text()).trigger("onDataChanged");
-            return;
-        }
-    });
+    // National Library of Australia
+    var nlaId = data["nlaId"];
+    if (nlaId != null) {
+        displayName.append(" (<a href=\""+nlaId+"\" target=\"_blank\">NLA</a>)");
+        var baseId = p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
+        $("input[id='"+baseId+".foaf:title']").val("");
+        $("input[id='"+baseId+".foaf:givenName']").val(data["firstName"]);
+        $("input[id='"+baseId+".foaf:familyName']").val(data["surname"]);
+
+    // Mint Identity
+    } else {
+        var lookupData=data["result-metadata"].all;
+        var baseId=p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
+        $("input[id='"+baseId+".foaf:title']").val(lookupData["Honorific"]);
+        $("input[id='"+baseId+".foaf:givenName']").val(lookupData["Given_Name"]);
+        $("input[id='"+baseId+".foaf:familyName']").val(lookupData["Family_Name"]);
+        $("input[id='"+baseId+".foaf:Organization.dc:identifier']").parents("td").find("option").each(function(c,e){
+            var option=$(e);
+            if (jQuery.trim(option.val()) == lookupData["primary_group_id"]){
+                $("input[id='"+baseId+".foaf:Organization.dc:identifier']")
+                    .val(option.val()).trigger("onDataChanged");
+                $("input[id='"+baseId+".foaf:Organization.skos:prefLabel']")
+                    .val(option.text()).trigger("onDataChanged");
+                return;
+            }
+        });
+    }
 }
 
 function lookupCleared(target,data){
-    var p=target.parent();
+    var p = target.parent();
     target.text("lookup");
     p.find(".identified-as-name").text("");
     p.find("input.nl").val("");
@@ -349,7 +363,10 @@ function lookupCleared(target,data){
 
 function pcLookupDone(target,data){
     lookupDone(target,data);
-    $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val(data["result-metadata"].all["Email"]);
+    var metadata = data["result-metadata"];
+    if (metadata != null) {
+        $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val(metadata.all["Email"]);
+    }
 }
 
 function pcLookupCleared(target,data){

@@ -1,6 +1,6 @@
 /* 
  * The Fascinator - ReDBox Curation Transaction Manager
- * Copyright (C) 2011 Queensland Cyber Infrastructure Foundation (http://www.qcif.edu.au/)
+ * Copyright (C) 2011-2012 Queensland Cyber Infrastructure Foundation (http://www.qcif.edu.au/)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -373,6 +373,14 @@ public class CurationManager extends GenericTransactionManager {
         if (exPath != null && !exPath.isEmpty() && exValue != null) {
             String value = baseNode.getString(null, exPath.toArray());
             if (value != null && value.equals(exValue)) {
+                log.info("Excluding relationship '{}' based on config", field);
+                return null;
+            }
+        }
+        String exStartsWith = config.getString(null, "excludeCondition", "startsWith");
+        if (exPath != null && !exPath.isEmpty() && exStartsWith != null) {
+            String value = baseNode.getString(null, exPath.toArray());
+            if (value != null && value.startsWith(exStartsWith)) {
                 log.info("Excluding relationship '{}' based on config", field);
                 return null;
             }

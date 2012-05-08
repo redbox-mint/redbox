@@ -37,7 +37,7 @@
     #end
 #end
 
-#macro(geoSpatial $field)
+#macro(geoSpatialMacro $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($geoMap = $valueMap.get($key))
@@ -200,7 +200,7 @@
             </rif:coverage>
         #end
 
-            #geoSpatial("dc:coverage.vivo:GeographicLocation")
+            #geoSpatialMacro("dc:coverage.vivo:GeographicLocation")
 
             ### Relations
             #set($valueList = $item.getJsonSimpleList("relationships"))
@@ -223,6 +223,18 @@
             </rif:relatedObject>
                         #end
                     #end
+                #end
+            #end
+
+            ### National Library Creators - Non-curated
+            #set($valueMap = $util.getList($item, "dc:creator.foaf:Person"))
+            #foreach($key in $valueMap.keySet())
+                #set ($value = $valueMap.get($key).get("dc:identifier"))
+                #if ("$!value" != "" && $value.startsWith("http://nla.gov.au/nla.party-"))
+            <rif:relatedObject>
+                <rif:key>$util.encodeXml($value)</rif:key>
+                <rif:relation type="hasCollector"></rif:relation>
+            </rif:relatedObject>
                 #end
             #end
 

@@ -140,17 +140,29 @@
             "dc:creator.foaf:Person.0.dc:identifier": {
                 "path": ["dc:creator", "foaf:Person"],
                 "identifier": ["dc:identifier"],
+                "excludeCondition": {
+                    "path": ["dc:identifier"],
+                    "startsWith": "http://nla.gov.au/nla.party-"
+                },
                 "relationship": "hasCollector"
             },
             "locrel:prc.foaf:Person.dc:identifier": {
                 "path": ["locrel:prc", "foaf:Person"],
                 "identifier": ["dc:identifier"],
+                "excludeCondition": {
+                    "path": ["dc:identifier"],
+                    "startsWith": "http://nla.gov.au/nla.party-"
+                },
                 "relationship": "hasAssociationWith",
                 "description": "Primary Contact"
             },
             "swrc:supervisor.foaf:Person.0.dc:identifier": {
                 "path": ["swrc:supervisor", "foaf:Person"],
                 "identifier": ["dc:identifier"],
+                "excludeCondition": {
+                    "path": ["dc:identifier"],
+                    "startsWith": "http://nla.gov.au/nla.party-"
+                },
                 "relationship": "hasAssociationWith",
                 "description": "Supervisor"
             },
@@ -474,7 +486,8 @@
         "Parties_Groups": "${mint.proxy.url}/Parties_Groups/opensearch/lookup",
         "Parties_People": "${mint.proxy.url}/Parties_People/opensearch/lookup",
         "Services": "${mint.proxy.url}/Services/opensearch/lookup",
-        "Geonames": "${mint.proxy.server}/geonames/search"
+        "Geonames": "${mint.proxy.server}/geonames/search",
+        "NLA_SRU": "${mint.proxy.url}/default/search/nlaLookup"
     },
     "alerts": {
         "path": "${fascinator.home}/alerts",
