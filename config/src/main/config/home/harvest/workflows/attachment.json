@@ -18,5 +18,13 @@
             "workflow.source": "ReDBox"
         }
     },
-    "stages": [ ]
+    "stages": [
+        {
+            "name": "uploaded",
+            "label": "Uploaded",
+            "description": "Uploaded attachments.",
+            "security": ["librarian", "reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"]
+        }
+    ]
 }
