@@ -29,6 +29,21 @@
             "id": "http://creativecommons.org/licenses/by-nc-nd/3.0/au",
             "label": "CC BY-NC-ND: Attribution-Noncommercial-No Derivatives",
             "description": "This licence is the most restrictive of the six main licences, allowing redistribution of the work in its current form only. This licence is often called the 'free advertising' licence because it allows others to download and share the work as long as they credit the original creator/s (and any other nominated parties), they don't change the material in any way and they don't use it commercially."
+        },
+        {
+            "id": "http://opendatacommons.org/licenses/pddl/1.0/",
+            "label": "PDDL - Public Domain Dedication and License",
+            "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/pddl/summary/\">http://opendatacommons.org/licenses/pddl/summary/</a>"
+        },
+        {
+            "id": "http://opendatacommons.org/licenses/by/1.0/",
+            "label": "ODC-By - Attribution License",
+            "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/by/summary/\">http://opendatacommons.org/licenses/by/summary/</a>"
+        },
+        {
+            "id": "http://opendatacommons.org/licenses/odbl/1.0/",
+            "label": "ODC-ODbL - Attribution Share-Alike for data/databases",
+            "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/odbl/summary/\">http://opendatacommons.org/licenses/odbl/summary/</a>"
         }
     ]
 }
