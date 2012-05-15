@@ -98,4 +98,23 @@
         </span>
     </span>
 
+    #fieldTitle("dc:license.rdf:Alt" "License - Other" false)
+    <div class="help-content" id="help-dc:license.rdf:Alt">
+        <p>If you want to use a license not included in the above list you can provide details below.</p>
+        <ul>
+            <li>If you are using this field frequently for the same license it would make sense to get your system administrator to add the license to the field above.</li>
+            <li>If you provide two licenses (one from above, plus this one) only the first will be sent to RDA in the RIF-CS.</li>
+            <li>Example of another license: <a href="http://www.opendefinition.org/licenses" target="blank">http://www.opendefinition.org/licenses</a></li>
+        </ul>
+    </div>
+    <table class="group">
+        <tr>
+            <th width="10%"><label for="dc:license.rdf:Alt.skos:prefLabel">Name:</label></th>
+            <td><input type="text" size="60" placeholder="license name" id="dc:license.rdf:Alt.skos:prefLabel" /></td>
+        </tr>
+        <tr>
+            <th><label for="dc:license.rdf:Alt.dc:identifier">URL:</label></th>
+            <td><input type="text" size="60" placeholder="license url" id="dc:license.rdf:Alt.dc:identifier" /></td>
+        </tr>
+    </table>
 </div>

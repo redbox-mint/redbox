@@ -195,6 +195,8 @@
         dc:accessRights.dc:RightsStatement.dc:identifier,
         dc:license.skos:prefLabel,
         dc:license.dc:identifier,
+        dc:license.rdf:Alt.skos:prefLabel,
+        dc:license.rdf:Alt.dc:identifier,
         ## management
         dc:identifier.rdf:PlainLiteral,
         dc:identifier.dc:type.rdf:PlainLiteral,

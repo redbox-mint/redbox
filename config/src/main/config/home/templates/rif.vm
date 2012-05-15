@@ -271,6 +271,12 @@
         #set ($licenceUriStr = "")
         #if ("$!licenceUri" != "")
             #set ($licenceUriStr = " rightsUri=${quote}${licenceUri}${quote}")
+        #else
+            #set ($licence = $util.get($item, "dc:license.rdf:Alt.skos:prefLabel"))
+            #set ($licenceUri = $util.get($item, "dc:license.rdf:Alt.dc:identifier"))
+            #if ("$!licenceUri" != "")
+                #set ($licenceUriStr = " rightsUri=${quote}${licenceUri}${quote}")
+            #end
         #end
 
         #if ("$!accessRights" != "" || "$!rights" != "" || "$!licence" != "")

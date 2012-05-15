@@ -3,7 +3,7 @@
     <dl>
         #displayFirst("dc:accessRights.rdf:PlainLiteral" "Access Rights/Conditions")
         #displayFirst("dc:accessRights.dc:RightsStatement" "Rights")
-        #displayUrl("License - Creative Commons" "redbox:creativeCommonsLicense.dc:identifier" "redbox:creativeCommonsLicense.skos:prefLabel")
-        #displayUrl("License - Other" "dc:license.dc:identifier" "dc:license.skos:prefLabel")
+        #displayUrl("License" "dc:license.dc:identifier" "dc:license.skos:prefLabel")
+        #displayUrl("License - Other" "dc:license.rdf:Alt.dc:identifier" "dc:license.rdf:Alt.skos:prefLabel")
     </dl>
 </div>
