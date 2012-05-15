@@ -14,6 +14,7 @@ class MigrateData:
         self.workflowPid = "workflow.metadata"
         self.packagePidSuffix = ".tfpackage"
         self.redboxVersion = None
+        self.version = None
 
         self.listRegex = re.compile(r"""
             (?P<PREFIX>.+)       # Starts with anything
@@ -45,6 +46,7 @@ class MigrateData:
         if self.redboxVersion is None:
             self.log.error("Error, could not determine system version!")
             return
+        self.version = None
 
         # Process the form
         try:
@@ -95,15 +97,15 @@ class MigrateData:
             return
 
         # Test our version data
-        version = workflowData.getString("{NO VERSION}", ["redbox:formVersion"])
+        self.version = workflowData.getString("{NO VERSION}", ["redbox:formVersion"])
         oldData = String(workflowData.toString(True))
-        if version != self.redboxVersion:
-            self.log.info("OID '{}' requires an upgrade: '{}' => '{}'", [self.oid, version, self.redboxVersion])
+        if self.version != self.redboxVersion:
+            self.log.info("OID '{}' requires an upgrade: '{}' => '{}'", [self.oid, self.version, self.redboxVersion])
             # The version data is old, run our upgrade
             #   function to see if any alterations are
             #   required. Most likely at least the
             #   version number will change.
-            newWorkflowData = self.__upgrade(version, workflowData)
+            newWorkflowData = self.__upgrade(workflowData)
         else:
             newWorkflowData = self.__hotfix(workflowData)
             if newWorkflowData is not None:
@@ -157,7 +159,7 @@ class MigrateData:
         formData.getJsonObject().put("dc:type.rdf:PlainLiteral", oldType);
         return formData
 
-    def __upgrade(self, version, formData):
+    def __upgrade(self, formData):
         # These fields are handled specially
         ignoredFields = ["metaList", "redbox:formVersion", "redbox:newForm"]
 
@@ -201,7 +203,7 @@ class MigrateData:
             counter += 1
             newIdField = "%s.%s.dc:identifier" % (template, counter)
 
-        self.audit.add("Migration tool. Version upgrade performed '%s' => '%s'" % (version, self.redboxVersion))
+        self.audit.add("Migration tool. Version upgrade performed '%s' => '%s'" % (self.version, self.redboxVersion))
         return newJsonSimple
 
     def __parseFieldName(self, field):
@@ -243,8 +245,50 @@ class MigrateData:
             self.log.error("Error backing up workflow payload: ", e)
             return False
 
-    ## Version 1.2 Field mappings from v1.1
+    ## Version 1.5+ upgrades
     def __mapField(self, oldBase, digits):
+        newField = None
+
+        # If the data is really old, it needs a different upgrade first
+        if self.version is None or self.version == "{NO VERSION}" \
+            or self.version.startswith("1.0.1") or self.version.startswith("1.1") \
+            or self.version.startswith("1.2")   or self.version.startswith("1.3"):
+            oldBase = self.__oldDataMapField(oldBase, digits)
+
+        # COVERAGE tab
+        if oldBase == "dc:coverage.vivo:GeographicLocation.0.gn:name":
+            newField = "dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral"
+
+        # RIGHTS tab
+        elif oldBase == "dc:accessRights.rdf:PlainLiteral":
+            newField = "dc:accessRights.skos:prefLabel"
+        elif oldBase == "dc:accessRights.dc:RightsStatement":
+            newField = "dc:accessRights.dc:RightsStatement.skos:prefLabel"
+
+        # Two license fields are being merged into Notes
+        elif oldBase == "redbox:creativeCommonsLicense.dc:identifier":
+            newField = "dc:license.dc:identifier"
+        elif oldBase == "redbox:creativeCommonsLicense.skos:prefLabel":
+            newField = "dc:license.skos:prefLabel"
+        elif oldBase == "dc:license.skos:prefLabel":
+            newField = "dc:license.rdf:Alt.skos:prefLabel"
+        elif oldBase == "dc:license.dc:identifier":
+            newField = "dc:license.rdf:Alt.dc:identifier"
+
+        # An unchanged field (or custom)
+        else:
+            newField = oldBase
+
+        # Important to note that v1.2 does not have any
+        # fields that end in digits, so no ".0", only ".0."
+        if digits is not None:
+            newField = newField.replace(".0.", ".%s." % digits, 1);
+
+        return newField
+    
+    ## Supports legacy data
+    ## Pre v1.5 Field mappings
+    def __oldDataMapField(self, oldBase, digits):
         newField = None
 
         # GENERAL tab
@@ -435,10 +479,5 @@ class MigrateData:
         # An unchanged field (or custom)
         else:
             newField = oldBase
-
-        # Important to note that v1.2 does not have any
-        # fields that end in digits, so no ".0", only ".0."
-        if digits is not None:
-            newField = newField.replace(".0.", ".%s." % digits, 1);
 
         return newField

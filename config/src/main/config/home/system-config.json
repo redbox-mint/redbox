@@ -515,6 +515,6 @@
             "allowOlder": false,
             "failOnMissing": false
         },
-        "migrationScript": "${fascinator.home}/restore/redboxMigration1.2.py"
+        "migrationScript": "${fascinator.home}/restore/redboxMigration1.5.py"
     }
 }
