@@ -269,6 +269,12 @@ class IndexData:
                 value = formData.get(field)
                 if value is not None and value.strip() != "":
                     self.utils.add(self.index, field, value)
+                    # We want to sort by date of creation, so it
+                    # needs to be indexed as a date (ie. 'date_*')
+                    if field == "dc:created":
+                        parsedTime = time.strptime(value, "%Y-%m-%d")   
+                        solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
+                        self.utils.add(self.index, "date_created", solrTime)
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \

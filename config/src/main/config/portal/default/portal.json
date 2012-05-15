@@ -33,9 +33,10 @@
     "facet-display" : "9",
     "sort-field-default" : "last_modified",
     "sort-field-default-order" : "desc",
-    "sort-fields" : {
-      "last_modified" : "Last modified",
-      "f_dc_title" : "Title"
+    "sort-fields": {
+        "last_modified": "Last modified",
+        "sort_text_title": "Title",
+        "date_created": "Date Created"
     }
   }
 }
