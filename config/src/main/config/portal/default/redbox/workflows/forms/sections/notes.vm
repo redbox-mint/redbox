@@ -1,5 +1,5 @@
 <h3><a href="#notes">Notes</a></h3>
-<div id="skos:note" class="inputscreen">
+<div id="notes" class="inputscreen">
     #fieldTitle("skos:note.0" "Notes" false)
     <div class="help-content" id="help-skos:note.0">
         Enter administrative notes as required.

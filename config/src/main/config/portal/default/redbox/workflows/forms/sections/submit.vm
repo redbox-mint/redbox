@@ -131,7 +131,7 @@
         </div>
     </p>
 
-    #if($stage != "live")
+    #if($stage != "live" && $stage != "retired")
         #fieldTitle("deleteAgreement" "Delete" false)
         <div class="help-content" id="help-deleteAgreement">
             Remove the record completely from ReDBox. Note that any records already
