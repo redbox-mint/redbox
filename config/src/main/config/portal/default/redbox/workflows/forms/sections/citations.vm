@@ -98,7 +98,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Title:</td>
+                                <td>Title<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Title" id="${citePart}.dc:title" class="citationTitle" />
                                     <label class="validation-err-msg" for="${citePart}.dc:title"
@@ -157,7 +157,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Edition:</td>
+                                <td>Edition<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Edition" id="${citePart}.dc:hasVersion.rdf:PlainLiteral" class="citationEdition" />
                                     <label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral"
@@ -177,7 +177,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Place of Publication:</td>
+                                <td>Place of Publication<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Place of Publication" id="${citePart}.vivo:Publisher.vivo:Location" class="citationPublicationLocation" />
                                     <label class="validation-err-msg" for="${citePart}.vivo:Publisher.vivo:Location"
@@ -224,7 +224,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>URL:</td>
+                                <td>URL<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="URL" id="${citePart}.bibo:Website.dc:identifier" class="citationUrl"/>
                                     <label class="validation-err-msg" for="${citePart}.bibo:Website.dc:identifier"
@@ -236,7 +236,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Context:</td>
+                                <td>Context<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Citation Context" id="${citePart}.skos:scopeNote" class="citationContext" />
                                     <label class="validation-err-msg" for="${citePart}.skos:scopeNote"
