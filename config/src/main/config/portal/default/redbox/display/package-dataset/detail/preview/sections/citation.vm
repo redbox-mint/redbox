@@ -1,7 +1,7 @@
 #sectionHeading("Citation")
 <div class="meta">
     <dl>
-        #displayFirst("dc:biblioGraphicCitation.redbox:sendCitation" "Sending Citation?")
+        #displayFirst("dc:biblioGraphicCitation.redbox:sendCitation" "Sending Citation")
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:identifier.skos:note" "Identifier Type")
 
         <dt>Creators</dt>
@@ -49,7 +49,5 @@
 
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier" "URL")
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote" "Context")
-        ,
-        ,
     </dl>
 </div>
