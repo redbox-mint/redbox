@@ -104,7 +104,7 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:accessRights.rdf:PlainLiteral">
+                <label class="validation-err-msg" for="dc:accessRights.skos:prefLabel">
                     Access Rights/Conditions or Rights is required!
                 </label>
            </div>
