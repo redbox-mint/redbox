@@ -181,15 +181,18 @@
                 <td>
                     <input type="text" size="60" placeholder="Funding body"
                         id="foaf:fundedBy.foaf:Agent.0.skos:prefLabel" class="autocomplete-funding" />
-                    <input type="hidden" id="foaf:fundedBy.foaf:Agent.0.dc:identifier" />
+                    <input type="hidden" id="foaf:fundedBy.foaf:Agent.0.dc:identifier" class="funding-body-id" />
                 </td>
-                <td width="100%"><a class="delete-item" href="#">delete</a></td>
+                <td width="100%">
+                    <span class="funding-body-id-label hidden"></span> <a href="#" class="clear-funding-body-id hidden">clear</a>
+                </td>
+                <td><a class="delete-item" href="#">delete</a></td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td></td>
-                <td colspan="2"><input type="button" class="button add-another-item" value="Add funding body" /></td>
+                <td colspan="3"><input type="button" class="button add-another-item" value="Add funding body" /></td>
             </tr>
         </tfoot>
     </table>
@@ -385,16 +388,49 @@ $(function() {
                 formatResult: function(row) { return splitFundingData(row).label; },
                 width: "40em"
             }).result(function(event, row) {
-                var uriElem = $(this).next();
+                var trElem = $(this).parent().parent();
+                var uriElem = trElem.find(".funding-body-id");
+                var labelElem = trElem.find(".funding-body-id-label");
                 if (row) {
-                    uriElem.val(splitFundingData(row).uri);
+                    var uri = splitFundingData(row).uri;
+                    uriElem.val(uri);
+                    labelElem.html("ID: '"+uri+"'");
                 } else {
                     uriElem.val("urn:uon:internal");
+                    labelElem.html("ID: 'urn:uon:internal'");
                 }
+                labelElem.show();
+                var clearElem = trElem.find(".clear-funding-body-id");
+                clearElem.show();
             })
         }).live("blur", function() {
             $(this).search();
         });
+    $(".funding-body-id").live("onDataChanged", function() {
+            var elem = $(this);
+            var value = elem.val();
+            if (value != null && value != "") {
+                var trElem = $(this).parent().parent();
+                var linkElem = trElem.find(".clear-funding-body-id");
+                var labelElem = trElem.find(".funding-body-id-label");
+                linkElem.show();
+                labelElem.html("ID: '"+value+"'");
+                labelElem.show();
+            }
+        });
+    $(".clear-funding-body-id").live("click", function() {
+        var elem = $(this);
+        elem.hide();
+        var trElem = $(this).parent().parent();
+        var uriElem = trElem.find(".funding-body-id");
+        uriElem.val("");
+        var nameElem = trElem.find(".autocomplete-funding");
+        nameElem.val("");
+        var labelElem = trElem.find(".funding-body-id-label");
+        labelElem.html("");
+        labelElem.hide();
+        return false;
+    });
 
     function styleIdentifier(isChecked, idInput, originInput) {
         if (isChecked) {
