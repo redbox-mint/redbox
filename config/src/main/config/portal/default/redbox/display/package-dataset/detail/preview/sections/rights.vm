@@ -1,9 +1,9 @@
 #sectionHeading("Rights")
 <div class="meta">
     <dl>
-        #displayFirst("dc:accessRights.rdf:PlainLiteral" "Access Rights/Conditions")
-        #displayFirst("dc:accessRights.dc:RightsStatement" "Rights")
+        #displayUrl("Access Rights/Conditions" "dc:accessRights.dc:identifier" "dc:accessRights.skos:prefLabel" "true")
+        #displayUrl("Rights" "dc:accessRights.dc:RightsStatement.dc:identifier" "dc:accessRights.dc:RightsStatement.skos:prefLabel" "true")
         #displayUrl("License" "dc:license.dc:identifier" "dc:license.skos:prefLabel")
-        #displayUrl("License - Other" "dc:license.rdf:Alt.dc:identifier" "dc:license.rdf:Alt.skos:prefLabel")
+        #displayUrl("License - Other" "dc:license.rdf:Alt.dc:identifier" "dc:license.rdf:Alt.skos:prefLabel" "true")
     </dl>
 </div>

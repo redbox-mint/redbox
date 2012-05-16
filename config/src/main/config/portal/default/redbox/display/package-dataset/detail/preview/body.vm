@@ -18,20 +18,25 @@
     </dd>
     #end
 #end
-#macro(displayUrl $name $hrefField $labelField)
+#macro(displayUrl $name $hrefField $labelField $canBeUnlinked)
     <dt>$name</dt>
     #set ($link = $self.getFirst($hrefField))
     #set ($label = $self.getFirst($labelField))
     #if ("$!link" != "")
         #if ("$!label" != "")
-    <dd><a href="$link" target="_blank">$label</a></dd>
+            <dd><a href="$link" target="_blank">$label</a></dd>
         #else
-    <dd><a href="$link" target="_blank">$link</a></dd>
+            <dd><a href="$link" target="_blank">$link</a></dd>
         #end
+
     #else
-    <dd>
-    #noInformation()
-    </dd>
+        #if ($canBeUnlinked == "true" && "$!label" != "")
+            <dd>$label</dd>
+        #else
+            <dd>
+            #noInformation()
+            </dd>
+        #end
     #end
 #end
 #macro(displayList $baseKey $name)
