@@ -44,37 +44,44 @@
         #noInformation()
         </dd>
         #else
-        <dd>
-            <ol>
-            #foreach($key in $dataList.keySet())
-                #set($data = $dataList.get($key))
-                #set($origin = $data.get("redbox:origin"))
-                #if ($origin == "on")
-                    #set($origin = "")
-                #else
-                    #set($origin = " (EXTERNAL)")
-                #end
-                #set($publish = $data.get("redbox:publish"))
-                #if ($publish == "on")
-                    #set($publish = "")
-                #else
-                    #set($publish = "<li><b>Publish to RDA</b>: <em>This related object (and relationship) is <b>NOT</b> being published to RDA.</em></li>")
-                #end
-                <li>
-                    <b>#displayRequiredKey($data "vivo:Relationship.skos:prefLabel")</b>
-                    &gt;&gt; <em>#displayRequiredKey($data "dc:title")</em>
-                    <ul>
-                        <li><b>ID</b>: #displayRequiredKey($data "dc:identifier")$origin</li>
-                    #set($note = $data.get("skos:note"))
-                    #if("$!note"!="")
-                        <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+            #set($firstData = $dataList.get("1").get("dc:identifier"))
+            #if("$!firstData"!="")
+                <dd>
+                    <ol>
+                    #foreach($key in $dataList.keySet())
+                        #set($data = $dataList.get($key))
+                        #set($origin = $data.get("redbox:origin"))
+                        #if ($origin == "on")
+                            #set($origin = "")
+                        #else
+                            #set($origin = " (EXTERNAL)")
+                        #end
+                        #set($publish = $data.get("redbox:publish"))
+                        #if ($publish == "on")
+                            #set($publish = "")
+                        #else
+                            #set($publish = "<li><b>Publish to RDA</b>: <em>This related object (and relationship) is <b>NOT</b> being published to RDA.</em></li>")
+                        #end
+                        <li>
+                            <b>#displayRequiredKey($data "vivo:Relationship.skos:prefLabel")</b>
+                            &gt;&gt; <em>#displayRequiredKey($data "dc:title")</em>
+                            <ul>
+                                <li><b>ID</b>: #displayRequiredKey($data "dc:identifier")$origin</li>
+                            #set($note = $data.get("skos:note"))
+                            #if("$!note"!="")
+                                <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+                            #end
+                                $publish
+                            </ul>
+                        </li>
                     #end
-                        $publish
-                    </ul>
-                </li>
+                    </ol>
+                </dd>
+            #else
+                <dd>
+                #noInformation()
+                </dd>
             #end
-            </ol>
-        </dd>
         #end
 
         <dt>Related Services</dt>
@@ -84,24 +91,31 @@
         #noInformation()
         </dd>
         #else
-        <dd>
-            <ol>
-            #foreach($key in $serviceList.keySet())
-                #set($service = $serviceList.get($key))
-                <li>
-                    <b>#displayRequiredKey($service "vivo:Relationship.skos:prefLabel")</b>
-                    &gt;&gt; <em>#displayRequiredKey($service "dc:title")</em>
-                    <ul>
-                        <li><b>ID</b>: #displayRequiredKey($service "dc:identifier")</li>
-                    #set($note = $service.get("skos:note"))
-                    #if("$!note"!="")
-                        <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+            #set($firstService = $serviceList.get("1").get("dc:identifier"))
+            #if("$!firstService"!="")
+                <dd>
+                    <ol>
+                    #foreach($key in $serviceList.keySet())
+                        #set($service = $serviceList.get($key))
+                        <li>
+                            <b>#displayRequiredKey($service "vivo:Relationship.skos:prefLabel")</b>
+                            &gt;&gt; <em>#displayRequiredKey($service "dc:title")</em>
+                            <ul>
+                                <li><b>ID</b>: #displayRequiredKey($service "dc:identifier")</li>
+                            #set($note = $service.get("skos:note"))
+                            #if("$!note"!="")
+                                <li><b>Note(s)</b>: <em>$self.escapeHtml($note)</em></li>
+                            #end
+                            </ul>
+                        </li>
                     #end
-                    </ul>
-                </li>
+                    </ol>
+                </dd>
+            #else
+                <dd>
+                #noInformation()
+                </dd>
             #end
-            </ol>
-        </dd>
         #end
     </dl>
 </div>
