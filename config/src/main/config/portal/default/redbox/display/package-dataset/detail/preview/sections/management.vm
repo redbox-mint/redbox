@@ -51,8 +51,14 @@
                 #set($grant = $grantList.get($key))
                 #set($internal = $grant.get("redbox:internalGrant"))
                 <li>
-                    $self.escapeHtml($grant.get("redbox:grantNumber")),
-                    $self.escapeHtml($grant.get("skos:prefLabel"))
+                    #set($grantId = $grant.get("redbox:grantNumber"))
+                    #if("$!grantId"!="")
+                        $self.escapeHtml($grantId),
+                    #end
+                    #set($grantName = $grant.get("skos:prefLabel"))
+                    #if("$!grantName"!="")
+                        $self.escapeHtml($grantName),
+                    #end
                     #if("$!internal"!="")<em>(Internal)</em>#end
                 </li>
             #end
