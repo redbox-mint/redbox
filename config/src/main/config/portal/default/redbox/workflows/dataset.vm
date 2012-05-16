@@ -105,6 +105,12 @@ function getDateTime(){
                             // extra submission request fields
                             if(packageData.metaData["redbox:submissionProcess.dc:title"]){$(".submitTitle").removeClass("hidden");}
                             if(packageData.metaData["redbox:submissionProcess.skos:note"]){$(".submitNotes").removeClass("hidden");}
+
+                            // Identifier, if not 'internal' or 'external' click() it
+                            var idOrigin = $("input[id=dc:identifier.redbox:origin]").val();
+                            if (idOrigin == "") {
+                                $("input[id=dc:identifier.checkbox]").click();
+                            }
                         }
                     );
                     widgets.formsById["main-form"].restore(packageData.metaData);
