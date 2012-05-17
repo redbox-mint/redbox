@@ -3,7 +3,13 @@
     #set($cite = "dc:biblioGraphicCitation")
     #fieldTitle(${cite} "Citation Information" false)
     <div class="help-content" id="help-$cite">
-        Citation Help text goes here...
+        <p>Provide metadata that should be used for the purposes of citing this
+        record. Sending a citation to RDA is optional, but if you choose to
+        enable this there are quite specific mandatory fields that will be
+        required by RIF-CS.</p>
+        <p>You can use the 'PREFILL' button to collect information from elsewhere
+        in this form as a starting point, <b>but please note the warning beside
+        the button.</b></p>
     </div>
 
     <label>I will provide a citation:</label>
