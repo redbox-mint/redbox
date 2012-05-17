@@ -121,6 +121,16 @@
     #set($value = $valueMap.get($key).get("foaf:name"))
     #if ("$!value" != "")
     <dc:creator>$util.encodeXml($value)</dc:creator>
+    #else
+        #set($value = $valueMap.get($key).get("foaf:givenName"))
+        #if ("$!value" != "")
+            #set($surname = $valueMap.get($key).get("foaf:familyName"))
+            #if ("$!surname" != "")
+            <dc:creator>$util.encodeXml($surname), $util.encodeXml($value)</dc:creator>
+            #else
+            <dc:creator>$util.encodeXml($value)</dc:creator>
+            #end
+        #end
     #end
 #end
 

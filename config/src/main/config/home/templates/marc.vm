@@ -56,13 +56,26 @@
 #macro (creators $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
+        #set($nameString = "")
         #set($value = $valueMap.get($key).get("foaf:name"))
+        #if ("$!value" != "")
+            #set($nameString = $value)
+        #else
+            #set($value = $valueMap.get($key).get("foaf:givenName"))
+            #if ("$!value" != "")
+                #set($nameString = $value)
+                #set($surname = $valueMap.get($key).get("foaf:familyName"))
+                #if ("$!surname" != "")
+                    #set($nameString = "${value}, ${surname}")
+                #end
+            #end
+        #end
         #if ($velocityCount == 1)
             #openField("100", "1", " ")
         #else
             #openField("700", "1", " ")
         #end
-        #subField("a", $value)
+        #subField("a", $nameString)
         #closeField()
     #end
 #end
