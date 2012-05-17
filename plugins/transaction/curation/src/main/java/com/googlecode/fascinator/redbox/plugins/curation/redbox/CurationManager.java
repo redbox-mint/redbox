@@ -396,7 +396,7 @@ public class CurationManager extends GenericTransactionManager {
         }
         String id = baseNode.getString(null, idPath.toArray());
         if (id != null && !id.equals("")) {
-            newRelation.put("identifier", id);
+            newRelation.put("identifier", id.trim());
         } else {
             log.info("Relationship '{}' has no identifier, ignoring!", field);
             return null;
