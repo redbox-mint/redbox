@@ -160,7 +160,7 @@
 
     #fieldTitle("dc:relation.vivo:Service" "Related Services" false)
     <div class="help-content" id="help-dc:relation.vivo:Service">
-        Indicate any related related Services to this Collection. A lookup works against Mint, or you can enter known information about remote Services.
+        Indicate any related Services to this Collection. A lookup works against Mint, or you can enter known information about remote Services.
     </div>
     <table class="input-list">
         <thead>

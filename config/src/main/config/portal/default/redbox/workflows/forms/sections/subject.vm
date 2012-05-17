@@ -25,7 +25,7 @@
                           "skos:narrower")
 
     #fieldTitle("dc:subject.vivo:keyword" "Keywords" true)
-    <div class="help-content" id="help-dc:subject">
+    <div class="help-content" id="help-dc:subject.vivo:keyword">
         Enter descriptive keywords as required.
     </div>
     <label for="dc:subject.vivo:keyword" class="validation-err-msg"
