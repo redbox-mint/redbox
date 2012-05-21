@@ -19,6 +19,7 @@
                         <input type="text" id="skos:note.0.dc:created" class="datetime" placeholder="date" readonly="readonly" size="25" />
                         <input type="text" id="skos:note.0.foaf:name" class="username" placeholder="username" readonly="readonly" size="25" />
                         <a id="skos:note.0.clear" class="clear-note" href="#">&lt; clear this note &gt;</a>
+                        <a id="skos:note.0.update" class="update-note" href="#">&lt; update &gt;</a>
                     </div>
                 </td>
                 <td>
@@ -38,13 +39,21 @@
 </div>
 <script type="text/javascript">
 $(function(){
+    function updateTime(element) {
+        element.val(getDateTime());
+    }
+    function updateUser(element) {
+        element.val("$page.authentication.get_username()");
+    }
     $(".vnote").live("change keydown", function(){
         var baseId = $(this).attr("id").replace(".dc:description", "");
-        if($("input[id='"+baseId+".dc:created']").val() == ""){
-            $("input[id='"+baseId+".dc:created']").val(getDateTime());
+        var dateElement = $("input[id='"+baseId+".dc:created']");
+        if(dateElement.val() == ""){
+            updateTime(dataElement);
         }
-        if($("input[id='"+baseId+".foaf:name']").val() == ""){
-            $("input[id='"+baseId+".foaf:name']").val("$page.authentication.get_username()");
+        var userElement = $("input[id='"+baseId+".foaf:name']");
+        if(userElement.val() == ""){
+            updateUser(userElement);
         }
     });
     $(".clear-note").live("click", function(){
@@ -52,6 +61,12 @@ $(function(){
         $("input[id='"+baseId+".dc:created']").val("");
         $("input[id='"+baseId+".foaf:name']").val("");
         $("textarea[id='"+baseId+".dc:description']").val("");
+        return false;
+    });
+    $(".update-note").live("click", function(){
+        var baseId = $(this).attr("id").replace(".update", "");
+        updateTime($("input[id='"+baseId+".dc:created']"));
+        updateUser($("input[id='"+baseId+".foaf:name']"));
         return false;
     });
 });
