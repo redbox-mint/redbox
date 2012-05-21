@@ -1,17 +1,11 @@
-from com.googlecode.fascinator.api.storage import StorageException
-from com.googlecode.fascinator.common import FascinatorHome, JsonConfigHelper
-from com.googlecode.fascinator.common.storage import StorageUtils
-from java.io import ByteArrayInputStream, StringWriter
-from java.lang import String
-from org.apache.commons.io import IOUtils
+from com.googlecode.fascinator.common import FascinatorHome
+from com.googlecode.fascinator.common import JsonSimple
 
 import sys
 import time
 pathToWorkflows = FascinatorHome.getPath("harvest/workflows")
 if sys.path.count(pathToWorkflows) == 0:
     sys.path.append(pathToWorkflows)
-from json2 import read as jsonReader, write as jsonWriter
-
 
 class IndexData:
     def __activate__(self, context):
@@ -23,25 +17,26 @@ class IndexData:
             self.params = context["params"]
             self.utils = context["pyUtils"]
             self.config = context["jsonConfig"]
-            # Common data
-            self.__newDoc()     # sets: self.oid, self.pid, self.itemType
-            self.item_security = []
-            self.owner = self.params.getProperty("owner", None)
-            print " * Running attachment-rules.py... itemType='%s'" % self.itemType
-            try:
-                # Real metadata
-                if self.itemType == "object":
-                    self.__index("repository_name", self.params["repository.name"])
-                    self.__index("repository_type", self.params["repository.type"])
-                    self.__index("workflow_source", self.params["workflow.source"])
-                    self.__metadata()
-                # Make sure security comes after workflows
-                self.__security()
-            except Exception, e:
-                print "  ERROR: '%s'" % str(e)
-        except Exception, e:
-            print " * Failed running attachment-rules.py - '%s'" % str(e)
+            self.log = context["log"]
 
+            # Common data
+            self.__newDoc() # sets: self.oid, self.pid, self.itemType
+            self.item_security = []
+            self.owner = self.params.getProperty("owner", "system")
+            self.log.debug("Running attachment-rules.py... itemType='{}'", self.itemType)
+
+            # Real metadata
+            if self.itemType == "object":
+                self.__index("repository_name", self.params["repository.name"])
+                self.__index("repository_type", self.params["repository.type"])
+                self.__index("workflow_source", self.params["workflow.source"])
+                self.__metadata()
+
+            # Make sure security comes after workflows
+            self.__security()
+
+        except Exception, e:
+            self.log.error("ERROR indexing attachment: {}", e);
 
     def __index(self, name, value):
         self.utils.add(self.index, name, value)
@@ -50,12 +45,10 @@ class IndexData:
         for value in values:
             self.utils.add(self.index, name, value)
 
-
     def __newDoc(self):
         self.oid = self.object.getId()
         self.pid = self.payload.getId()
         metadataPid = self.params.getProperty("metaPid", "DC")
-        #print "  pid='%s'" % (self.pid)
 
         self.utils.add(self.index, "storage_id", self.oid)
         if self.pid == metadataPid:
@@ -66,48 +59,47 @@ class IndexData:
             self.__index("identifier", self.pid)
         self.__index("id", self.oid)
         self.__index("item_type", self.itemType)
-        ## always set to 'datastream' so that it does not show up in search results etc.
-        #self.__index("item_type", "datastream")
         self.__index("last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         self.__index("harvest_config", self.params.getProperty("jsonConfigOid"))
         self.__index("harvest_rules",  self.params.getProperty("rulesOid"))
         self.__index("display_type", "attachment")
 
-
     def __metadata(self):
         wfMeta = self.__getJsonPayload("workflow.metadata")
-        print " __metadata() wfMeta=%s" % str(wfMeta)
-        pid = self.payload.getId()
+        self.log.debug("__metadata() wfMeta={}", wfMeta.toString(True))
         # Form processing
-        formData = wfMeta.get("formData", {})
-        for k, v in formData.iteritems():
-            self.__index(k, v)
-        self.__index("dc_title", "Attachment-"+formData.get("filename", ""))
-        self.item_security.append("admin")
-        self.__index("workflow_security", "admin")
-        if formData.get("access_rights", "private")=="public":
-            self.item_security.append("guest")
-            self.__index("workflow_security", "guest")
+        formData = wfMeta.getObject(["formData"])
+        if formData is not None:
+            for key in formData.keySet():
+                self.__index(key, formData.get(key))
+            filename = wfMeta.getString(None, ["formData", "filename"])
+            if filename is None:
+                self.log.warn("No filename for attachment!")
+                filename = "UNKNOWN"
+            self.__index("dc_title", "Attachment-%s" % filename)
 
+            # Security
+            self.item_security.append("admin")
+            self.__index("workflow_security", "admin")
+            if wfMeta.getString("private", ["formData", "access_rights"]) == "public":
+                self.item_security.append("guest")
+                self.__index("workflow_security", "guest")
 
     def __getJsonPayload(self, pid):
+        payload = None
         try:
             payload = self.object.getPayload(pid)
-            writer = StringWriter()
-            IOUtils.copy(payload.open(), writer)
-            dataDict = jsonReader(writer.toString())
+            json = JsonSimple(payload.open())
             payload.close()
-            return dataDict
+            return json
         except:
+            if payload is not None:
+                try:
+                    payload.close()
+                except:
+                    ## Wasn't open
+                    pass
             return {}
-
-    def __saveJsonPayload(self, pid, dataDict):
-        jsonString = String(jsonWriter(dataDict))
-        inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
-        try:
-            StorageUtils.createOrUpdatePayload(self.object, pid, inStream)
-        except StorageException:
-            print " * ERROR updating '%s' payload!" % pid
 
     def __security(self):
         # Security
@@ -147,18 +139,14 @@ class IndexData:
         else:
             self.__index("owner", self.owner)
 
-
     def __grantAccess(self, newRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
         self.utils.setAccessSchema(schema, "derby")
 
-
     def __revokeAccess(self, oldRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
         self.utils.removeAccessSchema(schema, "derby")
-
-

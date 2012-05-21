@@ -70,6 +70,7 @@ class WorkflowData(DefaultWorkflowData):
             uploadFile = uploadFile.replace("C:\\fakepath\\", "")
             fileDetails = self.vc("sessionState").get(uploadFile)
 
+            # Establish that we do have details on the uploaded file
             if fileDetails is None:
                 uploadFile = uploadFile.rsplit("\\", 1)[-1]
                 fileDetails = self.vc("sessionState").get(uploadFile)
@@ -78,22 +79,27 @@ class WorkflowData(DefaultWorkflowData):
                 return self.__toJson({
                     "error": "fileDetails is None (no upload file!)"
                 })
-            #self.log.debug("fileDetails:%s" % fileDetails)
+            self.log.debug("Attach Upload: fileDetails: '{}'", fileDetails)
+
             errorDetails = fileDetails.get("error")
             if errorDetails:
                 self.log.error("ERROR: %s" % errorDetails)
                 return self.__toJson({"error": errorDetails})
 
+            # Look for the storage info we need
             jsonFormData = JsonSimple(self.formData.get("json"))
             oid = jsonFormData.getString(None, "oid")
             fname = fileDetails.get("name")
             foid = fileDetails.get("oid")
-            #self.log.debug("attach oid='%s', filename='%s', foid='%s'" % (oid, fname, foid))
+            self.log.debug("attach oid='{}', filename='{}', foid='{}'", [oid, fname, foid])
+
+            # Make sure it was actually stored
             try:
                 attachObj = self.Services.getStorage().getObject(foid)
             except StorageException, e:
-                return JsonSimple({"error":"Attached file - '%s'" % str(e)})
+                return JsonSimple({"error": "Attached file - '%s'" % str(e)})
 
+            # Build up some metadata to store alongside the file
             attachFormData = JsonSimple(self.formData.get("json", "{}"))
             attachMetadata = {
                 "type": "attachment",
@@ -106,27 +112,37 @@ class WorkflowData(DefaultWorkflowData):
                     "attachment_type": attachFormData.getString("supporting-material", ["attachmentType"])
                 }
             }
+
+            # We are going to send an update on all attachments back with our response
             attachedFiles = self.__getAttachedFiles(oid)
             attachedFiles.append(dict(attachMetadata["formData"]))
+
+            # Now store our metadata for this file
             try:
                 jsonMetadata = self.__toJson(attachMetadata)
                 jsonIn = ByteArrayInputStream(jsonMetadata.toString())
                 StorageUtils.createOrUpdatePayload(attachObj, "workflow.metadata", jsonIn)
+                jsonIn.close();
+                attachObj.close();
             except StorageException, e:
-                self.log.error("Failed to create attachment metadata! %s" % str(e))
+                self.log.error("Failed to create attachment metadata!", e)
 
+            # Re-Index the main object so it knows about all attachments
             indexer = self.Services.getIndexer()
-            indexer.index(foid, "TF-OBJ-META")      # reindex main object only
+            indexer.index(foid, "TF-OBJ-META")
             indexer.commit()
 
             # Notify our subscribers
-            self.sendMessage(foid, "Attachment")
+            self.sendMessage(oid, "Attachment '%s'" % fname)
 
+            # Send a response back to the form
+            #TODO - attachedFiles is missing OIDs here
             return self.__toJson({
                 "ok": "Completed OK",
                 "oid": foid,
                 "attachedFiles": attachedFiles
             })
+
         except Exception, e:
             return self.__toJson({"error":"__attachFile() - '%s'" % str(e)})
 
@@ -134,22 +150,53 @@ class WorkflowData(DefaultWorkflowData):
         try:
             oid = self.formData.get("oid")
             foid = self.formData.get("foid")
-            self.log.debug("delete attachment oid='%s', foid='%s'" % (oid, foid))
+            if foid is None:
+                return self.__toJson({"error": "__deleteAttachment() - FOID cannot be null"})
+            self.log.debug("delete attachment oid='{}', foid='{}'", [oid, foid])
             attachedFiles = self.__getAttachedFiles(oid)
+
             # find
-            delFileData = [i for i in attachedFiles if i["id"]==foid]
-            if delFileData:
-                #print "delFileData='%s'" % str(delFileData)
+            delFileData = [i for i in attachedFiles if i["oid"] == foid]
+            if delFileData is not None:
+                self.log.debug("delFileData = '{}'", str(delFileData))
                 attachedFiles.remove(delFileData[0])
+
+                errors = False
+                # Delete from storage
+                try:
+                    self.Services.storage.removeObject(foid)
+                except Exception, e:
+                    self.log.error("Error deleting object from storage: ", e)
+                    errors = True
+
+                # Delete from Solr
                 try:
                     indexer = self.Services.getIndexer()
                     indexer.remove(foid)
-                    indexer.commit()
-                    # Notify our subscribers
-                    self.sendMessage(oid, "Delete")
-                    self.Services.storage.removeObject(foid)
                 except Exception, e:
-                    self.log.error("Failed to delete attachment '%s'" % str(e))
+                    self.vc["log"].error("Error deleting Solr entry: ", e)
+                    errors = True
+
+                # Delete annotations
+                try:
+                    indexer.annotateRemove(foid)
+                except Exception, e:
+                    self.log.error("Error deleting annotations: ", e)
+                    errors = True
+
+                # Solr commit
+                try:
+                    indexer.commit()
+                except Exception, e:
+                    self.log.error("Error during Solr commit: ", e)
+                    errors = True
+
+                # Notify our subscribers
+                self.sendMessage(oid, "Delete Attachment %s" % str(delFileData))
+
+                if errors:
+                    return self.__toJson({"error":"Failed to delete attachment, please check system logs"})
+
             return self.__toJson({"ok":"Deleted OK", "attachedFiles":attachedFiles})
         except Exception, e:
             self.log.error("ERROR: %s" % str(e))
@@ -165,7 +212,7 @@ class WorkflowData(DefaultWorkflowData):
     def __getAttachedFiles(self, oid):
         response = self.__search("attached_to:%s" % oid)
         files = [{
-            "id": doc.get("id"),
+            "oid": doc.get("storage_id"),
             "filename": doc.getFirst("filename"),
             "attachment_type": doc.getFirst("attachment_type"),
             "access_rights": doc.getFirst("access_rights")

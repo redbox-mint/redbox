@@ -58,27 +58,27 @@
 </div>
 <script type="text/javascript">
 var jQ=$;
-function fileUploadFunc(widgetForm, data){
-    if(!data.uploadFile){
+function fileUploadFunc(widgetForm, data) {
+    if (!data.uploadFile) {
         widgets.messageBox("Please select a file to be attached first!");
         jQ("#add-a-file .submit-result").html("");
         return false;
     }
-    data.oid="$oid";
+    data.oid = "$oid";
     jQ("#add-file").attr("disabled", true);
     //widgets.messageBox(JSON.stringify(data));
 }
 
-function uploadCompletedFunc(widgetForm, rData){
-    if(rData.ok){
+function uploadCompletedFunc(widgetForm, rData) {
+    if (rData.ok) {
         updateAttachedFiles(rData.attachedFiles);
     }
     jQ("#uploadFile").val("");
     jQ("#add-file").show();
 }
 
-function uploadErrorFunc(widgetForm, rData){
-    if(/already exists in storage/.test(rData.error)){
+function uploadErrorFunc(widgetForm, rData) {
+    if (/already exists in storage/.test(rData.error)) {
         alert("This file already exists in the storage!\n Please select another file.")
         jQ("#add-file").show();
         jQ("#add-a-file .submit-result").html("");
@@ -86,55 +86,73 @@ function uploadErrorFunc(widgetForm, rData){
     }
 }
 
-function updateAttachedFiles(attachedFiles){
-    var h, a, tr, tbody=jQ("#attached-files");
-    var url="$portalPath/actions/workflow.ajax?ajax=true&func=delete-attach-file&oid=$oid";
-    tbody.html("");
-    function format(s){
-        return s.replace("-", " ").replace(/\b\w/g,
-            function(m){return m.toUpperCase();})
+function updateAttachedFiles(attachedFiles) {
+    // Minor cosmetic improvements to strings for onscreen display
+    function format(string) {
+        var uppercase = function(toUpper) {
+            return toUpper.toUpperCase();
+        };
+        return string.replace("-", " ").replace(/\b\w/g, uppercase);
     }
-    if(attachedFiles.length==0){
+
+    var fileLink, tr, tbody = jQ("#attached-files");
+    var url = "$portalPath/actions/workflow.ajax?ajax=true&func=delete-attach-file&oid=$oid";
+    tbody.html("");
+    if (attachedFiles.length == 0) {
         tbody.append('<tr><td colspan="4">No files currently attached.</td></tr>');
     }
-    jQ.each(attachedFiles, function(c, d){
-        tr=jQ("<tr/>");
-        h = "$portalPath/detail/"+d.oid+"/"+d.filename+"?preview=true";
-        tr.append("<td><a href='"+h+"' target='_blank'>"+d.filename+"</a></td>");
-        tr.append("<td>"+format(d.attachment_type)+"</td>");
-        tr.append("<td>"+format(d.access_rights)+"</td>");
-        // Delete link
-        var t=jQ('<td><a class="delete-attachment" href="#">delete</a></td>');
-        t.find("a").click(function(){
-            var s=jQ('<td><span style="color:darkgreen;">deleting <img src="$portalPath/images/icons/loading.gif" /></span></td>');
-            t.replaceWith(s);
+    // Loop through the attachment metadata and build a UI
+    jQ.each(attachedFiles, function(_, attachment) {
+        tr = jQ("<tr/>");
+        // A link to the attachment
+        fileLink = "$portalPath/detail/" + attachment.oid + "/" + attachment.filename + "?preview=true";
+        tr.append("<td><a href='" + fileLink + "' target='_blank'>" + attachment.filename + "</a></td>");
+        // Details onscreen (after some cleaning)
+        tr.append("<td>" + format(attachment.attachment_type) + "</td>");
+        tr.append("<td>" + format(attachment.access_rights) + "</td>");
+        // Delete link - and click handler
+        var deleteCell = jQ('<td><a class="delete-attachment" href="#">delete</a></td>');
+        deleteCell.find("a").click(function() {
+            var waitingCell = jQ('<td><span style="color:darkgreen;">deleting <img src="$portalPath/images/icons/loading.gif" /></span></td>');
+            deleteCell.replaceWith(waitingCell);
             jQ.ajax({
-                url:url, data:{foid:d.oid}, type:"POST", dataType:"json", timeout:5000,
-                success:function(rJson, status){
-                    if(rJson.ok){ updateAttachedFiles(rJson.attachedFiles); }
-                    else{ s.replaceWith(t); }
+                url: url,
+                data: {
+                    foid: attachment.oid
                 },
-                error:function(xhr, status){
-                    s.replaceWith(t);
+                type: "POST",
+                dataType: "json",
+                timeout: 5000,
+                success: function(rJson, status) {
+                    if (rJson.ok) {
+                        updateAttachedFiles(rJson.attachedFiles);
+                    } else {
+                        alert(status);
+                        waitingCell.replaceWith(deleteCell);
+                    }
+                },
+                error: function(xhr, status, ex) {
+                    alert(status);
+                    waitingCell.replaceWith(deleteCell);
                 }
             });
             return false;
         });
-        tr.append(t);
+        // Add to UI
+        tr.append(deleteCell);
         tbody.append(tr);
     });
 }
 
-function uploadPreSave(widgetForm, data){
+function uploadPreSave(widgetForm, data) {
     $("#add-file").hide();
-    $("#add-a-file .submit-result").html(
-        '<span style="color:darkgreen;">attaching <img src="$portalPath/images/icons/loading.gif" /></span>').show();
+    $("#add-a-file .submit-result").html('<span style="color:darkgreen;">attaching <img src="$portalPath/images/icons/loading.gif" /></span>').show();
 }
 
-$(function(){
-    var but=jQ("#add-file"), uploadFile=jQ("#uploadFile");
+$(function() {
+    var but = jQ("#add-file"), uploadFile = jQ("#uploadFile");
     but.attr("disabled", true);
-    uploadFile.change(function(){
+    uploadFile.change(function() {
         // uploadFile.val() will fail after first upload in IE
         //but.attr("disabled", !uploadFile.val());
         but.attr("disabled", false);
