@@ -2,7 +2,7 @@
 .olControlEditingToolbar {
     float: right;
     width: 29px;
-    height: 120px;
+    height: 200px;
 }
 .olControlEditingToolbar div {
     float: right;
@@ -79,4 +79,11 @@
 .openLayersHolder .lookupHolder {
     padding-top: 5px;
     padding-left: 10px;
+}
+#polygonHelp {
+    font-weight: bold;
+    font-style: italic;
+}
+#polygonHelp div {
+    float: left;
 }

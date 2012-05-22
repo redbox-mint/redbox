@@ -303,11 +303,21 @@ function loadOpenLayers() {
                     sides: 20
                 }
             });
+        var polygonHelpOn = function(event) {
+            $("#polygonHelp").show();
+        };
+        var polygonHelpOff = function(event) {
+            $("#polygonHelp").hide();
+        };
         drawPoly = new OpenLayers.Control.DrawFeature(
             vLayer,
             OpenLayers.Handler.Polygon, {
                 displayClass: "olControlDrawFeaturePolygon",
-                title: "Draw Polygon"
+                title: "Draw Polygon",
+                eventListeners: {
+                    "activate": polygonHelpOn,
+                    "deactivate": polygonHelpOff
+                }
             });
         modify = new OpenLayers.Control.ModifyFeature(
             vLayer,

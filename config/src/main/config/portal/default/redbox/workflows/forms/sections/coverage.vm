@@ -125,6 +125,10 @@
     <div class="openLayersHolder">
         <div class="article">
             <p class="meta attribution">Map Credits: <span id="attribution"></span></p>
+            <div id="polygonHelp" class="hidden">
+                <div><span class="ui-button-icon-primary ui-icon ui-icon-lightbulb"></span></div>
+                Use double-click to 'close' your polygon.
+            </div>
             <div class="mapHolder">
                 <div id="panel" class="olControlEditingToolbar"></div>
                 <div id="map" class="smallmap"></div>
