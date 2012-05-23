@@ -21,6 +21,7 @@
             A valid to date or year is required!
         </label>
     </p>
+    <p>&nbsp;</p>
 
     #fieldTitle("dc:coverage.redbox:timePeriod" "Time Period" false)
     <div class="help-content" id="help-dc:coverage.redbox:timePeriod">
@@ -32,6 +33,7 @@
         <input type="text" id="dc:coverage.redbox:timePeriod" size="60"
             placeholder="eg. 21st Century, WWII, The Depression, etc." />
     </p>
+    <p>&nbsp;</p>
 
     #fieldTitle("dc:coverage.vivo:GeographicLocation" "Geospatial Location" false)
     <div class="help-content" id="help-dc:coverage.vivo:GeographicLocation">
