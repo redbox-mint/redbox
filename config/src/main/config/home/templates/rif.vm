@@ -2,15 +2,18 @@
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key))
-        #if ($label != "")
-            #set($labelVal = $value.get($label))
-            #if ($anzsrc == "anzsrc")
-                #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
-                #set($labelVal = $labelVal.substring($lastIndex) )
-            #end
+        #set($data = $value.get($key))
+        #if ("$!data" != "")
+            #if ($label != "")
+                #set($labelVal = $value.get($label))
+                #if ($anzsrc == "anzsrc")
+                    #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
+                    #set($labelVal = $labelVal.substring($lastIndex) )
+                #end
     <$tag$attr>$util.encodeXml($labelVal)</$tag>
-        #else
-    <$tag$attr>$util.encodeXml($value.get($key))</$tag>
+            #else
+    <$tag$attr>$util.encodeXml($data)</$tag>
+            #end
         #end
     #end
 #end
@@ -97,15 +100,20 @@
 #set ($identifierType = "")
 #if ($formOrigin == "internal")
     #if ($pid != "")
-        #set ($identifier = $pid)
-        #set ($identifierType = $pidType)
+        #set ($identifier = $util.encodeXml($pid))
+        #set ($identifierType = $util.encodeXml($pidType))
     #else
-        #set ($identifier = "$urlBase/detail/$oid")
+        #set ($identifier = $util.encodeXml("$urlBase/detail/$oid"))
         #set ($identifierType = "uri")
     #end
 #else
-    #set ($identifier = $formId)
-    #set ($identifierType = $formType)
+    #set ($identifier = $util.encodeXml($formId))
+    #set ($identifierType = $util.encodeXml($formType))
+#end
+#if ("$!identifier" == "")
+    ## We want invalid XML here so the record is never harvested without the correct ID
+    #set($identifier = "&Invalid ID: Not curated yet&")
+    #set ($identifierType = "invalid")
 #end
 
 ### Relationships
@@ -115,10 +123,10 @@
 #set($lang = "xml:lang=${quote}en${quote}")
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/home/orca/schemata/1.3.0/registryObjects.xsd">
+            xsi:schemaLocation="http://services.ands.org.au/documentation/rifcs/1.3/schema/registryObjects.xsd">
     <rif:registryObject group="$util.encodeXml($group)">
 
-        <rif:key>$util.encodeXml($identifier)</rif:key>
+        <rif:key>$identifier</rif:key>
         <rif:originatingSource>$urlBase</rif:originatingSource>
 
         #set($dateModified = "")
@@ -156,30 +164,36 @@
                 <rif:namePart>$util.encodeXml($util.get($item, "dc:title"))</rif:namePart>
             </rif:name>
 
-        ## Location, use Handle as priority if requested
-            <rif:location>
+        ## Location
         #set($valueMap = $util.getList($item, "bibo:Website"))
-        #foreach($key in $valueMap.keySet())
-            #set ($value = $valueMap.get($key).get("dc:identifier"))
-            #if ("$!value" != "")
+        #set($firstValue = "")
+        #if ($valueMap.size() > 0)
+            #set($firstValue = $valueMap.get("1").get("dc:identifier"))
+        #end
+        #set ($physicalLocation = $util.get($item, "vivo:Location.vivo:GeographicLocation.gn:name"))
+        #if ("$!physicalLocation" != "" || "$!firstValue" != "")
+            <rif:location>
+            #foreach($key in $valueMap.keySet())
+                #set ($value = $valueMap.get($key).get("dc:identifier"))
+                #if ("$!value" != "")
                 <rif:address>
                     <rif:electronic type="url">
                         <rif:value>$util.encodeXml($value)</rif:value>
                     </rif:electronic>
                 </rif:address>
+                #end
             #end
-        #end
 
-        #### Physical location
-        #set ($value = $util.get($item, "vivo:Location.vivo:GeographicLocation.gn:name"))
-        #if ("$!value" != "")
+            #### Physical location
+            #if ("$!physicalLocation" != "")
                 <rif:address>
                     <rif:physical>
-                        <rif:addressPart type="text">$util.encodeXml($value)</rif:addressPart>
+                        <rif:addressPart type="text">$util.encodeXml($physicalLocation)</rif:addressPart>
                     </rif:physical>
                 </rif:address>
-        #end
+            #end
             </rif:location>
+        #end
 
         #set ($covFrom = $util.get($item, "dc:coverage.vivo:DateTimeInterval.vivo:start"))
         #set ($covTo = $util.get($item, "dc:coverage.vivo:DateTimeInterval.vivo:end"))
@@ -303,89 +317,19 @@
             #set ($doi = $util.getMetadata($object, $doiProperty))
             ## Use the DOI by preference for a citation
             #if ("$!doi" == "")
-                #set ($citeId = $pid)
+                #set ($citeId = $identifier)
                 #set ($citeIdType = $identifierType)
             #else
                 #set ($citeId = "http://dx.doi.org/${doi}")
                 #set ($citeIdType = "doi")
             #end
             <rif:citationInfo>
-                #set($citationPublisher = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral"))
-                #set($citationTitle = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:title"))
-                #set($creatorMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
-                #set($creatorString = "")
-                #foreach($key in $creatorMap.keySet())
-                    #if ($velocityCount != 1)
-                        #set($creatorString = "${creatorString}; ")
-                    #end
-                    #set ($row = $creatorMap.get($key))
-                    #set ($given = $row.get("foaf:givenName"))
-                    #set ($family = $row.get("foaf:familyName"))
-                    #set($creatorString = "${creatorString}${family}, ${given}")
-                #end
-                #set($dateMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.dc:date"))
-                #foreach($key in $dateMap.keySet())
-                    #set ($row = $dateMap.get($key))
-                    #set ($date = $row.get("rdf:PlainLiteral"))
-                    #set ($dateType = $row.get("dc:type.rdf:PlainLiteral"))
-                    #if ($dateType == "publicationDate")
-                #set($citationDate = $date.substring(0, 4))
-                    #end
-                #end
-                #set($citationString = "$creatorString ($citationDate): $citationTitle. $citationPublisher. $citeId")
-                <rif:fullCitation style="Datacite">$util.encodeXml($citationString)</rif:fullCitation>
-
-                <rif:citationMetadata>
-                    <rif:identifier type="$util.encodeXml($citeIdType)">$util.encodeXml($citeId)</rif:identifier>
-
-                    #set($creatorMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
-                    #foreach($key in $creatorMap.keySet())
-                        #set ($row = $creatorMap.get($key))
-                        #set ($title = $row.get("foaf:title"))
-                        #set ($given = $row.get("foaf:givenName"))
-                        #set ($family = $row.get("foaf:familyName"))
-                    <rif:contributor seq="$velocityCount">
-                        #if ("$!title" != "")
-                            <rif:namePart type="title">$util.encodeXml($title)</rif:namePart>
-                        #end
-                        #if ("$!given" != "")
-                            <rif:namePart type="given">$util.encodeXml($given)</rif:namePart>
-                        #end
-                        #if ("$!family" != "")
-                            <rif:namePart type="family">$util.encodeXml($family)</rif:namePart>
-                        #end
-                    </rif:contributor>
-                    #end
-
-                    <rif:title>$util.encodeXml($citationTitle)</rif:title>
-
-                    #set($citationEdition = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral"))
-                    <rif:edition>$util.encodeXml($citationEdition)</rif:edition>
-
-                    #if ("$!citationPublisher" != "")
-                    <rif:publisher>$util.encodeXml($citationPublisher)</rif:publisher>
-                    #end
-
-                    #set($citationPublishedLocation = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location"))
-                    <rif:placePublished>$util.encodeXml($citationPublishedLocation)</rif:placePublished>
-
-                    #set($valueMap = $util.getList($item, "dc:biblioGraphicCitation.dc:hasPart.dc:date"))
-                    #foreach($key in $valueMap.keySet())
-                        #set ($row = $valueMap.get($key))
-                        #set ($date = $row.get("rdf:PlainLiteral"))
-                        #set ($dateType = $row.get("dc:type.rdf:PlainLiteral"))
-                        #if ("$!date" != "")
-                            #set($date = "$util.getDateTime($date, $dateFormat)Z")
-                    <rif:date type="$util.encodeXml($dateType)">$util.encodeXml($date)</rif:date>
-                        #end
-                    #end
-
-                    #set($citationUrl = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier"))
-                    <rif:url>$util.encodeXml($citationUrl)</rif:url>
-
-                    #set($citationContext = $util.get($item, "dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote"))
-                    <rif:context>$util.encodeXml($citationContext)</rif:context>
-                </rif:citationMetadata>
+            #set($citationString = $util.get($item, "dc:biblioGraphicCitation.skos:prefLabel"))
+            #if ("$!citationString" != "")
+                <rif:fullCitation style="Datacite">$util.encodeXml($citationString.replaceAll("\{ID_WILL_BE_HERE\}", $citeId))</rif:fullCitation>
+            #end
+            ## <rif:citationMetadata/> has now been removed.
+            ## See http://code.google.com/p/redbox-mint/issues/detail?id=77
             </rif:citationInfo>
         #end
         </rif:collection>

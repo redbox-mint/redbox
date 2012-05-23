@@ -15,10 +15,23 @@
     <label>I will provide a citation:</label>
     <input type="checkbox" id="${cite}.redbox:sendCitation" />
     <div class="hidden citation-block">
-        <input type="button" id="${cite}.prefillBtn" value="PREFILL" />
+        <input type="button" id="${cite}.prefillBtn" value="PREFILL*" />
+        <input type="button" id="${cite}.renderBtn" value="Render Citation" />
         <p>* <strong>NOTE</strong>: This will overwrite any values that may have been typed below using data from elsewhere in the form.</p>
+        <blockquote>
+            <div class="rdaLabel">Citation sent to RDA:</div>
+            <div class="citationString"><span class="ui-button-icon-primary ui-icon ui-icon-alert"></span>Please use the 'Render Citation' button when your citation metadata has been entered below.</div>
+        </blockquote >
+        <input type="hidden" id="${cite}.skos:prefLabel" class="fullCitation" />
+        <label class="validation-err-msg" for="${cite}.skos:prefLabel"
+            data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${cite}.skos:prefLabel');); liveFor(.fullCitation);">
+            The full citation string has not been rendered!
+        </label>
     </div>
 
+    ##### Full citation strings as free-text data entry were disabled in first
+    ##### draft. This is left here in case institutions want to pursue this on
+    ##### their own as a local customization.
     ##<table class="hidden citation-block">
     ##    <thead>
     ##        <tr>
@@ -61,30 +74,6 @@
                 <td>
                     <table>
                         <tbody>
-                            ##<tr>
-                            ##    <td>Identifier:</td>
-                            ##    <td>
-                            ##        <input type="text" size="60" placeholder="Persistent Identifier" id="${citePart}.dc:identifier.rdf:PlainLiteral" class="citationIdentifier" />
-                            ##        <label class="validation-err-msg" for="${citePart}.dc:identifier.rdf:PlainLiteral"
-                            ##            data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:identifier.rdf:PlainLiteral');); liveFor(.citationIdentifier);">
-                            ##            A citation identifier is required!
-                            ##        </label>
-                            ##    </td>
-                            ##</tr>
-                            ##<tr>
-                            ##    <td>&nbsp;</td>
-                            ##    <td><label>Type of ID:</label>
-                            ##        #mintSelectField("${citePart}.dc:identifier.dc:type.rdf:PlainLiteral"
-                            ##                         "${citePart}.dc:identifier.dc:type.skos:prefLabel"
-                            ##                         "$portalPath/workflows/forms/data/citationIdTypes.json"
-                            ##                         "id"
-                            ##                         "label"
-                            ##                         "results"
-                            ##                         "handle")
-                            ##    </td>
-                            ##</tr>
-                            ##<tr><td colspan="2"><hr/></td></tr>
-
                             <tr>
                                 <td>Identifier:</td>
                                 <td>
@@ -92,6 +81,8 @@
                                         <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" />
                                         Use the Identifier provided during curation
                                     </label>
+                                    ## DOI Integration is disabled pending v1.1 of
+                                    ##  ANDS 'Cite My Data' service being released
                                     <!--
                                     <strong>OR</strong>
                                     <label for="useDoi">
@@ -116,7 +107,7 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Creators:</td>
+                                <td>Creators<span class="required">(*)</span>:</td>
                                 <td class="input-list sortable" id="citationContributors">
                                     <table>
                                         <tbody>
@@ -163,19 +154,20 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Edition<span class="required">(*)</span>:</td>
+                                <td>Edition:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Edition" id="${citePart}.dc:hasVersion.rdf:PlainLiteral" class="citationEdition" />
-                                    <label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral"
-                                        data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:hasVersion.rdf:PlainLiteral');); liveFor(.citationEdition);">
-                                        A citation edition is required!
-                                    </label>
+                                    ## RIF-CS Requires this, but it is disabled for the current implementation
+                                    ##<label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral"
+                                    ##    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.dc:hasVersion.rdf:PlainLiteral');); liveFor(.citationEdition);">
+                                    ##    A citation edition is required!
+                                    ##</label>
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Publisher:</td>
+                                <td>Publisher<span class="required">(*)</span>:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Publisher" id="${citePart}.dc:publisher.rdf:PlainLiteral" />
                                 </td>
@@ -183,13 +175,14 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Place of Publication<span class="required">(*)</span>:</td>
+                                <td>Place of Publication:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Place of Publication" id="${citePart}.vivo:Publisher.vivo:Location" class="citationPublicationLocation" />
-                                    <label class="validation-err-msg" for="${citePart}.vivo:Publisher.vivo:Location"
-                                        data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.vivo:Publisher.vivo:Location');); liveFor(.citationPublicationLocation);">
-                                        A citation publication location is required!
-                                    </label>
+                                    ## RIF-CS Requires this, but it is disabled for the current implementation
+                                    ##<label class="validation-err-msg" for="${citePart}.vivo:Publisher.vivo:Location"
+                                    ##    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.vivo:Publisher.vivo:Location');); liveFor(.citationPublicationLocation);">
+                                    ##    A citation publication location is required!
+                                    ##</label>
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>
@@ -242,13 +235,14 @@
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
-                                <td>Context<span class="required">(*)</span>:</td>
+                                <td>Context:</td>
                                 <td>
                                     <input type="text" size="60" placeholder="Citation Context" id="${citePart}.skos:scopeNote" class="citationContext" />
-                                    <label class="validation-err-msg" for="${citePart}.skos:scopeNote"
-                                        data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.skos:scopeNote');); liveFor(.citationContext);">
-                                        A citation context is required!
-                                    </label>
+                                    ## RIF-CS Requires this, but it is disabled for the current implementation
+                                    ##<label class="validation-err-msg" for="${citePart}.skos:scopeNote"
+                                    ##    data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.skos:scopeNote');); liveFor(.citationContext);">
+                                    ##    A citation context is required!
+                                    ##</label>
                                 </td>
                             </tr>
                         </tbody>
@@ -294,6 +288,23 @@
         citationsCheckbox.live("onDataChanged", function() {
             toggleCitations($(this));
         });
+
+        ### Searches for and converts full publication dates to a year
+        function getPubYear() {
+            var dateList = $("#citationDates div.count-this");
+            var pubYear = null;
+            dateList.each(function(i, element) {
+                element = $(element);
+                var type = element.find(".selection-added-id").val();
+                if (type == "publicationDate") {
+                    var value = element.find(".dateYMD").val();
+                    if (value != null && value.length > 3) {
+                        pubYear = value.substring(0, 4);
+                    }
+                }
+            });
+            return pubYear;
+        }
 
         ### PREFILL Values
         function buildCreatorString(given, family) {
@@ -471,10 +482,15 @@
             doiDialog.dialog("open").dialog("moveToTop");
         }
 
+        // Use in both DOI and Rendering
+        var citeTitle = getReDBoxById("${citePart}.dc:title");
+        var citeUrl = getReDBoxById("${citePart}.bibo:Website.dc:identifier");
+        var citePublisher = getReDBoxById("${citePart}.dc:publisher.rdf:PlainLiteral");
+
         if (doiCreation) {
             $("label[for=\"useDoi\"]").live("click", function() {
                 ## Mandatory fields for ANDS
-                var title = getReDBoxById("${citePart}.dc:title").val();
+                var title = citeTitle.val();
                 if (title == null || title == "") {
                     alert("'Title' is a mandatory field for DOI");
                     return false;
@@ -482,7 +498,7 @@
                     doiMetadata.title = title;
                 }
 
-                var url = getReDBoxById("${citePart}.bibo:Website.dc:identifier").val();
+                var url = citeUrl.val();
                 if (url == null || url == "") {
                     alert("'URL' is a mandatory field for DOI");
                     return false;
@@ -506,7 +522,7 @@
                     doiMetadata.creators = creators;
                 }
 
-                var publisher = getReDBoxById("${citePart}.dc:publisher.rdf:PlainLiteral").val();
+                var publisher = citePublisher.val();
                 if (publisher == null || publisher == "") {
                     alert("'Publisher' is a mandatory field for DOI");
                     return false;
@@ -514,18 +530,7 @@
                     doiMetadata.publisher = publisher;
                 }
 
-                var dateList = $("#citationDates div.count-this");
-                var pubYear = null;
-                dateList.each(function(i, element) {
-                    element = $(element);
-                    var type = element.find(".selection-added-id").val();
-                    if (type == "publicationDate") {
-                        var value = element.find(".dateYMD").val();
-                        if (value != null && value.length > 3) {
-                            pubYear = value.substring(0, 4);
-                        }
-                    }
-                });
+                var pubYear = getPubYear();
                 if (pubYear == null) {
                     alert("A Publication Year is mandatory for DOI");
                     return false;
@@ -548,5 +553,70 @@
             }
             return true;
         }
+
+        var renderField = getReDBoxById("${cite}.skos:prefLabel");
+        var renderBtn = getReDBoxById("${cite}.renderBtn");
+
+        function citationStringSync(newString) {
+            renderField.val(newString);
+            $(".citationString").html(newString);
+        }
+
+        function renderCitationString() {
+            var title = citeTitle.val();
+            if (title == null || title == "") {
+                alert("Cannot render a citation without the 'Title' field");
+                return null;
+            }
+
+            var url = citeUrl.val();
+            if (url == null || url == "") {
+                alert("Cannot render a citation without the 'URL' field");
+                return null;
+            }
+
+            var creatorList = $("#citationContributors tr.count-this");
+            var creators = [];
+            creatorList.each(function(i, element) {
+                element = $(element);
+                var creatorName = buildCreatorString(element.find(".givenName").val(), element.find(".familyName").val());
+                if (creatorName != "") {
+                    creators.push(creatorName);
+                }
+            });
+            if (creators.length == 0) {
+                alert("Cannot render a citation without at least one 'Creator'");
+                return null;
+            }
+
+            var publisher = citePublisher.val();
+            if (publisher == null || publisher == "") {
+                alert("Cannot render a citation without the 'Publisher' field");
+                return null;
+            }
+
+            var pubYear = getPubYear();
+            if (pubYear == null) {
+                alert("Cannot render a citation without a Publication Date");
+                return null;
+            }
+
+            // Time to put the complete String together
+            return creators.join("; ") + " (" + pubYear + "): " + title + ". " + publisher + ". {ID_WILL_BE_HERE}";
+        }
+
+        renderBtn.live("click", function() {
+            var citation = renderCitationString();
+            if (citation != null) {
+                citationStringSync(citation);
+            }
+        });
+
+        renderField.live("onDataChanged", function() {
+            var citation = $(this).val();
+            if (citation != null && citation != "") {
+                citationStringSync(citation);
+            }
+        });
     </script>
 </div>

@@ -229,7 +229,7 @@
         skos:note.0.foaf:name,
         skos:note.0.dc:description,
         ## citations
-        ##dc:biblioGraphicCitation.skos:prefLabel,
+        dc:biblioGraphicCitation.skos:prefLabel,
         ##dc:biblioGraphicCitation.dc:type.rdf:PlainLiteral,
         ##dc:biblioGraphicCitation.dc:type.skos:prefLabel,
         dc:biblioGraphicCitation.redbox:sendCitation,

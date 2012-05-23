@@ -343,3 +343,16 @@ div.meta ol, div.meta ul {
 .selection-add-more-info {
     font-style: italic;
 }
+.citation-block blockquote {
+    margin-bottom: 10px;
+}
+.citation-block .rdaLabel {
+    font-size: 80%;
+    font-style: italic;
+}
+.citation-block .citationString {
+    margin-left: 10px;
+}
+.citation-block .ui-icon {
+    float: left;
+}
