@@ -149,7 +149,7 @@
         <dependency>
             <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-transformer-jsonVelocity</artifactId>
-            <version>1.0.8</version>
+            <version>${fascinator.version}</version>
         </dependency>
     </dependencies>
 

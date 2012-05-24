@@ -12,7 +12,7 @@
         <version>1.1</version>
     </parent>
     <properties>
-        <fascinator.version>1.0.9-SNAPSHOT</fascinator.version>
+        <fascinator.version>1.1</fascinator.version>
         <jetty.version>6.1.24</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
