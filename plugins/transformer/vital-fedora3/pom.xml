@@ -71,20 +71,4 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <!-- Trippi -->
-        <repository>
-            <id>duraspace</id>
-            <name>Duraspace Repository for Maven</name>
-            <url>https://m2.duraspace.org/content/repositories/releases</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>

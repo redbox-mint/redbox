@@ -94,4 +94,21 @@
             </plugin>
         </plugins>
     </reporting>
+    <repositories>
+        <!-- Snapshots are not synched with Maven central -->
+        <repository>
+            <id>fascinator-snapshots</id>
+            <url>http://dev.redboxresearchdata.com.au/nexus/content/repositories/sonatype-staging/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>redbox-nexus</id>
+            <url>http://dev.redboxresearchdata.com.au/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 </project>
