@@ -9,7 +9,8 @@
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-meta</artifactId>
-        <version>1.1</version>
+        <version>1.2-SNAPSHOT</version>
+        <relativePath></relativePath>
     </parent>
     <properties>
         <fascinator.version>1.1.1-SNAPSHOT</fascinator.version>
@@ -33,82 +34,6 @@
                 <artifactId>fascinator-plugin-api</artifactId>
                 <version>${fascinator.version}</version>
             </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.8.1</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Compile for Java 6 -->
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.1</version>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.2</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>index</report>
-                            <report>project-team</report>
-                            <report>issue-tracking</report>
-                            <report>license</report>
-                            <report>scm</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <id>default</id>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                    <reportSet>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-    <repositories>
-        <!-- Snapshots are not synched with Maven central -->
-        <repository>
-            <id>fascinator-snapshots</id>
-            <url>http://dev.redboxresearchdata.com.au/nexus/content/repositories/sonatype-staging/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>redbox-nexus</id>
-            <url>http://dev.redboxresearchdata.com.au/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
 </project>
