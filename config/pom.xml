@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-config</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ReDBox - Generic Configuration</name>
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>1.5.1</version>
+        <version>1.5.2-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
     <build>
@@ -20,8 +20,8 @@
         </resources>
     </build>
     <scm>
-        <url>http://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.5.1/config</url>
-        <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.5.1/config</connection>
-        <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox/tags/redbox-1.5.1/config</developerConnection>
+        <url>http://redbox-mint.googlecode.com/svn/redbox/trunk/config</url>
+        <connection>scm:svn:http://redbox-mint.googlecode.com/svn/redbox/trunk/config</connection>
+        <developerConnection>scm:svn:https://redbox-mint.googlecode.com/svn/redbox/trunk/config</developerConnection>
     </scm>
 </project>
