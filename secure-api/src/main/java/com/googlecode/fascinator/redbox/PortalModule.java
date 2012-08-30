@@ -119,8 +119,9 @@ public class PortalModule {
                     List<String> rolesList = null;
                     if (state.containsKey("username")) {
                         username = state.get("username").toString();
+                        String source = state.containsKey("source") ? state.get("source").toString() : "system";
                         try {
-                            User user = securityManager.getUser(state, username, "system");
+                            User user = securityManager.getUser(state, username, source);
                             rolesList = Arrays.asList(securityManager.getRolesList(state, user));
                         } catch (AuthenticationException ae) {
                             log.error("Failed to get user access, assuming guest access", ae);
