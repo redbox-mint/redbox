@@ -335,7 +335,13 @@ class AlertsData:
 
     def pFail(self, file):
         # A failed attempt to ingest
-        return self.__alertsFilePath("failed", file)
+        failedPath = self.__alertsFilePath("failed", file) 
+        try:
+            os.makedirs(failedPath)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+        return failedPath
 
     def pTemp(self, file):
         # Cache file for the HarvestClient... '.tfpackage' extension
@@ -344,7 +350,14 @@ class AlertsData:
 
     def pDone(self, file):
         # Archived originals
-        return self.__alertsFilePath("success", file)
+        successPath = self.__alertsFilePath("success", file) 
+        try:
+            os.makedirs(successPath)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+        return successPath
+        
 
     def __alertsFilePath(self, subdirectory, file):
         return os.path.join(self.alertsPath, subdirectory, file)
