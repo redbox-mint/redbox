@@ -150,7 +150,7 @@
 
 <script type="text/javascript">
 $(function() {
-    $("#agreementLabel").html(packageData.nextStageMessage);
+   $('#agreementLabel').wikiText(packageData.nextStageMessage);
     if (packageData.stage == "live") {
         $("#agreement,#retire").hide();
         $("#update-package").hide();

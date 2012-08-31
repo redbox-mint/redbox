@@ -144,17 +144,17 @@ class DatasetData:
         step = self.getCurrentStep()
         msg = "?"
         if step == "inbox":
-            msg = "This record is ready for the <strong>Investigation</strong> stage."
+            msg = "This record is ready for the '''Investigation''' stage."
         elif step == "investigation":
-            msg = "This record is ready for the <strong>Metadata Review</strong> stage."
+            msg = "This record is ready for the '''Metadata Review''' stage."
         elif step == "metadata-review":
-            msg = "This record is ready for the <strong>Final Review</strong> stage."
+            msg = "This record is ready for the '''Final Review''' stage."
         elif step == "final-review":
-            msg = "This record is ready to be <strong>Published</strong>."
+            msg = "This record is ready to be '''Published'''."
         elif step == "live":
-            msg = "This record has already been <strong>Published</strong>."
+            msg = "This record has already been '''Published'''."
         elif step == "retired":
-            msg = "This record has been <strong>Retired</strong>."
+            msg = "This record has been '''Retired'''."
         return msg
 
     ### Supports form rendering, not involved in AJAX
