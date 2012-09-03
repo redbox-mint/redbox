@@ -36,4 +36,17 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+    <distributionManagement>
+		<site>
+			<id>website</id>
+			<url>${sites.location}</url>
+		</site>
+	</distributionManagement>
 </project>
