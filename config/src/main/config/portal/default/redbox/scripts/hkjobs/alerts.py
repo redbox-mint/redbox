@@ -338,7 +338,7 @@ class AlertsData:
         failedPath = self.__alertsFilePath("failed", file) 
         try:
             os.makedirs(failedPath)
-        except OSError as exception:
+        except OSError, exception:
             if exception.errno != errno.EEXIST:
                 raise
         return failedPath
@@ -353,7 +353,7 @@ class AlertsData:
         successPath = self.__alertsFilePath("success", file) 
         try:
             os.makedirs(successPath)
-        except OSError as exception:
+        except OSError, exception:
             if exception.errno != errno.EEXIST:
                 raise
         return successPath
