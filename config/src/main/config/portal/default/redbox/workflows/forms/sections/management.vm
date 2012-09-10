@@ -23,7 +23,7 @@
         <p>The identifier for this collection. You have two options:</p>
         <ul>
             <li>(Default) Select "Use this record's ID" and the system's configured curation method will determine the best identifier to use for you.</li>
-            <li>Otherwise you can provide your own explicit identifier that fits into the <a href="services.ands.org.au/documentation/rifcs/1.3/vocabs/vocabularies.html#Identifier_Type" target="_blank">ANDS Controlled Vocabulary</a>.</li>
+            <li>Otherwise you can provide your own explicit identifier that fits into the <a href="http://services.ands.org.au/documentation/rifcs/1.3/vocabs/vocabularies.html#Identifier_Type" target="_blank">ANDS Controlled Vocabulary</a>.</li>
         </ul>
     </div>
     <div class="group">
