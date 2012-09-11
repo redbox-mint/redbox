@@ -36,9 +36,9 @@
                     <td><input type="file" id="uploadFile" name="uploadFile" size="40" /></td>
                     <td>
                         <select id="attachmentType" style="left:20em;">
-                            <option value="data-file">Data File</option>
-                            <option value="supporting-material">Supporting Material</option>
-                            <option value="readme">Readme</option>
+                            <option value="data-file">Data file</option>
+                            <option value="supporting-material">Supporting material</option>
+                            <option value="readme">Read me</option>
                         </select>
                     </td>
                     <td>

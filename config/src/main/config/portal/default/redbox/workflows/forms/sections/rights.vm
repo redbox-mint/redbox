@@ -32,9 +32,10 @@
         <p>
             <input type="text" size="60" id="dc:accessRights.skos:prefLabel" class="vrights"
                 placeholder="eg. Contact Chief Investigator to negotiate access to the data." />
-            <label for="dc:license.dc:identifier">URI:</label>
-            <input type="text" size="60" id="dc:accessRights.dc:identifier" placeholder="Access Rights URI" />
-        </p>
+            <span style="float:left"><label for="dc:license.dc:identifier">URI:</label>
+            <input type="text" size="60" id="dc:accessRights.dc:identifier" placeholder="Access Rights URI" /></span>
+        </p> 
+        <div style="clear:both"/>
 
         #fieldTitle("dc:accessRights.dc:RightsStatement.skos:prefLabel" "Rights" false)
         <div class="help-content" id="help-dc:accessRights.dc:RightsStatement.skos:prefLabel">
@@ -49,10 +50,11 @@
         </div>
         <div>
             <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.skos:prefLabel" class="vrights"
-                placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" />
-            <label for="dc:license.dc:RightsStatement.dc:identifier">URI:</label>
-            <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.dc:identifier" placeholder="Rights Statement URI" />
+                placeholder="eg. This dataset is made available under the Public Domain Dedication and License v1.0" style="float:left;margin-right:0.5em;"/>
+            <span style="float:left"><label for="dc:license.dc:RightsStatement.dc:identifier">URI:</label>
+            <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.dc:identifier" placeholder="Rights Statement URI" /></span>
         </div>
+        <div style="clear:both"/>
     </div>
 
     #fieldTitle("dc:license" "Licence" false)
