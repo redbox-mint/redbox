@@ -56,9 +56,6 @@ function getDateTime(){
             // OpenLayers init, store it globally so the Geonames lookup can hit it later
             window["openLayersMap"] = loadOpenLayers();
 
-            if (packageData.metaData["redbox:submissionProcess.redbox:submitted"] != "true"){
-                $(".request").remove();
-            }
             widgetTabs = widgets.changeToTabLayout($(".inputscreens"));
             widgetTabs.tabs({
                 select: function(event, ui){
