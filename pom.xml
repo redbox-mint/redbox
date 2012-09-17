@@ -443,7 +443,7 @@
     </repository>
   </repositories>
   <scm>
-    <scmUrl>https://github.com/redbox-mint/redbox</scmUrl>
+    <url>https://github.com/redbox-mint/redbox</url>
     <developerConnection>scm:git:https://github.com/redbox-mint/redbox</developerConnection>
   </scm>
 </project>
