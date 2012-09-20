@@ -1,0 +1,3 @@
+[submodule "config/src/main/config/portal/default/redbox/javascript-widgets"]
+	path = config/src/main/config/portal/default/redbox/javascript-widgets
+	url = https://github.com/redbox-mint/javascript-widgets.git
