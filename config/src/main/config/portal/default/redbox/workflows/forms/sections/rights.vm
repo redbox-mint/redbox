@@ -60,7 +60,7 @@
     #fieldTitle("dc:license" "Licence" false)
     <div class="help-content" id="help-dc:license">
         This list contains data licences that this server has been configured with.
-        For more information about Creative Commons licences please
+        For more information about the Australian Creative Commons licences please
         <a href="http://creativecommons.org.au/learn-more/licences" target="blank">&lt;see here&gt;</a>.
     </div>
 

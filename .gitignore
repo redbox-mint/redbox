@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/config/target
+/plugins/transaction/curation/target

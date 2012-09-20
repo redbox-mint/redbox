@@ -2,47 +2,47 @@
     "results": [
         {
             "id": "http://creativecommons.org/licenses/by/3.0/au",
-            "label": "CC BY: Attribution",
+            "label": "CC BY: Attribution 3.0 AU",
             "description": "This licence lets others distribute, remix and build upon a work, even commercially, as long as they credit the original creator/s (and any other nominated parties). This is the most accommodating of the licences in terms of what others can do with the work."
         },
         {
             "id": "http://creativecommons.org/licenses/by-sa/3.0/au",
-            "label": "CC BY-SA: Attribution-Share Alike",
+            "label": "CC BY-SA: Attribution-Share Alike 3.0 AU",
             "description": "This licence lets others distribute, remix and build upon the work, even for commercial purposes, as long as they credit the original creator/s (and any other nominated parties) and license any new creations based on the work under the same terms. All new derivative works will carry the same licence, so will also allow commercial use."
         },
         {
             "id": "http://creativecommons.org/licenses/by-nd/3.0/au",
-            "label": "CC BY-ND: Attribution-No Derivative Works",
+            "label": "CC BY-ND: Attribution-No Derivative Works 3.0 AU",
             "description": "This licence allows others to distribute the work, even for commercial purposes, as long as the work is unchanged, and the original creator/s (and any other nominated parties) are credited."
         },
         {
             "id": "http://creativecommons.org/licenses/by-nc/3.0/au",
-            "label": "CC BY-NC: Attribution-Noncommercial",
+            "label": "CC BY-NC: Attribution-Noncommercial 3.0 AU",
             "description": "This licence lets others distribute, remix and build upon the work, but only if it is for non-commercial purposes and they credit the original creator/s (and any other nominated parties). They don't have to license their derivative works on the same terms."
         },
         {
             "id": "http://creativecommons.org/licenses/by-nc-sa/3.0/au",
-            "label": "CC BY-NC-SA: Attribution-Noncommercial-Share Alike",
+            "label": "CC BY-NC-SA: Attribution-Noncommercial-Share Alike 3.0 AU",
             "description": "This licence lets others distribute, remix and build upon the work, but only if it is for non-commercial purposes, they credit the original creator/s (and any other nominated parties) and they license their derivative works under the same terms."
         },
         {
             "id": "http://creativecommons.org/licenses/by-nc-nd/3.0/au",
-            "label": "CC BY-NC-ND: Attribution-Noncommercial-No Derivatives",
+            "label": "CC BY-NC-ND: Attribution-Noncommercial-No Derivatives 3.0 AU",
             "description": "This licence is the most restrictive of the six main licences, allowing redistribution of the work in its current form only. This licence is often called the 'free advertising' licence because it allows others to download and share the work as long as they credit the original creator/s (and any other nominated parties), they don't change the material in any way and they don't use it commercially."
         },
         {
             "id": "http://opendatacommons.org/licenses/pddl/1.0/",
-            "label": "PDDL - Public Domain Dedication and License",
+            "label": "PDDL - Public Domain Dedication and License 1.0",
             "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/pddl/summary/\" target=\"blank\">http://opendatacommons.org/licenses/pddl/summary/</a>"
         },
         {
             "id": "http://opendatacommons.org/licenses/by/1.0/",
-            "label": "ODC-By - Attribution License",
+            "label": "ODC-By - Attribution License 1.0",
             "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/by/summary/\" target=\"blank\">http://opendatacommons.org/licenses/by/summary/</a>"
         },
         {
             "id": "http://opendatacommons.org/licenses/odbl/1.0/",
-            "label": "ODC-ODbL - Attribution Share-Alike for data/databases",
+            "label": "ODC-ODbL - Attribution Share-Alike for data/databases 1.0",
             "description": "A summary of this license is available here: <a href=\"http://opendatacommons.org/licenses/odbl/summary/\" target=\"blank\">http://opendatacommons.org/licenses/odbl/summary/</a>"
         }
     ]
