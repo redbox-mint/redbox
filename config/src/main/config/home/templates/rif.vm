@@ -1,20 +1,15 @@
 #macro(showElementRifCS $tag $field $attr $label $anzsrc)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key))
-        #set($data = $value.get($key))
-        #if ("$!data" != "")
+        #set($value = $valueMap.get($key))     
             #if ($label != "")
                 #set($labelVal = $value.get($label))
                 #if ($anzsrc == "anzsrc")
                     #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
                     #set($labelVal = $labelVal.substring($lastIndex) )
                 #end
-    <$tag$attr>$util.encodeXml($labelVal)</$tag>
-            #else
-    <$tag$attr>$util.encodeXml($data)</$tag>
-            #end
-        #end
+    			<$tag$attr>$util.encodeXml($labelVal)</$tag> 
+        	#end
     #end
 #end
 
@@ -251,11 +246,16 @@
             </rif:relatedObject>
                 #end
             #end
+			
+			
+			
+           	#showElementRifCS ("rif:subject"  "dc:subject.vivo:keyword"  " type=${quote}local${quote} $lang"  "rdf:PlainLiteral"  "")
+            #showElementRifCS ("rif:subject"  "dc:subject.anzsrc:for"  " type=${quote}anzsrc-for${quote} $lang"  "rdf:resource"  "anzsrc")
+            #showElementRifCS ("rif:subject"  "dc:subject.anzsrc:seo"  " type=${quote}anzsrc-seo${quote} $lang"  "rdf:resource"  "anzsrc")
+            
 
-            #showElementRifCS("rif:subject" "dc:subject.vivo:keyword", " type=${quote}local${quote} $lang", "rdf:PlainLiteral", "")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:for", " type=${quote}anzsrc-for${quote} $lang", "rdf:resource", "anzsrc")
-            #showElementRifCS("rif:subject" "dc:subject.anzsrc:seo", " type=${quote}anzsrc-seo${quote} $lang", "rdf:resource", "anzsrc")
-
+			
+            
         #set ($value = $util.get($item, "dc:subject.anzsrc:toa.skos:prefLabel"))
         #if ("$!value" != "")
             <rif:subject type="anzsrc-toa">$util.encodeXml($value)</rif:subject>
