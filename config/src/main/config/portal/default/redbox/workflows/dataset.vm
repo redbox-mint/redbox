@@ -27,6 +27,8 @@ var packageData = {
     andsDoiData: $self.getDoiMetadata()
 };
 
+var hideFundingBodyLabel = $self.getPresentationConfig('hide-funding-body-label');
+
 function pad(s,len,c){
     c = c || "0";
     var ps = s.toString();

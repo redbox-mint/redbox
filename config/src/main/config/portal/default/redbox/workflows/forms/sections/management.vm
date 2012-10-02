@@ -172,6 +172,7 @@
                          "")
     </p>
 
+	
     #fieldTitle("funding_bodies" "Funding Body/s" false)
     <div class="help-content" id="help-funding_bodies">
         Select/enter the name of the research funding body, if applicable.
@@ -390,9 +391,11 @@ $(function() {
                 formatResult: function(row) { return splitFundingData(row).label; },
                 width: "40em"
             }).result(function(event, row) {
+                if(!hideFundingBodyLabel) {
                 var trElem = $(this).parent().parent();
                 var uriElem = trElem.find(".funding-body-id");
                 var labelElem = trElem.find(".funding-body-id-label");
+                
                 if (row) {
                     var uri = splitFundingData(row).uri;
                     uriElem.val(uri);
@@ -404,6 +407,7 @@ $(function() {
                 labelElem.show();
                 var clearElem = trElem.find(".clear-funding-body-id");
                 clearElem.show();
+                }
             })
         }).live("blur", function() {
             $(this).search();
@@ -415,9 +419,11 @@ $(function() {
                 var trElem = $(this).parent().parent();
                 var linkElem = trElem.find(".clear-funding-body-id");
                 var labelElem = trElem.find(".funding-body-id-label");
-                linkElem.show();
-                labelElem.html("ID: '"+value+"'");
-                labelElem.show();
+                if(!hideFundingBodyLabel) {
+                	linkElem.show();
+                	labelElem.html("ID: '"+value+"'");
+                	labelElem.show();
+                }
             }
         });
     $(".clear-funding-body-id").live("click", function() {

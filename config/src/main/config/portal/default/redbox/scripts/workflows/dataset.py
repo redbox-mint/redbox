@@ -43,6 +43,8 @@ class DatasetData:
         self.__oid = formData.get("_oid") or formData.get("oid")
         self.Services = self.vc("Services")
         self.page = self.vc("page")
+        
+ 
 
         # These cache responses from methods
         self.__manifest = None
@@ -55,6 +57,10 @@ class DatasetData:
             func = ""
         if func == "" and request.getParameter("func"):
             func = request.getParameter("func")
+
+        config = self._getDataConfig()     
+        self.presentationConfig = config.getObject("presentation-settings")
+        
 
         self.log.debug("func='%s', oid='%s', id='%s'" % (func, self.__oid, id))
         try:
@@ -89,6 +95,8 @@ class DatasetData:
             writer = response.getPrintWriter("text/plain; charset=UTF-8")
             writer.println(result.toString())
             writer.close()
+            
+
 
     # Get from velocity context
     def vc(self, index):
@@ -144,17 +152,17 @@ class DatasetData:
         step = self.getCurrentStep()
         msg = "?"
         if step == "inbox":
-            msg = "This record is ready for the '''Investigation''' stage."
+            msg = "This record is ready for the <strong>Investigation</strong> stage."
         elif step == "investigation":
-            msg = "This record is ready for the '''Metadata Review''' stage."
+            msg = "This record is ready for the <strong>Metadata Review</strong> stage."
         elif step == "metadata-review":
-            msg = "This record is ready for the '''Final Review''' stage."
+            msg = "This record is ready for the <strong>Final Review</strong> stage."
         elif step == "final-review":
-            msg = "This record is ready to be '''Published'''."
+            msg = "This record is ready to be <strong>Published</strong>."
         elif step == "live":
-            msg = "This record has already been '''Published'''."
+            msg = "This record has already been <strong>Published</strong>."
         elif step == "retired":
-            msg = "This record has been '''Retired'''."
+            msg = "This record has been <strong>Retired</strong>."
         return msg
 
     ### Supports form rendering, not involved in AJAX
@@ -220,8 +228,13 @@ class DatasetData:
     ### Supports form rendering, not involved in AJAX
     def getFormData(self, field):
         formData = self.vc("formData")
-        #print "********** getFormData(field='%s')='%s'" % (field, formData.get(field, ""))
+        #print "********** getFormData(field='%s')='%s'" % (field, formData)
         return StringEscapeUtils.escapeHtml(formData.get(field, ""))
+    
+    def getPresentationConfig(self, field):
+        presentationConfig = self.presentationConfig;
+        #print "********** getPresentationConfig '%s'" % (presentationConfig.get(field) )
+        return StringEscapeUtils.escapeHtml(presentationConfig.get(field))
 
     ### Supports form rendering, not involved in AJAX
     def getOid(self):
@@ -237,6 +250,7 @@ class DatasetData:
                 self.log.error("Failed to retrieve object : ", e)
         return self.__object
 
+           
     # Retrieve and parse the Fascinator Package from storage
     def _getTFPackage(self):
         if self.__tfpackage is None:
@@ -532,3 +546,16 @@ class DatasetData:
         self.messaging.queueMessage(
                 TransactionManagerQueueConsumer.LISTENER_ID,
                 message.toString())
+                
+    def _getDataConfig(self):
+        systemConfig = self.vc("systemConfig")
+        
+        jsonConfigFileString = systemConfig.getObject(["portal", "packageTypes", "dataset"]).get("jsonconfig")
+        
+        jsonConfigFile = FascinatorHome.getPathFile(
+            "harvest/workflows/" + jsonConfigFileString)
+        config = JsonSimple()
+        config = JsonSimple(jsonConfigFile)
+        
+        return config
+
