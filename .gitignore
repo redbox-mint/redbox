@@ -6,3 +6,4 @@
 *.ear
 /config/target
 /plugins/transaction/curation/target
+target/
