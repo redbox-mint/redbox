@@ -441,7 +441,7 @@
                     {
                         "name": "alerts-poll",
                         "type": "external",
-                        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/alerts.script",
+                        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/alerts.py",
                         "timing": "0 0/15 * * * ?"
                     }
                 ]
@@ -490,14 +490,44 @@
         "NLA_SRU": "${mint.proxy.url}/default/search/nlaLookup"
     },
     "alerts": {
-        "path": "${fascinator.home}/alerts",
-        "xmlMaps": {
-            "xml": "${fascinator.home}/alerts/config/basicXmlMap.json",
-            "rif": "${fascinator.home}/alerts/config/rifXmlMap.json"
-        }
-    },
-    "watcher": {
-        "path": "${watcher.home}"
+        "alert-set": [
+    		{
+    			"name": "Default alert",
+    			"path": "${fascinator.home}/alerts",
+    			"harvestConfig": "${fascinator.home}/harvest/workflows/dataset.json",
+    			"handlers": {
+                    "csv": "CSVAlertHandler",
+                    "xml": "XMLAlertHandler",
+                    "rif": "XMLAlertHandler"
+                },
+                "CSVAlertHandler_params": {
+    				"configMap": {
+    					"csv": {
+    						"Dialect": {
+			    				"skipinitialspace": true,
+			    				"quotechar": "\"",
+			    				"delimiter": ","
+    						},
+    						"FieldMap": {
+    							"title": ["title","redbox:submissionProcess.dc:title"],
+    			                "description": ["description", "redbox:submissionProcess.dc:description"],
+    			                "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+    			                "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+    			                "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+    			                "source": "workflow_source",
+    			                "note": "redbox:submissionProcess.skos:note"
+    						}
+    					}
+    				}
+    			},
+    			"XMLAlertHandler_params": {
+	    			"configMap": {
+			            "xml": {"xmlMap": "${fascinator.home}/alerts/config/basicXmlMap.json"},
+			            "rif": {"xmlMap": "${fascinator.home}/alerts/config/rifXmlMap.json"}
+			        }
+    			}
+    		}
+    	]
     },
     "subscriber": {
         "solr-event-log": {

@@ -1,8 +1,13 @@
 *.class
-
+.DS_Store
 # Package Files #
 *.jar
 *.war
 *.ear
 /config/target
 /plugins/transaction/curation/target
+target/
+.settings
+.classpath
+.project
+.pydevproject
