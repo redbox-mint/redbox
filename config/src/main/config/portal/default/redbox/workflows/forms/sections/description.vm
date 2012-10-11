@@ -149,7 +149,7 @@
                 </td>
                 <td>
                     <span class="advanced hidden">
-                    Publish to RDA: <input type="checkbox" id="dc:relation.vivo:Dataset.0.redbox:publish" class="publish-to-rda" checked="checked"/>
+                    Publish to RDA: <input type="checkbox" id="dc:relation.vivo:Dataset.0.redbox:publish" class="publish-to-rda"/>
                     </span>
                 </td>
                 <td class="delete-item"><a href="#">delete</a></td>

@@ -13,17 +13,24 @@
         </thead>
         <tbody>
             <tr class="item-input-display notes">
-                <td style="vertical-align:middle;">
-                    <div class="group">
-                        Auto-generated values:
-                        <input type="text" id="skos:note.0.dc:created" class="datetime" placeholder="date" readonly="readonly" size="25" />
-                        <input type="text" id="skos:note.0.foaf:name" class="username" placeholder="username" readonly="readonly" size="25" />
-                        <a id="skos:note.0.clear" class="clear-note" href="#">&lt; clear this note &gt;</a>
-                        <a id="skos:note.0.update" class="update-note" href="#">&lt; update &gt;</a>
-                    </div>
-                </td>
                 <td>
-                    <textarea cols="80" rows="4" placeholder="description" id="skos:note.0.dc:description" class="vnote"></textarea>
+                	 <div class="group" style="display:none">
+                        Auto-generated values:
+                        <input type="text" id="skos:note.0.dc:created" class="datetime label-input" placeholder="date" readonly="readonly" size="25" />
+                        <input type="text" id="skos:note.0.foaf:name" class="username label-input" placeholder="username" readonly="readonly" />
+                    </div>
+                    <div class="group" id="skos:note.0.dc:description-timestampGroup" style="display:none">
+                    This note was created on  
+                    	 <span id="skos:note.0.dc:created-span"></span> by 
+                        <span id="skos:note.0.foaf:name-span"></span>
+                        
+                    </div>
+                    <div style="display:none;">
+                    	<textarea style="width: 45em;" rows="4" placeholder="description" id="skos:note.0.dc:description" class="vnote"></textarea>
+                    	<a id="skos:note.0.clear" class="clear-note" href="#">&lt; clear this note &gt;</a> <a id="skos:note.0.save" class="save-note" href="#">&lt; save this note &gt;</a>
+                    </div>
+                    <div id="skos:note.0.dc:description-readonly" style="width: 45em;"><span id="skos:note.0.dc:description-value"></span> <a href='#' style="display:block" class="edit-note-description-link" >&lt; edit this note &gt;</a></div>
+                    
                 </td>
                 <td style="vertical-align:middle;" class="delete-item"><a href="#">delete</a></td>
                 <td style="width:100%;"></td>
@@ -38,6 +45,8 @@
     </table>
 </div>
 <script type="text/javascript">
+
+    
 $(function(){
     function updateTime(element) {
         element.val(getDateTime());
@@ -45,6 +54,23 @@ $(function(){
     function updateUser(element) {
         element.val("$page.authentication.get_username()");
     }
+    function updateRelatedSpan(element) {
+    	var span = document.getElementById(element.attr('id')+"-span");
+		$(span).html(element.val());
+    }
+    
+     function editNoteDescription(element) {
+		$(element.parentNode).hide();
+	  	var descriptionTextBoxId = $(element.parentNode).attr('id').replace("-readonly","");
+		$(document.getElementById(descriptionTextBoxId).parentNode).show();       
+ 	}
+ 	
+ 	function bindInputValuesToLabels(baseId) {
+ 		$("span[id='"+baseId+".dc:description-value']").html($("textarea[id='"+baseId+".dc:description']").val());
+        updateRelatedSpan($("input[id='"+baseId+".dc:created']"));
+        updateRelatedSpan($("input[id='"+baseId+".foaf:name']"));
+    }
+ 
     $(".vnote").live("change keydown", function(){
         var baseId = $(this).attr("id").replace(".dc:description", "");
         var dateElement = $("input[id='"+baseId+".dc:created']");
@@ -63,11 +89,48 @@ $(function(){
         $("textarea[id='"+baseId+".dc:description']").val("");
         return false;
     });
-    $(".update-note").live("click", function(){
-        var baseId = $(this).attr("id").replace(".update", "");
-        updateTime($("input[id='"+baseId+".dc:created']"));
-        updateUser($("input[id='"+baseId+".foaf:name']"));
+     $(".add-note").live("click", function(){
+        //TODO: Find a better way to determine widgets have been loaded
+        if($('.loading-data').size() ==0) {
+           editNoteDescription($(".edit-note-description-link")[$(".edit-note-description-link").size()-1]);
+        }
         return false;
     });
+     $(".save-note").live("click", function(){
+        var baseId = $(this).attr("id").replace(".save", "");       
+        $("textarea[id='"+baseId+".dc:description']").parent().hide();
+        $("div[id='"+baseId+".dc:description-readonly']").show();
+ 
+	  	updateTime($("input[id='"+baseId+".dc:created']"));
+        updateUser($("input[id='"+baseId+".foaf:name']"));
+        
+        bindInputValuesToLabels(baseId);
+        
+         $(document.getElementById(baseId+".dc:description-timestampGroup")).show();
+         $(".form-fields-save").click();
+    });
+    
+    $(document).ajaxComplete(function() {
+    	var notesElements = $("tr.notes");
+    	for(var i = 0; i <notesElements.size(); i++) {
+    		if($(notesElements[i]).css('display') != 'none') {
+    		   var baseId = $($(notesElements[i]).find('.vnote')[0]).attr('id').replace(".dc:description", "");
+    		   bindInputValuesToLabels(baseId);
+    		   if($("textarea[id='"+baseId+".dc:description']").val() != '') {
+    		   	$(document.getElementById(baseId+".dc:description-timestampGroup")).show();    		   
+    		   	$("div[id='"+baseId+".dc:description-readonly']").show();
+    		   	$("textarea[id='"+baseId+".dc:description']").parent().hide();
+    		   } else {
+    		     $("div[id='"+baseId+".dc:description-readonly']").hide();
+    		   	 $("textarea[id='"+baseId+".dc:description']").parent().show();
+    		   }
+    		}
+    	}
+    });
+    
+    $(".edit-note-description-link").live("click", function() {
+    	editNoteDescription(this);
+    	return false;});
 });
+
 </script>

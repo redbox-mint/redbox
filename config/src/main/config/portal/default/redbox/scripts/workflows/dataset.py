@@ -232,7 +232,7 @@ class DatasetData:
         return StringEscapeUtils.escapeHtml(formData.get(field, ""))
     
     def getPresentationConfig(self, field):
-        presentationConfig = self.presentationConfig;
+        presentationConfig = self.presentationConfig
         #print "********** getPresentationConfig '%s'" % (presentationConfig.get(field) )
         return StringEscapeUtils.escapeHtml(presentationConfig.get(field))
 

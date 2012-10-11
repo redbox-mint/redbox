@@ -152,7 +152,35 @@
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>
-
+							<tr>
+                                <td>Publisher<span class="required">(*)</span>:</td>
+                                <td>
+                                    <input type="text" size="60" placeholder="Publisher" id="${citePart}.dc:publisher.rdf:PlainLiteral" />
+                                </td>
+                            </tr>
+                            <tr><td colspan="2"><hr/></td></tr>
+                            <tr>
+                                <td>URL<span class="required">(*)</span>:</td>
+                                <td>
+                                    <input type="text" size="60" placeholder="URL" id="${citePart}.bibo:Website.dc:identifier" class="citationUrl"/>
+                                    <label class="validation-err-msg" for="${citePart}.bibo:Website.dc:identifier"
+                                        data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.bibo:Website.dc:identifier');); liveFor(.citationUrl);">
+                                        A citation URL is required!
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr><td colspan="2"><hr/></td></tr>
+                            <tr>
+                                <td>Publication Date<span class="required">(*)</span>:</td>
+                                <td >
+                                    <div>
+                                        <input type="text" placeholder="YYYY-MM-DD" class="" id="publication-date-citation" /> 
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr><td colspan="2"><hr/> <a href='#' id='show-additional-citation-metadata'>Show additional citation metadata</a></td></tr>
+                            </tbody>
+                            <tbody id="additional-citation-info" class="hidden">
                             <tr>
                                 <td>Edition:</td>
                                 <td>
@@ -164,14 +192,7 @@
                                     ##</label>
                                 </td>
                             </tr>
-                            <tr><td colspan="2"><hr/></td></tr>
-
-                            <tr>
-                                <td>Publisher<span class="required">(*)</span>:</td>
-                                <td>
-                                    <input type="text" size="60" placeholder="Publisher" id="${citePart}.dc:publisher.rdf:PlainLiteral" />
-                                </td>
-                            </tr>
+                            </div>
                             <tr><td colspan="2"><hr/></td></tr>
 
                             <tr>
@@ -201,7 +222,7 @@
                                               data-label-key="label"
                                               data-list-key="results">
                                             <span class="selection-added">
-                                                <input type="hidden" class="selection-added-id"
+                                                <input type="hidden" class="selection-added-id date-type-prefId"
                                                        id="${citePart}.dc:date.0.dc:type.rdf:PlainLiteral" value="" />
                                                 <input type="text" class="selection-added-label" readonly="readonly" size="25"
                                                        id="${citePart}.dc:date.0.dc:type.skos:prefLabel" value="" />
@@ -216,20 +237,8 @@
                                         <span class="delete-item">| <a href="#">delete</a></span>
                                     </div>
                                     <div>
-                                        <input type="button" class="button add-another-item" value="Add Date" />
+                                        <input type="button" class="button add-another-item add-citation-date" value="Add Date" />
                                     </div>
-                                </td>
-                            </tr>
-                            <tr><td colspan="2"><hr/></td></tr>
-
-                            <tr>
-                                <td>URL<span class="required">(*)</span>:</td>
-                                <td>
-                                    <input type="text" size="60" placeholder="URL" id="${citePart}.bibo:Website.dc:identifier" class="citationUrl"/>
-                                    <label class="validation-err-msg" for="${citePart}.bibo:Website.dc:identifier"
-                                        data-validation-rule="test(notEmpty); when(blur, change, submit); jsTest(r = !validSimpleCitationField('${citePart}.bibo:Website.dc:identifier');); liveFor(.citationUrl);">
-                                        A citation URL is required!
-                                    </label>
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>
@@ -245,7 +254,10 @@
                                     ##</label>
                                 </td>
                             </tr>
-                        </tbody>
+                            <tr><td colspan="2"><br/></td></tr>
+                          </tbody>
+                          
+                        
                     </table>
                 </td>
             </tr>
@@ -288,7 +300,12 @@
         citationsCheckbox.live("onDataChanged", function() {
             toggleCitations($(this));
         });
-
+		
+		$('#show-additional-citation-metadata').live("click", function() {
+		$('#additional-citation-info').show();
+		$(this).hide();
+		return false;
+		});
         ### Searches for and converts full publication dates to a year
         function getPubYear() {
             var dateList = $("#citationDates div.count-this");
