@@ -385,8 +385,8 @@
             if (created.size() != 0) {
                 created = created.val();
                 if (created != null && created != "") {
-                    getReDBoxById("${citePart}.dc:date.1.rdf:PlainLiteral").val(created);
-                    var dateDropDown = getReDBoxById("${citePart}.dc:date.1.dc:type.rdf:PlainLiteral").parent().parent();
+                    getReDBoxById("${citePart}.dc:date.2.rdf:PlainLiteral").val(created);
+                    var dateDropDown = getReDBoxById("${citePart}.dc:date.2.dc:type.rdf:PlainLiteral").parent().parent();
                     var select = dateDropDown.find("select");
                     select.val("created"); // Change the drop-down
                     select.change(); // Change the widget state (enables button)

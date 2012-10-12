@@ -26,8 +26,10 @@ var packageData = {
     nextStageMessage: "$self.getNextStepAcceptMessage()",
     andsDoiData: $self.getDoiMetadata()
 };
-
-var hideFundingBodyLabel = $self.getPresentationConfig('hide-funding-body-label');
+var hideFundingBodyLabel = false;
+if('$self.getPresentationConfig('hide-funding-body-label')' == '') {
+	hideFundingBodyLabel = Boolean("$self.getPresentationConfig('hide-funding-body-label')");
+}
 
 function pad(s,len,c){
     c = c || "0";

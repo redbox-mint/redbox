@@ -234,6 +234,9 @@ class DatasetData:
     def getPresentationConfig(self, field):
         presentationConfig = self.presentationConfig
         #print "********** getPresentationConfig '%s'" % (presentationConfig.get(field) )
+        if presentationConfig is None or presentationConfig.get(field) is None:
+            return ''
+        
         return StringEscapeUtils.escapeHtml(presentationConfig.get(field))
 
     ### Supports form rendering, not involved in AJAX
