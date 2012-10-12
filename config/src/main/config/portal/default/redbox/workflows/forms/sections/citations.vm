@@ -327,10 +327,11 @@
         function buildCreatorString(given, family) {
             var hasGiven = true;
             var hasFamily = true;
-            if (given == null && given == "") {
+            if (given == null || given == "") {
                 hasGiven = false;
             }
-            if (family == null && family == "") {
+            
+            if (family == null || family == "") {
                 hasFamily = false;
             }
             if (hasGiven && hasFamily) {
