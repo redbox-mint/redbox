@@ -26,6 +26,7 @@ var packageData = {
     nextStageMessage: "$self.getNextStepAcceptMessage()",
     andsDoiData: $self.getDoiMetadata()
 };
+
 var hideFundingBodyLabel = false;
 if('$self.getPresentationConfig('hide-funding-body-label')' == '') {
 	hideFundingBodyLabel = Boolean("$self.getPresentationConfig('hide-funding-body-label')");
@@ -147,11 +148,27 @@ function getDateTime(){
             $('#publication-date-citation').change(function () {
              $("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:date.1.rdf:PlainLiteral']").val($(this).val());
             });
-             
+            
+            if($("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral']").val() != '') {
+              $('#show-additional-citation-metadata').click();
+            }
+            
+            if($("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral']").val() != '') {
+              $('#show-additional-citation-metadata').click();
+            }
+            
+            if($("input[id='dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote']").val() != '') {
+              $('#show-additional-citation-metadata').click();
+            }
+            
             if($('td#citationDates').find('.date-type-prefId').size() ==2) {
                //No non publication dates so add empty row for user
             	$('.add-citation-date').click();
+            } else {
+               $('#show-additional-citation-metadata').click();
             }
+            
+             
         }
 
         ## Do some version validation before we load the form
