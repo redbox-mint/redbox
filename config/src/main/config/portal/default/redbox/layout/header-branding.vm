@@ -1,5 +1,4 @@
 <div class="grid_16 branding">
-    <h1 id="branding"><a href="$portalPath/home">ReDBox</a></h1>
-    <div class="subtitle">Research Data Box</div>
+    <h1 id="branding"><a href="$portalPath/home"><img height="155" src="$portalPath/images/RedBox_Logo_Text.png"></a></h1>
 </div>
 <div class="clear"></div>
