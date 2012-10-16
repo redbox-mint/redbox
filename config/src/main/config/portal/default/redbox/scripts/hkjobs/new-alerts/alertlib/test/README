@@ -1,0 +1,20 @@
+In order to run these tests you'll need to get a classpath for Jython to use:
+
+To get the class path: 
+  In the base redbox directory run: mvn dependency:build-classpath -Dmdep.cpFile=classpath
+  
+Copy the classpath back to this test directory and jython <script> schould now work.
+
+You'll also need the mock library:
+ 1. Install setuptools: http://www.jython.org/jythonbook/en/1.0/appendixA.html#setuptools
+ 2. Install mock: http://www.voidspace.org.uk/python/mock/#installing
+    - Make sure you use the Jython easy install (might be something like sudo /opt/local/share/java/jython/bin/easy_install -U mock)
+    
+Test by running jython in the shell and importing mock
+
+
+TO RUN THE TESTS:
+  > jython AlertsTestData.py
+  
+TO TEST YOUR OWN Alert CONFIG
+  > ./alert_test.py <config file>
