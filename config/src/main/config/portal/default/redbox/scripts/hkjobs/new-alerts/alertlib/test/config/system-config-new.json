@@ -1,0 +1,56 @@
+{
+	"redbox.version.string": "1.5.2",
+    "alerts": {
+        "alertSet": [
+            {
+                "name": "Default alert",
+                "path": "test-alerts/config-new",
+                "harvestConfig": "config/dataset.json",
+                "handlers": {
+                    "csv": "CSVAlertHandler",
+                    "xml": "XMLAlertHandler",
+                    "rif": "XMLAlertHandler"
+                }, 
+                "alertBaselineData": {
+                	"workflow_source", "Default Alert"
+                },
+                "CSVAlertHandlerParams": {
+                    "configMap": {
+                        "csv": {
+                            "DialectClass": "csv.excel",
+                            "Dialect": {
+                                "skipinitialspace": true,
+                                "quotechar": "\"",
+                                "delimiter": ","
+                            },
+                            "hasHeaderRow": true,
+                            "fieldMap": {
+                                    "title": ["title","redbox:submissionProcess.dc:title"],
+                                    "description": ["description", "redbox:submissionProcess.dc:description"],
+                                    "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+                                    "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+                                    "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+                                    "source": "workflow_source",
+                                    "note": "redbox:submissionProcess.skos:note"
+                            }
+                        }
+                    }
+                },
+                "XMLAlertHandler-params": {
+                    "configMap": {
+                    	"xml": {"xmlMap": "config/basicXmlMap.json"},
+                    	"rif": {"xmlMap": "config/rifXmlMap.json"}
+                    }
+                }
+            }
+        ],
+        "baselineData": {
+            "viewId": "default",
+            "packageType": "dataset",
+            "redbox:formVersion": "1.5.2",
+            "redbox:newForm": true,
+            "redbox:submissionProcess.redbox:submitted": true,
+            "redbox:submissionProcess.dc:date", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+        }
+    }
+}

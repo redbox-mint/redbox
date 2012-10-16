@@ -1,0 +1,10 @@
+{
+	"redbox.version.string": "1.5.2",
+    "alerts": {
+        "path": "${fascinator.home}/alerts",
+        "xmlMaps": {
+            "xml": "${fascinator.home}/alerts/config/basicXmlMap.json",
+            "rif": "${fascinator.home}/alerts/config/rifXmlMap.json"
+        }
+    }
+}
