@@ -1,2 +1,0 @@
-class AlertException(Exception):
-        pass
