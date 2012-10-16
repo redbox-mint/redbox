@@ -332,7 +332,7 @@
         },
         "notify": {
             "screen-label": "Notify us about a dataset",
-            "security": ["guest", "metadata", "editor", "admin"],
+            "security": ["guest", "librarian", "reviewer", "admin"],
             "upload-path": "${fascinator.home}/uploads/submissions",
             "json-config": "${fascinator.home}/harvest/workflows/dataset.json",
             "upload-template": "workflows/submission"
