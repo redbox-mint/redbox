@@ -147,6 +147,8 @@ function getDateTime(){
             $('#publication-date-citation').val($("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:date.1.rdf:PlainLiteral']").val());
             $('#publication-date-citation').change(function () {
              $("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:date.1.rdf:PlainLiteral']").val($(this).val());
+             $("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:date.1.dc:type.rdf:PlainLiteral']").val('publicationDate');
+             
             });
             
             if($("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral']").val() != '') {
