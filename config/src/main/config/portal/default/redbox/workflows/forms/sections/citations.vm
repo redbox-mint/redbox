@@ -8,7 +8,8 @@
         enable this there are quite specific mandatory fields that will be
         required by RIF-CS.</p>
         <p>You can use the 'PREFILL' button to collect information from elsewhere
-        in this form as a starting point, <b>but please note the warning beside the button.</b></p>
+        in this form as a starting point, <b>but please note the warning beside
+        the button.</b></p>
     </div>
 
     <label>I will provide a citation:</label>
@@ -177,7 +178,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr><td colspan="2"><hr/> <a href='#' id='show-additional-citation-metadata'>Show additional citation metadata</a></td></tr>
+                            <tr><td colspan="2"><hr/> <a href='#' id='show-additional-citation-metadata'>Show additional citation metadata</a> <span id='hide-additional-citation-span' class='hidden'><a href='#' id='hide-additional-citation-metadata'>Hide additional citation metadata</a><hr/></span></td></tr>
                             </tbody>
                             <tbody id="additional-citation-info" class="hidden">
                             <tr>
@@ -301,8 +302,15 @@
         });
 		
 		$('#show-additional-citation-metadata').live("click", function() {
-		$('#additional-citation-info').show();
-		$(this).hide();
+			$('#hide-additional-citation-span').show();
+			$('#additional-citation-info').show();
+			$(this).hide();
+		return false;
+		});
+		$('#hide-additional-citation-metadata').live("click", function() {
+			$('#additional-citation-info').hide();
+			$('#show-additional-citation-metadata').show();
+			$(this.parentNode).hide();
 		return false;
 		});
         ### Searches for and converts full publication dates to a year
@@ -330,7 +338,7 @@
                 hasGiven = false;
             }
             
-            if (family == null || family == "") {
+            if (family == null && family == "") {
                 hasFamily = false;
             }
             if (hasGiven && hasFamily) {
