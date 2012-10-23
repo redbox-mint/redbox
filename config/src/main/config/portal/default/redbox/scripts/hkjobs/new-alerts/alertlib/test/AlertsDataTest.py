@@ -14,7 +14,7 @@ for lib in classpath.split(":"):
     #This should load all of the dependencies
     sys.path.append(lib)
 
-from alerts import AlertsData
+from new_alerts import AlertsData
 from AlertException import AlertException
 from com.googlecode.fascinator.common import JsonSimple
 
@@ -45,24 +45,11 @@ class TestAlertsData(unittest.TestCase):
         config = self.__getConfig("system-config.2.json")
         alert = AlertsData()
         self.assertRaises(AlertException, alert.__activate__, config)
-        
-    def test_old_config(self):
-        config = self.__getConfig("system-config-old.json")
-        alert = AlertsData()
-        alert.log = Log()
-        self.assertRaises(AlertException, alert.wrangleConfig, config["systemConfig"])
-        
-    def test_new_config(self):
-        config = self.__getConfig("system-config-new.json")
-        alert = AlertsData()
-        alert.log = Log()
-        conf = alert.wrangleConfig(config["systemConfig"])
-        #print conf
-        self.assertTrue(isinstance(conf, dict))
+
     
     @mock.patch('Alert.HarvestClient', FakeHarvestClient)
     @mock.patch('Alert.Alert.debug', True)
-    def test_run_new_config(self):
+    def test_run_config(self):
         config = self.__getConfig("system-config-new.json")
         alert = AlertsData()
         alert.log = Log()

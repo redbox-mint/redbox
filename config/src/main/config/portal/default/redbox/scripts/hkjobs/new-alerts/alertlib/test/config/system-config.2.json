@@ -1,6 +1,6 @@
 {
 	"redbox.version.string": "1.5.2",
-	"alerts": {
+	"new-alerts": {
 		"wrong": "True"
 	}
 }

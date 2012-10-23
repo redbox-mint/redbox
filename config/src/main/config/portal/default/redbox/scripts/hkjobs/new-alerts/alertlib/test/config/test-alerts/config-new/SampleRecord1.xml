@@ -235,7 +235,7 @@ xml:lang="en-au">
     honest</my:DataManagementPlanNotes>
   </my:DataManagementPlan>
   <my:SubmissionDetails>
-    <my:WorkflowSource>Test subsystem</my:WorkflowSource>
+    <!-- <my:WorkflowSource>Test subsystem</my:WorkflowSource> -->
     <my:ContactPersonName>Duncan Dickinson</my:ContactPersonName>
     <my:ContactPersonEmail>test@example.com</my:ContactPersonEmail>
     <my:ContactPersonPhone>012345678</my:ContactPersonPhone>

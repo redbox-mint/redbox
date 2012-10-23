@@ -13,7 +13,7 @@ target/
 .pydevproject
 *.pyc
 
-
+config/src/main/config/portal/default/redbox/scripts/hkjobs/new-alerts/alertlib/test/test-alerts
 config/src/main/config/portal/default/redbox/scripts/hkjobs/new-alerts/alertlib/test/classpath
 
 *.prefs
@@ -21,3 +21,5 @@ config/src/main/config/portal/default/redbox/scripts/hkjobs/new-alerts/alertlib/
 .settings/org.maven.ide.eclipse.prefs
 
 parent/.settings/org.maven.ide.eclipse.prefs
+
+*.log
