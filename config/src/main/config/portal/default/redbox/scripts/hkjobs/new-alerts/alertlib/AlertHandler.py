@@ -1,4 +1,5 @@
 import os
+from com.googlecode.fascinator.common import JsonObject
 
 class AlertHandler(object):
     """Base handler class for alerts 
@@ -21,4 +22,10 @@ class AlertHandler(object):
     def process(self):
         jsonList = []
         return jsonList
+    
+    def getNewJsonObject(self):
+        return JsonObject(self.baseline)
+    
+    def getNewJsonObjectDict(self, datadict):
+        dict(self.baseline.items() + datadict.items())
     

@@ -13,7 +13,7 @@ from java.io import File
 class Alert:    
     debug = False
     
-    def __init__(self, redboxVersion, config, baselineData):
+    def __init__(self, redboxVersion, config, baseline):
         
         self.config = config
         self.redboxVersion = redboxVersion
@@ -23,10 +23,10 @@ class Alert:
         self.handlers = config['handlers']
         self.processLog = []
         
-        if 'alertBaselineData' in config:
-            self.baseline = dict(baselineData.items() + config['alertBaselineData'].items())
+        if 'baseline' in config:
+            self.baseline = dict(baseline.items() + config['baseline'].items())
         else:
-            self.baseline = baselineData
+            self.baseline = baseline
         
         #These directories are used to hold files during/after processing
         self.__DIR_PROCESSED = os.path.join(self.path, ".processed")
@@ -77,11 +77,11 @@ class Alert:
                     
         if self.handlers[ext] == "CSVAlertHandler":
             config = self.config['CSVAlertHandlerParams']['configMap'][ext]
-            handler = CSVAlertHandler(self.pBase(file), config)
+            handler = CSVAlertHandler(self.pBase(file), config, self.baseline)
             self.logInfo(file, "Using the CSVAlertHandler for file with extension %s" % ext)
         elif self.handlers[ext] == "XMLAlertHandler":
             config = self.config['XMLAlertHandlerParams']['configMap'][ext]
-            handler = XMLAlertHandler(self.pBase(file), config)
+            handler = XMLAlertHandler(self.pBase(file), config, self.baseline)
             self.logInfo(file, "Using the XMLAlertHandler for file with extension %s" % ext)
         else:
             raise AlertException("Unknown file handler: '%s'" % self.handlers[ext])
@@ -113,7 +113,7 @@ class Alert:
                 continue
             
             self.logInfo(file, "Moving successful metadata file [%s] to %s." % (meta_file, self.__DIR_SUCCESS))
-            shutil.move(meta_file, self.__DIR_SUCCESS)
+            #shutil.move(meta_file, self.__DIR_SUCCESS)
 
         return (successCount, failedCount)
     

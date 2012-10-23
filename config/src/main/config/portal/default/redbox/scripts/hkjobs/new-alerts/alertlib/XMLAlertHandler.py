@@ -24,8 +24,9 @@ class XMLAlertHandler(AlertHandler):
     Each XML file is expected to contain only a single Collection
     """
     
-    def __init__(self, file, config):
-        AlertHandler.__init__(self, file, config)
+
+    def __init__(self, file, config, baseline):
+        AlertHandler.__init__(self, file, config, baseline)
         docFactory = DocumentFactory()
         self.saxReader = SAXReader(docFactory)
         self.xmlMapFile = config['xmlMap']
@@ -42,7 +43,7 @@ class XMLAlertHandler(AlertHandler):
         self.mappedExceptionCount = 0
         
         
-    def process(self, baselineData):
+    def process(self):
         #We'll return a list with 1 JsonSimple object
         jsonList = []
         data = None
@@ -66,7 +67,7 @@ class XMLAlertHandler(AlertHandler):
                 inStream.close()
 
         # Now go looking for all our data
-        data = JsonObject()
+        data = self.getNewJsonObject()
         #data.put("workflow_source", "XML Alert") # Default
         self.__mapXpathToFields(document, self.map, data)
         

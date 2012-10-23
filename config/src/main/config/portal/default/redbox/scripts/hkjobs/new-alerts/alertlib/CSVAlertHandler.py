@@ -7,8 +7,9 @@ class CSVAlertHandler(AlertHandler):
     Each CSV file may contain multiple rows which should become ReDBox Collections
     
     """
-    def __init__(self, file, config):
-        AlertHandler.__init__(self, file, config)
+    
+    def __init__(self, file, config, baseline):
+        AlertHandler.__init__(self, file, config, baseline)
         
         if not 'FieldMap' in config:
             raise AlertException("No FieldMap was provided for the CSVAlertHandler")
@@ -45,8 +46,8 @@ class CSVAlertHandler(AlertHandler):
                                 data[el] = self.fieldMap[col].strip()
                         else:
                             data[col] = self.fieldMap[col].strip()
-
-                    json = JsonSimple(JsonObject(data))
+                    
+                    json = JsonSimple(self.getNewJsonObjectDict(data))
                     jsonList.append(json)
         except:
             raise

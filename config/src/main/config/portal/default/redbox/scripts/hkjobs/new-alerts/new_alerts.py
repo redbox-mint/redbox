@@ -121,15 +121,19 @@ class AlertsData:
             self.log.debug("ReDBox version was not provided in the config")
             raise AlertException("Unable to determine configuration")
         
-        self.alertsConfig = self.wrangleConfig(self.config)
-        
-        if self.alertsConfig is None:
+        tmpConf = self.config.getObject('new-alerts')
+        if tmpConf is None:
             self.log.info("No alert configuration was provided")
             return False
         
+        self.alertsConfig = mapMapFromJava(tmpConf)
+        
         baseline = {}
-        if "baselineData" in self.alertsConfig:
-            baseline = self.alertsConfig["baselineData"]
+        if "baseline" in self.alertsConfig:
+            baseline = self.alertsConfig["baseline"]
+        
+        if not 'alertSet' in self.alertsConfig:
+            raise AlertException("Unable to determine configuration")
             
         for alertItem in self.alertsConfig["alertSet"]:
             self.log.info("Processing alert: %s." % alertItem["name"])
@@ -143,33 +147,33 @@ class AlertsData:
 
         return True
     
-    def wrangleConfig(self, config):
-        '''
-        Takes the general ReDBox config and locates the alerts config.
-        If the old-style config is used, throw an exception.
-        
-        Always return an object containing the key "alert-set" with a list of alerts
-        '''
-        alertsConfig = None
-        
-        tmpConfig = config.getObject(["alerts"])
-        
-        if tmpConfig is None:
-            return None
-        elif isinstance(tmpConfig, LinkedHashMap):
-            alertsConfig = mapMapFromJava(tmpConfig)
-        elif isinstance(tmpConfig, JsonSimple):
-            alertsConfig = tmpConfig
-        else:
-            raise AlertException("Unable to handle the configuration object: " + tmpConfig.__class__.__name__)
-
-            
-        if "alert-set" in alertsConfig:
-            return alertsConfig
-        elif "path" in alertsConfig:
-            raise AlertException("The Alerts configuration appears to use the older style - please update your configuration in system-config.json")
-        else:
-            raise AlertException("Unable to determine configuration")
+#    def wrangleConfig(self, config):
+#        '''
+#        Takes the general ReDBox config and locates the alerts config.
+#        If the old-style config is used, throw an exception.
+#        
+#        Always return an object containing the key "alert-set" with a list of alerts
+#        '''
+#        alertsConfig = None
+#        
+#        tmpConfig = config.getObject(["new-alerts"])
+#        
+#        if tmpConfig is None:
+#            return None
+#        elif isinstance(tmpConfig, LinkedHashMap):
+#            alertsConfig = mapMapFromJava(tmpConfig)
+#        elif isinstance(tmpConfig, JsonSimple):
+#            alertsConfig = tmpConfig
+#        else:
+#            raise AlertException("Unable to handle the configuration object: " + tmpConfig.__class__.__name__)
+#
+#            
+#        if "alert-set" in alertsConfig:
+#            return alertsConfig
+#        elif "path" in alertsConfig:
+#            raise AlertException("The Alerts configuration appears to use the older style - please update your configuration in system-config.json")
+#        else:
+#            raise AlertException("Unable to determine configuration")
         
 
 

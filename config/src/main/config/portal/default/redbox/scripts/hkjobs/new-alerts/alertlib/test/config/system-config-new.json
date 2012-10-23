@@ -1,6 +1,6 @@
 {
 	"redbox.version.string": "1.5.2",
-    "alerts": {
+    "new-alerts": {
         "alertSet": [
             {
                 "name": "Default alert",
@@ -11,8 +11,8 @@
                     "xml": "XMLAlertHandler",
                     "rif": "XMLAlertHandler"
                 }, 
-                "alertBaselineData": {
-                	"workflow_source", "Default Alert"
+                "baseline": {
+                	"workflow_source": "Default Alert"
                 },
                 "CSVAlertHandlerParams": {
                     "configMap": {
@@ -36,7 +36,7 @@
                         }
                     }
                 },
-                "XMLAlertHandler-params": {
+                "XMLAlertHandlerParams": {
                     "configMap": {
                     	"xml": {"xmlMap": "config/basicXmlMap.json"},
                     	"rif": {"xmlMap": "config/rifXmlMap.json"}
@@ -44,13 +44,13 @@
                 }
             }
         ],
-        "baselineData": {
+        "baseline": {
             "viewId": "default",
             "packageType": "dataset",
             "redbox:formVersion": "1.5.2",
             "redbox:newForm": true,
             "redbox:submissionProcess.redbox:submitted": true,
-            "redbox:submissionProcess.dc:date", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+            "redbox:submissionProcess.dc:date": "TIME"
         }
     }
 }
