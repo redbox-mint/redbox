@@ -17,4 +17,4 @@ TO RUN THE TESTS:
   > jython AlertsTestData.py
   
 TO TEST YOUR OWN Alert CONFIG
-  > ./alert_test.py <config file>
+  > jython alert_test.py <config file>

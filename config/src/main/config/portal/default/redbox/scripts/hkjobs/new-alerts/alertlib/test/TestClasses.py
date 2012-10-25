@@ -7,7 +7,7 @@ class FakeHarvestClient:
         pass
         
     def getUploadOid(self):
-        return 123456
+        return "FakeIDfromMockObject"
     
     def shutdown(self):
         pass

@@ -33,88 +33,108 @@ class AlertsData:
     
     Configuration parameters:
         
-        New style:
-            {
-                ...
-                "alerts": {
-                    "alert-set": [
-                        {
-                            "name": "Default alert",
-                            "path": "${fascinator.home}/alerts",
-                            "harvestConfig": "${fascinator.home}/harvest/workflows/dataset.json",
-                            "handlers": {
-                                "csv": "CSVAlertHandler",
-                                "xml": "XMLAlertHandler",
-                                "rif": "XMLAlertHandler"
-                            }, 
-                            "CSVAlertHandler-params": {
-                                "configMap": {
-                                    "csv": {
-                                        "DialectClass": "csv.excel",
-                                        "Dialect": {
-                                            "skipinitialspace": 1,
-                                            "quotechar": "\"",
-                                            "delimiter": ","
-                                        },
-                                        "hasHeaderRow": 1,
-                                        "FieldMap": {
-                                                "title": ["title","redbox:submissionProcess.dc:title"],
-                                                "description": ["description", "redbox:submissionProcess.dc:description"],
-                                                "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
-                                                "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
-                                                "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
-                                                "source": "workflow_source",
-                                                "note": "redbox:submissionProcess.skos:note"
-                                        }
-                                    }
-                                }
-                            },
-                            "XMLAlertHandler-params": {
-                                "config-map": {
-                                    "xml": "${fascinator.home}/alerts/config/basicXmlMap.json",
-                                    "rif": "${fascinator.home}/alerts/config/rifXmlMap.json"
+    {
+        ...
+        "alerts": {
+            "alert-set": [
+                {
+                    "name": "Default alert",
+                    "path": "${fascinator.home}/alerts",
+                    "harvestConfig": "${fascinator.home}/harvest/workflows/dataset.json",
+                    "handlers": {
+                        "csv": "CSVAlertHandler",
+                        "xml": "XMLAlertHandler",
+                        "rif": "XMLAlertHandler"
+                    }, 
+                    "baseline": {
+                        "workflow_source": "Default Alert"
+                    },
+                    "CSVAlertHandler-params": {
+                        "configMap": {
+                            "csv": {
+                                "DialectClass": "csv.excel",
+                                "Dialect": {
+                                    "skipinitialspace": 1,
+                                    "quotechar": "\"",
+                                    "delimiter": ","
+                                },
+                                "FieldMap": {
+                                        "title": ["title","redbox:submissionProcess.dc:title"],
+                                        "description": ["description", "redbox:submissionProcess.dc:description"],
+                                        "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+                                        "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+                                        "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+                                        "note": "redbox:submissionProcess.skos:note"
+                                },
+                                "multiValue": {
+                                    "fields": ["keywords"],
+                                    "fieldDelimiter": ";"
                                 }
                             }
                         }
-                    ]
-                },
-                ...
+                    },
+                    "XMLAlertHandler-params": {
+                        "configMap": {
+                            "xml": {
+                                "xmlMap": "${fascinator.home}/alerts/config/basicXmlMap.json"
+                            },
+                            "rif": {
+                                "xmlMap": "${fascinator.home}/alerts/config/rifXmlMap.json"
+                            }
+                        }
+                    }
+                }
+            ],
+            "baseline": {
+                "viewId": "default",
+                "packageType": "dataset",
+                "redbox:formVersion": "1.5.2",
+                "redbox:newForm": true,
+                "redbox:submissionProcess.redbox:submitted": true,
+                "redbox:submissionProcess.dc:date": "TIME"
             }
+        },
+        ...
+    }
     
 
         
     Configuration arguments:
-    name -- Purely informational - may be used in logging
-    path -- the filesystem path for the alert. This path is assumed to contain a 'config'
-            folder in the 'xmlMaps' option but, as this is an absolute path, this doesn't
-            have to be within the path directory
-    harvestConfig -- The location of the harvest config (json) file
-    xmlMaps -- These provide an xpath map to a metadata field. See xmlMap below.
-    handlers --  maps a file extension to a handler. 
-    CSVAlertHandler-params -- (optional) provides arguments used by the CSVAlertHandler. This is an optional element - not needed if you won't handle CSV files
-        configMap -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
-            DialectClass -- (optional) Provides one of the existing Dialect classes such as 'excel' or 'excel-tab'. If this parameter is provided, any settings
-                            for Dialect are ignored
-            Dialect -- (optional) The keys can be any Dialect setting (http://docs.python.org/library/csv.html#dialects-and-formatting-parameters). Common parameters include:
-                    skipinitialspace -- Default is False. See http://docs.python.org/library/csv.html#csv.Dialect.skipinitialspace
-                    quotechar -- Default is None. See http://docs.python.org/library/csv.html#csv.Dialect.quotechar
-                    delimiter -- Default is ','. See http://docs.python.org/library/csv.html#csv.Dialect.delimiter
-            FieldMap -- (required) A map of fields in the CSV to their associated ReDBox fields. The value can be a single field or a list of fields. 
-                        You use named fields as the key. 
-    XMLAlertHandler-params -- (optional) provides arguments used by the XMLAlertHandler. This is an optional element - not needed if you won't handle XML files.
-        configMap -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
-            xmlMap -- (required) These provide an xpath map to a metadata field.
-                        See the webpage below for further details
-                        http://www.redboxresearchdata.com.au/documentation/system-administration/administering-redbox/loading-data#TOC-XML-Maps
-    
+    alert-set -- An array of alert definitions, each being an object containing:
+        name -- (required) Purely informational - used in logging
+        path -- (required) the filesystem path in which incoming alerts will be placed. Subdirectories are ignored so it's safe to put config in subdirs. 
+        harvestConfig -- (required) The location of the harvest config (json) file
+        handlers --  (required) maps a file extension to a handler. 
+        baseline -- (optional) provides a set of pre-set values to be used in the ReDBox record. This is merged over the baseline provided in the parent level of the config.
+        CSVAlertHandler-params -- (optional) provides arguments used by the CSVAlertHandler. This is an optional element - not needed if you won't handle CSV files
+            configMap -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
+                DialectClass -- (optional) Provides one of the existing Dialect classes such as 'excel' or 'excel-tab'. If this parameter is provided, any settings
+                                for Dialect are ignored. See http://docs.python.org/library/csv.html#csv.excel
+                Dialect -- (optional) The keys can be the following Dialect setting (http://docs.python.org/library/csv.html#dialects-and-formatting-parameters):
+                        skipinitialspace -- Default is False. See http://docs.python.org/library/csv.html#csv.Dialect.skipinitialspace
+                        quotechar -- Default is None. See http://docs.python.org/library/csv.html#csv.Dialect.quotechar
+                        delimiter -- Default is ','. See http://docs.python.org/library/csv.html#csv.Dialect.delimiter
+                FieldMap -- (required) A map of fields in the CSV to their associated ReDBox fields. The value can be a single field or a list of fields. 
+                            You use named fields as the key so you can't use CSV files that don't have header rows.
+                multiValue -- (optional) Indicates that some fields contain multiple values
+                            fields -- (required) Array of fields that contain multiple values. This is the column heading in the CSV and must exist in the FieldMap as a key.
+                            fieldDelimiter -- (required) Denotes the delimiter used in multi value fields. This should never be the same as the delimiter used in the Dialect
+        XMLAlertHandler-params -- (optional) provides arguments used by the XMLAlertHandler. This is an optional element - not needed if you won't handle XML files.
+            configMap -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
+                xmlMap -- (required) These files provide an xpath map to a metadata field.
+                            See the webpage below for further details
+                            http://www.redboxresearchdata.com.au/documentation/system-administration/administering-redbox/loading-data#TOC-XML-Maps
+    baseline -- (optional) provides a set of pre-set values to be used in the ReDBox record.
     """
     def __activate__(self, context):
         self.log = context["log"]
-        self.log.info("Started alerts script")
         
         self.config = context["systemConfig"]
 
-        ## Variable prep
+        self.log.debug("Started alerts processing.")
+        self.log.debug("Alert config: " + self.config.toString(True))
+        
+        ## Determine ReDBox version in system-config
         self.redboxVersion = self.config.getString(None, "redbox.version.string")
         self.log.debug("ReDBox version is %s" % self.redboxVersion)
         if self.redboxVersion is None:
@@ -145,35 +165,8 @@ class AlertsData:
                 #Some exceptions stop an alert from running at all so log them just in case
                 self.log.error("Alert [%s] encountered problems - please review the log files in the associated .processed directory. Exception was: %s" % (alertItem["name"], e.message))
 
+        self.log.debug("Alerts processing complete.")
         return True
-    
-#    def wrangleConfig(self, config):
-#        '''
-#        Takes the general ReDBox config and locates the alerts config.
-#        If the old-style config is used, throw an exception.
-#        
-#        Always return an object containing the key "alert-set" with a list of alerts
-#        '''
-#        alertsConfig = None
-#        
-#        tmpConfig = config.getObject(["new-alerts"])
-#        
-#        if tmpConfig is None:
-#            return None
-#        elif isinstance(tmpConfig, LinkedHashMap):
-#            alertsConfig = mapMapFromJava(tmpConfig)
-#        elif isinstance(tmpConfig, JsonSimple):
-#            alertsConfig = tmpConfig
-#        else:
-#            raise AlertException("Unable to handle the configuration object: " + tmpConfig.__class__.__name__)
-#
-#            
-#        if "alert-set" in alertsConfig:
-#            return alertsConfig
-#        elif "path" in alertsConfig:
-#            raise AlertException("The Alerts configuration appears to use the older style - please update your configuration in system-config.json")
-#        else:
-#            raise AlertException("Unable to determine configuration")
         
 
 
