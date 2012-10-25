@@ -11,10 +11,15 @@ from com.googlecode.fascinator.api.harvester import HarvesterException
 from java.io import File
 
 class Alert:    
+    '''
+    This is the main alert handling class - each instance represents one alert (i.e. an element in the alert-set array)
+    '''
+    
+    #This is usually only changed in testing via:
+    # mock.patch('Alert.Alert.debug', True)
     debug = False
     
     def __init__(self, redboxVersion, config, baseline):
-        
         self.config = config
         self.redboxVersion = redboxVersion
         self.name = config['name']
@@ -23,7 +28,9 @@ class Alert:
         self.handlers = config['handlers']
         self.processLog = []
         
+        
         if 'baseline' in config:
+            #Merge the alert's fixed metadata over the main baseline 
             self.baseline = dict(baseline.items() + config['baseline'].items())
         else:
             self.baseline = baseline
@@ -31,41 +38,56 @@ class Alert:
         #These directories are used to hold files during/after processing
         self.__DIR_PROCESSED = os.path.join(self.path, ".processed")
         self.__DIR_ALERT = os.path.join(self.__DIR_PROCESSED, time.strftime("%Y_%m_%d_%H_%M_%S"))
-        self.__DIR_PROCESSING = os.path.join(self.__DIR_ALERT, "processing")
-        self.__DIR_SUCCESS = os.path.join(self.__DIR_ALERT, "success")
-        self.__DIR_FAILED = os.path.join(self.__DIR_ALERT, "failed")
-        self.__DIR_ORIGINAL = os.path.join(self.__DIR_ALERT, "original")
+        self.__DIR_PROCESSING = os.path.join(self.__DIR_ALERT, "processing/")
+        self.__DIR_SUCCESS = os.path.join(self.__DIR_ALERT, "success/")
+        self.__DIR_FAILED = os.path.join(self.__DIR_ALERT, "failed/")
+        self.__DIR_ORIGINAL = os.path.join(self.__DIR_ALERT, "original/")
         
     def processAlert(self):
+        '''Undertakes the alert handling
+        
+        The Alert is handled as "quietly" as possible. Exceptions etc are logged rather than thrown (where possible).
+        Logs and processing files are written to a ".processed" directory in the path of the alert.
+        
+        Exceptions:
+        Exception - thrown if the directories needed to handle processing don't exist or can't be created
+        '''
         try:
             self.__checkDirs()
         except Exception, e:
             #We can't handle this alert as the dirs weren't available
             raise
-        
         files = os.listdir(self.path)
+        self.logInfo("", "Processing files in %s" % self.path)
         for file in files:
             if not os.path.isfile(self.pBase(file)):
                 #Ignore sub-dirs
                 continue
-            
-            self.processLog = []
-            logFile = os.path.join(self.__DIR_ALERT, file + ".log")
-            
             try:
+                success = 0
+                fail = 0
+                #Start a new processLog for each alert
+                self.processLog = []
                 self.logInfo(file, "Processing file " + self.pBase(file))
-                self.logInfo(file, self.config)
-                (success, fail) = self.__handleAlert(file);
-                self.logInfo(file, "File processing complete. Successful imports: %s; Failed imports %s"%(success,fail))        
-            except Exception, e:
-                self.logException(file, e)
+                try:
+                    (success, fail) = self.__handleAlert(file)
+                    self.logInfo(file, "File processing complete. Successful imports: %s; Failed imports %s"%(success,fail))
+                except AlertException, e:
+                    self.logException(file, e)
             finally:
                 #Move the original file to an archive folder
                 shutil.move(self.pBase(file), self.__DIR_ORIGINAL) 
-                self.saveAlertLog(logFile)                         
+                logFile = os.path.join(self.__DIR_ALERT, file + ".log")
+                self.saveAlertLog(logFile) 
+                       
         return
     
     def __handleAlert(self, file):
+        '''Sends the alert off to the relevant handler and then pushes the metadata to ReDBox
+        
+        Parameters:
+        file -- the file (path, not object) to be processed
+        '''
         successCount = 0
         failedCount = 0
         handler = None
@@ -89,8 +111,7 @@ class Alert:
         try:
             jsonList = handler.process()
         except:
-            ## Processing failed
-            raise 
+            raise
         
         if jsonList is None:
             self.logInfo(file, "No records were returned.")
@@ -113,13 +134,14 @@ class Alert:
                 continue
             
             self.logInfo(file, "Moving successful metadata file [%s] to %s." % (meta_file, self.__DIR_SUCCESS))
-            #shutil.move(meta_file, self.__DIR_SUCCESS)
+            shutil.copy2(meta_file, self.__DIR_SUCCESS)
 
         return (successCount, failedCount)
     
     def __ingestJson(self, file, meta_file, json):
         '''Takes a json object and sends it through to the harvester
         
+        file -- the source file
         meta_file -- the name to use for the resulting source file of the data
         json -- the json construct to be sent to the harvester
         '''
@@ -128,11 +150,15 @@ class Alert:
         
         ## Cache the file out to disk... although it requires
         ## .tfpackage extension due to jsonVelocity transformer
+        jsonFile = None
         try:
             jsonFile = open(meta_file, "wb")
             jsonFile.write(json.toString(True).encode('utf-8'))  
+        except Exception, e:
+            raise e
         finally:
-            jsonFile.close
+            if jsonFile is not None:
+                jsonFile.close
             
         self.logInfo(file, "Submitting to harvest. Config file is %s and meta_file is %s" % (self.harvestConfig, meta_file))
         try:
@@ -154,7 +180,7 @@ class Alert:
         return oid
     
     def __checkDirs(self):
-        """Makes sure that the required directories exist: failed, processed, success
+        """Makes sure that the required directories exist: .processed, failed, processed, success, original
         """
 
         #All alert directories will have 1 process folder: .processed 
@@ -199,7 +225,7 @@ class Alert:
                 "file": fileName,
                 "message": message})
 
-        if Alert.debug:
+        if self.debug:
             print "%s\t%s\t%s\t%s" % (type, self.name, fileName, message)
         
     def logException (self, fileName, e):

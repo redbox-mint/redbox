@@ -27,5 +27,5 @@ class AlertHandler(object):
         return JsonObject(self.baseline)
     
     def getNewJsonObjectDict(self, datadict):
-        dict(self.baseline.items() + datadict.items())
+        return JsonObject(dict(self.baseline.items() + datadict.items()))
     

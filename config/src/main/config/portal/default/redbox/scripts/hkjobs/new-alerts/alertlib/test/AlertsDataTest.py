@@ -25,7 +25,8 @@ class TestAlertsData(unittest.TestCase):
     
     @classmethod
     def setUp(self):
-        shutil.rmtree("test-alerts")
+        if os.path.exists("test-alerts"):
+            shutil.rmtree("test-alerts")
         shutil.copytree("config/test-alerts", "./test-alerts")
     
     def test_no_config(self):
@@ -49,7 +50,7 @@ class TestAlertsData(unittest.TestCase):
     
     @mock.patch('Alert.HarvestClient', FakeHarvestClient)
     @mock.patch('Alert.Alert.debug', True)
-    def test_run_config(self):
+    def test_run_alert(self):
         config = self.__getConfig("system-config-new.json")
         alert = AlertsData()
         alert.log = Log()

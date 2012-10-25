@@ -20,10 +20,9 @@ from java.lang import Exception
 import os
 
 class XMLAlertHandler(AlertHandler):
-    """Processing method for a single XML File.
+    ''''Processing class for a single XML File.
     Each XML file is expected to contain only a single Collection
-    """
-    
+    '''
 
     def __init__(self, file, config, baseline):
         AlertHandler.__init__(self, file, config, baseline)
@@ -31,7 +30,7 @@ class XMLAlertHandler(AlertHandler):
         self.saxReader = SAXReader(docFactory)
         self.xmlMapFile = config['xmlMap']
         if not os.path.exists(self.xmlMapFile):
-            raise AlertException("Requested xmlMap file %s does not exist." % self.file)
+            raise AlertException("Requested xmlMap file %s does not exist." % self.xmlMapFile)
         
         ## Make sure we can see our mappings
         inStream = FileInputStream(File(self.xmlMapFile))
@@ -44,7 +43,9 @@ class XMLAlertHandler(AlertHandler):
         
         
     def process(self):
-        #We'll return a list with 1 JsonSimple object
+        '''Read the XML file and map xpath items to metadata
+        Return a list with 1 JsonSimple object (at most)
+        '''
         jsonList = []
         data = None
         reader = None
@@ -68,7 +69,6 @@ class XMLAlertHandler(AlertHandler):
 
         # Now go looking for all our data
         data = self.getNewJsonObject()
-        #data.put("workflow_source", "XML Alert") # Default
         self.__mapXpathToFields(document, self.map, data)
         
         if data is None:
