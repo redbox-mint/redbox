@@ -17,7 +17,8 @@ class AlertHandler(object):
             raise AlertException("Requested input file %s does not exist." % self.file)
         self.config = config
         self.baseline = baseline
-            
+        
+        
         
     def process(self):
         jsonList = []

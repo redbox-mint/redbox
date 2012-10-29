@@ -17,6 +17,7 @@
                 "baseline": {
                 	"workflow_source": "Default Alert"
                 },
+                "timestampFields": ["redbox:submissionProcess.dc:date"],
                 "CSVAlertHandlerParams": {
                     "configMap": {
                         "csv": {
@@ -98,8 +99,7 @@
             "packageType": "dataset",
             "redbox:formVersion": "1.5.2",
             "redbox:newForm": true,
-            "redbox:submissionProcess.redbox:submitted": true,
-            "redbox:submissionProcess.dc:date": "TIME"
-        }
+            "redbox:submissionProcess.redbox:submitted": true
+        },
     }
 }

@@ -35,6 +35,10 @@ class Alert:
         else:
             self.baseline = baseline
         
+        self.timestampFields = []   
+        if 'timestampFields' in config:
+            self.timestampFields = config['timestampFields']
+        
         #These directories are used to hold files during/after processing
         self.__DIR_PROCESSED = os.path.join(self.path, ".processed")
         self.__DIR_ALERT = os.path.join(self.__DIR_PROCESSED, time.strftime("%Y_%m_%d_%H_%M_%S"))
@@ -69,6 +73,7 @@ class Alert:
                 #Start a new processLog for each alert
                 self.processLog = []
                 self.logInfo(file, "Processing file " + self.pBase(file))
+                
                 try:
                     (success, fail) = self.__handleAlert(file)
                     self.logInfo(file, "File processing complete. Successful imports: %s; Failed imports %s"%(success,fail))
@@ -96,14 +101,21 @@ class Alert:
         if not ext in self.handlers:
             self.logInfo(file, "Did not process file as extension is not configured")
             return (0,0)
+        
+        #Add the timestamp to a copy of baseline
+        baseline = dict(self.baseline)
+        timestamp = time.gmtime(os.path.getmtime(self.file))
+        for field in self.timestampFields:
+            val = time.strftime("%Y-%m-%d %H:%M:%S", timestamp) 
+            baseline[field] = val
                     
         if self.handlers[ext] == "CSVAlertHandler":
             config = self.config['CSVAlertHandlerParams']['configMap'][ext]
-            handler = CSVAlertHandler(self.pBase(file), config, self.baseline)
+            handler = CSVAlertHandler(self.pBase(file), config, baseline)
             self.logInfo(file, "Using the CSVAlertHandler for file with extension %s" % ext)
         elif self.handlers[ext] == "XMLAlertHandler":
             config = self.config['XMLAlertHandlerParams']['configMap'][ext]
-            handler = XMLAlertHandler(self.pBase(file), config, self.baseline)
+            handler = XMLAlertHandler(self.pBase(file), config, baseline)
             self.logInfo(file, "Using the XMLAlertHandler for file with extension %s" % ext)
         else:
             raise AlertException("Unknown file handler: '%s'" % self.handlers[ext])
@@ -123,7 +135,8 @@ class Alert:
             id += 1
             #use an incremental filename in case the data file contains more than 1 record
             meta_file = self.pTemp("%s.%s" % (file,id))
-            self.logInfo(file, "Using metadata file: %s" % meta_file)
+            self.logInfo(file, "Using metadata file: %s" % meta_file)   
+            
             try:
                 oid = self.__ingestJson(file, meta_file, json)
                 successCount += 1
