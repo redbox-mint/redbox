@@ -106,6 +106,7 @@ class AlertsData:
         harvestConfig -- (required) The location of the harvest config (json) file
         handlers --  (required) maps a file extension to a handler. 
         baseline -- (optional) provides a set of pre-set values to be used in the ReDBox record. This is merged over the baseline provided in the parent level of the config.
+        timestampFields -- (optional) provides an array of field names that will be set to the mod time of the harvested file (os.path.getmtime)
         CSVAlertHandler-params -- (optional) provides arguments used by the CSVAlertHandler. This is an optional element - not needed if you won't handle CSV files
             configMap -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
                 DialectClass -- (optional) Provides one of the existing Dialect classes such as 'excel' or 'excel-tab'. If this parameter is provided, any settings
