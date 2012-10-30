@@ -104,7 +104,7 @@ class Alert:
         
         #Add the timestamp to a copy of baseline
         baseline = dict(self.baseline)
-        timestamp = time.gmtime(os.path.getmtime(self.file))
+        timestamp = time.gmtime(os.path.getmtime(self.pBase(file)))
         for field in self.timestampFields:
             val = time.strftime("%Y-%m-%d %H:%M:%S", timestamp) 
             baseline[field] = val

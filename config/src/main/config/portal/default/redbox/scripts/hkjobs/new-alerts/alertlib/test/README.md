@@ -9,16 +9,19 @@ You may also need the mock library (try to run the tests first though):
  1. Install setuptools: http://www.jython.org/jythonbook/en/1.0/appendixA.html#setuptools
  2. Install mock: http://www.voidspace.org.uk/python/mock/#installing
     - Make sure you use the Jython easy install (might be something like sudo /opt/local/share/java/jython/bin/easy_install -U mock)
-    
-    
-Test by running jython in the shell and importing mock
-
 
 TO RUN THE TESTS:
-  > jython AlertsTestData.py
+  * `jython AlertsTestData.py`
   
 TO TEST YOUR OWN Alert CONFIG
-  > jython alert_test.py <config file>
+  * `jython alert_test.py <config file>`
   
+  
+You can try out alert_test by 
+ * cd to config/src/main/config/portal/default/redbox/scripts/hkjobs/new-alerts/alertlib/test
+ * cp -r config/test-alerts ./
+ * jython alert_test.py config/system-config-new.json
+
+The result of the test can be found in test-alerts/config-new/.processed/
   
 These tests stub the interaction with ReDBox (HarvesterClient) so won't actually upload the metadata into the system.
