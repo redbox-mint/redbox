@@ -1,4 +1,6 @@
 import shutil
+import sys
+import os
 
 from com.googlecode.fascinator import HarvestClient
 from com.googlecode.fascinator.common import FascinatorHome
@@ -16,24 +18,17 @@ from Alert import Alert
 from AlertException import AlertException
 from Mapper import *
 
-"""
-Handy info:
- - This script is usually launched by Housekeeping
- - com.googlecode.fascinator.portal.quartz.ExternalJob calls this script via HTTP
- 
-"""
-
-class AlertsData:
+class NewAlerts:
     """The AlertsData class is the 'entry point' for the alert system. 
     See the README.md in this folder for further information
     """
-    def __activate__(self, context):
+    def run(self, context):
         self.log = context["log"]
         
         self.config = context["systemConfig"]
 
         self.log.debug("Started alerts processing.")
-        self.log.debug("Alert config: " + self.config.toString(True))
+        #self.log.debug("Alert config: " + self.config.toString(True))
         
         ## Determine ReDBox version in system-config
         self.redboxVersion = self.config.getString(None, "redbox.version.string")
@@ -59,7 +54,7 @@ class AlertsData:
         for alertItem in self.alertsConfig["alertSet"]:
             self.log.info("Processing alert: %s." % alertItem["name"])
             try:
-                alert = Alert(self.redboxVersion, alertItem, baseline)
+                alert = Alert(self.redboxVersion, alertItem, baseline, self.log)
                 alert.processAlert()
             except Exception, e:
                 #The Alert class will log this for us so continue to the next alert
@@ -67,6 +62,7 @@ class AlertsData:
                 self.log.error("Alert [%s] encountered problems - please review the log files in the associated .processed directory. Exception was: %s" % (alertItem["name"], e.message))
 
         self.log.debug("Alerts processing complete.")
+        
         return True
         
 

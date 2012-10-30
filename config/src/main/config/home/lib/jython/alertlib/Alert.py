@@ -1,6 +1,6 @@
 from CSVAlertHandler import CSVAlertHandler
 from XMLAlertHandler import XMLAlertHandler
-import AlertException
+from AlertException import AlertException
 import os
 import traceback
 import time
@@ -9,6 +9,7 @@ from com.googlecode.fascinator import HarvestClient
 from com.googlecode.fascinator.common import FascinatorHome
 from com.googlecode.fascinator.api.harvester import HarvesterException
 from java.io import File
+from org.apache.commons.lang.text import StrSubstitutor
 
 class Alert:    
     '''
@@ -19,14 +20,15 @@ class Alert:
     # mock.patch('Alert.Alert.debug', True)
     debug = False
     
-    def __init__(self, redboxVersion, config, baseline):
+    def __init__(self, redboxVersion, config, baseline, log):
         self.config = config
         self.redboxVersion = redboxVersion
         self.name = config['name']
-        self.path = config['path']
-        self.harvestConfig = config['harvestConfig']
+        self.path = StrSubstitutor.replaceSystemProperties(config['path'])
+        self.harvestConfig = StrSubstitutor.replaceSystemProperties(config['harvestConfig'])
         self.handlers = config['handlers']
         self.processLog = []
+        self.__log = log
         
         
         if 'baseline' in config:
@@ -62,7 +64,7 @@ class Alert:
             #We can't handle this alert as the dirs weren't available
             raise
         files = os.listdir(self.path)
-        self.logInfo("", "Processing files in %s" % self.path)
+        
         for file in files:
             if not os.path.isfile(self.pBase(file)):
                 #Ignore sub-dirs
@@ -195,10 +197,9 @@ class Alert:
         return oid
     
     def __checkDirs(self):
-        """Makes sure that the required directories exist: .processed, failed, processed, success, original
-        """
+        # Makes sure that the required directories exist: .processed, failed, processed, success, original
 
-        #All alert directories will have 1 process folder: .processed 
+        # All alert directories will have 1 process folder: .processed 
         self.__createDir(self.__DIR_PROCESSED)
         
         #Under that directory will be a subdir for each of the alerts run
@@ -212,8 +213,7 @@ class Alert:
         return
 
     def __createDir(self, dir):
-        #print dir
-        #self.logInfo("", "Checking directory: %s" % dir)
+        self.__log.info("Checking directory: %s" % dir)
         try:
             os.mkdir(dir)
         except OSError:
@@ -221,9 +221,11 @@ class Alert:
             pass
         
         if not os.path.exists(dir):
+            self.__log.error("Required processing directory %s does not exist. I even tried to create it for you." % dir)
             raise AlertException("Required processing directory %s does not exist. I even tried to create it for you." % dir)
 
-    ## Short nameed Wrappers for convention based file paths
+
+    # Short nameed Wrappers for convention based file paths
     def pBase(self, file):
         # A base path file
         return os.path.join(self.path, file)

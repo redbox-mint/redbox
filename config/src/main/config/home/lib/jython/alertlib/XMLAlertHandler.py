@@ -16,6 +16,7 @@ from java.io import File
 from java.io import FileInputStream
 from java.io import InputStreamReader
 from java.lang import Exception
+from org.apache.commons.lang.text import StrSubstitutor
 
 import os
 
@@ -28,7 +29,7 @@ class XMLAlertHandler(AlertHandler):
         AlertHandler.__init__(self, file, config, baseline)
         docFactory = DocumentFactory()
         self.saxReader = SAXReader(docFactory)
-        self.xmlMapFile = config['xmlMap']
+        self.xmlMapFile = StrSubstitutor.replaceSystemProperties(config['xmlMap'])
         if not os.path.exists(self.xmlMapFile):
             raise AlertException("Requested xmlMap file %s does not exist." % self.xmlMapFile)
         
