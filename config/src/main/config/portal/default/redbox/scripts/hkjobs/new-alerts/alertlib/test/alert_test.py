@@ -25,8 +25,8 @@ from new_alerts import AlertsData
 from TestClasses import FakeHarvestClient, Log
 from com.googlecode.fascinator.common import JsonSimple
 
-mock.patch('Alert.HarvestClient', FakeHarvestClient)
-mock.patch('Alert.Alert.debug', True)
+#mock.patch('Alert.HarvestClient', FakeHarvestClient)
+#mock.patch('Alert.Alert.debug', True)
 
 def getConfig(configFile):
     return {
@@ -45,9 +45,15 @@ def loadConfig(file):
     return config
 
 
-config = getConfig(sys.argv[1])
-alert = AlertsData()
-alert.log = Log()
-alert.__activate__(config)
+@mock.patch('Alert.HarvestClient', FakeHarvestClient)
+@mock.patch('Alert.Alert.debug', True)
+def main(config):
+    config = getConfig(config)
+    alert = AlertsData()
+    alert.log = Log()
+    alert.__activate__(config)
+
+if __name__ == "__main__":
+    main(sys.argv[1])
 
 

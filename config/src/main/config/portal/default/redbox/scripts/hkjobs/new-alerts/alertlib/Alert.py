@@ -134,7 +134,8 @@ class Alert:
         for json in jsonList:
             id += 1
             #use an incremental filename in case the data file contains more than 1 record
-            meta_file = self.pTemp("%s.%s" % (file,id))
+            meta_file_name = "%s.%s" % (file,id)
+            meta_file = self.pTemp(meta_file_name)
             self.logInfo(file, "Using metadata file: %s" % meta_file)   
             
             try:
@@ -143,11 +144,11 @@ class Alert:
             except HarvesterException, e:
                 failedCount += 1
                 self.logInfo(file, "Moving failed metadata file [%s] to %s." % (meta_file, self.__DIR_FAILED))
-                shutil.move(meta_file, self.__DIR_FAILED)
+                shutil.move(meta_file, os.path.join(self.__DIR_SUCCESS,meta_file_name))
                 continue
             
             self.logInfo(file, "Moving successful metadata file [%s] to %s." % (meta_file, self.__DIR_SUCCESS))
-            shutil.copy2(meta_file, self.__DIR_SUCCESS)
+            shutil.move(meta_file, os.path.join(self.__DIR_SUCCESS,meta_file_name))
 
         return (successCount, failedCount)
     
@@ -167,6 +168,7 @@ class Alert:
         try:
             jsonFile = open(meta_file, "wb")
             jsonFile.write(json.toString(True).encode('utf-8'))  
+            jsonFile.close
         except Exception, e:
             raise e
         finally:
