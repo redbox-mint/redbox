@@ -221,7 +221,7 @@ class Alert:
             pass
         
         if not os.path.exists(dir):
-            raise AlertException("Required processing directory % does not exist. I even tried to create it for you." % dir)
+            raise AlertException("Required processing directory %s does not exist. I even tried to create it for you." % dir)
 
     ## Short nameed Wrappers for convention based file paths
     def pBase(self, file):

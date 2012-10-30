@@ -32,7 +32,7 @@ The system-config.json file will usually provide the configuration for the alert
             "alert-set": [
                 {
                     "name": "Default alert",
-                    "path": "${fascinator.home}/alerts",
+                    "path": "${fascinator.home}/new-alerts",
                     "harvestConfig": "${fascinator.home}/harvest/workflows/dataset.json",
                     "handlers": {
                         "csv": "CSVAlertHandler",
