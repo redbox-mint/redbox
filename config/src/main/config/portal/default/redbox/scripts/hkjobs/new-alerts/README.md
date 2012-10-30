@@ -28,7 +28,7 @@ The system-config.json file will usually provide the configuration for the alert
         
     {
         ...
-        "alerts": {
+        "new-alerts": {
             "alert-set": [
                 {
                     "name": "Default alert",
