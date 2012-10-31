@@ -1,6 +1,0 @@
-title|description|name|phone|email|keywords|note
-Test CSV Record 30|This is a test record|Test User30|333456789|test30@example.com|testing;data;rabbits|Test note 30
-Test CSV Record 31|This is a test record|Test User31|333456789|test31@example.com|rabbits;kittens|Test note 31
-Test CSV Record 32|This is a test record|Test User32|333456789|test32@example.com|lizards|Test note 32
-Test CSV Record 33|This is a test record|Test User33|333456789|test33@example.com||Test note 33
-

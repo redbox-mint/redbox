@@ -64,7 +64,6 @@ class Alert:
             #We can't handle this alert as the dirs weren't available
             raise
         files = os.listdir(self.path)
-        
         for file in files:
             if not os.path.isfile(self.pBase(file)):
                 #Ignore sub-dirs
@@ -74,19 +73,20 @@ class Alert:
                 fail = 0
                 #Start a new processLog for each alert
                 self.processLog = []
-                self.logInfo(file, "Processing file " + self.pBase(file))
                 
                 try:
                     (success, fail) = self.__handleAlert(file)
                     self.logInfo(file, "File processing complete. Successful imports: %s; Failed imports %s"%(success,fail))
                 except AlertException, e:
+                    self.__log.error("The alert [%s] was handling [%s] and raised an exception: %s" % (self.name, file, e.message))
                     self.logException(file, e)
             finally:
-                #Move the original file to an archive folder
-                shutil.move(self.pBase(file), self.__DIR_ORIGINAL) 
                 logFile = os.path.join(self.__DIR_ALERT, file + ".log")
-                self.saveAlertLog(logFile) 
-                       
+                self.saveAlertLog(logFile)
+                self.__log.info("Log file created: %s" % logFile)
+                #Move the original file to an archive folder
+                self.__log.info("Moving %s to %s" % (self.pBase(file), os.path.join(self.__DIR_ORIGINAL,file)))
+                shutil.move(self.pBase(file), os.path.join(self.__DIR_ORIGINAL,file)) 
         return
     
     def __handleAlert(self, file):
@@ -99,6 +99,9 @@ class Alert:
         failedCount = 0
         handler = None
         
+        self.logInfo(file, "Processing file " + file)
+        self.__log.info("Alert system is processing file %s" % file)
+        
         ext = file.rpartition('.')[2]
         if not ext in self.handlers:
             self.logInfo(file, "Did not process file as extension is not configured")
@@ -107,10 +110,11 @@ class Alert:
         #Add the timestamp to a copy of baseline
         baseline = dict(self.baseline)
         timestamp = time.gmtime(os.path.getmtime(self.pBase(file)))
+        
         for field in self.timestampFields:
             val = time.strftime("%Y-%m-%d %H:%M:%S", timestamp) 
             baseline[field] = val
-                    
+        
         if self.handlers[ext] == "CSVAlertHandler":
             config = self.config['CSVAlertHandlerParams']['configMap'][ext]
             handler = CSVAlertHandler(self.pBase(file), config, baseline)
@@ -121,12 +125,9 @@ class Alert:
             self.logInfo(file, "Using the XMLAlertHandler for file with extension %s" % ext)
         else:
             raise AlertException("Unknown file handler: '%s'" % self.handlers[ext])
-            
-        try:
-            jsonList = handler.process()
-        except:
-            raise
-        
+
+        jsonList = handler.process()
+
         if jsonList is None:
             self.logInfo(file, "No records were returned.")
             return(0,0)
@@ -164,15 +165,17 @@ class Alert:
         harvester = None
         oid = None
         
+        #self.logInfo(file, "%s" % json.toString(True))
+        
         ## Cache the file out to disk... although it requires
         ## .tfpackage extension due to jsonVelocity transformer
         jsonFile = None
         try:
             jsonFile = open(meta_file, "wb")
-            jsonFile.write(json.toString(True).encode('utf-8'))  
+            jsonFile.write(json.toString(True))  
             jsonFile.close
         except Exception, e:
-            raise e
+            raise
         finally:
             if jsonFile is not None:
                 jsonFile.close
@@ -187,7 +190,7 @@ class Alert:
             
         except HarvesterException, e:     
             self.logException(file, e) 
-            raise e
+            raise
         finally:
             ## Cleanup
             if harvester is not None:
@@ -213,7 +216,7 @@ class Alert:
         return
 
     def __createDir(self, dir):
-        self.__log.info("Checking directory: %s" % dir)
+        self.__log.debug("Checking directory: %s" % dir)
         try:
             os.mkdir(dir)
         except OSError:
