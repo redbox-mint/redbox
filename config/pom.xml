@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.redbox-mint</groupId>
 	<artifactId>redbox-config</artifactId>
-	<version>1.5.3-SNAPSHOT</version>
+	<version>1.5.2.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>ReDBox - Generic Configuration</name>
 	<parent>
 		<groupId>com.googlecode.redbox-mint</groupId>
 		<artifactId>redbox-project</artifactId>
-		<version>1.5.3-SNAPSHOT</version>
+		<version>1.5.2.2-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<build>
