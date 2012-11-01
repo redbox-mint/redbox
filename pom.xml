@@ -168,11 +168,9 @@
              <executable>git</executable>
              <arguments>
                 <argument>submodule</argument>
-                <argument>foreach</argument>
-                <argument>git</argument>
-                <argument>submodule</argument>
                 <argument>update</argument>
                 <argument>--init</argument>
+                <argument>--recursive</argument>
              </arguments>
           </configuration>
       </plugin>
