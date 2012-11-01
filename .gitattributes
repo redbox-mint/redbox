@@ -1,1 +1,2 @@
-* text eol=lf 
+# Bash scripts are carriage return sensitive so ensure that none get added
+*.sh text eol=lf
