@@ -21,12 +21,9 @@ for lib in classpath.split(":"):
     #This should load all of the dependencies
     sys.path.append(lib)
 
-from new_alerts import AlertsData
+from NewAlerts import NewAlerts
 from TestClasses import FakeHarvestClient, Log
 from com.googlecode.fascinator.common import JsonSimple
-
-#mock.patch('Alert.HarvestClient', FakeHarvestClient)
-#mock.patch('Alert.Alert.debug', True)
 
 def getConfig(configFile):
     return {
@@ -49,9 +46,9 @@ def loadConfig(file):
 @mock.patch('Alert.Alert.debug', True)
 def main(config):
     config = getConfig(config)
-    alert = AlertsData()
+    alert = NewAlerts()
     alert.log = Log()
-    alert.__activate__(config)
+    alert.run(config)
 
 if __name__ == "__main__":
     main(sys.argv[1])

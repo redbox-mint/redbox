@@ -14,7 +14,7 @@ for lib in classpath.split(":"):
     #This should load all of the dependencies
     sys.path.append(lib)
 
-from new_alerts import AlertsData
+from NewAlerts import NewAlerts
 from AlertException import AlertException
 from com.googlecode.fascinator.common import JsonSimple
 
@@ -32,29 +32,29 @@ class TestAlertsData(unittest.TestCase):
     def test_no_config(self):
         #Tests that we handle situations where the config is missing redbox.version.string
         config = self.__getConfig("system-config.0.json")
-        alert = AlertsData()
-        self.assertRaises(AlertException, alert.__activate__, config)
+        alert = alert = NewAlerts()
+        self.assertRaises(AlertException, alert.run, config)
         
     def test_no_alert_config(self):
         #Tests that we handle situations where the config has no alerts config
         config = self.__getConfig("system-config.1.json")
-        alert = AlertsData()
-        self.assertFalse(alert.__activate__(config))
+        alert = NewAlerts()
+        self.assertFalse(alert.run(config))
         
     
     def test_incorrect_config(self):
         config = self.__getConfig("system-config.2.json")
-        alert = AlertsData()
-        self.assertRaises(AlertException, alert.__activate__, config)
+        alert = NewAlerts()
+        self.assertRaises(AlertException, alert.run, config)
 
     
     @mock.patch('Alert.HarvestClient', FakeHarvestClient)
     @mock.patch('Alert.Alert.debug', True)
     def test_run_alert(self):
         config = self.__getConfig("system-config-new.json")
-        alert = AlertsData()
+        alert = NewAlerts()
         alert.log = Log()
-        self.assertTrue(alert.__activate__(config))
+        self.assertTrue(alert.run(config))
     
     def __getConfig(self, configFile):
         return {

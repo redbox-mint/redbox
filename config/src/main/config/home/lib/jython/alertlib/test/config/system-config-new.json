@@ -4,7 +4,7 @@
         "alertSet": [
             {
                 "name": "Default alert",
-                "path": "test-alerts/config-new",
+                "path": "test-alerts",
                 "harvestConfig": "config/dataset.json",
                 "handlers": {
                     "csv": "CSVAlertHandler",

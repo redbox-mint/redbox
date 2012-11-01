@@ -29,44 +29,88 @@ The system-config.json file will usually provide the configuration for the alert
     {
         ...
         "new-alerts": {
-            "alert-set": [
+            "alertSet": [
                 {
                     "name": "Default alert",
-                    "path": "${fascinator.home}/alerts",
+                    "path": "${fascinator.home}/new-alerts",
                     "harvestConfig": "${fascinator.home}/harvest/workflows/dataset.json",
                     "handlers": {
                         "csv": "CSVAlertHandler",
-                        "xml": "XMLAlertHandler",
-                        "rif": "XMLAlertHandler"
+	                    "tab": "CSVAlertHandler",
+	                    "com": "CSVAlertHandler",
+	                    "csm": "CSVAlertHandler",
+	                    "xml": "XMLAlertHandler",
+	                    "rif": "XMLAlertHandler"
                     }, 
                     "baseline": {
                         "workflow_source": "Default Alert"
                     },
-                    "CSVAlertHandler-params": {
+                    "timestampFields": ["redbox:submissionProcess.dc:date"],
+                    "CSVAlertHandlerParams": {
                         "configMap": {
                             "csv": {
-                                "DialectClass": "csv.excel",
-                                "Dialect": {
-                                    "skipinitialspace": 1,
-                                    "quotechar": "\"",
-                                    "delimiter": ","
-                                },
-                                "FieldMap": {
-                                        "title": ["title","redbox:submissionProcess.dc:title"],
-                                        "description": ["description", "redbox:submissionProcess.dc:description"],
-                                        "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
-                                        "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
-                                        "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
-                                        "note": "redbox:submissionProcess.skos:note"
-                                },
-                                "multiValue": {
-                                    "fields": ["keywords"],
-                                    "fieldDelimiter": ";"
-                                }
-                            }
+	                        	"Dialect": {
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                                    "title": ["title","redbox:submissionProcess.dc:title"],
+	                                    "description": ["description", "redbox:submissionProcess.dc:description"],
+	                                    "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+	                                    "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+	                                    "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+	                                    "note": "redbox:submissionProcess.skos:note"
+	                            }
+	                        },
+	                        "tab": {
+	                            "Dialect": {
+	                                "delimiter": "\t",
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                                    "title": ["title","redbox:submissionProcess.dc:title"],
+	                                    "description": ["description", "redbox:submissionProcess.dc:description"],
+	                                    "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+	                                    "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+	                                    "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+	                                    "note": "redbox:submissionProcess.skos:note"
+	                            }
+	                        },
+	                        "com": {
+	                            "Dialect": {
+	                                "delimiter": "|",
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                                    "title": ["title","redbox:submissionProcess.dc:title"],
+	                                    "description": ["description", "redbox:submissionProcess.dc:description"],
+	                                    "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+	                                    "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+	                                    "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+	                                    "note": "redbox:submissionProcess.skos:note"
+	                            }
+	                        },
+	                        "csm": {
+	                            "Dialect": {
+	                                "delimiter": "|",
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                                    "title": ["title","redbox:submissionProcess.dc:title"],
+	                                    "description": ["description", "redbox:submissionProcess.dc:description"],
+	                                    "name": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:name",
+	                                    "phone": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone",
+	                                    "email": "redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox",
+	                                    "keywords": "dc:subject.vivo:keyword.0.rdf:PlainLiteral",
+	                                    "note": "redbox:submissionProcess.skos:note"
+	                            },
+	                            "multiValue": {
+	                            	"fields": ["keywords"],
+	                            	"fieldDelimiter": ";"
+	                            }
+	                        }
                         }
                     },
-                    "XMLAlertHandler-params": {
+                    "XMLAlertHandlerParams": {
                         "configMap": {
                             "xml": {
                                 "xmlMap": "${fascinator.home}/alerts/config/basicXmlMap.json"
@@ -83,8 +127,7 @@ The system-config.json file will usually provide the configuration for the alert
                 "packageType": "dataset",
                 "redbox:formVersion": "1.5.2",
                 "redbox:newForm": true,
-                "redbox:submissionProcess.redbox:submitted": true,
-                "redbox:submissionProcess.dc:date": "TIME"
+                "redbox:submissionProcess.redbox:submitted": true
             }
         },
         ...
@@ -129,6 +172,6 @@ To add the alerts script to housekeeping:
 	{
         "name": "alerts-new",
         "type": "external",
-        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/new-alerts/new_alerts.py",
+        "url": "http://localhost:${jetty.port}/redbox/default/hkjobs/newalerts.script",
         "timing": "0 0/15 * * * ?"
     }
