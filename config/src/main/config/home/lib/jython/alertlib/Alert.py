@@ -9,6 +9,7 @@ from com.googlecode.fascinator import HarvestClient
 from com.googlecode.fascinator.common import FascinatorHome
 from com.googlecode.fascinator.api.harvester import HarvesterException
 from java.io import File
+from org.apache.commons.io import FileUtils
 from org.apache.commons.lang.text import StrSubstitutor
 
 class Alert:    
@@ -95,6 +96,7 @@ class Alert:
         Parameters:
         file -- the file (path, not object) to be processed
         '''
+        
         successCount = 0
         failedCount = 0
         handler = None
@@ -151,7 +153,9 @@ class Alert:
                 continue
             
             self.logInfo(file, "Moving successful metadata file [%s] to %s." % (meta_file, self.__DIR_SUCCESS))
-            shutil.move(meta_file, os.path.join(self.__DIR_SUCCESS,meta_file_name))
+            filepath = os.path.join(self.__DIR_SUCCESS,meta_file_name)
+            #python library seems to dislike mixed \ and / in path
+            FileUtils.moveFile(File(meta_file),File(filepath));
 
         return (successCount, failedCount)
     
@@ -173,12 +177,12 @@ class Alert:
         try:
             jsonFile = open(meta_file, "wb")
             jsonFile.write(json.toString(True))  
-            jsonFile.close
+            jsonFile.close()
         except Exception, e:
             raise
         finally:
             if jsonFile is not None:
-                jsonFile.close
+                jsonFile.close()
             
         self.logInfo(file, "Submitting to harvest. Config file is %s and meta_file is %s" % (self.harvestConfig, meta_file))
         try:
@@ -218,6 +222,7 @@ class Alert:
     def __createDir(self, dir):
         self.__log.debug("Checking directory: %s" % dir)
         try:
+            dir = dir.replace('\\','/')
             os.mkdir(dir)
         except OSError:
             #Thrown when directory already exists so ignore
