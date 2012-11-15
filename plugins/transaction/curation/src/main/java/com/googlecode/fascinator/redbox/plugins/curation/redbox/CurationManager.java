@@ -448,7 +448,10 @@ public class CurationManager extends GenericTransactionManager {
         } else {
             newRelation.put("broker", brokerUrl);
             // ReDBox record's should also be told that the ID is an OID
-            newRelation.put("oid", id);
+            //JCU: causes an exception in CurationManager.
+            //checkChildren() will convert the identifier to an oid when a 
+            //'curation-confirm' is processed
+            //newRelation.put("oid", id);
         }
 
         // ** -7- ** OPTIONAL
@@ -488,19 +491,25 @@ public class CurationManager extends GenericTransactionManager {
 
         // Mint records we are less strict about and happy
         //  to allow multiple links in differing fields.
+        String newId = (String) newRelation.get("identifier");
+        String newField = (String) newRelation.get("field");
+        //JCU: In ReDBox, when there is a link between two records and the first one is curated, the second is also curated, due to the relationship
+        //In this case the newId and newFile are null. I have added the if statement to prevent an exception.
+        if  (newId != null && newField != null){
         for (Object relation : relations) {
             JsonObject json = (JsonObject) relation;
 
             if (json.containsKey("identifier")) {
                 String knownId = (String) json.get("identifier");
                 String knownField = (String) json.get("field");
-                String newId = (String) newRelation.get("identifier");
-                String newField = (String) newRelation.get("field");
+                    //String newId = (String) newRelation.get("identifier");
+                    //String newField = (String) newRelation.get("field");
                 // And does the ID match?
                 if (knownId.equals(newId) && knownField.equals(newField)) {
                     return true;
                 }
             }
+        }
         }
         // No match found
         return false;
