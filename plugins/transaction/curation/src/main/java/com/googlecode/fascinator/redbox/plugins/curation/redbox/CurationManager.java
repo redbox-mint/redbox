@@ -493,9 +493,6 @@ public class CurationManager extends GenericTransactionManager {
         //  to allow multiple links in differing fields.
         String newId = (String) newRelation.get("identifier");
         String newField = (String) newRelation.get("field");
-        //JCU: In ReDBox, when there is a link between two records and the first one is curated, the second is also curated, due to the relationship
-        //In this case the newId and newFile are null. I have added the if statement to prevent an exception.
-        if  (newId != null && newField != null){
         for (Object relation : relations) {
             JsonObject json = (JsonObject) relation;
 
@@ -509,7 +506,6 @@ public class CurationManager extends GenericTransactionManager {
                     return true;
                 }
             }
-        }
         }
         // No match found
         return false;
@@ -613,7 +609,6 @@ public class CurationManager extends GenericTransactionManager {
         //***
         // What should happen per task if we have already been curated?
         if (curated) {
-
             // Happy ending
             if (task.equals("curation-response")) {
                 log.info("Confirmation of curated object '{}'.", oid);
