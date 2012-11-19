@@ -491,16 +491,14 @@ public class CurationManager extends GenericTransactionManager {
 
         // Mint records we are less strict about and happy
         //  to allow multiple links in differing fields.
-        String newId = (String) newRelation.get("identifier");
-        String newField = (String) newRelation.get("field");
         for (Object relation : relations) {
             JsonObject json = (JsonObject) relation;
 
             if (json.containsKey("identifier")) {
                 String knownId = (String) json.get("identifier");
                 String knownField = (String) json.get("field");
-                    //String newId = (String) newRelation.get("identifier");
-                    //String newField = (String) newRelation.get("field");
+                String newId = (String) newRelation.get("identifier");
+                String newField = (String) newRelation.get("field");
                 // And does the ID match?
                 if (knownId.equals(newId) && knownField.equals(newField)) {
                     return true;
@@ -609,6 +607,7 @@ public class CurationManager extends GenericTransactionManager {
         //***
         // What should happen per task if we have already been curated?
         if (curated) {
+
             // Happy ending
             if (task.equals("curation-response")) {
                 log.info("Confirmation of curated object '{}'.", oid);
