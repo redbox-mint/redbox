@@ -448,7 +448,10 @@ public class CurationManager extends GenericTransactionManager {
         } else {
             newRelation.put("broker", brokerUrl);
             // ReDBox record's should also be told that the ID is an OID
-            newRelation.put("oid", id);
+            //JCU: causes an exception in CurationManager.
+            //checkChildren() will convert the identifier to an oid when a 
+            //'curation-confirm' is processed
+            //newRelation.put("oid", id);
         }
 
         // ** -7- ** OPTIONAL
