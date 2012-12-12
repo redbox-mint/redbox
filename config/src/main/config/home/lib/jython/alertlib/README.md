@@ -126,8 +126,8 @@ The system-config.json file will usually provide the configuration for the alert
                 "viewId": "default",
                 "packageType": "dataset",
                 "redbox:formVersion": "1.5.2",
-                "redbox:newForm": true,
-                "redbox:submissionProcess.redbox:submitted": true
+                "redbox:newForm": "true",
+                "redbox:submissionProcess.redbox:submitted": "true"
             }
         },
         ...
