@@ -120,8 +120,7 @@ public class CurationManager extends GenericTransactionManager {
         systemConfig = getJsonConfig();
 
         // Load the storage plugin
-        String storageId = systemConfig.getString("file-system",
-                "storage", "type");
+        String storageId = systemConfig.getString("file-system", "storage", "type");
         if (storageId == null) {
             throw new TransactionException("No Storage ID provided");
         }
@@ -513,10 +512,11 @@ public class CurationManager extends GenericTransactionManager {
      * This method encapsulates the logic for curation in ReDBox
      * 
      * @param oid The object ID being curated
+     * @throws TransactionException 
      * @returns JsonSimple The response object to send back to the
      * queue consumer
      */
-    private JsonSimple curation(JsonSimple message, String task, String oid) {
+    private JsonSimple curation(JsonSimple message, String task, String oid) throws TransactionException {
         JsonSimple response = new JsonSimple();
 
         //*******************
@@ -625,7 +625,10 @@ public class CurationManager extends GenericTransactionManager {
                     responseObj.put("originOid", oid);
                     responseObj.put("curatedPid", thisPid);
                 }
-
+                //JCU: now that the responses have been sent, remove them, so they are not sent again. Otherwise, they just keep getting resent and performance suffers greatly.
+                responses.clear();
+                saveObjectData(data, oid);
+                
                 // Set a flag to let publish events that may come in later
                 //  that this is ready to publish (if not already set)
                 if (!metadata.containsKey(READY_PROPERTY)) {
@@ -713,7 +716,7 @@ public class CurationManager extends GenericTransactionManager {
                     return response;
                 }
 
-                // If it is ready ont he first pass...
+                // If it is ready on the first pass...
                 if (isReady) {
                     createTask(response, oid, "curation-response");
                 } else {
@@ -1130,8 +1133,7 @@ public class CurationManager extends GenericTransactionManager {
                 for (JsonSimple relation : JsonSimple.toJavaList(relations)) {
                     String storedId = relation.getString(null, "identifier");
                     if (identifier.equals(storedId)) {
-                        log.debug("Ignoring duplicate relationship '{}'",
-                                identifier);
+                        log.debug("Ignoring duplicate relationship '{}'", identifier);
                         duplicate = true;
                     }
                 }
@@ -1218,8 +1220,9 @@ public class CurationManager extends GenericTransactionManager {
      * Send out requests to all relations to publish
      * 
      * @param oid The object identifier to publish
+     * @throws TransactionException 
      */
-    private void publishRelations(JsonSimple response, String oid) {
+    private void publishRelations(JsonSimple response, String oid) throws TransactionException {
         log.debug("Publishing Children of '{}'", oid);
 
         JsonSimple data = getDataFromStorage(oid);
@@ -1230,6 +1233,8 @@ public class CurationManager extends GenericTransactionManager {
                     + " record. Please check the system logs.");
             return;
         }
+
+        boolean saveData = false;
 
         JSONArray relations = data.writeArray("relationships");
         for (Object relation : relations) {
@@ -1256,7 +1261,9 @@ public class CurationManager extends GenericTransactionManager {
             if (authority) {
                 // Is this relationship using a curated ID?
                 boolean isCurated = json.getBoolean(false, "isCurated");
-                if (isCurated) {
+                //JCU: adding check for publishMsgSent, if already sent do not send it again. This is a fix to improve performance.
+                boolean publishMsgSent = json.getBoolean(false, "publishMsgSent");
+                if (isCurated && !publishMsgSent) {
                     log.debug(" * Publishing '{}'", relatedId);
                     // It is a local object
                     if (localRecord) {
@@ -1264,17 +1271,31 @@ public class CurationManager extends GenericTransactionManager {
 
                     // Or remote
                     } else {
-                    	JsonObject task = createTask(response, broker, relatedOid,
+                        JsonObject task = createTask(response, broker, relatedOid,
                                 "publish");
                         // We won't know OIDs for remote systems
                         task.remove("oid") ;
                         task.put("identifier", relatedId);
                     }
-                } else {
+                    
+                    //JCU: Adding tag to indicate the publish message has been sent.
+                    ((JsonObject) relation).put("publishMsgSent", "true");
+                    saveData = true;
+
+                } else if (publishMsgSent){
+                    log.debug(" * Ignoring already published relationship '{}'",
+                            relatedId);
+                }
+                else {
                     log.debug(" * Ignoring non-curated relationship '{}'",
                             relatedId);
                 }
             }
+        }
+
+        if  (saveData){
+        	//updating the relations with publishMsgSent
+            saveObjectData(data, oid);
         }
     }
 
