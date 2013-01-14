@@ -73,11 +73,12 @@
                             </tr>
                             <tr>
                                 <td colspan="6">
-                                    <label class="validation-err-msg"
+                                    <label class="validation-err-msg"				
+										id="dc:creator.foaf:Person.0.foaf:givenNameErrMsg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(blur,change,submit);
                                                                 jsTest(
-                                                                    var fid, gid, f, g;
+                                                                    var fid, gid, f, g, lid;
                                                                     fid=id.replace('given', 'family');
                                                                     gid=id.replace('family', 'given');
                                                                     f=ctx.find('input[id='+fid+']').val();
@@ -85,6 +86,7 @@
                                                                     f=jQ.trim(f); g=jQ.trim(g);
                                                                     r=(g=='')&&(f=='');
                                                                     id=gid;
+																	lid=id+'ErrMsg';
                                                                 );
                                                                 liveFor(.creatorName);">
                                         A creator's given name or family name is required!
