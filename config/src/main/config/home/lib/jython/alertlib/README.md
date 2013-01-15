@@ -1,4 +1,3 @@
-
 Introduction
 =====
 
@@ -157,8 +156,8 @@ Configuration arguments
            * `FieldMap` -- (required) A map of fields in the CSV to their associated ReDBox fields. The value can be a single field or a list of fields. 
                        You use named fields as the key so you can't use CSV files that don't have header rows.
            * `multiValue` -- (optional) Indicates that some fields contain multiple values
-                       * `fields` -- (required) Array of fields that contain multiple values. This is the column heading in the CSV and must exist in the FieldMap as a key.
-                       * `fieldDelimiter` -- (required) Denotes the delimiter used in multi value fields. This should never be the same as the delimiter used in the Dialect
+                   * `fields` -- (required) Array of fields that contain multiple values. This is the column heading in the CSV and must exist in the FieldMap as a key.
+                   * `fieldDelimiter` -- (required) Denotes the delimiter used in multi value fields. This should never be the same as the delimiter used in the Dialect
     * `XMLAlertHandler-params` -- (optional) provides arguments used by the XMLAlertHandler. This is an optional element - not needed if you won't handle XML files.
         * `configMap` -- (required) The key provides the file extension (the '.' prefix is assumed) with an object provided as the value.
            * `xmlMap` -- (required) These files provide an xpath map to a metadata field. See the webpage below for further details
