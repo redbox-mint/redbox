@@ -1,0 +1,57 @@
+{
+    "presentation-settings": {
+       "hide-funding-body-label" : "false"
+     },
+    "harvester": {
+        "type": "workflow-harvester",
+        "workflow-harvester": {
+            "force-storage": "true"
+        }
+    },
+    "workflow-id":"dmpt",
+    "transformer": {
+        "curation": ["local"],
+        "metadata": ["jsonVelocity"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
+    },
+
+    "transformerOverrides": {
+        "local": {
+            "template": "${server.url.base}published/detail/[[OID]]"
+        }
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "simpleworkflow-rules.py"
+        },
+        "params": {
+            "repository.name": "ReDBox",
+            "repository.type": "Data Management Portal"
+        }
+    },
+	"form-configuration": "form-configuration/dmptform.json",
+    "stages": [
+        {
+            "name": "inbox",
+            "label": "Inbox",
+            "description": "Potential records for investigation.",
+            "security": ["admin"],
+            "visibility": ["admin"],
+            "actions" :[ { "action-name" : "next",
+                           "target-step" : "investigation" }]
+        },
+        {
+            "name": "investigation",
+            "label": "Investigation",
+            "description": "Records under investigation.",
+            "security": [ "admin"],
+            "visibility": ["admin"],
+            "template": "workflows/simpleworkflow"
+        }
+    ]
+}

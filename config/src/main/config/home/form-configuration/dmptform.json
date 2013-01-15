@@ -1,0 +1,960 @@
+{
+    "stages":{
+        "inbox":{
+            "divs":[
+                {
+                    "heading":"Welcome",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<h2>Hello. Welcome to the REsearch Data Assistant, REDA</h2>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"You have landed on this page because you have clicked on a link asking you to register a research dataset."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Providing this information will help put you in touch with services that can help you store or analyse your research data and allow you to collaborate online with colleagues. It will form the basis of a Data Management Plan to satisfy the requirements of research funders and will lay the foundation of a description of your dataset for public information at the end of your project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"To move on, it will help to know if you are the person who is responsible for updating information about this data for the life of the project."
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input type='radio' id='yes_no' name='yes_no' value ='Yes' checked='checked' onclick='hide_no_option();' /> Yes, I am responsible for updating information about data in this project. <br /><input type='radio' id='yes_no' name='yes_no' value ='no' onclick='show_no_option();' /> No. That responsibility has been delegated to: <br /><script>function hide_no_option() { document.getElementById('delegation_sec').style.display='none'; } function show_no_option() { document.getElementById('delegation_sec').style.display='block'; }</script><div id='delegation_sec' style='display:none'><label for='delegation' /> Contact person <input id='delegation' type='text' /> <br /><label>Email address <input type='email' /></label></div>"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"delegation",
+                            "label":"Contact person"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"In this form, mandatory fields are marked with an asterisk <span class='mandatory'>*</span>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Answering just these questions will give enough information to register your dataset, give an indication of your data needs and create a very basic data management plan."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"You may return to the system to amend or add to the information at any time during the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"You will need to return to the system to finalise details at the end of the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Fields that will included in a data management plan are coloured <b class='mandatory'>red</b>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"For help, please click on <img src='help.png' alt='help' />"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Project",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"You have landed on this page because you have clicked on a link asking you to register a research dataset."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"This is some information we have gathered about the project from the RMS. Please check that this is accurate for the research data you wish to register."
+                        },
+                        {
+                            "component-type":"text-input",
+                            "filed-name":"dc:creator",
+                            "label":"Principal Researcher"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Principal.Researcher.email",
+                            "label":"Email contact of Principal Researcher"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Project.Name",
+                            "label":"Name of the Project"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Project.ID",
+                            "label":"Project ID"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Project.Description",
+                            "label":"Project Description",
+                            "content":"",
+                            "additional-classes":"mandatory"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Date.Start",
+                            "label":"Start Date",
+                            "additional-classes":"date"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Date.Estimated.finish",
+                            "label":"Estimated finish date",
+                            "additional-classes":"date"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Collaborators",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"A list of collaborators will be included in your Data Management Plan. It will also help to identify people authorised to access a collaboration space for the project."
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Person",
+                            "label":"People at this University",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input value='Add more' type='button'>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"People at other Australian Universities"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"People.Other",
+                            "label":"Name"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"People.Other.University",
+                            "label":"Name of University"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input value='Add more' type='button'>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"People at other institutions both in Australia and overseas"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"People.Other",
+                            "label":"Name"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"People.Other.University",
+                            "label":"Name of University/Institution"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input value='Add more' type='button'>"
+                        }
+                    ]
+                },
+                {
+                    "heading":"IP",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<h2>Ownership, Copyright and Intellectual Property of the Data</h2>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Information about rights associated with the data will be included in your Data Management Plan."
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "button-for":"Will new data be generated for this project?",
+                            "field-name":"is_new_data",
+                            "buttons":[
+                                {
+                                    "label":"Yes",
+                                    "action":""
+                                },
+                                {
+                                    "label":"No",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "conponent-type":"paragraph",
+                            "content":"If yes, it is very likely that the data will be protected by copyright."
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "button-for":"Is the data to be collected in Australia?",
+                            "field-name":"collected_in_australia",
+                            "buttons":[
+                                {
+                                    "label":"Yes",
+                                    "action":""
+                                },
+                                {
+                                    "label":"No",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"If not Australia, where will the data be collected?"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"country",
+                            "label":"If not Australia, where will the data be collected?",
+                            "additional-classes":"",
+                            "options":[
+                                {
+                                    "value":"country1",
+                                    "label":"conuntry1"
+                                },
+                                {
+                                    "value":"option-1",
+                                    "label":"Option 1"
+                                },
+                                {
+                                    "value":"option-2",
+                                    "label":"Option 2"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"copyright_owner",
+                            "label":"Who owns the copyright and other IP for this data?",
+                            "additional-classes":"",
+                            "options":[
+                                {
+                                    "value":"country1",
+                                    "label":"conuntry1"
+                                },
+                                {
+                                    "value":"option-1",
+                                    "label":"Option 1"
+                                },
+                                {
+                                    "value":"option-2",
+                                    "label":"Option 2"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Ownership, Copyright and Intellectual Property of the Data"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Information about rights associated with the data will be included in your Data Management Plan"
+                        },
+                        {
+                            "compontent-type":"radio-button",
+                            "button-for":"Are there any contractual obligations relating to the data?",
+                            "field-name":"contractual_obligation",
+                            "buttons":[
+                                {
+                                    "label":"Yes",
+                                    "action":""
+                                },
+                                {
+                                    "label":"No",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"If yes, please provide details of the contractual obligations. If you have a relevant document, please add a copy to your project collaboration space once enabled."
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Contract.Details",
+                            "label":"Contract details",
+                            "content":"",
+                            "additional-classes":"mandatory"
+                        }
+                    ]
+                },
+                {
+                    "heading":"About the data",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"This information gives a basic description of the data that may be used to identify useful services and tools. It will also form the basis of a record that may be sent for public exposure via Research Data Australia."
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Data.Collection.Name",
+                            "label":"Name of the data collection"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"Type of collection",
+                            "options":[
+                                {
+                                    "value":"collection.type1",
+                                    "label":"Catalogue or Index"
+                                },
+                                {
+                                    "value":"collection.type1",
+                                    "label":"Collection"
+                                },
+                                {
+                                    "value":"collection.type1",
+                                    "label":"Registry"
+                                },
+                                {
+                                    "value":"collection.type1",
+                                    "label":"Repository"
+                                },
+                                {
+                                    "value":"collection.type1",
+                                    "label":"Dataset"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Collection.Description",
+                            "label":"Description of the data to be generated or collected",
+                            "content":""
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Metadata.Standard",
+                            "label":"What metadata standards or discipline specific descriptive information will you use?",
+                            "content":""
+                        }
+                    ]
+                },
+                {
+                    "heading":"Confidentiality and Ethics",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"Data Confidentiality and Ethics"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Information provided here will be included in the Data Management Plan and may also influence your data storage choices. "
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "field-name":"Data.Access",
+                            "button-for":"Will access to the research data be restricted because it includes confidential, sensitive or private information?",
+                            "buttons":[
+                                {
+                                    "label":"Yes",
+                                    "action":""
+                                },
+                                {
+                                    "label":"No",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Data.Management",
+                            "label":"If yes, please provide details of how this will managed in the project.",
+                            "content":""
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "field-name":"Data.Ethical",
+                            "button-for":"Are there any ethical issues or considerations related to the research data?",
+                            "buttons":[
+                                {
+                                    "label":"Yes",
+                                    "action":""
+                                },
+                                {
+                                    "label":"No",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"Data.Ethical.Management",
+                            "label":"If yes, please provide details of the ethical issues/considerations and how you will manage them in this project OR provide an ethics approval number If you have a relevant document, please add a copy to your project collaboration space once enabled",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Approval Number",
+                            "field-name":"Data.Ethical.Approval.Number"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Retention",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<h2>Data Storage, Retention and Sharing</h2>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Information provided here will help determine choices for short and long term storage of data."
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Size",
+                            "label":"What is the expected size of all the research data that will be captured or created during the life of the research project?",
+                            "options":[
+                                {
+                                    "value":"Store.Size.1",
+                                    "label":"Less than 10 GB"
+                                },
+                                {
+                                    "value":"Store.Size.2",
+                                    "label":"10GB-20GB"
+                                },
+                                {
+                                    "value":"Store.Size.3",
+                                    "label":"20GB – 100GB"
+                                },
+                                {
+                                    "value":"Store.Size.4",
+                                    "label":"100GB"
+                                },
+                                {
+                                    "value":"Store.Size.5",
+                                    "label":"I don’t know"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.File.Format",
+                            "label":"*What are the predominant file formats of the research data?",
+                            "options":[
+                                {
+                                    "value":"Storage.File.Format.1",
+                                    "label":"CSV"
+                                },
+                                {
+                                    "value":"Storage.File.Format.2",
+                                    "label":"Microsoft Office file"
+                                },
+                                {
+                                    "value":"Storage.File.Format.3",
+                                    "label":"SPSS file"
+                                },
+                                {
+                                    "value":"Storage.File.Format.4",
+                                    "label":"Other"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Storge.File.Fomat.Other",
+                            "label":"If you have selected other, please provide details if possible"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Location",
+                            "label":"Where will you store the master, or authoritative version of your research data while the project is underway?",
+                            "options":[
+                                {
+                                    "value":"Storage.Location.1",
+                                    "label":"Faculty server"
+                                },
+                                {
+                                    "value":"Storage.Location.1",
+                                    "label":"External hard drive"
+                                },
+                                {
+                                    "value":"Storage.Location.1",
+                                    "label":"NeCTAR Virtual Laboratory"
+                                },
+                                {
+                                    "value":"Storage.Location.1",
+                                    "label":"RDSI Node"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Storage",
+                    "fields":[
+                        {
+                         	"component-type":"native-html",
+                         	"content":"<h2>Information provided here will help determine choices for short and long term storage of data.</h2>"   
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Backup",
+                            "label":"How will your master or authoritative version of the research data be backed up?",
+                            "options":[
+                                {
+                                    "value":"Storage.Backup.1",
+                                    "label":"Automatic replication"
+                                },
+                                {
+                                    "value":"Storage.Backup.2",
+                                    "label":"Automatic daily back up"
+                                },
+                                {
+                                    "value":"Storage.Backup.3",
+                                    "label":"Automatic weekly back up"
+                                },
+                                {
+                                    "value":"Storage.Backup.4",
+                                    "label":"Manually"
+                                },
+                                {
+                                    "value":"Storage.Backup.5",
+                                    "label":"Not sure"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Retention",
+                            "label":"Which of the following minimum retention periods will apply to your research data upon completion of the project?",
+                            "options":[
+                                {
+                                    "value":"Storage.Retention.1",
+                                    "label":"12 months (short term projects for assessment purposes only)"
+                                },
+                                {
+                                    "value":"Storage.Retention.2",
+                                    "label":"5 years after publication (general research)"
+                                },
+                                {
+                                    "value":"Storage.Retention.3",
+                                    "label":"15 years after publication (Clinical trials [research involving humans])"
+                                },
+                                {
+                                    "value":"Storage.Retention.4",
+                                    "label":"Permanent (Gene therapy [eg patient data/records] or data with significant heritage value"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Reason",
+                            "label":"Would you ideally preserve your data for the longer term for one of these reasons?",
+                            "options":[
+                                {
+                                    "value":"Storage.Reason.1",
+                                    "label":"It has community or heritage value"
+                                },
+                                {
+                                    "value":"Storage.Reason.2",
+                                    "label":"It is controversial"
+                                },
+                                {
+                                    "value":"Storage.Reason.3",
+                                    "label":"It is of wide public interest"
+                                },
+                                {
+                                    "value":"Storage.Reason.4",
+                                    "label":"It uses an innovative technique for the first time"
+                                },
+                                {
+                                    "value":"Storage.Reason.6",
+                                    "label":"It would be costly or impossible to reproduce"
+                                },
+                                {
+                                    "value":"Storage.Reason.7",
+                                    "label":"It supports a patent application or other IP process"
+                                },
+                                {
+                                    "value":"Storage.Reason.8",
+                                    "label":"I know it will be useful for other projects"
+                                },
+                                {
+                                    "value":"Storage.Reason.9",
+                                    "label":"Other"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Release.Info.When",
+                            "label":"When will information about your data be made openly available to the public? Only applies where the home institution is the sole or joint copyright owner of the data",
+                            "options":[
+                                {
+                                    "value":"Storage.Release.Info.When.1",
+                                    "label":"Never"
+                                },
+                                {
+                                    "value":"Storage.Release.Info.When.2",
+                                    "label":"At any stage of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Info.When.3",
+                                    "label":"At the end of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Info.When.4",
+                                    "label":"2 years after the end of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Info.When.5",
+                                    "label":"Only open to home institution staff"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Storage.Release.Data.When",
+                            "label":"When will the research data be made openly available to the public? Only applies where the home institution is the sole or joint copyright owner of the data",
+                            "options":[
+                                {
+                                    "value":"Storage.Release.Data.When.1",
+                                    "label":"Never"
+                                },
+                                {
+                                    "value":"Storage.Release.Data.When.2",
+                                    "label":"At any stage of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Data.When.3",
+                                    "label":"At the end of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Data.When.4",
+                                    "label":"2 years after the end of the project"
+                                },
+                                {
+                                    "value":"Storage.Release.Data.When.5",
+                                    "label":"Only open to home institution staff"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Licensing.Apply",
+                            "label":"What data licensing arrangements will be used to allow others to reuse this data?",
+                            "options":[
+                                {
+                                    "value":"Licensing.Apply.1",
+                                    "label":"All rights reserved (copyright protected)"
+                                },
+                                {
+                                    "value":"Licensing.Apply.2",
+                                    "label":"Creative Commons"
+                                },
+                                {
+                                    "value":"Licensing.Apply.3",
+                                    "label":"Restricted license"
+                                },
+                                {
+                                    "value":"Licensing.Apply.4",
+                                    "label":"Contact Principal Researcher to determine licensing arrangement"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Final",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<h2>That’s all you have to do for now!</h2>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<p>But you can answer more questions to describe the data, the data collection methodology or your intentions for sharing/licensing data by clicking here <a href='#extra'>here</a></p>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"You may also return to the system to amend or add to the information at any time during the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"And remember that"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"You will need to return to the system to finalise details at the end of the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Just one more thing.."
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "button-for":"Would you like some more help or information about any of the following?",
+                            "field-name":"help",
+                            "buttons":[
+                                {
+                                    "label":"Data management",
+                                    "action":""
+                                },
+                                {
+                                    "label":"Computing resources (including high performance computing)",
+                                    "action":""
+                                },
+                                {
+                                    "label":"Collaboration tools (eg shared spaces, videoconferencing)",
+                                    "action":""
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"With thanks, the research data support team."
+                        }
+                    ]
+                },
+                {
+                    "heading":"Extra",
+                    "fields":[
+                        {
+                         	"component-type":"native-html",
+                         	"content":"<a id='extra'></a>"   
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<h2>Great! Thank you for deciding to add more information at this stage.</h2>"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":" None of the fields are compulsory and some will not be added to a Data Management Plan, but they will help describe and give context to your dataset. You can come back to change or add information at any time during the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"About the data"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"If you are using data that is generated by another party;"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Extra.Data.Access",
+                            "label":"How will you get access to the data?",
+                            "options":[
+                                {
+                                    "value":"Extra.Data.Access.1",
+                                    "label":"Purchase"
+                                },
+                                {
+                                    "value":"Extra.Data.Access.2",
+                                    "label":"Obtain approval by the owner"
+                                },
+                                {
+                                    "value":"Extra.Data.Access.3",
+                                    "label":"Access is freely available"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"extra.meta.link",
+                            "label":"Is metadata already available for this data? If yes, please provide a link.",
+                            "additional-classes":"link"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"For ALL data collections"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Keywords"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"extra.keyword.1",
+                            "label":"What keywords or tags would you use to describe the data?",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input value='Add more' type='button'>"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Extra.Language",
+                            "label":"What language is relevant to this data collection?",
+                            "options":[
+                                {
+                                    "value":"Extra.Language.1",
+                                    "label":"English"
+                                },
+                                {
+                                    "value":"Extra.Language.2",
+                                    "label":"Obtain approval by the owner"
+                                },
+                                {
+                                    "value":"Extra.Language.3",
+                                    "label":"Access is freely available"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"What date or date range will this data cover?"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Extra.Collection.Date.From",
+                            "label":"From:",
+                            "additional-class":"date"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Extra.Collection.Date.From",
+                            "label":"To:",
+                            "additional-class":"date"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Extra.Collection.OtherDescription",
+                            "label":"Include another way to describe the period, if relevant (eg World War II)",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"What is the geographic location relevant to this dataset? Interactive map might be used later."
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<div id='mapholder' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder').innerHTML='<img src='+img_url+'>';</script>"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Links to websites related to this data collection",
+                            "field-name":"Extra.Website.URL",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Links to datasets related to this collection",
+                            "field-name":"Extra.DataSet.URL",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Supervisors associated with this data collection",
+                            "field-name":"Extra.Collection.Supervisor",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Link to this data collection",
+                            "field-name":"Extra.Links",
+                            "additional-class":"url"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Data Collection Methodology",
+                            "additional-class":"h2"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"What software or equipment is used to create the data?",
+                            "field-name":"Extra.Software_Equipment",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"textarea",
+                            "label":"Please provide a description of the data collection methodology",
+                            "field-name":"Extra.Collection.Methodology",
+                            "content":"",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button id='done_button' onclick=done_forms()>Done</button><div id='thanks'></div><script>function done_forms(){ document.getElementById('done_button').setAttribute('hidden', 'hidden');document.getElementById('thanks').innerHTML = '<h3>Thank you.</h3>'+'<p>By completing this information, you have not only created a more complete Data Management Plan, you have gone some way to establishing a description of your dataset.</p>'+'<p>If you have any questions about this process, please do not hesitate to contact the Research Data Support team.</p>';}</script>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<script>$(document).ready(function() {jaffa.ui.changeToTabLayout($('#simpleworkflow-form'), 'h1');})</script>"
+                        }
+                    ]
+                }
+            ],
+            "buttons":[
+                {
+                    "component-type":"standard-button",
+                    "button-name":"save",
+                    "action":"save",
+                    "label":"Save"
+                },
+                {
+                    "component-type":"standard-button",
+                    "button-name":"next",
+                    "action":"next",
+                    "label":"Next>"
+                }
+            ],
+            "validation":{
+                "required":"title"
+            }
+        },
+        "investigation":{
+            "fields":[
+                {
+                    "component-type":"text-input",
+                    "field-name":"title",
+                    "label":"Name",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"dc:description",
+                    "label":"Description",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"type",
+                    "label":"Type",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"website",
+                    "label":"Website",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"website",
+                    "label":"Website",
+                    "additional-classes":""
+                }
+            ],
+            "buttons":[
+                {
+                    "component-type":"standard-button",
+                    "button-name":"save",
+                    "action":"save",
+                    "label":"Save"
+                },
+                {
+                    "component-type":"standard-button",
+                    "button-name":"next",
+                    "action":"next",
+                    "label":"Next>"
+                }
+            ],
+            "validation":{
+                "required":"title"
+            }
+        }
+    }
+}
