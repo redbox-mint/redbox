@@ -6,8 +6,9 @@
                     "heading":"Welcome",
                     "fields":[
                         {
-                            "component-type":"native-html",
-                            "content":"<h2>Hello. Welcome to the REsearch Data Assistant, REDA</h2>"
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"Hello. Welcome to the REsearch Data Assistant, REDA, heading 2"
                         },
                         {
                             "component-type":"paragraph",
@@ -18,17 +19,42 @@
                             "content":"Providing this information will help put you in touch with services that can help you store or analyse your research data and allow you to collaborate online with colleagues. It will form the basis of a Data Management Plan to satisfy the requirements of research funders and will lay the foundation of a description of your dataset for public information at the end of your project."
                         },
                         {
-                            "component-type":"paragraph",
-                            "content":"To move on, it will help to know if you are the person who is responsible for updating information about this data for the life of the project."
+                            "component-type":"radio-button",
+                            "button-for":"To move on, it will help to know if you are the person who is responsible for updating information about this data for the life of the project.",
+                            "field-name":"CreaterIsResponsible",
+                            "multiline":true,
+                            "buttons":[
+                                {
+                                    "label":"Yes, I am responsible for updating information about data in this project.",
+                                    "checked":true,
+                                    "action":"hide_no_option();"
+                                },
+                                {
+                                    "label":"No. That responsibility has been delegated to someone else.",
+                                    "action":"show_no_option();"
+                                }
+                            ]
                         },
                         {
-                            "component-type":"native-html",
-                            "content":"<input type='radio' id='yes_no' name='yes_no' value ='Yes' checked='checked' onclick='hide_no_option();' /> Yes, I am responsible for updating information about data in this project. <br /><input type='radio' id='yes_no' name='yes_no' value ='no' onclick='show_no_option();' /> No. That responsibility has been delegated to: <br /><script>function hide_no_option() { document.getElementById('delegation_sec').style.display='none'; } function show_no_option() { document.getElementById('delegation_sec').style.display='block'; }</script><div id='delegation_sec' style='display:none'><label for='delegation' /> Contact person <input id='delegation' type='text' /> <br /><label>Email address <input type='email' /></label></div>"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"delegation",
-                            "label":"Contact person"
+                            "component-type":"group",
+                            "fields":[
+                                {
+                                    "component-type":"text-input",
+                                    "label":"Contact person",
+                                    "field-name":"contact_person",
+                                    "additional-classes":"",
+                                    
+                                },
+                                {
+                                    "component-type":"text-input",
+                                    "label":"Email adress",
+                                    "field-name":"contact_email",
+                                    "additional-classes":""
+                                }
+                            ],
+                            "template":"div-grouping",
+                            "element-id":"delegation_sec",
+                            "additional-class":"HiddenWidget"
                         },
                         {
                             "component-type":"paragraph",
@@ -98,13 +124,13 @@
                             "component-type":"text-input",
                             "field-name":"Date.Start",
                             "label":"Start Date",
-                            "additional-classes":"date"
+                            "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"Date.Estimated.finish",
                             "label":"Estimated finish date",
-                            "additional-classes":"date"
+                            "additional-classes":"dateYMD"
                         }
                     ]
                 },
@@ -116,59 +142,65 @@
                             "content":"A list of collaborators will be included in your Data Management Plan. It will also help to identify people authorised to access a collaboration space for the project."
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"repeatable-text",
                             "field-name":"Person",
-                            "label":"People at this University",
-                            "additional-classes":""
+                            "label":"People at this University"
                         },
                         {
-                            "component-type":"native-html",
-                            "content":"<input value='Add more' type='button'>"
-                        },
-                        {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"People at other Australian Universities"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"People.Other",
-                            "label":"Name"
+                            "component-type":"group",
+                            "fields":[
+                                {
+                                    "component-type":"repeatable-text",
+                                    "field-name":"Collaborators-Other-Uni-Person",
+                                    "label":"Name"
+                                },
+                                {
+                                    "component-type":"repeatable-text",
+                                    "field-name":"Collaborators-Other-Uni-Name",
+                                    "label":"Name of University"
+                                },
+                                
+                            ],
+                            "template":"div-grouping",
+                            "element-id":"Collaborators-Other-Uni",
+                            "additional-class":""
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"People.Other.University",
-                            "label":"Name of University"
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<input value='Add more' type='button'>"
-                        },
-                        {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"People at other institutions both in Australia and overseas"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"People.Other",
-                            "label":"Name"
+                            "component-type":"group",
+                            "fields":[
+		                        {
+		                            "component-type":"repeatable-text",
+		                            "field-name":"Collaborators-Other-Ins-Person",
+		                            "label":"Name"
+		                        },
+		                        {
+		                            "component-type":"repeatable-text",
+		                            "field-name":"Collaborators-Other-Ins-Name",
+		                            "label":"Name of University/Institution"
+		                        }
+                            ],
+                            "template":"div-grouping",
+                            "element-id":"Collaborators-Other-Ins"
                         },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"People.Other.University",
-                            "label":"Name of University/Institution"
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<input value='Add more' type='button'>"
-                        }
                     ]
                 },
                 {
                     "heading":"IP",
                     "fields":[
                         {
-                            "component-type":"native-html",
-                            "content":"<h2>Ownership, Copyright and Intellectual Property of the Data</h2>"
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"Ownership, Copyright and Intellectual Property of the Data"
                         },
                         {
                             "component-type":"paragraph",
@@ -180,12 +212,11 @@
                             "field-name":"is_new_data",
                             "buttons":[
                                 {
-                                    "label":"Yes",
-                                    "action":""
+                                    "label":"Yes"
                                 },
                                 {
                                     "label":"No",
-                                    "action":""
+                                    
                                 }
                             ]
                         },
@@ -200,11 +231,11 @@
                             "buttons":[
                                 {
                                     "label":"Yes",
-                                    "action":""
+                                    
                                 },
                                 {
                                     "label":"No",
-                                    "action":""
+                                    
                                 }
                             ]
                         },
@@ -345,7 +376,8 @@
                     "heading":"Confidentiality and Ethics",
                     "fields":[
                         {
-                            "component-type":"native-html",
+                            "component-type":"text-block",
+                            "type":"h2",
                             "content":"Data Confidentiality and Ethics"
                         },
                         {
@@ -358,12 +390,10 @@
                             "button-for":"Will access to the research data be restricted because it includes confidential, sensitive or private information?",
                             "buttons":[
                                 {
-                                    "label":"Yes",
-                                    "action":""
+                                    "label":"Yes"
                                 },
                                 {
-                                    "label":"No",
-                                    "action":""
+                                    "label":"No"
                                 }
                             ]
                         },
@@ -379,12 +409,10 @@
                             "button-for":"Are there any ethical issues or considerations related to the research data?",
                             "buttons":[
                                 {
-                                    "label":"Yes",
-                                    "action":""
+                                    "label":"Yes"
                                 },
                                 {
-                                    "label":"No",
-                                    "action":""
+                                    "label":"No"
                                 }
                             ]
                         },
@@ -405,8 +433,9 @@
                     "heading":"Retention",
                     "fields":[
                         {
-                            "component-type":"native-html",
-                            "content":"<h2>Data Storage, Retention and Sharing</h2>"
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"Data Storage, Retention and Sharing"
                         },
                         {
                             "component-type":"paragraph",
@@ -496,8 +525,8 @@
                     "heading":"Storage",
                     "fields":[
                         {
-                         	"component-type":"native-html",
-                         	"content":"<h2>Information provided here will help determine choices for short and long term storage of data.</h2>"   
+                            "component-type":"paragraph",
+                            "content":"Information provided here will help determine choices for short and long term storage of data."
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
@@ -671,8 +700,9 @@
                     "heading":"Final",
                     "fields":[
                         {
-                            "component-type":"native-html",
-                            "content":"<h2>That’s all you have to do for now!</h2>"
+                            "component-type":"text-block",
+                            "type":"h4",
+                            "content":"That’s all you have to do for now!"
                         },
                         {
                             "component-type":"native-html",
@@ -697,19 +727,17 @@
                         {
                             "component-type":"radio-button",
                             "button-for":"Would you like some more help or information about any of the following?",
+                            "multiline":"true",
                             "field-name":"help",
                             "buttons":[
                                 {
-                                    "label":"Data management",
-                                    "action":""
+                                    "label":"Data management"
                                 },
                                 {
-                                    "label":"Computing resources (including high performance computing)",
-                                    "action":""
+                                    "label":"Computing resources (including high performance computing)"
                                 },
                                 {
-                                    "label":"Collaboration tools (eg shared spaces, videoconferencing)",
-                                    "action":""
+                                    "label":"Collaboration tools (eg shared spaces, videoconferencing)"
                                 }
                             ]
                         },
@@ -723,12 +751,13 @@
                     "heading":"Extra",
                     "fields":[
                         {
-                         	"component-type":"native-html",
-                         	"content":"<a id='extra'></a>"   
+                            "component-type":"native-html",
+                            "content":"<a id='extra'></a>"
                         },
                         {
-                            "component-type":"native-html",
-                            "content":"<h2>Great! Thank you for deciding to add more information at this stage.</h2>"
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"Great! Thank you for deciding to add more information at this stage."
                         },
                         {
                             "component-type":"paragraph",
@@ -773,17 +802,12 @@
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"Keywords"
+                            "content":"What keywords or tags would you use to describe the data?"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"extra.keyword.1",
-                            "label":"What keywords or tags would you use to describe the data?",
-                            "additional-classes":""
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<input value='Add more' type='button'>"
+                            "component-type":"repeatable-text",
+                            "field-name":"keyword",
+                            "label":"Keyword"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
@@ -812,13 +836,13 @@
                             "component-type":"text-input",
                             "field-name":"Extra.Collection.Date.From",
                             "label":"From:",
-                            "additional-class":"date"
+                            "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"Extra.Collection.Date.From",
+                            "field-name":"Extra.Collection.Date.To",
                             "label":"To:",
-                            "additional-class":"date"
+                            "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
@@ -879,10 +903,6 @@
                         {
                             "component-type":"native-html",
                             "content":"<button id='done_button' onclick=done_forms()>Done</button><div id='thanks'></div><script>function done_forms(){ document.getElementById('done_button').setAttribute('hidden', 'hidden');document.getElementById('thanks').innerHTML = '<h3>Thank you.</h3>'+'<p>By completing this information, you have not only created a more complete Data Management Plan, you have gone some way to establishing a description of your dataset.</p>'+'<p>If you have any questions about this process, please do not hesitate to contact the Research Data Support team.</p>';}</script>"
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<script>$(document).ready(function() {jaffa.ui.changeToTabLayout($('#simpleworkflow-form'), 'h1');})</script>"
                         }
                     ]
                 }
@@ -901,6 +921,7 @@
                     "label":"Next>"
                 }
             ],
+            "form-footer":"dmptform-footer",
             "validation":{
                 "required":"title"
             }
