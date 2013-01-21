@@ -55,7 +55,7 @@ class AndsDoiData:
         # Create = https://services.ands.org.au/doi/1.1/mint.json?app_id=$app_id&url=$url
         if page == "create":
             #return baseUrl + "mint.json?app_id=" + apiKey + "&url="
-            return baseUrl + "doi.php?app_id=" + apiKey + "&url="
+            return baseUrl + "mint.json?app_id=" + apiKey + "&url="
 
         # Update = https://services.ands.org.au/doi/1.1/update.json?app_id=$app_id&doi=$DOI_id[&url=$url]
         if page == "update":
