@@ -1,0 +1,40 @@
+<div style="width:90%;margin:0px auto 0px auto;">
+#if($self.getErrorMsg()=="")
+	
+	<div>
+        <span>Date Range		
+			<label for="dateFrom">From</label>
+            <input type="text" placeholder="Start Date" id="dateFrom" name="dateFrom" value="$self.getFromDt()" onchange="updateChart('#dateTo')(this.value, $('#dateFrom'))"/>			
+            <label for="dateTo">To</label>
+            <input type="text" placeholder="End Date" id="dateTo" name="dateTo" value="$self.getToDt()" onchange="updateChart('#dateFrom')(this.value, $('#dateTo'))"/>
+			<label for="reportName">Report Name</label>
+			<input type="text" placeholder="Report Name" id="reportName" name="reportName" />
+			<input type="button" value="Export as CSV" onclick="location.assign('chart?chartName=exportDash&format=csv&$self.getDateRange()')"/>			
+		</span>				
+	</div>
+	<div style="width:50%;margin:0px auto 0px auto;">
+		<span class='validation-err-msg' style='visibility:hidden'>
+			Invalid date range
+		</span>
+	</div>
+	<div>
+		<span>
+			<img src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
+		</span>
+		<span>
+			<img src="chart?chartName=records-by-stage-2&$self.getDateRange()" />
+		</span>		
+	</div>
+	<div>
+		<span>
+			<img src="chart?chartName=records-by-month-1&$self.getDateRange()" />
+		</span>
+		<span>
+			<img src="chart?chartName=records-by-month-2&$self.getDateRange()" />
+		</span>		
+	</div>
+	<script type="text/javascript" src="$portalPath/js/reportdashboard.js"></script>
+#else
+	<span>$self.getErrorMsg()</span>
+#end
+</div>
