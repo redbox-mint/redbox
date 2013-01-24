@@ -1,0 +1,576 @@
+{
+    "stages":{
+        "inbox":{
+            "divs":[
+                {
+                    "heading":"Content",
+                    "fields":[
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:title",
+                            "label":"Title"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Descriptions"
+                        },              
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"rif:description.1.type",
+                            "label":"Type",
+                            "additional-classes":"",
+                            "options":[
+                                {
+                                    "value":"brief",
+                                    "label":"Brief:"
+                                },
+                                {
+                                    "value":"full",
+                                    "label":"Full:"
+                                },
+                                {
+                                    "value":"note",
+                                    "label":"Note:"
+                                },
+                                {
+                                    "value":"logo",
+                                    "label":"Logo:"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"rif:description.1.value",
+                            "label":"Description"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:type.rdf:PlainLiteral",
+                            "label":"Type",
+                            "additional-classes":"",
+                            "options":[
+                                {
+                                    "value":"catalogueOrIndex",
+                                    "label":"Catalogue or Index"
+                                },
+                                {
+                                    "value":"collection",
+                                    "label":"Collection"
+                                },
+                                {
+                                    "value":"dataset",
+                                    "label":"Dataset"
+                                },
+                                {
+                                    "value":"registry",
+                                    "label":"Registry"
+                                },
+                                {
+                                    "value":"repository",
+                                    "label":"Repository"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Access/Rights"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:accessRights.skos:prefLabel",
+                            "label":"Access Rights/Conditions"
+                        },                      
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:accessRights.dc:identifier",
+                            "label":"Access Rights/Conditions - URI:"
+                        },                      
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:accessRights.dc:RightsStatement.skos:prefLabel",
+                            "label":"Rights"
+                        },                      
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:license.dc:identifier",
+                            "label":"Rights - URI:"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Coverage",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"Date Coverage"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
+                            "label":"From:",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
+                            "label":"To:",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.redbox:timePeriod",
+                            "label":"Time Period"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<div class='openLayersHolder'>
+        <div class='article'>
+            <p class='meta attribution'>Map Credits: <span id='attribution'></span></p>
+            <div id='polygonHelp' class='hidden'>
+                <div><span class='ui-button-icon-primary ui-icon ui-icon-lightbulb'></span></div>
+                Use double-click to 'close' your polygon.
+            </div>
+            <div class='mapHolder'>
+                <div id='panel' class='olControlEditingToolbar'></div>
+                <div id='map' class='smallmap' style='width:512px; height:256px'></div>
+            </div>
+            <div class='lookupHolder'>
+                <label for='geonamesLookup'>Find location: </label>
+                <input type='text' size='40' placeholder='Place name' id='geonamesLookup' />
+            </div>
+        </div>
+    </div>"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Data Location",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"Additional Identifiers (*)"
+                        },                        
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='dc:identifier.checkbox' type='checkbox'><label for='dc:identifier.checkbox'>Use this record's ID</label>"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:identifier.dc:type.rdf:PlainLiteral",
+                            "label":"Type of Identifier",
+                            "additional-classes":"",
+                            "options":[
+						        {
+						            "value": "abn",
+						            "label": "Australian Business Number"
+						        },
+						        {
+						            "value": "arc",
+						            "label": "Australian Research Council identifier"
+						        },
+						        {
+						            "value": "ark",
+						            "label": "ARK Persistent Identifier Scheme"
+						        },
+						        {
+						            "value": "doi",
+						            "label": "Digital Object Identifier"
+						        },
+						        {
+						            "value": "handle",
+						            "label": "HANDLE System Identifier"
+						        },
+						        {
+						            "value": "infouri",
+						            "label": "'info' URI scheme"
+						        },
+						        {
+						            "value": "isil",
+						            "label": "International Standard Identifier for Libraries"
+						        },
+						        {
+						            "value": "local",
+						            "label": "Local Identifier"
+						        },
+						        {
+						            "value": "nla",
+						            "label": "National Library of Australia identifier"
+						        },
+						        {
+						            "value": "purl",
+						            "label": "Persistent Uniform Resource Locator"
+						        },
+						        {
+						            "value": "uri",
+						            "label": "Uniform Resource Identifier"
+						        }
+                            ]
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:identifier.rdf:PlainLiteral",
+                            "label":"Identifier"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"redbox:retentionPeriod",
+                            "label":"Retention Period"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Associations",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"Creators"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:creator.foaf:Person.0.jcu:relationshipType",
+                            "label":"Relationship Types",
+                            "additional-classes":"",
+                            "options":[
+						        {
+						            "value":"isManagedBy",
+						            "label":"Managed by:"
+						        },
+						        {
+						            "value":"isOwnedBy",
+						            "label":"Owned by:"
+						        },
+						        {
+						            "value":"hasCollector",
+						            "label":"Aggregated by:"
+						        },
+							    {
+							        "value":"isEnrichedBy",
+							        "label":"Enriched by:"
+							    },
+							    {
+							        "value":"hasAssociationWith",
+							        "label":"Associated with:"
+							    }
+                            ]
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"locrel:prc.foaf:Person.foaf:title",
+                            "label":"Title:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"locrel:prc.foaf:Person.foaf:givenName",
+                            "label":"Given name:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"locrel:prc.foaf:Person.foaf:familyName",
+                            "label":"Family name:"
+                        },                        
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "label":"Affiliation",
+                            "additional-classes":"",
+                            "options":[
+                                {
+                                    "value":"values from The Mint",
+                                    "label":"values from The Mint"
+                                },
+                                {
+                                    "value":"values from The Mint",
+                                    "label":"values from The Mint1"
+                                },
+                                {
+                                    "value":"values from The Mint",
+                                    "label":"values from The Mint"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Related Activities - same as Type of Research Activities ??"
+                        },                        
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
+                            "label":"Type of Research Activity",
+                            "additional-classes":"",
+                            "options":[
+						        {
+						            "value": "pure",
+						            "label": "Pure basic research"
+						        },
+						        {
+						            "value": "strategic",
+						            "label": "Strategic basic research"
+						        },
+						        {
+						            "value": "applied",
+						            "label": "Applied research"
+						        },
+						        {
+						            "value": "experimental",
+						            "label": "Experimental development"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Co-investigators and other contributors - same as Collaborators ??"
+                        },                        
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:contributor.locrel:clb.0.foaf:Agent",
+                            "label":"Collaborator"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Related Publications"
+                        },                        
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.swrc:Publication.0.dc:identifier",
+                            "label":"URL:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.swrc:Publication.0.dc:title",
+                            "label":"Title:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.swrc:Publication.0.skos:note",
+                            "label":"Notes:"
+                        }, 
+                        {
+                            "component-type":"paragraph",
+                            "content":"Related Websites"
+                        },                        
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.bibo:Website.0.dc:identifier",
+                            "label":"URL:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.bibo:Website.0.dc:title",
+                            "label":"Title:"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.bibo:Website.0.skos:note",
+                            "label":"Notes:"
+                        }, 
+                    ]
+                },
+                {
+                    "heading":"Keywords",
+                    "fields":[
+                        {
+                            "component-type":"paragraph",
+                            "content":"Fields of Research"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"FOR1",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"FOR2",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"FOR3",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Socio-Economic Objective"
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"SEO1",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"SEO2",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"Collection.Type",
+                            "label":"SEO3",
+                            "options":[
+                                {
+                                    "value":"TDB",
+                                    "label":"to be done"
+                                }
+                            ]
+                        },                        
+                        {
+                            "component-type":"paragraph",
+                            "content":"Research Themes - selection one or more of the 4 themes, or not aligned."
+                        }
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='jcu:research.themes.tropicalEcoSystems' type='checkbox'><label>Tropical Ecosystems, Conservation and Climate Change</label>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='jcu:research.themes.industriesEconomies' type='checkbox'><label>Industries and Economies in the Tropics</label>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='jcu:research.themes.peopleSocieties' type='checkbox'><label>People and Societies in the Tropics</label>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='jcu:research.themes.tropicalHealth' type='checkbox'><label>Tropical Health, Medicine and Biosecurity</label>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='jcu:research.themes.notAligned' type='checkbox'><label>Not aligned to a University theme</label>"
+                        }
+                        {
+                            "component-type":"paragraph",
+                            "content":"Keywords"
+                        }
+                        {
+                            "component-type":"text-input",
+                            "label":"Keword",
+                            "field-name":"dc:subject.vivo:keyword.0.rdf:PlainLiteral"
+                        }
+                    ]
+                },
+                {
+                    "heading":"Final",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<a id='extra'></a>"   
+                        },
+                        {
+                            "component-type":"textarea",
+                            "label":"Jay, see Marianne as this will contain some legal declarion about Researchers own work. e.g true and correct to my best knowledge",
+                            "field-name":"Extra.Collection.Methodology",
+                            "content":"",
+                            "additional-class":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button id='done_button' onclick=done_forms()>Done</button><div id='thanks'></div><script>function done_forms(){ document.getElementById('done_button').setAttribute('hidden', 'hidden');document.getElementById('thanks').innerHTML = '<h3>Thank you.</h3>'+'<p>By completing this information, you have not only created a more complete Data Management Plan, you have gone some way to establishing a description of your dataset.</p>'+'<p>If you have any questions about this process, please do not hesitate to contact the Research Data Support team.</p>';}</script>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<script>$(document).ready(function() {jaffa.ui.changeToTabLayout($('#simpleworkflow-form'), 'h1');})</script>"
+                        }
+                    ]
+                }
+            ],
+            "buttons":[
+                {
+                    "component-type":"standard-button",
+                    "button-name":"save",
+                    "action":"save",
+                    "label":"Save"
+                },
+                {
+                    "component-type":"standard-button",
+                    "button-name":"next",
+                    "action":"next",
+                    "label":"Next>"
+                }
+            ],
+            "form-footer":"simpleform-footer",            
+            "validation":{
+                "required":"title"
+            }
+        },
+        "investigation":{
+            "fields":[
+                {
+                    "component-type":"text-input",
+                    "field-name":"title",
+                    "label":"Name",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"dc:description",
+                    "label":"Description",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"type",
+                    "label":"Type",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"website",
+                    "label":"Website",
+                    "additional-classes":""
+                },
+                {
+                    "component-type":"text-input",
+                    "field-name":"website",
+                    "label":"Website",
+                    "additional-classes":""
+                }
+            ],
+            "buttons":[
+                {
+                    "component-type":"standard-button",
+                    "button-name":"save",
+                    "action":"save",
+                    "label":"Save"
+                },
+                {
+                    "component-type":"standard-button",
+                    "button-name":"next",
+                    "action":"next",
+                    "label":"Next>"
+                }
+            ],
+            "validation":{
+                "required":"title"
+            }
+        }
+    }
+}
