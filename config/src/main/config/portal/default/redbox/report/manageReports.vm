@@ -1,0 +1,36 @@
+<div class="grid_4">
+	<div class="box menu">
+	    <h2>Options</h2>
+	    <ul class="menu">
+	        <li><a href="$portalPath/report/reports">Create New Reports</a></li>
+	        <li><a id="reharvest-view" href="$portalPath/report/statisticalReports" rel="default">Create New Statistical Reports</a></li>
+	        <li><a href="$portalPath/report/ingestReports" rel="default">Create New Ingest Reports</a></li>
+	        <li><a href="$portalPath/report/manageReports" rel="default">View Reports</a></li>
+	    </ul>
+    </div>
+</div>  
+<div class="grid_12">
+	<table>
+		<tr>
+			<th>Select</th>
+			<th>Report</th>
+			<th>Run</th>
+		</tr>
+		<tr>
+			<td><input name="selected_report" type="checkbox" /></td>
+			<td><a href="$portalPath/report/reports">Records without Citations</a></td>
+			<td><a href="#">Run</a></td>
+		</tr>
+		<tr>
+			<td><input name="selected_report" type="checkbox" /></td>
+			<td><a href="$portalPath/report/reports">Embargoed Records</a></td>
+			<td><a href="#">Run</a></td>
+		</tr>
+		<tr>
+			<td><input name="selected_report" type="checkbox" /></td>
+			<td><a href="$portalPath/report/reports">Records with NLA Identifiers</a></td>
+			<td><a href="#">Run</a></td>
+		</tr>
+	</table>
+	<button>Duplicate</button><button>Delete</button>
+</div>

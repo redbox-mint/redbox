@@ -1,6 +1,5 @@
-<div style="width:90%;margin:0px auto 0px auto;">
 #if($self.getErrorMsg()=="")
-	
+<div class="grid_12">
 	<div>
         <span>Date Range		
 			<label for="dateFrom">From</label>
