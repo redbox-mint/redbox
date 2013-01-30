@@ -23,22 +23,24 @@ var updateChart =  function(pId) {
 		location.assign(location.pathname + "?from=" + fromDt + "&to=" + toDt);		
 		$(this).blur();
 	}
-  };
-		
-  $(document).ready(function() {
-    $("#dateFrom").datepicker({
-           dateFormat: "yy-mm-dd", 
-           changeMonth: true, 
-           changeYear: true, 
-           showButtonPanel: false,
-		   onSelect:updateChart('#dateTo')
-       });
-	$("#dateTo").datepicker({
-           dateFormat: "yy-mm-dd", 
-           changeMonth: true, 
-           changeYear: true, 
-           showButtonPanel: false,
-		   onSelect:updateChart('#dateFrom')
-       });
-         
-  });  
+};
+var imgW = 500;
+var imgH = 400;
+$(document).ready(function() {
+  $("#dateFrom").datepicker({
+         dateFormat: "yy-mm-dd", 
+         changeMonth: true, 
+         changeYear: true, 
+         showButtonPanel: false,
+	   onSelect:updateChart('#dateTo')
+     });
+$("#dateTo").datepicker({
+         dateFormat: "yy-mm-dd", 
+         changeMonth: true, 
+         changeYear: true, 
+         showButtonPanel: false,
+	   onSelect:updateChart('#dateFrom')
+     });
+imgW =  Math.floor($(".reportImages").parent().innerWidth() / 2 - 100);  
+jQuery.each($('.reportImages').find('img').map(function(){return this}).get(), function(idx,elem){elem.src=elem.src+"&w="+imgW+"&h="+imgH});
+});  

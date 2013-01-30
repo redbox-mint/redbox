@@ -1,5 +1,5 @@
 #if($self.getErrorMsg()=="")
-<div class="grid_12">
+<div style="width:90%">
 	<div>
         <span>Date Range		
 			<label for="dateFrom">From</label>
@@ -16,7 +16,7 @@
 			Invalid date range
 		</span>
 	</div>
-	<div>
+	<div class="reportImages">
 		<span>
 			<img src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
 		</span>
@@ -24,7 +24,7 @@
 			<img src="chart?chartName=records-by-stage-2&$self.getDateRange()" />
 		</span>		
 	</div>
-	<div>
+	<div class="reportImages">
 		<span>
 			<img src="chart?chartName=records-by-month-1&$self.getDateRange()" />
 		</span>

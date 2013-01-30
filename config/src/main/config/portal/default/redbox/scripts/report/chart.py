@@ -33,8 +33,12 @@ class ChartData:
             
     def buildBarChart(self, context):
         barChartData = None
-        self.imgW = 550
+        self.imgW = 400
         self.imgH = 400
+        if (self.request.getParameter("w") is not None):
+            self.imgW = Integer.valueOf(self.request.getParameter("w"))
+        if (self.request.getParameter("h") is not None):
+            self.imgH = Integer.valueOf(self.request.getParameter("h"))
         self.fromDtTxt =  self.request.getParameter("from")
         self.toDtTxt = self.request.getParameter("to") 
         if (self.fromDtTxt is None or self.toDtTxt is None):
@@ -49,12 +53,12 @@ class ChartData:
         if (self.chartName=="records-by-stage-1"):                
             barChartData = BarChartData(self.fromDtTxt + " to " + self.toDtTxt + "\n Records by Workflow Stage", "", "", BarChartData.LabelPos.SLANTED, BarChartData.LabelPos.HIDDEN,  self.imgW, self.imgH, False)
         if (self.chartName=="records-by-stage-2"):                
-            barChartData = BarChartData("", "", "", BarChartData.LabelPos.VERTICAL, BarChartData.LabelPos.RIGHT,  self.imgW, self.imgH, True)            
+            barChartData = BarChartData("[Insert Title]", "", "", BarChartData.LabelPos.VERTICAL, BarChartData.LabelPos.RIGHT,  self.imgW, self.imgH, True)            
             barChartData.setUseSeriesColor(True)
         if (self.chartName=="records-by-month-1"):                
             barChartData = BarChartData(self.fromDtTxt + " to " + self.toDtTxt + "\n Records Published by Month", "", "", BarChartData.LabelPos.HORIZONTAL, BarChartData.LabelPos.RIGHT,  self.imgW, self.imgH, False)            
         if (self.chartName=="records-by-month-2"):                
-            barChartData = BarChartData("", "", "", BarChartData.LabelPos.HIDDEN, BarChartData.LabelPos.LEFT,  self.imgW, self.imgH, False)                 
+            barChartData = BarChartData("[Insert Title]", "", "", BarChartData.LabelPos.HIDDEN, BarChartData.LabelPos.LEFT,  self.imgW, self.imgH, False)                 
             barChartData.setUseSeriesColor(True)                            
         if (barChartData is None):
             self.errorMsg = "Invalid chart"
