@@ -9,7 +9,7 @@ from org.apache.commons.httpclient.methods import PostMethod
 class AndsDoiData:
     def __init__(self):
         # Some templates for making our XML
-        self.xml_xmlWrapper = "<resource xmlns=\"http://datacite.org/schema/kernel-2.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd\">\n%s</resource>"
+        self.xml_xmlWrapper = "<resource xmlns=\"http://datacite.org/schema/kernel-2.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://datacite.org/schema/kernel-2.2 http://schema.datacite.org/meta/kernel-2.2/metadata.xsd\">\n%s</resource>"
         self.xml_id = "<identifier identifierType=\"DOI\">%s</identifier>\n"
         self.xml_title = "<titles><title>%s</title></titles>\n"
         self.xml_publisher = "<publisher>%s</publisher>\n"
@@ -52,25 +52,26 @@ class AndsDoiData:
         baseUrl = self.doiConfig("apiBaseUrl")
         apiKey = self.doiConfig("apiKey")
 
-        # Create = https://test.ands.org.au/home/dois/doi_mint.php?app_id=$app_id&url=$url
+        # Create = https://services.ands.org.au/doi/1.1/mint.json?app_id=$app_id&url=$url
         if page == "create":
-            return baseUrl + "doi_mint.php?app_id=" + apiKey + "&url="
+            #return baseUrl + "mint.json?app_id=" + apiKey + "&url="
+            return baseUrl + "mint.json/?app_id=" + apiKey + "&url="
 
-        # Update = https://test.ands.org.au/home/dois/doi_update.php?app_id=$app_id&DOI=$DOI_id[&url=$url]
+        # Update = https://services.ands.org.au/doi/1.1/update.json?app_id=$app_id&doi=$DOI_id[&url=$url]
         if page == "update":
-            return baseUrl + "doi_update.php?app_id=" + apiKey + "&DOI="
+            return baseUrl + "update.json/?app_id=" + apiKey + "&doi="
 
-        # Activate = https://test.ands.org.au/home/dois/doi_activate.php?app_id=$app_id&DOI=$DOI_id
+        # Activate = https://services.ands.org.au/doi/1.1/activate.json?app_id=$app_id&doi=$DOI_id
         if page == "activate":
-            return baseUrl + "doi_activate.php?app_id=" + apiKey + "&DOI="
+            return baseUrl + "activate.json/?app_id=" + apiKey + "&doi="
 
-        # Deactivate = https://test.ands.org.au/home/dois/doi_deactivate.php?app_id=$app_id&DOI=$DOI_id
+        # Deactivate = https://services.ands.org.au/doi/1.1/deactivate.json?app_id=$app_id&doi=$DOI_id
         if page == "deactivate":
-            return baseUrl + "doi_deactivate.php?app_id=" + apiKey + "&DOI="
+            return baseUrl + "deactivate.json/?app_id=" + apiKey + "&doi="
 
-        # Get = https://test.ands.org.au/home/dois/doi_xml.php?DOI=$DOI_id
+        # Get = https://services.ands.org.au/doi/1.1/xml.json?doi=$DOI_id
         if page == "get":
-            return baseUrl + "doi_xml.php?DOI="
+            return baseUrl + "xml.json/?doi="
 
     # Get from velocity context
     def vc(self, index):
@@ -191,8 +192,8 @@ class AndsDoiData:
         andsUrl = self.getApiUrl("create")
         ourUrl = json.getString(None, ["url"])
         if (andsUrl is not None and ourUrl is not None):
-            #andsUrl += ourUrl
-            andsUrl += "http://www.example.org"
+            andsUrl += ourUrl
+            #andsUrl += "http://www.example.org"
         self.log.debug("About to create DOI via URL: '{}'", andsUrl)
         (code, body) = self.urlPost(andsUrl, xmlString)
         self.log.debug("Response Code: '{}'", code)
@@ -201,19 +202,27 @@ class AndsDoiData:
             self.throwError("Invalid response from ANDS server, code "+code+ ": "+body)
             return
 
-        # Grab the DOI from their repsonse string
-        words = body.split()
-        if len(words) != 6:
-            self.throwError("We received a SUCCESS response from ANDS, but the format was not as expected. Response body: '"+body.replace("\n", "\\n")+"'")
+        # Grab the DOI from their response string
+        # Modified to match ANDS service point version 2.2
+        andsJsonResp = self.parseJson(body)
+        if andsJsonResp is None:
+            self.throwError("We received a 200 response from ANDS, but the body format was not as expected. Response body: '"+body.replace("\n", "\\n")+"'")
             return
-        doi = words[2]
+        responseCode = andsJsonResp.getString(None, ["response", "responsecode"])
+        if responseCode != "MT001":
+            self.throwError(responseCode + "-" + andsJsonResp.getString(None, ["response", "verbosemessage"]))
+            return
+        doi = andsJsonResp.getString(None, ["response", "doi"]) 
         stored = self.storeDoi(doi, oid)
         if not stored:
             # We've already thrown the error
             return
 
         self.responseJson.getJsonObject().put("doi", doi)
-        self.writer.println(self.responseJson.toString(True).replace("\n", "\\n"))
+        respStr = self.responseJson.toString(True)
+        self.log.debug("Sending response to client:")
+        self.log.debug(respStr)
+        self.writer.println(respStr)
         self.writer.close()
 
     def getDoiFromStorage(self, oid):
