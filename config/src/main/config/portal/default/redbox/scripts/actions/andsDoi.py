@@ -55,23 +55,23 @@ class AndsDoiData:
         # Create = https://services.ands.org.au/doi/1.1/mint.json?app_id=$app_id&url=$url
         if page == "create":
             #return baseUrl + "mint.json?app_id=" + apiKey + "&url="
-            return baseUrl + "mint.json?app_id=" + apiKey + "&url="
+            return baseUrl + "mint.json/?app_id=" + apiKey + "&url="
 
         # Update = https://services.ands.org.au/doi/1.1/update.json?app_id=$app_id&doi=$DOI_id[&url=$url]
         if page == "update":
-            return baseUrl + "update.json?app_id=" + apiKey + "&doi="
+            return baseUrl + "update.json/?app_id=" + apiKey + "&doi="
 
         # Activate = https://services.ands.org.au/doi/1.1/activate.json?app_id=$app_id&doi=$DOI_id
         if page == "activate":
-            return baseUrl + "activate.json?app_id=" + apiKey + "&doi="
+            return baseUrl + "activate.json/?app_id=" + apiKey + "&doi="
 
         # Deactivate = https://services.ands.org.au/doi/1.1/deactivate.json?app_id=$app_id&doi=$DOI_id
         if page == "deactivate":
-            return baseUrl + "deactivate.json?app_id=" + apiKey + "&doi="
+            return baseUrl + "deactivate.json/?app_id=" + apiKey + "&doi="
 
         # Get = https://services.ands.org.au/doi/1.1/xml.json?doi=$DOI_id
         if page == "get":
-            return baseUrl + "xml.json?doi="
+            return baseUrl + "xml.json/?doi="
 
     # Get from velocity context
     def vc(self, index):
@@ -192,8 +192,8 @@ class AndsDoiData:
         andsUrl = self.getApiUrl("create")
         ourUrl = json.getString(None, ["url"])
         if (andsUrl is not None and ourUrl is not None):
-            #andsUrl += ourUrl
-            andsUrl += "http://www.example.org"
+            andsUrl += ourUrl
+            #andsUrl += "http://www.example.org"
         self.log.debug("About to create DOI via URL: '{}'", andsUrl)
         (code, body) = self.urlPost(andsUrl, xmlString)
         self.log.debug("Response Code: '{}'", code)
