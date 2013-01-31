@@ -23,14 +23,16 @@
                                          "fieldName":"rif:description.0.type",
                                          "fieldNameLabel":"rif:description.0.label",
                                          "sourceUrl":"workflows/forms/data/types.json",
-                                         "mandatory":"true"
+                                         "mandatory":"true",
+                                         "idKey":"id",
+                                         "labelKey":"label",
+                                         "listKey":"results"
                                      },
                                      {
                                         "component-type":"textarea",
                                         "field-name":"rif:description.1.value",
                                         "label":"Description"
-                                     },
-                                
+                                     }
                             ],
                             "template":"div-grouping",
                             "element-id":"Collaborators-Other-Uni",
@@ -42,7 +44,10 @@
                             "fieldName":"dc:type.rdf:PlainLiteral",
                             "fieldNameLabel":"dc:type.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/types.json",
-                            "mandatory":"true"
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"paragraph",
@@ -133,7 +138,10 @@
                             "fieldName":"dc:identifier.dc:type.rdf:PlainLiteral",
                             "fieldNameLabel":"dc:identifier.dc:type.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/identifierTypes.json",
-                            "mandatory":"true"
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },                        
                         {
                             "component-type":"text-input",
@@ -160,7 +168,10 @@
                             "fieldName":"dc:creator.foaf:Person.0.jcu:relationshipType",
                             "fieldNameLabel":"dc:creator.foaf:Person.0.jcu:relationshipLabel",
                             "sourceUrl":"workflows/forms/data/types.json",
-                            "mandatory":"true"
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },                        
                         {
                             "component-type":"text-input",
@@ -178,25 +189,16 @@
                             "label":"Family name:"
                         },                        
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "component-type":"data-source-dropdown",
                             "label":"Affiliation",
-                            "additional-classes":"",
-                            "options":[
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint"
-                                },
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint1"
-                                },
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint"
-                                }
-                            ]
-                        },
+                            "fieldName":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "fieldNameLabel":"dc:creator.foaf:Person.0.foaf:Organization.skos:prefLabel",
+                            "sourceUrl":"proxyGet?ns=Parties_Groups&qs=count%3D9999",
+                            "mandatory":"true",
+                            "idKey":"dc:identifier",
+                            "labelKey":"rdfs:label",
+                            "listKey":"results"
+                        },                      
                         {
                             "component-type":"paragraph",
                             "content":"Related Activities - same as Type of Research Activities ??"
@@ -207,7 +209,10 @@
                             "fieldName":"dc:subject.anzsrc:toa.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:toa.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/researchTypes.json",
-                            "mandatory":"true"
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         }, 
                         {
                             "component-type":"paragraph",
@@ -255,7 +260,7 @@
                             "component-type":"text-input",
                             "field-name":"dc:relation.bibo:Website.0.skos:note",
                             "label":"Notes:"
-                        }, 
+                        } 
                     ]
                 },
                 {
@@ -281,8 +286,13 @@
                             "label":"Type",
                             "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
-                            "sourceUrl":"proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3Dtop",
-                            "mandatory":"true"
+                            "sourceUrl":"proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
+                            "dataLevel":"top",
+                            "mandatory":"true",
+                            "idKey":"rdf:about",
+                            "labelKey":"skos:prefLabel",
+                            "listKey":"results",
+                            "defaultValue":"skos:narrower"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
