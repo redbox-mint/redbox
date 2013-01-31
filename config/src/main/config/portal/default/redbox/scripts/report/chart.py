@@ -1,7 +1,7 @@
 from com.googlecode.fascinator.portal.report import ChartGenerator
 from com.googlecode.fascinator.portal.report import BarChartData
-from com.googlecode.fascinator.portal.report.type import RecordsByStageReportManager
-from com.googlecode.fascinator.portal.report.type import RecordsByStage2ReportManager
+from com.googlecode.fascinator.portal.report.type import RecordsByStageChartHandler
+from com.googlecode.fascinator.portal.report.type import RecordsByStage2ChartHandler
 from java.lang import Integer
 from java.awt import Color
 from java.text import SimpleDateFormat
@@ -57,13 +57,13 @@ class ChartData:
         self.out = self.response.getOutputStream("image/png")
         if (self.chartName=="records-by-stage-1"):                
             #barChartData = BarChartData(self.fromDtTxt + " to " + self.toDtTxt + "\n Records by Workflow Stage", "", "", BarChartData.LabelPos.SLANTED, BarChartData.LabelPos.HIDDEN,  self.imgW, self.imgH, False)
-            recordsByStageReportManager = RecordsByStageReportManager()
+            recordsByStageReportManager = RecordsByStageChartHandler()
             recordsByStageReportManager.setScriptingServices(self.Services)
             recordsByStageReportManager.setFromDate(self.fromDt)
             recordsByStageReportManager.setToDate(self.toDt)
             recordsByStageReportManager.renderChart(self.out)
         if (self.chartName=="records-by-stage-2"):
-            recordsByStageReportManager = RecordsByStage2ReportManager()
+            recordsByStageReportManager = RecordsByStage2ChartHandler()
             recordsByStageReportManager.setScriptingServices(self.Services)
             recordsByStageReportManager.setFromDate(self.fromDt)
             recordsByStageReportManager.setToDate(self.toDt)
