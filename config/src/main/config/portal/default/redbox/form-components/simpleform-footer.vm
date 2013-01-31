@@ -32,7 +32,7 @@ function getDateTime(){
         function onContentLoaded(){
             // OpenLayers init, store it globally so the Geonames lookup can hit it later
             window["openLayersMap"] = loadOpenLayers();
-
+/*
             widgetTabs = widgets.changeToTabLayout($(".inputscreens"));
             widgetTabs.tabs({
                 select: function(event, ui){
@@ -92,6 +92,7 @@ function getDateTime(){
                     alert(e);
                 }
             });
+  */
         }
         $(window).load(onContentLoaded);
     });

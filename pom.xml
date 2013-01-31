@@ -216,7 +216,7 @@
         </file>
       </activation>
       <dependencies>
-        <!-- Needs the warpath plugin, so errors outside this build profile -->
+        <!-- Needs the cd plugin, so errors outside this build profile -->
         <dependency>
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>

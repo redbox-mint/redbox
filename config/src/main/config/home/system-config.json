@@ -106,7 +106,7 @@
     },
     "andsDoi": {
         "apiKey": "1234",
-        "apiBaseUrl": "https://test.ands.org.au/home/dois/",
+        "apiBaseUrl": "https://services.ands.org.au/doi/1.1/",
         "doiProperty": "andsDoi",
         "security": {
             "users": [],

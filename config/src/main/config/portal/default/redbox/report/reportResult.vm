@@ -1,0 +1,33 @@
+<div class="grid_16">	
+	<table>
+		<tr>
+			<th>Record Title</th>
+			<th>Type</th>
+			<th>Workflow</th>
+			<th>Field X</th>
+			<th>Field Y</th>
+		</tr>
+		<tr>
+			<td>Study of green frogs in NSW</td>
+			<td>Dataset</td>
+			<td>Published</td>
+			<td>Blah Blah</td>
+			<td>Blah Blah</td>
+		</tr>
+		<tr>
+			<td>Rainfall measures in tropical climates</td>
+			<td>Collection</td>
+			<td>Investigation</td>
+			<td>Blah Blah</td>
+			<td>Blah Blah</td>
+		</tr>
+		<tr>
+			<td>Rainfall measures in tropical climates</td>
+			<td>Collection</td>
+			<td>Metadata Review</td>
+			<td>Blah Blah</td>
+			<td>Blah Blah</td>
+		</tr>
+	</table>
+	<button>Export CSV</button>
+</div>	

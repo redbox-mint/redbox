@@ -15,12 +15,15 @@ from java.lang import String
 
 from org.apache.commons.lang import StringEscapeUtils
 from org.json.simple import JSONArray
+import sys;sys.path.append(r'c:\tools\eclipse\plugins\org.python.pydev_2.6.0.2012062818\pysrc')
+import pydevd
 
 class DatasetData:
     def __init__(self):
         self.messaging = MessagingServices.getInstance()
 
     def __activate__(self, context):
+        pydevd.patch_django_autoreload(patch_remote_debugger=True, patch_show_console=True)
         self.velocityContext = context
         self.log = self.vc("log")
         ##self.log.debug("**** dataset.py")

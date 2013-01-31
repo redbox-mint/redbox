@@ -83,13 +83,13 @@
                                     </label>
                                     ## DOI Integration is disabled pending v1.1 of
                                     ##  ANDS 'Cite My Data' service being released
-                                    <!--
+                                    
                                     <strong>OR</strong>
                                     <label for="useDoi">
                                         <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useDoi" />
                                         <span><button>Get me a DOI using ANDS 'Cite My Data'</button></span>
                                     </label>
-                                    -->
+                                    
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>

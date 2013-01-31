@@ -15,61 +15,39 @@
                             "content":"Descriptions"
                         },              
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"rif:description.1.type",
-                            "label":"Type",
-                            "additional-classes":"",
-                            "options":[
-                                {
-                                    "value":"brief",
-                                    "label":"Brief:"
-                                },
-                                {
-                                    "value":"full",
-                                    "label":"Full:"
-                                },
-                                {
-                                    "value":"note",
-                                    "label":"Note:"
-                                },
-                                {
-                                    "value":"logo",
-                                    "label":"Logo:"
-                                }
-                            ]
-                        },
+                            "component-type":"group",
+                            "fields":[
+                                     {
+                                         "component-type":"data-source-dropdown",
+                                         "label":"Type",
+                                         "fieldName":"rif:description.0.type",
+                                         "fieldNameLabel":"rif:description.0.label",
+                                         "sourceUrl":"workflows/forms/data/types.json",
+                                         "mandatory":"true",
+                                         "idKey":"id",
+                                         "labelKey":"label",
+                                         "listKey":"results"
+                                     },
+                                     {
+                                        "component-type":"textarea",
+                                        "field-name":"rif:description.1.value",
+                                        "label":"Description"
+                                     }
+                            ],
+                            "template":"div-grouping",
+                            "element-id":"Collaborators-Other-Uni",
+                            "additional-class":""
+                        },                        
                         {
-                            "component-type":"textarea",
-                            "field-name":"rif:description.1.value",
-                            "label":"Description"
-                        },
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:type.rdf:PlainLiteral",
+                            "component-type":"data-source-dropdown",
                             "label":"Type",
-                            "additional-classes":"",
-                            "options":[
-                                {
-                                    "value":"catalogueOrIndex",
-                                    "label":"Catalogue or Index"
-                                },
-                                {
-                                    "value":"collection",
-                                    "label":"Collection"
-                                },
-                                {
-                                    "value":"dataset",
-                                    "label":"Dataset"
-                                },
-                                {
-                                    "value":"registry",
-                                    "label":"Registry"
-                                },
-                                {
-                                    "value":"repository",
-                                    "label":"Repository"
-                                }
-                            ]
+                            "fieldName":"dc:type.rdf:PlainLiteral",
+                            "fieldNameLabel":"dc:type.skos:prefLabel",
+                            "sourceUrl":"workflows/forms/data/types.json",
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"paragraph",
@@ -155,57 +133,16 @@
                             "content":"<input id='dc:identifier.checkbox' type='checkbox'><label for='dc:identifier.checkbox'>Use this record's ID</label>"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:identifier.dc:type.rdf:PlainLiteral",
-                            "label":"Type of Identifier",
-                            "additional-classes":"",
-                            "options":[
-						        {
-						            "value": "abn",
-						            "label": "Australian Business Number"
-						        },
-						        {
-						            "value": "arc",
-						            "label": "Australian Research Council identifier"
-						        },
-						        {
-						            "value": "ark",
-						            "label": "ARK Persistent Identifier Scheme"
-						        },
-						        {
-						            "value": "doi",
-						            "label": "Digital Object Identifier"
-						        },
-						        {
-						            "value": "handle",
-						            "label": "HANDLE System Identifier"
-						        },
-						        {
-						            "value": "infouri",
-						            "label": "'info' URI scheme"
-						        },
-						        {
-						            "value": "isil",
-						            "label": "International Standard Identifier for Libraries"
-						        },
-						        {
-						            "value": "local",
-						            "label": "Local Identifier"
-						        },
-						        {
-						            "value": "nla",
-						            "label": "National Library of Australia identifier"
-						        },
-						        {
-						            "value": "purl",
-						            "label": "Persistent Uniform Resource Locator"
-						        },
-						        {
-						            "value": "uri",
-						            "label": "Uniform Resource Identifier"
-						        }
-                            ]
-                        },
+                            "component-type":"data-source-dropdown",
+                            "label":"Type",
+                            "fieldName":"dc:identifier.dc:type.rdf:PlainLiteral",
+                            "fieldNameLabel":"dc:identifier.dc:type.skos:prefLabel",
+                            "sourceUrl":"workflows/forms/data/identifierTypes.json",
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
+                        },                        
                         {
                             "component-type":"text-input",
                             "field-name":"dc:identifier.rdf:PlainLiteral",
@@ -226,33 +163,16 @@
                             "content":"Creators"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:creator.foaf:Person.0.jcu:relationshipType",
+                            "component-type":"data-source-dropdown",
                             "label":"Relationship Types",
-                            "additional-classes":"",
-                            "options":[
-						        {
-						            "value":"isManagedBy",
-						            "label":"Managed by:"
-						        },
-						        {
-						            "value":"isOwnedBy",
-						            "label":"Owned by:"
-						        },
-						        {
-						            "value":"hasCollector",
-						            "label":"Aggregated by:"
-						        },
-							    {
-							        "value":"isEnrichedBy",
-							        "label":"Enriched by:"
-							    },
-							    {
-							        "value":"hasAssociationWith",
-							        "label":"Associated with:"
-							    }
-                            ]
-                        },
+                            "fieldName":"dc:creator.foaf:Person.0.jcu:relationshipType",
+                            "fieldNameLabel":"dc:creator.foaf:Person.0.jcu:relationshipLabel",
+                            "sourceUrl":"workflows/forms/data/types.json",
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
+                        },                        
                         {
                             "component-type":"text-input",
                             "field-name":"locrel:prc.foaf:Person.foaf:title",
@@ -269,53 +189,31 @@
                             "label":"Family name:"
                         },                        
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "component-type":"data-source-dropdown",
                             "label":"Affiliation",
-                            "additional-classes":"",
-                            "options":[
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint"
-                                },
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint1"
-                                },
-                                {
-                                    "value":"values from The Mint",
-                                    "label":"values from The Mint"
-                                }
-                            ]
-                        },
+                            "fieldName":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "fieldNameLabel":"dc:creator.foaf:Person.0.foaf:Organization.skos:prefLabel",
+                            "sourceUrl":"proxyGet?ns=Parties_Groups&qs=count%3D9999",
+                            "mandatory":"true",
+                            "idKey":"dc:identifier",
+                            "labelKey":"rdfs:label",
+                            "listKey":"results"
+                        },                      
                         {
                             "component-type":"paragraph",
                             "content":"Related Activities - same as Type of Research Activities ??"
-                        },                        
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
-                            "label":"Type of Research Activity",
-                            "additional-classes":"",
-                            "options":[
-						        {
-						            "value": "pure",
-						            "label": "Pure basic research"
-						        },
-						        {
-						            "value": "strategic",
-						            "label": "Strategic basic research"
-						        },
-						        {
-						            "value": "applied",
-						            "label": "Applied research"
-						        },
-						        {
-						            "value": "experimental",
-						            "label": "Experimental development"
-                                }
-                            ]
                         },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "label":"Type of Research Activity",
+                            "fieldName":"dc:subject.anzsrc:toa.rdf:resource",
+                            "fieldNameLabel":"dc:subject.anzsrc:toa.skos:prefLabel",
+                            "sourceUrl":"workflows/forms/data/researchTypes.json",
+                            "mandatory":"true",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
+                        }, 
                         {
                             "component-type":"paragraph",
                             "content":"Co-investigators and other contributors - same as Collaborators ??"
@@ -362,7 +260,7 @@
                             "component-type":"text-input",
                             "field-name":"dc:relation.bibo:Website.0.skos:note",
                             "label":"Notes:"
-                        }, 
+                        } 
                     ]
                 },
                 {
@@ -382,6 +280,19 @@
                                     "label":"to be done"
                                 }
                             ]
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "label":"Type",
+                            "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
+                            "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
+                            "sourceUrl":"proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
+                            "dataLevel":"top",
+                            "mandatory":"true",
+                            "idKey":"rdf:about",
+                            "labelKey":"skos:prefLabel",
+                            "listKey":"results",
+                            "defaultValue":"skos:narrower"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
@@ -465,16 +376,16 @@
                         {
                             "component-type":"native-html",
                             "content":"<input id='jcu:research.themes.notAligned' type='checkbox'><label>Not aligned to a University theme</label>"
-                        }
+                        },
                         {
                             "component-type":"paragraph",
                             "content":"Keywords"
-                        }
+                        },
                         {
                             "component-type":"text-input",
-                            "label":"Keword",
-                            "field-name":"dc:subject.vivo:keyword.0.rdf:PlainLiteral"
-                        }
+                            "field-name":"dc:subject.vivo:keyword.0.rdf:PlainLiteral",
+                            "label":"Keyword:"
+                        }                        
                     ]
                 },
                 {

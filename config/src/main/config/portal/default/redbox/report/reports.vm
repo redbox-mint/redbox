@@ -1,0 +1,83 @@
+
+	<section>
+		<h1>Create New Report</h1>
+	<form>
+		<fieldset>
+			<legend>Date Range</legend>
+			<label>From<input type="date" class="datepicker" /></label> 
+			<label>To<input type="date" class="datepicker" /></label><br>
+			<label><input type="radio" name="date_type" checked="checked" />Date created</label><br>
+			<label><input type="radio" name="date_type" />Date modified</label><br>
+			<label>Show
+			<select>
+				<option>All records</option>
+				<option>Published records</option>
+			</select>
+			</label>
+		</fieldset>
+		<label>Report Name: <input type="text" /></label><br>
+		<div id="test-repeatable">
+			<div style="clear:both; padding-top:1em;" id="template">
+				<div style="float:left;">
+					<select name="logicalOp" id="logicalOp" style="display: none"><option>AND</option><option>OR</option></select><br>
+					<label>Select field:
+						<select>
+							<option>FOR</option>
+							<option>SEO</option>
+						</select>
+					</label>
+					<input type="text" />
+				</div>
+				<div>
+					<label><input type="radio" name="field_match" checked="checked"/>Exact match</label>
+					<label><input type="radio" name="ex_inc_null" checked="checked"/>Include null value</label><br>
+					<label style="margin-right:17px"><input type="radio" name="field_match"/>Contains</label>
+					<label><input type="radio" name="ex_inc_null"/>Exclude null value</label><br>
+				</div>
+				<div class="clear" ></div>
+			</div>
+			<button id="add_more_btn" onclick="add_more('test-repeatable');" >Add more</button>
+		</div>
+
+		<br>
+		<input type="submit" name="submit" value="Create" onclick="location.href = '$portalPath/report/reportResult';return false;"/>
+		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
+	</form>
+		
+	</section>
+	<script>
+		 $(function() {$( ".datepicker" ).datepicker();});
+		 $('form').submit(function() { return false;});
+// Add more function		 
+	function add_more(container_id) {
+		var n = $('#'+container_id).children().length;
+		// one template div and an add more button
+		n -= 1;
+		console.info("number of repeatable unit(s) = "+n);
+		if (n==1) {
+			console.info("Add button should be shown");
+		}
+		var myClone = $('#'+container_id).find('#template').clone();
+		myClone[0].id = "clone"+n;
+		renameRadios(myClone,n+1);
+		renameSelect(myClone,n+1);
+		// $('#'+container_id).append(myClone);
+		$(myClone).insertBefore($('#add_more_btn'));
+		// return false;
+	}
+	// newPart can be number needs to be added
+	function renameRadios(jqCont, newPart) {
+		var buttons = jqCont.find(':radio');
+		for (var i=0; i < buttons.length; i++) {
+			console.info("old name:"+buttons[i].name);
+			buttons[i].name += newPart; 
+			console.info("new name:"+buttons[i].name);
+		}
+	}
+	// Logical operator select
+	function renameSelect(jqCont, newPart) {
+		var sel = jqCont.find('#logicalOp');
+		sel.name += newPart;
+		sel.show(); 
+	}
+	</script>

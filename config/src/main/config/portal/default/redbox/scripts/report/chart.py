@@ -39,6 +39,10 @@ class ChartData:
         
         self.imgW = 550
         self.imgH = 400
+        if (self.request.getParameter("w") is not None):
+            self.imgW = Integer.valueOf(self.request.getParameter("w"))
+        if (self.request.getParameter("h") is not None):
+            self.imgH = Integer.valueOf(self.request.getParameter("h"))
         self.fromDtTxt =  self.request.getParameter("from")
         self.toDtTxt = self.request.getParameter("to") 
         if (self.fromDtTxt is None or self.toDtTxt is None):
@@ -67,7 +71,7 @@ class ChartData:
         if (self.chartName=="records-by-month-1"):                
             barChartData = BarChartData(self.fromDtTxt + " to " + self.toDtTxt + "\n Records Published by Month", "", "", BarChartData.LabelPos.HORIZONTAL, BarChartData.LabelPos.RIGHT,  self.imgW, self.imgH, False)            
         if (self.chartName=="records-by-month-2"):                
-            barChartData = BarChartData("", "", "", BarChartData.LabelPos.HIDDEN, BarChartData.LabelPos.LEFT,  self.imgW, self.imgH, False)                 
+            barChartData = BarChartData("[Insert Title]", "", "", BarChartData.LabelPos.HIDDEN, BarChartData.LabelPos.LEFT,  self.imgW, self.imgH, False)                 
             barChartData.setUseSeriesColor(True)                            
         if (barChartData is None):
             self.errorMsg = "Invalid chart"
