@@ -1,5 +1,7 @@
 #if($self.getErrorMsg()=="")
+<link rel="stylesheet" type="text/css" media="print" href="$portalPath/css/dashboard-print.css" />
 <div style="width:90%">
+	<div id="reportDashboardForm">
 	<div>
         <span>Date Range		
 			<label for="dateFrom">From</label>
@@ -16,23 +18,30 @@
 			Invalid date range
 		</span>
 	</div>
+	</div>
 	<div class="reportImages">
+	<h1 id="reportTitle" style="text-align:center"></h1>
 		<span>
-			<img src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
+			<img class="reportDashboardChart" src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
 		</span>
 		<span>
-			<img src="chart?chartName=records-by-stage-2&$self.getDateRange()" />
+			<img class="reportDashboardChart" src="chart?chartName=records-by-stage-2&$self.getDateRange()" />
 		</span>		
 	</div>
 	<div class="reportImages">
 		<span>
-			<img src="chart?chartName=records-by-month-1&$self.getDateRange()" />
+			<img class="reportDashboardChart" src="chart?chartName=records-by-month-1&$self.getDateRange()" />
 		</span>
 		<span>
-			<img src="chart?chartName=records-by-month-2&$self.getDateRange()" />
+			<img class="reportDashboardChart" src="chart?chartName=records-by-month-2&$self.getDateRange()" />
 		</span>		
 	</div>
 	<script type="text/javascript" src="$portalPath/js/reportdashboard.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#reportName").blur(function() {$("#reportTitle").text($(this).val());});
+	});
+	</script>
 #else
 	<span>$self.getErrorMsg()</span>
 #end

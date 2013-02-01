@@ -1,0 +1,28 @@
+.branding {
+ display:none;
+}
+
+.nav {
+ display:none;
+}
+
+#notifications {
+	display:none;
+}
+
+.hidden {
+display:none;
+}
+
+#reportDashboardForm {
+ display:none;
+}
+
+.reportImages {
+  width:700px;
+}
+
+.reportDashboardChart {
+  max-width:49%;
+  max-height:49%;
+}
