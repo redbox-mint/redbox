@@ -2,6 +2,7 @@ from com.googlecode.fascinator.portal.report import ChartGenerator
 from com.googlecode.fascinator.portal.report import BarChartData
 from com.googlecode.fascinator.portal.report.type import RecordsByStageChartHandler
 from com.googlecode.fascinator.portal.report.type import RecordsByStage2ChartHandler
+from com.googlecode.fascinator.portal.report.type import RecordsPublishedByMonthChartHandler
 from java.lang import Integer
 from java.awt import Color
 from java.text import SimpleDateFormat
@@ -69,14 +70,18 @@ class ChartData:
             recordsByStageReportManager.setToDate(self.toDt)
             recordsByStageReportManager.renderChart(self.out)                
         if (self.chartName=="records-by-month-1"):                
-            barChartData = BarChartData(self.fromDtTxt + " to " + self.toDtTxt + "\n Records Published by Month", "", "", BarChartData.LabelPos.HORIZONTAL, BarChartData.LabelPos.RIGHT,  self.imgW, self.imgH, False)            
+            recordsPublishedByMonthChartHandler = RecordsPublishedByMonthChartHandler()
+            recordsPublishedByMonthChartHandler.setScriptingServices(self.Services)
+            recordsPublishedByMonthChartHandler.setFromDate(self.fromDt)
+            recordsPublishedByMonthChartHandler.setToDate(self.toDt)
+            recordsPublishedByMonthChartHandler.renderChart(self.out)            
         if (self.chartName=="records-by-month-2"):                
             barChartData = BarChartData("[Insert Title]", "", "", BarChartData.LabelPos.HIDDEN, BarChartData.LabelPos.LEFT,  self.imgW, self.imgH, False)                 
             barChartData.setUseSeriesColor(True)                            
         if (barChartData is None):
             self.errorMsg = "Invalid chart"
             return
-        if (self.chartName!="records-by-stage-1" or chartName!="records-by-stage-2"):
+        if (self.chartName=="records-by-month-2"):
             barChartData.setBaseSeriesColor(Color(98, 157, 209))
             barChartData = self.getChartData(self.chartName, barChartData)
             ChartGenerator.renderPNGBarChart(self.out, barChartData)
@@ -104,5 +109,3 @@ class ChartData:
             chartData.addEntry(Integer(70), "Activity", "Published Records", Color(127,143,169))
             chartData.addEntry(Integer(20), "Service", "Published Records", Color(45,127,217))                    
         return chartData
-            
-           
