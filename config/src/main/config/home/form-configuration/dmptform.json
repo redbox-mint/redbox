@@ -41,20 +41,17 @@
                                 {
                                     "component-type":"text-input",
                                     "label":"Contact person",
-                                    "field-name":"contact_person",
-                                    "additional-classes":"",
-                                    
+                                    "field-name":"contact_person"
                                 },
                                 {
                                     "component-type":"text-input",
                                     "label":"Email adress",
-                                    "field-name":"contact_email",
-                                    "additional-classes":""
+                                    "field-name":"contact_email"
                                 }
                             ],
+                            "additional-classes":"HiddenWidget",
                             "template":"div-grouping",
-                            "element-id":"delegation_sec",
-                            "additional-class":"HiddenWidget"
+                            "element-id":"delegation_sec"
                         },
                         {
                             "component-type":"paragraph",
@@ -95,8 +92,9 @@
                         },
                         {
                             "component-type":"text-input",
-                            "filed-name":"dc:creator",
-                            "label":"Principal Researcher"
+                            "field-name":"dc:creator",
+                            "label":"Principal Researcher",
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
@@ -142,9 +140,13 @@
                             "content":"A list of collaborators will be included in your Data Management Plan. It will also help to identify people authorised to access a collaboration space for the project."
                         },
                         {
-                            "component-type":"repeatable-text",
-                            "field-name":"Person",
-                            "label":"People at this University"
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"People at this University"
+                        },
+                        {
+                        	"component-type":"people",
+                        	"lookup-name":"Collaborators.local"
                         },
                         {
                             "component-type":"text-block",
@@ -152,23 +154,13 @@
                             "content":"People at other Australian Universities"
                         },
                         {
-                            "component-type":"group",
-                            "fields":[
-                                {
-                                    "component-type":"repeatable-text",
-                                    "field-name":"Collaborators-Other-Uni-Person",
-                                    "label":"Name"
-                                },
-                                {
-                                    "component-type":"repeatable-text",
-                                    "field-name":"Collaborators-Other-Uni-Name",
-                                    "label":"Name of University"
-                                },
-                                
-                            ],
-                            "template":"div-grouping",
-                            "element-id":"Collaborators-Other-Uni",
-                            "additional-class":""
+                            "component-type":"repeatable-container",
+                            "containter-for":"people-other-university",
+                            "sub-elements":{"settings":[
+                            					{"jaffaPeople":{"source":"nla","label":"","class-list":"jaffa-field","suffix":"person"}},
+												{"jaffaText":{"label": "University","class-list":"jaffa-field","suffix": "university"}}
+												]
+											}	
                         },
                         {
                             "component-type":"text-block",
@@ -176,22 +168,14 @@
                             "content":"People at other institutions both in Australia and overseas"
                         },
                         {
-                            "component-type":"group",
-                            "fields":[
-		                        {
-		                            "component-type":"repeatable-text",
-		                            "field-name":"Collaborators-Other-Ins-Person",
-		                            "label":"Name"
-		                        },
-		                        {
-		                            "component-type":"repeatable-text",
-		                            "field-name":"Collaborators-Other-Ins-Name",
-		                            "label":"Name of University/Institution"
-		                        }
-                            ],
-                            "template":"div-grouping",
-                            "element-id":"Collaborators-Other-Ins"
-                        },
+                            "component-type":"repeatable-container",
+                            "containter-for":"collaborators-other-institution",
+                            "sub-elements":{"settings":[
+                            					{"jaffaText":{"label":"Name","class-list":"jaffa-field","suffix":"person"}},
+                            					{"jaffaText":{"label":"University/Institution","class-list":"jaffa-field","suffix": "institution"}}
+                            					]
+                            				}
+                        }
                     ]
                 },
                 {
@@ -848,7 +832,7 @@
                             "component-type":"text-input",
                             "field-name":"Extra.Collection.OtherDescription",
                             "label":"Include another way to describe the period, if relevant (eg World War II)",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"paragraph",
@@ -862,43 +846,43 @@
                             "component-type":"text-input",
                             "label":"Links to websites related to this data collection",
                             "field-name":"Extra.Website.URL",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Links to datasets related to this collection",
                             "field-name":"Extra.DataSet.URL",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Supervisors associated with this data collection",
                             "field-name":"Extra.Collection.Supervisor",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Link to this data collection",
                             "field-name":"Extra.Links",
-                            "additional-class":"url"
+                            "additional-classes":"url"
                         },
                         {
                             "component-type":"paragraph",
                             "content":"Data Collection Methodology",
-                            "additional-class":"h2"
+                            "additional-classes":"h2"
                         },
                         {
                             "component-type":"text-input",
                             "label":"What software or equipment is used to create the data?",
                             "field-name":"Extra.Software_Equipment",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"textarea",
                             "label":"Please provide a description of the data collection methodology",
                             "field-name":"Extra.Collection.Methodology",
                             "content":"",
-                            "additional-class":""
+                            "additional-classes":""
                         },
                         {
                             "component-type":"native-html",
