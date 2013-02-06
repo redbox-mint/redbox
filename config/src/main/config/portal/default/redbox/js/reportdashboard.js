@@ -41,6 +41,6 @@ $("#dateTo").datepicker({
          showButtonPanel: false,
 	   onSelect:updateChart('#dateFrom')
      });
-imgW =  Math.floor($(".reportImages").parent().innerWidth() / 2 - 100);  
+imgW =  Math.floor($(".reportImages").parent().innerWidth() / 2 - 120);  
 jQuery.each($('.reportImages').find('img').map(function(){return this}).get(), function(idx,elem){elem.src=elem.src+"&w="+imgW+"&h="+imgH});
 });  

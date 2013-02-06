@@ -513,5 +513,14 @@
             "failOnMissing": false
         },
         "migrationScript": "${fascinator.home}/restore/redboxMigration1.5.py"
-    }
+    },
+    "services": [
+    	{
+    		"id":"reportManager",
+    		"className":"com.googlecode.fascinator.portal.report.service.ReportManager",
+    		"config": {
+    			"home":"${fascinator.home}/reports/saved-reports"
+    		}	
+    	}
+    ]
 }
