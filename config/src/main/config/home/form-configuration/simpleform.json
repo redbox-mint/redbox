@@ -271,88 +271,37 @@
                             "content":"Fields of Research"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"FOR1",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type":"data-source-dropdown",
-                            "label":"Type",
+                            "component-type":"anzsrc-selection",
+                            "label":"",
                             "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
                             "sourceUrl":"proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
                             "dataLevel":"top",
-                            "mandatory":"true",
+                            "mandatory":"false",
                             "idKey":"rdf:about",
                             "labelKey":"skos:prefLabel",
                             "listKey":"results",
-                            "defaultValue":"skos:narrower"
-                        },
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"FOR2",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"FOR3",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
+                            "defaultValue":"skos:narrower",
+                            "anzsrcType":"for"
                         },
                         {
                             "component-type":"paragraph",
                             "content":"Socio-Economic Objective"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"SEO1",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
+                            "component-type":"anzsrc-selection",
+                            "label":"",
+                            "fieldName":"dc:subject.anzsrc:seo.0.rdf:resource",
+                            "fieldNameLabel":"dc:subject.anzsrc:seo.0.skos:prefLabel",
+                            "sourceUrl":"proxyGet?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
+                            "dataLevel":"top",
+                            "mandatory":"false",
+                            "idKey":"rdf:about",
+                            "labelKey":"skos:prefLabel",
+                            "listKey":"results",
+                            "defaultValue":"skos:narrower",
+                            "anzsrcType":"seo"
                         },
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"SEO2",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"Collection.Type",
-                            "label":"SEO3",
-                            "options":[
-                                {
-                                    "value":"TDB",
-                                    "label":"to be done"
-                                }
-                            ]
-                        },                        
                         {
                             "component-type":"paragraph",
                             "content":"Research Themes - selection one or more of the 4 themes, or not aligned."
