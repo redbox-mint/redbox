@@ -1,3 +1,4 @@
+#if($self.getErrorMsg()=="")
 <div class="grid_4">
 	<div class="box menu">
 	    <h2>Options</h2>
@@ -16,21 +17,23 @@
 			<th>Report</th>
 			<th>Run</th>
 		</tr>
+		#set ($reports = $self.getReports())
+		#if($reports)
+			#foreach($report in $reports.values())
 		<tr>
 			<td><input name="selected_report" type="checkbox" /></td>
-			<td><a href="$portalPath/report/reports">Records without Citations</a></td>
+			<td><a href="$portalPath/report/reports">$report.getLabel()</a></td>
 			<td><a href="#">Run</a></td>
 		</tr>
+			#end
+		#else
 		<tr>
-			<td><input name="selected_report" type="checkbox" /></td>
-			<td><a href="$portalPath/report/reports">Embargoed Records</a></td>
-			<td><a href="#">Run</a></td>
+			<td colspan=3>No Reports</td>
 		</tr>
-		<tr>
-			<td><input name="selected_report" type="checkbox" /></td>
-			<td><a href="$portalPath/report/reports">Records with NLA Identifiers</a></td>
-			<td><a href="#">Run</a></td>
-		</tr>
+		#end
 	</table>
 	<button>Duplicate</button><button>Delete</button>
 </div>
+#else
+	<div>$self.getErrorMsg()</div>
+#end

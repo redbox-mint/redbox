@@ -154,14 +154,13 @@
                             "content":"People at other Australian Universities"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"Collaborators-Other-Uni-Name",
-                            "label":"Name of University"
-                        },
-                        {
-                        	"component-type":"people",
-                        	"lookup-name":"Collaborators.other",
-                        	"source":"nla"
+                            "component-type":"repeatable-container",
+                            "containter-for":"people-other-university",
+                            "sub-elements":{"settings":[
+                            					{"jaffaPeople":{"source":"nla","label":"","class-list":"jaffa-field","suffix":"person"}},
+												{"jaffaText":{"label": "University","class-list":"jaffa-field","suffix": "university"}}
+												]
+											}	
                         },
                         {
                             "component-type":"text-block",
@@ -169,22 +168,14 @@
                             "content":"People at other institutions both in Australia and overseas"
                         },
                         {
-                            "component-type":"group",
-                            "fields":[
-		                        {
-		                            "component-type":"repeatable-text",
-		                            "field-name":"Collaborators-Other-Ins-Person",
-		                            "label":"Name"
-		                        },
-		                        {
-		                            "component-type":"repeatable-text",
-		                            "field-name":"Collaborators-Other-Ins-Name",
-		                            "label":"Name of University/Institution"
-		                        }
-                            ],
-                            "template":"div-grouping",
-                            "element-id":"Collaborators-Other-Ins"
-                        },
+                            "component-type":"repeatable-container",
+                            "containter-for":"collaborators-other-institution",
+                            "sub-elements":{"settings":[
+                            					{"jaffaText":{"label":"Name","class-list":"jaffa-field","suffix":"person"}},
+                            					{"jaffaText":{"label":"University/Institution","class-list":"jaffa-field","suffix": "institution"}}
+                            					]
+                            				}
+                        }
                     ]
                 },
                 {

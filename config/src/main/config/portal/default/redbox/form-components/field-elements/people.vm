@@ -28,6 +28,3 @@ $(document).ready(function() {$("[id='$lookup-name']").jaffaPeopleRepeatable({
 
 });
 </script>
-
-<script type="text/javascript" src="../jaffa/widgets/people.js"></script>
-<script type="text/javascript" src="../jaffa/libs/nameLookup2.js"></script>
