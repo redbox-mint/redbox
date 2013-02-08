@@ -1,3 +1,4 @@
+<script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
 	function hide_no_option() { 
   		document.getElementById('delegation_sec').style.display='none';
@@ -13,15 +14,11 @@
 	}
 	
 	$(document).ready(function() {
-   		jaffa.ui.changeToTabLayout($('#simpleworkflow-form'), 'h1');
-   		$(widgets.contentLoaded);
-//   		$( ".datepicker" ).datepicker();
-   		var hidden_elements = document.getElementsByClassName('HiddenWidget');
-   		console.info("HiddenWidgets");
-   		console.info('length = ' + hidden_elements.length);
+		var hidden_elements = document.getElementsByClassName('HiddenWidget');
    		for( var i = 0; i < hidden_elements.length; i++) {
-   			console.info(hidden_elements[i].id);
    			hidden_elements[i].style.display = 'none';
    		}
+		$(widgets.contentLoaded);
+		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/webflow.json");
    	})
 </script>

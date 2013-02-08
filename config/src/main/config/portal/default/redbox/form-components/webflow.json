@@ -1,0 +1,33 @@
+{
+    "steps": {
+        "Welcome": {
+            "Next": "Project"
+        },
+        "Project": {
+            "Next": "Collaborators"
+        },
+        "Collaborators": {
+            "Next": "IP",
+            "Finish": "Final",
+            "Back": "Project"
+        },
+        "IP": {
+            "Next": "About the data"
+        },
+        "About the data": {
+            "Next": "Confidentiality and Ethics"
+        },
+        "Confidentiality and Ethics": {
+            "Next": "Retention"
+        },
+        "Retention": {
+            "Next": "Storage"
+        },
+        "Storage": {
+            "Next": "Final"
+        },
+        "Final": {
+            "Next": "Extra"
+        }
+    }
+}

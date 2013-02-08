@@ -76,12 +76,22 @@
                         {
                             "component-type":"paragraph",
                             "content":"For help, please click on <img src='help.png' alt='help' />"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "state-name":"Welcome",
+                            "transition-name":"Next"
                         }
                     ]
                 },
                 {
                     "heading":"Project",
                     "fields":[
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"Project"
+                        },
                         {
                             "component-type":"paragraph",
                             "content":"You have landed on this page because you have clicked on a link asking you to register a research dataset."
@@ -129,6 +139,11 @@
                             "field-name":"Date.Estimated.finish",
                             "label":"Estimated finish date",
                             "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "state-name":"Collaborators",
+                            "type":"button"
                         }
                     ]
                 },
@@ -175,6 +190,12 @@
                             					{"jaffaText":{"label":"University/Institution","class-list":"jaffa-field","suffix": "institution"}}
                             					]
                             				}
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "state-name":"Collaborators",
+                            "transition-name":"Finish",
+                            "type":"button"
                         }
                     ]
                 },

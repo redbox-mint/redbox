@@ -1,0 +1,6 @@
+#if (!$transition-name) #set($transition-name="Next") #end
+#if ($type == 'button') 
+<button state-name="$state-name" transition-name="$transition-name" onclick="transition_click(this)">$transition-name</button>
+ #else 
+<a href="#" state-name="$state-name" transition-name="$transition-name" onclick="transition_click(this)">$transition-name</a>
+#end
