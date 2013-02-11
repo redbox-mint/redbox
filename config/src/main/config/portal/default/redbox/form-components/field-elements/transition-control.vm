@@ -1,6 +1,7 @@
-#if (!$transition-name) #set($transition-name="Next") #end
+#foreach( $its-name in $transition-names )
 #if ($type == 'button') 
-<button state-name="$state-name" transition-name="$transition-name" onclick="transition_click(this)">$transition-name</button>
- #else 
-<a href="#" state-name="$state-name" transition-name="$transition-name" onclick="transition_click(this)">$transition-name</a>
+	<button transition-name="$its-name" onclick="transition_click(this)">$its-name</button>
+	 #else 
+	<a href="#" transition-name="$its-name" onclick="transition_click(this)">$its-name</a>
+	#end
 #end

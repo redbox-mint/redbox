@@ -1,33 +1,45 @@
 {
     "steps": {
         "Welcome": {
-            "Next": "Project"
+            "Next": "Overview"
         },
-        "Project": {
-            "Next": "Collaborators"
+        "Overview": {
+            "Next": "People"
         },
-        "Collaborators": {
-            "Next": "IP",
-            "Finish": "Final",
-            "Back": "Project"
+        "People": {
+            "Next": "dataCollection",
+            "Back": "Overview"
         },
-        "IP": {
-            "Next": "About the data"
+        "dataCollection": {
+            "Back": "People",
+            "Next": "dataStructure"
         },
-        "About the data": {
-            "Next": "Confidentiality and Ethics"
+        "dataStructure": {
+        	"Back": "dataCollection",
+            "Next": "dataStorage"
         },
-        "Confidentiality and Ethics": {
+        "dataStorage": {
+        	"Back": "dataStructure",
+            "Next": "dataLicensingAccess"
+        },
+        "dataLicensingAccess": {
+            "Back": "dataStorage",
             "Next": "Retention"
         },
         "Retention": {
-            "Next": "Storage"
+            "Back": "dataLicensingAccess",
+            "Next": "EthicsSensitivities"
         },
-        "Storage": {
-            "Next": "Final"
+        "EthicsSensitivities": {
+        	"Back": "Retention",
+            "Next": "Ownership"
         },
-        "Final": {
-            "Next": "Extra"
+        "Ownership": {
+        	"Back": "EthicsSensitivities",
+            "Next": "furtherinfo"
+        },
+        "furtherinfo": {
+            "Back": "Ownership"
         }
     }
 }

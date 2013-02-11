@@ -1,0 +1,17 @@
+<div>
+<input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
+<input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet?ns=NLA_SRU&qs={searchTerms}" />
+</div>
+
+<div id="$lookup-name">&nbsp;</div>
+<script type="text/javascript">
+$(document).ready(function() {$("[id='$lookup-name']").jaffaPeople({
+	#if ($source)		
+			"source":"$source",
+	#end	
+			"label":"Name",
+			"class-list":"jaffa-field",
+			"field":"${lookup-name}-person"
+		});
+	});
+</script>
