@@ -55,15 +55,15 @@ var PeopleWidgetBuilder = function($, jaffa) {
             }
 
             var titleFieldId= this.field+"title";
-            ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel\">Title</label>");
+            ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Title</label>");
             ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field\" />");
             
             var givenNameFieldId= this.field+"givenName";
-            ui.append("<label for=\""+givenNameFieldId+"\" class=\"widgetLabel\">Given Name</label>");
+            ui.append("<label for=\""+givenNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Given Name</label>");
             ui.append("<input type=\"text\" id=\""+givenNameFieldId+"\" class=\"jaffa-field\" />");
             
             var familyNameFieldId= this.field+"familyName";
-            ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel\">Family Name</label>");
+            ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Family Name</label>");
             ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field\" />");
 
             var dcIdentifierId = this.field+"dcIdentifier";
