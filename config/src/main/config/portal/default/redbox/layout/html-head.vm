@@ -9,6 +9,9 @@
 <script type="text/javascript" src="$portalPath/js/json2.min.js"></script>
 #if($pageTitle.equals("Metadata Record")) 
 <script type="text/javascript" src="$portalPath/js/jquery-1.4.2.min.js"></script>
+#end
+#if($pageTitle.equals("Notify us about a dataset")) 
+<script type="text/javascript" src="$portalPath/js/jquery-1.4.2.min.js"></script>
 #else
 <script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
 #end
