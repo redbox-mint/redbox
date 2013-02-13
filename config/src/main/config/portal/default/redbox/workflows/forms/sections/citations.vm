@@ -355,6 +355,7 @@
 
         var prefillBtn = getReDBoxById("${cite}.prefillBtn");
         prefillBtn.live("click", function() {
+			$(".validation-err-msg").hide();
             ### Collection Title
             var title = getReDBoxById("dc:title");
             if (title.size() != 0) {
