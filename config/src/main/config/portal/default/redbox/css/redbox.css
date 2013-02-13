@@ -362,4 +362,24 @@ div.meta ol, div.meta ul {
 	margin-right:0.5em;
 }
 
+.component-wrapper > label {
+	 display:block;
+}
+
+.component-wrapper .widgetLabel {
+	display:block;
+}
+
+.component-wrapper .peopleWidgetLabel{
+	display:inline;
+	padding-right:0.3em;
+	padding-left:0.3em;
+}
+'
+.component-wrapper > hr {
+	padding-bottom:0;
+}
+.component-wrapper{
+	padding-bottom:0.5em;
+}
 
