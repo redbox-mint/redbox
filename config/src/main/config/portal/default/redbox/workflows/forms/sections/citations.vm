@@ -78,7 +78,7 @@
                                 <td>Identifier:</td>
                                 <td>
                                     <label for="useCuration">
-                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" />
+                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" checked/>
                                         Use the Identifier provided during curation
                                     </label>
                                     ## DOI Integration is disabled pending v1.1 of
