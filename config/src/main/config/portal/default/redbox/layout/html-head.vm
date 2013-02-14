@@ -9,10 +9,11 @@
 <script type="text/javascript" src="$portalPath/js/json2.min.js"></script>
 #if($pageTitle.equals("Metadata Record") || $pageTitle.equals("Notify us about a dataset")) 
 <script type="text/javascript" src="$portalPath/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="$portalPath/js/jquery-ui-1.7.2.custom.min.js"></script>
 #else
 <script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
-#end
 <script type="text/javascript" src="$portalPath/js/jquery-ui.1.8.18.min.js"></script>
+#end
 $!pageHeader
 #parse($page.getTemplate('layout/html-head-links.vm'))
 #parse($page.getTemplate('layout/html-head-scripts.vm'))
