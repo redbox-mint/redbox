@@ -1,0 +1,13 @@
+#if($noLayout)$!pageContent#else
+<!DOCTYPE html>
+<html>
+    <head>
+        #parseTemplate("layout/html-head.vm")
+    </head>
+    <body>
+        #parseTemplate("layout/jquery-settings.vm")
+        #parseTemplate("layout/page-structure.vm")
+        #parseTemplate("layout/action-form.vm")
+    </body>
+</html>
+#end

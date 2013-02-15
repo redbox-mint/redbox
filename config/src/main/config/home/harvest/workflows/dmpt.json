@@ -11,7 +11,7 @@
     "workflow-id":"dmpt",
     "transformer": {
         "curation": ["local"],
-        "metadata": ["jsonVelocity"]
+        "metadata": ["jsonVelocity","jsonVelocityPDF"]
     },
     "curation": {
         "neverPublish": false,
@@ -37,17 +37,18 @@
 	"form-configuration": "form-configuration/dmptform.json",
     "stages": [
         {
-            "name": "inbox",
-            "label": "Inbox",
-            "description": "Potential records for investigation.",
+            "name": "dmpt-draft",
+            "label": "Draft",
+            "description": "Draft plans by researchers",
+            "owner_edit_allowed": "true",
             "security": ["admin"],
             "visibility": ["admin"],
             "actions" :[ { "action-name" : "next",
                            "target-step" : "investigation" }]
         },
         {
-            "name": "investigation",
-            "label": "Investigation",
+            "name": "dmpt-complete",
+            "label": "Complete",
             "description": "Records under investigation.",
             "security": [ "admin"],
             "visibility": ["admin"],

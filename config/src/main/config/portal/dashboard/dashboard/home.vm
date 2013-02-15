@@ -1,0 +1,16 @@
+#if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
+#set($pageTitle = "Home")
+
+<h2 id="page-heading">
+  <span>$page.portalName</span>
+</h2>
+
+#parseTemplate("menus/home-main-menu.vm")
+
+
+    <div class="grid_12">
+       #parseTemplate("home/dmpt/myplans.vm")
+       #parseTemplate("home/dmpt/mydatasets.vm")
+    </div>
+    <div class="clear"></div>
+#end

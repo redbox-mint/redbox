@@ -1,0 +1,82 @@
+#set ($projectName = $util.get($item, "project.name"))
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Data management plan</title>
+<style type='text/css'>
+body {width: 18cm; }
+dt  {
+	clear:left;
+	float:left;
+	line-height:26px;
+	width:100px;
+}
+dd {
+	clear:right;
+	padding:4px 0 4px 40px;
+}
+.details-table { width:100%; border: 2px solid black; border-collapse: collapse; }
+.details-table	th {background-color:#1B81CD; text-align:left }
+.details-table	th,td { border: 1px solid black; padding:2px}
+NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.
+@page { 
+	size:8.27in 11.69in; 
+	margin: 0.5in 0.25in 0.5in 0.25in; 
+	-fs-flow-top: "header";
+	-fs-flow-bottom: "footer";
+	-fs-flow-left: "left";
+	-fs-flow-right: "right";
+	padding: 1em;
+	@top-center { content: element(header)}
+	@bottom-center { content: element(footer) }
+}
+
+#header {
+	font: bold serif;
+	position: running(header); 
+	-fs-move-to-flow: "header";
+	text-align: left;
+}
+
+#footer {
+	font-size: 90%; font-style: italic; 
+	position: running(footer);
+	display: block; 
+	text-align: right;
+}
+
+#pagenumber:before {
+	content: counter(page); 
+}
+
+#pagecount:before {
+	content: counter(pages);  
+}
+
+h1 {
+	text-align:center;
+}
+		
+	</style>
+	</head>
+<body>
+<div id="header"><img src='../../portal/default/redbox/images/redboxicon.png' height="30"/> Data management planning toolkit</div>
+<div id="footer">Project: $projectName<br/>Page: <span id="pagenumber"/></div>
+<h1>Data management plan</h1>
+<dl>
+<dt style="font-weight:bold;">Project name</dt>
+<dd>$projectName</dd>
+<dt>Project ID</dt>
+<dd>$util.get($item, "project.id")</dd>
+</dl>
+<h4>Description:</h4>
+<p>$util.get($item, "project.description")</p>
+<h4>Plan details</h4>
+<h4>Overview</h4>
+<h4>People</h4>
+<h4>Data collection</h4>
+<h4>Data structure</h4>
+<h4>Ethics and sensitivities</h4>
+</body>
+</html>

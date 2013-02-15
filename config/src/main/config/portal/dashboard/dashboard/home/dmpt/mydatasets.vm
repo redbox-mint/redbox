@@ -1,0 +1,61 @@
+#set($menuTitle = "My datasets")
+#parseTemplate("wrapping/info-box-open.vm")
+
+<div class="block">
+<p><b>My drafts</b></p>
+<table>
+    <thead>
+        <tr>
+            <th>Dataset</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+	#foreach($item in $self.myDrafts)
+	    #set($oid = $item.get("id"))
+	    <tr>
+	    	<td><a href="$portalPath/detail/$oid">$item.get("dc_title")</a></td>
+		    <td>
+            #parseTemplate("home/dmpt/created_modified_date.vm")                
+		    </td>
+		    <td>$self.formatDate($item.get("last_modified"))</td>
+	        <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
+	            <a href="#"><img alt="Delete record" src="$portalPath/images/icons/delete.png"></a>
+	            <a href="#"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
+	       </td>
+	    </tr>
+	#end
+    </tbody>
+</table>
+
+<p><b>Submitted</b></p>
+<table>
+    <thead>
+        <tr>
+            <th>Dataset</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Manage</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    #foreach($item in $self.myDatasets)
+    #set($oid = $item.get("id"))
+	    <tr>
+    	<td><a href="$portalPath/detail/$oid">$item.get("dc_title")</a></td>
+	    <td>
+        #parseTemplate("home/dmpt/created_modified_date.vm")                
+	    </td>
+	    <td>$self.formatDate($item.get("last_modified"))</td>
+        <td><a href="#"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a></td>
+        <td>$item.get("workflow_step_label")</td>
+        </tr>
+    #end
+    </tbody>
+</table>
+
+#parseTemplate("wrapping/info-box-close.vm")
+

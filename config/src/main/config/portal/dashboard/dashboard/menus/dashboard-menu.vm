@@ -1,0 +1,9 @@
+<div class="grid_4">
+    #set($menuTitle = "Create a new...")
+    #parseTemplate("wrapping/main-menu-open.vm")
+    <ul class="menu">
+        <li><a href="$portalPath/null">Data Plan</a></li>
+        <li><a href="$portalPath/null">Dataset Description</a></li>
+    </ul>
+    #parseTemplate("wrapping/main-menu-close.vm")
+</div>

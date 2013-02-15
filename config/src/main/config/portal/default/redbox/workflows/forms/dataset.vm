@@ -352,6 +352,9 @@ $(function(){
 
     $(".form-fields-save-close").click(function() {
         saveAndClose = true;
+		$(".save-note").each(function(idx){ 
+			this.click();
+		});
         $(".form-fields-save").click();
     });
 

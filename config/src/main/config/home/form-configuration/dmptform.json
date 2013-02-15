@@ -1,6 +1,6 @@
 {
     "stages":{
-        "inbox":{
+        "dmpt-draft":{
             "divs":[
                 {
                     "heading":"Welcome",
