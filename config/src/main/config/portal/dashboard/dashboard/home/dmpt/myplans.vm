@@ -1,0 +1,32 @@
+#set($menuTitle = "My plans")
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Created</th>
+                <th>Modified</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+        #foreach($item in $self.myPlans)
+            #set($oid = $item.get("id"))
+          <tr>
+                <td><a href="$portalPath/detail/$oid">$item.get('project.name')</a></td>
+                <td>
+                #parseTemplate("home/dmpt/created_modified_date.vm")                
+                </td>
+                <td>$self.formatDate($item.get("last_modified"))</td>
+                <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
+                <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                <a href="#"><img alt="Delete record" src="$portalPath/images/icons/delete.png"></a>
+                <a href="#"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
+                </td>
+            </tr>
+        #end
+        </tbody>
+    </table>
+</div>
+#parseTemplate("wrapping/info-box-close.vm")
