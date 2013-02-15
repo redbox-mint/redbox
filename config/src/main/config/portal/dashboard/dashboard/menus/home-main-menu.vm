@@ -1,11 +1,11 @@
-#if($page.authentication.is_logged_in())
+#if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
 <div class="grid_4">
     #set($menuTitle = "Options")
     #parseTemplate("wrapping/main-menu-open.vm")
     <ul class="menu">
         <li>
-            <a id="new-record" href="#" title="Create a new data management plan for your project">Add a new plan</a>
-            <a id="edit-record" href="#" title="Create a description for your research data">Describe my data</a>
+            <a id="new-dmpt" href="#" title="Create a new data management plan for your project">Add a new plan</a>
+            <a id="new-dataset" href="#" title="Create a description for your research data">Describe my data</a>
         </li>
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")
@@ -14,17 +14,17 @@
 $(function() {
     var jQ = $;
     var processing = false;
-    jQ("#new-record").click(function() {
+    jQ("#new-dataset").click(function() {
         if (processing) return;
         processing = true;
-        jQ("#new-record").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        jQ("#new-dataset").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
         jQ.ajax({
             type: "POST",
             url: "$portalPath/actions/packaging.ajax",
             data: {
                 ajax: 1,
                 func: "create-new",
-                packageType: "dataset",
+                packageType: "simple",
                 metaList: ["title", "description", "redbox:newForm", "redbox:formVersion"],
                 title: "[Untitled]",
                 description: "",
@@ -48,6 +48,43 @@ $(function() {
         });
         return false;
     });
+    
+    jQ("#new-dmpt").click(function() {
+        if (processing) return;
+        processing = true;
+        jQ("#new-dmpt").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        jQ.ajax({
+            type: "POST",
+            url: "$portalPath/actions/packaging.ajax",
+            data: {
+                ajax: 1,
+                func: "create-new",
+                packageType: "dmpt",
+                metaList: ["title", "dc:description", "redbox:newForm", "redbox:formVersion","project.name"],
+                title: "[Untitled]",
+                description: "",
+                "project.name": "New Project",
+                "redbox:newForm": "true",
+                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")"
+            },
+            success: function(data) {
+                if (data.status == "ok") {
+                    function redirect() {
+                        window.location.href = data.url;
+                    }
+                    setTimeout(redirect, 1500);
+                } else {
+                    alert("Failed to create record!");
+                }
+            },
+            error: function(xhr, status, e) {
+                alert("Failed to create record!");
+            },
+            dataType: "json"
+        });
+        return false;
+    });
 });
+
 </script>
 #end

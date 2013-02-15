@@ -147,6 +147,11 @@
       <artifactId>plugin-transformer-jsonVelocity</artifactId>
       <version>1.1.3-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.googlecode.the-fascinator.plugins</groupId>
+      <artifactId>plugin-transformer-jsonVelocity-pdf</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

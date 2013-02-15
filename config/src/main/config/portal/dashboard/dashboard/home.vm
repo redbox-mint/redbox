@@ -1,3 +1,4 @@
+#if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
 #set($pageTitle = "Home")
 
 <h2 id="page-heading">
@@ -6,7 +7,7 @@
 
 #parseTemplate("menus/home-main-menu.vm")
 
-#if($page.authentication.is_logged_in())
+
     <div class="grid_12">
        #parseTemplate("home/dmpt/myplans.vm")
        #parseTemplate("home/dmpt/mydatasets.vm")

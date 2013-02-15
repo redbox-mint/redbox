@@ -40,6 +40,7 @@
             "name": "inbox",
             "label": "Inbox",
             "description": "Potential records for investigation.",
+            "owner_edit_allowed": "true",	
             "security": ["admin"],
             "visibility": ["admin"],
             "actions" :[ { "action-name" : "next",
