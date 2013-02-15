@@ -17,7 +17,7 @@
         "neverPublish": false,
         "alreadyCurated": false
     },
-
+	"display-type":"package-dmpt",
     "transformerOverrides": {
         "local": {
             "template": "${server.url.base}published/detail/[[OID]]"
