@@ -1,0 +1,26 @@
+{
+    "results": [
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "title"
+                }
+            },
+            "key": "title",
+            "label": "Title",
+            "solrField": "dc_title"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "keyword"
+                }
+            },
+            "label": "Keywords",
+            "key" : "keyword",
+            "solrField": "dc_subject"
+        }
+    ]
+}

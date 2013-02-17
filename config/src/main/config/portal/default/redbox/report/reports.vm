@@ -1,22 +1,44 @@
-
+#if($self.getErrorMsg()=="")
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/myJaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/container.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/dropdown.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
+	<div id="reportForm">
 	<section>
 		<h1>Create New Report</h1>
-	<form>
+	<div>
 		<fieldset>
 			<legend>Date Range</legend>
-			<label>From<input type="date" class="datepicker" /></label> 
-			<label>To<input type="date" class="datepicker" /></label><br>
-			<label><input type="radio" name="date_type" checked="checked" />Date created</label><br>
-			<label><input type="radio" name="date_type" />Date modified</label><br>
-			<label>Show
+			<div>
+			<label>From<input type="date" id="dateFrom" class="datepicker jaffa-field" /></label>
+	
+				<!-- label for="dateFrom">From</label><span id="dateFromSpan"></span>
+				<label for="dateTo">To</label><span id="dateToSpan"></span-->
+			 
+			<label>To<input type="date"  id="dateTo" class="datepicker jaffa-field" /></label>
+			</div>
+			<div id="dateCreatedContainer"></div>
+			<div id="showOptionsContainer"></div>
+			<!--label>Show
 			<select>
 				<option>All records</option>
 				<option>Published records</option>
 			</select>
-			</label>
+			</label-->
 		</fieldset>
-		<label>Report Name: <input type="text" /></label><br>
-		<div id="test-repeatable">
+		<label>Report Name: <input type="text" id="reportName" /></label><br>
+		<!--div id="test-repeatable">
 			<div style="clear:both; padding-top:1em;" id="template">
 				<div style="float:left;">
 					<select name="logicalOp" id="logicalOp" style="display: none"><option>AND</option><option>OR</option></select><br>
@@ -37,47 +59,101 @@
 				<div class="clear" ></div>
 			</div>
 			<button id="add_more_btn" onclick="add_more('test-repeatable');" >Add more</button>
-		</div>
+		</div-->
 
-		<br>
-		<input type="submit" name="submit" value="Create" onclick="location.href = '$portalPath/report/reportResult';return false;"/>
+		<div id="reportCriteria"></div>
+		<input type="submit" name="submit" value="Create" onclick="jaffa.form.save(); return false;"/>
 		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
-	</form>
+	</div>
 		
 	</section>
+	</div>
 	<script>
-		 $(function() {$( ".datepicker" ).datepicker();});
-		 $('form').submit(function() { return false;});
-// Add more function		 
-	function add_more(container_id) {
-		var n = $('#'+container_id).children().length;
-		// one template div and an add more button
-		n -= 1;
-		console.info("number of repeatable unit(s) = "+n);
-		if (n==1) {
-			console.info("Add button should be shown");
-		}
-		var myClone = $('#'+container_id).find('#template').clone();
-		myClone[0].id = "clone"+n;
-		renameRadios(myClone,n+1);
-		renameSelect(myClone,n+1);
-		// $('#'+container_id).append(myClone);
-		$(myClone).insertBefore($('#add_more_btn'));
-		// return false;
-	}
-	// newPart can be number needs to be added
-	function renameRadios(jqCont, newPart) {
-		var buttons = jqCont.find(':radio');
-		for (var i=0; i < buttons.length; i++) {
-			console.info("old name:"+buttons[i].name);
-			buttons[i].name += newPart; 
-			console.info("new name:"+buttons[i].name);
-		}
-	}
-	// Logical operator select
-	function renameSelect(jqCont, newPart) {
-		var sel = jqCont.find('#logicalOp');
-		sel.name += newPart;
-		sel.show(); 
-	}
-	</script>
+		$(function() {$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });});
+		
+		var widgetListBranding = {
+								"" : "control-group",
+								".jaffaValidationError" : ["alert", "alert-error"]
+							 };
+
+		$(document).ready(function(){
+		$("#reportCriteria").jaffaReportCriteriaRepeatable({
+															"disable-numbers":true,
+															"disable-sorting":true,
+															"base-field":"report-criteria",
+															"sub-fields": {
+																			"field":""
+																		   },
+															"add-item-text":"Add",
+															"delete-item-html":"<button>Remove</button>",
+														    "min-size":1,
+															"child-config":{
+																			"label":"Select field:",
+																			"field":"",
+																			"json-data-url": "$portalPath/report/reports?func=action&action=options"
+																			},
+															"class-list":widgetListBranding
+															});
+
+
+		$("#dateCreatedContainer").jaffaRadioGroup({
+    												"label": "",
+    												"field": "dateCreatedModified",
+    												"label-field": "formRadioLabel",
+    												"radio-data": {
+        															"created": "Date created",
+        															"modified": "Date modified"
+    												  			   },
+													"default-value": "created"    												  			   
+													});	
+	
+		$("#showOptionsContainer").jaffaDropDown({
+    												"label": "Show:",
+    												"field": "showOption",
+    												"allow-empty": false,
+    												"option-data": [
+        															{"value": "all",  "label": "All records"},
+        															{"value": "published",  "label": "Published records"}
+    															   ],    
+												});										
+		});
+</script>
+
+	<script type="text/javascript">
+  var jaffa = jaffaFactory({
+        debuggingEnabled: true,
+        /*urlDataSource: "$portalPath/workflows/simpleworkflow.ajax?func=get-tfpackage&oid=$oid",*/
+        formSelector: "#reportForm",
+        functionSaveData: saveData,
+        callbackPreSave: preSave
+    });
+    
+    jaffa.form.addField("dateFrom","dateFrom");
+    jaffa.form.addField("dateTo","dateTo");
+    jaffa.form.addField("reportName","reportName");
+    
+    function preSave() {
+    	return true;
+    }
+    
+    function saveData(unmanagedData, isValid,something, serverData) {  
+         var url = '$portalPath/report/reports.ajax?func=action&action=create';
+         jQuery.ajax({type:"POST", url:url, data:serverData,
+			success:function(data, status){ 
+			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		}); 
+    }
+    
+    function preSave() {
+    	return true;
+    }
+
+</script>
+#else
+	<span>$self.getErrorMsg()</span>
+#end

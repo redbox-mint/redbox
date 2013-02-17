@@ -21,9 +21,9 @@
 		#if($reports)
 			#foreach($report in $reports.values())
 		<tr>
-			<td><input name="selected_report" type="checkbox" /></td>
+			<td><input name="selected_report" type="checkbox" value="$report.getReportName()" /></td>
 			<td><a href="$portalPath/report/reports">$report.getLabel()</a></td>
-			<td><a href="#">Run</a></td>
+			<td><a href="$portalPath/report/reportResult?id=$report.getReportName()">Run</a></td>
 		</tr>
 			#end
 		#else
@@ -32,8 +32,39 @@
 		</tr>
 		#end
 	</table>
-	<button>Duplicate</button><button>Delete</button>
+	<button>Duplicate</button>
+	<button id='deleteButton'>Delete</button>
 </div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#deleteButton").click(function() {
+	     var checkedElements = $("[name='selected_report']:checked");
+		 var checkedReportNames = new Array();
+		 for(var i =0; i < checkedElements.length; i++) {
+    			checkedReportNames.push(checkedElements[i].value);
+		 }
+		 var checkedReportNamesRequest={};
+		 checkedReportNamesRequest["reportName"] = checkedReportNames.join();
+		 var url = '$portalPath/report/manageReports.ajax?func=action&action=delete';
+         jQuery.ajax({type:"POST", url:url, data:checkedReportNamesRequest,
+			success:function(data, status){ 			
+				var checkedElements = $("[name='selected_report']:checked");
+				for(var i =0; i < checkedElements.length; i++) {
+    				$(checkedElements[i]).attr('checked',false);
+    			}
+    			location.reload();
+		 
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		});
+		 
+									
+							});
+});
+</script>
 #else
 	<div>$self.getErrorMsg()</div>
 #end
