@@ -21,12 +21,12 @@
 		<fieldset>
 			<legend>Date Range</legend>
 			<div>
-			<label>From<input type="date" id="dateFrom" class="datepicker jaffa-field" /></label>
+			<label>From<input type="text" id="dateFrom" class="datepicker jaffa-field" /></label>
 	
 				<!-- label for="dateFrom">From</label><span id="dateFromSpan"></span>
 				<label for="dateTo">To</label><span id="dateToSpan"></span-->
 			 
-			<label>To<input type="date"  id="dateTo" class="datepicker jaffa-field" /></label>
+			<label>To<input type="text"  id="dateTo" class="datepicker jaffa-field" /></label>
 			</div>
 			<div id="dateCreatedContainer"></div>
 			<div id="showOptionsContainer"></div>
