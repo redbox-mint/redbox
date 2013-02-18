@@ -30,7 +30,19 @@ class ManageReportsData:
                     out = self.response.getPrintWriter("text/plain; charset=UTF-8")
                     out.println("{\"status\":\"OK\"}")
                     out.close()
+                if self.action == "duplicate":
+                    self.duplicateReport()
+                    out = self.response.getPrintWriter("text/plain; charset=UTF-8")
+                    out.println("{\"status\":\"OK\"}")
+                    out.close()    
                     
+    def duplicateReport(self):
+        reportNames = self.formData.get("reportName").split(",")
+        if len(reportNames) > 1:
+            for reportName in reportNames:       
+                self.reportManager.duplicateReport(reportName)
+        else:
+            self.reportManager.duplicateReport(self.formData.get("reportName"))
                     
     def deleteReport(self):
         reportNames = self.formData.get("reportName").split(",")

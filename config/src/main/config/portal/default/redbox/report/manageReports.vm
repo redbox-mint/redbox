@@ -32,7 +32,7 @@
 		</tr>
 		#end
 	</table>
-	<button>Duplicate</button>
+	<button id='duplicateButton'>Duplicate</button>
 	<button id='deleteButton'>Delete</button>
 </div>
 <script type="text/javascript">
@@ -63,6 +63,33 @@ $(document).ready(function(){
 		 
 									
 							});
+	$("#duplicateButton").click(function() {
+		var checkedElements = $("[name='selected_report']:checked");
+		if (checkedElements.length == 0) {
+			alert("Please select a report to duplicate");
+			return;
+		}
+		if (checkedElements.length > 1) {
+			alert("Please select just one report");
+			return;
+		}
+		var checkedReportNames = new Array();
+        for(var i =0; i < checkedElements.length; i++) {
+        	checkedReportNames.push(checkedElements[i].value);
+        }
+        var checkedReportNamesRequest={};
+        checkedReportNamesRequest["reportName"] = checkedReportNames.join();
+		var url = '$portalPath/report/manageReports.ajax?func=action&action=duplicate';
+		jQuery.ajax({type:"POST", url:url, data:checkedReportNamesRequest,
+			success:function(data, status){ 			
+    			location.reload();
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		});
+	});
 });
 </script>
 #else
