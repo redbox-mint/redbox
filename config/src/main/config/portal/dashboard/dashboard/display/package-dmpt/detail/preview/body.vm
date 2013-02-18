@@ -1,0 +1,85 @@
+<div>
+    #set($oid = $metadata.get("id"))
+    <h1>$metadata.get('project.name') data management plan</h1>
+    <p>
+    <span>Project ID</span>
+    <span>$metadata.get('project.id')</span>
+    </p>
+    <h4>Description:</h4>
+    <p>$metadata.get('project.description')</p>
+    <div style="text-align:center">
+    <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
+    <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
+    </a>
+    </div>
+    <table>
+    <tr><td>Info of sub flow 1</td><td>Done</td></tr>
+    <tr><td>Info of sub flow 2</td><td>Not filled</td></tr>
+    </table>
+    <p>You can add information to your plan to assist us in working with you to manage your research data.</p>
+</div>
+#macro(sectionHeading $heading)
+<span class="accordion-header">$heading</span>
+#end
+
+<div id="toggle-accordion" class="toggle-accordion">
+    <span id="toggle-accordion-icon" class="ui-icon ui-icon-triangle-1-e"></span>
+    <span id="toggle-accordion-text">Show all sections</span>
+</div>
+<div class="accordion">
+	#sectionHeading("Plan details")
+	<div class="meta"></div>
+	#sectionHeading("Overview")
+	<div class="meta"></div>
+	#sectionHeading("People")
+	<div class="meta"></div>
+	#sectionHeading("Data collection")
+	<div class="meta"></div>
+	#sectionHeading("Data structure")
+	<div class="meta"></div>
+	#sectionHeading("Ethics and sensitivities")
+	<div class="meta"></div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    function addAccordion() {
+        $(".accordion").accordion({
+            autoHeight:false,
+            clearStyle:true,
+            collapsible:false,
+            header:".accordion-header"
+        });
+    }
+    $("#toggle-accordion").click(function(){
+        if ($(".ui-accordion").length > 0) {
+            $(".accordion").fadeOut(function(){
+                $(this).accordion("destroy");
+                $(".accordion-header").each(function() {
+                    $(this).addClass("accordion-reset");
+                });
+                $(this).fadeIn();
+            });
+            $("#toggle-accordion-text").text("Show sections individually");
+        } else {
+            $(".accordion").fadeOut(function(){
+                addAccordion();
+                $(".accordion-header").each(function() {
+                    $(this).removeClass("accordion-reset");
+                });
+                $(this).fadeIn();
+            });
+            $("#toggle-accordion-text").text("Show all sections");
+        }
+        $("#toggle-accordion-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s");
+        return false;
+    });
+    addAccordion();
+});
+</script>
+<div class="article">
+<h1 style="margin-top:1.5em">Data Sets</h1>
+<p style="margin-bottom: 0px;">The following datasets have been linked to this plan:</p>
+#parseTemplate("home/dmpt/mydatasets.vm")
+</div>
+<div class="clear"></div>

@@ -1,6 +1,3 @@
-#set($menuTitle = "My datasets")
-#parseTemplate("wrapping/info-box-open.vm")
-
 <div class="block">
 <p><b>My drafts</b></p>
 <table>
@@ -56,6 +53,3 @@
     #end
     </tbody>
 </table>
-
-#parseTemplate("wrapping/info-box-close.vm")
-

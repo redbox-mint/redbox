@@ -1,0 +1,4 @@
+#set($contentId = $oid)
+#set($contentTitle = "Details")
+#parseTemplate("wrapping/content-block-open.vm")
+<div class="article first" id="content">
