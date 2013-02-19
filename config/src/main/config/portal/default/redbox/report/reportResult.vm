@@ -48,8 +48,15 @@
         #end
         </tbody>
     </table>
-	<button>Export CSV</button>
+	<button id='exportCsvBtn'>Export CSV</button>
 </div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#exportCsvBtn").click(function() {
+		window.location.assign(window.location.href+"&format=csv");
+	});
+});
+</script>
 #else
 	<div>$self.getErrorMsg()</div>
 #end
