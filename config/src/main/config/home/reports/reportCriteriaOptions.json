@@ -21,6 +21,18 @@
             "label": "Keywords",
             "key" : "keyword",
             "solrField": "dc_subject"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "creator",
+                    "lookup-data":"lookup?field=creator"
+                }
+            },
+            "label": "Creators",
+            "key" : "creator",
+            "solrField": "dc:creator.foaf:Person"
         }
     ]
 }

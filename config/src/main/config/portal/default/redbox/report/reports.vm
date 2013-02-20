@@ -151,8 +151,7 @@
     
     function preSave() {
     	return true;
-    }
-
+    }	
 </script>
 #else
 	<span>$self.getErrorMsg()</span>

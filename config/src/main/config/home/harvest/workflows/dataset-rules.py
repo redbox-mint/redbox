@@ -3,7 +3,7 @@ import time
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
-from java.util import HashSet
+from java.util import HashSet, HashMap
 from org.apache.commons.io import IOUtils
 
 class IndexData:
@@ -150,7 +150,8 @@ class IndexData:
         self.formatList = ["application/x-fascinator-package"]
         self.fulltext = []
         self.relationDict = {}
-        self.customFields = {}
+        self.customFields = {}        
+        self.creatorFullNameMap = HashMap()
 
         # Try our data sources, order matters
         self.__workflow()
@@ -176,7 +177,8 @@ class IndexData:
             self.__indexList(key, self.customFields[key])
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
-
+        self.__indexList("creatorfullname", self.creatorFullNameMap.values())
+        
     def __workflow(self):
         # Workflow data
         WORKFLOW_ID = "dataset"
@@ -302,6 +304,21 @@ class IndexData:
                         # index keywords for lookup
                         if field.startswith("dc:subject.vivo:keyword."):
                             self.utils.add(self.index, "keywords", value)
+                    if field.startswith("dc:creator.foaf:Person."):
+                        ftrim = field[23:]
+                        self.log.debug("field name: %s , ftrim is: %s" % (field, ftrim))
+                        idx = ftrim[:ftrim.index(".")]
+                        self.log.debug("idx:%s" % idx)
+                        fullname = self.creatorFullNameMap.get(idx)
+                        if (fullname is None):
+                            fullName = ""
+                            self.creatorFullNameMap.put(idx, fullName)
+                        if (field.endswith("givenName")):
+                            fullName = "%s, %s" % (fullName, value)
+                        if (field.endswith("familyName")):
+                            fullName = "%s%s" % (value, fullName) 
+                        self.log.debug("fullname now is :%s" % fullName)
+                        self.creatorFullNameMap.put(idx, fullName)
 
         self.utils.add(self.index, "display_type", displayType)
 
