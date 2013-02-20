@@ -29,17 +29,24 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             container.find("input[name=\""+this.oldField+"include_nulls\"]").attr("name", this.field+"include_nulls");
             // Tell Jaffa to ignore the field's this widget used to manage A
             jaffa.form.ignoreField(this.oldField);
-            
-           $("[id='"+this.field+"dropdown-span']").on("change","[id='"+this.field+"dropdown']",function(){
+            var idValue = this.id();
+			$("[id='"+this.field+"dropdown-span']").on("change","[id='"+this.field+"dropdown']",function(){
+												
 												var optionValue = jQuery.parseJSON($(this).val());
 													var id = $(this).attr('id');
 													var field = id.substr(0,id.length - 8);
 													for(key in optionValue) {
 													  var options = optionValue[key];
+													  if($("[id='"+field+"dropdown-input']").val() == options["key"] && $('[id="'+field+'searchcomponent"]').length > 0){
+													     break;
+													  }
 													  options["field"] = field+"searchcomponent";
 													  $("[id='"+field+"searchcomponent-span']")[key](options);
-													  jaffa.form.addField(field+"searchcomponent", field+"searchcomponent");
+													  jaffa.form.addField(field+"searchcomponent", idValue);
+													  $("[id='"+field+"dropdown-input']").val(options["key"]);
+													  
 													}
+													
 												});
 			 
 			// Don't want to show the logic operator element if it's the first element in the list
@@ -79,7 +86,7 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             }
 
 
-			var logicOperatorDropDown = $('<div><select style="" id="'+this.field+'logicalOp" name="logicalOp"><option>AND</option><option>OR</option></select><div>');
+			var logicOperatorDropDown = $('<div><select class="jaffa-field" id="'+this.field+'logicalOp" name="logicalOp"><option value="AND">AND</option><option value="OR">OR</option></select><div>');
 			ui.append(logicOperatorDropDown);
             // Label
             var label = this.getConfig("label");
@@ -104,20 +111,26 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
         					    "label": "",
         					    });
 
-			
-		$("[id='"+this.field+"dropdown-span']").on("change","[id='"+this.field+"dropdown']",function(){
+			var idValue = this.id();
+			$("[id='"+this.field+"dropdown-span']").on("change","[id='"+this.field+"dropdown']",function(){
+												
 												var optionValue = jQuery.parseJSON($(this).val());
 													var id = $(this).attr('id');
 													var field = id.substr(0,id.length - 8);
 													for(key in optionValue) {
 													  var options = optionValue[key];
+													  if($("[id='"+field+"dropdown-input']").val() == options["key"] && $('[id="'+field+'searchcomponent"]').length > 0){
+													     break;
+													  }
 													  options["field"] = field+"searchcomponent";
 													  $("[id='"+field+"searchcomponent-span']")[key](options);
-														jaffa.form.addField(field+"searchcomponent", field+"searchcomponent");
+													  jaffa.form.addField(field+"searchcomponent", idValue);
 													  $("[id='"+field+"dropdown-input']").val(options["key"]);
+													  
 													}
+													
 												});
-												
+			
 			var exactMatchContainsRadioGroup = $('<span><label for="field_match"><input type="radio" name="'+this.field+'match_contains" checked="checked" value="field_match"/>Exact match</label><label for="field_contains"><input type="radio" name="'+this.field+'match_contains" value="field_contains"/>Contains</label><span>');
 			ui.append(exactMatchContainsRadioGroup);						
 			var includeExcludeNullRadioGroup = $('<span><label for="field_match"><input type="radio" name="'+this.field+'include_nulls" checked="checked" value="field_include_null"/>Include null value</label><label for="field_contains"><input type="radio" name="'+this.field+'include_nulls" value="field_exclude_null"/>Exclude null value</label><span>');
@@ -202,11 +215,11 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             }
             // TODO: Placeholder
             
-            jaffa.form.addField(this.field+"match_contains", this.id()+"match_contains");
-            jaffa.form.addField(this.field+"logicalOp", this.id()+"logicalOp");
-            jaffa.form.addField(this.field+"include_nulls", this.id()+"include_nulls");
-            jaffa.form.addField(this.field+"dropdown-input", this.id()+"dropdown-input");
-            jaffa.form.addField(this.field+"dropdown", this.id()+"dropdown");
+            jaffa.form.addField(this.field+"match_contains", this.id());
+            jaffa.form.addField(this.field+"logicalOp",  this.id());
+            jaffa.form.addField(this.field+"include_nulls",  this.id());
+            jaffa.form.addField(this.field+"dropdown-input",  this.id());
+            jaffa.form.addField(this.field+"dropdown",  this.id());
 
             // Add help content
             this._super();

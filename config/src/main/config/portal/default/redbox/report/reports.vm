@@ -1,4 +1,5 @@
 #if($self.getErrorMsg()=="")
+#set($reportName = $velocityContext.get("request").getParameter("reportName"))
 <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
@@ -11,21 +12,21 @@
 <script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/container.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
-<script type="text/javascript" src="$portalPath/jaffa/widgets/dropdown.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
 	<div id="reportForm">
 	<section>
+	#if($reportName)
+		<h1>Edit Report</h1>
+	#else
 		<h1>Create New Report</h1>
+	#end
 	<div>
 		<fieldset>
 			<legend>Date Range</legend>
 			<div>
-			<label>From<input type="text" id="dateFrom" class="datepicker jaffa-field" /></label>
-	
-				<!-- label for="dateFrom">From</label><span id="dateFromSpan"></span>
-				<label for="dateTo">To</label><span id="dateToSpan"></span-->
-			 
+			<label>From<input type="text" id="dateFrom" class="datepicker jaffa-field" /></label>	 
 			<label>To<input type="text"  id="dateTo" class="datepicker jaffa-field" /></label>
 			</div>
 			<div id="dateCreatedContainer"></div>
@@ -37,37 +38,64 @@
 			</select>
 			</label-->
 		</fieldset>
-		<label>Report Name: <input type="text" id="reportName" /></label><br>
-		<!--div id="test-repeatable">
-			<div style="clear:both; padding-top:1em;" id="template">
-				<div style="float:left;">
-					<select name="logicalOp" id="logicalOp" style="display: none"><option>AND</option><option>OR</option></select><br>
-					<label>Select field:
-						<select>
-							<option>FOR</option>
-							<option>SEO</option>
-						</select>
-					</label>
-					<input type="text" />
-				</div>
-				<div>
-					<label><input type="radio" name="field_match" checked="checked"/>Exact match</label>
-					<label><input type="radio" name="ex_inc_null" checked="checked"/>Include null value</label><br>
-					<label style="margin-right:17px"><input type="radio" name="field_match"/>Contains</label>
-					<label><input type="radio" name="ex_inc_null"/>Exclude null value</label><br>
-				</div>
-				<div class="clear" ></div>
-			</div>
-			<button id="add_more_btn" onclick="add_more('test-repeatable');" >Add more</button>
-		</div-->
-
+		<label>Report Name: <input type="text" id="reportName" class="jaffa-field"/></label><br>
+		
 		<div id="reportCriteria"></div>
-		<input type="submit" name="submit" value="Create" onclick="jaffa.form.save(); return false;"/>
+		#if($reportName)
+			#set($buttonName = "Save & Run")
+		#else
+			#set($buttonName = "Create & Run")	
+		#end
+		<input type="submit" name="submit" value="$buttonName" onclick="jaffa.form.save(); return false;"/>
 		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
 	</div>
 		
 	</section>
+	
 	</div>
+		<script type="text/javascript">
+  var jaffa = jaffaFactory({
+        debuggingEnabled: true,
+        #if($reportName)
+        	urlDataSource: "$portalPath/report/reports.ajax?func=action&action=get-json&reportName=$reportName",
+        #end
+        formSelector: "#reportForm",
+        functionSaveData: saveData,
+        callbackPreSave: preSave
+    });
+    
+    jaffa.form.addField("dateFrom","dateFrom");
+    jaffa.form.addField("dateTo","dateTo");
+    jaffa.form.addField("reportName","reportName");
+    
+    function preSave() {
+    	return true;
+    }
+    
+    function saveData(unmanagedData, isValid,something, serverData) {  
+    	 #if($reportName)
+			var url = '$portalPath/report/reports.ajax?func=action&action=edit&reportId=$reportName';
+		 #else
+			var url = '$portalPath/report/reports.ajax?func=action&action=create';	
+		 #end
+         
+         jQuery.ajax({type:"POST", url:url, data:serverData,
+			success:function(data, status){ 
+			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		}); 
+    }
+    
+    function preSave() {
+    	return true;
+    }
+
+</script>
+	
 	<script>
 		$(function() {$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });});
 		
@@ -117,42 +145,35 @@
     															   ],    
 												});										
 		});
+		
+		var dataSource = jaffa.config("urlDataSource");
+
+		if (dataSource != null && dataSource != "") {
+			// Get the JSON Data and run this callback
+			jaffa.util.loadJsonUrl(dataSource, function(data) {
+				var numberOfReportCriteria = 0;
+				for (var field in data) {
+					if(field.indexOf("report-criteria") != -1) {
+   						var index = field.split(".")[1];
+   						if(index > (numberOfReportCriteria+1)){
+     						numberOfReportCriteria = index -1;
+   						}
+					}
+					jaffa.serverData[field] = data[field];
+				}
+
+		for(var i=0; i<numberOfReportCriteria;i++) {
+    		$("#reportCriteria .jaffaAddItem button").click();
+		}
+		
+		jaffa.form.synch(true);
+	});
+} 
+
+		
 </script>
 
-	<script type="text/javascript">
-  var jaffa = jaffaFactory({
-        debuggingEnabled: true,
-        /*urlDataSource: "$portalPath/workflows/simpleworkflow.ajax?func=get-tfpackage&oid=$oid",*/
-        formSelector: "#reportForm",
-        functionSaveData: saveData,
-        callbackPreSave: preSave
-    });
-    
-    jaffa.form.addField("dateFrom","dateFrom");
-    jaffa.form.addField("dateTo","dateTo");
-    jaffa.form.addField("reportName","reportName");
-    
-    function preSave() {
-    	return true;
-    }
-    
-    function saveData(unmanagedData, isValid,something, serverData) {  
-         var url = '$portalPath/report/reports.ajax?func=action&action=create';
-         jQuery.ajax({type:"POST", url:url, data:serverData,
-			success:function(data, status){ 
-			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
-			},
-			error:function(xhr, status, e){
-				alert(e);
-			},
-			dataType:"json"
-		}); 
-    }
-    
-    function preSave() {
-    	return true;
-    }	
-</script>
+
 #else
 	<span>$self.getErrorMsg()</span>
 #end

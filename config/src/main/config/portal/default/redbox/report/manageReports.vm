@@ -22,7 +22,7 @@
 			#foreach($report in $reports.values())
 		<tr>
 			<td><input name="selected_report" type="checkbox" value="$report.getReportName()" /></td>
-			<td><a href="$portalPath/report/reports">$report.getLabel()</a></td>
+			<td><a href="$portalPath/report/reports?reportName=$report.getReportName()">$report.getLabel()</a></td>
 			<td><a href="$portalPath/report/reportResult?id=$report.getReportName()">Run</a></td>
 		</tr>
 			#end
