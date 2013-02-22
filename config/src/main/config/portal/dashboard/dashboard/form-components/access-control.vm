@@ -1,0 +1,55 @@
+## This added because local custom.css has hugh title bar height
+<script type="text/javascript">
+    $(function () {
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            height: "auto",
+            width: 300,
+            modal: true,
+            buttons: {
+                "Save": function () {
+                	alert("Update config");
+                	$(this).dialog("close");
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+##        $("#manage-access")
+##            .button()
+##            .click(function () {
+##            $("#dialog-form").dialog("open");
+##        });
+    });
+    
+    var data = ["Tom", "Mary"];
+    $(function() {
+    	var jaffa = jaffaFactory({});
+    	$("#user-list").jaffaText({
+    	    "label": "Add: ",
+    	    "field": "add_user",
+    	    "help-content": "#user-list-help",
+    	    "lookup-data": data
+    	});
+    });
+</script>
+
+<div id="dialog-form" title="Configuration">
+    <h2>View access</h2>
+    <table>
+	    <tr>
+	        <td>Name</td>
+	        <td style="width:10%">Delete</td>
+	    </tr>
+	    <tr>
+	        <td>John</td>
+	        <td><span class="ui-icon ui-icon-trash" style="display:inline-block" onclick="alert('im')"></span></td>
+	    </tr>
+	</table>
+	<div id="user-list">input text here</div>
+	<div id="user-list-help">Grant user access help here: try tom or mary</div>
+    <h2>Owner</h2>
+	<label for="change_owner">Change the record owner to:</label><br>
+	<input type="text" class="jaffa-field" name="change_owner" id="change_owner" onclick="alert('Change it')" />
+</div>

@@ -1,7 +1,14 @@
-#foreach( $its-name in $transition-names )
-#if ($type == 'button') 
-	<button transition-name="$its-name" onclick="transition_click(this)">$its-name</button>
+#foreach( $transition in $transitions )
+	#if ($type == 'button') 
+		<button 
 	 #else 
-	<a href="#" transition-name="$its-name" onclick="transition_click(this)">$its-name</a>
+		<a href="#" 
+	#end
+	transition-name="$transition.name" onclick="transition_click(this)" 
+	#if ( $transition.form-submit-action) form-action = "$transition.form-submit-action" #end  
+	#if ( $transition.close) close-transition="$portalPath/home" #end
+	>$transition.name
+	#if ($type == 'button') </button>
+	#else 	</a>
 	#end
 #end

@@ -53,7 +53,8 @@ var PeopleWidgetBuilder = function($, jaffa) {
                 jaffa.logError("No field name provided for widget '"+this.id()+"'. This is mandatory!");
                 return;
             }
-
+            
+            var lookup_only = this.getConfig("lookup-only");
             var titleFieldId= this.field+"title";
             ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Title</label>");
             ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field\" />");
@@ -72,7 +73,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             var dlg_source = this.getConfig("source");
             if (dlg_source == null) { dlg_source = 'mint'; }
             ui.append("<a onclick='showMintNlaLookupDialog(this,\""+dlg_source+"\");return false;' class='mintNlaLookup' href='#'>lookup</a>");
-            
+            if (lookup_only) $("#" + this.id() + " input").attr('disabled','disabled');
             // Are we tying any data lookups to the control?
             var lookupData = this.getConfig("lookup-data");
             if (lookupData != null) {

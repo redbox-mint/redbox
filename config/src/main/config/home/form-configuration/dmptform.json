@@ -28,7 +28,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transition-names":["Next"]
+                            "transitions":[{"name":"Next"}]
                         }
                     ]
                 },
@@ -42,43 +42,46 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.name",
+                            "field-name":"project-name",
                             "label":"Project name",
-                            "additional-classes":""
+                            "additional-classes":"",
+                            "help":"Where do I got from?"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.id",
+                            "field-name":"project-id",
                             "label":"Project ID",
-                            "additional-classes":""
+                            "help":"this is your help"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"project.description",
+                            "field-name":"project-description",
                             "label":"Description",
                             "content":"",
-                            "additional-classes":"mandatory"
+                            "additional-classes":"mandatory",
+                            "help":"You need help, can I help?"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.website",
+                            "field-name":"project-website",
                             "label":"Project website"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.startdate",
+                            "field-name":"project-startdate",
                             "label":"Start date",
-                            "additional-classes":"dateYMD"
+                            "additional-classes":"dateYMD",
+                            "help":"This is a date control"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.enddate",
+                            "field-name":"project-enddate",
                             "label":"End date",
                             "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.fundingsource",
+                            "field-name":"project-fundingsource",
                             "label":"Funding source"
                         },
                         {
@@ -93,12 +96,12 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"project.activitytype",
+                            "field-name":"project-activitytype",
                             "label":"Activity type",
                             "sourceUrl":"dmpt/data/projectActivityType.json"
                         },
                         {
-                            "component-type":"anzsrc-selection",
+                            "component-type":"repeatable-anzsrc-selection",
                             "label":"FoR code(s)",
                             "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
@@ -112,7 +115,7 @@
                             "anzsrcType":"for"
                         },
                         {
-                            "component-type":"anzsrc-selection",
+                            "component-type":"repeatable-anzsrc-selection",
                             "label":"SEO code(s)",
                             "fieldName":"dc:subject.anzsrc:seo.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:seo.0.skos:prefLabel",
@@ -127,7 +130,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transition-names":["Next"]
+                            "transitions":[{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -146,11 +149,12 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.pi"
+                        	"lookup-name":"project-pi",
+                        	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.pi.email",
+                            "field-name":"project-pi-email",
                             "label":"Email address"
                         },
                         {
@@ -164,11 +168,12 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.datamanager"
+                        	"lookup-name":"project-datamanager",
+                        	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.datamanager.email",
+                            "field-name":"project-datamanager-email",
                             "label":"Email address"
                         },
                         {
@@ -202,7 +207,7 @@
                             "component-type":"repeatable-container",
                             "containter-for":"collaborators-other-institution",
                             "sub-elements":{"settings":[
-                            					{"jaffaText":{"label":"Name","class-list":"jaffa-field","suffix":"person"}},
+                            					{"jaffaPeople":{"source":"nla","label":"","class-list":"jaffa-field","suffix":"person"}},
                             					{"jaffaText":{"label":"University/Institution","class-list":"jaffa-field","suffix": "institution"}}
                             					]
                             				}
@@ -218,17 +223,20 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.supervisor"
+                        	"lookup-name":"project-supervisor",
+                        	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.supervisor.email",
+                            "field-name":"project-supervisor-email",
                             "label":"Email address",
                             "additional-classes":""
                         },
                         {
                             "component-type":"transition-control",
-                            "transition-names":["Back","Next"]
+                            "transition-names":["Back","Next","Save"]
+                            "transitions":[{"name":"Back"},
+                             			   {"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -242,34 +250,34 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.method",
+                            "field-name":"dataCollection-method",
                             "label":"Please provide a brief description of your data collection methodology",
                             "content":"",
-                            "additional-classes":"mandatory"
+                            "validator":"mandatory"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.software.create",
+                            "field-name":"dataCollection-software-create",
                             "label":"Software/equipment used to create/collect the data",
                             "content":"",
-                            "additional-classes":"mandatory"
+                            "validator":"mandatory"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.software.manipulate",
+                            "field-name":"dataCollection-software-manipulate",
                             "label":"Software/equipment used to manipulate/analyse the data",
                             "content":"",
-                            "additional-classes":"mandatory"
+                            "validator":"mandatory"
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "fieldName":"dataCollection.fileFormat",
+                            "fieldName":"dataCollection-fileFormat",
                             "label":"Predominant file format",
                             "sourceUrl":"dmpt/data/fileFormat.json"
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -283,19 +291,19 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStructure.metadataStandards",
+                            "field-name":"dataStructure-metadataStandards",
                             "label":"Metadata standars used",
                             "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStructure.metadataStandards",
+                            "field-name":"dataStructure-Standards",
                             "label":"Standards applied to the data structure",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -309,7 +317,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Size",
+                            "field-name":"Storage-Size",
                             "label":"What is the expected size of all the research data that will be captured or created during the life of the research project?",
                             "options":[
                                 {
@@ -336,7 +344,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Location",
+                            "field-name":"Storage-Location",
                             "label":"Storage location",
                             "options":[
                                 {
@@ -359,13 +367,13 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStorage.locationOther",
+                            "field-name":"dataStorage-locationOther",
                             "label":"If you have selected other, please provide details if possible",
                             "content":""
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Location.masterVersion",
+                            "field-name":"Storage-Location-masterVersion",
                             "label":"Location of master version",
                             "options":[
                                 {
@@ -388,13 +396,13 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStorage.locationMasterVersionOther",
+                            "field-name":"dataStorage-locationMasterVersionOther",
                             "label":"If you have selected other, please provide details if possible",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -413,7 +421,7 @@
                         },
                         {
                             "component-type":"radio-button",
-                            "field-name":"data.access.manageBy",
+                            "field-name":"data-access-manageBy",
                             "button-for":"Access will be managed by:",
                             "buttons":[
                                 {
@@ -426,7 +434,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataLicensingAccess.manager",
+                            "field-name":"dataLicensingAccess-manager",
                             "label":"The data manager is recorded as: ",
                             "additional-classes":""
                         },
@@ -441,7 +449,7 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "fieldName":"dataLicensingAccess.type",
+                            "fieldName":"dataLicensingAccess-type",
                             "label":"License type",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
@@ -451,7 +459,7 @@
                         
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataLicensingAccess.license",
+                            "field-name":"dataLicensingAccess-license",
                             "label":"The data will be licensed under:",
                             "options":[
                                 {
@@ -474,12 +482,12 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataLicensingAccess.other",
+                            "field-name":"dataLicensingAccess-other",
                             "label":"Other: "
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataLicensingAccess.otherURL",
+                            "field-name":"dataLicensingAccess-otherURL",
                             "label":"URL: "
                         },
                         {
@@ -493,19 +501,19 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataLicensingAccess.statement",
+                            "field-name":"dataLicensingAccess-statement",
                             "label":"Additional asserted statement of rights",
                             "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataLicensingAccess.accessProcedures",
+                            "field-name":"dataLicensingAccess-accessProcedures",
                             "label":"Other relevant information (e.g. access procedures)",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -519,7 +527,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataRetention.period",
+                            "field-name":"dataRetention-period",
                             "label":"Applicable retention period*",
                             "options":[
                                 {
@@ -542,7 +550,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataRetention.reason",
+                            "field-name":"dataRetention-reason",
                             "label":"Justification for extended retention period:",
                             "options":[
                                 {
@@ -581,13 +589,13 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataRetention.disposalDate",
+                            "field-name":"dataRetention-disposalDate",
                             "label":"Earliest possible disposal date",
                             "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -607,11 +615,11 @@
                         {
                             "component-type":"text-input",
                             "label":"Approval Number",
-                            "field-name":"dataEthical.approvalNumber"
+                            "field-name":"dataEthical-approvalNumber"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataEthical.information",
+                            "field-name":"dataEthical-information",
                             "label":"Information about ethical considerations relevant to this project and how they will be managed",
                             "content":""
                         },
@@ -622,7 +630,7 @@
                         },
                         {
                             "component-type":"checkbox",
-                            "field-name":"dataSensitivity.type",
+                            "field-name":"dataSensitivity-type",
                             "box-for":"Type of sensitivity:",
                             "multiline":true,
                             "boxes":[
@@ -642,13 +650,13 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataSensitivity.information",
+                            "field-name":"dataSensitivity-information",
                             "label":"Information about privacy, confidentiality or sensitivity to the data and how it will be managed",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -662,7 +670,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataOwnership.countryCollected",
+                            "field-name":"dataOwnership-countryCollected",
                             "label":"In which country will your data be collected",
                             "options":[
                                 {
@@ -673,7 +681,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataOwnership.IPowner",
+                            "field-name":"dataOwnership-IPowner",
                             "label":"Copyright and intellectual property owners",
                             "options":[
                                 {
@@ -693,19 +701,19 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataOwnership.ownerList",
+                            "field-name":"dataOwnership-ownerList",
                             "label":"Please list any other owners:",
                             "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataOwnership.information",
+                            "field-name":"dataOwnership-information",
                             "label":"Information about contractual obligations that apply to this data",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transition-names":["Back","Next"]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
                         }
                     ]
                 },
@@ -766,19 +774,19 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"finalCollection.Date.From",
+                            "field-name":"finalCollection-Date-From",
                             "label":"Start date:",
                             "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"finalCollection.Date.To",
+                            "field-name":"finalCollection-Date-To",
                             "label":"End date:",
                             "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"finalCollection.tiemPeriod",
+                            "field-name":"finalCollection-tiemPeriod",
                             "label":"Time period:"
                         },
                         {
@@ -792,7 +800,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transition-names":["Back"]
+                            "transitions":[{"name":"Back"},{"name":"Done","form-submit-action":"save","close":true}]
                         }
                     ]
                 },
@@ -822,7 +830,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Extra.Data.Access",
+                            "field-name":"Extra-Data-Access",
                             "label":"How will you get access to the data?",
                             "options":[
                                 {
@@ -841,7 +849,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"extra.meta.link",
+                            "field-name":"extra-meta-link",
                             "label":"Is metadata already available for this data? If yes, please provide a link.",
                             "additional-classes":"link"
                         },
@@ -864,7 +872,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"Extra.Collection.OtherDescription",
+                            "field-name":"Extra-Collection-OtherDescription",
                             "label":"Include another way to describe the period, if relevant (eg World War II)",
                             "additional-classes":""
                         },
@@ -879,25 +887,25 @@
                         {
                             "component-type":"text-input",
                             "label":"Links to websites related to this data collection",
-                            "field-name":"Extra.Website.URL",
+                            "field-name":"Extra-Website-URL",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Links to datasets related to this collection",
-                            "field-name":"Extra.DataSet.URL",
+                            "field-name":"Extra-DataSet-URL",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Supervisors associated with this data collection",
-                            "field-name":"Extra.Collection.Supervisor",
+                            "field-name":"Extra-Collection-Supervisor",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "label":"Link to this data collection",
-                            "field-name":"Extra.Links",
+                            "field-name":"Extra-Links",
                             "additional-classes":"url"
                         },
                         {
@@ -908,15 +916,14 @@
                         {
                             "component-type":"text-input",
                             "label":"What software or equipment is used to create the data?",
-                            "field-name":"Extra.Software_Equipment",
+                            "field-name":"Extra-Software_Equipment",
                             "additional-classes":""
                         },
                         {
                             "component-type":"textarea",
                             "label":"Please provide a description of the data collection methodology",
-                            "field-name":"Extra.Collection.Methodology",
-                            "content":"",
-                            "additional-classes":""
+                            "field-name":"Extra-Collection-Methodology",
+                            "content":""
                         },
                         {
                             "component-type":"native-html",

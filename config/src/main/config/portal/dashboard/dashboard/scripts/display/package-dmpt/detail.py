@@ -64,6 +64,8 @@ class DetailData:
         if tfpackage:
             relatedDataSets = tfpackage.getArray("related.datasets")
             dataSetQueryResults = self.__searchDataSetOids(relatedDataSets)
+            if (not dataSetQueryResults):
+                return;
             found = ""
             for result in dataSetQueryResults.getResults():
                 #check type and put results in 2 lists
@@ -76,24 +78,27 @@ class DetailData:
     ## each object has an oid field.
     def __searchDataSetOids(self, oids):
         query_ids = "storage_id:"
-        if (len(oids) > 1):
-            query_ids += "(" + oids[0].get('oid')
-            for oid in oids[1:]:
-                query_ids += " OR " + oid.get('oid')
-            query_ids += ")"   
-        else:
-            query_ids = oids[0].get('oid')
-        self.log.debug("query_ids= " + query_ids)
-            
-        req = SearchRequest(query_ids)
-        req.setParam("fq", 'item_type:"object"')
-
-        req.addParam("fq", "")
-        req.setParam("sort", "last_modified desc, f_dc_title asc");
-        # FIXME: security? 
-        out = ByteArrayOutputStream()
-        self.indexer.search(req, out)
-        return SolrResult(ByteArrayInputStream(out.toByteArray()))
+        try:
+            if (len(oids) > 1):
+                query_ids += "(" + oids[0].get('oid')
+                for oid in oids[1:]:
+                    query_ids += " OR " + oid.get('oid')
+                query_ids += ")"   
+            else:
+                query_ids = oids[0].get('oid')
+            self.log.debug("query_ids= " + query_ids)
+                
+            req = SearchRequest(query_ids)
+            req.setParam("fq", 'item_type:"object"')
+    
+            req.addParam("fq", "")
+            req.setParam("sort", "last_modified desc, f_dc_title asc");
+            # FIXME: security? 
+            out = ByteArrayOutputStream()
+            self.indexer.search(req, out)
+            return SolrResult(ByteArrayInputStream(out.toByteArray()))
+        except: 
+            return None
         
     def getMyDrafts(self):
         return self.__draftDatasets

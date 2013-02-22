@@ -1,3 +1,10 @@
+#parseTemplate("form-components/access-control.vm")
+<script>
+function manage_access(e) {
+	$("#dialog-form").dialog("open");
+}
+</script>
+
 <div>
     #set($oid = $metadata.get("id"))
     <h1>$metadata.get('project.name') data management plan</h1>
@@ -79,7 +86,8 @@ $(function(){
 </script>
 <div class="article">
 <h1 style="margin-top:1.5em">Data Sets</h1>
-<p style="margin-bottom: 0px;">The following datasets have been linked to this plan:</p>
+<p style="margin-bottom: 0px;">The following datasets have been linked to this plan.<br>
+You can also add more:<img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"<img></p>
 #parseTemplate("home/dmpt/mydatasets.vm")
 </div>
 <div class="clear"></div>

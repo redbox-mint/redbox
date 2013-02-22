@@ -39,7 +39,8 @@
             "Next": "furtherinfo"
         },
         "furtherinfo": {
-            "Back": "Ownership"
+            "Back": "Ownership",
+            "Done": "Overview"
         }
     }
 }

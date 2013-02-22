@@ -20,5 +20,6 @@
    		}
 		$(widgets.contentLoaded);
 		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/webflow.json");
+		prepareHelps();
    	})
 </script>

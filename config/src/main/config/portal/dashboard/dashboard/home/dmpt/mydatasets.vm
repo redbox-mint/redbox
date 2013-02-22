@@ -18,9 +18,9 @@
             #parseTemplate("home/dmpt/created_modified_date.vm")                
 		    </td>
 		    <td>$self.formatDate($item.get("last_modified"))</td>
-	        <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
-	            <a href="#"><img alt="Delete record" src="$portalPath/images/icons/delete.png"></a>
-	            <a href="#"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
+	        <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png" title="Edit Dataset"></a>
+	            <a href="#"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>
+	            <a onclick="manage_access(this);" href="#" title="Set Permissions"><img alt="Manage Record" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
 	       </td>
 	    </tr>
 	#end
@@ -47,9 +47,10 @@
         #parseTemplate("home/dmpt/created_modified_date.vm")                
 	    </td>
 	    <td>$self.formatDate($item.get("last_modified"))</td>
-        <td><a href="#"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a></td>
+        <td><a href="#" onclick="manage_access(this);"><img alt="Manage record" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a></td>
         <td>$item.get("workflow_step_label")</td>
         </tr>
     #end
     </tbody>
 </table>
+</div>

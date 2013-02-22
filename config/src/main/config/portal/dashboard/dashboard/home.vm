@@ -1,3 +1,14 @@
+## Introduce jaffa to dashboard
+<script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+
 #if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
 #set($pageTitle = "Home")
 
@@ -5,9 +16,14 @@
   <span>$page.portalName</span>
 </h2>
 
+#parseTemplate("form-components/access-control.vm")
+<script>
+function manage_access(e) {
+	$("#dialog-form").dialog("open");
+}
+</script>
+
 #parseTemplate("menus/home-main-menu.vm")
-
-
     <div class="grid_12">
        #parseTemplate("home/dmpt/myplans.vm")
        ## Below section is treated differently to myplans.vm because it has to be reused in other parts and there is no easy way to do it.
@@ -15,6 +31,7 @@
        #parseTemplate("wrapping/info-box-open.vm")
        #parseTemplate("home/dmpt/mydatasets.vm")
        #parseTemplate("wrapping/info-box-close.vm")
+       
     </div>
     <div class="clear"></div>
 #end
