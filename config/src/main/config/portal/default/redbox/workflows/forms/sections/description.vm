@@ -299,7 +299,7 @@ $(function() {
         var baseId = elem.attr("id").replace(".dc:title", "");
         elem.unautocomplete();
         elem.autocomplete(
-            "$portalPath/proxyGet?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
+            "$portalPath/proxyGet.script?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
