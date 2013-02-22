@@ -73,7 +73,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             var dlg_source = this.getConfig("source");
             if (dlg_source == null) { dlg_source = 'mint'; }
             ui.append("<a onclick='showMintNlaLookupDialog(this,\""+dlg_source+"\");return false;' class='mintNlaLookup' href='#'>lookup</a>");
-            if (lookup_only) $("#" + this.id() + " input").attr('disabled','disabled');
+            if (lookup_only) $("[id='" + this.id() + "'] input").attr('disabled','disabled');
             // Are we tying any data lookups to the control?
             var lookupData = this.getConfig("lookup-data");
             if (lookupData != null) {
