@@ -118,7 +118,7 @@
 															"child-config":{
 																			"label":"Select field:",
 																			"field":"",
-																			"json-data-url": "$portalPath/report/reports?func=action&action=options"
+																			"json-data-url": "$portalPath/report/reports.ajax?func=action&action=options"
 																			},
 															"class-list":widgetListBranding
 															});
