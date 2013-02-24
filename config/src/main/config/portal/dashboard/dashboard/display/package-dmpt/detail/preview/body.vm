@@ -1,4 +1,4 @@
-#parseTemplate("form-components/access-control.vm")
+##parseTemplate("form-components/access-control.vm")
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");
@@ -87,7 +87,75 @@ $(function(){
 <div class="article">
 <h1 style="margin-top:1.5em">Data Sets</h1>
 <p style="margin-bottom: 0px;">The following datasets have been linked to this plan.<br>
-You can also add more:<img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"<img></p>
+You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"/></a></p>
 #parseTemplate("home/dmpt/mydatasets.vm")
 </div>
 <div class="clear"></div>
+
+<script type="text/javascript">
+    
+	$(document).ready(function() {
+		$('#create-selfsubmission').click(function () {
+			var processing = false;
+        	if (processing) return;
+        	processing = true;
+        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6-SNAPSHOT/default/images/icons/loading.gif" />');
+        	jQuery.ajax({
+            	type: "POST",
+            	url: "$portalPath/actions/packaging.ajax",
+            	data: {
+                	ajax: 1,
+                	func: "create-new",
+                	packageType: "simple",
+                	metaList: ["title", "dc:description", "redbox:newForm", "redbox:formVersion"],
+                	title: "[Untitled]",
+                	description: "",
+                	"redbox:newForm": "true",
+                	"redbox:formVersion": "1.6-SNAPSHOT"
+            	}, success: function(data) {
+                if (data.status == "ok") {
+                    function copyMetadata() {
+                    	var oid = "$metadata.get('storage_id')";
+                    	jQuery.ajax({
+            	type: "POST",
+            	url: "$portalPath/copyTfPackage.ajax",
+            	data: {
+                	ajax: 1,
+                	fromOid: oid,
+                	toOid: data.oid
+            		}, success: function(data) {
+            		 	                if (data.status == "ok") {
+                    function redirect() {
+                        window.location.href = data.url;
+                    }
+                    setTimeout(redirect, 1500);
+                } else {
+                    alert("Failed to copy record!");
+                }
+            		 	
+
+            		},error:  function(xhr, status, e) {
+                		alert("Failed to create record!");
+           		 },
+            	dataType: "json"
+        		});
+                    	
+                    	
+                
+                    }
+                    setTimeout(copyMetadata, 1500);
+                } else {
+                    alert("Failed to create record!");
+                }
+            },
+            error: function(xhr, status, e) {
+                alert("Failed to create record!");
+            },
+            dataType: "json"
+        });
+        	return false;
+		});
+	
+	
+	});
+</script>
