@@ -13,6 +13,8 @@ from com.googlecode.fascinator.common.storage import StorageUtils
 from org.apache.commons.io import IOUtils
 from com.googlecode.fascinator.common import JsonSimple
 from org.json.simple import JSONArray
+from java.io import ByteArrayInputStream
+from java.io import ByteArrayOutputStream
 
 class CopyTfPackageData:
 
@@ -55,12 +57,18 @@ class CopyTfPackageData:
              fromTFPackage.close()
              #add relatedOid info
              fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()),toOid)
+             
              inStream = IOUtils.toInputStream(fromTFPackageJson.toJSONString(), "UTF-8")
              
              try:
                  StorageUtils.createOrUpdatePayload(fromObject, fromTFPackage.getId(), inStream)
              except StorageException:
                  print "error setting tfPackage"
+             
+             tfMetaPropertyValue = self.formData.get("tfMetaPropertyValue")
+             self._addPropertyValueToTFMeta(toObject,tfMetaPropertyValue)
+                 
+            
              
              result = '{"status": "ok", "url": "%s/workflow/%s", "oid": "%s" }' % (context["portalPath"], toOid , toOid)    
              writer = self.response.getPrintWriter("application/json; charset=UTF-8")
@@ -69,15 +77,28 @@ class CopyTfPackageData:
     
     def getErrorMsg(self):
         return self.errorMsg
-            
+    
+    def _addPropertyValueToTFMeta(self, object, tfMetaPropertyValue):
+        objectMetadata = object.getMetadata()
+        objectMetadata.setProperty("copyTFPackage", tfMetaPropertyValue)
+        
+        output = ByteArrayOutputStream();
+        objectMetadata.store(output, None);
+        input = ByteArrayInputStream(output.toByteArray());
+        StorageUtils.createOrUpdatePayload(object,"TF-OBJ-META",input);
+        
+        
+                
     def _addRelatedOid(self, tfPackageJson, relatedOid):
-        relatedOids = tfPackageJson.getArray("relatedOids")
+        relatedOids = tfPackageJson.getArray("related.datasets")
         if relatedOids is None:
             relatedOids = JSONArray()
         
-        relatedOids.add(relatedOid)
+        relatedOidJsonObject = JsonObject()
+        relatedOidJsonObject.put("oid",relatedOid)
+        relatedOids.add(relatedOidJsonObject)
         jsonObject = tfPackageJson.getJsonObject()
-        jsonObject.put("relatedOids", relatedOids)
+        jsonObject.put("related.datasets", relatedOids)
         return jsonObject
         
     # Retrieve and parse the Fascinator Package from storage

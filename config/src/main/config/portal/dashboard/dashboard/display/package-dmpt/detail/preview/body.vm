@@ -122,7 +122,8 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
             	data: {
                 	ajax: 1,
                 	fromOid: oid,
-                	toOid: data.oid
+                	toOid: data.oid,
+                	tfMetaPropertyValue: "dmptToSimple"
             		}, success: function(data) {
             		 	                if (data.status == "ok") {
                     function redirect() {
@@ -135,7 +136,7 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
             		 	
 
             		},error:  function(xhr, status, e) {
-                		alert("Failed to create record!");
+                		alert("Failed to create record!"); 
            		 },
             	dataType: "json"
         		});
