@@ -9,6 +9,7 @@ from com.googlecode.fascinator.portal.report import RedboxReport
 from org.apache.commons.io import FileUtils
 from java.io import File
 from com.googlecode.fascinator.common import FascinatorHome
+from java.net import URLEncoder
 
 class ReportsData:
 
@@ -31,7 +32,11 @@ class ReportsData:
         else:
             self.errorMsg = "Please login."
         if self.errorMsg == "": 
+            self.reportName = self.formData.get("reportName")
             
+            if (self.reportName):
+                self.report = self.reportManager.getReport(self.reportName)
+                
             self.func = self.formData.get("func", "")
             if self.func == "" and self.request.getParameter("func"):
                 self.func = self.request.getParameter("func")
@@ -115,5 +120,13 @@ class ReportsData:
     
     def getDateRange(self):
         return "from="+ self.getFromDt() + "&to=" + self.getToDt()
-           
+    
+    def getReportName(self):
+        return self.report.getReportName()
+    
+    def getReportLabel(self):
+        return self.report.getLabel()
+    
+    def urlEncode(self, text):
+        return URLEncoder.encode(text, "utf-8")
     

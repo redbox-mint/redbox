@@ -11,10 +11,13 @@ class DashboardData:
         self.request = context["request"]
         self.fromDtTxt =  self.request.getParameter("from")
         self.toDtTxt = self.request.getParameter("to")
+        self.reportName = self.request.getParameter("reportName")
         if (self.fromDtTxt is None or self.toDtTxt is None):
             curCal = Calendar.getInstance()
             self.fromDtTxt =  "%s-01-01" % curCal.get(Calendar.YEAR)
             self.toDtTxt =  "%s-12-31" % curCal.get(Calendar.YEAR)
+        if (self.reportName is None):
+            self.reportName = "Dashboard Report"
         if (self.auth.is_logged_in()):
             if (self.auth.is_admin()==True):
                 self.buildDashboard(context)
@@ -37,5 +40,7 @@ class DashboardData:
     
     def getDateRange(self):
         return "from="+ self.getFromDt() + "&to=" + self.getToDt()
-           
+    
+    def getReportName(self):
+        return self.reportName
     
