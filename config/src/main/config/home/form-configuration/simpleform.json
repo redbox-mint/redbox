@@ -6,41 +6,45 @@
                     "heading":"Content",
                     "fields":[
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:title",
-                            "label":"Title"
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Title"
                         },
                         {
-                            "component-type":"paragraph",
-                            "content":"Descriptions"
-                        },              
+                            "component-type":"text-input",
+                            "field-name":"dc:title",
+                            "label":""
+                        },
                         {
-                            "component-type":"group",
-                            "fields":[
-                                     {
-                                         "component-type":"data-source-dropdown",
-                                         "label":"Type",
-                                         "fieldName":"rif:description.0.type",
-                                         "fieldNameLabel":"rif:description.0.label",
-                                         "sourceUrl":"workflows/forms/data/types.json",
-                                         "mandatory":"true",
-                                         "idKey":"id",
-                                         "labelKey":"label",
-                                         "listKey":"results"
-                                     },
-                                     {
-                                        "component-type":"textarea",
-                                        "field-name":"rif:description.1.value",
-                                        "label":"Description"
-                                     }
-                            ],
-                            "template":"div-grouping",
-                            "element-id":"Collaborators-Other-Uni",
-                            "additional-class":""
-                        },                        
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Descriptions"
+                        },
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"rif:description",
+                            "sub-elements":{"settings":[
+                                                {"jaffaDropDown":{"label":"Type",
+                                                                  "suffix":"type", 
+                                                                  "field":"type", 
+                                                                  "label-field":"rif:description.0.label", 
+                                                                  "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/types.json",
+                                                                  "data-id-key":"id",
+                                                                  "data-label-key":"label",
+                                                                  "data-list-key":"results",                                                                  
+                                                                  "mandatory":"true"}},
+                                                {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
+                                                ]
+                                            }
+                        },           
+                       {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Collection Type"
+                        },
                         {
                             "component-type":"data-source-dropdown",
-                            "label":"Type",
+                            "label":"",
                             "fieldName":"dc:type.rdf:PlainLiteral",
                             "fieldNameLabel":"dc:type.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/types.json",
@@ -50,7 +54,8 @@
                             "listKey":"results"
                         },
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Access/Rights"
                         },
                         {
@@ -79,8 +84,9 @@
                     "heading":"Coverage",
                     "fields":[
                         {
-                            "component-type":"paragraph",
-                            "content":"Date Coverage"
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Coverage Date"
                         },
                         {
                             "component-type":"text-input",
@@ -118,16 +124,104 @@
             </div>
         </div>
     </div>"
+                        },
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"rif:description",
+                            "sub-elements":{"settings":[
+                                                {"jaffaDropDown":{"label":"Type",
+                                                                  "suffix":"type", 
+                                                                  "field":"type", 
+                                                                  "label-field":"rif:description.0.label", 
+                                                                  "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/types.json",
+                                                                  "data-id-key":"id",
+                                                                  "data-label-key":"label",
+                                                                  "data-list-key":"results",                                                                  
+                                                                  "mandatory":"true"}},
+                                                {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
+                                                ]
+                                            }
+                        },           
+                        {
+                            "component-type":"dropdown-fixedvalue",
+                            "field-name":"dc:coverage.vivo:GeographicLocation.0.dc:type",
+                            "label":"",
+                            "additional-classes":"locationType",
+                            "options":[
+                                {
+                                    "value":"gml",
+                                    "label":"OpenGIS Geography Markup Language"
+                                },
+                                {
+                                    "value":"kml",
+                                    "label":"Keyhole Markup Language"
+                                },
+                                {
+                                    "value":"iso19139dcmiBox",
+                                    "label":"DCMI Box notation (iso19139)"
+                                },
+                                {
+                                    "value":"dcmiPoint",
+                                    "label":"DCMI Point notation"
+                                },
+                                {
+                                    "value":"gpx",
+                                    "label":"GPS Exchange Format"
+                                },
+                                {
+                                    "value":"iso31661",
+                                    "label":"Country code (iso31661)"
+                                },
+                                {
+                                    "value":"iso31662",
+                                    "label":"Country subdivision code (iso31662)"
+                                },
+                                {
+                                    "value":"kmlPolyCoords",
+                                    "label":"KML long/lat co-ordinates"
+                                },
+                                {
+                                    "value":"gmlKmlPolyCoords",
+                                    "label":"KML long/lat co-ordinates derived from GML"
+                                },
+                                {
+                                    "value":"text",
+                                    "label":"Free text"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input type='hidden' class='redboxGeoDataFid' />
+                                       <input type='hidden' class='redboxGeoDataWkt' id='dc:coverage.vivo:GeographicLocation.0.redbox:wktRaw' />
+                                       <input type='text' class='redboxGeoDataOutput autocomplete-geonames' placeholder='eg. coordinates or placename'
+                                              id='dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral' size='60' />
+                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.dc:identifier' />
+                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.geo:long' />
+                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.geo:lat' />
+                                        <div class='hidden coords' id='dc:coverage.vivo:GeographicLocation.0.coords'>
+                                            <a class='map-link' target='_blank' href=''>map</a>
+                                            @ longitude: <span class='east'> </span>
+                                            , latitude: <span class='north'> </span>
+                                            | <a class='clear-link' href='#'>clear</a>
+                                        </div>"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<input id='add-location' class='button add-another-item' type='button' value='Add location'>"
                         }
+                        
                     ]
+                        
                 },
                 {
                     "heading":"Data Location",
                     "fields":[
                         {
-                            "component-type":"paragraph",
-                            "content":"Additional Identifiers (*)"
-                        },                        
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Additional Identifiers"
+                        },
                         {
                             "component-type":"native-html",
                             "content":"<input id='dc:identifier.checkbox' type='checkbox'><label for='dc:identifier.checkbox'>Use this record's ID</label>"
@@ -159,7 +253,8 @@
                     "heading":"Associations",
                     "fields":[
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Creators"
                         },
                         {
@@ -215,61 +310,65 @@
                             "listKey":"results"
                         }, 
                         {
-                            "component-type":"paragraph",
-                            "content":"Co-investigators and other contributors - same as Collaborators ??"
-                        },                        
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Collaborators"
+                        },           
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:contributor.locrel:clb.0.foaf:Agent",
-                            "label":"Collaborator"
-                        },
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:contributor.locrel:clb",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"", "class-list":"jaffa-field", "suffix":"foaf:Agent"}}
+                                                ]
+                                            }
+                        },           
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Related Publications"
-                        },                        
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.swrc:Publication.0.dc:identifier",
-                            "label":"URL:"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.swrc:Publication.0.dc:title",
-                            "label":"Title:"
-                        },
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:relation.swrc:Publication",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"URL: ", "class-list":"jaffa-field", "suffix":"dc:identifier"}},
+                                                {"jaffaText":{"label":"Title: ", "class-list":"jaffa-field", "suffix":"dc:title"}},
+                                                {"jaffaText":{"label":"Notes: ", "class-list":"jaffa-field", "suffix":"skos:note"}}
+                                                ]
+                                           }
+                        },           
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.swrc:Publication.0.skos:note",
-                            "label":"Notes:"
-                        }, 
-                        {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Related Websites"
-                        },                        
+                        },                
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.bibo:Website.0.dc:identifier",
-                            "label":"URL:"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.bibo:Website.0.dc:title",
-                            "label":"Title:"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.bibo:Website.0.skos:note",
-                            "label":"Notes:"
-                        } 
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:relation.bibo:Website",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"URL: ", "class-list":"jaffa-field", "suffix":"dc:identifier"}},
+                                                {"jaffaText":{"label":"Title: ", "class-list":"jaffa-field", "suffix":"dc:title"}},
+                                                {"jaffaText":{"label":"Notes: ", "class-list":"jaffa-field", "suffix":"skos:note"}}
+                                                ]
+                                           }
+                        }           
                     ]
                 },
                 {
                     "heading":"Keywords",
                     "fields":[
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
                             "content":"Fields of Research"
-                        },
+                            "type":"h3",
+                        },                        
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:subject.anzsrc:for",
+                            "sub-elements":{"settings":[
+                                                ]
+                                           }
+                        },           
                         {
                             "component-type":"anzsrc-selection",
                             "label":"",
@@ -285,9 +384,10 @@
                             "anzsrcType":"for"
                         },
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Socio-Economic Objective"
-                        },
+                        },                        
                         {
                             "component-type":"anzsrc-selection",
                             "label":"",
@@ -303,9 +403,10 @@
                             "anzsrcType":"seo"
                         },
                         {
-                            "component-type":"paragraph",
-                            "content":"Research Themes - selection one or more of the 4 themes, or not aligned."
-                        }
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Research Themes"
+                        },                        
                         {
                             "component-type":"native-html",
                             "content":"<input id='jcu:research.themes.tropicalEcoSystems' type='checkbox'><label>Tropical Ecosystems, Conservation and Climate Change</label>"
@@ -327,14 +428,18 @@
                             "content":"<input id='jcu:research.themes.notAligned' type='checkbox'><label>Not aligned to a University theme</label>"
                         },
                         {
-                            "component-type":"paragraph",
+                            "component-type":"text-block",
+                            "type":"h3",
                             "content":"Keywords"
-                        },
+                        },                        
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:subject.vivo:keyword.0.rdf:PlainLiteral",
-                            "label":"Keyword:"
-                        }                        
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:subject.vivo:keyword",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"Keyword: ", "class-list":"jaffa-field", "suffix":"rdf:PlainLiteral"}}
+                                                ]
+                                           }
+                        }           
                     ]
                 },
                 {
