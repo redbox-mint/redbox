@@ -271,7 +271,7 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "fieldName":"dataCollection-fileFormat",
+                            "field-name":"dataCollection-fileFormat",
                             "label":"Predominant file format",
                             "sourceUrl":"dmpt/data/fileFormat.json"
                         },
@@ -348,26 +348,26 @@
                             "label":"Storage location",
                             "options":[
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"storageLocation1",
                                     "label":"Faculty server"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"storageLocation2",
                                     "label":"External hard drive"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"storageLocation3",
                                     "label":"NeCTAR Virtual Laboratory"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"storageLocation4",
                                     "label":"RDSI Node"
                                 }
                             ]
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStorage.locationOther",
+                            "field-name":"datastorageLocationOther",
                             "label":"If you have selected other, please provide details if possible",
                             "content":""
                         },
@@ -381,15 +381,15 @@
                                     "label":"Faculty server"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"Storage.Location.2",
                                     "label":"External hard drive"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"Storage.Location.3",
                                     "label":"NeCTAR Virtual Laboratory"
                                 },
                                 {
-                                    "value":"Storage.Location.1",
+                                    "value":"Storage.Location.4",
                                     "label":"RDSI Node"
                                 }
                             ]
@@ -449,7 +449,7 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "fieldName":"dataLicensingAccess-type",
+                            "field-name":"dataLicensingAccess-type",
                             "label":"License type",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
