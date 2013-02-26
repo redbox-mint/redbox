@@ -9,7 +9,7 @@
             <label for="dateTo">To</label>
             <input type="text" placeholder="End Date" id="dateTo" name="dateTo" value="$self.getToDt()" onchange="updateChart('#dateFrom')(this.value, $('#dateTo'))"/>
 			<label for="reportName">Report Name</label>
-			<input type="text" placeholder="Report Name" id="reportName" name="reportName" />
+			<input type="text" placeholder="Report Name" id="reportName" name="reportName" value="$self.getReportName()" />
 			<input type="button" value="Export as CSV" onclick="location.assign('chart?chartName=exportDash&format=csv&$self.getDateRange()')"/>			
 		</span>				
 	</div>
@@ -20,7 +20,7 @@
 	</div>
 	</div>
 	<div class="reportImages">
-	<h1 id="reportTitle" style="text-align:center"></h1>
+	<h1 id="reportTitle" style="text-align:center">$self.getReportName()</h1>
 		<span>
 			<img class="reportDashboardChart" src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
 		</span>

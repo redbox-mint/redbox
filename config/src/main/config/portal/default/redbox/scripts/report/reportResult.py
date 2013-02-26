@@ -1,6 +1,7 @@
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from com.googlecode.fascinator.common.solr import SolrResult
+from java.net import URLEncoder
 
 class ReportResultData:
 
@@ -65,5 +66,13 @@ class ReportResultData:
                
     def getReportResult(self):
         return self.__reportResult.getResults()
-           
+    
+    def getReportName(self):
+        return self.report.getReportName()
+    
+    def getReportLabel(self):
+        return self.report.getLabel()
+    
+    def urlEncode(self, text):
+        return URLEncoder.encode(text, "utf-8")
     

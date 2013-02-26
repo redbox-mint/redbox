@@ -32,7 +32,7 @@
             },
             "label": "Creators",
             "key" : "creator",
-            "solrField": "dc:creator.foaf:Person"
+            "solrField": "creatorfullname"
         }
     ]
 }
