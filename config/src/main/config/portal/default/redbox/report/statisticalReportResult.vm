@@ -1,0 +1,70 @@
+#if($self.getErrorMsg()=="")
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<section>
+		<h1>Statistical Report</h1>
+	<form method="post" action="$portalPath/report/statisticalReportResult">
+		<label>Report Name: <input type="text" name="reportName" value="$self.getReport().getLabel()"/></label><br>
+		<fieldset style="margin-top:20px;">
+			<legend>Date Range</legend>
+			<label style="margin-right:7px;">From</label>
+			<input name="dateFrom" type="text" class="datepicker" value="$self.getReportFilter('dateFrom')" /> 
+			<label>To<input name="dateTo" type="text" class="datepicker" value="$self.getReportFilter('dateTo')"/></label><br>
+			<label>Date</label>
+			<label><input type="radio" name="dateCreatedModified" value="created" $self.getSelectedOpt("dateCreatedModified","created", "checked='checked'") />Created</label>
+			<label><input type="radio" name="dateCreatedModified" value="modified" $self.getSelectedOpt("dateCreatedModified","modified", "checked='checked'")/>Modified</label><br>
+			<label>Show
+			<select name="showOption">
+				<option value="all" $self.getSelectedOpt("showOption","all", "selected")>All records</option>
+				<option value="published" $self.getSelectedOpt("showOption","published", "selected")>Published records</option>
+			</select>
+			</label>
+		</fieldset>
+		<input type="submit" name="submit" value="Save and Run"/>
+		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
+		<input type="submit" name="clear" value="CSV Export"/>
+	</form>
+	<style type="text/css"> table.demo td {width:200em;} table.demo {margin-top:20px;} </style>
+<div id='redbox'>
+	<table class="demo">
+		<tr>
+			<th>REDBOX System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		#foreach($field in $self.getResultFields())
+			<!-- $field -->
+			#set($label = $self.getRedboxStatsLabel($field))
+			#set($value = $self.getRedboxStatsCount($field))
+		<tr>			
+			<td> $label </td>
+			<td> $value </td>
+		</tr>	
+		#end
+</table>
+</div>		
+<div id='mint'>
+	<table class="demo">
+		<tr>
+			<th>MINT System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		<tr>
+			<td>Total</td>
+			<td>100</td>
+		</tr>
+		<tr>
+			<td>Party</td>
+			<td>100</td>
+		</tr>
+		<tr>
+			<td>(Party type) Person</td>
+			<td>100</td>
+		</tr>
+</table>
+</div>		
+	</section>
+	<script>
+		 $(function() {$( ".datepicker" ).datepicker();});		 	
+	</script>
+#else
+	<div>$self.getErrorMsg()</div>
+#end

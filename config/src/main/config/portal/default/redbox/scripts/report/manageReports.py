@@ -1,3 +1,5 @@
+from java.lang import String
+
 class ManageReportsData:
 
     def __init__(self):
@@ -61,3 +63,18 @@ class ManageReportsData:
     def getReports(self):
         if (self.reportManager is not None):
             return self.reportManager.getReports()
+        
+    def getReportRunLink(self, report):
+        classname = String(report.getConfig().getString(None, "report", "className"))
+        if classname.endsWith("RedboxReport"):
+            return "reportResult?id=%s" % report.getReportName()
+        else:
+            return  "statisticalReportResult?reportName=%s" % report.getReportName()
+        
+    def getReportEditLink(self, report):
+        classname = String(report.getConfig().getString(None, "report", "className"))
+        if classname.endsWith("RedboxReport"):
+            return "reports?reportName=%s" % report.getReportName()
+        else:
+            return  "statisticalReportResult?reportName=%s" % report.getReportName()
+        

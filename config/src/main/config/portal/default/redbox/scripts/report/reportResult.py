@@ -2,6 +2,8 @@ from com.googlecode.fascinator.api.indexer import SearchRequest
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.net import URLEncoder
+from java.util import TreeMap
+from org.apache.commons.lang import StringEscapeUtils
 
 class ReportResultData:
 
@@ -15,6 +17,7 @@ class ReportResultData:
         self.log = context["log"]
         self.reportManager = context["Services"].getService("reportManager")
         self.indexer = context['Services'].getIndexer()
+        self.metadata = context["metadata"]
         
         self.errorMsg = "" 
         if (self.auth.is_logged_in()):
@@ -74,5 +77,8 @@ class ReportResultData:
         return self.report.getLabel()
     
     def urlEncode(self, text):
-        return URLEncoder.encode(text, "utf-8")
-    
+        return URLEncoder.encode(text, "utf-8")    
+    def escapeHtml(self, value):
+        if value:
+            return StringEscapeUtils.escapeHtml(value) or ""
+        return ""

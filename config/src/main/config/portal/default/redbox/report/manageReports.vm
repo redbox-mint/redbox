@@ -20,10 +20,12 @@
 		#set ($reports = $self.getReports())
 		#if($reports)
 			#foreach($report in $reports.values())
+				#set($link = $self.getReportRunLink($report))
+				#set($editlink = $self.getReportEditLink($report))
 		<tr>
 			<td><input name="selected_report" type="checkbox" value="$report.getReportName()" /></td>
-			<td><a href="$portalPath/report/reports?reportName=$report.getReportName()">$report.getLabel()</a></td>
-			<td><a href="$portalPath/report/reportResult?id=$report.getReportName()">Run</a></td>
+			<td><a href="$portalPath/report/$editlink">$report.getLabel()</a></td>			
+			<td><a href="$portalPath/report/$link">Run</a></td>
 		</tr>
 			#end
 		#else

@@ -1,70 +1,28 @@
 	<section>
 		<h1>Create New Statistical Report</h1>
-	<form>
-		<label>Report Name: <input type="text" /></label><br>
+	<form method="post">
+		<label>Report Name: <input name="reportName" type="text" /></label><br>
 		<fieldset style="margin-top:20px;">
 			<legend>Date Range</legend>
-			<label style="margin-right:7px;">From</label><input type="date" class="datepicker" /> 
-			<label>To<input type="date" class="datepicker" /></label><br>
+			<label style="margin-right:7px;">From</label>
+			<input name="dateFrom" type="text" class="datepicker" /> 
+			<label>To<input name="dateTo" type="text" class="datepicker" /></label><br>
 			<label>Date</label>
-			<label><input type="radio" name="date_type" checked="checked" />Created</label>
-			<label><input type="radio" name="date_type" />Modified</label><br>
+			<label><input type="radio" name="dateCreatedModified" value="created" checked="checked" />Created</label>
+			<label><input type="radio" name="dateCreatedModified" value="modified" />Modified</label><br>
 			<label>Show
-			<select>
-				<option>All records</option>
-				<option>Published records</option>
+			<select name="showOption">
+				<option value="all">All records</option>
+				<option value="published">Published records</option>
 			</select>
 			</label>
 		</fieldset>
-		<input type="submit" name="submit" value="Create" onclick="getresults();"/>
+		<input type="submit" name="submit" value="Create" />
 		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
 		<input type="submit" name="clear" value="CSV Export"/>
 	</form>
 	<style type="text/css"> table.demo td {width:200em;} table.demo {margin-top:20px;} </style>
-<div id='redbox'>
-	<table class="demo">
-		<tr>
-			<th>REDBOX System Statistical Report</th>
-			<th>Count</th>
-		</tr>
-		<tr>
-			<td>Total</td>
-			<td>100</td>
-		</tr>
-		<tr>
-			<td>Collection</td>
-			<td>100</td>
-		</tr>
-</table>
-</div>		
-<div id='mint'>
-	<table class="demo">
-		<tr>
-			<th>MINT System Statistical Report</th>
-			<th>Count</th>
-		</tr>
-		<tr>
-			<td>Total</td>
-			<td>100</td>
-		</tr>
-		<tr>
-			<td>Party</td>
-			<td>100</td>
-		</tr>
-		<tr>
-			<td>(Party type) Person</td>
-			<td>100</td>
-		</tr>
-</table>
-</div>		
 	</section>
 	<script>
-		 $(function() {$( ".datepicker" ).datepicker();});
-		 $('form').submit(function() { return false;}); 
-		$('#redbox').hide();
-		$('#mint').hide();
-	function getresults() {
-		$('#redbox').show();
-		$('#mint').show();
-	}		
+		 $(function() {$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy'});});		 
 	</script>
