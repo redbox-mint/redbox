@@ -18,12 +18,12 @@ $(document).ready(function() {
 														"field":""
 											},
 										"add-item-text":"Add",
-										"delete-item-html":"<button>Remove</button>",
+										"delete-item-html":"<button class='anzsrcSelection'>Remove</button>",
 										"min-size":1,
 										"child-config":config
 	
 										});
-				
+				 
    
 });
 
