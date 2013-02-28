@@ -1,55 +1,200 @@
 ## This added because local custom.css has hugh title bar height
 <script type="text/javascript">
-    $(function () {
+	var access_control_oid = null; // used for caller from myplans mydatasets to set oid
+	var access_control_users = null;
+
+	function build_users_table(results) {
+		var table_html = "<td>Is owner</td><td>User name</td><td style='width:10%'>Delete</td></tr>"
+
+		var owner = results.owner;
+		table_html += "<tr>";
+		table_html += "<td><input type='radio' name='is_owner' checked = 'checked' value='old-owner' /></td>";
+		table_html += "<td>" + owner + "</td>";
+		table_html += "<td></td>";
+		table_html += "</tr>";
+
+		var users = results.viewers;
+		if (typeof users === 'string') {
+	    	table_html += "<tr>";
+	    	table_html += "<td><input type='radio' name='is_owner'";
+	    	if (users == owner) { table_html += " checked = 'checked'"; } 
+	    	table_html += " value='" + owner + "' /></td>";
+	    	table_html += "<td>" + users + "</td>";
+	    	table_html += "<td><span class='ui-icon ui-icon-trash' style='display:inline-block' onclick=\"revoke_user('" + users + "')\"></span></td>";
+	    	table_html += "</tr>";
+		} else {
+		    for (var i = 0; i< users.length; i++ ) {
+		    	table_html += "<tr>";
+		    	table_html += "<td><input type='radio' name='is_owner'";
+		    	if (users[i] == owner) { table_html += " checked = 'checked'"; } 
+		    	table_html += "  value='" + users[i] + "'/></td>";
+		    	table_html += "<td>" + users[i] + "</td>";
+		    	table_html += "<td><span class='ui-icon ui-icon-trash' style='display:inline-block' onclick=\"revoke_user('" + users[i] + "')\"></span></td>";
+		    	table_html += "</tr>";
+		    }
+		}
+	    document.getElementById("access_userlist").innerHTML = table_html;
+	}
+
+	function manage_access(oid) {
+		access_control_oid = oid;
+		// This ajax call is for initialise user list
+		var action = "get"; 
+		jQuery.ajax({
+			url: "$portalPath/grantAccess.ajax",
+			data: { oid:access_control_oid,
+					action:action
+				  },
+			error: function(j, s) {alert(s)},	  
+			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
+			});
+	}
+	
+	$(function () {
         $("#dialog-form").dialog({
             autoOpen: false,
             height: "auto",
             width: 300,
             modal: true,
             buttons: {
-                "Save": function () {
-                	alert("Update config");
+                "Change": function () {
+                	var owners = document.getElementsByName('is_owner');
+                	var new_owner = '';
+                	for(var i = 0; i < owners.length; i++) {
+                          if (owners[i].checked) {
+                        	  new_owner = owners[i].value;
+                              break;
+                          } 
+                	}
+                	if (new_owner !== 'old-owner') {
+                		var action = "change"
+                    	jQuery.ajax({
+                    		url: "$portalPath/grantAccess.ajax",
+                    		data: { action:action,
+                    				oid:access_control_oid,
+                    				new_owner:new_owner
+                    			  },
+                    		dataType:'json'
+                    		});
+                	}
                 	$(this).dialog("close");
                 },
-                Cancel: function () {
+                "Close": function () {
                     $(this).dialog("close");
+                },
+                "Reload": function () {
+                	$("#action-warning-msg").hide();
+            		var action = "get"; 
+            		jQuery.ajax({
+            			url: "$portalPath/grantAccess.ajax",
+            			data: { oid:access_control_oid,
+            					action:action
+            				  },
+            			error: function(j, s) {alert(s)},	  
+            			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
+            			});
                 }
             }
         });
-##        $("#manage-access")
-##            .button()
-##            .click(function () {
-##            $("#dialog-form").dialog("open");
-##        });
     });
     
-    var data = ["Tom", "Mary"];
-    $(function() {
-    	var jaffa = jaffaFactory({});
-    	$("#user-list").jaffaText({
-    	    "label": "Add: ",
-    	    "field": "add_user",
-    	    "help-content": "#user-list-help",
-    	    "lookup-data": data
-    	});
-    });
+    
+    function revoke_user(user_name) {
+    	var r=confirm("Are you sure to remove?");
+		if (r==false) {
+		  return;
+		}
+    	jQuery.ajax({
+    		type : "POST",
+    		url : "$portalPath/actions/admin.ajax",
+    		dataType:"text",
+    		success: function(data, status) {
+	    			var action = "get"; 
+	    			jQuery.ajax({
+	    				url: "$portalPath/grantAccess.ajax",
+	    				data: { oid:access_control_oid,
+	    						action:action
+	    					  },
+	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
+	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
+	    				});
+	    		},
+    		error:	function (req) {
+	    			alert("Deletion failed.\n" + req.responseText)
+	    		},
+    		data: {
+		    		record: access_control_oid,
+		    		user: user_name,
+		    		source: "derby",
+		    		verb: "revoke-access"
+	    		}
+    		}); 
+    }
+    
+    function add_user() {
+    	var added_user = document.getElementById('add_user').value;
+    	
+    	var action = "grant"; 
+    	if (added_user) {
+			jQuery.ajax({
+				type : "POST",
+				url : "$portalPath/actions/admin.ajax",
+				error: function (req) {
+					alert("Attention please:\n" + req.responseText);
+				},
+				data: {
+					record: access_control_oid,
+					user: added_user,
+					source: "derby",
+					verb: "grant-access"
+				},
+        		dataType:"text",	
+        		success: function() {
+	    			var action = "get"; 
+	    			jQuery.ajax({
+	    				url: "$portalPath/grantAccess.ajax",
+	    				data: { oid:access_control_oid,
+	    						action:action
+	    					  },
+	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
+	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
+	    				});
+        			}
+        		});
+    	}
+    }
 </script>
 
 <div id="dialog-form" title="Configuration">
     <h2>View access</h2>
-    <table>
+    ##set($item = $self.NewThing.get(0))
+    ##if (! $item.security_exception)
+    ##<p>We don't have list yet<br></p>
+    ##end	
+    <table id="access_userlist">
 	    <tr>
-	        <td>Name</td>
+	    	<td>Is owner</td>
+	        <td>User name</td>
 	        <td style="width:10%">Delete</td>
 	    </tr>
 	    <tr>
+	    	<td><input type="radio" name="is_owner" /></td>
 	        <td>John</td>
-	        <td><span class="ui-icon ui-icon-trash" style="display:inline-block" onclick="alert('im')"></span></td>
+	        <td><span class="ui-icon ui-icon-trash" style="display:inline-block" onclick="revoke_user('John')"></span></td>
 	    </tr>
+	    #foreach($user in $item.security_exception)
+	    <!--
+	    <tr>
+	    	<td><input type="radio" name="is_owner" /></td>
+	        <td>$user</td>
+	        <td><span class="ui-icon ui-icon-trash" style="display:inline-block" onclick="revoke_user('$user')"></span></td>
+	    </tr>
+	    -->
+	    #end
 	</table>
-	<div id="user-list">input text here</div>
-	<div id="user-list-help">Grant user access help here: try tom or mary</div>
-    <h2>Owner</h2>
-	<label for="change_owner">Change the record owner to:</label><br>
-	<input type="text" class="jaffa-field" name="change_owner" id="change_owner" onclick="alert('Change it')" />
+	##<div id="user-list">input text here</div>
+	<input type="text" name="add_user" id="add_user" />
+	<button onclick="add_user()">Add</button>
+	<div id="user-list-help" class="pre-help-content">#displayMessage("access-control.help")</div>
+	<div id="action-warning-msg" style="display:none" >#displayMessage("access-control.action-warning")</div>
 </div>
