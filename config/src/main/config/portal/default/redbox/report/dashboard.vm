@@ -40,7 +40,12 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("#reportName").blur(function() {$("#reportTitle").text($(this).val());});
-	});
+		$("#reportName").keypress(function(event) {
+ 				 if ( event.which == 13 ) {
+     					$("#reportTitle").text($(this).val());
+  			 } 
+  		});
+	}); 
 	</script>
 #else
 	<span>$self.getErrorMsg()</span>

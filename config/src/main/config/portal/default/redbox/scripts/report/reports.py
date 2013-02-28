@@ -62,7 +62,6 @@ class ReportsData:
                     return
                 if self.action == "get-json":
                      out = self.response.getPrintWriter("text/plain; charset=UTF-8")
-#                     out.println(FileUtils.readFileToString(File(FascinatorHome.getPath("reports")+"/reportCriteriaOptions.json")))
                      report = self.reportManager.getReports().get(self.request.getParameter("reportName"))
                      queryFilters = report.config.getObject("query", "filter")
                      jsonMap = HashMap()

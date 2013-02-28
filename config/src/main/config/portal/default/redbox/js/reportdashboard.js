@@ -7,13 +7,13 @@ var updateChart =  function(pId) {
 		if (pDate == null) {
 			return;
 		}
-		var pDateTxt = $.datepicker.formatDate('yy-mm-dd',pDate);
+		var pDateTxt = $.datepicker.formatDate('d/m/yy',pDate);
 		try {
-			var mDate = $.datepicker.parseDate('yy-mm-dd', dateTxt); 
-			var pDate = $.datepicker.parseDate('yy-mm-dd', pDateTxt); 
+			var mDate = $.datepicker.parseDate('d/m/yy', dateTxt); 
+			var pDate = $.datepicker.parseDate('d/m/yy', pDateTxt); 
 			fromDt = (pId == "#dateFrom" ? pDateTxt : dateTxt);
 			toDt = (pId == "#dateFrom" ? dateTxt : pDateTxt);
-			if ($.datepicker.parseDate('yy-mm-dd',fromDt) > $.datepicker.parseDate('yy-mm-dd',toDt)) {
+			if ($.datepicker.parseDate('d/m/yy',fromDt) > $.datepicker.parseDate('d/m/yy',toDt)) {
 				throw "Invalid date range";
 			}
 		} catch (e) {
@@ -28,14 +28,14 @@ var imgW = 500;
 var imgH = 400;
 $(document).ready(function() {
   $("#dateFrom").datepicker({
-         dateFormat: "yy-mm-dd", 
+         dateFormat: "d/m/yy", 
          changeMonth: true, 
          changeYear: true, 
          showButtonPanel: false,
 	   onSelect:updateChart('#dateTo')
      });
 $("#dateTo").datepicker({
-         dateFormat: "yy-mm-dd", 
+         dateFormat: "d/m/yy", 
          changeMonth: true, 
          changeYear: true, 
          showButtonPanel: false,

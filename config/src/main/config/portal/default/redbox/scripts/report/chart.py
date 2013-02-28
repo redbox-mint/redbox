@@ -14,7 +14,7 @@ class ChartData:
         self.response = context["response"]
         self.request = context["request"]
         self.Services = context["Services"]
-        self.dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        self.dateFormatter = SimpleDateFormat("d/M/yyyy")
         self.errorMsg = "" 
         if (self.auth.is_logged_in()):
             if (self.auth.is_admin()==True):
