@@ -19,7 +19,9 @@
             <a href="#">Admin</a>
             <ul class="dropdown">
 				<li><a href="$portalPath/report/dashboard">Dashboard</a></li>
+				#if($systemConfig.getString("false", "redbox-reports", "enabled") == "true")
 				<li><a href="$portalPath/report/manageReports">Reports</a></li>
+				#end
                 <li><a href="$portalPath/settings">Settings</a></li>
                 <li><a href="$portalPath/admin">Security</a></li>
                 <li><a href="$portalPath/batchprocess">Batch</a></li>

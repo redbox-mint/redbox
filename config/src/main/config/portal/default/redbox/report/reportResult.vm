@@ -1,5 +1,5 @@
 #if($self.getErrorMsg()=="")
-<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a></div>
+<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a> &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp; <span style='font-weight:bold'>Preview</span></div>
 <div class="grid_16">	
 	<table>
         <thead>
@@ -7,7 +7,7 @@
                 <th>Record Title</th>
                 <th>Type</th>
                 <th>Workflow</th>
-                <th>Keywords</th>
+                <th>Date Created</th>
                 <th>Creators</th>
             </tr>
         </thead>
@@ -15,13 +15,10 @@
          #foreach($item in $self.getReportResult())
             #set($oid = $item.get("id"))
           <tr>
-                <td><a href="$portalPath/detail/$oid">$item.get('dc_title')</a></td>
+                <td>$item.get('dc_title')</td>
                 <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
                 <td>$item.get("workflow_step_label")</td>
-                <td>#foreach($keyword in $item.getList("dc_subject"))
-                		$keyword,
-                	#end
-                </td>
+                <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
                 <td>
                     
                 	#set($creatorList = $item.getList("creatorfullname"))
