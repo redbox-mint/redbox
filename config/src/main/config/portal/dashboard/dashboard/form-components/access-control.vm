@@ -35,6 +35,23 @@
 		}
 	    document.getElementById("access_userlist").innerHTML = table_html;
 	}
+	
+	function change_owner(oid) {
+		var change = "change", new_owner = "admin";
+		jQuery.ajax({
+			url: "$portalPath/grantAccess.ajax",
+			data: { action:change,
+					oid:oid,
+					new_owner:"admin"
+				  },
+			dataType:'json',
+			success: function(data) {
+				window.location.reload();
+			},
+			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }
+		});
+
+	}
 
 	function manage_access(oid) {
 		access_control_oid = oid;
