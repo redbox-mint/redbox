@@ -515,6 +515,13 @@
         "migrationScript": "${fascinator.home}/restore/redboxMigration1.5.py"
     },
     "services": [
+           {
+           "id": "languageService",
+           "className": "com.googlecode.fascinator.portal.services.impl.JavaPropertiesLanguageService",
+           "config": {
+               "propertiesDir": "${fascinator.home}/language-files/"
+           }
+       },
     	{
     		"id":"reportManager",
     		"className":"com.googlecode.fascinator.portal.report.service.ReportManager",

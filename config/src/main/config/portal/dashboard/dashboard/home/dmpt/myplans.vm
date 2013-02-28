@@ -1,4 +1,5 @@
 #set($menuTitle = "My plans")
+
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
     <table>
@@ -22,7 +23,7 @@
                 <td><a href="$portalPath/workflow/$oid" title="Edit Plan"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
                 <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
                 <a href="#" title="Delete Plan"><img alt="Delete plan" src="$portalPath/images/icons/delete.png"></a>
-                <a href="#" onclick="manage_access(this);" title="Set Permissions"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
+                <a href="#" onclick="manage_access('$oid');" title="Set Permissions"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
                 </td>
             </tr>
         #end
