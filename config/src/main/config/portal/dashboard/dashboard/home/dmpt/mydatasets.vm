@@ -19,7 +19,7 @@
 		    </td>
 		    <td>$self.formatDate($item.get("last_modified"))</td>
 	        <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png" title="Edit Dataset"></a>
-	            <a href="#"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>
+	            <a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>
 	            <a onclick="manage_access('$oid');" href="#" title="Set Permissions"><img alt="Manage Record" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
 	       </td>
 	    </tr>
