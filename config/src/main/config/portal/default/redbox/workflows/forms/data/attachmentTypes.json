@@ -1,0 +1,20 @@
+{
+    "results": [
+        {
+            "id": "data-file",
+            "label": "Data file"
+        },
+        {
+            "id": "supporting-material",
+            "label": "Supporting material"
+        },
+        {
+            "id": "readme",
+            "label": "Read me"
+        },
+        {
+            "id": "ethics",
+            "label": "Ethics"
+        }
+    ]
+}
