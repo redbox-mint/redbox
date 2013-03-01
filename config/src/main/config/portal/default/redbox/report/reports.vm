@@ -24,6 +24,11 @@
 		<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
 		<h1>Create New Report</h1>
 	#end
+	<div class="errorbox">
+		#displayMessage("reports.create.report.validation.message")
+		<ul id="errorbox-list">
+		<ul>
+	</div>
 	<div>
 		<fieldset>
 			<legend>Date Range</legend>
@@ -70,11 +75,18 @@
     jaffa.form.addField("dateTo","dateTo");
     jaffa.form.addField("reportName","reportName");
     
+    jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
+    
+    
     function preSave() {
-    	return true;
+    	return jaffa.valid.okToSave();
     }
     
-    function saveData(unmanagedData, isValid,something, serverData) {  
+    function saveData(unmanagedData, isValid,something, serverData) {
+    	$("#errorbox-list").html('');  
+    	if(jaffa.valid.okToSave()) {
     	 #if($reportName)
 			var url = '$portalPath/report/reports.ajax?func=action&action=edit&reportId=$reportName';
 		 #else
@@ -90,11 +102,43 @@
 			},
 			dataType:"json"
 		}); 
+		}
     }
     
     function preSave() {
     	return true;
     }
+    function focus(elementId) {
+		$("[id='"+elementId+"']").focus();
+	}
+
+    
+    function validationFail(fieldId, testsFailed) {
+    
+    if (fieldId == "dateFrom") {
+        if (jQuery.inArray("required", testsFailed) != -1) {
+            $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
+        }
+    }
+    if (fieldId == "dateTo") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+        	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateTo-errorButton").click(function() { focus("dateTo");});
+        }
+    }
+    if (fieldId == "reportName") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportName-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#reportName-errorButton").click(function() { focus("reportName");});
+            
+        }
+    }
+    
+}
+
+
+
 
 </script>
 	
@@ -171,6 +215,8 @@
 		jaffa.form.synch(true);
 	});
 } 
+
+
 
 		
 </script>
