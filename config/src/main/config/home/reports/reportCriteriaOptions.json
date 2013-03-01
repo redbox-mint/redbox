@@ -33,6 +33,78 @@
             "label": "Creators",
             "key" : "creator",
             "solrField": "creatorfullname"
+        },
+         {
+            "value": {
+                "jaffaDropDown": {
+                    "field": "",
+                    "key": "recordType",
+                    "json-data-url":"lookup?field=recordType"
+                }
+            },
+            "label": "Record Type",
+            "key" : "recordType",
+            "solrField": "dc\\:type.skos\\:prefLabel"
+        },
+         {
+            "value": {
+                "jaffaDropDown": {
+                    "field": "",
+                    "key": "workflowStep",
+                    "json-data-url":"lookup?field=workflowStep"
+                }
+            },
+            "label": "Workflow Step",
+            "key" : "workflowStep",
+            "solrField": "workflow_step_label"
+        },
+         {
+            "value": {
+                "jaffaDropDown": {
+                    "field": "",
+                    "key": "licenceType",
+                    "json-data-url":"http://localhost:9000/redbox/default/workflows/forms/data/licences.json",
+                    "data-id-key":"id",
+                    "data-label-key": "label",
+                    "data-list-key": "results"
+                }
+            },
+            "label": "Licence Type",
+            "key" : "licenceType",
+            "solrField": "dc:license.skos:prefLabel"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "accessConditions"
+                }
+            },
+            "label": "Access Conditions",
+            "key" : "accessConditions",
+            "solrField": "dc\\:accessRights.skos\\:prefLabel"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "depositor"
+                }
+            },
+            "label": "Depositor",
+            "key" : "depositor",
+            "solrField": "locrel\\:dpt.foaf\\:Person.foaf\\:name"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "retentionPeriod"
+                }
+            },
+            "label": "Retention Period",
+            "key" : "retentionPeriod",
+            "solrField": "redbox\\:retentionPeriod"
         }
     ]
 }
