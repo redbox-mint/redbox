@@ -85,8 +85,7 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
                 return;
             }
 
-
-			var logicOperatorDropDown = $('<div><select class="jaffa-field" id="'+this.field+'logicalOp" name="logicalOp"><option value="AND">AND</option><option value="OR">OR</option></select><div>');
+			var logicOperatorDropDown = $('<div style="display:inline; margin-right:20px"><select class="jaffa-field" id="'+this.field+'logicalOp" name="logicalOp"><option value="AND">AND</option><option value="OR">OR</option></select>');
 			ui.append(logicOperatorDropDown);
             // Label
             var label = this.getConfig("label");

@@ -1,5 +1,6 @@
 body {
     font-size: 75%;
+    min-width: 960px
 }
 
 #notifications h2 {
@@ -387,3 +388,4 @@ button.anzsrcSelection {
 	margin-top:1.5em
 }
 
+.report-img { display:inline-block; border: solid 1px; margin:5px; padding:10px }
