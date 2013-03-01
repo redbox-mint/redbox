@@ -1,4 +1,4 @@
-#set ($projectName = $util.get($item, "project.name"))
+#set ($projectName = $util.get($item, "dc:title"))
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,7 +19,7 @@ dd {
 .details-table { width:100%; border: 2px solid black; border-collapse: collapse; }
 .details-table	th {background-color:#1B81CD; text-align:left }
 .details-table	th,td { border: 1px solid black; padding:2px}
-NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.
+
 @page { 
 	size:8.27in 11.69in; 
 	margin: 0.5in 0.25in 0.5in 0.25in; 
@@ -68,10 +68,10 @@ h1 {
 <dt style="font-weight:bold;">Project name</dt>
 <dd>$projectName</dd>
 <dt>Project ID</dt>
-<dd>$util.get($item, "project.id")</dd>
+<dd>$util.get($item, "dc:identifier")</dd>
 </dl>
 <h4>Description:</h4>
-<p>$util.get($item, "project.description")</p>
+<p>$util.get($item, "dc:description")</p>
 <h4>Plan details</h4>
 <h4>Overview</h4>
 <h4>People</h4>
