@@ -14,8 +14,8 @@ class DashboardData:
         self.reportName = self.request.getParameter("reportName")
         if (self.fromDtTxt is None or self.toDtTxt is None):
             curCal = Calendar.getInstance()
-            self.fromDtTxt =  "01/01/%s" % curCal.get(Calendar.YEAR)
-            self.toDtTxt =  "%s/%s/%s" % (curCal.get(Calendar.DAY_OF_MONTH), curCal.get(Calendar.MONTH),curCal.get(Calendar.YEAR))
+            self.fromDtTxt =  "1/1/%s" % curCal.get(Calendar.YEAR)
+            self.toDtTxt =  "%s/%s/%s" % (curCal.get(Calendar.DAY_OF_MONTH), curCal.get(Calendar.MONTH)+1,curCal.get(Calendar.YEAR))
         if (self.reportName is None):
             self.reportName = "Dashboard Report"
         if (self.auth.is_logged_in()):
