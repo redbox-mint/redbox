@@ -15,7 +15,7 @@
         #foreach($item in $self.myPlans)
             #set($oid = $item.get("id"))
           <tr>
-                <td><a href="$portalPath/detail/$oid">$item.get('project.name')</a></td>
+                <td><a href="$portalPath/detail/$oid">$item.get('dc:title')</a></td>
                 <td>
                 #parseTemplate("home/dmpt/created_modified_date.vm")                
                 </td>

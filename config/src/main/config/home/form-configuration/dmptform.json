@@ -42,20 +42,20 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.name",
+                            "field-name":"dc:title",
                             "label":"Project name",
                             "additional-classes":"",
                             "help":"Where do I got from?"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.id",
+                            "field-name":"dc:identifier",
                             "label":"Project ID",
-                            "help":"this is your help"
+                            "help":"dmpt-help"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"project.description",
+                            "field-name":"dc:description",
                             "label":"Description",
                             "content":"",
                             "additional-classes":"mandatory",
@@ -63,25 +63,25 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.website",
+                            "field-name":"dc:relation.bibo:Website",
                             "label":"Project website"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.startdate",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
                             "label":"Start date",
                             "additional-classes":"dateYMD",
                             "help":"This is a date control"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.enddate",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
                             "label":"End date",
                             "additional-classes":"dateYMD"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.fundingsource",
+                            "field-name":"foaf:fundedBy.foaf:Agent",
                             "label":"Funding source"
                         },
                         {
@@ -91,12 +91,12 @@
                         },
                         {
                             "component-type":"repeatable-text",
-                            "field-name":"project.grantnumber",
+                            "field-name":"foaf:fundedBy.vivo:Grant",
                             "label":""
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"project.activitytype",
+                            "field-name":"dc:subject.anzsrc:toa",
                             "label":"Activity type",
                             "sourceUrl":"dmpt/data/projectActivityType.json"
                         },
@@ -149,12 +149,12 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.pi",
+                        	"lookup-name":"locrel:rth.foaf:Person",
                         	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.pi.email",
+                            "field-name":"locrel:rth.foaf:Person.foaf:email",
                             "label":"Email address"
                         },
                         {
@@ -168,12 +168,12 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.datamanager",
+                        	"lookup-name":"locrel:prc.foaf:Person",
                         	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.datamanager.email",
+                            "field-name":"locrel:prc.foaf:Person.foaf:email",
                             "label":"Email address"
                         },
                         {
@@ -187,7 +187,7 @@
                         },
                         {
                             "component-type":"repeatable-container",
-                            "containter-for":"collaborators",
+                            "containter-for":"locrel:clb.foaf:Person",
                             "sub-elements":{"settings":[
                             					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}},
 												{"jaffaText":{"label": "Email address","class-list":"jaffa-field","suffix": "email"}}
@@ -223,12 +223,12 @@
                         },
                         {
                         	"component-type":"person",
-                        	"lookup-name":"project.supervisor",
+                        	"lookup-name":"swrc:supervisor.foaf:Person",
                         	"lookup-only":"true"
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"project.supervisor.email",
+                            "field-name":"swrc:supervisor.foaf:Person:foaf:email",
                             "label":"Email address",
                             "additional-classes":""
                         },
@@ -317,7 +317,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Size",
+                            "field-name":"vivo:Dataset.dc:extent",
                             "label":"What is the expected size of all the research data that will be captured or created during the life of the research project?",
                             "options":[
                                 {
@@ -344,7 +344,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Location",
+                            "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
                             "label":"Storage location",
                             "options":[
                                 {
@@ -367,13 +367,13 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"datastorageLocationOther",
+                            "field-name":"vivo:Dataset.dc:location.skos:note",
                             "label":"If you have selected other, please provide details if possible",
                             "content":""
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"Storage.Location.masterVersion",
+                            "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
                             "label":"Location of master version",
                             "options":[
                                 {
@@ -396,7 +396,7 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataStorage.locationMasterVersionOther",
+                            "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
                             "label":"If you have selected other, please provide details if possible",
                             "content":""
                         },
@@ -615,11 +615,11 @@
                         {
                             "component-type":"text-input",
                             "label":"Approval Number",
-                            "field-name":"dataEthical-approvalNumber"
+                            "field-name":"agls:policy.dc:identifier"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataEthical.information",
+                            "field-name":"agls:policy.skos:note",
                             "label":"Information about ethical considerations relevant to this project and how they will be managed",
                             "content":""
                         },
@@ -628,29 +628,33 @@
                             "type":"h3",
                             "content":"Sensitivities"
                         },
-                        {
-                            "component-type":"checkbox",
-                            "field-name":"dataSensitivity.type",
-                            "box-for":"Type of sensitivity:",
-                            "multiline":true,
-                            "boxes":[
-                                {
-                                    "label":"Commercially sensitive"
-                                },
-                                {
-                                    "label":"Culturally sensitive"
-                                },
-                                {
-                                    "label":"Security classified"
-                                },
-                                {
-                                    "label":"Non-public"
-                                }
-                            ]
-                        },
+						{
+							"component-type": "checkbox",
+							"field-name": "agls:protectiveMarking.dc:type",
+							"box-for": "Type of sensitivity:",
+							"multiline": true,
+							"boxes": [
+								{
+									"label": "Commercially sensitive",
+									"value": "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive"
+								},
+								{
+									"label": "Culturally sensitive",
+									"value": "agls:protectiveMarking.dc:type.redbox:CulturallySensitive"
+								},
+								{
+									"label": "Security classified",
+									"value": " agls:protectiveMarking.dc:type.redbox:SecurityClassified"
+								},
+								{
+									"label": "Non-public",
+									"value": "agls:protectiveMarking.dc:type.redbox:NonPublic"
+								}
+							]
+						},
                         {
                             "component-type":"textarea",
-                            "field-name":"dataSensitivity.information",
+                            "field-name":"agls:protectiveMarking.skos:note",
                             "label":"Information about privacy, confidentiality or sensitivity to the data and how it will be managed",
                             "content":""
                         },
@@ -670,7 +674,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataOwnership.countryCollected",
+                            "field-name":"dc:coverage",
                             "label":"In which country will your data be collected",
                             "options":[
                                 {
@@ -681,7 +685,7 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataOwnership.IPowner",
+                            "field-name":"dc:rightsHolder.dc:name",
                             "label":"Copyright and intellectual property owners",
                             "options":[
                                 {
@@ -707,7 +711,7 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataOwnership.information",
+                            "field-name":"dc:rightsHolder.dc:description",
                             "label":"Information about contractual obligations that apply to this data",
                             "content":""
                         },

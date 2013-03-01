@@ -3,9 +3,9 @@
 <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
 </div>
 
-<div id="$lookup-name">&nbsp;</div>
+<div id="${lookup-name}-container">&nbsp;</div>
 <script type="text/javascript">
-$(document).ready(function() {$("[id='$lookup-name']").jaffaPeople({
+$(document).ready(function() {$("[id='${lookup-name}-container']").jaffaPeople({
 	#if ($source)		
 			"source":"$source",
 	#end	
@@ -16,7 +16,7 @@ $(document).ready(function() {$("[id='$lookup-name']").jaffaPeople({
 	#end	
 			"label":"Name",
 			"class-list":"jaffa-field",
-			"field":"${lookup-name}-person"
+			"field":"${lookup-name}"
 		});
 	});
 </script>

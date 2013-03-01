@@ -18,10 +18,10 @@ var PeopleWidgetBuilder = function($, jaffa) {
             // Update DOM but constrain searches to container, since there may
             //  be very temporary duplicate IDs as sort orders swap
             var container = this.getContainer();
-            container.find("input[id=\""+this.oldField+"title\"]").attr("id", this.field+"title");
-            container.find("input[id=\""+this.oldField+"givenName\"]").attr("id", this.field+"givenName");
-            container.find("input[id=\""+this.oldField+"familyName\"]").attr("id", this.field+"familyName");
-            container.find("input[id=\""+this.oldField+"dcIdentifier\"]").attr("id", this.field+"dcIdentifier");
+            container.find("input[id=\""+this.oldField+".foaf:title\"]").attr("id", this.field+".foaf:title");
+            container.find("input[id=\""+this.oldField+".foaf:givenName \"]").attr("id", this.field+".foaf:givenName");
+            container.find("input[id=\""+this.oldField+".foaf:familyName\"]").attr("id", this.field+".foaf:familyName");
+            container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
             
             // Tell Jaffa to ignore the field's this widget used to manage
             jaffa.form.ignoreField(this.oldField);
@@ -55,19 +55,19 @@ var PeopleWidgetBuilder = function($, jaffa) {
             }
             
             var lookup_only = this.getConfig("lookup-only");
-            var titleFieldId= this.field+"title";
+            var titleFieldId= this.field+".foaf:title";
             ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Title</label>");
             ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field\" />");
             
-            var givenNameFieldId= this.field+"givenName";
+            var givenNameFieldId= this.field+".foaf:givenName";
             ui.append("<label for=\""+givenNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Given Name</label>");
             ui.append("<input type=\"text\" id=\""+givenNameFieldId+"\" class=\"jaffa-field\" />");
             
-            var familyNameFieldId= this.field+"familyName";
+            var familyNameFieldId= this.field+".foaf:familyName";
             ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Family Name</label>");
             ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field\" />");
 
-            var dcIdentifierId = this.field+"dcIdentifier";
+            var dcIdentifierId = this.field+"dc:identifier";
             ui.append("<input type=\"hidden\" id=\""+dcIdentifierId+"\" class=\"jaffa-field\" />");
             
             var dlg_source = this.getConfig("source");
