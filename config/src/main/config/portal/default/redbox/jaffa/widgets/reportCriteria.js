@@ -1,4 +1,3 @@
-
 var ReportCriteriaWidgetBuilder = function($, jaffa) {
     var reportCriteriaClass = jaffa.widgets.baseWidget.extend({
         field: null,
@@ -25,8 +24,10 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             container.find("select[id=\""+this.oldField+"dropdown-input\"]").attr("id", this.field+"dropdown-input");
             container.find("span[id=\""+this.oldField+"searchcomponent-span\"]").attr("id", this.field+"searchcomponent-span");
             container.find("[id=\""+this.oldField+"searchcomponent\"]").attr("id", this.field+"searchcomponent");
-            container.find("input[name=\""+this.oldField+"match_contains\"]").attr("name", this.field+"match_contains");
-            container.find("input[name=\""+this.oldField+"include_nulls\"]").attr("name", this.field+"include_nulls");
+            container.find("select[name=\""+this.oldField+"match_contains\"]").attr("id", this.field+"match_contains");
+            container.find("span[name=\""+this.oldField+"containsdropdown-span\"]").attr("id", this.field+"containsdropdown-span");
+            container.find("select[name=\""+this.oldField+"include_nulls\"]").attr("id", this.field+"include_nulls");
+            container.find("span[name=\""+this.oldField+"includeNullsDropDown-span\"]").attr("id", this.field+"includeNullsDropDown-span");
             // Tell Jaffa to ignore the field's this widget used to manage A
             jaffa.form.ignoreField(this.oldField);
             var idValue = this.id();
@@ -35,6 +36,11 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 												var optionValue = jQuery.parseJSON($(this).val());
 													var id = $(this).attr('id');
 													var field = id.substr(0,id.length - 8);
+													//clear existing dropdowns
+													$("[id=\""+field+"containsdropdown-span\"]").html("");
+													jaffa.form.ignoreField(field+"match_contains", false);
+													$("[id=\""+field+"includeNullsDropDown-span\"]").html("");
+													jaffa.form.ignoreField(field+"include_nulls", false);
 													for(key in optionValue) {
 													  var options = optionValue[key];
 													  if($("[id='"+field+"dropdown-input']").val() == options["key"] && $('[id="'+field+'searchcomponent"]').length > 0){
@@ -45,9 +51,18 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 													  jaffa.form.addField(field+"searchcomponent", idValue);
 													  $("[id='"+field+"dropdown-input']").val(options["key"]);
 													  
+													  if(options["showContainsDropDown"] != "false") {
+													  	$("[id=\""+field+"containsdropdown-span\"]").html("<select id=\""+field+"match_contains\"><option value=\"field_match\">Exact match</option><option value=\"field_contains\">Match contains</option></select>"); 
+													  	jaffa.form.addField(field+"match_contains", idValue);
+													  }
+													  if(options["showNullDropDown"] != "false") {
+													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
+													  	jaffa.form.addField(field+"include_nulls",  idValue); 
+													  }
 													}
 													
 												});
+			
 			 
 			// Don't want to show the logic operator element if it's the first element in the list
             var count = this.field[this.field.length -2]; 												
@@ -97,8 +112,9 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             var input = null;
             
             var type = this.getConfig("type") || "text";
-            input = $("<span id=\""+this.field+"dropdown-span\"></span><input  type=\"hidden\" id=\""+this.field+"dropdown-input\" /><span id=\""+this.field+"searchcomponent-span\"></span>");
-            
+            input = $("<span id=\""+this.field+"dropdown-span\"></span><input  type=\"hidden\" id=\""+this.field+"dropdown-input\" />");
+            ui.append(input);
+            input = $("<span id=\""+this.field+"searchcomponent-span\"></span><span id=\""+this.field+"containsdropdown-span\" ></span><span id=\""+this.field+"includeNullsDropDown-span\" ></span>");
             ui.append(input);
             
             var dropdownElement = $("[id='"+this.field+"dropdown-span']").jaffaDropDown({
@@ -116,6 +132,11 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 												var optionValue = jQuery.parseJSON($(this).val());
 													var id = $(this).attr('id');
 													var field = id.substr(0,id.length - 8);
+													//clear existing dropdowns
+													$("[id=\""+field+"containsdropdown-span\"]").html("");
+													jaffa.form.ignoreField(field+"match_contains", false);
+													$("[id=\""+field+"includeNullsDropDown-span\"]").html("");
+													jaffa.form.ignoreField(field+"include_nulls", false);
 													for(key in optionValue) {
 													  var options = optionValue[key];
 													  if($("[id='"+field+"dropdown-input']").val() == options["key"] && $('[id="'+field+'searchcomponent"]').length > 0){
@@ -126,14 +147,19 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 													  jaffa.form.addField(field+"searchcomponent", idValue);
 													  $("[id='"+field+"dropdown-input']").val(options["key"]);
 													  
+													  if(options["showContainsDropDown"] != "false") {
+													  	$("[id=\""+field+"containsdropdown-span\"]").html("<select id=\""+field+"match_contains\"><option value=\"field_match\">Exact match</option><option value=\"field_contains\">Match contains</option></select>"); 
+													  	jaffa.form.addField(field+"match_contains", idValue);
+													  }
+													  if(options["showNullDropDown"] != "false") {
+													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
+													  	jaffa.form.addField(field+"include_nulls",  idValue); 
+													  }
 													}
 													
 												});
 			
-			var exactMatchContainsRadioGroup = $('<span><label for="field_match"><input type="radio" name="'+this.field+'match_contains" checked="checked" value="field_match"/>Exact match</label><label for="field_contains"><input type="radio" name="'+this.field+'match_contains" value="field_contains"/>Contains</label><span>');
-			ui.append(exactMatchContainsRadioGroup);						
-			var includeExcludeNullRadioGroup = $('<span><label for="field_match"><input type="radio" name="'+this.field+'include_nulls" checked="checked" value="field_include_null"/>Include null value</label><label for="field_contains"><input type="radio" name="'+this.field+'include_nulls" value="field_exclude_null"/>Exclude null value</label><span>');
-			ui.append(includeExcludeNullRadioGroup);		
+					
 					
             // Don't want to show the logic operator element if it's the first element in the list			 												
 			if(this.field[this.field.length -2] == '1') {
@@ -214,9 +240,7 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             }
             // TODO: Placeholder
             
-            jaffa.form.addField(this.field+"match_contains", this.id());
             jaffa.form.addField(this.field+"logicalOp",  this.id());
-            jaffa.form.addField(this.field+"include_nulls",  this.id());
             jaffa.form.addField(this.field+"dropdown-input",  this.id());
             jaffa.form.addField(this.field+"dropdown",  this.id());
 

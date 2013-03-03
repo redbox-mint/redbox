@@ -85,6 +85,7 @@
     }
     
     function saveData(unmanagedData, isValid,something, serverData) {
+    	$(".errorbox").hide();
     	$("#errorbox-list").html('');  
     	if(jaffa.valid.okToSave()) {
     	 #if($reportName)
@@ -114,7 +115,7 @@
 
     
     function validationFail(fieldId, testsFailed) {
-    
+    $(".errorbox").show();
     if (fieldId == "dateFrom") {
         if (jQuery.inArray("required", testsFailed) != -1) {
             $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');

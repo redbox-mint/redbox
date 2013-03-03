@@ -389,3 +389,8 @@ button.anzsrcSelection {
 }
 
 .report-img { display:inline-block; border: solid 1px; margin:5px; padding:10px }
+
+.errorbox{
+   display:none;
+background-color:#FFDDDD;
+}
