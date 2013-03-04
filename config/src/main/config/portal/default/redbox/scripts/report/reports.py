@@ -5,7 +5,7 @@ from com.googlecode.fascinator.common import JsonObject
 from java.util import HashMap
 from java.util import ArrayList
 from java.util import Collections
-from java.lang import Math
+from org.apache.commons.lang import RandomStringUtils
 from com.googlecode.fascinator.portal.report import RedboxReport
 from org.apache.commons.io import FileUtils
 from java.io import File
@@ -76,7 +76,6 @@ class ReportsData:
                      Collections.sort(elementIds)
                      
                      for elementId in elementIds:
-#                         out.println("\""+elementId+"\" : \""+queryFilters.get(elementId).get("value")+"\",")
                          jsonMap.put(elementId,queryFilters.get(elementId).get("value"))
                      jsonMap.put("reportName",report.getLabel())
                      JsonObject.writeJSONString(jsonMap,out)
@@ -84,9 +83,9 @@ class ReportsData:
                      return
         
     def createReport(self):
-        self.reportName = DigestUtils.md5Hex(self.formData.get("reportName") + self.formData.get("dateFrom") + self.formData.get("dateTo") + Math.random() )
-        self.report = RedboxReport(self.reportName)
-        #self.report = RedboxReport(String(self.formData.get("reportName")).replaceAll(" ",""),self.formData.get("reportName")) 
+        self.reportName = DigestUtils.md5Hex(self.formData.get("reportName") + self.formData.get("dateFrom") + RandomStringUtils.randomAlphanumeric(20));
+        
+        self.report = RedboxReport( self.reportName, self.formData.get("reportName")) 
         self.report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
         self.report.setQueryFilterVal("dateTo",self.formData.get("dateTo"),"dateTo", "dateTo")
         
@@ -99,13 +98,20 @@ class ReportsData:
         
     def editReport(self):
         self.report = self.reportManager.getReports().get(self.request.getParameter("reportId"))
-        self.report.setLabel(self.formData.get("reportName"))
-        self.report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
-        self.report.setQueryFilterVal("dateTo",self.formData.get("dateTo"),"dateTo", "dateTo")
+        
+        report = RedboxReport(self.report.getReportName(), self.report.getLabel())
+        report.setLabel(self.formData.get("reportName"))
+        report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
+        report.setQueryFilterVal("dateTo",self.formData.get("dateTo"),"dateTo", "dateTo")
         
         for fieldName in self.formData.getFormFields():
             if fieldName != "reportName":
-                self.report.setQueryFilterVal(fieldName,self.formData.get(fieldName),fieldName, fieldName)           
+                report.setQueryFilterVal(fieldName,self.formData.get(fieldName),fieldName, fieldName)
+        
+        self.report = report          
+        
+        self.log.error('report ' + report.toString()) 
+        self.reportManager.addReport(self.report)
         self.reportManager.saveReport(self.report)
        
         
