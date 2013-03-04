@@ -68,6 +68,7 @@
         #end
         formSelector: "#reportForm",
         functionSaveData: saveData,
+        callbackStartupComplete: startupComplete,
         callbackPreSave: preSave
     });
     
@@ -139,7 +140,80 @@
 }
 
 
+function startupComplete() {
+	
+	
+	var dataSource = jaffa.config("urlDataSource");
 
+		if (dataSource != null && dataSource != "") {
+			// Get the JSON Data and run this callback
+			jaffa.util.loadJsonUrl(dataSource, function(data) {
+				for (var field in data) {
+					jaffa.serverData[field] = data[field];
+				}
+				
+				reportCriteriaArray = [];
+
+for(key in jaffa.serverData) {
+if(key.indexOf('report-criteria') != -1){
+var index = key.charAt(16);
+var reportCriteria = reportCriteriaArray[index];
+if(reportCriteria == null) {
+reportCriteria = {};
+}
+if(key.indexOf('logicalOp') != -1) {
+reportCriteria['logicalOp'] = jaffa.serverData[key];
+}
+if(key.indexOf('dropdown') != -1 && key.indexOf('dropdown-input') == -1) {
+reportCriteria['dropdown'] = jaffa.serverData[key];
+}
+if(key.indexOf('dropdown-input') != -1) {
+reportCriteria['dropdownInput'] = jaffa.serverData[key];
+}
+if(key.indexOf('searchcomponent') != -1) {
+reportCriteria['searchcomponent'] = jaffa.serverData[key];
+}
+if(key.indexOf('match_contains') != -1) {
+reportCriteria['matchContains'] = jaffa.serverData[key];
+}
+if(key.indexOf('include_nulls') != -1) {
+reportCriteria['includeNulls'] = jaffa.serverData[key];
+}
+reportCriteriaArray[index] = reportCriteria;
+}
+}
+
+for (var i=1; i<reportCriteriaArray.length; i++) {
+reportCriteria = reportCriteriaArray[i];
+
+
+$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
+$('[id="report-criteria.'+i+'.dropdown-input"]').val(reportCriteria['dropdownInput']);
+if(reportCriteria['matchContains'] != null) {
+if($('[id="report-criteria.'+i+'.match_contains"]').length ==0) {
+	$("[id=\"report-criteria."+i+".containsdropdown-span\"]").html("<select id=\"report-criteria."+i+".match_contains\"><option value=\"field_match\">Exact match</option><option value=\"field_contains\">Match contains</option></select>");
+	jaffa.form.addField("report-criteria."+i+".match_contains", "report-criteria."+i+".Container");
+}
+$('[id="report-criteria.'+i+'.match_contains"]').val(reportCriteria['matchContains']);
+}
+
+$
+if(reportCriteria['includeNulls'] != null) {
+if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
+	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
+	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
+}
+$('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
+}
+jaffa.form.ignoreField("report-criteria.'+i+'.searchcomponent", true);
+jaffa.form.addField("report-criteria.'+i+'.searchcomponent", "report-criteria."+i+".Container");
+$('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomponent']);
+}		
+	});
+	}
+	
+	
+}
 
 </script>
 	
@@ -214,8 +288,15 @@
 		}
 		
 		jaffa.form.synch(true);
+		
+		
+
+		
 	});
 } 
+
+
+	
 
 
 

@@ -5,11 +5,13 @@ from com.googlecode.fascinator.common import JsonObject
 from java.util import HashMap
 from java.util import ArrayList
 from java.util import Collections
+from java.lang import Math
 from com.googlecode.fascinator.portal.report import RedboxReport
 from org.apache.commons.io import FileUtils
 from java.io import File
 from com.googlecode.fascinator.common import FascinatorHome
 from java.net import URLEncoder
+from org.apache.commons.codec.digest import DigestUtils
 
 class ReportsData:
 
@@ -23,6 +25,7 @@ class ReportsData:
         self.formData = context["formData"]
         self.log = context["log"]
         self.reportManager = context["Services"].getService("reportManager")
+        self.reportName = None
             
         if (self.auth.is_logged_in()):
             if (self.auth.is_admin()==True):
@@ -81,7 +84,9 @@ class ReportsData:
                      return
         
     def createReport(self):
-        self.report = RedboxReport(String(self.formData.get("reportName")).replaceAll(" ",""),self.formData.get("reportName")) 
+        self.reportName = DigestUtils.md5Hex(self.formData.get("reportName") + self.formData.get("dateFrom") + self.formData.get("dateTo") + Math.random() )
+        self.report = RedboxReport(self.reportName)
+        #self.report = RedboxReport(String(self.formData.get("reportName")).replaceAll(" ",""),self.formData.get("reportName")) 
         self.report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
         self.report.setQueryFilterVal("dateTo",self.formData.get("dateTo"),"dateTo", "dateTo")
         

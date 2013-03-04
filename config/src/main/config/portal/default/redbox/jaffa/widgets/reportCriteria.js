@@ -5,7 +5,12 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
         v2rules: {},
 
         deleteWidget: function() {
-            jaffa.form.ignoreField(this.field);
+            jaffa.form.ignoreField(this.field+'logicalOp');
+            jaffa.form.ignoreField(this.field+'dropdown');
+            jaffa.form.ignoreField(this.field+'dropdown-input');
+            jaffa.form.ignoreField(this.field+'searchcomponent');
+            jaffa.form.ignoreField(this.field+'match_contains');
+            jaffa.form.ignoreField(this.field+'include_nulls');
             this.getContainer().remove();
         },
         // Identity has been altered, adjust the DOM for all fields
@@ -156,7 +161,6 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 													  	jaffa.form.addField(field+"include_nulls",  idValue); 
 													  }
 													}
-													
 												});
 			
 					
