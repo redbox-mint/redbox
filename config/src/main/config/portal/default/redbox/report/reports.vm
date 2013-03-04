@@ -54,7 +54,7 @@
 			#set($buttonName = "Create & Run")	
 		#end
 		<input type="submit" name="submit" value="$buttonName" onclick="jaffa.form.save(); return false;"/>
-		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
+		<!--input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/-->
 	</div>
 		
 	</section>

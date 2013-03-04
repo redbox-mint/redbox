@@ -142,6 +142,13 @@ function getDateTime(){
                 if('$self.getPresentationConfig('use-ands-doi')' == 'true') {
 					$('#doiOptionSpan').show();
 				}
+				
+				if('$self.getPresentationConfig('use-embargoes')' == 'true') {
+					$("[id='embargo-section']").show();
+				}
+				var selectbox = $('#attachmentType-span select');
+        			selectbox.attr('id', 'attachmentType');
+        			selectbox.find('option[value=""]').remove();
             });
             
             //Hide the first date in the citations list, this one is reserved for Publication Date which has it's own field

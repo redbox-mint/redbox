@@ -21,6 +21,7 @@
     </label>
 #end
 
+
 #macro(mintSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey $defaultValue)
     <span class="data-source-drop-down"
           data-json-source-url="$sourceUrl"
@@ -257,7 +258,10 @@
         redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone,
         redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,
         redbox:submissionProcess.dc:title,
-        redbox:submissionProcess.skos:note
+        redbox:submissionProcess.skos:note,
+        redbox:embargo:isembargoed,
+        redbox:embargo:embargoedDate,
+        redbox:embargo:embargoedNotes
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />
