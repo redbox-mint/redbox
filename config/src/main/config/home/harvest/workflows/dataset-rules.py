@@ -171,6 +171,7 @@ class IndexData:
         self.relationDict = {}
         self.customFields = {}        
         self.creatorFullNameMap = HashMap()
+        self.embargoedDate = None
 
         # Try our data sources, order matters
         self.__workflow()
@@ -197,6 +198,8 @@ class IndexData:
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
         self.__indexList("creatorfullname", self.creatorFullNameMap.values())
+        if self.embargoedDate is not None:
+            self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
         
     def __workflow(self):
         # Workflow data
@@ -296,6 +299,8 @@ class IndexData:
                         parsedTime = time.strptime(value, "%Y-%m-%d")   
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
+                    elif field == "redbox:embargo:embargoedDate":
+                        self.embargoedDate = value
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \

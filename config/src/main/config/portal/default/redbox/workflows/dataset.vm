@@ -145,6 +145,7 @@ function getDateTime(){
 				
 				if('$self.getPresentationConfig('use-embargoes')' == 'true') {
 					$("[id='embargo-section']").show();
+					$("[id='redbox:embargo:isembargoed']").change();
 				}
 				var selectbox = $('#attachmentType-span select');
         			selectbox.attr('id', 'attachmentType');
