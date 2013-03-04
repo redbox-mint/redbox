@@ -1,6 +1,7 @@
 #set($oid = $self.getFormData("oid"))
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
+#set($languageService = $Services.getService("languageService"))
 <div class="grid_16" id="inputForms">
     <p class="loading-data">Loading form data, please wait...</p>
 </div>
@@ -147,6 +148,11 @@ function getDateTime(){
 					$("[id='embargo-section']").show();
 					$("[id='redbox:embargo:isembargoed']").change();
 				}
+				
+				if('$self.getPresentationConfig('use-technical-metadata')' == 'true') {
+					$("[id='technical-metadata-section']").show();
+				}
+				
 				var selectbox = $('#attachmentType-span select');
         			selectbox.attr('id', 'attachmentType');
         			selectbox.find('option[value=""]').remove();
