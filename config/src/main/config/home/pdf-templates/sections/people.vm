@@ -1,0 +1,10 @@
+<section>
+<h1>People</h1>
+    <table id="people">
+        #displayRow("locrel:rth.foaf:Person.foaf:name" "Principal investigator" "odd_row" "list")
+        #displayRow("locrel:prc.foaf:Person.foaf:name" "Data manager" "even_row" "list")
+        #displayRow("locrel:clb.foaf:Person.foaf:name" "Collaborators" "odd_row" "list")
+        #displayRow("swrc:supervisor.foaf:Person.0.foaf:name" "Supervisor" "even_row" "list")
+	</table>
+</section>
+<hr />

@@ -1,0 +1,9 @@
+#sectionHeading("Ethics and sensitivities")
+<div class="meta">
+    <dl>
+        #display("agls:policy.dc:identifier" "Ethics approval number")
+        #display("agls:policy.skos:note" "Ethics considerations")
+        #display("agls:protectiveMarking.dc:type" "Type of sensitivity")
+        #display("agls:protectiveMarking.skos:note" "Sensitivity note")
+    </dl>
+</div>

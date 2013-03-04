@@ -1,0 +1,11 @@
+#sectionHeading("Data structure, collection and analysis")
+<div class="meta">
+    <dl>
+        #display("vivo:Dataset.redbox:MetadataStandard" "Metadata standards used")
+        #display("vivo:Dataset.redbox:DataStructureStandard" "Standards applied to the data structure")
+        #display("vivo:Dataset.redbox:DataCollectionMethodology" "Data collection methodology")
+        #display("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used for data collection/creation")
+        #display("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
+        #display("vivo:Dataset.dc.format" "Primary file format")
+    </dl>
+</div>

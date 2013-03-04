@@ -1,3 +1,65 @@
+#macro(noInformation)
+<i>Not provided</i>
+#end
+#macro(getValue $key)
+    #set($v = $util.get($item, $key))
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	
+    #end
+#end
+
+#macro(getList $listName)
+    #set($items = $util.getList("$listName"))
+    #if ($items && $items.size() > 0)
+		#set($i = 0)
+		#foreach($el in $items)
+			#if($i > 0) , #else #set($i = 1) #end
+			$el
+		#end
+    #else
+		#noInformation()
+    #end
+#end
+
+#macro(display $key $name)
+    <dt>$name: </dt>
+    #set($v = $util.get($item, $key))
+    <dd>
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	
+    #end
+    </dd>
+#end
+#macro(displayList $listName $label)
+    <dt>$label</dt>
+    #set($items = $util.getList("$listName"))
+    <dd>
+    #if ($items && $items.size() > 0)
+		#set($i = 0)
+		#foreach($item in $items)
+			#if($i > 0) , #else #set($i = 1) #end
+			$item
+		#end
+    #else
+		#noInformation()
+    </dd>
+    #end
+#end
+#macro(displayNote $key $name)
+   	<h4>$name</h4>
+	<p>#getValue("vivo:Dataset.dc:location.skos:note")</p>
+#end
+#macro(displayRow $key $name $c $type)
+	<tr class="$c">
+    <td class="first_col">$name: </td>
+    <td>#if ( $type == "list" ) #getList($key) #else #getValue($key) #end </td>
+    </tr>
+#end
+
 #set ($projectName = $util.get($item, "dc:title"))
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,19 +68,34 @@
 <title>Data management plan</title>
 <style type='text/css'>
 body {width: 18cm; }
+p { margin-top: 2px; }
+hr { margin:0px; margin-top:10px; }
+
+h1 { text-align:center; }
+section h1 { text-align:left; font-size: x-large; margin-top:1px; margin-bottom:5px; }
+h4 { font-wight:bold; margin-top: 10px; margin-bottom: 2px;}
+
+dl { margin-top: 1px; margin-bottom: 1px; }
 dt  {
 	clear:left;
 	float:left;
 	line-height:26px;
-	width:100px;
+	font-weight:bold;
+	margin-right: 1em;
 }
 dd {
 	clear:right;
-	padding:4px 0 4px 40px;
+	padding:4px 0 4px;
 }
-.details-table { width:100%; border: 2px solid black; border-collapse: collapse; }
-.details-table	th {background-color:#1B81CD; text-align:left }
-.details-table	th,td { border: 1px solid black; padding:2px}
+
+table { width:12cm }
+table, td, th {	border: none; border-collapse:collapse; padding:8px;}
+.first_col { width: 4cm; }
+
+#people {	border: solid 1px; margin-bottom:5px; }
+#people td { border-right: solid 1px; }
+.odd_row { background-color: white }
+.even_row { background-color: #EEEEEE }
 
 @page { 
 	size:8.27in 11.69in; 
@@ -54,29 +131,82 @@ dd {
 	content: counter(pages);  
 }
 
-h1 {
-	text-align:center;
-}
-		
 	</style>
 	</head>
 <body>
 <div id="header"><img src='../../portal/default/redbox/images/redboxicon.png' height="30"/> Data management planning toolkit</div>
 <div id="footer">Project: $projectName<br/>Page: <span id="pagenumber"/></div>
+
 <h1>Data management plan</h1>
-<dl>
-<dt style="font-weight:bold;">Project name</dt>
-<dd>$projectName</dd>
-<dt>Project ID</dt>
-<dd>$util.get($item, "dc:identifier")</dd>
-</dl>
-<h4>Description:</h4>
-<p>$util.get($item, "dc:description")</p>
-<h4>Plan details</h4>
-<h4>Overview</h4>
-<h4>People</h4>
-<h4>Data collection</h4>
-<h4>Data structure</h4>
-<h4>Ethics and sensitivities</h4>
+#parse( "sections/overview.vm" )
+#parse( "sections/people.vm" )
+<section>
+<h1>Data storage</h1>
+    <dl>
+        #display("vivo:Dataset.dc:extent" "Expected size of data collected")
+        #display("vivo:Dataset.dc:location.rdf:PlainLiteral" "Storage location")
+    </dl>
+	#displayNote("vivo:Dataset.dc:location.skos:note" "Storage location note")
+    ##display("vivo:Dataset.dc:location.skos:note" "Storage location note")
+    <dl>    
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral" "Master location")
+    </dl>    
+    #displayNote("vivo:Dataset.dc:source.dc:location.skos:note" "Master location note")
+</section>
+<hr />
+<section>
+<h1>Ethics and sensitivities</h1>
+    <dl>
+        #display("agls:policy.dc:identifier" "Ethics approval number")
+    </dl>    
+    #displayNote("agls:policy.skos:note" "Ethics considerations")
+    <dl>    
+        #display("agls:protectiveMarking.dc:type" "Type of sensitivity")
+    </dl>    
+    #displayNote("agls:protectiveMarking.skos:note" "Sensitivity note")
+</section>
+<hr />
+<section>
+<h1>Ethics, licensing and IP</h1>
+    <dl>
+        #display("dc:coverage" "Country of collection")
+    </dl>    
+	#displayNote("dc:rightsHolder.dc:name" "Copyright and intellectual property owners")
+	#displayNote("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
+	#displayNote("redbox:ContractualObligations" "Constractual obligations")
+</section>
+<hr />
+<section>
+<h1>Data structure, collection and analysis</h1>
+	#displayNote("vivo:Dataset.redbox:MetadataStandard" "Metadata standards used")
+	#displayNote("vivo:Dataset.redbox:DataStructureStandard" "Standards applied to the data structure")
+	#displayNote("vivo:Dataset.redbox:DataCollectionMethodology" "Data collection methodology")
+	#displayNote("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used for data collection/creation")
+	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
+    <dl>    
+        #display("vivo:Dataset.dc.format" "Primary file format")
+    </dl>
+</section>
+<hr />
+<section>
+<h1>Licensing and access</h1>
+    <dl>
+        #display("dc:accessRights" "Access")
+        #display("dc:license" "Licence")
+    </dl>
+	#displayNote("dc:RightsStatement" "Rights")
+	#displayNote("dc:rights.skos:note" "Access notes")
+</section>
+<hr />
+<section>
+<h1>Retention and disposal</h1>
+    <dl>
+        #display("redbox:retentionPeriod.dc:date" "Application retention period")
+    </dl>    
+    #displayNote("redbox:retentionPeriod.dc:date.skos:note" "Justification for extended retention period")
+    <dl>
+        #display("redbox:disposalDate" "Earliest possible disposal date")
+    </dl>
+</section>
 </body>
 </html>

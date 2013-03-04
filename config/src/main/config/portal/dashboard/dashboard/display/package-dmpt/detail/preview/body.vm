@@ -1,19 +1,30 @@
-##parseTemplate("form-components/access-control.vm")
+#macro(sectionHeading $heading)
+<span class="accordion-header">$heading</span>
+#end
+#macro(noInformation)
+<i>Not provided</i>
+#end
+#macro(display $key $name)
+    <dt>$name</dt>
+    #set($v = $metadata.get("$key"))
+    <dd>
+    #if ($v)
+		$v
+    #else
+		#noInformation()
+    </dd>
+    #end
+#end
+
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");
 }
 </script>
-
 <div>
     #set($oid = $metadata.get("id"))
-    <h1>$metadata.get('dc:title') data management plan</h1>
-    <p>
-    <span>Project ID</span>
-    <span>$metadata.get('dc:identifier')</span>
-    </p>
-    <h4>Description:</h4>
-    <p>$metadata.get('dc:description')</p>
+    #parseDisplayTemplate("detail/preview/sections/overview.vm")
+
     <div style="text-align:center">
     <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
     <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
@@ -25,27 +36,19 @@ function manage_access(e) {
     </table>
     <p>You can add information to your plan to assist us in working with you to manage your research data.</p>
 </div>
-#macro(sectionHeading $heading)
-<span class="accordion-header">$heading</span>
-#end
 
 <div id="toggle-accordion" class="toggle-accordion">
     <span id="toggle-accordion-icon" class="ui-icon ui-icon-triangle-1-e"></span>
     <span id="toggle-accordion-text">Show all sections</span>
 </div>
 <div class="accordion">
-	#sectionHeading("Plan details")
-	<div class="meta"></div>
-	#sectionHeading("Overview")
-	<div class="meta"></div>
-	#sectionHeading("People")
-	<div class="meta"></div>
-	#sectionHeading("Data collection")
-	<div class="meta"></div>
-	#sectionHeading("Data structure")
-	<div class="meta"></div>
-	#sectionHeading("Ethics and sensitivities")
-	<div class="meta"></div>
+    #parseDisplayTemplate("detail/preview/sections/people.vm")
+    #parseDisplayTemplate("detail/preview/sections/data-storage.vm")
+    #parseDisplayTemplate("detail/preview/sections/ethics-sensitivities.vm")
+    #parseDisplayTemplate("detail/preview/sections/ethics-licensing-IP.vm")
+    #parseDisplayTemplate("detail/preview/sections/data-strucure.vm")
+    #parseDisplayTemplate("detail/preview/sections/licensing-access.vm")
+    #parseDisplayTemplate("detail/preview/sections/retention-disposal.vm")
 </div>
 
 <script type="text/javascript">
