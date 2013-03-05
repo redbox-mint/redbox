@@ -32,10 +32,10 @@
                    			 <li>
                       			 $self.escapeHtml($value)
                     		</li>
+                    	 #end
 						</ol>
 					</dd>
            			#end                    
-        #end
                 </td>
             </tr>
         #end
