@@ -204,8 +204,6 @@ $(function() {
     } else {
         $("[id='redbox:embargo.dc:date']").attr('disabled','disabled');
         $("[id='redbox:embargo.skos:note']").attr('disabled','disabled');
-        $("[id='redbox:embargo.dc:date']").val('');
-        $("[id='redbox:embargo.skos:note']").val('');
         $("#agreement").attr('disabled','');
         $("#embargoed-explanation").hide();
         $("#progression-section").show();
