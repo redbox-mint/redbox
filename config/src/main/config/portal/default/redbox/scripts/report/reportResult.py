@@ -60,6 +60,7 @@ class ReportResultData:
             self.indexer.search(recnumreq, out)
             recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
             req.setParam("rows", "%s" % recnumres.getNumFound())
+            req.setParam("csv.mv.separator",";")
             
             if self.fields is not None:
                 fieldString = ""
