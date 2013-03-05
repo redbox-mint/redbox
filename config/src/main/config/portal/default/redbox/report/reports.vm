@@ -53,7 +53,7 @@
 		#else
 			#set($buttonName = "Create & Run")	
 		#end
-		<input type="submit" name="submit" value="$buttonName" onclick="jaffa.form.save(); return false;"/>
+		<input type="submit" name="submit" value="$buttonName" id="submitButton"/>
 		<!--input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/-->
 	</div>
 		
@@ -72,77 +72,9 @@
         callbackPreSave: preSave
     });
     
-    jaffa.form.addField("dateFrom","dateFrom");
-    jaffa.form.addField("dateTo","dateTo");
-    jaffa.form.addField("reportName","reportName");
-    
-    jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
-    jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
-    jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
-    
-    
-    function preSave() {
-    	return jaffa.valid.okToSave();
-    }
-    
-    function saveData(unmanagedData, isValid,something, serverData) {
-    	$(".errorbox").hide();
-    	$("#errorbox-list").html('');  
-    	if(jaffa.valid.okToSave()) {
-    	 #if($reportName)
-			var url = '$portalPath/report/reports.ajax?func=action&action=edit&reportId=$reportName';
-		 #else
-			var url = '$portalPath/report/reports.ajax?func=action&action=create';	
-		 #end
-         
-         jQuery.ajax({type:"POST", url:url, data:serverData,
-			success:function(data, status){ 
-			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
-			},
-			error:function(xhr, status, e){
-				alert(e);
-			},
-			dataType:"json"
-		}); 
-		}
-    }
-    
-    function preSave() {
-    	return true;
-    }
-    function focus(elementId) {
-		$("[id='"+elementId+"']").focus();
-	}
-
-    
-    function validationFail(fieldId, testsFailed) {
-    $(".errorbox").show();
-    if (fieldId == "dateFrom") {
-        if (jQuery.inArray("required", testsFailed) != -1) {
-            $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
-            $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
-        }
-    }
-    if (fieldId == "dateTo") {
-         if (jQuery.inArray("required", testsFailed) != -1) {
-        	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
-            $("#dateTo-errorButton").click(function() { focus("dateTo");});
-        }
-    }
-    if (fieldId == "reportName") {
-         if (jQuery.inArray("required", testsFailed) != -1) {
-         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportName-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
-            $("#reportName-errorButton").click(function() { focus("reportName");});
-            
-        }
-    }
-    
-}
-
-
-function startupComplete() {
+    function startupComplete() {
 	
-	
+	if(jaffa) {
 	var dataSource = jaffa.config("urlDataSource");
 
 		if (dataSource != null && dataSource != "") {
@@ -212,18 +144,94 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 	});
 	}
 	
-	
+	}
 }
+    
+    jaffa.form.addField("dateFrom","dateFrom");
+    jaffa.form.addField("dateTo","dateTo");
+    jaffa.form.addField("reportName","reportName");
+    
+    jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
+    
+    
+    function preSave() {
+    	return jaffa.valid.okToSave();
+    }
+    
+    function saveData(unmanagedData, isValid,something, serverData) {
+    	$(".errorbox").hide();
+    	$("#errorbox-list").html('');  
+    	if(jaffa.valid.okToSave()) {
+    	 #if($reportName)
+			var url = '$portalPath/report/reports.ajax?func=action&action=edit&reportId=$reportName';
+		 #else
+			var url = '$portalPath/report/reports.ajax?func=action&action=create';	
+		 #end
+         
+         jQuery.ajax({type:"POST", url:url, data:serverData,
+			success:function(data, status){ 
+			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		}); 
+		}
+    }
+    
+    function preSave() {
+    	return true;
+    }
+    function focus(elementId) {
+		$("[id='"+elementId+"']").focus();
+	}
+
+    
+    function validationFail(fieldId, testsFailed) {
+    $(".errorbox").show();
+    if (fieldId == "dateFrom") {
+        if (jQuery.inArray("required", testsFailed) != -1) {
+            $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
+        }
+    }
+    if (fieldId == "dateTo") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+        	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateTo-errorButton").click(function() { focus("dateTo");});
+        }
+    }
+    if (fieldId == "reportName") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportName-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#reportName-errorButton").click(function() { focus("reportName");});
+            
+        }
+    }
+    
+}
+
+
+
 
 </script>
 	
 	<script>
-		$(function() {$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });});
-		
 		var widgetListBranding = {
 								"" : "control-group",
 								".jaffaValidationError" : ["alert", "alert-error"]
-							 };
+							 	 };
+							 	 
+		$(document).ready(function(){ 
+		
+					$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		
+		
+							 
+						});
 
 		$(document).ready(function(){
 		$("#reportCriteria").jaffaReportCriteriaRepeatable({
@@ -267,36 +275,41 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 												});										
 		});
 		
+		$(document).ready(function(){
+		
 		var dataSource = jaffa.config("urlDataSource");
 
 		if (dataSource != null && dataSource != "") {
 			// Get the JSON Data and run this callback
 			jaffa.util.loadJsonUrl(dataSource, function(data) {
-				var numberOfReportCriteria = 0;
-				for (var field in data) {
-					if(field.indexOf("report-criteria") != -1) {
-   						var index = field.split(".")[1];
-   						if(index > (numberOfReportCriteria+1)){
-     						numberOfReportCriteria = index -1;
-   						}
-					}
-					jaffa.serverData[field] = data[field];
-				}
+																var numberOfReportCriteria = 0;
+																for (var field in data) {
+																	if(field.indexOf("report-criteria") != -1) {
+   																		var index = field.split(".")[1];
+   																		if(index > (numberOfReportCriteria+1)){
+     																		numberOfReportCriteria = index -1;
+   																		}
+																	}
+																	jaffa.serverData[field] = data[field];
+															  	}
 
-		for(var i=0; i<numberOfReportCriteria;i++) {
-    		$("#reportCriteria .jaffaAddItem button").click();
-		}
+																for(var i=0; i<numberOfReportCriteria;i++) {
+    																$("#reportCriteria .jaffaAddItem button").click();
+																}
 		
-		jaffa.form.synch(true);
-		
-		
-
-		
-	});
-} 
+																jaffa.form.synch(true);
+															});
+													}
+	
+	$('#submitButton').click(function () {
+											jaffa.form.save();
+											return false;
+										});
+}); 
 
 
 	
+
 
 
 
