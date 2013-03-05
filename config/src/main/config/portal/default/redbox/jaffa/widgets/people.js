@@ -5,7 +5,14 @@ var PeopleWidgetBuilder = function($, jaffa) {
         v2rules: {},
 
         deleteWidget: function() {
-            jaffa.form.ignoreField(this.field);
+        	var titleFieldId= this.field+"foaf:title";
+            var givenNameFieldId= this.field+"foaf:givenName";
+            var familyNameFieldId= this.field+"foaf:familyName";
+            var dcIdentifierId = this.field+"dc:identifier";
+            jaffa.form.ignoreField(titleFieldId);
+            jaffa.form.ignoreField(givenNameFieldId);
+            jaffa.form.ignoreField(familyNameFieldId);
+            jaffa.form.ignoreField(dcIdentifierId);
             this.getContainer().remove();
         },
         // Identity has been altered, adjust the DOM for all fields
@@ -24,8 +31,15 @@ var PeopleWidgetBuilder = function($, jaffa) {
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
             
             // Tell Jaffa to ignore the field's this widget used to manage
-            jaffa.form.ignoreField(this.oldField);
-            // TODO: Testing
+            var titleFieldId= this.oldField+"foaf:title";
+            var givenNameFieldId= this.oldField+"foaf:givenName";
+            var familyNameFieldId= this.oldField+"foaf:familyName";
+            var dcIdentifierId = this.oldField+"dc:identifier";
+            jaffa.form.ignoreField(titleFieldId);
+            jaffa.form.ignoreField(givenNameFieldId);
+            jaffa.form.ignoreField(familyNameFieldId);
+            jaffa.form.ignoreField(dcIdentifierId);
+            
         },
         // Notify Jaffa that field <=> widget relations need to be updated
         //  This is called separately from above to avoid duplicate IDs that
@@ -34,7 +48,14 @@ var PeopleWidgetBuilder = function($, jaffa) {
             // Only synch if an update has effected this widget
             if (this.oldField != null) {
                 this._super();
-                jaffa.form.addField(this.field, this.id());
+                var titleFieldId= this.field+"foaf:title";
+            	var givenNameFieldId= this.field+"foaf:givenName";
+            	var familyNameFieldId= this.field+"foaf:familyName";
+            	var dcIdentifierId = this.field+"dc:identifier";
+            	jaffa.form.addField(titleFieldId, this.id());
+            	jaffa.form.addField(givenNameFieldId, this.id());
+            	jaffa.form.addField(familyNameFieldId, this.id());
+            	jaffa.form.addField(dcIdentifierId, this.id());
                 this.oldField = null;
             }
             // TODO: Validation alterations ?? Doesn't seem to matter
@@ -53,17 +74,20 @@ var PeopleWidgetBuilder = function($, jaffa) {
                 jaffa.logError("No field name provided for widget '"+this.id()+"'. This is mandatory!");
                 return;
             }
+            if(this.field.indexOf(".", this.field.length - 1) == -1) {
+            	this.field = this.field+".";
+            }
             
             var lookup_only = this.getConfig("lookup-only");
-            var titleFieldId= this.field+".foaf:title";
+            var titleFieldId= this.field+"foaf:title";
             ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Title</label>");
             ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field\" />");
             
-            var givenNameFieldId= this.field+".foaf:givenName";
+            var givenNameFieldId= this.field+"foaf:givenName";
             ui.append("<label for=\""+givenNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Given Name</label>");
             ui.append("<input type=\"text\" id=\""+givenNameFieldId+"\" class=\"jaffa-field\" />");
             
-            var familyNameFieldId= this.field+".foaf:familyName";
+            var familyNameFieldId= this.field+"foaf:familyName";
             ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Family Name</label>");
             ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field\" />");
 
@@ -137,8 +161,11 @@ var PeopleWidgetBuilder = function($, jaffa) {
                 }
             }
 
-            // TODO: Placeholder
-            jaffa.form.addField(this.field, this.id());
+            jaffa.form.addField(titleFieldId,  this.id());
+            jaffa.form.addField(givenNameFieldId,  this.id());
+            jaffa.form.addField(familyNameFieldId,  this.id());
+            jaffa.form.addField(dcIdentifierId,  this.id());
+            
 
             // Add help content
             this._super();

@@ -165,8 +165,8 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
 			jaffa.form.ignoreField(this.field+".top.dropdown",false);
 			jaffa.form.ignoreField(this.field+".middle.dropdown",false);
 			jaffa.form.ignoreField(this.field+".bottom.dropdown",false);
-			jaffa.form.addField(this.field,this.field+"skos:prefLabel");
-			jaffa.form.addField(this.field,this.field+"rdf:resource");
+			jaffa.form.addField(this.field+"skos:prefLabel",this.id());
+			jaffa.form.addField(this.field+"rdf:resource",this.id());
 			
             // Add help content
            	this._super();

@@ -242,7 +242,6 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
             if (defaultValue != null) {
                 input.val(defaultValue);
             }
-            // TODO: Placeholder
             
             jaffa.form.addField(this.field+"logicalOp",  this.id());
             jaffa.form.addField(this.field+"dropdown-input",  this.id());
