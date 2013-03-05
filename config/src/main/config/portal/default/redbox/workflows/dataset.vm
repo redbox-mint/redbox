@@ -146,7 +146,7 @@ function getDateTime(){
 				
 				if('$self.getPresentationConfig('use-embargoes')' == 'true') {
 					$("[id='embargo-section']").show();
-					$("[id='redbox:embargo:isembargoed']").change();
+					$("[id='redbox:embargo.redbox:isEmbargoed']").change();
 				}
 				
 				if('$self.getPresentationConfig('use-technical-metadata')' == 'true') {

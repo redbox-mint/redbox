@@ -259,9 +259,13 @@
         redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,
         redbox:submissionProcess.dc:title,
         redbox:submissionProcess.skos:note,
-        redbox:embargo:isembargoed,
-        redbox:embargo:embargoedDate,
-        redbox:embargo:embargoedNotes
+        redbox:embargo.redbox:isEmbargoed,
+        redbox:embargo.dc:date,
+        redbox:embargo.skos:note,
+        dc:relation.redbox:TechnicalMetadata.0.dc:identifier,
+        dc:relation.redbox:TechnicalMetadata.0.dc:title,
+        dc:relation.redbox:TechnicalMetadata.0.dc:type,
+        dc:relation.redbox:TechnicalMetadata.0.dc:conformsTo
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />

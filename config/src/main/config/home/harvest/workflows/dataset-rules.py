@@ -299,7 +299,7 @@ class IndexData:
                         parsedTime = time.strptime(value, "%Y-%m-%d")   
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
-                    elif field == "redbox:embargo:embargoedDate":
+                    elif field == "redbox:embargo.dc:date":
                         self.embargoedDate = value
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
