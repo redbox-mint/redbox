@@ -1,0 +1,10 @@
+#sectionHeading("Data storage")
+<div class="meta">
+    <dl>
+        #display("vivo:Dataset.dc:extent" "Expected size of data collected")
+        #display("vivo:Dataset.dc:location.rdf:PlainLiteral" "Storage location")
+        #display("vivo:Dataset.dc:location.skos:note" "Storage location note")
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral" "Master location")
+        #display("vivo:Dataset.dc:source.dc:location.skos:note" "Master location note")
+    </dl>
+</div>
