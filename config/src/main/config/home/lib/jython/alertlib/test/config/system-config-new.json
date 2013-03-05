@@ -15,6 +15,11 @@
                     "rif": "XMLAlertHandler"
                 }, 
                 "baseline": {
+                    "viewId": "default",
+                    "packageType": "dataset",
+                    "redbox:formVersion": "1.5.2",
+                    "redbox:newForm": true,
+                    "redbox:submissionProcess.redbox:submitted": true,
                 	"workflow_source": "Default Alert"
                 },
                 "timestampFields": ["redbox:submissionProcess.dc:date"],
@@ -92,14 +97,51 @@
                         }
                     }
                 }
+            },
+            {
+	             "name": "Data plans",
+	             "path": "test-alerts/dataplan",
+	             "harvestConfig": "config/dmpt.json",
+	             "handlers": {
+	                 "csv": "CSVAlertHandler"
+	             },
+	             "CSVAlertHandlerParams": {
+	                    "configMap": {
+	                        "csv": {
+	                        	"Dialect": {
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                                    "Title": ["title","dc:title"],
+	                                    "Description": ["description", "dc:description"],
+	                                    "ID": "dc:identifier",
+	                                    "Start": "dc:coverage.vivo:DateTimeInterval.vivo:start",
+	                                    "End": "dc:coverage.vivo:DateTimeInterval.vivo:start",
+	                                    "PI_Given_Name": "locrel:rth.foaf:Person.foaf:givenName",
+	                                    "PI_Family_Name": "locrel:rth.foaf:Person.foaf:familyName",
+	                                    "PI_Honorific": "locrel:rth.foaf:Person.foaf:title ",
+	                                    "PI_Email": "locrel:rth.foaf:Person.foaf:email",
+	                                    "Supervisor_Given_Name": "swrc:supervisor.foaf:Person.0.foaf:givenName",
+	                                    "Supervisor_Family_Name": "swrc:supervisor.foaf:Person.0.foaf:familyName",
+	                                    "Supervisor_Honorific": "swrc:supervisor.foaf:Person.0.foaf:title",
+	                                    "Supervisor_Email": "swrc:supervisor.foaf:Person.0.foaf:email"
+	                            }
+	                        }
+	                    }
+	             },
+	             "baseline": {
+	                    "viewId": "default",
+	                    "packageType": "dmpt",
+	                    "redbox:formVersion": "1.6-SNAPSHOT",
+	                    "redbox:newForm": true,
+	                    "redbox:submissionProcess.redbox:submitted": true,
+	                	"workflow_source": "Default Alert"
+	            }
+	             
             }
         ],
         "baseline": {
-            "viewId": "default",
-            "packageType": "dataset",
-            "redbox:formVersion": "1.5.2",
-            "redbox:newForm": true,
-            "redbox:submissionProcess.redbox:submitted": true
-        },
+
+        }
     }
 }
