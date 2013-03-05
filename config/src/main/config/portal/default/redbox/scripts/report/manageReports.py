@@ -69,12 +69,12 @@ class ManageReportsData:
         if classname.endsWith("RedboxReport"):
             return "reportResult?id=%s" % report.getReportName()
         else:
-            return  "statisticalReportResult?reportName=%s" % report.getReportName()
+            return  "statisticalReports?reportName=%s" % report.getReportName()
         
     def getReportEditLink(self, report):
         classname = String(report.getConfig().getString(None, "report", "className"))
         if classname.endsWith("RedboxReport"):
             return "reports?reportName=%s" % report.getReportName()
         else:
-            return  "statisticalReportResult?reportName=%s" % report.getReportName()
+            return  "statisticalReports?reportName=%s" % report.getReportName()
         
