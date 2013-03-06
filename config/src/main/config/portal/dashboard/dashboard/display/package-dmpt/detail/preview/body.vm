@@ -31,7 +31,7 @@ function manage_access(e) {
     </a>
     </div>
     <table>
-    <tr><td>Info of sub flow 1</td><td>Done</td></tr>
+    <tr><td></td><td>Done</td></tr>
     <tr><td>Info of sub flow 2</td><td>Not filled</td></tr>
     </table>
     <p>You can add information to your plan to assist us in working with you to manage your research data.</p>

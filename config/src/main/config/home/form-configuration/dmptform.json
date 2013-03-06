@@ -45,7 +45,17 @@
                             "field-name":"dc:title",
                             "label":"Project name",
                             "additional-classes":"",
-                            "help":"Where do I got from?"
+                            "help":"",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:title",
+        									"focus-id": "dc:title",
+        									 "validation-messages":{
+        									 						"required": "Project name is required"
+        									 						}
+    						 			  }                          
                         },
                         {
                             "component-type":"text-input",
@@ -292,7 +302,7 @@
                         {
                             "component-type":"textarea",
                             "field-name":"dataStructure.metadataStandards",
-                            "label":"Metadata standars used",
+                            "label":"Metadata standards used",
                             "content":""
                         },
                         {
@@ -302,9 +312,25 @@
                             "content":""
                         },
                         {
-                            "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
-                        }
+ 						   "component-type": "transition-control",
+    					   "transitions": [
+        									{
+            									"name": "Done",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataStructureComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}
+    									 ]
+						   }
                     ]
                 },
                 {
@@ -513,7 +539,21 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{
+            									"name": "Done",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataAccessComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
                         }
                     ]
                 },
@@ -595,7 +635,21 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{
+            									"name": "Done",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataRetention",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
                         }
                     ]
                 },
@@ -804,7 +858,17 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Back"},{"name":"Done","form-submit-action":"save","close":true}]
+                            "transitions":[{"name":"Back"},{
+            									"name": "Done",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
                         }
                     ]
                 },

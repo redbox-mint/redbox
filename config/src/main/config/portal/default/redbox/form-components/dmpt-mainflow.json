@@ -1,0 +1,21 @@
+{
+    "steps": {
+        "Welcome": {
+            "Next": "Overview"
+        },
+        "Overview": {
+            "Next": "People"
+        },
+        "People": {
+            "Next": "dataStorage",
+            "Back": "Overview"
+        },
+        "dataStorage": {
+        	"Back": "People",
+            "Next": "Retention"
+        },
+        "Retention": {
+            "Back": "dataLicensingAccess"
+        }
+    }
+}
