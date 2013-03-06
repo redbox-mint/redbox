@@ -27,5 +27,8 @@
     <div class="grid_6">
         #parseTemplate("home/alerts.vm")
     </div>
+    <div class="grid_6">
+        #parseTemplate("home/embargoes.vm")
+    </div>
     <div class="clear"></div>
 #end

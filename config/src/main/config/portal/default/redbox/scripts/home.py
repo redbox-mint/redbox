@@ -2,6 +2,7 @@ from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.common import FascinatorHome, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
+from java.text import SimpleDateFormat
 
 class WorkflowStage:
     def __init__(self, json, facets):
@@ -35,6 +36,7 @@ class HomeData:
         self.__alerts = None
         self.__result = None
         self.__stages = None
+        self.__embargoes = None
         self.__search()
 
     # Get from velocity context
@@ -117,7 +119,7 @@ class HomeData:
         out = ByteArrayOutputStream()
         indexer.search(req, out)
         self.__latest = SolrResult(ByteArrayInputStream(out.toByteArray()))
-
+        self._searchEmbargoes()
         self.vc("sessionState").set("fq", 'item_type:"object"')
 
     def getLatest(self):
@@ -131,4 +133,27 @@ class HomeData:
 
     def getStages(self):
         return self.__stages
+        
+    def getEmbargoes(self):
+		return self.__embargoes.getResults()
+		
+    def _searchEmbargoes(self):
+        req = SearchRequest("item_type:object")
+        req.setParam("fq", 'redbox\:embargo.redbox\:isEmbargoed:on')
+        req.addParam("fq", 'workflow_step:final-review')
+        req.addParam("fq", "")
+        req.setParam("fl","id,date_embargoed,dc_title")
+        req.setParam("rows", "25")
+        req.setParam("sort", "date_embargoed asc, dc_title asc");
 
+        out = ByteArrayOutputStream()
+        indexer = Services.getIndexer()
+        indexer.search(req, out)
+        self.__embargoes = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        self.velocityContext["log"].info("searchEmbargoes call ended" + str(self.__embargoes))
+
+    def formatDate(self, date):    
+        dfSource = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        dfTarget = SimpleDateFormat("dd/MM/yyyy")
+        return dfTarget.format(dfSource.parse(date))
+        
