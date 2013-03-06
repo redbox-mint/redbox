@@ -1,12 +1,12 @@
 #if($self.getErrorMsg()=="")
+#set($pageTitle = "Manage Reports")
+<h2 id="page-heading"><span>Manage Reports</span></h2>
 <div class="grid_4">
 	<div class="box menu">
 	    <h2>Options</h2>
 	    <ul class="menu">
-	        <li><a href="$portalPath/report/reports">Create New Reports</a></li>
-	        <li><a id="reharvest-view" href="$portalPath/report/statisticalReports" rel="default">Create New Statistical Reports</a></li>
-	        <li><a href="$portalPath/report/ingestReports" rel="default">Create New Ingest Reports</a></li>
-	        <li><a href="$portalPath/report/manageReports" rel="default">View Reports</a></li>
+	        <li><a href="$portalPath/report/reports">Create New Report</a></li>
+	        <li><a href="$portalPath/report/statisticalReports">Create New Statistical Report</a></li>
 	    </ul>
     </div>
 </div>  
