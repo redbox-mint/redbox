@@ -5,6 +5,7 @@ from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception
 from java.text import SimpleDateFormat
+from java.util import ArrayList
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
@@ -19,8 +20,8 @@ class DetailData:
         self.Services = context["Services"]
         self.indexer = self.Services.getIndexer()
         self.log = context["log"]
-        self.__draftDatasets = []
-        self.__submittedDatasets = []
+        self.__draftDatasets = ArrayList()
+        self.__submittedDatasets = ArrayList()
         self.__getRelatedDataSets()
 
     def formatDate(self, date):    
@@ -71,9 +72,9 @@ class DetailData:
                 #check type and put results in 2 lists
                 setType = result.get('packageType')
                 if setType == 'simple':
-                    self.__draftDatasets.append(result)
+                    self.__draftDatasets.add(result)
                 elif setType == 'dataset':
-                    self.__submittedDatasets.append(result)
+                    self.__submittedDatasets.add(result)
     
     ## each object has an oid field.
     def __searchDataSetOids(self, oids):

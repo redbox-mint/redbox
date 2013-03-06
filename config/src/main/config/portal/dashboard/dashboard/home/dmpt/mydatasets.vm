@@ -1,5 +1,6 @@
 <div class="block">
-<p><b>My drafts</b></p>
+#if ($self.myDrafts && $self.myDrafts.size() > 0)
+<p><b>My drafts: </b></p>
 <table>
     <thead>
         <tr>
@@ -26,7 +27,9 @@
 	#end
     </tbody>
 </table>
+#end
 
+#if ($self.myDatasets && $slef.myDatasets.size() > 0)
 <p><b>Submitted</b></p>
 <table>
     <thead>
@@ -53,4 +56,5 @@
     #end
     </tbody>
 </table>
+#end
 </div>

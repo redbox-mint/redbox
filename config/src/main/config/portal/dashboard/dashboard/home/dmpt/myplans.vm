@@ -1,7 +1,7 @@
 #set($menuTitle = "My plans")
-
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
+#if ($self.myPlans && $self.myPlans.size() > 0)
     <table>
         <thead>
             <tr>
@@ -29,5 +29,39 @@
         #end
         </tbody>
     </table>
+#end
+</div>    
+#parseTemplate("wrapping/info-box-close.vm")
+
+#if ($self.sharedPlans && $self.sharedPlans.size() > 0)
+#set($menuTitle = "Plans shared with me")
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Created</th>
+                <th>Modified</th>
+                <th>Plan</th>
+            </tr>
+        </thead>
+        <tbody>
+        #foreach($item in $self.sharedPlans)
+            #set($oid = $item.get("id"))
+          <tr>
+                <td><a href="$portalPath/detail/$oid">$item.get('dc:title')</a></td>
+                <td>
+                #parseTemplate("home/dmpt/created_modified_date.vm")                
+                </td>
+                <td>$self.formatDate($item.get("last_modified"))</td>
+                <td>
+                <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                </td>
+            </tr>
+        #end
+        </tbody>
+    </table>
 </div>
 #parseTemplate("wrapping/info-box-close.vm")
+#end
