@@ -25,7 +25,6 @@ class GrantAccessData:
         self.__respond(context["response"], result)    
 
     def __getUsers(self, oid):
-        #return '{"owner":"admin", "users": ["research", "other people"]}'
         indexer = Services.getIndexer()
         req = SearchRequest("id:"+oid)
         req.setParam("fl","security_exception,owner")
@@ -37,9 +36,6 @@ class GrantAccessData:
             owner = qresult.getString(None, 'owner')
             secException = qresult.getArray('security_exception')
             
-            #            self.log.debug(secFilter.toString())
-            #            self.log.debug(qresult.get('owner'))
-            #            self.log.debug(qresult.get('security_exception') is None)
             if secException is None:
                 secException = JSONArray()
                 
