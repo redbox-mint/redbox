@@ -46,6 +46,7 @@
 		$("#reportName").keypress(function(event) {
  				 if ( event.which == 13 ) {
      					$("#reportTitle").text($(this).val());
+     					return false;
   			 } 
   		});
 	}); 

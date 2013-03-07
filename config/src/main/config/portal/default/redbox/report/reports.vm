@@ -14,6 +14,7 @@
 <script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/anzsrc-SelectionReportCriteria.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
 	<div id="reportForm">
 	<section>
@@ -211,6 +212,13 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
             
         }
     }
+    if (fieldId.indexOf("report-criteria") == 0) {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportCriteria")<button id="'+fieldId+'-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("[id='"+fieldId+"-errorButton']").click(function() { focus(fieldId);});
+            
+        }
+    }
     
 }
 
@@ -302,6 +310,10 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 													}
 	
 	$('#submitButton').click(function () {
+											jQuery.each($("[id^=report-criteria]").find("[id$=dropdown]"),function(index,value) {
+   													 jaffa.valid.setSaveRules($(value).attr('id'), ["required"], null, validationFail);
+											});
+											
 											jaffa.form.save();
 											return false;
 										});

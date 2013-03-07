@@ -39,7 +39,8 @@
                 "jaffaDropDown": {
                     "field": "",
                     "key": "recordType",
-                    "json-data-url":"lookup?field=recordType"
+                    "json-data-url":"lookup?field=recordType",
+                    "showContainsDropDown": "false"
                 }
             },
             "label": "Record Type",
@@ -51,10 +52,11 @@
                 "jaffaDropDown": {
                     "field": "",
                     "key": "workflowStep",
-                    "json-data-url":"lookup?field=workflowStep"
+                    "json-data-url":"lookup?field=workflowStep",
+                    "showContainsDropDown": "false"
                 }
             },
-            "label": "Workflow Step",
+            "label": "Workflow Stage",
             "key" : "workflowStep",
             "solrField": "workflow_step_label"
         },
@@ -63,10 +65,11 @@
                 "jaffaDropDown": {
                     "field": "",
                     "key": "licenceType",
-                    "json-data-url":"http://localhost:9000/redbox/default/workflows/forms/data/licences.json",
+                    "json-data-url":"../workflows/forms/data/licences.json",
                     "data-id-key":"id",
                     "data-label-key": "label",
-                    "data-list-key": "results"
+                    "data-list-key": "results",
+                    "showContainsDropDown": "false"
                 }
             },
             "label": "Licence Type",
@@ -105,6 +108,32 @@
             "label": "Retention Period",
             "key" : "retentionPeriod",
             "solrField": "redbox\\:retentionPeriod"
+        },
+        {
+            "value": {
+                "jaffaAnzsrcSelectionReportCriteria": {
+                    "field": "",
+                    "key": "for",
+                    "json-data-url": "../proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
+                    "showContainsDropDown": "false"
+                }
+            },
+            "label": "ANZSRC-FOR",
+            "key" : "for",
+            "solrField": "dc_subject"
+        },
+        {
+            "value": {
+                "jaffaAnzsrcSelectionReportCriteria": {
+                    "field": "",
+                    "key": "seo",
+                    "json-data-url": "../proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
+                    "showContainsDropDown": "false"
+                }
+            },
+            "label": "ANZSRC-SEO",
+            "key" : "seo",
+            "solrField": "dc_subject"
         }
     ]
 }

@@ -2,6 +2,7 @@ from java.util import Date
 from java.util import Calendar
 from java.lang import Class
 from java.text import SimpleDateFormat
+from java.net import URLEncoder
 
 class DashboardData:
 
@@ -49,7 +50,8 @@ class DashboardData:
             self.errorMsg = "Invalid date range."
             return
         if format == "csv":
-            self.response.setHeader("Content-Disposition", "attachment; filename=%s-%s-%s.csv" % (reportName, self.fromDtTxt, self.toDtTxt))
+            fileName = self.urlEncode(reportName)
+            self.response.setHeader("Content-Disposition", "attachment; filename=%s-%s-%s.csv" % (fileName, self.fromDtTxt, self.toDtTxt))
             writer = self.response.getPrintWriter("text/csv; charset=UTF-8")
             
             charts = self.systemConfig.getJsonSimpleMap("charts")
