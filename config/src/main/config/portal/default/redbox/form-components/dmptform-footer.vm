@@ -13,7 +13,7 @@
    		for( var i = 0; i < hidden_elements.length; i++) {
    			hidden_elements[i].style.display = 'none';
    		}
-		$(widgets.contentLoaded);
+		
 		#set($flowName = $velocityContext.get("request").getParameter("flow"))
 		#if($flowName == "dataAccess")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-licensingandaccessflow.json", "dmptTabs");

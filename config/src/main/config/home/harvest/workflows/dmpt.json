@@ -9,6 +9,7 @@
         }
     },
     "workflow-id":"dmpt",
+    "page-title": "Data management plan",
     "transformer": {
         "curation": ["local"],
         "metadata": ["jsonVelocity","jsonVelocityPDF"]
