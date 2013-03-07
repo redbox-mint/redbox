@@ -26,14 +26,14 @@ function manage_access(e) {
     #parseDisplayTemplate("detail/preview/sections/overview.vm")
 
     <div style="text-align:center">
-    <a href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
+    <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
     <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
     </a>
     </div>
     <table>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">Data structure, collection and analysis</a></td><td>Done</td></tr>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataAccess">Licensing and access</a></td><td>Not filled</td></tr>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataRetention">Retention and disposal</a></td><td>Not filled</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">Data structure, collection and analysis</a></td><td>#if($self.getObjectMetaProperty("dataStructureComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataAccess">Licensing and access</a></td><td>#if($self.getObjectMetaProperty("dataAccessComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataRetention">Retention and disposal</a></td><td>#if($self.getObjectMetaProperty("dataRetentionComplete") == true)Completed #else Not completed #end</td></tr>
     </table>
     <p>You can add information to your plan to assist us in working with you to manage your research data.</p>
 </div>

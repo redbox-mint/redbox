@@ -8,11 +8,6 @@
 		document.getElementById('delegation_sec').style.display='block'; 
 	}
 	
-	function repeat_div(div_class) {
-		var divs = $("."+div_class);
-		
-	}
-	
 	$(document).ready(function() {
 		var hidden_elements = document.getElementsByClassName('HiddenWidget');
    		for( var i = 0; i < hidden_elements.length; i++) {

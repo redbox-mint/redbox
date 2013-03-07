@@ -46,4 +46,9 @@ jQuery(document).ready(function prepareHelps() {
        
     </div>
     <div class="clear"></div>
+#elseif(!$page.authentication.is_logged_in())
+ ##prompt user to login
+ <script type="text/javascript">
+ 	$(document).ready(function() {$(".login-now").click();});
+ </script>
 #end

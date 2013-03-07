@@ -388,7 +388,16 @@ button.anzsrcSelection {
 	margin-top:1.5em
 }
 
-.report-img { display:inline-block; border: solid 1px; margin:5px; padding:10px }
+.reportImages { 
+	width:1220px;
+ }
+
+.report-img { 
+				display:inline-block; 
+				border: solid 1px; 
+				margin:5px; 
+				padding:10px 
+			}
 
 .errorbox{
    display:none;

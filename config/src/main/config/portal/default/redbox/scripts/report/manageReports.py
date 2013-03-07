@@ -1,4 +1,5 @@
 from java.lang import String
+from java.util import ArrayList
 
 class ManageReportsData:
 
@@ -63,7 +64,26 @@ class ManageReportsData:
     def getReports(self):
         if (self.reportManager is not None):
             return self.reportManager.getReports()
-        
+    
+    def getRedboxReports(self):
+        if (self.reportManager is not None):
+            reports = self.reportManager.getReports()
+            redboxReports = ArrayList()
+            for report in reports.values():
+                if String(report.getConfig().getString(None, "report", "className")).endsWith("RedboxReport"):
+                    redboxReports.add(report)
+            return redboxReports    
+    
+    def getStatisticalReports(self):
+        if (self.reportManager is not None):
+            reports = self.reportManager.getReports()
+            redboxReports = ArrayList()
+            for report in reports.values():
+                if String(report.getConfig().getString(None, "report", "className")).endsWith("StatisticalReport"):
+                    redboxReports.add(report)
+            return redboxReports    
+    
+    
     def getReportRunLink(self, report):
         classname = String(report.getConfig().getString(None, "report", "className"))
         if classname.endsWith("RedboxReport"):

@@ -15,6 +15,7 @@
 		<tr>
 			<th>Select</th>
 			<th>Report</th>
+			<th>Report Type</th>
 			<th>Run</th>
 		</tr>
 		#set ($reports = $self.getReports())
@@ -24,7 +25,8 @@
 				#set($editlink = $self.getReportEditLink($report))
 		<tr>
 			<td><input name="selected_report" type="checkbox" value="$report.getReportName()" /></td>
-			<td><a href="$portalPath/report/$editlink">$report.getLabel()</a></td>			
+			<td><a href="$portalPath/report/$editlink">$report.getLabel()</a></td>
+			<td>#if($report.getClass().getName() == "com.googlecode.fascinator.portal.report.RedboxReport")Report #else Statistical Report#end</a></td>				
 			<td><a href="$portalPath/report/$link">Run</a></td>
 		</tr>
 			#end

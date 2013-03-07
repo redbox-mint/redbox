@@ -123,3 +123,8 @@ class DetailData:
             return None
 
         return object
+
+    def getObjectMetaProperty(self,propertyName):
+        object = self._getObject()
+        objectMeta = object.getMetadata()
+        return objectMeta.get(propertyName)
