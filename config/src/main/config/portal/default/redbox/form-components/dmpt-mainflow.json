@@ -12,10 +12,14 @@
         },
         "dataStorage": {
         	"Back": "People",
-            "Next": "Retention"
+            "Next": "EthicsSensitivities"
         },
-        "Retention": {
-            "Back": "dataLicensingAccess"
+        "EthicsSensitivities": {
+        	"Back": "People",
+            "Next": "Ownership"
+        },
+        "Ownership": {
+            "Back": "EthicsSensitivities"
         }
     }
 }
