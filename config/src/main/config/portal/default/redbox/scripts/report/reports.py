@@ -98,7 +98,7 @@ class ReportsData:
         
     def editReport(self):
         self.report = self.reportManager.getReports().get(self.request.getParameter("reportId"))
-        
+        reportName = self.report.getReportName()
         report = RedboxReport(self.report.getReportName(), self.report.getLabel())
         report.setLabel(self.formData.get("reportName"))
         report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
@@ -113,6 +113,7 @@ class ReportsData:
         self.log.error('report ' + report.toString()) 
         self.reportManager.addReport(self.report)
         self.reportManager.saveReport(self.report)
+        self.reportManager.deleteReport(reportName)
        
         
     
