@@ -1,100 +1,129 @@
+from com.googlecode.fascinator.api.indexer import SearchRequest
+from java.io import ByteArrayInputStream, ByteArrayOutputStream
+from com.googlecode.fascinator.common.solr import SolrResult
+from java.net import URLEncoder
+from java.util import TreeMap
+from org.apache.commons.lang import StringEscapeUtils
+from org.json.simple import JSONArray
+from au.com.bytecode.opencsv import CSVParser
+from au.com.bytecode.opencsv import CSVWriter
+from java.io import StringWriter
 from java.lang import String
-from java.util import ArrayList
 
-class ManageReportsData:
+class ReportResultData:
 
     def __init__(self):
         pass
     def __activate__(self, context):
+        self.__reportResult = None
         self.auth = context["page"].authentication
-        self.errorMsg = "" 
         self.request = context["request"]
         self.response = context["response"]
-        self.formData = context["formData"]
         self.log = context["log"]
         self.reportManager = context["Services"].getService("reportManager")
+        self.indexer = context['Services'].getIndexer()
+        self.metadata = context["metadata"]
+        self.systemConfig = context["systemConfig"] 
         
+        self.errorMsg = "" 
         if (self.auth.is_logged_in()):
             if (self.auth.is_admin()==True):
-                pass
+                self.buildDashboard(context)
             else:
-                self.errorMsg = "Requires Admin / Librarian / Reviewer access."
+                self.errorMsg = "Requires Admin / Librarian / Reviewer access." 
         else:
             self.errorMsg = "Please login."
+        self.__reportSearch()
+        
+        
+
+    def __reportSearch(self):
+        self.reportId = self.request.getParameter("id")
+        self.format = self.request.getParameter("format")
+        self.report = self.reportManager.getReports().get(self.reportId)
+        self.reportQuery = self.report.getQueryAsString()
+        self.log.debug("Report query: " +self.reportQuery)
+        
+        req = SearchRequest(self.reportQuery)
+        req.setParam("fq", 'item_type:"object"')
+        req.setParam("fq", 'workflow_id:"dataset"')
+        if (self.format == "csv"): 
+            out = ByteArrayOutputStream()
+            self.fields = self.systemConfig.getArray("redbox-reports","csv-output-fields")
             
-        if self.errorMsg == "":             
-            self.func = self.formData.get("func", "")
-            if self.func == "" and self.request.getParameter("func"):
-                self.func = self.request.getParameter("func")         
-            if self.func == "action":
-                self.action = self.request.getParameter("action")
-                if self.action == "delete":
-                    self.deleteReport()
-                    out = self.response.getPrintWriter("text/plain; charset=UTF-8")
-                    out.println("{\"status\":\"OK\"}")
-                    out.close()
-                if self.action == "duplicate":
-                    self.duplicateReport()
-                    out = self.response.getPrintWriter("text/plain; charset=UTF-8")
-                    out.println("{\"status\":\"OK\"}")
-                    out.close()    
-                    
-    def duplicateReport(self):
-        reportNames = self.formData.get("reportName").split(",")
-        if len(reportNames) > 1:
-            for reportName in reportNames:       
-                self.reportManager.duplicateReport(reportName)
-        else:
-            self.reportManager.duplicateReport(self.formData.get("reportName"))
-                    
-    def deleteReport(self):
-        reportNames = self.formData.get("reportName").split(",")
-        if len(reportNames) > 1:
-            for reportName in reportNames:        
-                self.reportManager.deleteReport(reportName)
-        else:
-            self.reportManager.deleteReport(self.formData.get("reportName"))
+              
+            recnumreq = SearchRequest(self.reportQuery)
+            recnumreq.setParam("fq", 'item_type:"object"')
+            recnumreq.setParam("fq", 'workflow_id:"dataset"')
             
+            recnumreq.setParam("rows", "0")
+            self.indexer.search(recnumreq, out)
+            recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
+            req.setParam("rows", "%s" % recnumres.getNumFound())
+            req.setParam("csv.mv.separator",";")
+            
+            if self.fields is not None:
+                fieldString = ""
+                for field in self.fields:
+                  fieldString = fieldString+ field.get("field-name")+","
+                fieldString = fieldString[:-1]
+                req.setParam("fl",fieldString)
+                
+            
+            out = ByteArrayOutputStream()
+            fileName = self.urlEncode(self.report.getLabel())
+            self.log.error("FileName: " +fileName)
+            self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % fileName)
+            self.indexer.search(req, out, self.format)
+            csvResponseString = String(out.toByteArray(),"utf-8")
+            csvResponseLines = csvResponseString.split("\n")
+            self.out = self.response.getOutputStream("text/csv")
+            sw = StringWriter()
+            parser = CSVParser()
+            writer = CSVWriter(sw)
+            count = 0
+            for line in csvResponseLines:
+                csvLine = parser.parseLine(line)
+                if count == 0 :
+                    for idx, csvValue in enumerate(csvLine):
+                        csvLine[idx] = self.findDisplayLabel(csvValue)
+                
+                writer.writeNext(csvLine)
+
+            self.out.print(sw.toString())
+            self.out.close()
+        else:    
+            req.setParam("rows", "1000")
+            out = ByteArrayOutputStream()
+            self.indexer.search(req, out)
+            self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
+
+    def findDisplayLabel(self, csvValue):
+        if self.fields is not None:
+            for field in self.fields:
+                if field.get("field-name") == csvValue:
+                    return field.get("label")    
+        return csvValue
+                
     def getErrorMsg(self):
         return self.errorMsg
             
     def buildDashboard(self, context):
         self.velocityContext = context
+               
+    def getReportResult(self):
+        return self.__reportResult.getResults()
     
-    def getReports(self):
-        if (self.reportManager is not None):
-            return self.reportManager.getReports()
+    def getReportName(self):
+        return self.report.getReportName()
     
-    def getRedboxReports(self):
-        if (self.reportManager is not None):
-            reports = self.reportManager.getReports()
-            redboxReports = ArrayList()
-            for report in reports.values():
-                if String(report.getConfig().getString(None, "report", "className")).endsWith("RedboxReport"):
-                    redboxReports.add(report)
-            return redboxReports    
+    def getReportLabel(self):
+        return self.report.getLabel()
     
-    def getStatisticalReports(self):
-        if (self.reportManager is not None):
-            reports = self.reportManager.getReports()
-            redboxReports = ArrayList()
-            for report in reports.values():
-                if String(report.getConfig().getString(None, "report", "className")).endsWith("StatisticalReport"):
-                    redboxReports.add(report)
-            return redboxReports    
-    
-    
-    def getReportRunLink(self, report):
-        classname = String(report.getConfig().getString(None, "report", "className"))
-        if classname.endsWith("RedboxReport"):
-            return "reportResult?id=%s" % report.getReportName()
-        else:
-            return  "statisticalReports?reportName=%s" % report.getReportName()
+    def urlEncode(self, text):
+        return URLEncoder.encode(text, "utf-8")
         
-    def getReportEditLink(self, report):
-        classname = String(report.getConfig().getString(None, "report", "className"))
-        if classname.endsWith("RedboxReport"):
-            return "reports?reportName=%s" % report.getReportName()
-        else:
-            return  "statisticalReports?reportName=%s" % report.getReportName()
-        
+    def escapeHtml(self, value):
+        if value:
+            return StringEscapeUtils.escapeHtml(value) or ""
+        return ""
