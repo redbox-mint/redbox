@@ -211,24 +211,6 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"People at other institutions both in Australia and overseas"
-                        },
-                        {
-                            "component-type":"repeatable-container",
-                            "containter-for":"collaborators-other-institution",
-                            "sub-elements":{"settings":[
-                            					{"jaffaPeople":{"source":"nla","label":"","class-list":"jaffa-field","suffix":"person"}},
-                            					{"jaffaText":{"label":"University/Institution","class-list":"jaffa-field","suffix": "institution"}}
-                            					]
-                            				}
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<hr>"
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"h3",
                             "content":"Supervisor"
                         },
                         {
@@ -244,7 +226,6 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transition-names":["Back","Next","Save"]
                             "transitions":[{"name":"Back"},
                              			   {"name":"Next","form-submit-action":"save"}]
                         }
@@ -256,38 +237,82 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
+                            "content":"About the data"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Data structure"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:MetadataStandard",
+                            "label":"Metadata standards used",
+                            "content":""
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:DataStructureStandard",
+                            "label":"Standards applied to the data structure",
+                            "content":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
                             "content":"Data collection and analysis"
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.method",
+                            "field-name":"vivo:Dataset.redbox:DataCollectionMethodology",
                             "label":"Please provide a brief description of your data collection methodology",
-                            "content":"",
-                            "validator":"mandatory"
+                            "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.software.create",
+                            "field-name":"vivo:Dataset.redbox:DataCollectionResources",
                             "label":"Software/equipment used to create/collect the data",
-                            "content":"",
-                            "validator":"mandatory"
+                            "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataCollection.software.manipulate",
+                            "field-name":"vivo:Dataset.redbox:DataAnalysisResources",
                             "label":"Software/equipment used to manipulate/analyse the data",
-                            "content":"",
-                            "validator":"mandatory"
+                            "content":""
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"dataCollection-fileFormat",
+                            "field-name":"vivo:Dataset.dc.format",
                             "label":"Predominant file format",
                             "sourceUrl":"dmpt/data/fileFormat.json"
                         },
                         {
+                            "component-type":"text-input",
+                            "field-name":"vivo:Dataset.dc.format.other",
+                            "label":"Other format used"
+                        },
+                        {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+    					   "transitions": [
+        									{
+            									"name": "Save and close",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataStructureComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}
+    									 ]
                         }
                     ]
                 },
@@ -344,27 +369,23 @@
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"vivo:Dataset.dc:extent",
-                            "label":"What is the expected size of all the research data that will be captured or created during the life of the research project?",
+                            "label":"Expected size of the data collected",
                             "options":[
                                 {
-                                    "value":"Store.Size.1",
+                                    "value":"Less than 10 GB",
                                     "label":"Less than 10 GB"
                                 },
                                 {
-                                    "value":"Store.Size.2",
+                                    "value":"10GB-20GB",
                                     "label":"10GB-20GB"
                                 },
                                 {
-                                    "value":"Store.Size.3",
+                                    "value":"20GB – 100GB",
                                     "label":"20GB – 100GB"
                                 },
                                 {
-                                    "value":"Store.Size.4",
-                                    "label":"100GB"
-                                },
-                                {
-                                    "value":"Store.Size.5",
-                                    "label":"I don’t know"
+                                    "value":"20GB – 100GB",
+                                    "label":"100GB+"
                                 }
                             ]
                         },
@@ -374,56 +395,56 @@
                             "label":"Storage location",
                             "options":[
                                 {
-                                    "value":"storageLocation1",
-                                    "label":"Faculty server"
+                                    "value":"Personal equipment",
+                                    "label":"Personal equipment"
                                 },
                                 {
-                                    "value":"storageLocation2",
-                                    "label":"External hard drive"
+                                    "value":"Shared university network drive",
+                                    "label":"Shared university network drive"
                                 },
                                 {
-                                    "value":"storageLocation3",
-                                    "label":"NeCTAR Virtual Laboratory"
+                                    "value":"University provided collaboration space",
+                                    "label":"University provided collaboration space"
                                 },
                                 {
-                                    "value":"storageLocation4",
-                                    "label":"RDSI Node"
+                                    "value":"Other",
+                                    "label":"Other"
                                 }
                             ]
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:location.skos:note",
-                            "label":"If you have selected other, please provide details if possible",
+                            "label":"If other, please provide further details:",
                             "content":""
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
-                            "label":"Location of master version",
+                            "label":"Location of the master version",
                             "options":[
                                 {
-                                    "value":"Storage.Location.1",
-                                    "label":"Faculty server"
+                                    "value":"Personal equipment",
+                                    "label":"Personal equipment"
                                 },
                                 {
-                                    "value":"Storage.Location.2",
-                                    "label":"External hard drive"
+                                    "value":"Shared university network drive",
+                                    "label":"Shared university network drive"
                                 },
                                 {
-                                    "value":"Storage.Location.3",
-                                    "label":"NeCTAR Virtual Laboratory"
+                                    "value":"University provided collaboration space",
+                                    "label":"University provided collaboration space"
                                 },
                                 {
-                                    "value":"Storage.Location.4",
-                                    "label":"RDSI Node"
+                                    "value":"Other",
+                                    "label":"Other"
                                 }
                             ]
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
-                            "label":"If you have selected other, please provide details if possible",
+                            "label":"If other, please provide further details:",
                             "content":""
                         },
                         {
@@ -447,7 +468,7 @@
                         },
                         {
                             "component-type":"radio-button",
-                            "field-name":"data.access.manageBy",
+                            "field-name":"dc:accessRights",
                             "button-for":"Access will be managed by:",
                             "buttons":[
                                 {
@@ -475,46 +496,24 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"dataLicensingAccess-type",
-                            "label":"License type",
+                            "field-name":"dc:license.dc:identifier",
+                            "label":"The data will be licensed under:",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
                             "labelKey":"label",
                             "listKey":"results"
                         },
-                        
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataLicensingAccess.license",
-                            "label":"The data will be licensed under:",
-                            "options":[
-                                {
-                                    "value":"Storage.Location.1",
-                                    "label":"Faculty server"
-                                },
-                                {
-                                    "value":"Storage.Location.1",
-                                    "label":"External hard drive"
-                                },
-                                {
-                                    "value":"Storage.Location.1",
-                                    "label":"NeCTAR Virtual Laboratory"
-                                },
-                                {
-                                    "value":"Storage.Location.1",
-                                    "label":"RDSI Node"
-                                }
-                            ]
+                            "component-type":"text-input",
+                            "field-name":"dc:license.dc:identifier.other",
+                            "label":"Other:",
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataLicensingAccess.other",
-                            "label":"Other: "
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dataLicensingAccess.otherURL",
-                            "label":"URL: "
+                            "field-name":"dc:license.dc:identifier.url",
+                            "label":"URL:",
+                            "additional-classes":""
                         },
                         {
                             "component-type":"native-html",
@@ -527,20 +526,20 @@
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataLicensingAccess.statement",
+                            "field-name":"dc:RightsStatement",
                             "label":"Additional asserted statement of rights",
                             "content":""
                         },
                         {
                             "component-type":"textarea",
-                            "field-name":"dataLicensingAccess.accessProcedures",
+                            "field-name":"dc:rights.skos:note",
                             "label":"Other relevant information (e.g. access procedures)",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
 							"transitions":[{
-            									"name": "Done",
+            									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
             									"object-metadata-params": [
@@ -567,63 +566,51 @@
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataRetention.period",
+                            "field-name":"redbox:retentionPeriod.dc:date",
                             "label":"Applicable retention period*",
                             "options":[
                                 {
-                                    "value":"Storage.Retention.1",
+                                    "value":"12 months (short term projects for assessment purposes only)",
                                     "label":"12 months (short term projects for assessment purposes only)"
                                 },
                                 {
-                                    "value":"Storage.Retention.2",
+                                    "value":"5 years after publication (general research)",
                                     "label":"5 years after publication (general research)"
                                 },
                                 {
-                                    "value":"Storage.Retention.3",
-                                    "label":"15 years after publication (Clinical trials [research involving humans])"
+                                    "value":"15 years after publication (Clinical trials, research involving humans)",
+                                    "label":"15 years after publication (Clinical trials, research involving humans)"
                                 },
                                 {
-                                    "value":"Storage.Retention.4",
-                                    "label":"Permanent (Gene therapy [eg patient data/records] or data with significant heritage value"
+                                    "value":"Permanent (gene therapy or data with significant heritage value)",
+                                    "label":"Permanent (gene therapy or data with significant heritage value)"
                                 }
                             ]
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
-                            "field-name":"dataRetention.reason",
+                            "field-name":"redbox:retentionPeriod.dc:date.skos:note",
                             "label":"Justification for extended retention period:",
                             "options":[
                                 {
-                                    "value":"Storage.Reason.1",
+                                    "value":"It has community or heritage value",
                                     "label":"It has community or heritage value"
                                 },
                                 {
-                                    "value":"Storage.Reason.2",
+                                    "value":"It is controversial",
                                     "label":"It is controversial"
                                 },
                                 {
-                                    "value":"Storage.Reason.3",
+                                    "value":"It is of wide public interest",
                                     "label":"It is of wide public interest"
                                 },
                                 {
-                                    "value":"Storage.Reason.4",
-                                    "label":"It uses an innovative technique for the first time"
-                                },
-                                {
-                                    "value":"Storage.Reason.6",
+                                    "value":"It would be costly or impossible to reproduce",
                                     "label":"It would be costly or impossible to reproduce"
                                 },
                                 {
-                                    "value":"Storage.Reason.7",
-                                    "label":"It supports a patent application or other IP process"
-                                },
-                                {
-                                    "value":"Storage.Reason.8",
-                                    "label":"I know it will be useful for other projects"
-                                },
-                                {
-                                    "value":"Storage.Reason.9",
-                                    "label":"Other"
+                                    "value":"There is a commercial obligation to do so",
+                                    "label":"There is a commercial obligation to do so"
                                 }
                             ]
                         },
@@ -636,7 +623,7 @@
                         {
                             "component-type":"transition-control",
 							"transitions":[{
-            									"name": "Done",
+            									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
             									"object-metadata-params": [
@@ -668,7 +655,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "label":"Approval Number",
+                            "label":"Ethics approval number",
                             "field-name":"agls:policy.dc:identifier"
                         },
                         {
@@ -1005,6 +992,6 @@
             "validation":{
                 "required":"title"
             }
-        },
+        }
     }
 }
