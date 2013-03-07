@@ -1,0 +1,46 @@
+{
+    "results": [
+        {
+            "id":"gml",
+            "label":"OpenGIS Geography Markup Language"
+        },
+        {
+            "id":"kml",
+            "label":"Keyhole Markup Language"
+        },
+        {
+            "id":"iso19139dcmiBox",
+            "label":"DCMI Box notation (iso19139)"
+        },
+        {
+            "id":"dcmiPoint",
+            "label":"DCMI Point notation"
+        },
+        {
+            "id":"gpx",
+            "label":"GPS Exchange Format"
+        },
+        {
+            "id":"iso31661",
+            "label":"Country code (iso31661)"
+        },
+        {
+            "id":"iso31662",
+            "label":"Country subdivision code (iso31662)"
+        },
+        {
+            "id":"kmlPolyCoords",
+            "label":"KML long/lat co-ordinates"
+        },
+        {
+            "id":"gmlKmlPolyCoords",
+            "label":"KML long/lat co-ordinates derived from GML"
+        },
+        {
+            "id":"text",
+            "label":"Free text"
+        }
+    ]
+}
+
+

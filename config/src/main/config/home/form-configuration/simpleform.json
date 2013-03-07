@@ -6,14 +6,14 @@
                     "heading":"Content",
                     "fields":[
                         {
-                            "component-type":"text-block",
-                            "type":"h3",
-                            "content":"Title"
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Title"
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"dc:title",
-                            "label":""
+                            "component-type": "text-input",
+                            "field-name": "dc:title",
+                            "label": ""
                         },
                         {
                             "component-type":"text-block",
@@ -32,12 +32,13 @@
                                                                   "data-id-key":"id",
                                                                   "data-label-key":"label",
                                                                   "data-list-key":"results",                                                                  
-                                                                  "mandatory":"true"}},
-                                                {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
+                                                                  "mandatory":"true",
+                                                                  "help-content":"[id='data-source-dropdown-help-type']",}},
+                                                 {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
                                                 ]
                                             }
                         },           
-                       {
+                        {
                             "component-type":"text-block",
                             "type":"h3",
                             "content":"Collection Type"
@@ -45,8 +46,8 @@
                         {
                             "component-type":"data-source-dropdown",
                             "label":"",
-                            "fieldName":"dc:type.rdf:PlainLiteral",
-                            "fieldNameLabel":"dc:type.skos:prefLabel",
+                            "field-name":"dc:type.rdf:PlainLiteral",
+                            "field-name-label":"dc:type.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/types.json",
                             "mandatory":"true",
                             "idKey":"id",
@@ -127,92 +128,35 @@
                         },
                         {
                             "component-type":"repeatable-container",
-                            "containter-for":"rif:description",
+                            "containter-for":"dc:coverage.vivo:GeographicLocation",
+                            "additional-classes":"redboxGeoData",
+                            "add-item-text":"Add location",
                             "sub-elements":{"settings":[
-                                                {"jaffaDropDown":{"label":"Type",
-                                                                  "suffix":"type", 
-                                                                  "field":"type", 
-                                                                  "label-field":"rif:description.0.label", 
-                                                                  "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/types.json",
-                                                                  "data-id-key":"id",
-                                                                  "data-label-key":"label",
-                                                                  "data-list-key":"results",                                                                  
-                                                                  "mandatory":"true"}},
-                                                {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
+                                                {"jaffaDropDown":{"label":"Location Type", "suffix":"type", "field":"type", "label-field":"dc:type", 
+                                                                  "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/locationTypes.json", 
+                                                                  "data-id-key":"id", "data-label-key":"label", "data-list-key":"results", "mandatory":"true",
+                                                                  "help-content":"[id='data-source-dropdown-help-dc:type']", "class-list":"locationType"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataFid","suffix": "redbox:Fid"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataWkt","suffix": "redbox:wktRaw"}},                 
+                                                 {"jaffaText":{"label":"","type":"text","class-list":"jaffa-field redboxGeoDataOutput autocomplete-geonames","suffix":"rdf:PlainLiteral",
+                                                               "placeholder":"eg. coordinates or placename","size":"60"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"dc:identifier"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:long"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:lat"}}
                                                 ]
                                             }
-                        },           
-                        {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:coverage.vivo:GeographicLocation.0.dc:type",
-                            "label":"",
-                            "additional-classes":"locationType",
-                            "options":[
-                                {
-                                    "value":"gml",
-                                    "label":"OpenGIS Geography Markup Language"
-                                },
-                                {
-                                    "value":"kml",
-                                    "label":"Keyhole Markup Language"
-                                },
-                                {
-                                    "value":"iso19139dcmiBox",
-                                    "label":"DCMI Box notation (iso19139)"
-                                },
-                                {
-                                    "value":"dcmiPoint",
-                                    "label":"DCMI Point notation"
-                                },
-                                {
-                                    "value":"gpx",
-                                    "label":"GPS Exchange Format"
-                                },
-                                {
-                                    "value":"iso31661",
-                                    "label":"Country code (iso31661)"
-                                },
-                                {
-                                    "value":"iso31662",
-                                    "label":"Country subdivision code (iso31662)"
-                                },
-                                {
-                                    "value":"kmlPolyCoords",
-                                    "label":"KML long/lat co-ordinates"
-                                },
-                                {
-                                    "value":"gmlKmlPolyCoords",
-                                    "label":"KML long/lat co-ordinates derived from GML"
-                                },
-                                {
-                                    "value":"text",
-                                    "label":"Free text"
-                                }
-                            ]
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<input type='hidden' class='redboxGeoDataFid' />
-                                       <input type='hidden' class='redboxGeoDataWkt' id='dc:coverage.vivo:GeographicLocation.0.redbox:wktRaw' />
-                                       <input type='text' class='redboxGeoDataOutput autocomplete-geonames' placeholder='eg. coordinates or placename'
-                                              id='dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral' size='60' />
-                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.dc:identifier' />
-                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.geo:long' />
-                                       <input type='hidden' id='dc:coverage.vivo:GeographicLocation.0.geo:lat' />
+                            "content":"
                                         <div class='hidden coords' id='dc:coverage.vivo:GeographicLocation.0.coords'>
                                             <a class='map-link' target='_blank' href=''>map</a>
                                             @ longitude: <span class='east'> </span>
                                             , latitude: <span class='north'> </span>
                                             | <a class='clear-link' href='#'>clear</a>
                                         </div>"
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<input id='add-location' class='button add-another-item' type='button' value='Add location'>"
-                        }
-                        
+                        }                     
                     ]
-                        
                 },
                 {
                     "heading":"Data Location",
@@ -229,8 +173,8 @@
                         {
                             "component-type":"data-source-dropdown",
                             "label":"Type",
-                            "fieldName":"dc:identifier.dc:type.rdf:PlainLiteral",
-                            "fieldNameLabel":"dc:identifier.dc:type.skos:prefLabel",
+                            "field-name":"dc:identifier.dc:type.rdf:PlainLiteral",
+                            "field-name-label":"dc:identifier.dc:type.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/identifierTypes.json",
                             "mandatory":"true",
                             "idKey":"id",
@@ -260,8 +204,8 @@
                         {
                             "component-type":"data-source-dropdown",
                             "label":"Relationship Types",
-                            "fieldName":"dc:creator.foaf:Person.0.jcu:relationshipType",
-                            "fieldNameLabel":"dc:creator.foaf:Person.0.jcu:relationshipLabel",
+                            "field-name":"dc:creator.foaf:Person.0.jcu:relationshipType",
+                            "field-name-label":"dc:creator.foaf:Person.0.jcu:relationshipLabel",
                             "sourceUrl":"workflows/forms/data/types.json",
                             "mandatory":"true",
                             "idKey":"id",
@@ -286,8 +230,8 @@
                         {
                             "component-type":"data-source-dropdown",
                             "label":"Affiliation",
-                            "fieldName":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
-                            "fieldNameLabel":"dc:creator.foaf:Person.0.foaf:Organization.skos:prefLabel",
+                            "field-name":"dc:creator.foaf:Person.0.foaf:Organization.dc:identifier",
+                            "field-name-label":"dc:creator.foaf:Person.0.foaf:Organization.skos:prefLabel",
                             "sourceUrl":"proxyGet.script?ns=Parties_Groups&qs=count%3D9999",
                             "mandatory":"true",
                             "idKey":"dc:identifier",
@@ -301,8 +245,8 @@
                         {
                             "component-type":"data-source-dropdown",
                             "label":"Type of Research Activity",
-                            "fieldName":"dc:subject.anzsrc:toa.rdf:resource",
-                            "fieldNameLabel":"dc:subject.anzsrc:toa.skos:prefLabel",
+                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
+                            "field-name-label":"dc:subject.anzsrc:toa.skos:prefLabel",
                             "sourceUrl":"workflows/forms/data/researchTypes.json",
                             "mandatory":"true",
                             "idKey":"id",
@@ -370,7 +314,7 @@
                                            }
                         },           
                         {
-                            "component-type":"anzsrc-selection",
+                            "component-type":"repeatable-anzsrc-selection",
                             "label":"",
                             "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
@@ -389,7 +333,7 @@
                             "content":"Socio-Economic Objective"
                         },                        
                         {
-                            "component-type":"anzsrc-selection",
+                            "component-type":"repeatable-anzsrc-selection",
                             "label":"",
                             "fieldName":"dc:subject.anzsrc:seo.0.rdf:resource",
                             "fieldNameLabel":"dc:subject.anzsrc:seo.0.skos:prefLabel",

@@ -32,7 +32,6 @@ function getDateTime(){
     $('#openLayersCss2').attr('href', '$portalPath/openlayers/redbox.css');
 
     $(function(){
-        function onContentLoaded(){
             // OpenLayers init, store it globally so the Geonames lookup can hit it later
             window["openLayersMap"] = loadOpenLayers();
 /*
@@ -96,8 +95,6 @@ function getDateTime(){
                 }
             });
   */
-        }
-        $(window).load(onContentLoaded);
     });
 })(jQuery);
 </script>
