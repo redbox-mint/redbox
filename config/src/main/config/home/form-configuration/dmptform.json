@@ -711,7 +711,7 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Ownership, licensing and"
+                            "content":"Ownership, licensing and IP"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
@@ -758,7 +758,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/home/dmpt/planready"}]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/dmpt/planready"}]
                         }
                     ]
                 },
