@@ -6,7 +6,14 @@
 	#end
 	transition-name="$transition.name" onclick="transition_click(this)" 
 	#if ( $transition.form-submit-action) form-action = "$transition.form-submit-action" #end  
-	#if ( $transition.close) close-transition="$portalPath/home" #end
+	#if ( $transition.close) 
+		#if ( $transition.closeUrl ) 
+			#set($oid = $velocityContext.get("formData").get("oid"))
+			close-transition="$transition.closeUrl?oid=$oid"
+		#else 
+			close-transition="$portalPath/home"
+		#end
+	#end
 	#if ( $transition.object-metadata-params)
 			object-metadata-params="#foreach( $params in $transition.object-metadata-params)$params.key;$params.value:#end"		
 	#end

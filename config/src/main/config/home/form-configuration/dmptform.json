@@ -758,7 +758,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/home/dmpt/planready"}]
                         }
                     ]
                 },
