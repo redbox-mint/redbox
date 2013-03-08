@@ -55,11 +55,11 @@
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date" "even_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
-        #displayRow("foaf:fundedBy.vivo:Grant" "Grant numbers" "odd_row" "list")
+        #displayRow("foaf:fundedBy.vivo:Grant.1." "Grant numbers" "odd_row" "list") ##not very correct
         #displayRow("dc:subject.anzsrc:toa" "Activity type" "even_row")
-        #displayRow("dc:subject.anzsrc:for" "FOR codes" "odd_row" "list")
-        #displayRow("dc:subject.anzsrc:seo" "SEO codes" "even_row" "list")
+        #displayRow("dc:subject.anzsrc:for.0.rdf:resource.1.skos:prefLabel" "FOR codes" "odd_row" "list")
+        #displayRow("dc:subject.anzsrc:seo.0.rdf:resource.1.skos:prefLabel" "SEO codes" "even_row" "list")
 	</table>
 	<h4>Description</h4>
-	<p>$metadata.get('dc:description')</p>
+	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
 <section>

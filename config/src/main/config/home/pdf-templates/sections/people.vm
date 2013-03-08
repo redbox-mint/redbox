@@ -1,10 +1,25 @@
+#macro(displayPerson $key $name)
+    <dt>$name</dt>
+    <dd>
+    	#set($title = $metadata.get("$key:title"))
+		#set($givenName = $metadata.get("$key:givenName"))
+		#set($familyName = $metadata.get("$key:familyName"))
+		#set($email = $metadata.get("$key:email"))
+    #if ($familyName)
+    	$!title $!givenName $familyName $!email
+    #else	
+		#noInformation()
+    </dd>
+    #end
+#end
+
 <section>
 <h1>People</h1>
     <table id="people">
-        #displayRow("locrel:rth.foaf:Person.foaf:name" "Principal investigator" "odd_row" "list")
-        #displayRow("locrel:prc.foaf:Person.foaf:name" "Data manager" "even_row" "list")
-        #displayRow("locrel:clb.foaf:Person.foaf:name" "Collaborators" "odd_row" "list")
-        #displayRow("swrc:supervisor.foaf:Person.0.foaf:name" "Supervisor" "even_row" "list")
+    #displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator")
+    #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager")
+    #displayPerson("locrel:clb.foaf:Person.1.person.foaf" "Collaborators")
+    #displayPerson("swrc:supervisor.foaf:Person.foaf" "Supervisor")
 	</table>
 </section>
 <hr />

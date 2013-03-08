@@ -758,7 +758,15 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/dmpt/planready"}]
+							"transitions":[{"name":"Back"},
+							{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/dmpt/planready",
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															}
+            															 ]
+        									}}]
                         }
                     ]
                 },
