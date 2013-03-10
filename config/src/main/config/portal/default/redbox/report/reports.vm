@@ -311,7 +311,11 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 	
 	$('#submitButton').click(function () {
 											jQuery.each($("[id^=report-criteria]").find("[id$=dropdown]"),function(index,value) {
-   													 jaffa.valid.setSaveRules($(value).attr('id'), ["required"], null, validationFail);
+													 var id = $(value).attr('id');
+													 //we only want the id of the select field dropdown
+													 if(id.match("report-criteria\\.[0-9]+\\.dropdown")) {
+   													 	jaffa.valid.setSaveRules(, ["required"], null, validationFail);
+   													 }
 											});
 											
 											jaffa.form.save();

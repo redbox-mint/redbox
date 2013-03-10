@@ -229,6 +229,7 @@ span.required {
     display: none;
     margin: 4px 2em;
     padding: 4px;
+    font-weight: normal;
 }
 
 .help-content dl {
@@ -247,6 +248,10 @@ span.required {
     color: red;
     cursor: pointer;
     vertical-align: top;
+}
+
+h3 div.help-content {
+    font-size: 63%;
 }
 
 #validation-summary .validation-err-msg {
@@ -376,7 +381,12 @@ div.meta ol, div.meta ul {
 	padding-right:0.3em;
 	padding-left:0.3em;
 }
-'
+
+.simple-workflow.component-wrapper > label {
+    font-size: 105%;
+    font-weight: bold;
+}
+
 .component-wrapper > hr {
 	padding-bottom:0;
 }
@@ -403,4 +413,13 @@ button.anzsrcSelection {
    display:none;
    background-color:#FFDDDD;
    padding: 10px;
+}
+
+#reportCriteria input {
+	margin:5px;
+}
+
+#reportCriteria select {
+	margin:5px;
+	/*display:none;*/
 }

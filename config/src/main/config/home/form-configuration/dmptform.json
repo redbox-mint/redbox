@@ -8,23 +8,23 @@
                         {
                             "component-type":"text-block",
                             "type":"h2",
-                            "content":"Data management plan"
+                            "content":"dmpt.form.welcome.heading"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"You have landed on this page because you have clicked on a link to create a new plan or have received an email asking you to register a research data plan."
+                            "content":"dmpt.form.welcome.paragraph1"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"If you received an email notification you've submitted a research project proposal to SYSTEM X. Where possible, we have pre-filled parts of this form for you but it's a good idea to make sure that the pre-fills are correct."
+                            "content":"dmpt.form.welcome.paragraph2"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"Providing this information will help put you in touch with services that can help you store or analyse your research data and allow you to collaborate online with colleagues. It will form the basis of a Data Management Plan to satisfy the requirements of research funders and will lay the foundation of a description of your dataset for public information at the end of your project."
+                            "content":"dmpt.form.welcome.paragraph3"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"If you require any assistance completing your plan, please contact us via plans@library.org."
+                            "content":"dmpt.form.welcome.paragraph4"
                         },
                         {
                             "component-type":"transition-control",
@@ -38,14 +38,19 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Project overview"
+                            "content":"dmpt.form.projectOverview.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.projectName.label",
+                            "help":"dmpt.form.help.dc:title"
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"dc:title",
-                            "label":"Project name",
+                            "label":"",
                             "additional-classes":"",
-                            "help":"",
                             "validation": {
         									"save-rules": [
             									"required"
@@ -58,46 +63,94 @@
     						 			  }                          
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.projectId.label",
+                            "help":"dmpt.form.help.dc:identifier"
+                        },
+                        {
                             "component-type":"text-input",
                             "field-name":"dc:identifier",
-                            "label":"Project ID",
-                            "help":"dmpt-help"
-                        },
-                        {
-                            "component-type":"textarea",
-                            "field-name":"dc:description",
-                            "label":"Description",
-                            "content":"",
-                            "additional-classes":"mandatory",
-                            "help":"You need help, can I help?"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:relation.bibo:Website",
-                            "label":"Project website"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
-                            "label":"Start date",
-                            "additional-classes":"dateYMD",
-                            "help":"This is a date control"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
-                            "label":"End date",
-                            "additional-classes":"dateYMD"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"foaf:fundedBy.foaf:Agent",
-                            "label":"Funding source"
+                            "label":"",
+                            "additional-classes":"",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:identifier",
+        									"focus-id": "dc:identifier",
+        									 "validation-messages":{
+        									 						"required": "Project ID is required"
+        									 						}
+    						 			  }                          
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"Grant number(s)"
+                            "content":"dmpt.form.projectOverview.description.label",
+                            "help":"dmpt.form.help.dc:description"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"dc:description",
+                            "label":"",
+                            "content":"",
+                            "additional-classes":"mandatory"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.projectWebsite.label",
+                            "help":"dmpt.form.help.dc:relation.bibo:website"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.bibo:Website",
+                            "label":"",
+                            "additional-classes":"",
+                            
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.startDate.label",
+                            "help":"dmpt.form.help.dc:coverage.vivo:DateTimeInterval.vivo:start"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
+                            "label": "",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.endDate.label",
+                            "help":"dmpt.form.help.dc:coverage.vivo:DateTimeInterval.vivo:end"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
+                            "label":"",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.fundingSource.label",
+                            "help":"dmpt.form.help.foaf:fundedBy.foaf:Agent"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"foaf:fundedBy.foaf:Agent",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.grantNumbers.label",
+                            "help":"dmpt.form.help.foaf:fundedBy.vivo:Grant"
                         },
                         {
                             "component-type":"repeatable-text",
@@ -105,10 +158,22 @@
                             "label":""
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.activityType.label",
+                            "help": "dmpt.form.help.dc:subject.anzsrc:toa"
+                        },
+                        {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:subject.anzsrc:toa",
-                            "label":"Activity type",
+                            "label":"",
                             "sourceUrl":"dmpt/data/projectActivityType.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.forCodes.label",
+                            "help":"dmpt.form.help.dc:subject.anzsrc:for"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -123,6 +188,12 @@
                             "listKey":"results",
                             "defaultValue":"skos:narrower",
                             "anzsrcType":"for"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.projectOverview.seoCodes.label",
+                            "help":"dmpt.form.help.dc:subject.dc:subject.anzsrc:seo"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -150,22 +221,33 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"People"
+                            "content":"dmpt.form.people.heading"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Principal investigator*"
+                            "content":"dmpt.form.people.principalInvestigator.label",
+                            "help":"dmpt.form.help.locrel:rth.foaf:Person"
                         },
                         {
                         	"component-type":"person",
                         	"lookup-name":"locrel:rth.foaf:Person",
-                        	"lookup-only":"true"
+                        	"lookup-only":"true",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "locrel:rth.foaf:Person.dc:identifier",
+        									"focus-id": "locrel:rth.foaf:Person.foaf:title",
+        									 "validation-messages":{
+        									 						"required": "Principal investigator is required"
+        									 						}
+    						 			  }      
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"locrel:rth.foaf:Person.foaf:email",
-                            "label":"Email address"
+                            "label":"dmpt.form.people.emailAddress.label"
                         },
                         {
                             "component-type":"native-html",
@@ -174,17 +256,28 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Data manager*"
+                            "content":"dmpt.form.people.dataManager.label",
+                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
                         },
                         {
                         	"component-type":"person",
                         	"lookup-name":"locrel:prc.foaf:Person",
-                        	"lookup-only":"true"
+                        	"lookup-only":"true",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "locrel:prc.foaf:Person.dc:identifier",
+        									"focus-id": "locrel:prc.foaf:Person.foaf:title",
+        									 "validation-messages":{
+        									 						"required": "Data manager is required"
+        									 						}
+    						 			  }  
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"locrel:prc.foaf:Person.foaf:email",
-                            "label":"Email address"
+                            "label":"dmpt.form.people.emailAddress.label"
                         },
                         {
                             "component-type":"native-html",
@@ -193,7 +286,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Collaborators"
+                            "content":"dmpt.form.people.collaborators.label",
+                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
                         },
                         {
                             "component-type":"repeatable-container",
@@ -211,7 +305,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Supervisor"
+                            "content":"dmpt.form.people.supervisor.label",
+                            "help":"dmpt.form.help.swrc:supervisor.foaf:Person"
                         },
                         {
                         	"component-type":"person",
@@ -221,8 +316,8 @@
                         {
                             "component-type":"text-input",
                             "field-name":"swrc:supervisor.foaf:Person:foaf:email",
-                            "label":"Email address",
-                            "additional-classes":""
+                            "label":"dmpt.form.people.emailAddress.label",
+                            "label-classes":"dmpt-supervisor-email"
                         },
                         {
                             "component-type":"transition-control",
@@ -237,23 +332,35 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"About the data"
+                            "content":"dmpt.form.dataCollection.heading"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Data structure"
+                            "content":"dmpt.form.dataCollection.dataStructure.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataStructure.metadataStandards.label",
+                            "help":"dmpt.form.help.vivo:Dataset.redbox:MetadataStandard"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.redbox:MetadataStandard",
-                            "label":"Metadata standards used",
+                            "label":"",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataStructure.standards.label",
+                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataStructureStandard"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.redbox:DataStructureStandard",
-                            "label":"Standards applied to the data structure",
+                            "label":"",
                             "content":""
                         },
                         {
@@ -263,36 +370,65 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Data collection and analysis"
+                            "content":"dmpt.form.dataCollection.dataCollection.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataCollection.methodology.label",
+                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataCollectionMethodology"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.redbox:DataCollectionMethodology",
-                            "label":"Please provide a brief description of your data collection methodology",
+                            "label":"",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataCollection.collectionResources.label",
+                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataCollectionResources"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.redbox:DataCollectionResources",
-                            "label":"Software/equipment used to create/collect the data",
+                            "label":"",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataCollection.analysisResources.label",
+                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataAnalysisResources"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.redbox:DataAnalysisResources",
-                            "label":"Software/equipment used to manipulate/analyse the data",
+                            "label":"",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataCollection.fileFormat.label",
+                            "help":"dmpt.form.help.vivo:Dataset.dc.format"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc.format",
-                            "label":"Predominant file format",
+                            "label":"",
                             "sourceUrl":"dmpt/data/fileFormat.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataCollection.fileFormatOther.label"
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"vivo:Dataset.dc.format.other",
-                            "label":"Other format used"
+                            "label":""
                         },
                         {
                             "component-type":"transition-control",
@@ -322,18 +458,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Data structure"
+                            "content":"dmpt.form.dataStructure.heading"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"dataStructure.metadataStandards",
-                            "label":"Metadata standards used",
+                            "label":"safsa",
                             "content":""
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"dataStructure.Standards",
-                            "label":"Standards applied to the data structure",
+                            "label":"dmpt.form.dataStructure.standards.label",
                             "content":""
                         },
                         {
@@ -364,12 +500,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Data Storage"
+                            "content":"dmpt.form.dataStorage.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataStorage.size.label",
+                            "help":"dmpt.form.help.vivo:Dataset.dc:extent"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"vivo:Dataset.dc:extent",
-                            "label":"Expected size of the data collected",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"Less than 10 GB",
@@ -390,9 +532,15 @@
                             ]
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataStorage.storageLocation.label",
+                            "help":"dmpt.form.help.vivo:Dataset.dc:location"
+                        },
+                        {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
-                            "label":"Storage location",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"Personal equipment",
@@ -415,13 +563,19 @@
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:location.skos:note",
-                            "label":"If other, please provide further details:",
+                            "label":"dmpt.form.dataStorage.storageLocation.otherNote.label",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataStorage.masterVersionLocation.label",
+                            "help":"dmpt.form.help.vivo:Dataset.dc:source.dc:location"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
-                            "label":"Location of the master version",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"Personal equipment",
@@ -444,7 +598,7 @@
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
-                            "label":"If other, please provide further details:",
+                            "label":"dmpt.form.dataStorage.storageLocation.otherNote.label",
                             "content":""
                         },
                         {
@@ -459,17 +613,23 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Data Licensing and Access"
+                            "content":"dmpt.form.dataLicensing.heading"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Access"
+                            "content":"dmpt.form.dataLicensing.access.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataLicensing.accessRights.label",
+                            "help":"dmpt.form.help.dc:accessRights"
                         },
                         {
                             "component-type":"radio-button",
                             "field-name":"dc:accessRights",
-                            "button-for":"Access will be managed by:",
+                            "button-for":"",
                             "buttons":[
                                 {
                                     "label":"permission from the data manager"
@@ -480,9 +640,14 @@
                             ]
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataLicensing.accessRights.label"
+                        },
+                        {
                             "component-type":"text-input",
                             "field-name":"dataLicensingAccess.manager",
-                            "label":"The data manager is recorded as: ",
+                            "label":"",
                             "additional-classes":""
                         },
                         {
@@ -492,12 +657,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Licensing"
+                            "content":"dmpt.form.dataLicensing.licensing.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataLicensing.licence.label",
+                            "help":"dmpt.form.help.dc:license"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:license.dc:identifier",
-                            "label":"The data will be licensed under:",
+                            "label":"",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
                             "labelKey":"label",
@@ -506,13 +677,13 @@
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.other",
-                            "label":"Other:",
+                            "label":"dmpt.form.dataLicensing.other.label",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.url",
-                            "label":"URL:",
+                            "label":"dmpt.form.dataLicensing.url.label",
                             "additional-classes":""
                         },
                         {
@@ -522,18 +693,30 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Rights"
+                            "content":"dmpt.form.dataLicensing.rights.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataLicensing.rightsStatement.label",
+                            "help":"dmpt.form.help.dc:RightsStatement"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"dc:RightsStatement",
-                            "label":"Additional asserted statement of rights",
+                            "label":"",
                             "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataLicensing.relevantInfo.label",
+                            "help":"dmpt.form.help.dc:rights.skos:note"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"dc:rights.skos:note",
-                            "label":"Other relevant information (e.g. access procedures)",
+                            "label":"",
                             "content":""
                         },
                         {
@@ -562,12 +745,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Data Retention and Disposal"
+                            "content":"dmpt.form.dataRetention.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataRetention.applicableRetention.label",
+                            "help":"dmpt.form.help.redbox:retentionPeriod"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"redbox:retentionPeriod.dc:date",
-                            "label":"Applicable retention period*",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"12 months (short term projects for assessment purposes only)",
@@ -588,9 +777,15 @@
                             ]
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.dataRetention.applicableRetention.label",
+                            "help":"dmpt.form.help.redbox:retentionPeriod"
+                        },
+                        {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"redbox:retentionPeriod.dc:date.skos:note",
-                            "label":"Justification for extended retention period:",
+                            "label":"dmpt.form.dataRetention.justification.label",
                             "options":[
                                 {
                                     "value":"It has community or heritage value",
@@ -617,7 +812,7 @@
                         {
                             "component-type":"text-input",
                             "field-name":"dataRetention.disposalDate",
-                            "label":"Earliest possible disposal date",
+                            "label":"dmpt.form.dataRetention.disposalDate.label",
                             "additional-classes":"dateYMD"
                         },
                         {
@@ -646,33 +841,51 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Ethics and sensitivities"
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"h3",
-                            "content":"Ethics"
-                        },
-                        {
-                            "component-type":"text-input",
-                            "label":"Ethics approval number",
-                            "field-name":"agls:policy.dc:identifier"
-                        },
-                        {
-                            "component-type":"textarea",
-                            "field-name":"agls:policy.skos:note",
-                            "label":"Information about ethical considerations relevant to this project and how they will be managed",
                             "content":""
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Sensitivities"
+                            "content":"dmpt.form.EthicsSensitivities.ethics.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.EthicsSensitivities.ethicsApproval.label",
+                            "help": "dmpt.form.help.agls:policy.dc:identifier"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"",
+                            "field-name":"agls:policy.dc:identifier"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.EthicsSensitivities.ethicsInfo.label",
+                            "help": "dmpt.form.help.agls:policy.skos:note"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"agls:policy.skos:note",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.form.EthicsSensitivities.sensitivities.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.EthicsSensitivities.typeOfSensitivity.label",
+                            "help": "dmpt.form.help.agls:protectiveMarking"
                         },
 						{
 							"component-type": "checkbox",
 							"field-name": "agls:protectiveMarking.dc:type",
-							"box-for": "Type of sensitivity:",
+							"box-for": "",
 							"multiline": true,
 							"boxes": [
 								{
@@ -693,10 +906,16 @@
 								}
 							]
 						},
+						{
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.EthicsSensitivities.privacyInfo.label",
+                            "help": "dmpt.form.help.agls:protectiveMarking.skos:note"
+                        },
                         {
                             "component-type":"textarea",
                             "field-name":"agls:protectiveMarking.skos:note",
-                            "label":"Information about privacy, confidentiality or sensitivity to the data and how it will be managed",
+                            "label":"",
                             "content":""
                         },
                         {
@@ -711,12 +930,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"Ownership, licensing and IP"
+                            "content":"dmpt.form.ownership.heading"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.ownership.location.label",
+                            "help": "dmpt.form.help.dc:coverage"
                         },
                         {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"dc:coverage",
-                            "label":"In which country will your data be collected",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"au",
@@ -725,9 +950,15 @@
                             ]
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.ownership.copyright.label",
+                            "help": "dmpt.form.help.dc:rightsHolder.dc:name"
+                        },
+                        {
                             "component-type":"dropdown-fixedvalue",
                             "field-name":"dc:rightsHolder.dc:name",
-                            "label":"Copyright and intellectual property owners",
+                            "label":"",
                             "options":[
                                 {
                                     "value":"myUni",
@@ -745,28 +976,32 @@
                             ]
                         },
                         {
-                            "component-type":"textarea",
-                            "field-name":"dataOwnership.ownerList",
-                            "label":"Please list any other owners:",
-                            "content":""
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.ownership.ownerList.label",
+                            "help": "dmpt.form.help.dc:rightsHolder.dc:description"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"dc:rightsHolder.dc:description",
-                            "label":"Information about contractual obligations that apply to this data",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.form.ownership.obligations.label",
+                            "help": "dmpt.form.help.redbox:ContractualObligations"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"redbox:ContractualObligations",
+                            "label":"",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},
-							{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/dmpt/planready",
-            									"object-metadata-params": [
-                															{
-                    															"key": "generatePDF",
-                    															"value": "true"
-                															}
-            															 ]
-        									}}]
+							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/home/dmpt/planready"}]
                         }
                     ]
                 },

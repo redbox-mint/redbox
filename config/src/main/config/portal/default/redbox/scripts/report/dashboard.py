@@ -107,3 +107,6 @@ class DashboardData:
         for comp in parts[1:]:
             m = getattr(m, comp)            
         return m
+    
+    def urlEncode(self, text):
+        return URLEncoder.encode(text, "utf-8")
