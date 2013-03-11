@@ -98,26 +98,33 @@ class BaseIndexData(object):
                         self.utils.add(self.index, "security_filter", role)
                     else:
                         # Their access has been revoked
-                        self.__revokeAccess(role)
+                        self.__revokeRoleAccess(role)
             # Now for every role that the new step allows access
             for role in self.item_security:
                 if role not in roles:
                     # Grant access if new
-                    self.__grantAccess(role)
+                    self.__grantRoleAccess(role)
                     self.utils.add(self.index, "security_filter", role)
 
         # No existing security
         else:
             if self.item_security is None:
                 # Guest access if none provided so far
-                self.__grantAccess("guest")
+                self.__grantRoleAccess("guest")
                 self.utils.add(self.index, "security_filter", role)
             else:
                 # Otherwise use workflow security
                 for role in self.item_security:
                     # Grant access if new
-                    self.__grantAccess(role)
+                    self.__grantRoleAccess(role)
                     self.utils.add(self.index, "security_filter", role)
+        
+        users = self.utils.getUsersWithAccess(self.oid)
+        if users is not None:
+            # For every role currently with access
+            for user in users:
+                self.utils.add(self.index, "security_exception", user)
+
         # Ownership
         if self.owner is None:
             self.utils.add(self.index, "owner", "system")
@@ -129,18 +136,29 @@ class BaseIndexData(object):
         for value in HashSet(values):
             self.utils.add(self.index, name, value)
 
-    def __grantAccess(self, newRole):
+    def __grantRoleAccess(self, newRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
         self.utils.setAccessSchema(schema, "derby")
+        
+    def __grantUserAccess(self, newUser):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("user", newUser)
+        self.utils.setAccessSchema(schema, "derby")
 
-    def __revokeAccess(self, oldRole):
+    def __revokeRoleAccess(self, oldRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
         self.utils.removeAccessSchema(schema, "derby")
-
+        
+    def __revokeUserAccess(self, oldUser):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("user", oldUser)
+        self.utils.removeAccessSchema(schema, "derby")
     def __metadata(self):
         self.title = None
         self.dcType = None
