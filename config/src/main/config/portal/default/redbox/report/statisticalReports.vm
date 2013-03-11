@@ -58,13 +58,17 @@
 			<th>Count</th>
 		</tr>
 		#foreach($field in $self.getResultFields())
-			<!-- $field -->
-			#set($label = $self.getRedboxStatsLabel($field))
-			#set($value = $self.getRedboxStatsCount($field))
-		<tr>			
-			<td> $label </td>
-			<td> $value </td>
-		</tr>	
+			#if($self.isHeader($field))
+				#set($label = $self.getHeaderText($field))
+    			#set($value = "&nbsp;")
+			#else
+    			#set($label = $self.getStatsLabel($field, "redbox-all"))
+    			#set($value = $self.getStatsCount($field, "redbox-all"))
+			#end
+			<tr>			
+    			<td> $label </td>
+    			<td> $value </td>
+    		</tr>
 		#end
 </table>
 </div>
@@ -74,18 +78,38 @@
 			<th>MINT System Statistical Report</th>
 			<th>Count</th>
 		</tr>
-		<tr>
-			<td>Total</td>
-			<td>100</td>
-		</tr>
-		<tr>
-			<td>Party</td>
-			<td>100</td>
-		</tr>
-		<tr>
-			<td>(Party type) Person</td>
-			<td>100</td>
-		</tr>
+		#foreach($field in $self.getMintResultFields())
+			#if($self.isHeader($field))
+				#set($label = $self.getHeaderText($field))
+    			#set($value = "&nbsp;")
+				<tr>			
+            		<td>$self.getHeaderText($field)</td>
+            		<td> &nbsp; </td>
+    			</tr>
+			#else
+				#if ($self.isGroupField($field))
+					<tr>			
+            			<td> $self.getStatsLabel($field, "mint-all")</td>
+            			<td> &nbsp; </td>
+    				</tr>
+					#foreach ($groupField in $self.getGroupFields($field, "mint-all"))
+						#set($label = $self.getGroupLabel($groupField, $field))
+						#set($value = $self.getGfStatsCount($groupField, $field, "mint-all"))
+						<tr>			
+                			<td> $label </td>
+                			<td> $value </td>
+						</tr>
+					#end
+				#else
+					#set($label = $self.getStatsLabel($field, "mint-all"))
+					#set($value = $self.getStatsCount($field, "mint-all"))
+					<tr>			
+            			<td> $label </td>
+            			<td> $value </td>
+            		</tr>
+				#end
+			#end
+		#end
 </table>
 </div>
 #end

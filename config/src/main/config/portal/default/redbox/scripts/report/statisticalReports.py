@@ -16,8 +16,11 @@ class StatisticalReportsData:
         self.reportManager = context["Services"].getService("reportManager")
         self.log = context["log"]            
         self.formData = context["formData"]
+        self.systemConfig = context["systemConfig"]
         self.errorMsg = ""
-        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "rb-workflow-published", "rb-workflow-final", "rb-workflow-metadata", "rb-workflow-investigation", "rb-workflow-retired"] 
+        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-published", "rb-workflow-final", "rb-workflow-metadata", "rb-workflow-investigation", "rb-workflow-retired"]
+        self.mintResultFields = ["mint-total", "hdr-party", "parties_people", "parties_groups", "activities:", "services:"]
+        self.headerText = {"hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
         self.isNew = False
         self.report = None
         if (self.auth.is_logged_in()):
@@ -49,7 +52,7 @@ class StatisticalReportsData:
         if (self.request.getParameter("isNew") is None):
             reportName = self.request.getParameter("reportName")
             self.report = self.reportManager.getReport(reportName)
-            self.report.setLabel(self.formData.get("reportName"))
+            self.report.setLabel(self.request.getParameter("reportLabel"))
             self.report.setQueryFilterVal("dateFrom",self.formData.get("dateFrom"),"dateFrom", "dateFrom")
             self.report.setQueryFilterVal("dateTo",self.formData.get("dateTo"),"dateTo", "dateTo")
             self.report.setQueryFilterVal("showOption",self.request.getParameter("showOption"),"showOption", "showOption")
@@ -75,11 +78,27 @@ class StatisticalReportsData:
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % self.report.getLabel())
             writer = self.response.getPrintWriter("text/csv; charset=UTF-8")
             for field in self.getResultFields():
-                label = self.getRedboxStatsLabel(field)
-                value = self.getRedboxStatsCount(field)
-                writer.print(label)
-                writer.print(",")
-                writer.println(value)
+                if self.isHeader(field) == False:
+                    label = self.getStatsLabel(field, "redbox-all")
+                    value = self.getStatsCount(field, "redbox-all")
+                    writer.print(label)
+                    writer.print(",")
+                    writer.println(value)
+            for field in self.getMintResultFields():
+                if self.isHeader(field) == False:
+                    if self.isGroupField(field) == True:
+                        for groupField in self.getGroupFields(field, "mint-all"):
+                            label = self.getGroupLabel(groupField, field)
+                            value = self.getGfStatsCount(groupField, field, "mint-all")
+                            writer.print(label)
+                            writer.print(",")
+                            writer.println(value)                        
+                    else:
+                        label = self.getStatsLabel(field, "mint-all")
+                        value = self.getStatsCount(field, "mint-all")
+                        writer.print(label)
+                        writer.print(",")
+                        writer.println(value)                        
             writer.close()
                                                                             
     def getReportLabel(self):
@@ -91,22 +110,46 @@ class StatisticalReportsData:
     def getReportName(self):
         return self.report.getReportName()
     
-    def getRedboxStatsCount(self, field):
-        stat = self.stats.get("redbox-all")
+    def getStatsCount(self, field, statname):
+        stat = self.stats.get(statname)
         return stat.getResultByName(field).getCounts()
     
-    def getRedboxStatsLabel(self, field):
-        stat = self.stats.get("redbox-all")
+    def getStatsLabel(self, field, statname):
+        stat = self.stats.get(statname)
         return stat.getResultByName(field).getLabel()
+    
+    def getGfStatsCount(self, groupfield, field, statname):
+        stat = self.stats.get(statname)
+        return stat.getResultByName(field).getGroupMap().get(groupfield)
+    
+    def getGroupFields(self, field, statname):
+        stat = self.stats.get(statname)
+        return stat.getResultByName(field).getGroupMap().keySet()
+    
+    def getGroupLabel(self, groupField, field):
+        stat = self.stats.get("mint-all")
+        return "%s %s" % (stat.getResultByName(field).getSolrFieldValue(), groupField)
     
     def getResultFields(self):
         return self.resultFields    
+    
+    def isHeader(self, fldname):
+        return fldname[:3] == "hdr"
+    
+    def isGroupField(self, fldname):
+        return String(fldname).indexOf(":") >= 0
+    
+    def getHeaderText(self, hdr):
+        return self.headerText[hdr]
     
     def getReportFilter(self, param):
         if (self.report is not None):
             return self.report.getConfig().getString(None, "query", "filter", param, "value")
         else:
             return ""
+    
+    def getMintResultFields(self):
+        return self.mintResultFields  
     
     def getSelectedOpt(self, param, val, selval):
         if self.isNew and val in self.defOpts:
