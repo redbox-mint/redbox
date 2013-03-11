@@ -19,13 +19,14 @@ display:none;
 }
 
 .reportImages {
-  width:5cm;
-  margin-left: 5cm
+  width:21cm;
+  margin-left:2cm;
 }
 
 .reportDashboardChart {
-  max-width:49%;
-  max-height:49%;
+  width: 9.5cm;
 }
 
-.report-img { border: none; }
+.report-img { 
+			border: none;
+ }
