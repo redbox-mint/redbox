@@ -314,7 +314,7 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 													 var id = $(value).attr('id');
 													 //we only want the id of the select field dropdown
 													 if(id.match("report-criteria\\.[0-9]+\\.dropdown")) {
-   													 	jaffa.valid.setSaveRules(, ["required"], null, validationFail);
+   													 	jaffa.valid.setSaveRules(id, ["required"], null, validationFail);
    													 }
 											});
 											
