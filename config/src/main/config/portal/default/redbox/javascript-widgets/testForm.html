@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>Test javascript-widgets form</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <script type="text/javascript">
+     //<!--
+        $(widgets.contentLoaded);
+        function subFormSubmitted(){ $("#result-msg").text("subForm Submitted function called ok"); }
+        function subFormSubmittedResult(form, data){ 
+            $("#result-msg").text(JSON.stringify(data)); 
+        }
+     //-->
+    </script>
+    <!-- base -->
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<!-- dark-hive, ui-darkness, ui-lightness
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/dark-hive/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />
+-->
+    <style>
+      h2 { color:blue; }
+      h3 { color:blue; margin-top:2em;}
+      h4 { color:blue; }
+      .block { display:block; margin:0.5em; }
+      textarea { font-size:110%; }
+      .dateYMD { width: 11ex; }
+      .dateYM { width: 7.5ex; }
+      .dateMMY { width: 14em; }
+      .dateY { width: 4.5ex;}
+      .thumbnail { height:100px; }
+    </style>
+  </head>
+  <body>
+   <div class="widget-form">
+    <h2>Test javascipt widgets form page</h2>
+
+    <!-- Field registartion -->
+    <input type="hidden" class="form-fields" value="hidden1, hidden2, stext1, stext2, chkbox1, radio1, sel1,
+                                                vA.0, vB.0, vC.0, test.0.label, test.0" />
+
+    <!-- optional hidden fields -->
+    <input type="hidden" id="hidden1" value="HideOne" />
+    <input type="hidden" id="hidden2" value="HideTwo" />
+    <input type="hidden" id="test:test" value="Test:Test" />
+
+    <div>
+      <h3>Simple inputs</h3>
+      <label class="block">text: <input type="text" id="stext1" size="40" /></label>
+      <label class="block">textarea: <textarea id="stext2" rows="2" cols="40"></textarea></label>
+      <label class="block">checkbox: <input type="checkbox" id="chkbox1" value="chk1"/></label>
+      <div class="block">radio: <!-- NOTE: radio fields must use the 'name' attribute only and not 'id' -->
+            <label><input type="radio" name="radio1" value="r1"/>one</label>
+            <label><input type="radio" name="radio1" value="r2"/>two</label>
+            <label><input type="radio" name="radio1" value="r3"/>three</label>
+      </div>
+      <label class="block">Please select one:
+        <select id="sel1">
+          <option value="a">A</option>
+          <option value="b" selected="selected">B</option>
+          <option value="c">C</option>
+        </select>
+      </label>
+    </div>
+
+####
+<div>
+    <h3>testing</h3>
+    <table class="input-list">
+      <tfoot>
+        <tr>
+          <td colspan="7"><input class="add-another-item" type="button" value="Add another creator" /></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr class="item-input-display">
+          <td class="sort-number">1</td>
+          <td>
+              <span class="data-source-drop-down" id="testid.0"
+                    data-json-source-urlX="dropDwonListSample.json"
+                    data-json-data='{
+	"namespace": "http://id.loc.gov/vocabulary/relators/",
+	"list": [
+	         {"children": 0, "id": "cre", "label": "Creator"},
+	         {"children": 0, "id": "art", "label": "Artist"},
+	         {"children": 0, "id": "aut", "label": "Author"},
+	         {"children": 0, "id": "cur", "label": "Curator"},
+	         {"children": 0, "id": "mus", "label": "Musician"},
+	         {"children": 0, "id": "msd", "label": "Musical Director"},
+	         {"children": 0, "id": "cmp", "label": "Composer"},
+	         {"children": 0, "id": "drt", "label": "Director"},
+	         {"children": 0, "id": "pro", "label": "Producer"},
+	         {"children": 0, "id": "oth", "label": "Other"}
+     ],
+     "selectable": 1
+ }'
+                    data-id="dc:creator.foaf:Person.0.usq:role">
+              </span>
+          </td>
+          <td class="delete-item"><a href="#">delete</a></td>
+          <td style="width: 100%;"></td>
+        </tr>
+      </tbody>
+    </table>
+    
+</div>
+####
+
+    <div>
+      <h3>Date widgets</h3> <!-- YMD, YM, Y -->
+      <label class="block">Date (YMD): <input type="text" placeholder="YYYY/MM/DD" class="dateYMD" id="dateYMD"/></label>
+      <label class="block">Date (YM):&#160;&#160; <input type="text" placeholder="YYYY/MM" class="dateYM" id="dateYM"/></label>
+      <label class="block">Date (Year): <input type="text" placeholder="year" class="dateY" id="dateY"/></label>
+    </div>
+
+    <div>
+      <h3>Simple text list widgets</h3> <!-- add, delete, ordered? -->
+
+      <h4>Not sortable</h4>
+      <table class="input-list"><tbody>  <!--  -->
+        <tr class="item-display">
+          <td class="sort-number"></td>
+          <td class="item-display-item" style="border:1px solid #cccccc;"></td>
+          <td class="delete-item"><a href="#">delete</a></td>
+          <td style="width:100%;"></td>
+        </tr>
+        <tr class="item-input">
+          <td></td>
+          <td><input type="text" placeholder="enter a tag here" id="tag.0"/></td>
+          <td><input type="button" class="item-add" value="Add"/></td>
+          <td></td>
+        </tr>
+      </tbody></table>
+
+      <h4>Not sortable input (min-size=3, max-size=5)</h4>
+      <table class="input-list" data-min-size="3" data-max-size="5"><tbody>  <!--  -->
+        <tr class="item-input-display">
+          <td><input type="text" placeholder="enter a tag here" id="tag2.0"/></td>
+          <td class="delete-item"><a href="#">delete</a></td>
+          <td style="width:100%;"></td>
+        </tr>
+        <tr>
+          <td><input type="button" class="add-another-item" value="Add another tag"/></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody></table>
+
+      <h4>Sortable</h4>
+      <table class="input-list sortable"><tbody> 
+        <tr class="item-input-display sortable-item">
+          <td class="sort-handle"><img src="grippy.png"/></td>
+          <td class="sort-number">1</td>
+          <td><input type="text" placeholder="enter a keyword here" id="keyword.0"/></td>
+          <td><button class="delete-item">delete</button></td>
+          <td style="width:100%;"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><input type="button" class="add-another-item" value="Add another keyword"/></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div>
+      <h3>Data entry table</h3> <!-- add/delete a row, Order rows(option) -->
+      <h4>With sortable data rows</h4>
+      <table class="input-list sortable"><tbody>
+        <tr><th colspan="3" style="color:green;">Optional Header</th><th></th><th></th></tr>
+        <tr class="item-input-display sortable-item">
+          <td> =&#160;<span class="sort-number"></span>&#160;= </td>
+          <td><input type="text" placeholder="enter a value here" id="vA.0"/></td>
+          <td>
+            <select id="vB.0">
+              <option value="">Select a color</option>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+            </select>
+          </td>
+          <td><label><input type="checkbox" value="yes" id="vC.0"/>Extra</label></td>
+          <td class="delete-item"><a href="#">delete</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="button" class="add-another-item" value="Add another item"/></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:center;color:green;">Optional Footer</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div>
+      <h3>Datasource drop-down</h3> <!-- JSON source or list, defaultOption, (add) mutli-select, checkbox, radio -->
+
+      <table class="input-list sortable"><tbody> 
+        <tr class="item-display sortable-item">
+          <td> =&#160;<span class="sort-number"></span>&#160;= </td>
+          <td>
+            <span class="item-display-item"></span>
+            <span class="item-display-item" style="color:lightblue;"></span>
+            <a class="delete-item" href="#">delete</a></td>
+          <td></td>
+        </tr>
+        <tr class="item-input">
+          <td colspan="2">
+            <span class="data-source-drop-down" id="dsdd.0">
+              <span class="json-data-source">
+{
+  "list": [
+          {"label":"GroupA", "id":"gA", "children":1},
+          {"label":"GroupB", "id":"gB", "children":"GroupB"},
+          {"label":"GroupC", "id":"gC", "children":"GroupC.json"}
+        ],
+  "namespace":"addThisToTheId",
+  "gA":     {
+            "list": [
+                    {"label":"Light-Red", "id":"gA-red"},
+                    {"label":"Light-Green", "id":"gA-green"},
+                    {"label":"Light-Blue", "id":"gA-blue"}
+                  ], "selectable":1, "default":"gA-blue"
+          },
+  "GroupB": {
+            "list": [
+                    {"label":"Dark-Red", "id":"gB-red"},
+                    {"label":"Dark-Green", "id":"gB-green"},
+                    {"label":"Dark-Blue", "id":"gB-blue"}
+                  ], "selectable":1, "default":""
+          },
+  "GroupC.json": {
+            "list": [
+                    {"label":"Lime-Red", "id":"gC-red"},
+                    {"label":"Lime-Green", "id":"gC-green", "children":"lGreenTypes"},
+                    {"label":"Lime-Blue", "id":"gC-blue"}
+                  ], "selectable":1, "default":"gC-green"
+          },
+  "lGreenTypes": {
+            "list": [
+                    {"label":"Green Go", "id":"gC-go"},
+                    {"label":"Green Goo", "id":"gC-goo"},
+                    {"label":"Green Stuff", "id":"gC-stuff"}
+                  ], "selectable":1, "default":""
+          }
+}
+              </span>
+              <input type="text" class="selection-added-label" id="test.0.label" value="testing" />
+              <input type="text" class="selection-added-id" id="test.0" value="testing" />
+            </span>
+            <button class="item-add selection-add add-unique-only">
+              Add '<span class="selection-add-label"></span>'(id=<span class="selection-added-id"></span>)
+            </button>
+          </td>
+        </tr>
+      </tbody></table>
+<!-- -->
+    </div>
+
+    <div>
+      <h3>Datasource drop-down 2
+          <span class="helpWidget" style="float:right;font-size:75%;color:green;padding-right:2em;"
+                data-help-content-id="help-content">
+            <span class="helpWidget-show">help</span>
+            <span class="helpWidget-hide">hide-help</span>
+          </span>
+      </h3> <!-- JSON source or list, defaultOption, (add) mutli-select, checkbox, radio -->
+      <div id="help-content" style="border:1px solid lightgreen;color:green;padding:1ex;margin:0.5ex;">
+          This is a sample help content.
+          <div>The quick brown fox <div>jumps</div> over the lazy dog.</div>
+          <p>max-size=1</p>
+      </div>
+      <table class="input-list" data-max-size="2" id="inputListTest2"><tbody>  <!--  -->
+        <tr class="item-display">
+          <td>
+            <span class="item-display-item"></span>
+            <span class="item-display-item" style="color:lightblue;"></span>
+            <a class="delete-item" href="#">delete</a></td>
+          <td></td>
+        </tr>
+        <tr class="item-input">
+          <td colspan="2">
+            <span class="data-source-drop-down">
+              <!-- <input type='hidden' class='json-data-source-url' value=''/> -->
+              <span class="json-data-source">
+{ "namespace": "http://namespace.url",
+  "list": [
+            {"children": 1, "id": "x1", "label": "One"},
+            {"children": 0, "id": "x2", "label": "Two", "selectable": 1}
+          ],
+   "x1": {
+            "list": [
+                        {"id": "x1a", "label": "OneA"},
+                        {"id": "x1b", "label": "OneB"}
+                    ],
+            "selectable":1,
+            "default": "x1b"
+         }
+}               </span>
+              <input type="text" class="selection-added-label" id="test.0.label" value="testing" />
+              <input type="text" class="selection-added-id" id="test.0" value="testing" />
+            </span>
+            <button class="item-add selection-add add-unique-only" id="sa-but">
+              Add '<span class="selection-add-label"></span>'(id=<span class="selection-added-id"></span>)
+            </button>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div class="widget-form">
+      <h3>Subform</h3>
+      <div style='border:1px solid blue;padding:1ex;'>
+        <input type="hidden" class="form-fields" value="file1, text99" />
+        <input type="hidden" class="form-fields-readonly" value="subHidden ajax" />
+        <input type="hidden" id="subHidden" value="hiddenSubValue"/>
+        <input type="hidden" class="form-fields-submit-url" value="/upload?ajax=1" />
+        
+        <h4>File Uploading</h4>
+        <div class="file-upload-section" style="border:1px dotted blue;padding:1em;">
+          <label>File: <input type="file" id="file1" class="file-upload"/><span class="file-upload-info" style="padding-left:4em;"> </span></label>
+        </div>
+        <p> Text: <input type='text' id='text99' value="testing"/> </p>
+<button>test</button>
+        <p><button class="form-fields-submit">Submit</button></p>
+          <input type="hidden" class="submit-func" value="subFormSubmitted"/>
+          <input type="hidden" class="submit-result-func" value="subFormSubmittedResult"/>
+        <!--<span class="sumbitted-result" style="padding-left:2em;font-size:120%;"> </span>-->
+        <div style='color:orange; border:1px solid orange; padding:1ex;'> 
+          Results: <span class="submitted-result"> </span> <br/>
+          <span id='result-msg'> </span>
+        </div>
+      </div>
+    </div>
+
+
+    <div>
+      <h3>Form validation</h3>
+      See <a href='validationTest.html'>validation tests</a>
+      <div>
+        <input type='text' id='vtest'/>
+        <label for="vtest" class="validation-err-msg" style="color:red;"> Must not be Empty!</label>
+        <pre class="validation-rules">
+          rule {for(vtest);test(notEmpty);when(onBlur);};
+        </pre>  
+      </div>
+    </div>
+
+    <div style='border:1px solid lightgray;padding:1em;margin:1em;'>
+      <button class="form-save">Save</button>
+      <button class="form-reset">Reset</button>
+      <button class="form-restore">Restore</button>
+    </div>
+
+   </div>
+  </body>
+</html>
+
+
+
+
+
+

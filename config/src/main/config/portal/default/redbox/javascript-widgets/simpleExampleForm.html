@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>A Simple Widgets Form Example</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <script type="text/javascript">
+        var savedData={}, widgetForm, result;
+        $(function(){
+            widgets.contentLoaded(function(){      // initialise widgets
+                // this callback is called when the widgets has finished initialising
+                widgetForm = widgets.forms[0];
+            });
+            $("#restore").click(testRestore);
+            result=$("#result");
+        })
+        function testSave(widgetForm, data){
+            var rt;
+            gw=widgetForm; gd=data;
+            savedData = data;
+            $("#savedData").text(JSON.stringify(data));
+            rt=result.text("Saved OK");
+            rt.stop().css("opacity",1).show().fadeOut(3000);
+            //return false;        // false - Cancel (do not do ajax save)
+        }
+        function testRestore(){
+            var rt;
+            widgetForm.restore(savedData);
+            rt=result.text("Restored OK");
+            rt.stop().css("opacity",1).show().fadeOut(3000);
+        }
+
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" />
+  </head>
+  <body>
+      <h2 style="color:darkgreen;">A Simple Sample Widgets Form</h2>
+
+      <!--<div class="widget-form" style="padding:1em;"
+            data-init-data-url="data1.json"     - Optional Initial form data values
+            data-pre-save-func=""               - called before the form data is collected
+            data-save-func="testSave"           - called with json form data(2nd arg) but before being posted to the save-url
+            data-save-url=""                    -
+            data-submit-url=""                  -
+            data-form-fields="name, dob, chkbox1, radio1, comments, sel1"
+            data-form-fields-readonly="formID"> -->
+      <div class="widget-form" style="padding:1em;"
+            data-init-data-url="data1.json"
+            data-pre-save-func=""          
+            data-save-func="testSave"      
+            data-save-url=""               
+            data-submit-url=""             
+            data-form-fields="name, dob, chkbox1, radio1, comments, sel1"
+            data-form-fields-readonly="formID">
+         <input type="hidden" id="formID" value="1234"/>
+         <label>Name: <input type="text" id="name" /></label><br/>
+         DOB: <input type="text" class="dateYMD" id="dob" placeholder="YYYY/MM/DD" /> <br/>
+         checkbox: <input type="checkbox" id="chkbox1" value="chk1"/>
+          <div class="block">radio: <!-- NOTE: radio fields must use the 'name' attribute only and not 'id' -->
+                <label><input type="radio" name="radio1" value="r1"/>one</label>
+                <label><input type="radio" name="radio1" value="r2"/>two</label>
+                <label><input type="radio" name="radio1" value="r3"/>three</label>
+          </div>
+         textarea: <textarea id="comments" rows="2" cols="40" style="vertical-align:middle;"></textarea> <br/>
+         color selection: <select id="sel1">
+             <option>Red</option>
+             <option>Green</option>
+             <option>Blue</option>
+         </select>
+         <hr/>
+         <p>
+             <button id="save" class="form-fields-save">Save/Submit</button> &#160;
+             <button id="restore">Restore saved data</button> 
+             <span id="result" style="color:green;"> </span>
+         </p>
+         <p style="border:1px dotted black;padding:0.5ex;font-size:smaller;">
+             Saved data: <span id="savedData">{}</span>
+         </p>
+      </div>
+  </body>
+</html>

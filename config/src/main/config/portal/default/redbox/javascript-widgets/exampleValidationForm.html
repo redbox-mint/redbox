@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>An Example Widgets Form</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <script type="text/javascript">
+        $(widgets.contentLoaded);
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" />
+    <style>
+        h3 { color:green; }
+        label.validation-err-msg {
+            color: red;
+        }
+    </style>
+  </head>
+  <body>
+      <div class="widget-form" style="padding:1em;"
+            data-init-data-url=""
+            data-pre-save-func=""
+            data-save-func=""
+            data-save-url=""
+            data-submit-url=""
+            data-form-fields=""
+            data-form-fields-readonly="">
+          <h3>Simple Validation Tests</h3>
+          <p>
+              Required*: <input type="text" id="required"/>
+              <label for="required" class="validation-err-msg"
+                     data-validation-rule="test(notEmpty);when(onBlur, onChange);">
+                  This is a required field!
+              </label>
+          </p>
+          <p>
+              Length greater than 3 characters: <input type="text" id="gt3"/>
+              <label class="validation-err-msg"
+                     data-validation-rule="for(gt3);test(lengt(3));when(onBlur, onChange);">
+                  Must have more than 3 characters!
+              </label>
+          </p>
+          <p>
+              yes or no only: <input type="text" id="yesno"/>
+              <label for="yesno" data-validation-rule="test(='yes' or ='no');when(onBlur);">
+                  Must be the value 'yes' or 'no' only!
+              </label>
+          </p>
+          <p>
+              Numbers only*: <input type="text" id="numonly"/>
+              <label for="numonly" class="validation-err-msg"
+                     data-validation-rule="test(/^\d*$/);when(onBlur, onChange);">
+                  Only numbers are valid here!
+              </label>
+          </p>
+
+          <h3>More Validation Samples</h3>
+          <p>
+              Required A: <input id="a" class="ab" type="text" data-validation-rule="test(notEmpty);name(testA);"/>
+              OR B:<input id="b" class="ab" type="text" data-validation-rule="test(notEmpty);name(testB);"/>
+              <label class="validation-err-msg"
+                     data-validation-rule="livefor(.ab);when(onBlur);test(testA or testB);"
+                     >A or B is a required field!</label>
+          </p>
+
+          <p>
+              Either D: <input id="d" class="de" type="text" data-validation-rule="test(notEmpty);name(testD);"/>
+              OR E:<input id="e" class="de" type="text" data-validation-rule="test(notEmpty);name(testE);"/>
+              <label class="validation-err-msg"
+                     data-validation-rule="livefor(.de);when(onBlur);test((testD or testE) and not (testD and testE));"
+                     >Either D or E is a required field (But not both)!</label>
+          </p>
+
+          <p>
+              No validation: <input type="text" id="??"/>
+          </p>
+
+          <p>
+              <button class="form-fields-save">Save</button> <!-- just for tiggering the onSave event -->
+          </p>
+      </div>
+  </body>
+</html>
