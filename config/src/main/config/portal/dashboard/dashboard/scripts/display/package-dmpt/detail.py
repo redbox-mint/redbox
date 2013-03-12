@@ -4,8 +4,9 @@ from com.googlecode.fascinator.common import JsonObject, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception
+from java.util import TreeMap, TreeSet, ArrayList
+
 from java.text import SimpleDateFormat
-from java.util import ArrayList
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
@@ -128,3 +129,30 @@ class DetailData:
         object = self._getObject()
         objectMeta = object.getMetadata()
         return objectMeta.get(propertyName)
+    
+    # get a list of metadata using basekey. Used by repeatable elements like FOR code or people
+    def getList(self, baseKey):
+        if baseKey[-1:] != ".":
+            baseKey = baseKey + "."
+        valueMap = TreeMap()
+        metadata = self.metadata.getJsonObject()
+        for key in [k for k in metadata.keySet() if k.startswith(baseKey)]:
+            value = metadata.get(key)
+            field = key[len(baseKey):]
+            index = field[:field.find(".")]
+            if index == "":
+                valueMapIndex = field[:key.rfind(".")]
+                dataIndex = "value"
+            else:
+                valueMapIndex = index
+                dataIndex = field[field.find(".")+1:]
+            #print "%s. '%s'='%s' ('%s','%s')" % (index, key, value, valueMapIndex, dataIndex)
+            data = valueMap.get(valueMapIndex)
+            #print "**** ", data
+            if not data:
+                data = TreeMap()
+                valueMap.put(valueMapIndex, data)
+            if len(value) == 1:
+                value = value.get(0)
+            data.put(dataIndex, value)
+        return valueMap

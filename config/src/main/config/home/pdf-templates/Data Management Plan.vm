@@ -11,7 +11,7 @@
 #end
 
 #macro(getList $listName)
-    #set($items = $util.getList("$listName"))
+    #set($items = $util.getList($item, "$listName"))
     #if ($items && $items.size() > 0)
 		#set($i = 0)
 		#foreach($el in $items)
@@ -33,21 +33,6 @@
 		#noInformation()	
     #end
     </dd>
-#end
-#macro(displayList $listName $label)
-    <dt>$label</dt>
-    #set($items = $util.getList("$listName"))
-    <dd>
-    #if ($items && $items.size() > 0)
-		#set($i = 0)
-		#foreach($item in $items)
-			#if($i > 0) , #else #set($i = 1) #end
-			$item
-		#end
-    #else
-		#noInformation()
-    </dd>
-    #end
 #end
 #macro(displayNote $key $name)
    	<h4>$name</h4>
@@ -88,7 +73,7 @@ dd {
 	padding:4px 0 4px;
 }
 
-table { width:12cm }
+table { width:14cm }
 table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 .first_col { width: 4cm; }
 
