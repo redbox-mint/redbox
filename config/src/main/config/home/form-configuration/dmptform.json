@@ -437,6 +437,7 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -479,6 +480,7 @@
             									"name": "Done",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -725,6 +727,7 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -821,13 +824,14 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details"
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
                     															"value": "true"
                 															},
                 															{
-                    															"key": "dataRetention",
+                    															"key": "dataRetentionComplete",
                     															"value": "true"
                 															}
             															 ]
@@ -1001,7 +1005,19 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/home/dmpt/planready"}]
+							"transitions":[{"name":"Back"},
+											{"name":"Next",
+											 "form-submit-action":"save",
+											 "close":true,
+											 "closeUrl":"dmpt/planready",
+												"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															}
+            															 ]
+							
+							}]
                         }
                     ]
                 },
@@ -1092,6 +1108,7 @@
             									"name": "Done",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",

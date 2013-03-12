@@ -277,6 +277,7 @@ class BaseIndexData(object):
             for formTitle in formTitles:
                 if self.title is None:
                     self.title = formTitle
+                    
         self.descriptionList = [manifest.getString("", ["description"])]
         formData = manifest.getJsonObject()
         for field in formData.keySet():
@@ -284,6 +285,8 @@ class BaseIndexData(object):
                 value = formData.get(field)
                 if value is not None and value.strip() != "":
                     self.utils.add(self.index, field, value)
+                    if field == "dc:title":
+                        self.title = value
                     # We want to sort by date of creation, so it
                     # needs to be indexed as a date (ie. 'date_*')
                     if field == "dc:created":

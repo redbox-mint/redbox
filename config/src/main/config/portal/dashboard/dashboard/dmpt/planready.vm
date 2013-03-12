@@ -1,4 +1,4 @@
-if($page.authentication.is_logged_in())
+#if($page.authentication.is_logged_in())
 <h2>Plan completed</h2>
 
 <p>Thank you for preparing a plan for your research data.</p>
@@ -6,12 +6,10 @@ if($page.authentication.is_logged_in())
 #if ($velocityContext.get("request").getParameter("oid"))
 	#set ($oid = $velocityContext.get("request").getParameter("oid"))
 	<a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF">Download the plan<img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
-#end	
-
 #else
 	 ##prompt user to login
 	 <script type="text/javascript">
 	 	$(document).ready(function() {$(".login-now").click();});
 	 </script>
-	#end
+#end
 #end
