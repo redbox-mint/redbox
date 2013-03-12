@@ -173,12 +173,12 @@ class Alert:
         try:
             jsonFile = open(meta_file, "wb")
             jsonFile.write(json.toString(True))  
-            jsonFile.close
+            jsonFile.close()
         except Exception, e:
             raise
         finally:
             if jsonFile is not None:
-                jsonFile.close
+                jsonFile.close()
             
         self.logInfo(file, "Submitting to harvest. Config file is %s and meta_file is %s" % (self.harvestConfig, meta_file))
         try:
