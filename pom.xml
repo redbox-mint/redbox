@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.redbox-mint</groupId>
   <artifactId>redbox</artifactId>
-  <version>1.6-RC01-SNAPSHOT</version>
+  <version>1.6-RC01</version>
   <packaging>pom</packaging>
   <name>ReDBox</name>
   <parent>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-project</artifactId>
-    <version>1.6-RC01-SNAPSHOT</version>
+    <version>1.6-RC01</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
   <modules>
@@ -47,12 +47,12 @@
       <artifactId>fascinator-portal</artifactId>
       <type>war</type>
       <classifier>skinny</classifier>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.redbox-mint</groupId>
       <artifactId>redbox-reports</artifactId>
-      <version>1.0-RC01-SNAPSHOT</version>
+      <version>1.0-RC01</version>
     </dependency>
     <!-- Solr Web App -->
     <dependency>
@@ -110,52 +110,52 @@
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-access-derby</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-authentication-internal</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-oai-pmh</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-workflow</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-indexer-solr</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-roles-internal</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-storage-filesystem</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-subscriber-solrEventLog</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity</artifactId>
-      <version>1.1.3-RC01-SNAPSHOT</version>
+      <version>1.1.3-RC01</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity-pdf</artifactId>
-      <version>0.1-RC01-SNAPSHOT</version>
+      <version>0.1-RC01</version>
     </dependency>
   </dependencies>
   <build>
@@ -236,7 +236,7 @@
     								</goals>
     							</pluginExecutionFilter>
     							<action>
-    								<ignore></ignore>
+    								<ignore />
     							</action>
     						</pluginExecution>
     					</pluginExecutions>
@@ -262,7 +262,7 @@
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>
           <type>warpath</type>
-          <version>1.1.3-RC01-SNAPSHOT</version>
+          <version>1.1.3-RC01</version>
         </dependency>
       </dependencies>
       <!-- The standard build/deploy process for making a server -->
@@ -511,6 +511,6 @@
         <url>scm:git://github.com/redbox-mint/redbox.git</url>
         <connection>scm:git://github.com/redbox-mint/redbox.git</connection>
         <developerConnection>scm:git:https://github.com/redbox-mint/redbox.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>redbox-1.6-RC01</tag>
   </scm>
 </project>
