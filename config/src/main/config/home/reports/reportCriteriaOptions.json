@@ -74,7 +74,7 @@
             },
             "label": "Licence Type",
             "key" : "licenceType",
-            "solrField": "dc:license.skos:prefLabel"
+            "solrField": "dc\\:license.skos\\:prefLabel"
         },
         {
             "value": {
