@@ -1,0 +1,127 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta charset="utf-8"/>
+  <title>Validation Widget Testing</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"><!-- --> </script>  
+    <script type="text/javascript" src="widgets.js"><!-- --> </script>
+  <script type="text/javascript">
+    $(function(){
+      widgets.contentLoaded();
+      var msgElem=$("#msg").hide();
+      $("#saveBut").click(function(){
+        var v=widgets.getValidator();
+        var msg=v.isOkToSave()?"OK to Save":"Save validation failed. Cannot save yet!";
+        msgElem.text(msg).show();
+      });
+      $("#submitBut").click(function(){
+        var v=widgets.getValidator();
+        var msg=v.isOkToSubmit()?"OK to Submit":"Submit validation failed!";
+        msgElem.text(msg).show();
+      });
+    });
+  </script>
+  <style>
+    label.validation-err-msg { color:red; }
+    .validation-rule { display:inline; color:lightblue;}
+    .validation-rules { display:inline; color:lightblue;}
+  </style>
+ </head>
+ <body class="widget-form">
+  <h3>Validation testing</h3>
+  
+  <p>Title: <input type="text" id="dc:title" size="20" 
+            placeholder="enter title here" autofocus/>
+      <label class="validation-err-msg" for="dc:title">
+          The title must have between 3 and 8 characters!
+      </label>
+      <span class="validation-rule">for(dc:title);test(lenGT 2 and lenLT(9));when(onBlur,onsubmit);name(test1);</span>
+  </p>
+  <p>
+    Please enter 'one', 'two', or 'three': <input type='text' id='testinput' /> 
+    <label class="validation-err-msg" for="testinput">Must be: one, two or three</label>
+    <span class="validation-rule">for(testinput); when(onblur,onsubmit); name(test); test(/^(one|two|three)$/);</span>
+  </p>
+  <p>
+    Date (YYYYMMDD):<input type="text" id="date1"/>
+    <label class="validation-err-msg" for="date1">Please enter a validate date!</label>
+    <span class="validation-rule">for(date1); when(blur, save, submit); test(YYYYMMDD);</span>
+  </p>
+  <p>
+    NotEmpty <input type="text" id="i1"/> OR <input type="text" id="i2"/>
+    <label class="validation-err-msg" style="color:red;" for="either">Either one must contain content!</label>
+    <input type="hidden" class="validation-rule" 
+            value="for(i1);name(i1);test(notEmpty);"/>
+    <input type="hidden" class="validation-rule" 
+            value="for(i2);name(i2);test(notEmpty);"/>
+    <input type="hidden" class="validation-rule" 
+            value="for(either);when('#i1,#i2'.blur, submit);test(i1 or i2);"/>
+  </p>
+  <p>
+    NotEmpty <input type="text" id="i3"/> AND <input type="text" id="i4"/>
+    <label class="validation-err-msg" style="color:red;" for="both">Both must be notEmpty!</label>
+<!--
+    <input type="hidden" class="validation-rule" 
+            value="for(i3);name(i3);test(notEmpty);"/>
+    <input type="hidden" class="validation-rule" 
+            value="for(i4);name(i4);test(notEmpty);"/>
+    <input type="hidden" class="validation-rule" 
+            value="for(both);when('#i3,#i4'.blur, submit);test(i3 and i4);"/>
+-->
+  </p>
+
+  <p>
+    <button id="saveBut">Save test</button> 
+    <button id="submitBut">Submit test</button>
+    <span style="color:orange;padding-left:4em;" id="msg">Message</span>
+  </p>
+
+  <div>
+    <pre class="validation-rules">
+      rulex {for(either);when('#i1,#i2'.blur, submit);test(i1 or i2);};
+
+      rule {for(i3);name(i3);test(notEmpty);};
+      rule {for(i4);test(notEmpty);}  // Note: name defaults to 'i4'
+      rule {for(both);when('#i3,#i4'.blur, submit);test(i3 and i4);};
+    </pre><br/>
+    <a href="validationTest.html">Refresh</a>
+  </div>
+
+  <div>
+      <h4>Sortable</h4>
+      <table class="input-list sortable"><tbody> 
+        <tr class="item-input-display sortable-item">
+          <td class="sort-handle"><img src="grippy.png"/></td>
+          <td class="sort-number">1</td>
+          <td><input type="text" placeholder="enter a keyword here" id="keyword.0" class="keyword_0"/></td>
+          <td><button class="delete-item">delete</button></td>
+          <td style="width:100%;">
+            <label class="validation-err-msg" style="color:red;" for="keyword.0">Must not be Empty!</label>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><input type="button" class="add-another-item" value="Add another keyword"/></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody></table>
+      <p>
+        <input type='text' id='vtest'/><label for="vtest" class="validation-err-msg" style="color:red;">Must not be Empty!</label>
+      <p>
+      <pre class="validation-rules">
+        rule {for(vtest);test(notEmpty);when(onBlur);};
+        rule {forClass(keyword_0);test(notEmpty);when(onBlur);};
+      </pre>
+  </div>
+
+ </body>
+</html>
+
+
+
+
+
+

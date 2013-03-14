@@ -171,6 +171,7 @@ class IndexData:
         self.relationDict = {}
         self.customFields = {}        
         self.creatorFullNameMap = HashMap()
+        self.grantNumberList = []
         self.embargoedDate = None
 
         # Try our data sources, order matters
@@ -198,6 +199,7 @@ class IndexData:
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
         self.__indexList("creatorfullname", self.creatorFullNameMap.values())
+        self.__indexList("grant_numbers", self.grantNumberList)
         if self.embargoedDate is not None:
             self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
         
@@ -343,6 +345,8 @@ class IndexData:
                             fullName = "%s%s" % (value, fullName) 
                         self.log.debug("fullname now is :%s" % fullName)
                         self.creatorFullNameMap.put(idx, fullName)
+                    if (field.endswith("grantNumber")):
+                        self.grantNumberList.append(value)
 
         self.utils.add(self.index, "display_type", displayType)
 

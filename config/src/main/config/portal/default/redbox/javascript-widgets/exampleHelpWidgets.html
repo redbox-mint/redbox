@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>A Help Widgets Example</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+    <script type="text/javascript">
+        $(widgets.contentLoaded);
+    </script>
+    <style>
+        .help-content {
+            display:none;
+            border:1px gray dotted;
+            padding:0.5ex;
+            color: #002020;
+        }
+    </style>
+  </head>
+  <body>
+      <div class="widget-form">
+          <h4>Heading
+              <span class="helpWidget" data-help-content-id="hc1">
+                  <img src="help.png"/>
+              </span>
+          </h4>
+          <div id="hc1" class="help-content">
+              This is some sample help content.
+          </div>
+          <p>
+              Just some content.
+          </p>
+          <p>
+           Ajax help-content test displayed inline.
+            <span class="helpWidget" data-help-content-id="hc2" style="color:blue;"
+                  data-show-text="help" data-hide-text="hide help"
+                  data-help-content-url="sampleHelp.txt"
+                  > </span>
+            <span id="hc2" class="help-content inline"> </span>
+          </p>
+      </div>
+          <div>
+              <h5>Another Heading
+                  <span class="helpWidget" data-help-content-class="helpCls1">
+                      <span class="helpWidget-show"><b style="color:green;">Help</b></span>
+                      <span class="helpWidget-hide"><i style="color:red;">Hide-Help</i></span>
+                  </span>
+              </h5>
+              <div class="help-content helpCls1">
+                  More help.
+              </div>
+          </div>
+  </body>
+</html>

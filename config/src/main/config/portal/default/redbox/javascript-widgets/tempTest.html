@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>TempTest javascript-widgets form</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <script type="text/javascript">
+     //<!--
+        $(widgets.contentLoaded);
+        function subFormSubmitted(){
+            $("#result-msg").text("subForm Submitted function called ok"); }
+        function subFormSubmittedResult(form, data){
+            $("#result-msg").text(JSON.stringify(data));
+        }
+     //-->
+    </script>
+    <!-- base -->
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<!-- dark-hive, ui-darkness, ui-lightness
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/dark-hive/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />
+-->
+    <style>
+      h2 { color:blue; }
+      h3 { color:blue; margin-top:2em;}
+      h4 { color:blue; }
+      .block { display:block; margin:0.5em; }
+      textarea { font-size:110%; }
+      .dateYMD { width: 11ex; }
+      .dateYM { width: 7.5ex; }
+      .dateMMY { width: 14em; }
+      .dateY { width: 4.5ex;}
+      .thumbnail { height:100px; }
+    </style>
+    <script type="text/javascript">
+     //<!--
+       var savedData = {};
+       function testSave(widgetForm, data){
+           savedData = data;
+           //alert("testSave data="+data.toSource());
+           alert("Saved OK");
+           return false;
+       }
+       function testRestore(){
+           widgetForm = widgets.forms[0];
+           widgetForm.restore(savedData);
+       }
+       $(function(){
+           $("#loadSavedDataBut").click(testRestore);
+       });
+     //-->
+    </script>
+  </head>
+  <body>
+   <div class="widget-form" 
+            data-pre-save-func=""
+            data-url=""
+            data-save-func="testSave" 
+            data-form-fields="usq:role, dc:creator.foaf:Person.0.usq:role,
+                                dc:creator.foaf:Person.0.usq:role.0"
+            data-form-fields-readonly=" "
+            >
+    <h2>Temp-Test javascipt widgets form page</h2>
+
+    <!-- optional hidden fields -->
+    <input type="hidden" id="hidden1" value="HideOne" />
+    <input type="hidden" id="hidden2" value="HideTwo" />
+    <input type="hidden" id="test:test" value="Test:Test" />
+
+    <div>
+        <h3>testing</h3>
+        <table class="input-list">
+          <tfoot>
+            <tr>
+              <td colspan="7"><input class="add-another-item" type="button" value="Add another creator" /></td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr class="item-input-display">
+              <td class="sort-number">1</td>
+              <td>
+                  <span class="data-source-drop-down" id="testid.0"
+                        data-json-source-url="dropDownListSample.json"
+                        data-json-dataX='{
+            "namespace": "http://id.loc.gov/vocabulary/relators/",
+            "list": [
+                     {"children": 0, "id": "cre", "label": "Creator"},
+                     {"children": 0, "id": "art", "label": "Artist"},
+                     {"children": 0, "id": "aut", "label": "Author"},
+                     {"children": 0, "id": "cur", "label": "Curator"},
+                     {"children": 0, "id": "mus", "label": "Musician"},
+                     {"children": 0, "id": "msd", "label": "Musical Director"},
+                     {"children": 0, "id": "cmp", "label": "Composer"},
+                     {"children": 0, "id": "drt", "label": "Director"},
+                     {"children": 0, "id": "pro", "label": "Producer"},
+                     {"children": 0, "id": "oth", "label": "Other"}
+         ],
+         "selectable": 1
+     }'
+                        data-id="dc:creator.foaf:Person.0.usq:role">
+                  </span>
+              </td>
+              <td>
+                  
+                  <table class="input-list" style="border:1px solid red;">
+                      <tfoot>
+                          <tr>
+                              <td colspan="2"><input class="add-another-item" type="button" value="Add+"/></td>
+                          </tr>
+                      </tfoot>
+                      <tbody>
+                          <tr class="item-input-display">
+                              <td><span class="sort-number"> </span></td>
+                              <td>
+                                  <span class="drop-down-list-json"
+                                        data-id="dc:creator.foaf:Person.0.usq:role.0"
+                                        data-value="http://id.loc.gov/vocabulary/relators/aut"
+                                        data-json-data='{
+                                           "namespace": "http://id.loc.gov/vocabulary/relators/",
+                                           "list": [
+                                             {"children": 0, "id": "cre", "label": "Creator"},
+                                             {"children": 0, "id": "art", "label": "Artist"},
+                                             {"children": 0, "id": "aut", "label": "Author"},
+                                             {"children": 0, "id": "cur", "label": "Curator"},
+                                             {"children": 0, "id": "mus", "label": "Musician"},
+                                             {"children": 0, "id": "msd", "label": "Musical Director"},
+                                             {"children": 0, "id": "cmp", "label": "Composer"},
+                                             {"children": 0, "id": "drt", "label": "Director"},
+                                             {"children": 0, "id": "pro", "label": "Producer"},
+                                             {"children": 0, "id": "oth", "label": "Other"}
+                                           ],
+                                           "selectable": 1
+                                        }'></span>
+                              </td>
+                              <td>
+                                  <a class="delete-item" href="#">remove</a>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  
+              </td>
+              <td class="delete-item"><a href="#">delete</a></td>
+              <td style="width: 100%;"></td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3>Simple List test</h3>
+                  <span class="drop-down-list-json"
+                        data-id="usq:role"
+                        data-value="http://id.loc.gov/vocabulary/relators/aut"
+                        data-json-data='{
+                           "namespace": "http://id.loc.gov/vocabulary/relators/",
+                           "list": [
+                             {"children": 0, "id": "cre", "label": "Creator"},
+                             {"children": 0, "id": "art", "label": "Artist"},
+                             {"children": 0, "id": "aut", "label": "Author"},
+                             {"children": 0, "id": "cur", "label": "Curator"},
+                             {"children": 0, "id": "mus", "label": "Musician"},
+                             {"children": 0, "id": "msd", "label": "Musical Director"},
+                             {"children": 0, "id": "cmp", "label": "Composer"},
+                             {"children": 0, "id": "drt", "label": "Director"},
+                             {"children": 0, "id": "pro", "label": "Producer"},
+                             {"children": 0, "id": "oth", "label": "Other"}
+                           ],
+                           "selectable": 1
+                        }'></span>
+    </div>
+
+    <div>
+        <table class="input-list test" data-max-size="1">
+          <tfoot>
+            <tr class="item-input">
+              <td>
+                <span class="data-source-drop-down" id="rdf:type.0">
+                  <input type="hidden" class="json-data-source-url" value="dropDownListSample.json" />
+                  <input type="text"   class="selection-add-label" id="rdf:type.0.rdf:label" value="[one]" />
+                  <input type="text"   class="selection-add-id" id="rdf:type.0.rdf:resource" value="[two]" />
+                </span>
+                <button class="item-add selection-add add-unique-only"
+                    >Add '<span class="selection-add-label"></span>'<!--
+                        (id=<span class="selection-add-id"></span>)
+                    -->
+                </button>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr class="item-display">
+              <td>
+                <span class="item-display-item"></span>
+                <span class="item-display-item" style="color: lightblue; display: none;"></span>
+                <a class="delete-item" href="#">delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div style='border:1px solid lightgray;padding:1em;margin:1em;'>
+      <button class="form-fields-save">Save</button>
+      <!--<button class="form-fields-submit">Submit</button>  (save+)
+      <button class="form-fields-restore">Restore</button>
+      <button class="form-fields-reset">Reset</button> -->
+      <button id="loadSavedDataBut">Load saved data</button>
+    </div>
+
+   </div>
+  </body>
+</html>
+
+
+
+
+
+

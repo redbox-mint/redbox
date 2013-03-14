@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>An Example Widgets Form</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="widgets2.js"><!-- --></script>
+    <script type="text/javascript">
+        var savedData={}, widgetForm, result;
+        $(function(){
+            widgets.contentLoaded(function(){      // initialise widgets
+                // this callback is called when the widgets has finished initialising
+                widgetForm = widgets.forms[0];
+            });
+            $("#restore").click(testRestore);
+            result=$("#result");
+        })
+        function testSave(widgetForm, data){
+            var rt;
+            gw=widgetForm; gd=data;
+            savedData = data;
+            $("#savedData").text(JSON.stringify(data));
+            rt=result.text("Saved OK");
+            rt.stop().css("opacity",1).show().fadeOut(3000);
+            //return false;        // false - Cancel (do not do ajax save)
+        }
+        function testRestore(){
+            var rt;
+            widgetForm.restore(savedData);
+            rt=result.text("Restored OK");
+            rt.stop().css("opacity",1).show().fadeOut(3000);
+        }
+
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" />
+    <style>
+        h2 { color:green; }
+        h3 { color:darkgreen;}
+        h4 { color:darkblue;}
+        div { padding:1em;}
+    </style>
+  </head>
+  <body>
+      <h2>Example Widgets Form</h2>
+      <!--<div class="widget-form" style="padding:1em;"
+            data-init-data-url="data1.json"     - Optional Initial form data values
+            data-pre-save-func=""               - called before the form data is collected
+            data-save-func="testSave"           - called with json form data(2nd arg) but before being posted to the save-url
+            data-save-url=""                    -
+            data-submit-url=""                  -
+            data-form-fields="name, dob, chkbox1, radio1, comments, sel1"
+            data-form-fields-readonly="formID"> -->
+      <div class="widget-form" style="padding:1em;"
+            data-pre-save-func=""
+            data-save-func="testSave"
+            data-save-url=""
+            data-submit-url=""
+            data-form-fields="name, dob, chkbox1, radio1, comments, sel1,
+                                language, language-label, id"
+            data-form-fields-readonly="formID">
+         <input type="hidden" id="formID" value="1234"/>
+         <label>Name: <input type="text" id="name" /></label><br/>
+         DOB: <input type="text" class="dateYMD" id="dob" placeholder="YYYY/MM/DD" /> <br/>
+         checkbox: <input type="checkbox" id="chkbox1" value="chk1"/>
+         <div class="block">radio: <!-- NOTE: radio fields must use the 'name' attribute only and not 'id' -->
+            <label><input type="radio" name="radio1" value="r1"/>one</label>
+            <label><input type="radio" name="radio1" value="r2"/>two</label>
+            <label><input type="radio" name="radio1" value="r3"/>three</label>
+         </div>
+         textarea: <textarea id="comments" rows="2" cols="40" style="vertical-align:middle;"></textarea> <br/>
+
+
+         <div>
+            <h3>Simple text list widget</h3>
+              <h4>Not sortable</h4>
+              <table class="input-list"><tbody>  <!--  -->
+                <tr class="item-display">
+                  <td class="sort-number"></td>
+                  <td class="item-display-item" style="border:1px solid #cccccc;"></td>
+                  <td class="delete-item"><a href="#">delete</a></td>
+                  <td style="width:100%;"></td>
+                </tr>
+                <tr class="item-input">
+                  <td></td>
+                  <td><input type="text" placeholder="enter a tag here" id="tag.0"/></td>
+                  <td><input type="button" class="item-add" value="Add"/></td>
+                  <td></td>
+                </tr>
+              </tbody></table>
+
+              <h4>Not sortable input (min-size=3, max-size=5)</h4>
+              <table class="input-list" data-min-size="3" data-max-size="5"><tbody>  <!--  -->
+                <tr class="item-input-display">
+                  <td><input type="text" placeholder="enter a tag here" id="tag2.0"/></td>
+                  <td class="delete-item"><a href="#">delete</a></td>
+                  <td style="width:100%;"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" class="add-another-item" value="Add another tag"/></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody></table>
+
+              <h4>Sortable</h4>
+              <table class="input-list sortable"><tbody>
+                <tr class="item-input-display sortable-item">
+                  <td class="sort-handle"><img src="grippy.png"/></td>
+                  <td class="sort-number">1</td>
+                  <td><input type="text" placeholder="enter a keyword here" id="keyword.0"/></td>
+                  <td><button class="delete-item">delete</button></td>
+                  <td style="width:100%;"></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td><input type="button" class="add-another-item" value="Add another keyword"/></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody></table>
+         </div>
+
+         <div>
+            <h4>More complex input list</h4>
+              <h4>Multiply inputs</h4>
+              <table class="input-list sortable"><tbody>  <!--  -->
+                <tr class="item-display sortable-item">
+                  <td class="sort-number"></td>
+                  <td class="item-display-item" style="border:1px solid #cccccc;"></td>
+                  <td class="item-display-item" style="border:1px solid #cccccc;"></td>
+                  <td class="delete-item"><a href="#">delete</a></td>
+                  <td style="width:100%;"></td>
+                </tr>
+                <tr class="item-input">
+                  <td></td>
+                  <td><input type="text" placeholder="enter a tag here" id="tag1.0" size="40"/></td>
+                  <td>
+                      <input type="text" placeholder="enter a tag here" id="tag2.0" size="40"/>
+                  </td>
+                  <td><input type="button" class="item-add" value="Add"/></td>
+                  <td></td>
+                </tr>
+              </tbody></table>
+         </div>
+
+         <hr/>
+
+         <div>
+            <h3>Drop-down datasource list input widget</h3>
+            Language:
+            <span class="data-source-drop-down"
+                  data-json-data='{
+                    "results":[
+                        {"id":"eng", "label":"English"},
+                        {"id":"fre", "label":"French"},
+                        {"id":"res", "label":"Russian"},
+                        {"id":"spa", "label":"Spanish"},
+                        {"id":"ger", "label":"German"}
+                    ]
+                  }'
+                  data-id-key="id"
+                  data-label-key="label"
+                  data-list-key="results">
+                <span class="selection-added">
+                    <input type="hidden" class="selection-added-id"
+                           id="language" value="" />
+                    <input type="text" class="selection-added-label" size="20" readonly="readonly"
+                           id="language-label" value="" />
+                    <a href="#" class="clear-item">change</a>
+                </span>
+                <span class="drop-down-location">
+                    <button class="selection-add add-unique-only" data-add-on-click="1">
+                        Select <span class="selection-added-label"> </span>
+                    </button>
+                </span>
+            </span>
+         </div>
+
+         <div>
+            <h3>Drop-down datasource list (with multiply drop-downs) input widget</h3>
+            <span class="data-source-drop-down"
+                  data-json-data='{
+  "namespace": "http://namespace.url",
+  "list": [
+            {"children":1, "id":"x1", "label":"One", "selectable":0},
+            {"children":1, "id":"x2", "label":"Two", "selectable":1}
+          ],
+   "x1": { "list":
+           [
+            {"id": "x1a", "label": "OneA"},
+            {"id": "x1b", "label": "OneB"},
+            {"id": "x1c", "label": "OneC"}
+           ], "selectable":1,
+           "default": "x1b"
+         },
+   "x2": { "list":
+            [
+             {"id": "x2a", "label": "TwoA", "children":1, "selectable":0},
+             {"id": "x2b", "label": "TwoB", "selectable":1}
+            ]
+         },
+   "x2a": { "list":
+            [
+             {"id": "x2a1", "label": "TwoA1"},
+             {"id": "x2a2", "label": "TwoA2"}
+            ], "selectable":1
+          }
+}'>
+                <span class="selection-added">
+                    <input type="hidden" class="selection-added-id"
+                           id="dataIdx.0" value="" />
+                    <input type="text" class="selection-added-label" size="20" readonly="readonly"
+                           id="dataLabelx.0" value="" />
+                    <a href="#" class="clear-item">change</a>
+                </span>
+                <span class="drop-down-location">
+                    <button class="selection-add add-unique-only" data-add-on-click="1">
+                        Select <span class="selection-added-label" style="font-size:smaller;"> </span>
+                    </button>
+                </span>
+            </span>
+         </div>
+
+         <hr/>
+         <div>
+             <button id="save" class="form-fields-save">Save/Submit</button> &#160;
+             <button id="restore">Restore saved data</button>
+             <span id="result" style="color:green;"> </span>
+         </div>
+         <div style="border:1px dotted black;padding:0.5ex;font-size:smaller;">
+             Saved data: <span id="savedData">{}</span>
+         </div>
+      </div>
+
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8"/>
+    <title>Test javascript-widgets form</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="nameLookup.js"><!-- --></script>
+    <!-- base -->
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<!-- dark-hive, ui-darkness, ui-lightness
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/dark-hive/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />
+-->
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <h2>Name Lookup Test</h2>
+    <input type='hidden' id='nameLookup-url' value='nameLookup.json'/>
+    <div>
+      <label for="name1">Name: </label><input id="name1" type="text" class="nameLookup" value="smith"/>
+      <a class="nameLookup-link" style='margin-left:1ex;' href='#'>Lookup Name</a>
+      <input type="hidden" id="name1-url" class="nameLookup-nameUrl" value="" />
+    </div>
+    <div style="margin:1em;">
+      <input type="text" class="nameLookup" name="name2"/>
+      <a class="nameLookup-link" style='margin-left:1ex;' href='#'>Lookup Name</a>
+      <input type="text" readonly="readonly" id="name2-url" class="nameLookup-nameUrl" value="" 
+        style="color:gray;border:none;"/>
+    </div>
+    <div style="margin:1em;">
+      <button id="refresh">Refresh</button>
+    </div>
+
+    <div style="border:1px dotted green; margin-top:4ex;padding:0.5ex;">
+      <span id="debugMsg"></span>
+    </div>
+  </body>
+</html>
+
+
+

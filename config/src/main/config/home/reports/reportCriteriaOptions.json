@@ -34,6 +34,18 @@
             "key" : "creator",
             "solrField": "creatorfullname"
         },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "grantNumber",
+                    "lookup-data":"lookup?field=grantNumber"
+                }
+            },
+            "label": "Grant Numbers",
+            "key" : "grantNumber",
+            "solrField": "grantNumbers"
+        },
          {
             "value": {
                 "jaffaDropDown": {
@@ -74,7 +86,7 @@
             },
             "label": "Licence Type",
             "key" : "licenceType",
-            "solrField": "dc:license.skos:prefLabel"
+            "solrField": "dc\\:license.skos\\:prefLabel"
         },
         {
             "value": {

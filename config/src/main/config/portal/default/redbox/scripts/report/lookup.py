@@ -41,7 +41,38 @@ class LookupData:
 #
             self.handleWorkflowStep()
             return
+        if (self.field=="grantNumber"):
+            self.handleGrantNumber()
 
+    def handleGrantNumber(self):
+        out = ByteArrayOutputStream()
+        req = SearchRequest("grant_numbers:%s*" % self.term)
+        req.setParam("fq", 'item_type:"object"')
+        req.setParam("fq", 'workflow_id:"dataset"')
+        req.setParam("rows", "1000")
+        self.indexer.search(req, out)
+        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        hits = HashSet()
+        if (res.getNumFound() > 0):
+            creatorResults = res.getResults()
+            for creatorRes in creatorResults:
+                creatorList = creatorRes.getList("grant_numbers")
+                if (creatorList.isEmpty()==False):
+                    for hit in creatorList:
+                        hits.add(hit)
+            self.writer.print("[")
+            hitnum = 0
+            for hit in hits:
+                if (hitnum > 0):
+                    self.writer.print(",\"%s\"" % hit)
+                else:    
+                    self.writer.print("\"%s\"" % hit)
+                hitnum += 1
+            self.writer.print("]")
+        else:   
+             self.writer.println("[\"\"]")
+        self.writer.close()
+        
     def handleWorkflowStep(self):
         out = ByteArrayOutputStream()
         req = SearchRequest("workflow_step_label:[* TO *]" )
