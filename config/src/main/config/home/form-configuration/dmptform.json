@@ -257,7 +257,7 @@
                             "component-type":"text-block",
                             "type":"h3",
                             "content":"dmpt.form.people.dataManager.label",
-                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
+                            "help":"dmpt.form.help.locrel:prc.foaf:Person"
                         },
                         {
                         	"component-type":"person",
