@@ -234,14 +234,13 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 							 	 };
 							 	 
 		$(document).ready(function(){ 
-		
-					$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });
-		
-		
-							 
-						});
+					  $(".datepicker").datepicker({
+					         dateFormat: "d/m/yy", 
+					         changeMonth: true, 
+					         changeYear: true, 
+					         showButtonPanel: false
+					     });
 
-		$(document).ready(function(){
 		$("#reportCriteria").jaffaReportCriteriaRepeatable({
 															"disable-numbers":true,
 															"disable-sorting":true,
