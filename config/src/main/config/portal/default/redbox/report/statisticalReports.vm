@@ -115,7 +115,15 @@
 #end
 </section>
 	<script type="text/javascript">
-		$(function() {$( ".datepicker" ).datepicker();});				          
+	$(document).ready(function() {
+		  $(".datepicker").datepicker({
+		         dateFormat: "d/m/yy", 
+		         changeMonth: true, 
+		         changeYear: true, 
+		         showButtonPanel: false
+		     });
+		});  	
+				          
    /** commented out - jaffa validation             
           var jaffa = jaffaFactory({
         debuggingEnabled: true,

@@ -146,7 +146,37 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     </dl>    
     #displayNote("agls:policy.skos:note" "Ethics considerations")
     <dl>    
-        #display("agls:protectiveMarking.dc:type" "Type of sensitivity")
+    ## agls:protectiveMarking.dc:type is saved from checkbox, sepecial treat
+    #set($itemList = $util.getList($item, "agls:protectiveMarking.dc:type"))
+    <dt>Type of sensitivity</dt>
+    <dd>
+    #if ($itemList.size() > 0)
+    	#set($i = 0)
+        #foreach($key in $itemList.keySet())
+            #set($display_value = "--")
+            #set($key_value = $itemList.get($key).get($key))
+            #if ($key_value == "agls:protectiveMarking.dc:type.redbox:CulturallySensitive") 			
+        	    #set($display_value = "Culturally sensitive")
+            #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive")
+			    #set($display_value = "Commercially sensitive")
+            #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:SecurityClassified")
+			    #set($display_value = "Security classified")
+		    #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:NonPublic")
+			    #set($display_value = "Non-public")
+            #elseif($key_value != 'null')
+         	   #set($display_value = $key_value)
+            #end
+            #if( $!display_value != "" && $display_value != "--") 
+         	   #if($i > 0) , #end
+         	   $display_value
+          	   #set($i = $i + 1)
+            #end	
+        #end
+    #else
+        #noInformation()
+    #end
+    </dd>
+
     </dl>    
     #displayNote("agls:protectiveMarking.skos:note" "Sensitivity note")
 </section>
@@ -177,7 +207,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <h1>Licensing and access</h1>
     <dl>
         #display("dc:accessRights" "Access")
-        #display("dc:license" "Licence")
+        #display("dc:license.dc:identifier" "Licence")
     </dl>
 	#displayNote("dc:RightsStatement" "Rights")
 	#displayNote("dc:rights.skos:note" "Access notes")

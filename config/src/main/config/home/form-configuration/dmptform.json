@@ -257,7 +257,7 @@
                             "component-type":"text-block",
                             "type":"h3",
                             "content":"dmpt.form.people.dataManager.label",
-                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
+                            "help":"dmpt.form.help.locrel:prc.foaf:Person"
                         },
                         {
                         	"component-type":"person",
@@ -814,7 +814,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataRetention.disposalDate",
+                            "field-name":"redbox:disposalDate",
                             "label":"",
                             "additional-classes":"dateYMD"
                         },
@@ -902,7 +902,7 @@
 								},
 								{
 									"label": "Security classified",
-									"value": " agls:protectiveMarking.dc:type.redbox:SecurityClassified"
+									"value": "agls:protectiveMarking.dc:type.redbox:SecurityClassified"
 								},
 								{
 									"label": "Non-public",
