@@ -1100,7 +1100,7 @@
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<div id='mapholder' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder').innerHTML='<img src='+img_url+'>';</script>"
+                            "content":"<div id='mapholder_demo1' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo1').innerHTML='<img src='+img_url+'>';</script>"
                         },
                         {
                             "component-type":"transition-control",
@@ -1197,7 +1197,7 @@
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<div id='mapholder' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder').innerHTML='<img src='+img_url+'>';</script>"
+                            "content":"<div id='mapholder_demo2' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo2').innerHTML='<img src='+img_url+'>';</script>"
                         },
                         {
                             "component-type":"text-input",
