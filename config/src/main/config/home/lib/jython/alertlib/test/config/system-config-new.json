@@ -105,6 +105,8 @@
 	             "handlers": {
 	                 "csv": "CSVAlertHandler"
 	             },
+	             "owner": "admin",
+	             "ownerResolutionScript": "",
 	             "CSVAlertHandlerParams": {
 	                    "configMap": {
 	                        "csv": {
