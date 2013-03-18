@@ -5,7 +5,7 @@
     <ul class="menu">
         <li>
             <a id="new-dmpt" href="#" title="Create a new data management plan for your project">#displayMessage("researcher-dashboard.add.new.plan")</a>
-            <a id="new-dataset" href="#" title="Create a description for your research data">Describe my data</a>
+            <!--<a id="new-dataset" href="#" title="Create a description for your research data">Describe my data</a>-->
         </li>
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")
