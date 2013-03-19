@@ -6,6 +6,7 @@
 #if ($velocityContext.get("request").getParameter("oid"))
 	#set ($oid = $velocityContext.get("request").getParameter("oid"))
 	<a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF">Download the plan<img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+	<a style="padding-left:200px" href="$portalPath" title="home">Go to home<img alt="home" src="$portalPath/images/icons/house_go.png"></a> 
 #else
 	 ##prompt user to login
 	 <script type="text/javascript">
