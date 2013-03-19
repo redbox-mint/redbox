@@ -136,7 +136,7 @@ class LookupData:
         
     def handleCreator(self):
         out = ByteArrayOutputStream()
-        req = SearchRequest("creatorfullname:%s*" % self.term)
+        req = SearchRequest("dc\:creator.foaf\:Person:%s*" % self.term)
         req.setParam("fq", 'item_type:"object"')
         req.setParam("fq", 'workflow_id:"dataset"')
         req.setParam("rows", "1000")
@@ -146,10 +146,11 @@ class LookupData:
         if (res.getNumFound() > 0):
             creatorResults = res.getResults()
             for creatorRes in creatorResults:
-                creatorList = creatorRes.getList("creatorfullname")
+                creatorList = creatorRes.getList("dc:creator.foaf:Person")
                 if (creatorList.isEmpty()==False):
                     for hit in creatorList:
-                        hits.add(hit)
+                        if hit.find(self.term) != -1:
+                            hits.add(hit)
             self.writer.print("[")
             hitnum = 0
             for hit in hits:
