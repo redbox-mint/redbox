@@ -175,6 +175,7 @@ class IndexData:
         self.arrayBucket = HashMap()
         self.compFields = ["dc:coverage.vivo:DateTimeInterval", "locrel:prc.foaf:Person"]
         self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ","start":"start","end":"end"},"locrel:prc.foaf:Person":{"delim":", ","start":"familyName","end":"givenName"} }
+        self.reportingFieldPrefix = "reporting_"
         self.embargoedDate = None
 
         # Try our data sources, order matters
@@ -203,7 +204,7 @@ class IndexData:
             self.__indexList(key, self.relationDict[key])
         if self.arrayBucket.size() > 0:
             for arrFldName in self.arrayBucket.keySet():
-                if arrFldName.endswith("Person") or arrFldName in self.compFields:
+                if arrFldName.endswith("Person") or arrFldName.replace(self.reportingFieldPrefix, "") in self.compFields:
                     self.__indexList(arrFldName, self.arrayBucket.get(arrFldName).values())
                 else:
                     self.__indexList(arrFldName, self.arrayBucket.get(arrFldName))
@@ -350,9 +351,9 @@ class IndexData:
                             fldPart = ":%s" % arrParts[0]
                             prefixEndIdx = field.find(fldPart) + len(fldPart)
                             suffixStartIdx = prefixEndIdx+len(arrParts[1])+1
-                            arrFldName = field[:prefixEndIdx] + field[suffixStartIdx:]
+                            arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx] + field[suffixStartIdx:]
                             if field.endswith("Name"):
-                                arrFldName = field[:prefixEndIdx]
+                                arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx]
                             self.log.debug("Array Field name is:%s  from: %s, with value:%s" % (arrFldName, field, value))
                             
                             if field.endswith("Name"):
@@ -379,7 +380,7 @@ class IndexData:
                                 
                     for compfield in self.compFields:
                         if field.startswith(compfield):    
-                            arrFldName = compfield
+                            arrFldName = self.reportingFieldPrefix +compfield
                             fullFieldMap = self.arrayBucket.get(arrFldName)
                             if fullFieldMap is None:
                                 fullFieldMap = HashMap()
