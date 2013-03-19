@@ -32,6 +32,12 @@
         #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
 	</table>
 	<h4>Description</h4>
-	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
+	#set($v = $util.get($item, 'dc:description'))
+	<p>    #if($v && ("$!v" != ""))
+		$v
+	    #else
+			#noInformation()	
+	    #end
+	 </p>
 </section>
 <hr />

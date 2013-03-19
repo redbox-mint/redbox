@@ -36,7 +36,7 @@
 #end
 #macro(displayNote $key $name)
    	<h4>$name</h4>
-	<p>#getValue("vivo:Dataset.dc:location.skos:note")</p>
+	<p>#getValue($key)</p>
 #end
 #macro(displayRow $key $name $c $type)
 	<tr class="$c">
@@ -188,7 +188,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     </dl>    
 	#displayNote("dc:rightsHolder.dc:name" "Copyright and intellectual property owners")
 	#displayNote("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
-	#displayNote("redbox:ContractualObligations" "Constractual obligations")
+	#displayNote("redbox:ContractualObligations" "Contractual obligations")
 </section>
 <hr />
 <section>
