@@ -120,7 +120,7 @@ for (var i=1; i<reportCriteriaArray.length; i++) {
 reportCriteria = reportCriteriaArray[i];
 
 
-$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
+//$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
 $('[id="report-criteria.'+i+'.dropdown-input"]').val(reportCriteria['dropdownInput']);
 if(reportCriteria['matchContains'] != null) {
 if($('[id="report-criteria.'+i+'.match_contains"]').length ==0) {

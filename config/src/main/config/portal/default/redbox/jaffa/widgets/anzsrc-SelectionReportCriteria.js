@@ -110,7 +110,7 @@ var AnzsrcSelectionReportCriteriaWidgetBuilder = function($, jaffa) {
         												nextCombo["data-id-key"] = 'rdf:about';       
             											nextCombo["data-label-key"] = 'skos:prefLabel';
         												nextCombo["data-list-key"] = 'results';
-        												nextCombo["default-value"] = 'skos:narrower';           
+        												nextCombo["default-value"] = jaffa.serverData[field+'.middle.dropdown'];;           
     													nextCombo["class-list"] = 'widgetListBranding';
     													$("span[id='"+field+".middle']").jaffaDropDown(nextCombo);
     												}
@@ -133,7 +133,7 @@ var AnzsrcSelectionReportCriteriaWidgetBuilder = function($, jaffa) {
         												nextCombo["data-id-key"] = 'rdf:about';       
             											nextCombo["data-label-key"] = 'skos:prefLabel';
         												nextCombo["data-list-key"] = 'results';
-        												nextCombo["default-value"] = 'skos:narrower';           
+        												nextCombo["default-value"] = jaffa.serverData[field+'.bottom.dropdown'];;           
     													nextCombo["class-list"] = 'widgetListBranding';
     													$("span[id='"+field+".bottom']").jaffaDropDown(nextCombo);
     												}
