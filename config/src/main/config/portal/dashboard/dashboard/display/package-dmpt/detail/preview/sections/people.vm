@@ -10,8 +10,8 @@
 		#set($givenName = $metadata.get("$key:givenName"))
 		#set($familyName = $metadata.get("$key:familyName"))
 		#set($email = $metadata.get("$key:email"))
-    #if ($familyName)
-    	$!title $!givenName $familyName $!email
+    #if ($familyName || $givenName)
+    	$!title $!givenName $!familyName $!email
     #else	
     ##if ($items && $items.size > 0)
 		##set($i = 0)
