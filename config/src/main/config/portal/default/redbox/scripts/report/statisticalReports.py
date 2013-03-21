@@ -73,7 +73,7 @@ class StatisticalReportsData:
     def showReport(self, reportName):
         format = self.request.getParameter("format")
         self.report = self.reportManager.getReport(reportName)
-        self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString())
+        self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString(), self.report)
         if format == "csv":
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % self.report.getLabel())
             writer = self.response.getPrintWriter("text/csv; charset=UTF-8")
