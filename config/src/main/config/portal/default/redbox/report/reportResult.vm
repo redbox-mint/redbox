@@ -21,7 +21,7 @@
                 <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
                 <td>
                     
-                	#set($creatorList = $item.getList("creatorfullname"))
+                	#set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
        				#if ($creatorList.isEmpty())
             			<dd>
            				</dd>
