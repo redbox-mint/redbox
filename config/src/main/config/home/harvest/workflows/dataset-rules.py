@@ -310,8 +310,8 @@ class IndexData:
                     self.utils.add(self.index, field, value)
                     # We want to sort by date of creation, so it
                     # needs to be indexed as a date (ie. 'date_*')
-                    if field == "dc:created" or field == "redbox:submissionProcess.dc:date":
-                        parsedTime = time.strptime(value, "%Y-%m-%d")   
+                    if field == "dc:created":
+                        parsedTime = time.strptime(value, "%Y-%m-%d")
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
                         self.log.debug("Set created date to :%s" % solrTime)
@@ -406,8 +406,7 @@ class IndexData:
         
         # Make sure we have a creation date
         if not createdDateFlag:
-            parsedTime = time.strptime(value, "%Y-%m-%d")   
-            solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
+            solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ")
             self.utils.add(self.index, "date_created", solrTime)
             self.log.debug("Forced creation date to %s because it was not explicitly set." % solrTime)
 
