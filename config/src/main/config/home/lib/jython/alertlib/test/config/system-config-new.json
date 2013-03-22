@@ -132,7 +132,7 @@
 	             "baseline": {
 	                    "viewId": "default",
 	                    "packageType": "dmpt",
-	                    "redbox:formVersion": "1.6-RC01-SNAPSHOT",
+	                    "redbox:formVersion": "1.6-RC02-SNAPSHOT",
 	                    "redbox:newForm": true,
 	                    "redbox:submissionProcess.redbox:submitted": true,
 	                	"workflow_source": "Default Alert"

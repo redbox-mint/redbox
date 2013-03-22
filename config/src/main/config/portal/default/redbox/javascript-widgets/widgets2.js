@@ -1438,21 +1438,21 @@ var widgets={forms:[], globalObject:this};
             return false;
         }
         data = getFormData();
-        completed=function(data, dataStr){
+        completed=function(data){
             if(typeof(getFormData)==="undefined") { return; }
             if(typeof(data)=="string"){
-                dataStr=data;
                 try{
                     data = JSON.parse(data);
                 }catch(e){
                     data = {error:e};
                 }
             }
-            if(data.error || !data.ok){
+            if(data.error){
+            	// Quick fix. Needs more rewriting
+            	// Only expecting JSON parsing error
                 ctx.findx(".saved-result").html("");
                 if(callIfFunction(xErrResultFunc, widgetForm, data)!=false){
-                    if(!data.ok && !data.error) data.error="Failed to receive an 'ok'!";
-                    messageBox("Failed to "+stype+"! (error='"+data.error+"') response='"+dataStr+"'");
+                    messageBox("Failed to "+stype+"! (error='"+data.error+"')");
                 }
             }else{
                 callIfFunction(xResultFunc, widgetForm, data);
@@ -1468,6 +1468,16 @@ var widgets={forms:[], globalObject:this};
                 // update ctxInputs - as fileInputs will now be different
                 ctxInputs=ctx.findx("input, textarea, select");
                 lastData = getFormData();
+            }
+        };
+        // Separated from success handler
+        errHandler=function(data, dataStr){
+            ctx.findx(".saved-result").html("");
+            if(callIfFunction(xErrResultFunc, widgetForm, data)!=false){
+                if (dataStr) {
+                	// Only let user to know when server sends back message
+                	messageBox("Failed to "+stype+"! (error='"+data.error+"') response='"+dataStr+"'");	
+                }
             }
         };
         if(data.title===null)data.title=data["dc:title"];
@@ -1499,8 +1509,8 @@ var widgets={forms:[], globalObject:this};
                 $.ajax({type:"POST", url:url, data:data,
                     success:completed,
                     error:function(xhr, status, e){
-                        if(typeof(completed)==="undefined") { return; }
-                        completed({error:"status='"+status+"'"}, xhr.responseText);
+                        // if(typeof(completed)==="undefined") { return; }
+                        errHandler({error:"status='"+status+"'"}, xhr.responseText);
                     },
                     dataType:"json"
                 });
