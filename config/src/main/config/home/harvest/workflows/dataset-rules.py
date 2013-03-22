@@ -26,7 +26,7 @@ class IndexData:
         for pid in pidList:
             if pid.endswith(".tfpackage"):
                 self.packagePid = pid
-                
+
         # Real metadata
         if self.itemType == "object":
             self.__basicData()
@@ -297,12 +297,7 @@ class IndexData:
                 if self.title is None:
                     self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
-        
-        #Used to make sure we have a created date
-        createdDateFlag  = False
-        
         formData = manifest.getJsonObject()
-        
         for field in formData.keySet():
             if field not in coreFields:
                 value = formData.get(field)
@@ -310,12 +305,10 @@ class IndexData:
                     self.utils.add(self.index, field, value)
                     # We want to sort by date of creation, so it
                     # needs to be indexed as a date (ie. 'date_*')
-                    if field == "dc:created" or field == "redbox:submissionProcess.dc:date":
+                    if field == "dc:created":
                         parsedTime = time.strptime(value, "%Y-%m-%d")   
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
-                        self.log.debug("Set created date to :%s" % solrTime)
-                        createdDateFlag = True
                     elif field == "redbox:embargo.dc:date":
                         self.embargoedDate = value
                     # try to extract some common fields for faceting
@@ -402,14 +395,7 @@ class IndexData:
                             self.log.debug("full field now is :%s" % fullField)
                             fullFieldMap.put("1", fullField)     
 
-        self.utils.add(self.index, "display_type", displayType) 
-        
-        # Make sure we have a creation date
-        if not createdDateFlag:
-            parsedTime = time.strptime(value, "%Y-%m-%d")   
-            solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
-            self.utils.add(self.index, "date_created", solrTime)
-            self.log.debug("Forced creation date to %s because it was not explicitly set." % solrTime)
+        self.utils.add(self.index, "display_type", displayType)
 
         # Workflow processing
         wfStep = wfMeta.getString(None, ["step"])
