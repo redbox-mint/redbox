@@ -18,7 +18,7 @@ label.validation, .validation label { color: red; display: block; }
     <fieldset>
         <p>
             <label for="redbox:submissionProcess.dc:date">Date Submitted</label>
-            <input id="redbox:submissionProcess.dc:date" type="text" size="40" value="$!self.getSubmitDate()" readonly="readonly" />
+            <input id="redbox:submissionProcess.dc:date" type="text" size="8" value="$!self.getSubmitDate()" readonly="readonly" disabled="disabled"/>
         </p>
         <p>
             <label for="redbox:submissionProcess.dc:description">Description <span class="required">*</span></label>
