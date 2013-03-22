@@ -18,7 +18,7 @@ class StatisticalReportsData:
         self.formData = context["formData"]
         self.systemConfig = context["systemConfig"]
         self.errorMsg = ""
-        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-published", "rb-workflow-final", "rb-workflow-metadata", "rb-workflow-investigation", "rb-workflow-retired"]
+        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-inbox", "rb-workflow-investigation", "rb-workflow-metadata", "rb-workflow-final", "rb-workflow-published", "rb-workflow-retired"]
         self.mintResultFields = ["mint-total", "hdr-party", "parties_people", "parties_groups", "activities:", "services:"]
         self.headerText = {"hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
         self.isNew = False
