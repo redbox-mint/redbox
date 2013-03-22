@@ -51,5 +51,7 @@ $(document).ready(function(){
 });
 </script>
 #else
-	<div>$self.getErrorMsg()</div>
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<div class="grid_16">	
+	$self.getErrorMsg()</div>
 #end

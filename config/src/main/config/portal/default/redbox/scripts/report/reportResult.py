@@ -9,6 +9,7 @@ from au.com.bytecode.opencsv import CSVParser
 from au.com.bytecode.opencsv import CSVWriter
 from java.io import StringWriter
 from java.lang import String
+import sys
 
 class ReportResultData:
 
@@ -95,8 +96,12 @@ class ReportResultData:
         else:    
             req.setParam("rows", "1000")
             out = ByteArrayOutputStream()
-            self.indexer.search(req, out)
-            self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
+            try:
+                self.indexer.search(req, out)
+                self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
+            except:
+                self.errorMsg = "Query failed - please review your report criteria."
+                self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
 
     def findDisplayLabel(self, csvValue):
         if self.fields is not None:
