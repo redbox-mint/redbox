@@ -50,7 +50,27 @@
 			},
 			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }
 		});
-
+	}
+	
+	function transfer_all_access_to_admin(oid) {
+		change_owner(oid);
+		jQuery.ajax({
+			url: "$portalPath/grantAccess.ajax",
+			data: { oid:oid,
+					action:get
+				  },
+			error: function(j, s) {alert(s)},	  
+			success: function(results) { 
+				var users = results.viewers;
+				if (typeof users === 'string') {
+					revoke_user(users);
+				} else {
+					for (var i = 0; i< users.length; i++ ) {
+						revoke_user(users[i]);
+					}
+				}
+			}
+		});
 	}
 
 	function manage_access(oid) {
@@ -117,7 +137,7 @@
     
     
     function revoke_user(user_name) {
-    	var r=confirm("Are you sure to remove?");
+    	var r=confirm("Are you sure want to remove access from " + user_name + "?");
 		if (r==false) {
 		  return;
 		}

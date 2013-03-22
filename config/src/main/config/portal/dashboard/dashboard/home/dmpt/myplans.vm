@@ -23,7 +23,7 @@
                 <td>$self.formatDate($item.get("last_modified"))</td>
                 <td><a href="$portalPath/workflow/$oid" title="Edit Plan"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
                 <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
-                <a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete plan" src="$portalPath/images/icons/delete.png"></a>
+                <a href="#" onclick="transfer_all_access_to_admin('$oid');" title="Delete Plan"><img alt="Delete plan" src="$portalPath/images/icons/delete.png"></a>
                 <a href="#" onclick="manage_access('$oid');" title="Set Permissions"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
                 </td>
             </tr>
