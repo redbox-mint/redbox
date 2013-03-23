@@ -73,7 +73,7 @@ class ReportResultData:
             
             out = ByteArrayOutputStream()
             fileName = self.urlEncode(self.report.getLabel())
-            self.log.error("FileName: " +fileName)
+            self.log.debug("FileName: " +fileName)
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % fileName)
             self.indexer.search(req, out, self.format)
             csvResponseString = String(out.toByteArray(),"utf-8")
@@ -84,17 +84,22 @@ class ReportResultData:
             writer = CSVWriter(sw)
             count = 0
             for line in csvResponseLines:
-                csvLine = parser.parseLine(line)
-                if count == 0 :
-                    for idx, csvValue in enumerate(csvLine):
-                        csvLine[idx] = self.findDisplayLabel(csvValue)
+                try:
+                    csvLine = parser.parseLine(line)
+                    if count == 0 :
+                        for idx, csvValue in enumerate(csvLine):
+                            csvLine[idx] = self.findDisplayLabel(csvValue)
                 
-                writer.writeNext(csvLine)
+                    writer.writeNext(csvLine)
+                except: 
+                    writer.writeNext(["Failed to transfer record to CSV - check logs"])
+                    self.log.debug("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], line))
+
 
             self.out.print(sw.toString())
             self.out.close()
         else:    
-            req.setParam("rows", "1000")
+            req.setParam("rows", "10")
             out = ByteArrayOutputStream()
             try:
                 self.indexer.search(req, out)
