@@ -32,7 +32,7 @@
             },
             "label": "Creators",
             "key" : "creator",
-            "solrField": "dc\\:creator.foaf\\:Person"
+            "solrField": "reporting_dc\\:creator.foaf\\:Person.foaf\\:name"
         },
         {
             "value": {
@@ -86,7 +86,7 @@
             },
             "label": "Licence Type",
             "key" : "licenceType",
-            "solrField": "dc\\:license.skos\\:identifier"
+            "solrField": "dc\\:license.dc\\:identifier"
         },
         {
             "value": {
