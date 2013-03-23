@@ -16,7 +16,7 @@ class IndexData:
         self.utils = context["pyUtils"]
         self.config = context["jsonConfig"]
         self.log = context["log"]
-
+        self.last_modified = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         self.log.debug("Indexing Metadata Record '{}' '{}'", self.object.getId(), self.payload.getId())
 
         # Common data
@@ -53,7 +53,7 @@ class IndexData:
 
         self.utils.add(self.index, "id", self.oid)
         self.utils.add(self.index, "item_type", self.itemType)
-        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+        self.utils.add(self.index, "last_modified", self.last_modified)
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
 
@@ -406,8 +406,7 @@ class IndexData:
         
         # Make sure we have a creation date
         if not createdDateFlag:
-            solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ")
-            self.utils.add(self.index, "date_created", solrTime)
+            self.utils.add(self.index, "date_created", self.last_modified)
             self.log.debug("Forced creation date to %s because it was not explicitly set." % solrTime)
 
         # Workflow processing
