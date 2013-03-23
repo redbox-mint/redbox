@@ -1,4 +1,5 @@
 #if($self.getErrorMsg()=="")
+#set($pageTitle = "Report result")
 #set($portalPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
 <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
@@ -15,9 +16,10 @@
 <script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
 <script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
+
 	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<h2 id="page-heading"><span>Statistical report</span></h2>
 	<section>
-		<h1>Statistical Report</h1>
 		<div class="errorbox">
     		#displayMessage("reports.create.report.validation.message")
     		<ul id="errorbox-list">
@@ -187,5 +189,9 @@
 
 	</script>	
 #else
-	<div>$self.getErrorMsg()</div>
+	#set($pageTitle = "Reporting error")
+	<h2 id="page-heading"><span>Reporting error</span></h2>
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<div class="grid_16">	
+	$self.getErrorMsg()</div>
 #end

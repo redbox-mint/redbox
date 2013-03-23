@@ -1,6 +1,6 @@
 from java.lang import String
 from com.googlecode.fascinator.portal.report import StatisticalReport
-
+import sys
 
 from java.lang import String
 class StatisticalReportsData:
@@ -73,7 +73,12 @@ class StatisticalReportsData:
     def showReport(self, reportName):
         format = self.request.getParameter("format")
         self.report = self.reportManager.getReport(reportName)
-        self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString(), self.report)
+        try:
+            self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString(), self.report)
+        except:
+            self.errorMsg = "Query failed - please refer to your system administrator."
+            self.log.debug("Statistical reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+            
         if format == "csv":
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % self.report.getLabel())
             writer = self.response.getPrintWriter("text/csv; charset=UTF-8")

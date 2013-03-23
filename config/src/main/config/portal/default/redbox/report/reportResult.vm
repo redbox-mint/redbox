@@ -1,57 +1,72 @@
 #if($self.getErrorMsg()=="")
-<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a> &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp; <span style='font-weight:bold'>Preview</span></div>
-<div class="grid_16">	
-	<table>
-        <thead>
-            <tr>
-                <th>Record Title</th>
-                <th>Type</th>
-                <th>Workflow</th>
-                <th>Date Created</th>
-                <th>Creators</th>
-            </tr>
-        </thead>
-        <tbody>
-         #foreach($item in $self.getReportResult())
-            #set($oid = $item.get("id"))
-          <tr>
-                <td>$item.get('dc_title')</td>
-                <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
-                <td>$item.get("workflow_step_label")</td>
-                <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
-                <td>
-                    
-                	#set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
-       				#if ($creatorList.isEmpty())
-            			<dd>
-           				</dd>
-       				#else
-       				 <dd>
-            			<ol>
-           				 #foreach($value in $creatorList)               				                 			
-                   			 <li>
-                      			 $self.escapeHtml($value)
-                    		</li>
-                    	 #end
-						</ol>
-					</dd>
-           			#end                    
-                </td>
-            </tr>
+    #set($pageTitle = "Report result")
+    <div>
+        <a href='$portalPath/report/manageReports'>View Reports</a>
+        &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a>
+        &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp; <span style='font-weight:bold'>Preview</span>
+    </div>
+	<h2 id="page-heading"><span>Report results</span></h2>
+    <div class="grid_16">
+        #if($self.getReportResult().isEmpty())
+            <p>No results found</p>
+            #else
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Record Title</th>
+                            <th>Type</th>
+                            <th>Workflow</th>
+                            <th>Date Created</th>
+                            <th>Creators</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #foreach($item in $self.getReportResult())
+                            #set($oid = $item.get("id"))
+                            <tr>
+                                <td>$item.get('dc_title')</td>
+                                <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
+                                    <td>$item.get("workflow_step_label")</td>
+                                    <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
+                                        <td>
+                                            #set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
+                                            #if ($creatorList.isEmpty())
+                                                <dd>
+                                                </dd>
+                                                #else
+                                                    <dd>
+                                                        <ol>
+                                                            #foreach($value in $creatorList)               				                 			
+                                                                <li>
+                                                                    $self.escapeHtml($value)
+                                                                </li>
+                                                            #end
+                                                        </ol>
+                                                    </dd>
+                                            #end                    
+                                        </td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+                <button id='exportCsvBtn'>Export CSV</button>
         #end
-        </tbody>
-    </table>
-	<button id='exportCsvBtn'>Export CSV</button>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#exportCsvBtn").click(function() {
-		window.location.assign(window.location.href+"&format=csv");
-	});
-});
-</script>
-#else
-	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
-	<div class="grid_16">	
-	$self.getErrorMsg()</div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $("#exportCsvBtn").click(function() {
+        window.location.assign(window.location.href+"&format=csv");
+        });
+        });
+    </script>
+    #else
+		#set($pageTitle = "Reporting error")
+		<div>
+            <a href='$portalPath/report/manageReports'>View Reports</a>
+        </div>
+		<h2 id="page-heading"><span>Reporting error</span></h2>
+        
+        <div class="grid_12">	
+            $self.getErrorMsg()</div>
 #end
+    
