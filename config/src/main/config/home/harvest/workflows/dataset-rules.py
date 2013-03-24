@@ -407,7 +407,7 @@ class IndexData:
         # Make sure we have a creation date
         if not createdDateFlag:
             self.utils.add(self.index, "date_created", self.last_modified)
-            self.log.debug("Forced creation date to %s because it was not explicitly set." % solrTime)
+            self.log.debug("Forced creation date to %s because it was not explicitly set." % self.last_modified)
 
         # Workflow processing
         wfStep = wfMeta.getString(None, ["step"])
