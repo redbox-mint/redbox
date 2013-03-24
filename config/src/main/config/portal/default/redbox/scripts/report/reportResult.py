@@ -60,7 +60,8 @@ class ReportResultData:
             recnumreq.setParam("rows", "0")
             self.indexer.search(recnumreq, out)
             recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-            req.setParam("rows", "%s" % recnumres.getNumFound())
+            rowsFound = recnumres.getNumFound()
+            req.setParam("rows", "%s" % rowsFound)
             req.setParam("csv.mv.separator",";")
             
             if self.fields is not None:
@@ -73,31 +74,56 @@ class ReportResultData:
             
             out = ByteArrayOutputStream()
             fileName = self.urlEncode(self.report.getLabel())
-            self.log.debug("FileName: " +fileName)
+            self.log.debug("Generating CSV report with file name: " + fileName)
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % fileName)
             self.indexer.search(req, out, self.format)
             csvResponseString = String(out.toByteArray(),"utf-8")
             csvResponseLines = csvResponseString.split("\n")
+            
             self.out = self.response.getOutputStream("text/csv")
             sw = StringWriter()
             parser = CSVParser()
             writer = CSVWriter(sw)
             count = 0
+            
+            prevLine = ""
+            badRowFlag = False
+            
             for line in csvResponseLines:
-                try:
-                    csvLine = parser.parseLine(line)
-                    if count == 0 :
-                        for idx, csvValue in enumerate(csvLine):
-                            csvLine[idx] = self.findDisplayLabel(csvValue)
+                if badRowFlag:
+                    try:
+                        self.log.debug("Reporting - trying to append the previous line with the previous faulty one. Line appears as: %s" % prevLine + line)
+                        csvLine = parser.parseLine(prevLine + line)
+                        badRowFlag = False
+                        prevLine = ""
+                        self.log.debug("Reporting - remedy appears to have worked. Line appears as: %s" % prevLine + line)
+                    except:
+                        #We tried to rescue the file but failed on the second run so give up
+                        writer.writeNext(["Failed to transfer record to CSV - check logs"])
+                        self.log.error("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], prevLine + line))
+                else:
+                    try: 
+                        csvLine = parser.parseLine(line)
+                        badRowFlag = False
+                        prevLine = ""
+                    except: 
+                        #This can happen if there's a newline in the index data 
+                        #so we raise the badRowFlag and see if we can join this
+                        #row to the next one to fix it
+                        self.log.debug("Reporting threw an exception but I'll see if it's just a formatting issue (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], line))
+                        badRowFlag = True
+                        prevLine = line
+                        continue
                 
-                    writer.writeNext(csvLine)
-                except: 
-                    writer.writeNext(["Failed to transfer record to CSV - check logs"])
-                    self.log.debug("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], line))
-
+                if count == 0 :
+                    for idx, csvValue in enumerate(csvLine):
+                        csvLine[idx] = self.findDisplayLabel(csvValue)
+            
+                writer.writeNext(csvLine)
 
             self.out.print(sw.toString())
             self.out.close()
+            
         else:    
             req.setParam("rows", "10")
             out = ByteArrayOutputStream()
