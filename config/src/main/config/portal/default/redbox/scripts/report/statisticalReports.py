@@ -18,9 +18,9 @@ class StatisticalReportsData:
         self.formData = context["formData"]
         self.systemConfig = context["systemConfig"]
         self.errorMsg = ""
-        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-inbox", "rb-workflow-investigation", "rb-workflow-metadata", "rb-workflow-final", "rb-workflow-published", "rb-workflow-retired"]
+        self.resultFields = ["rb-total", "hdr-collection-type", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-inbox", "rb-workflow-investigation", "rb-workflow-metadata", "rb-workflow-final", "rb-workflow-published", "rb-workflow-retired"]
         self.mintResultFields = ["mint-total", "hdr-party", "parties_people", "parties_groups", "activities:", "services:"]
-        self.headerText = {"hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
+        self.headerText = {"hdr-collection-type":"Records in Redbox (by Collection type)", "hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
         self.isNew = False
         self.report = None
         if (self.auth.is_logged_in()):
