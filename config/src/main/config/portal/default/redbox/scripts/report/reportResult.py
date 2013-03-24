@@ -25,6 +25,7 @@ class ReportResultData:
         self.indexer = context['Services'].getIndexer()
         self.metadata = context["metadata"]
         self.systemConfig = context["systemConfig"] 
+        self.__rowsFound = 0
         
         self.errorMsg = "" 
         if (self.auth.is_logged_in()):
@@ -60,7 +61,7 @@ class ReportResultData:
             recnumreq.setParam("rows", "0")
             self.indexer.search(recnumreq, out)
             recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-            rowsFound = recnumres.getNumFound()
+            self.__rowsFound = recnumres.getNumFound()
             req.setParam("rows", "%s" % rowsFound)
             req.setParam("csv.mv.separator",";")
             
@@ -125,9 +126,20 @@ class ReportResultData:
             self.out.close()
             
         else:    
-            req.setParam("rows", "10")
-            out = ByteArrayOutputStream()
             try:
+                #Get a total number of records
+                recnumreq = SearchRequest(self.reportQuery)
+                recnumreq.setParam("fq", 'item_type:"object"')
+                recnumreq.setParam("fq", 'workflow_id:"dataset"')
+                recnumreq.setParam("rows", "0")
+                out = ByteArrayOutputStream()
+                self.indexer.search(recnumreq, out)
+                recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
+                self.__rowsFound = recnumres.getNumFound()
+                
+                #Now do the search
+                req.setParam("rows", "10")
+                out = ByteArrayOutputStream()
                 self.indexer.search(req, out)
                 self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
             except:
@@ -163,3 +175,6 @@ class ReportResultData:
         if value:
             return StringEscapeUtils.escapeHtml(value) or ""
         return ""
+        
+    def getRowsFound(self):
+        return self.__rowsFound 

@@ -10,6 +10,9 @@
         #if($self.getReportResult().isEmpty())
             <p>No results found</p>
             #else
+                <p>Rows found: 
+                $self.getRowsFound() 
+                (below is a preview of up to 10 results)</p>
                 <table>
                     <thead>
                         <tr>
