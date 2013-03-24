@@ -14,6 +14,12 @@
                             "component-type": "text-input",
                             "field-name": "dc:title",
                             "label": ""
+                            "validation": {
+                                            "save-rules": ["required"],
+                                            "validation-id": "dc:title",
+                                            "focus-id": "dc:title",
+                                            "validation-messages":{"required": "Title is required"}
+                                          }
                         },
                         {
                             "component-type":"text-block",
@@ -33,10 +39,11 @@
                                                                   "data-label-key":"label",
                                                                   "data-list-key":"results",                                                                  
                                                                   "mandatory":"true",
-                                                                  "help-content":"[id='data-source-dropdown-help-type']",}},
+                                                                  "help-content":"[id='data-source-dropdown-help-type']"}},
                                                  {"jaffaText":{"label": "Description","class-list":"jaffa-field","suffix": "value"}}
                                                 ]
-                                            }
+                                            },
+                            "additional-classes":"containerLayout"
                         },           
                         {
                             "component-type":"text-block",
@@ -78,6 +85,10 @@
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier",
                             "label":"Rights - URI:"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button class='nexttab'>Next</button>"
                         }
                     ]
                 },
@@ -155,7 +166,11 @@
                                             , latitude: <span class='north'> </span>
                                             | <a class='clear-link' href='#'>clear</a>
                                         </div>"
-                        }                     
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button class='prevtab'>Previous</button><button class='nexttab'>Next</button>"
+                        }
                     ]
                 },
                 {
@@ -190,6 +205,10 @@
                             "component-type":"text-input",
                             "field-name":"redbox:retentionPeriod",
                             "label":"Retention Period"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button class='prevtab'>Previous</button><button class='nexttab'>Next</button>"
                         }
                     ]
                 },
@@ -295,7 +314,11 @@
                                                 {"jaffaText":{"label":"Notes: ", "class-list":"jaffa-field", "suffix":"skos:note"}}
                                                 ]
                                            }
-                        }           
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button class='prevtab'>Previous</button><button class='nexttab'>Next</button>"
+                        }
                     ]
                 },
                 {
@@ -303,8 +326,8 @@
                     "fields":[
                         {
                             "component-type":"text-block",
-                            "content":"Fields of Research"
-                            "type":"h3",
+                            "content":"Fields of Research",
+                            "type":"h3"
                         },                        
                         {
                             "component-type":"repeatable-container",
@@ -383,7 +406,11 @@
                                                 {"jaffaText":{"label":"Keyword: ", "class-list":"jaffa-field", "suffix":"rdf:PlainLiteral"}}
                                                 ]
                                            }
-                        }           
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button class='prevtab'>Previous</button><button class='nexttab'>Next</button>"
+                        }
                     ]
                 },
                 {
@@ -406,24 +433,16 @@
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<script>$(document).ready(function() {jaffa.ui.changeToTabLayout($('#simpleworkflow-form'), 'h1');})</script>"
-                        }
+                            "content":"<script>$(document).ready(function() {wizardTabIdentifier='simpleWorkflowTab'; jaffa.ui.changeToTabLayout($('#simpleworkflow-form'),'h1','h1.heading-selector', wizardTabIdentifier);})</script>"
+                       },
+                       {
+                            "component-type":"native-html",
+                            "content":"<button class='prevtab'>Previous</button>"
+                       }
                     ]
                 }
             ],
             "buttons":[
-                {
-                    "component-type":"standard-button",
-                    "button-name":"save",
-                    "action":"save",
-                    "label":"Save"
-                },
-                {
-                    "component-type":"standard-button",
-                    "button-name":"next",
-                    "action":"next",
-                    "label":"Next>"
-                }
             ],
             "form-footer":"simpleform-footer",            
             "validation":{
@@ -476,7 +495,7 @@
                     "action":"next",
                     "label":"Next>"
                 }
-            ],
+            ],            
             "validation":{
                 "required":"title"
             }
