@@ -129,20 +129,21 @@ class ReportResultData:
         else:    
             try:
                 #Get a total number of records
-                recnumreq = SearchRequest(self.reportQuery)
-                recnumreq.setParam("fq", 'item_type:"object"')
-                recnumreq.setParam("fq", 'workflow_id:"dataset"')
-                recnumreq.setParam("rows", "0")
-                out = ByteArrayOutputStream()
-                self.indexer.search(recnumreq, out)
-                recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-                self.__rowsFound = recnumres.getNumFound()
+                #recnumreq = SearchRequest(self.reportQuery)
+                #recnumreq.setParam("fq", 'item_type:"object"')
+                #recnumreq.setParam("fq", 'workflow_id:"dataset"')
+                #recnumreq.setParam("rows", "0")
+                #out = ByteArrayOutputStream()
+                #self.indexer.search(recnumreq, out)
+                #recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
+                #self.__rowsFound = recnumres.getNumFound()
                 
                 #Now do the search
                 req.setParam("rows", "10")
                 out = ByteArrayOutputStream()
                 self.indexer.search(req, out)
                 self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
+                self.__checkResults()
             except:
                 self.errorMsg = "Query failed - please review your report criteria."
                 self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
@@ -168,6 +169,7 @@ class ReportResultData:
             
             #For each criteria item
             for criteria_item in criteria.getCriteria():
+            
                 #If the last criteria item didn't check out and the AND op is used, the record doesn't make it
                 if not lastCheck and criteria_item.getOperator() == RedboxReport.KEY_CRITERIA_LOGICAL_OP_AND:
                     dropResultFlag = True
@@ -180,22 +182,53 @@ class ReportResultData:
                         dropResultFlag = False
                         lastCheck = True
                         break
-                
-                #If the query criteria uses 'equals', check that it's an exact match
-                if criteria_item.getMatchingOperator() == "field_match":
-                    if item.get(criteria_item.getSolr_field()) != criteria_item.getValue():
+                else:
+                    if item.get(criteria_item.getSolr_field()) is None:
                         dropResultFlag = True
                         lastCheck = False
                         break
+                
+                #If the query criteria uses 'equals', check that it's an exact match
+                if criteria_item.getMatchingOperator() == "field_match":
+                    solrvallist = []
+                    solrval = item.get(criteria_item.getSolr_field());
+                    if solrval is None:
+                        solrvallist = item.getArray(criteria_item.getSolr_field());
+                    else:
+                        solrvallist.append(solrval)
+                    
+                    for solrval in solrvallist:
+                        if  solrval != criteria_item.getValue():
+                            dropResultFlag = True
+                            lastCheck = False
+                            break
+                else:
+                    solrvallist = []
+                    solrval = item.get(criteria_item.getSolr_field());
+                    if solrval is None:
+                        solrvallist = item.getArray(criteria_item.getSolr_field());
+                    else:
+                        solrvallist.append(solrval)
+                    
+                    for solrval in solrvallist:
+                        if solrval is None:
+                            dropResultFlag = True
+                            lastCheck = False
+                            break
+                        elif solrval.lower().find(criteria_item.getValue().lower()) == -1:
+                            dropResultFlag = True
+                            lastCheck = False
+                            break
             
             if not dropResultFlag:
                 #Copy over to the new listing
                 self.processed_results_list.append(item)
+            else:
+                self.log.debug("Chucked out " + item.get("id"))
                 
         self.__rowsFound = len(self.processed_results_list)
 
     def getProcessedResultsList(self):
-        self.__checkResults()
         return self.processed_results_list
 
     def findDisplayLabel(self, csvValue):

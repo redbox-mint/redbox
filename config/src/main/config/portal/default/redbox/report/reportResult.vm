@@ -7,7 +7,7 @@
     </div>
 	<h2 id="page-heading"><span>Report results</span></h2>
     <div class="grid_16">
-        #if($self.getReportResult().isEmpty())
+        #if($self.getRowsFound() == 0)
             <p>No results found</p>
             #else
                 <p>Rows found: 
