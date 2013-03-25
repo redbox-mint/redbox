@@ -34,18 +34,6 @@
             "key" : "creator",
             "solrField": "reporting_dc\\:creator.foaf\\:Person.foaf\\:name"
         },
-        {
-            "value": {
-                "jaffaText": {
-                    "field": "",
-                    "key": "grantNumber",
-                    "lookup-data":"lookup?field=grantNumber"
-                }
-            },
-            "label": "Grant Numbers",
-            "key" : "grantNumber",
-            "solrField": "grantNumbers"
-        },
          {
             "value": {
                 "jaffaDropDown": {
