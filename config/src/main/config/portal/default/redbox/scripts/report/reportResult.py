@@ -1,8 +1,9 @@
+from com.googlecode.fascinator.portal.report import SearchCriteriaListing
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.net import URLEncoder
-from java.util import TreeMap
+from java.util import TreeMap, ArrayList
 from org.apache.commons.lang import StringEscapeUtils
 from org.json.simple import JSONArray
 from au.com.bytecode.opencsv import CSVParser
@@ -139,7 +140,7 @@ class ReportResultData:
                 #self.__rowsFound = recnumres.getNumFound()
                 
                 #Now do the search
-                req.setParam("rows", "10")
+                req.setParam("rows", "9999")
                 out = ByteArrayOutputStream()
                 self.indexer.search(req, out)
                 self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
@@ -164,51 +165,57 @@ class ReportResultData:
         #For each result item we need to check that it matches the criteria
         for item in self.getReportResult():
             #Use last check to assist in the left-to-right check of operators
-            lastCheck = True
-            dropResultFlag = False
+            # negative by default unless matched below
+            lastCheck = False
+            dropResultFlag = True
             
             #For each criteria item
             for criteria_item in criteria.getCriteria():
             
                 #If the last criteria item didn't check out and the AND op is used, the record doesn't make it
-                if not lastCheck and criteria_item.getOperator() == RedboxReport.KEY_CRITERIA_LOGICAL_OP_AND:
+                if not lastCheck and criteria_item.getOperator() == SearchCriteriaListing.KEY_CRITERIA_LOGICAL_OP_AND:
                     dropResultFlag = True
                     lastCheck = False
                     break
-                     
+                # sanitise solr field
+                criteria_item.setSolr_field(String(criteria_item.getSolr_field()).replace("\\", ""))
                 #If the query criteria allows nulls and the field is null, true
                 if criteria_item.getAllowNulls() == "field_include_null":
-                    if item.get(criteria_item.getSolr_field()) is None:
+                    if item.get(criteria_item.getSolr_field()) is None:                        
                         dropResultFlag = False
                         lastCheck = True
                         break
                 else:
-                    if item.get(criteria_item.getSolr_field()) is None:
+                    if item.get(criteria_item.getSolr_field()) is None:                        
                         dropResultFlag = True
                         lastCheck = False
                         break
                 
                 #If the query criteria uses 'equals', check that it's an exact match
                 if criteria_item.getMatchingOperator() == "field_match":
-                    solrvallist = []
-                    solrval = item.get(criteria_item.getSolr_field());
-                    if solrval is None:
-                        solrvallist = item.getArray(criteria_item.getSolr_field());
-                    else:
-                        solrvallist.append(solrval)
-                    
+                    solrvallist = ArrayList()
+                    solrval = item.getString(None, criteria_item.getSolr_field());
+                    if solrval is None:                                     
+                        solrvallist = item.getList(criteria_item.getSolr_field());
+                    else:                        
+                        solrvallist.add(solrval)                    
                     for solrval in solrvallist:
-                        if  solrval != criteria_item.getValue():
-                            dropResultFlag = True
+                        if  String(String(solrval).trim()).equalsIgnoreCase(String(criteria_item.getValue()).trim()):
+                            self.log.debug("Matched at: field_match --> %s == %s" %(solrval, criteria_item.getValue()))
+                            self.log.debug("criteria_item.getSolr_field() -> " + criteria_item.getSolr_field())
+                            self.log.debug("solrvallist:%s" % solrvallist )
+                            dropResultFlag = False
                             lastCheck = False
                             break
+                        else:
+                            self.log.debug("Not Matched at: field_match --> %s == %s" %(solrval, criteria_item.getValue()) )
                 else:
-                    solrvallist = []
-                    solrval = item.get(criteria_item.getSolr_field());
+                    solrvallist = ArrayList()
+                    solrval = item.getString(None, criteria_item.getSolr_field());
                     if solrval is None:
-                        solrvallist = item.getArray(criteria_item.getSolr_field());
+                        solrvallist = item.getList(criteria_item.getSolr_field());
                     else:
-                        solrvallist.append(solrval)
+                        solrvallist.add(solrval)
                     
                     for solrval in solrvallist:
                         if solrval is None:
@@ -219,12 +226,16 @@ class ReportResultData:
                             dropResultFlag = True
                             lastCheck = False
                             break
-            
-            if not dropResultFlag:
+                                    
+#            if dropResultFlag and not lastCheck:
+#                self.log.debug("Broke out of all loops: " + item.get("id"))
+#                break
+            if dropResultFlag:
                 #Copy over to the new listing
                 self.processed_results_list.append(item)
             else:
                 self.log.debug("Chucked out " + item.get("id"))
+            
                 
         self.__rowsFound = len(self.processed_results_list)
 
