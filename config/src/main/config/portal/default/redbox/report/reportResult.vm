@@ -24,32 +24,36 @@
                         </tr>
                     </thead>
                     <tbody>
+                        #set($i = 0)
                         #foreach($item in $self.getProcessedResultsList())
                             #set($oid = $item.get("id"))
-                            <tr>
-                                <!-- <td>$item.get('dc_title')</td>  -->
-								<td>$item.get("dc_title")</td>
-                                <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
-                                    <td>$item.get("workflow_step_label")</td>
-                                    <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
-                                        <td>
-                                            #set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
-                                            #if ($creatorList.isEmpty())
-                                                <dd>
-                                                </dd>
-                                                #else
+                            #set($i = $i + 1)
+                            #if($i < 11)
+                                <tr>
+                                    <!-- <td>$item.get('dc_title')</td>  -->
+                                    <td>$item.get("dc_title")</td>
+                                    <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
+                                        <td>$item.get("workflow_step_label")</td>
+                                        <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
+                                            <td>
+                                                #set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
+                                                #if ($creatorList.isEmpty())
                                                     <dd>
-                                                        <ol>
-                                                            #foreach($value in $creatorList)               				                 			
-                                                                <li>
-                                                                    $self.escapeHtml($value)
-                                                                </li>
-                                                            #end
-                                                        </ol>
                                                     </dd>
-                                            #end                    
-                                        </td>
-                            </tr>
+                                                    #else
+                                                        <dd>
+                                                            <ol>
+                                                                #foreach($value in $creatorList)               				                 			
+                                                                    <li>
+                                                                        $self.escapeHtml($value)
+                                                                    </li>
+                                                                #end
+                                                            </ol>
+                                                        </dd>
+                                                #end                    
+                                            </td>
+                                </tr>
+                            #end
                         #end
                     </tbody>
                 </table>
