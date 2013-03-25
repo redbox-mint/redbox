@@ -218,8 +218,10 @@ class ReportResultData:
 
 
     def __checkResultsMatch(self, criteria_item, item):
-        if item.get(criteria_item.getSolr_field()) is None:
-            return False
+        if criteria_item.getAllowNulls() == "field_include_null":
+            #If the query criteria allows nulls and the field is null, true
+            if item.get(criteria_item.getSolr_field()) is None:                        
+                return True
             
         #Some fields are lists so just handle lists
         solrvallist = ArrayList()
