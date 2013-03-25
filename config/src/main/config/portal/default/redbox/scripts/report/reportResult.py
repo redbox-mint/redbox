@@ -27,6 +27,7 @@ class ReportResultData:
         self.metadata = context["metadata"]
         self.systemConfig = context["systemConfig"] 
         self.__rowsFound = 0
+        self.__rowsFoundSolr = 0
         self.processed_results_list = []
         
         self.errorMsg = "" 
@@ -39,8 +40,6 @@ class ReportResultData:
             self.errorMsg = "Please login."
         self.__reportSearch()
         
-        
-
     def __reportSearch(self):
         self.reportId = self.request.getParameter("id")
         self.format = self.request.getParameter("format")
@@ -48,24 +47,44 @@ class ReportResultData:
         self.reportQuery = self.report.getQueryAsString()
         self.log.debug("Report query: " +self.reportQuery)
         
+        #Get a total number of records
+        out = ByteArrayOutputStream() 
+        recnumreq = SearchRequest(self.reportQuery)
+        recnumreq.setParam("rows", "0")
+        self.indexer.search(recnumreq, out)
+        recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        self.__rowsFoundSolr = "%s" % recnumres.getNumFound()
+        
+        #Setup the main query
         req = SearchRequest(self.reportQuery)
         req.setParam("fq", 'item_type:"object"')
         req.setParam("fq", 'workflow_id:"dataset"')
-        if (self.format == "csv"): 
+        req.setParam("rows", self.__rowsFoundSolr)
+        try:                
+            #Now do the master search
             out = ByteArrayOutputStream()
-            self.fields = self.systemConfig.getArray("redbox-reports","csv-output-fields")
+            self.indexer.search(req, out)
+            self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
+            self.__checkResults()
+        except:
+            self.errorMsg = "Query failed - please review your report criteria."
+            self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+        
+        if (self.format == "csv"):
+            #Setup the main query
+            req = SearchRequest(self.reportQuery)
+            req.setParam("fq", 'item_type:"object"')
+            req.setParam("fq", 'workflow_id:"dataset"')
+            req.setParam("rows", self.__rowsFoundSolr)
             
-              
-            recnumreq = SearchRequest(self.reportQuery)
-            recnumreq.setParam("fq", 'item_type:"object"')
-            recnumreq.setParam("fq", 'workflow_id:"dataset"')
+            #we need to get a list of the matching IDs from Solr
+            idQry = ""
+            for item in self.getProcessedResultsList():
+                idQry += item.get("id") + " OR "
+            req.setParam("fq", 'id:(%s)' % idQry[:len(idQry)-4])
             
-            recnumreq.setParam("rows", "0")
-            self.indexer.search(recnumreq, out)
-            recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-            self.__rowsFound = recnumres.getNumFound()
-            req.setParam("rows", "%s" % self.__rowsFound)
             req.setParam("csv.mv.separator",";")
+            self.fields = self.systemConfig.getArray("redbox-reports","csv-output-fields")
             
             if self.fields is not None:
                 fieldString = ""
@@ -126,28 +145,6 @@ class ReportResultData:
 
             self.out.print(sw.toString())
             self.out.close()
-            
-        else:    
-            try:
-                #Get a total number of records
-                #recnumreq = SearchRequest(self.reportQuery)
-                #recnumreq.setParam("fq", 'item_type:"object"')
-                #recnumreq.setParam("fq", 'workflow_id:"dataset"')
-                #recnumreq.setParam("rows", "0")
-                #out = ByteArrayOutputStream()
-                #self.indexer.search(recnumreq, out)
-                #recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-                #self.__rowsFound = recnumres.getNumFound()
-                
-                #Now do the search
-                req.setParam("rows", "9999")
-                out = ByteArrayOutputStream()
-                self.indexer.search(req, out)
-                self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
-                self.__checkResults()
-            except:
-                self.errorMsg = "Query failed - please review your report criteria."
-                self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
 
 
     def __checkResults(self):
