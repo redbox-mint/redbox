@@ -132,11 +132,11 @@ $('[id="report-criteria.'+i+'.match_contains"]').val(reportCriteria['matchContai
 
 $
 if(reportCriteria['includeNulls'] != null) {
-if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
-	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
-	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
-}
-$('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
+    if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
+    	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\" selected>Exclude null values</option></select>");
+    	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
+    }
+    $('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
 }
 jaffa.form.ignoreField("report-criteria.'+i+'.searchcomponent", true);
 jaffa.form.addField("report-criteria.'+i+'.searchcomponent", "report-criteria."+i+".Container");

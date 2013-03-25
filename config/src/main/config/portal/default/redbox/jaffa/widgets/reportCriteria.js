@@ -61,7 +61,7 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 													  	jaffa.form.addField(field+"match_contains", idValue);
 													  }
 													  if(options["showNullDropDown"] != "false") {
-													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
+													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\" selected>Exclude null values</option></select>");
 													  	jaffa.form.addField(field+"include_nulls",  idValue); 
 													  }
 													}
@@ -157,7 +157,7 @@ var ReportCriteriaWidgetBuilder = function($, jaffa) {
 													  	jaffa.form.addField(field+"match_contains", idValue);
 													  }
 													  if(options["showNullDropDown"] != "false") {
-													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
+													  	$("[id=\""+field+"includeNullsDropDown-span\"]").html("<select id=\""+field+"include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\" selected>Exclude null values</option></select>");
 													  	jaffa.form.addField(field+"include_nulls",  idValue); 
 													  }
 													}
