@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        #foreach($item in $self.getReportResult())
+                        #foreach($item in $self.getProcessedResultsList())
                             #set($oid = $item.get("id"))
                             <tr>
                                 <td>$item.get('dc_title')</td>

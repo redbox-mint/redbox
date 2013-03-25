@@ -26,6 +26,7 @@ class ReportResultData:
         self.metadata = context["metadata"]
         self.systemConfig = context["systemConfig"] 
         self.__rowsFound = 0
+        self.processed_results_list = []
         
         self.errorMsg = "" 
         if (self.auth.is_logged_in()):
@@ -145,6 +146,57 @@ class ReportResultData:
             except:
                 self.errorMsg = "Query failed - please review your report criteria."
                 self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+
+
+    def __checkResults(self):
+        #This is a fix, required because our SOLR index doesn't support
+        #all of the required reporting criteria - specifically exact/contains
+        
+        self.processed_results_list = []
+        
+        if self.__reportResult is None:
+            return
+        
+        #Get the report criteria
+        criteria = self.report.getCriteria()
+        
+        #For each result item we need to check that it matches the criteria
+        for item in self.getReportResult():
+            #Use last check to assist in the left-to-right check of operators
+            lastCheck = True
+            dropResultFlag = False
+            
+            #For each criteria item
+            for criteria_item in criteria.getCriteria():
+                #If the last criteria item didn't check out and the AND op is used, the record doesn't make it
+                if not lastCheck and criteria_item.getOperator() == RedboxReport.KEY_CRITERIA_LOGICAL_OP_AND:
+                    dropResultFlag = True
+                    lastCheck = False
+                    break
+                     
+                #If the query criteria allows nulls and the field is null, true
+                if criteria_item.getAllowNulls() == "field_include_null":
+                    if item.get(criteria_item.getSolr_field()) is None:
+                        dropResultFlag = False
+                        lastCheck = True
+                        break
+                
+                #If the query criteria uses 'equals', check that it's an exact match
+                if criteria_item.getMatchingOperator() == "field_match":
+                    if item.get(criteria_item.getSolr_field()) != criteria_item.getValue():
+                        dropResultFlag = True
+                        lastCheck = False
+                        break
+            
+            if not dropResultFlag:
+                #Copy over to the new listing
+                self.processed_results_list.append(item)
+                
+        self.__rowsFound = len(self.processed_results_list)
+
+    def getProcessedResultsList(self):
+        self.__checkResults()
+        return self.processed_results_list
 
     def findDisplayLabel(self, csvValue):
         if self.fields is not None:
