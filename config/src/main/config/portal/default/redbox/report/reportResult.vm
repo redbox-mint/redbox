@@ -28,7 +28,7 @@
                             #set($oid = $item.get("id"))
                             <tr>
                                 <!-- <td>$item.get('dc_title')</td>  -->
-								<td>$oid</td>
+								<td>$item.get("dc_title")</td>
                                 <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
                                     <td>$item.get("workflow_step_label")</td>
                                     <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>

@@ -165,79 +165,86 @@ class ReportResultData:
         #For each result item we need to check that it matches the criteria
         for item in self.getReportResult():
             #Use last check to assist in the left-to-right check of operators
-            # negative by default unless matched below
-            lastCheck = False
-            dropResultFlag = True
+            lastCheck = True
+            dropResultFlag = False
             
             #For each criteria item
             for criteria_item in criteria.getCriteria():
-            
+                
                 #If the last criteria item didn't check out and the AND op is used, the record doesn't make it
                 if not lastCheck and criteria_item.getOperator() == SearchCriteriaListing.KEY_CRITERIA_LOGICAL_OP_AND:
                     dropResultFlag = True
-                    lastCheck = False
                     break
+                    
                 # sanitise solr field
                 criteria_item.setSolr_field(String(criteria_item.getSolr_field()).replace("\\", ""))
-                #If the query criteria allows nulls and the field is null, true
-                if criteria_item.getAllowNulls() == "field_include_null":
-                    if item.get(criteria_item.getSolr_field()) is None:                        
-                        dropResultFlag = False
-                        lastCheck = True
-                        break
-                else:
-                    if item.get(criteria_item.getSolr_field()) is None:                        
-                        dropResultFlag = True
-                        lastCheck = False
-                        break
                 
-                #If the query criteria uses 'equals', check that it's an exact match
-                if criteria_item.getMatchingOperator() == "field_match":
-                    solrvallist = ArrayList()
-                    solrval = item.getString(None, criteria_item.getSolr_field());
-                    if solrval is None:                                     
-                        solrvallist = item.getList(criteria_item.getSolr_field());
-                    else:                        
-                        solrvallist.add(solrval)                    
-                    for solrval in solrvallist:
-                        if  String(String(solrval).trim()).equalsIgnoreCase(String(criteria_item.getValue()).trim()):
-                            self.log.debug("Matched at: field_match --> %s == %s" %(solrval, criteria_item.getValue()))
-                            self.log.debug("criteria_item.getSolr_field() -> " + criteria_item.getSolr_field())
-                            self.log.debug("solrvallist:%s" % solrvallist )
-                            dropResultFlag = False
-                            lastCheck = False
-                            break
-                        else:
-                            self.log.debug("Not Matched at: field_match --> %s == %s" %(solrval, criteria_item.getValue()) )
+                thisCheck = False
+                if self.__checkResultsNull(criteria_item, item):
+                    if self.__checkResultsMatch(criteria_item, item):
+                        thisCheck = True
+                
+                #If this criteria item and the last one didn't check out and the OR op is used, the record doesn't make it
+                if (lastCheck or thisCheck) and criteria_item.getOperator() == SearchCriteriaListing.KEY_CRITERIA_LOGICAL_OP_OR:
+                    dropResultFlag = False
+                elif (lastCheck and thisCheck) and criteria_item.getOperator() == SearchCriteriaListing.KEY_CRITERIA_LOGICAL_OP_AND:
+                    dropResultFlag = False
                 else:
-                    solrvallist = ArrayList()
-                    solrval = item.getString(None, criteria_item.getSolr_field());
-                    if solrval is None:
-                        solrvallist = item.getList(criteria_item.getSolr_field());
-                    else:
-                        solrvallist.add(solrval)
+                    #This row doesn't match
+                    dropResultFlag = True
+                    break
                     
-                    for solrval in solrvallist:
-                        if solrval is None:
-                            dropResultFlag = True
-                            lastCheck = False
-                            break
-                        elif solrval.lower().find(criteria_item.getValue().lower()) == -1:
-                            dropResultFlag = True
-                            lastCheck = False
-                            break
+                lastCheck = thisCheck
+                #End of criteria check loop
                                     
-#            if dropResultFlag and not lastCheck:
-#                self.log.debug("Broke out of all loops: " + item.get("id"))
-#                break
-            if dropResultFlag:
+                                    
+            if not dropResultFlag:
                 #Copy over to the new listing
                 self.processed_results_list.append(item)
-            else:
-                self.log.debug("Chucked out " + item.get("id"))
             
                 
         self.__rowsFound = len(self.processed_results_list)
+
+    def __checkResultsNull(self, criteria_item, item):
+        # Check Null criteria
+        if criteria_item.getAllowNulls() == "field_include_null":
+            #If the query criteria allows nulls and the field is null, true
+            if item.get(criteria_item.getSolr_field()) is None:                        
+                return True
+            else:
+                return False
+
+        if item.get(criteria_item.getSolr_field()) is None:                        
+            return False
+        else:
+            return True
+
+
+    def __checkResultsMatch(self, criteria_item, item):
+        if item.get(criteria_item.getSolr_field()) is None:
+            return False
+            
+        #Some fields are lists so just handle lists
+        solrvallist = ArrayList()
+        solrval = item.getString(None, criteria_item.getSolr_field());
+        if solrval is None:                                     
+            solrvallist = item.getList(criteria_item.getSolr_field());
+        else:                        
+            solrvallist.add(solrval)
+        
+        #If the query's matching criteria uses 'equals', check that it's an exact match
+        for solrval in solrvallist:
+            if criteria_item.getMatchingOperator() == "field_match": 
+                if  String(String(solrval).trim()).equalsIgnoreCase(String(criteria_item.getValue()).trim()):
+                    #self.log.debug("Matched at: field_match --> %s == %s" %(solrval, criteria_item.getValue()))
+                    #self.log.debug("criteria_item.getSolr_field() -> " + criteria_item.getSolr_field())
+                    #self.log.debug("solrvallist:%s" % solrvallist )
+                    return True
+            else:
+                #This is a contains search
+                if solrval.lower().find(criteria_item.getValue().lower()) != -1:
+                    return True
+        return False
 
     def getProcessedResultsList(self):
         return self.processed_results_list
