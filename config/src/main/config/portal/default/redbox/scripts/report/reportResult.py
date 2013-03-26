@@ -56,7 +56,7 @@ class ReportResultData:
             recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
             self.__rowsFoundSolr = "%s" % recnumres.getNumFound()
         except:
-            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (sys.exc_info()[0], sys.exc_info()[1])
             self.log.error("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
             return
         
@@ -72,7 +72,7 @@ class ReportResultData:
             self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
             self.__checkResults()
         except:
-            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (sys.exc_info()[0], sys.exc_info()[1])
             self.log.error("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
             return
         
@@ -110,7 +110,7 @@ class ReportResultData:
                 csvResponseLines = csvResponseString.split("\n")
             except:
                 #We can't get the result back from SOLR so fail back to the template display
-                self.errorMsg = "Query failure. Failed to prepare the CSV - this issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+                self.errorMsg = "Query failure. Failed to prepare the CSV - this issue has been logged (%s - %s)." % (sys.exc_info()[0], sys.exc_info()[1])
                 self.log.error("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], prevLine + line))
                 return
             
