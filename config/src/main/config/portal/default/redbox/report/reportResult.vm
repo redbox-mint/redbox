@@ -67,7 +67,7 @@
         });
         });
     </script>
-    #else
+#else
 		#set($pageTitle = "Reporting error")
 		<div>
             <a href='$portalPath/report/manageReports'>View Reports</a>

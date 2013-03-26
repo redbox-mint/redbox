@@ -45,15 +45,20 @@ class ReportResultData:
         self.format = self.request.getParameter("format")
         self.report = self.reportManager.getReports().get(self.reportId)
         self.reportQuery = self.report.getQueryAsString()
-        self.log.debug("Report query: " +self.reportQuery)
+        self.log.debug("Report query: " + self.reportQuery)
         
         #Get a total number of records
-        out = ByteArrayOutputStream() 
-        recnumreq = SearchRequest(self.reportQuery)
-        recnumreq.setParam("rows", "0")
-        self.indexer.search(recnumreq, out)
-        recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        self.__rowsFoundSolr = "%s" % recnumres.getNumFound()
+        try:
+            out = ByteArrayOutputStream() 
+            recnumreq = SearchRequest(self.reportQuery)
+            recnumreq.setParam("rows", "0")
+            self.indexer.search(recnumreq, out)
+            recnumres = SolrResult(ByteArrayInputStream(out.toByteArray()))
+            self.__rowsFoundSolr = "%s" % recnumres.getNumFound()
+        except:
+            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+            self.log.error("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+            return
         
         #Setup the main query
         req = SearchRequest(self.reportQuery)
@@ -67,15 +72,21 @@ class ReportResultData:
             self.__reportResult = SolrResult(ByteArrayInputStream(out.toByteArray()))
             self.__checkResults()
         except:
-            self.errorMsg = "Query failed - please review your report criteria."
-            self.log.debug("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+            self.errorMsg = "Query failure. The issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+            self.log.error("Reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+            return
         
+        #At this point the display template has enough to go with.
+        #We just need to handle the CSV now
         if (self.format == "csv"):
-            #Setup the main query
+            #Setup the main query - we need to requery to make sure we return 
+            #only the required fields. We'll use the specific IDs that met the
+            #__checkResults check
             req = SearchRequest(self.reportQuery)
             req.setParam("fq", 'item_type:"object"')
             req.setParam("fq", 'workflow_id:"dataset"')
             req.setParam("rows", self.__rowsFoundSolr)
+            req.setParam("csv.mv.separator",";")
             
             #we need to get a list of the matching IDs from Solr
             idQry = ""
@@ -83,26 +94,30 @@ class ReportResultData:
                 idQry += item.get("id") + " OR "
             req.setParam("fq", 'id:(%s)' % idQry[:len(idQry)-4])
             
-            req.setParam("csv.mv.separator",";")
+            #Setup SOLR query with the required fields
             self.fields = self.systemConfig.getArray("redbox-reports","csv-output-fields")
-            
             if self.fields is not None:
                 fieldString = ""
                 for field in self.fields:
                   fieldString = fieldString+ field.get("field-name")+","
                 fieldString = fieldString[:-1]
                 req.setParam("fl",fieldString)
-                
             
-            out = ByteArrayOutputStream()
+            try:
+                out = ByteArrayOutputStream()
+                self.indexer.search(req, out, self.format)
+                csvResponseString = String(out.toByteArray(),"utf-8")
+                csvResponseLines = csvResponseString.split("\n")
+            except:
+                #We can't get the result back from SOLR so fail back to the template display
+                self.errorMsg = "Query failure. Failed to prepare the CSV - this issue has been logged (%s - %s)." % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1])
+                self.log.error("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], prevLine + line))
+                return
+            
             fileName = self.urlEncode(self.report.getLabel())
             self.log.debug("Generating CSV report with file name: " + fileName)
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % fileName)
-            self.indexer.search(req, out, self.format)
-            csvResponseString = String(out.toByteArray(),"utf-8")
-            csvResponseLines = csvResponseString.split("\n")
             
-            self.out = self.response.getOutputStream("text/csv")
             sw = StringWriter()
             parser = CSVParser()
             writer = CSVWriter(sw)
@@ -113,6 +128,8 @@ class ReportResultData:
             
             for line in csvResponseLines:
                 if badRowFlag:
+                    #In this section of code we'll handle errors by either trying to fix the problem
+                    #or by adding an error line in the CSV. We'll then move to the next row and keep going
                     try:
                         self.log.debug("Reporting - trying to append the previous line with the previous faulty one. Line appears as: %s" % prevLine + line)
                         csvLine = parser.parseLine(prevLine + line)
@@ -142,7 +159,9 @@ class ReportResultData:
                         csvLine[idx] = self.findDisplayLabel(csvValue)
             
                 writer.writeNext(csvLine)
-
+            
+            #Now send off the CSV
+            self.out = self.response.getOutputStream("text/csv")
             self.out.print(sw.toString())
             self.out.close()
 

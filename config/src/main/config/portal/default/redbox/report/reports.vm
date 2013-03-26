@@ -21,6 +21,7 @@
 	#if($reportName)
 		<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a></div>
 		<h2 id="page-heading"><span>Edit Report</span>
+		</h2>
 	#else
 	    <div><a href='$portalPath/report/manageReports'>View Reports</a></div>
 	    <h2 id="page-heading"><span>Create New Report</span>
