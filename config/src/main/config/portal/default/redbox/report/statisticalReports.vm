@@ -18,7 +18,36 @@
 <script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
 
 	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
-	<h2 id="page-heading"><span>Statistical report</span></h2>
+	<h2 id="page-heading"><span>Statistical report</span>
+            <span class="helpWidget" data-help-content-id="help-stats">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-stats").toggle();'/>
+            </span>
+        </h2>
+        <div class="help-content" id="help-stats" style="display: none;">
+        <p>The <i>Create a New Statistical Report</i> function will allow the user to create a statistical report
+across both the ReDBox and the Mint systems for a selected date range and where data is
+available within the specified time frame.</p>
+<p>Users can:</p>
+<ul>
+<li>select the required <i>date range from</i> and <i>date range to</i> from the entry fields to
+generate a customised report by date, where data is available.</li>
+<li>select to create a report based on the created or modified date of the record. Note:
+<i>Alerts</i> ingested into ReDBox will have both a created and modified date applied on
+ingest, by default.</li>
+</ul>
+
+<p>ReDBox System Statistical Report provides statistics of records in ReDBox by:</p>
+<ul>
+<li>Collection type</li>
+<li>Workflow stage</li>
+</ul>
+The MINT System Statistical Report provides statistics of records in the MINT by:
+<ul>
+<li>Party type</li>
+<li>Activity type</li>
+<li>Service type</li>
+</ul>
+        </div>
 	<section>
 		<div class="errorbox">
     		#displayMessage("reports.create.report.validation.message")
