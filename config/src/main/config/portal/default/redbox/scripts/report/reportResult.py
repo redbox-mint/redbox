@@ -89,29 +89,44 @@ class ReportResultData:
             req.setParam("csv.mv.separator",";")
             
             #we need to get a list of the matching IDs from Solr
-            idQry = ""
+            #this doesn't work for long queries so it's abandoned
+            #but left here commented to make sure we don't try it again
+            #idQry = ""
+            #for item in self.getProcessedResultsList():
+            #    idQry += item.get("id") + " OR "
+            #req.setParam("fq", 'id:(%s)' % idQry[:len(idQry)-4])
+            
+            #Create a list of IDs for reference when preparing the CSV
+            idQryList = []
             for item in self.getProcessedResultsList():
-                idQry += item.get("id") + " OR "
-            req.setParam("fq", 'id:(%s)' % idQry[:len(idQry)-4])
+                idQryList.append(item.get("id"))
             
             #Setup SOLR query with the required fields
             self.fields = self.systemConfig.getArray("redbox-reports","csv-output-fields")
-            if self.fields is not None:
-                fieldString = ""
+            #We must have an ID field and it must be the first field
+            fieldString = "id,"
+            if self.fields is not None:                
                 for field in self.fields:
-                  fieldString = fieldString+ field.get("field-name")+","
+                    fieldString = fieldString+ field.get("field-name")+","
                 fieldString = fieldString[:-1]
-                req.setParam("fl",fieldString)
+                
+            req.setParam("fl",fieldString)
             
+            out = ByteArrayOutputStream()
             try:
-                out = ByteArrayOutputStream()
                 self.indexer.search(req, out, self.format)
+            except:
+                #We can't get the result back from SOLR so fail back to the template display
+                self.errorMsg = "Query failure. Failed to load the data - this issue has been logged (%s - %s)." % (sys.exc_info()[0], sys.exc_info()[1])
+                self.log.error("Reporting threw an exception (report was %s); Error: %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+                return
+            try:
                 csvResponseString = String(out.toByteArray(),"utf-8")
                 csvResponseLines = csvResponseString.split("\n")
             except:
                 #We can't get the result back from SOLR so fail back to the template display
                 self.errorMsg = "Query failure. Failed to prepare the CSV - this issue has been logged (%s - %s)." % (sys.exc_info()[0], sys.exc_info()[1])
-                self.log.error("Reporting threw an exception (report was %s); Error: %s - %s; Result line: %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1], prevLine + line))
+                self.log.error("Reporting threw an exception (report was %s); Error: %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
                 return
             
             fileName = self.urlEncode(self.report.getLabel())
@@ -155,10 +170,16 @@ class ReportResultData:
                         continue
                 
                 if count == 0 :
+                    #Header row
+                    count += 1
                     for idx, csvValue in enumerate(csvLine):
-                        csvLine[idx] = self.findDisplayLabel(csvValue)
-            
+                        csvLine[idx] = self.findDisplayLabel(csvValue)  
+                elif csvLine[0] not in idQryList:
+                    #ignore
+                    continue
+                
                 writer.writeNext(csvLine)
+
             
             #Now send off the CSV
             self.out = self.response.getOutputStream("text/csv")
