@@ -1,0 +1,14 @@
+#sectionHeading("Embargo")
+<div class="meta">
+    <dl>
+        #set ($embargo = $self.getFirst("redbox:embargo.redbox:isEmbargoed"))
+        <dt>Embargo</dt>
+        #if ("$embargo" == "on")
+            <dd>Item is currently embargoed.</dd>
+        #else
+            <dd>Not embargoed.</dd>
+        #end
+        #displayFirst("redbox:embargo.dc:date" "Embargo date")
+        #displayFirst("redbox:embargo.skos:note" "Embargo comment")
+    </dl>
+</div>
