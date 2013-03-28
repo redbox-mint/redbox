@@ -115,6 +115,7 @@ $self.escapeHtml($value)
         #parseDisplayTemplate("detail/preview/sections/curation.vm")
     #end
     #parseDisplayTemplate("detail/preview/sections/general.vm")
+    #parseDisplayTemplate("detail/preview/sections/embargo.vm")
     #parseDisplayTemplate("detail/preview/sections/coverage.vm")
     #parseDisplayTemplate("detail/preview/sections/description.vm")
     #parseDisplayTemplate("detail/preview/sections/people.vm")
