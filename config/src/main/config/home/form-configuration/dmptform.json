@@ -941,17 +941,12 @@
                             "type":"label",
                             "content":"dmpt.form.ownership.location.label",
                             "help": "dmpt.form.help.dc:coverage"
-                        },
+                        },                        
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:coverage",
+                            "component-type":"data-source-dropdown",
+                            "field-name":"dc:coverage.dc:identifier",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"au",
-                                    "label":"Australia"
-                                }
-                            ]
+                            "sourceUrl":"proxyGet.script?ns=Countries"
                         },
                         {
                             "component-type":"text-block",
