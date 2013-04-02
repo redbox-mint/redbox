@@ -104,7 +104,7 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
 			var processing = false;
         	if (processing) return;
         	processing = true;
-        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6-RC02-SNAPSHOT/default/images/icons/loading.gif" />');
+        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6-SNAPSHOT/default/images/icons/loading.gif" />');
         	jQuery.ajax({
             	type: "POST",
             	url: "$portalPath/actions/packaging.ajax",
@@ -116,7 +116,7 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
                 	title: "[Untitled]",
                 	description: "",
                 	"redbox:newForm": "true",
-                	"redbox:formVersion": "1.6-RC02-SNAPSHOT"
+                	"redbox:formVersion": "1.6-SNAPSHOT"
             	}, success: function(data) {
                 if (data.status == "ok") {
                     function copyMetadata() {
