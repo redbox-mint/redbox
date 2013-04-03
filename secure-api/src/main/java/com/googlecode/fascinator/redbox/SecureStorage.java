@@ -194,7 +194,8 @@ public class SecureStorage implements Storage {
                 req.setParam("fl", "id");
                 req.setParam("fq", "owner:" + username
                         + " OR security_filter:("
-                        + StringUtils.join(rolesList, " OR ") + ")");
+                        + StringUtils.join(rolesList, " OR ") + ")"
+                        + " OR security_exception:(" + username + ")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
                 JsonSimple json = new JsonSimple(
