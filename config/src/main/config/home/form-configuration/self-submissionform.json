@@ -1,0 +1,719 @@
+{
+    "stages": {
+        "self-submission-draft": {
+            "divs": [
+                {
+                    "heading": "Overview",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content": "self.Overview.heading"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Title*",
+                            "help": "self.help.dc:title"
+                        },
+                        {
+                            "component-type": "textarea",
+                            "field-name": "dc:title",
+                            "label": "",
+                            "content": "",
+                            "additional-classes": "mandatory"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Description *",
+                            "help": "self.help.dc:title"
+                        },
+                        {
+                            "component-type": "textarea",
+                            "field-name": "dc:description",
+                            "label": "",
+                            "content": "",
+                            "additional-classes": "mandatory"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Type",
+                            "help": "dataset-type-help"
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "label": "",
+                            "field-name": "dc:type.rdf:PlainLiteral",
+                            "field-name-label": "dc:type.skos:prefLabel",
+                            "sourceUrl": "workflows/forms/data/types.json",
+                            "mandatory": "true",
+                            "idKey": "id",
+                            "labelKey": "label",
+                            "listKey": "results"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.Overview.activityType.label",
+                            "help": "form.help.dc:subject.anzsrc:toa: there is another one Jay defined"
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "field-name": "dc:subject.anzsrc:toa",
+                            "label": "",
+                            "sourceUrl": "dmpt/data/projectActivityType.json"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Language"
+                        },
+                        {
+                            "component-type": "dropdown-fixedvalue",
+                            "field-name": "finalLanguage",
+                            "label": "",
+                            "options": [
+                                {
+                                    "value": "",
+                                    "label": "Please select one..."
+                                },
+                                {
+                                    "value": "Extra.Language.1",
+                                    "label": "English"
+                                },
+                                {
+                                    "value": "Extra.Language.2",
+                                    "label": "Obtain approval by the owner"
+                                },
+                                {
+                                    "value": "Extra.Language.3",
+                                    "label": "Access is freely available"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "form.redbox:ManagementPlan.skos:note",
+                            "help": "help.redbox:ManagementPlan.skos:note"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "redbox:ManagementPlan.skos:note",
+                            "label": "",
+                            "additional-classes": ""
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Identifier",
+                            "help": "Identifier help message"
+                        },
+                        {
+                            "component-type": "radio-button",
+                            "field-name": "dc:accessRights",
+                            "button-for": "",
+                            "buttons": [
+                                {
+                                    "label": "I would like a DOI created for this data"
+                                },
+                                {
+                                    "label": "This data has been allocated on identifier (please provide below)"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "allocated.doi",
+                            "label": "",
+                            "additional-classes": ""
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Data location",
+                            "help": "Data location help message"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "URL:"
+                        },
+                        {
+                            "component-type": "textarea",
+                            "field-name": "url",
+                            "label": "",
+                            "content": ""
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "url-more",
+                            "label": "Add URL (Nor for label but actually for button below)"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<button>Add URL</button>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Physical address"
+                        },
+                        {
+                            "component-type": "textarea",
+                            "field-name": "physical-address",
+                            "label": "",
+                            "additional-classes": "",
+                            "content": ""
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Subject",
+                            "help": "self.help.section.subject"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.Overview.forCodes.label",
+                            "help": "self.help.dc:subject.anzsrc:for"
+                        },
+                        {
+                            "component-type": "repeatable-anzsrc-selection",
+                            "label": "FoR code(s)",
+                            "fieldName": "dc:subject.anzsrc:for.0.rdf:resource",
+                            "fieldNameLabel": "dc:subject.anzsrc:for.0.skos:prefLabel",
+                            "sourceUrl": "proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
+                            "dataLevel": "top",
+                            "mandatory": "false",
+                            "idKey": "rdf:about",
+                            "labelKey": "skos:prefLabel",
+                            "listKey": "results",
+                            "defaultValue": "skos:narrower",
+                            "anzsrcType": "for"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.Overview.seoCodes.label",
+                            "help": "self.help.dc:subject.dc:subject.anzsrc:seo"
+                        },
+                        {
+                            "component-type": "repeatable-anzsrc-selection",
+                            "label": "SEO code(s)",
+                            "fieldName": "dc:subject.anzsrc:seo.0.rdf:resource",
+                            "fieldNameLabel": "dc:subject.anzsrc:seo.0.skos:prefLabel",
+                            "sourceUrl": "proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
+                            "dataLevel": "top",
+                            "mandatory": "false",
+                            "idKey": "rdf:about",
+                            "labelKey": "skos:prefLabel",
+                            "listKey": "results",
+                            "defaultValue": "skos:narrower",
+                            "anzsrcType": "seo"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "Key words",
+                            "help": "We don't have a table widget"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<table><tr><td>1</td><td>Science</td><tr></table>"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "label": "",
+                            "field-name": "more_keyword"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<button>Add (a button control widget?)</button>"
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "People",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content": "self.people.heading"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.people.principalInvestigator.label",
+                            "help": "self.help.locrel:rth.foaf:Person"
+                        },
+                        {
+                            "component-type": "person",
+                            "lookup-name": "locrel:rth.foaf:Person",
+                            "lookup-only": "true",
+                            "validation": {
+                                "save-rules": [
+                                    "required"
+                                ],
+                                "validation-id": "locrel:rth.foaf:Person.dc:identifier",
+                                "focus-id": "locrel:rth.foaf:Person.foaf:title",
+                                "validation-messages": {
+                                    "required": "Principal investigator is required"
+                                }
+                            }
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "locrel:rth.foaf:Person.foaf:email",
+                            "label": "self.people.emailAddress.label"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.people.dataManager.label",
+                            "help": "self.help.locrel:prc.foaf:Person"
+                        },
+                        {
+                            "component-type": "person",
+                            "lookup-name": "locrel:prc.foaf:Person",
+                            "lookup-only": "true",
+                            "validation": {
+                                "save-rules": [
+                                    "required"
+                                ],
+                                "validation-id": "locrel:prc.foaf:Person.dc:identifier",
+                                "focus-id": "locrel:prc.foaf:Person.foaf:title",
+                                "validation-messages": {
+                                    "required": "Data manager is required"
+                                }
+                            }
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "locrel:prc.foaf:Person.foaf:email",
+                            "label": "self.people.emailAddress.label"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.people.collaborators.label",
+                            "help": "self.help.locrel:clb.foaf:Person"
+                        },
+                        {
+                            "component-type": "repeatable-container",
+                            "containter-for": "locrel:clb.foaf:Person",
+                            "sub-elements": {
+                                "settings": [
+                                    {
+                                        "jaffaPeople": {
+                                            "source": "nla,mint",
+                                            "label": "",
+                                            "class-list": "jaffa-field",
+                                            "suffix": "person"
+                                        }
+                                    },
+                                    {
+                                        "jaffaText": {
+                                            "label": "Email address",
+                                            "class-list": "jaffa-field",
+                                            "suffix": "email"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.people.supervisor.label",
+                            "help": "self.help.swrc:supervisor.foaf:Person"
+                        },
+                        {
+                            "component-type": "person",
+                            "lookup-name": "swrc:supervisor.foaf:Person",
+                            "lookup-only": "true"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "swrc:supervisor.foaf:Person:foaf:email",
+                            "label": "self.people.emailAddress.label",
+                            "label-classes": "dmpt-supervisor-email"
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Back"
+                                },
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Access",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content": "self.access.heading"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.access.licensing.heading"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.access.licence.label",
+                            "help": "self.help.dc:license"
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "field-name": "dc:license.dc:identifier",
+                            "label": "",
+                            "sourceUrl": "workflows/forms/data/licences.json",
+                            "idKey": "id",
+                            "labelKey": "label",
+                            "listKey": "results"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "dc:license.dc:identifier.other",
+                            "label": "self.access.other.label",
+                            "additional-classes": ""
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "dc:license.dc:identifier.url",
+                            "label": "self.access.url.label",
+                            "additional-classes": ""
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.access.accessRights.heading",
+                            "help": "self.help.dc:accessRights"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "ATTENTION.dc:accessRights",
+                            "label": ""
+                        },
+                        {
+                            "component-type": "text-input",
+                            "label": "URL: ",
+                            "field-name": "ATTENTION.access.right.url"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Access conditions",
+                            "help": "ATTENTION.AccessConditionsHelp"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "label": "",
+                            "field-name": "access.conditions.ATTENTION"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "label": "URL: ",
+                            "field-name": "access.conditions.url.ATTENTION"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<hr>"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self.dataRetention.heading"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.dataRetention.applicableRetention.label",
+                            "help": "self.help.redbox:retentionPeriod"
+                        },
+                        {
+                            "component-type": "dropdown-fixedvalue",
+                            "field-name": "redbox:retentionPeriod.dc:date",
+                            "label": "",
+                            "options": [
+                                {
+                                    "value": "5 years after publication (general research)",
+                                    "label": "5 years after publication (general research)"
+                                },
+                                {
+                                    "value": "12 months (short term projects for assessment purposes only)",
+                                    "label": "12 months (short term projects for assessment purposes only)"
+                                },
+                                {
+                                    "value": "15 years after publication (Clinical trials, research involving humans)",
+                                    "label": "15 years after publication (Clinical trials, research involving humans)"
+                                },
+                                {
+                                    "value": "Permanent (gene therapy or data with significant heritage value)",
+                                    "label": "Permanent (gene therapy or data with significant heritage value)"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type": "dropdown-fixedvalue",
+                            "field-name": "redbox:retentionPeriod.dc:date.skos:note",
+                            "label": "self.dataRetention.justification.label",
+                            "options": [
+                                {
+                                    "value": "It has community or heritage value",
+                                    "label": "It has community or heritage value"
+                                },
+                                {
+                                    "value": "It is controversial",
+                                    "label": "It is controversial"
+                                },
+                                {
+                                    "value": "It is of wide public interest",
+                                    "label": "It is of wide public interest"
+                                },
+                                {
+                                    "value": "It would be costly or impossible to reproduce",
+                                    "label": "It would be costly or impossible to reproduce"
+                                },
+                                {
+                                    "value": "There is a commercial obligation to do so",
+                                    "label": "There is a commercial obligation to do so"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self.dataRetention.disposalDate.label",
+                            "help": "self.help.redbox:disposalDate"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "redbox:disposalDate",
+                            "label": "",
+                            "additional-classes": "dateYMD"
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Back"
+                                },
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Coverage",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content": "Coverage"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Temporal (time) information"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "finalCollection.Date.From",
+                            "label": "Start date:",
+                            "additional-classes": "dateYMD"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "finalCollection.Date.To",
+                            "label": "End date:",
+                            "additional-classes": "dateYMD"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "finalCollection.tiemPeriod",
+                            "label": "Time period:"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Geographic/spatial information"
+                        },
+                        {
+                            "component-type": "native-html",
+                            "content": "<div id='mapholder_demo1' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo1').innerHTML='<img src='+img_url+'>';</script>"
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Back"
+                                },
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Furtherinfo",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content": "Further information"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "p",
+                            "content": "You can provide further information in the sub-sections belloow"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Data factors"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Funding information"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Related publications"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Related websites"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Related data"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "Related services"
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Back"
+                                },
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Submit",
+                    "fields": [
+                        {
+                            "component-type": "text-block",
+                            "type": "h1",
+                            "content":"Submit"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"submit.furtherinfo",
+                            "label":"Please add any further information/queries below - these will be followed up by the reviewer",
+                            "content":""
+                        },
+						{
+							"component-type": "checkbox",
+							"field-name": "readyforreview",
+							"box-for": "",
+							"boxes": [
+								{
+									"label":"This collection is ready to be reviewed by a data librarian",
+									"value":"ready"
+								}
+							]
+						},
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name":"Back"
+                                },
+                                {
+                                    "name":"Submit",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "buttons": [],
+            "form-footer": "self-submissionform-footer",
+            "validation": {
+                "required": "title"
+            }
+        }
+    }
+}
