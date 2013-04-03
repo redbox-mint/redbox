@@ -1,0 +1,26 @@
+{
+    "steps": {
+        "Overview": {
+            "Next": "People"
+        },
+        "People": {
+            "Back": "Overview",
+            "Next": "Access"
+        },
+        "Access": {
+        	"Back": "People",
+            "Next": "Coverage"
+        },
+        "Coverage": {
+        	"Back": "Access",
+            "Next": "Furtherinfo"
+        },
+        "Furtherinfo": {
+            "Back": "Coverage",
+            "Next": "Submit"
+        },
+        "Submit": {
+            "Back": "Furtherinfo"
+        }
+    }
+}

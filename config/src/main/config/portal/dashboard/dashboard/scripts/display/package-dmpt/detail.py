@@ -11,6 +11,8 @@ from java.text import SimpleDateFormat
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
 
+import glob, os.path, re
+
 class DetailData:
     def __init__(self):
         pass
@@ -29,6 +31,11 @@ class DetailData:
         dfSource = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         dfTarget = SimpleDateFormat("dd/MM/yyyy")
         return dfTarget.format(dfSource.parse(date))
+    
+    def formatVersion(self, dString):    
+        dfSource = SimpleDateFormat("yyyyMMddHHmmss")
+        dfTarget = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        return dfTarget.format(dfSource.parse(dString))
 
     # Retrieve and parse the Fascinator Package from storage
     def getTFPackage(self):
@@ -61,6 +68,19 @@ class DetailData:
         payload.close()
         return __tfpackage
         
+    def getPlanVersions(self):
+        pdfs = TreeMap()
+        path = self._getObject().getPath()
+        allPDFs = glob.glob(path+"/Data*.pdf")
+        if len(allPDFs) > 2:
+            prog = re.compile('[a-zA-Z ]+\-(\d*)\.pdf')
+            for f in allPDFs:
+                bn = os.path.basename(f)
+                m = prog.match(bn)
+                if m:
+                    pdfs.put(self.formatVersion(m.group(1)), bn)
+        return pdfs
+
     def __getRelatedDataSets(self):
         tfpackage = self.getTFPackage()
         if tfpackage:
