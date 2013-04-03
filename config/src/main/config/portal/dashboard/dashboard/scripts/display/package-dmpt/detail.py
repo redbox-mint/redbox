@@ -32,6 +32,11 @@ class DetailData:
         dfTarget = SimpleDateFormat("dd/MM/yyyy")
         return dfTarget.format(dfSource.parse(date))
     
+    def formatVersion(self, dString):    
+        dfSource = SimpleDateFormat("yyyyMMddHHmmss")
+        dfTarget = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        return dfTarget.format(dfSource.parse(dString))
+
     # Retrieve and parse the Fascinator Package from storage
     def getTFPackage(self):
         payload = None
@@ -73,7 +78,7 @@ class DetailData:
                 bn = os.path.basename(f)
                 m = prog.match(bn)
                 if m:
-                    pdfs.put(m.group(1), bn)
+                    pdfs.put(self.formatVersion(m.group(1)), bn)
         return pdfs
 
     def __getRelatedDataSets(self):
