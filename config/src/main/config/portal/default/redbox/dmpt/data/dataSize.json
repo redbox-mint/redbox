@@ -1,0 +1,18 @@
+[
+    {
+        "value":"Less than 10 GB",
+        "label":"Less than 10 GB"
+    },
+    {
+        "value":"10GB-20GB",
+        "label":"10GB-20GB"
+    },
+    {
+        "value":"20GB – 100GB",
+        "label":"20GB – 100GB"
+    },
+    {
+        "value":"20GB – 100GB",
+        "label":"100GB+"
+    }
+]

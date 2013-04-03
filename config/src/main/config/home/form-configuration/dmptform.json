@@ -511,27 +511,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:extent"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:extent",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Less than 10 GB",
-                                    "label":"Less than 10 GB"
-                                },
-                                {
-                                    "value":"10GB-20GB",
-                                    "label":"10GB-20GB"
-                                },
-                                {
-                                    "value":"20GB – 100GB",
-                                    "label":"20GB – 100GB"
-                                },
-                                {
-                                    "value":"20GB – 100GB",
-                                    "label":"100GB+"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/dataSize.json"
                         },
                         {
                             "component-type":"text-block",
@@ -540,27 +523,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:location"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Personal equipment",
-                                    "label":"Personal equipment"
-                                },
-                                {
-                                    "value":"Shared university network drive",
-                                    "label":"Shared university network drive"
-                                },
-                                {
-                                    "value":"University provided collaboration space",
-                                    "label":"University provided collaboration space"
-                                },
-                                {
-                                    "value":"Other",
-                                    "label":"Other"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/storageLocation.json "
                         },
                         {
                             "component-type":"textarea",
@@ -575,27 +541,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:source.dc:location"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Personal equipment",
-                                    "label":"Personal equipment"
-                                },
-                                {
-                                    "value":"Shared university network drive",
-                                    "label":"Shared university network drive"
-                                },
-                                {
-                                    "value":"University provided collaboration space",
-                                    "label":"University provided collaboration space"
-                                },
-                                {
-                                    "value":"Other",
-                                    "label":"Other"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/masterLocation.json"
                         },
                         {
                             "component-type":"textarea",
@@ -955,24 +904,10 @@
                             "help": "dmpt.form.help.dc:rightsHolder.dc:name"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"dc:rightsHolder.dc:name",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"myUni",
-                                    "label":"My University"
-                                },
-                                {
-                                    "value":"myUnjount",
-                                    "label":"My University (joint ownership)"
-                                },
-                                {
-                                    "value":"student",
-                                    "label":"Higher Degree Research Student"
-                                }
-                                
-                            ]
+                            "sourceUrl":"dmpt/data/rightsOwner.json"
                         },
                         {
                             "component-type":"text-block",
