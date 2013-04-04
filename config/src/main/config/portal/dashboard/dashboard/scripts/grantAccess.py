@@ -46,7 +46,29 @@ class GrantAccessData:
             return '{"owner":"' + owner + '", "viewers": ' + secException.toString() + '}'
         except Exception, e:
             self.log.error("Error during query/package ownership data" + str(e))
-        
+            
+    def getViewers(self, oid):
+        indexer = Services.getIndexer()
+        req = SearchRequest("id:"+oid)
+        req.setParam("fl","security_exception,owner")
+        out = ByteArrayOutputStream()
+        indexer.search(req, out)
+        try:
+            qresult = SolrResult(ByteArrayInputStream(out.toByteArray())).getResults().get(0)
+            owner = qresult.getString(None, 'owner')
+            secException = qresult.getArray('security_exception')
+            
+            if secException is None:
+                secException = JSONArray()
+                
+            self.log.debug("Owner of object: " + owner)
+            self.log.debug("Viewer(s) of object: " + secException.toString())
+            if secException.contains(owner):
+                secException.remove(owner)
+            return secException
+        except Exception, e:
+            self.log.error("Error during query/package ownership data" + str(e))
+                
     def __change(self, context, oid, new_owner):
         try:
             storage = context["Services"].getStorage()
@@ -62,7 +84,17 @@ class GrantAccessData:
 
             auth = context["page"].authentication
             
-            auth.grant_user_access(oid, owner)
+            #special condition when setting admin as owner - revoke all viewers
+            if new_owner == "admin":
+              self.log.debug("New owner is admin, revoking all viewers") 
+              viewers = self.getViewers(oid)
+              self.log.debug("Viewers: " + viewers.toString())
+              for viewer in viewers:
+                 self.log.debug("Revoking:%s" % viewer)
+                 auth.revoke_user_access(oid, viewer)
+              auth.revoke_user_access(oid, owner)
+            # don't know what's going on but this was originally set to "owner", changed it to new_owner. 
+            auth.grant_user_access(oid, new_owner)
             
             err = auth.get_error()
             if err is None or err == 'Duplicate! That user has already been applied to this record.':
