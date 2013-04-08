@@ -1,0 +1,18 @@
+[
+    {
+        "value":"12 months (short term projects for assessment purposes only)",
+        "label":"12 months (short term projects for assessment purposes only)"
+    },
+    {
+        "value":"5 years after publication (general research)",
+        "label":"5 years after publication (general research)"
+    },
+    {
+        "value":"15 years after publication (Clinical trials, research involving humans)",
+        "label":"15 years after publication (Clinical trials, research involving humans)"
+    },
+    {
+        "value":"Permanent (gene therapy or data with significant heritage value)",
+        "label":"Permanent (gene therapy or data with significant heritage value)"
+    }
+]
