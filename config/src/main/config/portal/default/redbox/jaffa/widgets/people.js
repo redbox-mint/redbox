@@ -8,10 +8,12 @@ var PeopleWidgetBuilder = function($, jaffa) {
         	var titleFieldId= this.field+"foaf:title";
             var givenNameFieldId= this.field+"foaf:givenName";
             var familyNameFieldId= this.field+"foaf:familyName";
+            var emailFieldId= this.field+"foaf:email";
             var dcIdentifierId = this.field+"dc:identifier";
             jaffa.form.ignoreField(titleFieldId);
             jaffa.form.ignoreField(givenNameFieldId);
             jaffa.form.ignoreField(familyNameFieldId);
+            jaffa.form.ignoreField(emailFieldId);
             jaffa.form.ignoreField(dcIdentifierId);
             this.getContainer().remove();
         },
@@ -34,10 +36,12 @@ var PeopleWidgetBuilder = function($, jaffa) {
             var titleFieldId= this.oldField+"foaf:title";
             var givenNameFieldId= this.oldField+"foaf:givenName";
             var familyNameFieldId= this.oldField+"foaf:familyName";
+            var emailFieldId= this.oldField+"foaf:email";
             var dcIdentifierId = this.oldField+"dc:identifier";
             jaffa.form.ignoreField(titleFieldId);
             jaffa.form.ignoreField(givenNameFieldId);
             jaffa.form.ignoreField(familyNameFieldId);
+            jaffa.form.ignoreField(emailFieldId);
             jaffa.form.ignoreField(dcIdentifierId);
             
         },
@@ -51,10 +55,12 @@ var PeopleWidgetBuilder = function($, jaffa) {
                 var titleFieldId= this.field+"foaf:title";
             	var givenNameFieldId= this.field+"foaf:givenName";
             	var familyNameFieldId= this.field+"foaf:familyName";
+            	var emailFieldId= this.field+"foaf:email";
             	var dcIdentifierId = this.field+"dc:identifier";
             	jaffa.form.addField(titleFieldId, this.id());
             	jaffa.form.addField(givenNameFieldId, this.id());
             	jaffa.form.addField(familyNameFieldId, this.id());
+            	jaffa.form.addField(emailFieldId, this.id());
             	jaffa.form.addField(dcIdentifierId, this.id());
                 this.oldField = null;
             }
@@ -90,6 +96,10 @@ var PeopleWidgetBuilder = function($, jaffa) {
             var familyNameFieldId= this.field+"foaf:familyName";
             ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Family Name</label>");
             ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field\" />");
+            
+            var emailFieldId= this.field+"foaf:email";
+            ui.append("<label for=\""+emailFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Email</label>");
+            ui.append("<input type=\"text\" id=\""+emailFieldId+"\" class=\"jaffa-field\" />");
 
             var dcIdentifierId = this.field+"dc:identifier";
             ui.append("<input type=\"hidden\" id=\""+dcIdentifierId+"\" class=\"jaffa-field\" />");
@@ -164,6 +174,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             jaffa.form.addField(titleFieldId,  this.id());
             jaffa.form.addField(givenNameFieldId,  this.id());
             jaffa.form.addField(familyNameFieldId,  this.id());
+            jaffa.form.addField(emailFieldId,  this.id());
             jaffa.form.addField(dcIdentifierId,  this.id());
             
 

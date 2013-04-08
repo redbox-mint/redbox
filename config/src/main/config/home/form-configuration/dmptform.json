@@ -245,11 +245,6 @@
     						 			  }      
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"locrel:rth.foaf:Person.foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label"
-                        },
-                        {
                             "component-type":"native-html",
                             "content":"<hr>"
                         },
@@ -275,11 +270,6 @@
     						 			  }  
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"locrel:prc.foaf:Person.foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label"
-                        },
-                        {
                             "component-type":"native-html",
                             "content":"<hr>"
                         },
@@ -293,8 +283,7 @@
                             "component-type":"repeatable-container",
                             "containter-for":"locrel:clb.foaf:Person",
                             "sub-elements":{"settings":[
-                            					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}},
-												{"jaffaText":{"label": "Email address","class-list":"jaffa-field","suffix": "email"}}
+                            					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}}
 												]
 											}	
                         },
@@ -313,12 +302,7 @@
                         	"lookup-name":"swrc:supervisor.foaf:Person",
                         	"lookup-only":"true"
                         },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"swrc:supervisor.foaf:Person:foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label",
-                            "label-classes":"dmpt-supervisor-email"
-                        },
+                        
                         {
                             "component-type":"transition-control",
                             "transitions":[{"name":"Back"},

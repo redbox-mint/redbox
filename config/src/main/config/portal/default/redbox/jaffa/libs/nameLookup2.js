@@ -116,8 +116,10 @@ function NameLookUp(ids, lookup_source) {
 					$(document.getElementById(ids[1])).change();
 					document.getElementById(ids[2]).value = lookupData["Family_Name"];
 					$(document.getElementById(ids[2])).change();
-					document.getElementById(ids[3]).value = lookupData["dc_identifier"];
+					document.getElementById(ids[3]).value = lookupData["Email"];
 					$(document.getElementById(ids[3])).change();
+					document.getElementById(ids[4]).value = lookupData["dc_identifier"];
+					$(document.getElementById(ids[4])).change();
 				}
 			} catch(e) {
 				alert("Error executing selected-func. " + e.message);
