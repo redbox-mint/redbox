@@ -71,27 +71,13 @@
                             "content": "Language"
                         },
                         {
-                            "component-type": "dropdown-fixedvalue",
-                            "field-name": "finalLanguage",
+                            "component-type": "data-source-dropdown",
+                            "field-name": "dc:language.dc:identifier",
                             "label": "",
-                            "options": [
-                                {
-                                    "value": "",
-                                    "label": "Please select one..."
-                                },
-                                {
-                                    "value": "Extra.Language.1",
-                                    "label": "English"
-                                },
-                                {
-                                    "value": "Extra.Language.2",
-                                    "label": "Obtain approval by the owner"
-                                },
-                                {
-                                    "value": "Extra.Language.3",
-                                    "label": "Access is freely available"
-                                }
-                            ]
+                            "sourceUrl": "proxyGet.script?ns=Languages&qs=count%3D9999",
+                            "listKey": "results",
+                            "labelKey": "dc:title",
+                            "idKey": "dc:identifier"
                         },
                         {
                             "component-type": "text-block",
@@ -113,15 +99,16 @@
                             "component-type": "text-block",
                             "type": "h3",
                             "content": "Identifier",
-                            "help": "Identifier help message"
+                            "help": "help.Identifier"
                         },
                         {
                             "component-type": "radio-button",
-                            "field-name": "dc:accessRights",
+                            "field-name": "dc:identifier.redbox:origin",
                             "button-for": "",
                             "buttons": [
                                 {
-                                    "label": "I would like a DOI created for this data"
+                                    "label": "I would like a DOI created for this data",
+                                    "checked": "checked"
                                 },
                                 {
                                     "label": "This data has been allocated on identifier (please provide below)"
@@ -130,7 +117,7 @@
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "allocated.doi",
+                            "field-name": "allocated.dc:identifier",
                             "label": "",
                             "additional-classes": ""
                         },
@@ -147,11 +134,12 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "URL:"
+                            "content": "URL:",
+                            "help": "A widget may be needed"
                         },
                         {
                             "component-type": "textarea",
-                            "field-name": "url",
+                            "field-name": "bibo:Website",
                             "label": "",
                             "content": ""
                         },
@@ -171,7 +159,7 @@
                         },
                         {
                             "component-type": "textarea",
-                            "field-name": "physical-address",
+                            "field-name": "vivo:Location.vivo:GeographicLocation.gn:name",
                             "label": "",
                             "additional-classes": "",
                             "content": ""
@@ -230,7 +218,7 @@
                             "component-type": "text-block",
                             "type": "label",
                             "content": "Key words",
-                            "help": "We don't have a table widget"
+                            "help": "We don't have a table widget: dc:subject.vivo:keyword"
                         },
                         {
                             "component-type": "native-html",
@@ -268,18 +256,18 @@
                             "component-type": "text-block",
                             "type": "h3",
                             "content": "self.people.principalInvestigator.label",
-                            "help": "self.help.locrel:rth.foaf:Person"
+                            "help": "self.help.dc:creator.foaf:Person"
                         },
                         {
                             "component-type": "person",
-                            "lookup-name": "locrel:rth.foaf:Person",
+                            "lookup-name": "dc:creator.foaf:Person",
                             "lookup-only": "true",
                             "validation": {
                                 "save-rules": [
                                     "required"
                                 ],
-                                "validation-id": "locrel:rth.foaf:Person.dc:identifier",
-                                "focus-id": "locrel:rth.foaf:Person.foaf:title",
+                                "validation-id": "dc:creator.foaf:Person.dc:identifier",
+                                "focus-id": "dc:creator.foaf:Person.foaf:title",
                                 "validation-messages": {
                                     "required": "Principal investigator is required"
                                 }
@@ -287,7 +275,7 @@
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "locrel:rth.foaf:Person.foaf:email",
+                            "field-name": "dc:creator.foaf:Person.foaf:email",
                             "label": "self.people.emailAddress.label"
                         },
                         {
@@ -332,7 +320,7 @@
                         },
                         {
                             "component-type": "repeatable-container",
-                            "containter-for": "locrel:clb.foaf:Person",
+                            "containter-for": "dc:contributor.locrel:clb",
                             "sub-elements": {
                                 "settings": [
                                     {
@@ -340,7 +328,7 @@
                                             "source": "nla,mint",
                                             "label": "",
                                             "class-list": "jaffa-field",
-                                            "suffix": "person"
+                                            "suffix": "foaf:Agent"
                                         }
                                     },
                                     {
@@ -418,14 +406,14 @@
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "dc:license.dc:identifier.other",
-                            "label": "self.access.other.label",
+                            "field-name": "dc:license.rdf:Alt.skos:prefLabel",
+                            "label": "dc:license.rdf:Alt.skos:prefLabel",
                             "additional-classes": ""
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "dc:license.dc:identifier.url",
-                            "label": "self.access.url.label",
+                            "field-name": "dc:license.rdf:Alt.dc:identifier",
+                            "label": "dc:license.rdf:Alt.dc:identifier",
                             "additional-classes": ""
                         },
                         {
@@ -436,17 +424,17 @@
                             "component-type": "text-block",
                             "type": "h3",
                             "content": "self.access.accessRights.heading",
-                            "help": "self.help.dc:accessRights"
+                            "help": "dc:accessRights.dc:RightsStatement.skos:prefLabel"
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "ATTENTION.dc:accessRights",
+                            "field-name": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
                             "label": ""
                         },
                         {
                             "component-type": "text-input",
                             "label": "URL: ",
-                            "field-name": "ATTENTION.access.right.url"
+                            "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier"
                         },
                         {
                             "component-type": "native-html",
@@ -456,17 +444,17 @@
                             "component-type": "text-block",
                             "type": "h3",
                             "content": "Access conditions",
-                            "help": "ATTENTION.AccessConditionsHelp"
+                            "help": "dc:accessRights.skos:prefLabel"
                         },
                         {
                             "component-type": "text-input",
                             "label": "",
-                            "field-name": "access.conditions.ATTENTION"
+                            "field-name": "dc:accessRights.skos:prefLabel"
                         },
                         {
                             "component-type": "text-input",
                             "label": "URL: ",
-                            "field-name": "access.conditions.url.ATTENTION"
+                            "field-name": "dc:accessRights.dc:identifier"
                         },
                         {
                             "component-type": "native-html",
@@ -480,64 +468,38 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.dataRetention.applicableRetention.label",
-                            "help": "self.help.redbox:retentionPeriod"
+                            "content": "redbox:retentionPeriod",
+                            "help": "redbox:retentionPeriod"
                         },
                         {
-                            "component-type": "dropdown-fixedvalue",
-                            "field-name": "redbox:retentionPeriod.dc:date",
+                            "component-type": "data-source-dropdown",
+                            "field-name": "redbox:retentionPeriod",
                             "label": "",
-                            "options": [
-                                {
-                                    "value": "5 years after publication (general research)",
-                                    "label": "5 years after publication (general research)"
-                                },
-                                {
-                                    "value": "12 months (short term projects for assessment purposes only)",
-                                    "label": "12 months (short term projects for assessment purposes only)"
-                                },
-                                {
-                                    "value": "15 years after publication (Clinical trials, research involving humans)",
-                                    "label": "15 years after publication (Clinical trials, research involving humans)"
-                                },
-                                {
-                                    "value": "Permanent (gene therapy or data with significant heritage value)",
-                                    "label": "Permanent (gene therapy or data with significant heritage value)"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type": "dropdown-fixedvalue",
-                            "field-name": "redbox:retentionPeriod.dc:date.skos:note",
-                            "label": "self.dataRetention.justification.label",
-                            "options": [
-                                {
-                                    "value": "It has community or heritage value",
-                                    "label": "It has community or heritage value"
-                                },
-                                {
-                                    "value": "It is controversial",
-                                    "label": "It is controversial"
-                                },
-                                {
-                                    "value": "It is of wide public interest",
-                                    "label": "It is of wide public interest"
-                                },
-                                {
-                                    "value": "It would be costly or impossible to reproduce",
-                                    "label": "It would be costly or impossible to reproduce"
-                                },
-                                {
-                                    "value": "There is a commercial obligation to do so",
-                                    "label": "There is a commercial obligation to do so"
-                                }
-                            ]
+                            "sourceUrl": "workflows/forms/data/retentionPeriod.json",
+                            "idKey": "id",
+                            "labelKey": "label",
+                            "listKey": "results"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.dataRetention.disposalDate.label",
-                            "help": "self.help.redbox:disposalDate"
+                            "content": "redbox:retentionPeriod.dc:date.skos:note",
+                            "help": "redbox:retentionPeriod.dc:date.skos:note"
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "field-name": "redbox:retentionPeriod.dc:date.skos:note",
+                            "label": "",
+                            "sourceUrl": "workflows/forms/data/retentionPeriodJustification.json",
+                            "idKey": "id",
+                            "labelKey": "label",
+                            "listKey": "results"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "redbox:disposalDate",
+                            "help": "redbox:disposalDate"
                         },
                         {
                             "component-type": "text-input",
@@ -574,25 +536,26 @@
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "finalCollection.Date.From",
+                            "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:start",
                             "label": "Start date:",
                             "additional-classes": "dateYMD"
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "finalCollection.Date.To",
+                            "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:end",
                             "label": "End date:",
                             "additional-classes": "dateYMD"
                         },
                         {
                             "component-type": "text-input",
-                            "field-name": "finalCollection.tiemPeriod",
+                            "field-name": "dc:coverage.redbox:timePeriod",
                             "label": "Time period:"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Geographic/spatial information"
+                            "content": "Geographic/spatial information",
+                            "help": "dc:coverage.vivo:GeographicLocation.0.dc:type"
                         },
                         {
                             "component-type": "native-html",
@@ -675,12 +638,12 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content":"Submit"
+                            "content": "Submit"
                         },
                         {
-                            "component-type":"textarea",
-                            "field-name":"submit.furtherinfo",
-                            "label":"Please add any further information/queries below - these will be followed up by the reviewer",
+                            "component-type": "textarea",
+                            "field-name": "skos:note.0.dc:description",
+                            "label": "Please add any further information/queries below - these will be followed up by the reviewer",
                             "content":""
                         },
 						{
@@ -689,8 +652,8 @@
 							"box-for": "",
 							"boxes": [
 								{
-									"label":"This collection is ready to be reviewed by a data librarian",
-									"value":"ready"
+									"label": "This collection is ready to be reviewed by a data librarian",
+									"value": "ready"
 								}
 							]
 						},
@@ -698,10 +661,10 @@
                             "component-type": "transition-control",
                             "transitions": [
                                 {
-                                    "name":"Back"
+                                    "name": "Back"
                                 },
                                 {
-                                    "name":"Submit",
+                                    "name": "Submit",
                                     "form-submit-action": "save-next",
 									"close": true,
 									"closeUrl": "dmpt/details"
