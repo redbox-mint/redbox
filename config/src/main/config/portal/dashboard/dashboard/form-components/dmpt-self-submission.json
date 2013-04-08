@@ -17,9 +17,9 @@
         },
         "Furtherinfo": {
             "Back": "Coverage",
-            "Next": "Submit"
+            "Next": "UserSubmit"
         },
-        "Submit": {
+        "UserSubmit": {
             "Back": "Furtherinfo"
         }
     }

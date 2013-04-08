@@ -92,7 +92,7 @@ class DetailData:
             for result in dataSetQueryResults.getResults():
                 #check type and put results in 2 lists
                 setType = result.get('packageType')
-                if setType == 'simple':
+                if setType == 'self-submission' or setType == 'simple':
                     self.__draftDatasets.add(result)
                 elif setType == 'dataset':
                     self.__submittedDatasets.add(result)
@@ -108,7 +108,7 @@ class DetailData:
                 query_ids += ")"   
             else:
                 query_ids = oids[0].get('oid')
-            self.log.debug("query_ids= " + query_ids)
+            self.log.debug("related.datasets: query_ids = {}", query_ids)
                 
             req = SearchRequest(query_ids)
             req.setParam("fq", 'item_type:"object"')

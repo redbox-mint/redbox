@@ -1,5 +1,6 @@
 <div class="block">
 #if ($self.myDrafts && $self.myDrafts.size() > 0)
+	<p style="margin-bottom: 0px;">The following datasets (draft) have been linked to this plan.</p>
 <p><b>My drafts: </b></p>
 <table>
     <thead>
@@ -30,6 +31,7 @@
 #end
 
 #if ($self.myDatasets && $slef.myDatasets.size() > 0)
+	<p style="margin-bottom: 0px;">The following datasets (submitted) have been linked to this plan.</p>
 <p><b>Submitted</b></p>
 <table>
     <thead>
