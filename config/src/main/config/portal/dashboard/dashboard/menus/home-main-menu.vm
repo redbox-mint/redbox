@@ -65,7 +65,8 @@ $(function() {
                 description: "",
                 "project.name": "New Project",
                 "redbox:newForm": "true",
-                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")"
+                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")",
+				"access_plugin":"derby"
             },
             success: function(data) {
                 if (data.status == "ok") {
