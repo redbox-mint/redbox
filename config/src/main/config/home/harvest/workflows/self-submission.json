@@ -24,7 +24,6 @@
             "template": "${server.url.base}published/detail/[[OID]]"
         }
     },
-
     "indexer": {
         "script": {
             "type": "python",
@@ -39,21 +38,21 @@
     "stages": [
         {
             "name": "self-submission-draft",
-            "label": "Draft",
+            "label": "Researcher dataset - Draft",
             "description": "Potential records for investigation.",
             "owner_edit_allowed": "true",	
             "security": ["admin"],
             "visibility": ["admin"],
             "actions" :[ { "action-name" : "next",
-                           "target-step" : "investigation" }]
+                           "target-step" : "self-submission-submitted" }]
         },
         {
-            "name": "self-submission-complete",
-            "label": "Complete",
-            "description": "Records under investigation.",
-            "security": [ "admin"],
+            "name": "self-submission-submitted",
+            "label": "Researcher dataset - Submitted",
+            "description": "Records for review",
+            "security": ["admin"],
             "visibility": ["admin"],
             "template": "workflows/simpleworkflow"
-        }
+        }	
     ]
 }

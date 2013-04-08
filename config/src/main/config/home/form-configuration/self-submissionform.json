@@ -670,7 +670,7 @@
                     ]
                 },
                 {
-                    "heading": "Submit",
+                    "heading": "UserSubmit",
                     "fields": [
                         {
                             "component-type": "text-block",
@@ -702,7 +702,9 @@
                                 },
                                 {
                                     "name":"Submit",
-                                    "form-submit-action": "save"
+                                    "form-submit-action": "save-next",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }

@@ -55,8 +55,8 @@ class CopyTfPackageData:
                  print "error setting tfPackage"
                  
              fromTFPackage.close()
-             #add relatedOid info
-             fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()),toOid)
+             # add relatedOid info
+             fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()), toOid)
              
              inStream = IOUtils.toInputStream(fromTFPackageJson.toJSONString(), "UTF-8")
              
@@ -66,14 +66,14 @@ class CopyTfPackageData:
                  print "error setting tfPackage"
              
              tfMetaPropertyValue = self.formData.get("tfMetaPropertyValue")
-             self._addPropertyValueToTFMeta(toObject,tfMetaPropertyValue)
+             self._addPropertyValueToTFMeta(toObject, tfMetaPropertyValue)
                  
-            
-             
-             result = '{"status": "ok", "url": "%s/workflow/%s", "oid": "%s" }' % (context["portalPath"], toOid , toOid)    
-             writer = self.response.getPrintWriter("application/json; charset=UTF-8")
-             writer.println(result)
-             writer.close()
+             result = '{"status": "ok", "url": "%s/workflow/%s", "oid": "%s" }' % (context["portalPath"], toOid , toOid)
+        else:
+            result = '{"status": "err", "message": "%s"}' % self.errorMsg
+        writer = self.response.getPrintWriter("application/json; charset=UTF-8")
+        writer.println(result)
+        writer.close()
     
     def getErrorMsg(self):
         return self.errorMsg
