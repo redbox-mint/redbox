@@ -1,0 +1,24 @@
+{
+    "results": [
+        {
+            "id": "heritage",
+            "label": "It has community or heritage value"
+        },
+        {
+            "id": "controversial",
+            "label": "It is controversial"
+        },
+        {
+            "id": "ofinterest",
+            "label": "It is of wide public interest"
+        },
+        {
+            "id": "costly_impossible",
+            "label": "It would be costly or impossible to reproduce"
+        },
+        {
+            "id": "commercial",
+            "label": "There is a commercial obligation to do so"
+        }
+    ]
+}
