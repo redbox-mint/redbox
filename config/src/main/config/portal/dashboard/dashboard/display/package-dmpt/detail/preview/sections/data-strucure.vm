@@ -7,5 +7,6 @@
         #display("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used for data collection/creation")
         #display("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
         #display("vivo:Dataset.dc.format" "Primary file format")
+        #display("vivo:Dataset.dc.format.other" "Other format used")
     </dl>
 </div>

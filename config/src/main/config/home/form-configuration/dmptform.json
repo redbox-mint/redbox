@@ -107,8 +107,7 @@
                             "component-type":"text-input",
                             "field-name":"dc:relation.bibo:Website",
                             "label":"",
-                            "additional-classes":"",
-                            
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-block",
@@ -412,7 +411,8 @@
                         {
                             "component-type":"text-input",
                             "field-name":"vivo:Dataset.dc.format.other",
-                            "label":""
+                            "label":"",
+                            "additional-classes":""
                         },
                         {
                             "component-type":"transition-control",
@@ -719,7 +719,7 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
-            									"closeUrl": "dmpt/details"
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -756,6 +756,7 @@
                         {
                             "component-type":"text-input",
                             "label":"",
+                            "additional-classes":"",
                             "field-name":"agls:policy.dc:identifier"
                         },
                         {
@@ -956,6 +957,7 @@
                         {
                             "component-type":"text-input",
                             "field-name":"finalCollection.tiemPeriod",
+                            "additional-classes":"",
                             "label":"Time period:"
                         },
                         {

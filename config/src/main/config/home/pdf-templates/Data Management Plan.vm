@@ -201,6 +201,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
     <dl>    
         #display("vivo:Dataset.dc.format" "Primary file format")
+        #display("vivo:Dataset.dc.format.other" "Other format used")
     </dl>
 </section>
 <hr />
