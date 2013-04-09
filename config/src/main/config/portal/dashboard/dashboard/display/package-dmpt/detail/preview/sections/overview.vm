@@ -83,4 +83,4 @@
     </table>
     <h4>Description</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
-<section>
+</section>

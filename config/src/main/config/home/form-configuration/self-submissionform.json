@@ -135,22 +135,16 @@
                             "component-type": "text-block",
                             "type": "label",
                             "content": "URL:",
-                            "help": "A widget may be needed"
+                            "help": "bibo:Website"
                         },
                         {
-                            "component-type": "textarea",
-                            "field-name": "bibo:Website",
-                            "label": "",
-                            "content": ""
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "url-more",
-                            "label": "Add URL (Nor for label but actually for button below)"
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<button>Add URL</button>"
+                            "component-type": "repeatable-container",
+                            "containter-for": "bibo:Website",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"", "class-list": "jaffa-field", "suffix":"dc:identifier"}}
+                                                ]
+                                           },
+                            "additional-classes": ""                                           
                         },
                         {
                             "component-type": "text-block",
@@ -158,7 +152,7 @@
                             "content": "Physical address"
                         },
                         {
-                            "component-type": "textarea",
+                            "component-type": "text-input",
                             "field-name": "vivo:Location.vivo:GeographicLocation.gn:name",
                             "label": "",
                             "additional-classes": "",
@@ -217,21 +211,16 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Key words",
-                            "help": "We don't have a table widget: dc:subject.vivo:keyword"
+                            "content": "Key words"
                         },
                         {
-                            "component-type": "native-html",
-                            "content": "<table><tr><td>1</td><td>Science</td><tr></table>"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "label": "",
-                            "field-name": "more_keyword"
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<button>Add (a button control widget?)</button>"
+                            "component-type": "repeatable-container",
+                            "containter-for": "dc:subject.vivo:keyword",
+                            "sub-elements":{"settings":[
+                                                {"jaffaText":{"label":"", "class-list":"jaffa-field", "suffix":"rdf:PlainLiteral"}}
+                                                ]
+                                           },
+                            "additional-classes":""                                           
                         },
                         {
                             "component-type": "transition-control",
@@ -552,14 +541,59 @@
                             "label": "Time period:"
                         },
                         {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Geographic/spatial information",
-                            "help": "dc:coverage.vivo:GeographicLocation.0.dc:type"
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Geospatial Location"
                         },
                         {
-                            "component-type": "native-html",
-                            "content": "<div id='mapholder_demo1' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo1').innerHTML='<img src='+img_url+'>';</script>"
+                            "component-type":"native-html",
+                            "content":"<div class='openLayersHolder'>
+        <div class='article'>
+            <p class='meta attribution'>Map Credits: <span id='attribution'></span></p>
+            <div id='polygonHelp' class='hidden'>
+                <div><span class='ui-button-icon-primary ui-icon ui-icon-lightbulb'></span></div>
+                Use double-click to 'close' your polygon.
+            </div>
+            <div class='mapHolder'>
+                <div id='panel' class='olControlEditingToolbar'></div>
+                <div id='map' class='smallmap' style='width:512px; height:256px'></div>
+            </div>
+            <div class='lookupHolder'>
+                <label for='geonamesLookup'>Find location: </label>
+                <input type='text' size='40' placeholder='Place name' id='geonamesLookup' />
+            </div>
+        </div>
+    </div>"
+                        },
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:coverage.vivo:GeographicLocation",
+                            "additional-classes":"containerLayout redboxGeoData",
+                            "add-item-text":"Add location",
+                            "sub-elements":{"settings":[
+                                                {"jaffaDropDown":{"label":"Location Type", "suffix":"dc:type", "field":"dc:type", "label-field":"dc:type", 
+                                                                  "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/locationTypes.json", 
+                                                                  "data-id-key":"id", "data-label-key":"label", "data-list-key":"results", "mandatory":"true",
+                                                                  "class-list":"locationType"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataFid","suffix": "redbox:Fid"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataWkt","suffix": "redbox:wktRaw"}},                 
+                                                 {"jaffaText":{"label":"","type":"text","class-list":"jaffa-field redboxGeoDataOutput autocomplete-geonames","suffix":"rdf:PlainLiteral",
+                                                               "placeholder":"eg. coordinates or placename","size":"60"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"dc:identifier"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:long"}},
+                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:lat"}}
+                                                ]
+                                            }
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"
+                                        <div class='hidden coords' id='dc:coverage.vivo:GeographicLocation.0.coords'>
+                                            <a class='map-link' target='_blank' href=''>map</a>
+                                            @ longitude: <span class='east'> </span>
+                                            , latitude: <span class='north'> </span>
+                                            | <a class='clear-link' href='#'>clear</a>
+                                        </div>"
                         },
                         {
                             "component-type": "transition-control",

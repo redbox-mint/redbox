@@ -13,14 +13,14 @@
         },
         "Coverage": {
         	"Back": "Access",
-            "Next": "Furtherinfo"
+            "Next": "UserSubmit"
         },
         "Furtherinfo": {
             "Back": "Coverage",
             "Next": "UserSubmit"
         },
         "UserSubmit": {
-            "Back": "Furtherinfo"
+            "Back": "Coverage"
         }
     }
 }
