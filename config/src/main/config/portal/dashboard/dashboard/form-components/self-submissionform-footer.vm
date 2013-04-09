@@ -1,5 +1,18 @@
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
+	var selfSubmission = {
+		submit_hidden: true,
+		toggle_submit: function () {
+			var btn_submit = document.querySelector('a[transition-name="Submit"]');
+			if (selfSubmission.submit_hidden) {
+				btn_submit.style.visibility = 'hidden';	
+			} else {
+				btn_submit.style.visibility = 'visible';
+			}
+			selfSubmission.submit_hidden = !selfSubmission.submit_hidden; 
+		}
+		
+	};
 	$(document).ready(function() {
 		var hidden_elements = document.getElementsByClassName('HiddenWidget');
    		for( var i = 0; i < hidden_elements.length; i++) {
@@ -16,6 +29,10 @@
  			$("[id='locrel:prc.foaf:Person.foaf:givenName']").val() + " " + $("[id='locrel:prc.foaf:Person.foaf:familyName']").val();
 			$("[id='dataLicensingAccess.manager']").val(dataManager);
 		});
+		
+		selfSubmission.toggle_submit();
+		// hide Submit link until user acknowledges 
+		document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
 		
 		prepareHelps();
    	})
