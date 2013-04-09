@@ -24,11 +24,13 @@ $buttonHtml
 						 success:function(){
 							 if (workflow_next) {
 								 // Change stage of this workflow
-								 jQuery.ajax({type:"POST", 
+								 jQuery.ajax(
+									{type:"POST", 
 									 url:'$portalPath/workflows/simpleworkflow.ajax?func=action&action=next&oid=$oid',
+									 success:function() { setInterval(function() { window.location = closeUrl;}, 1500) },
+									 error:function(xhr, status, e) { alert("Failed to submit.\n" + e)}
 								   });
-							 };
-		 					 if(closeUrl) {
+							 } else if(closeUrl) {
 		 					 	var redirectUrl = closeUrl;
 		 					 	closeUrl= null;
 		 					 	// go to portal home
