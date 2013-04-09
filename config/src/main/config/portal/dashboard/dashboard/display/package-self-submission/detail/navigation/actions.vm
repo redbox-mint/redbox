@@ -1,0 +1,93 @@
+<div id="actions-menu">
+    #set($menuTitle = "Actions")
+    #parseTemplate("wrapping/main-menu-open.vm")
+    <ul class="menu">
+        #parseDisplayTemplate("detail/navigation/workflow.vm")
+        #parseDisplayTemplate("detail/navigation/custom-actions.vm")
+        #if($page.authentication.is_admin())
+            <li><a href="$portalPath/history/$oid/">Object History</a></li>
+            #if(!$parent.isPending())
+                <li>
+                    <a id="reharvest-this" href="$portalPath/detail/$oid">Reharvest</a>
+                    <script type="text/javascript">
+                    <!--
+                        var pollTimerId = 0;
+                        function poll() {
+                            jQuery.post("$portalPath/actions/objectMeta.ajax",
+                                { "oid" : "$oid" },
+                                function(data) {
+                                    if (data.error) {
+                                        $("#reharvest-form").append('<img src="$portalPath/images/icons/exclamation.png" alt="Error" /><span>&nbsp;<b>Error</b>:&nbsp;' + data.error + '</span>');
+                                        return;
+                                    }
+                                    if (data.meta) {
+                                        var pending = data.meta["render-pending"];
+                                        if (pending == "false") {
+                                            clearTimeout(pollTimerId);
+                                            $("#reharvest-loading, #reharvest-in-progress").fadeOut(
+                                                function() {
+                                                    $("#reharvest-form b").html("COMPLETE");
+                                                    $("#reharvest-complete").fadeIn();
+                                                });
+                                        }
+                                    }
+                                },
+                                "json");
+                        }
+                        $(function() {
+                            $("#reharvest-this").click(function() {
+                                $(this).hide();
+                                $("#reharvest-form").show();
+                                jQuery.post("$portalPath/actions/reharvest.ajax",
+                                    { func: "reharvest", oid: "$oid" },
+                                    function(data) { pollTimerId = setInterval("poll()", 2500); },
+                                    "json");
+                                return false;
+                            });
+                        });
+                    -->
+                    </script>
+                </li>
+
+                <li>
+                    <a id="reindex-this" href="$portalPath/detail/$oid">
+                        Reindex
+                        <span id="reindexloading" class="hidden"><img src="$portalPath/images/icons/loading.gif" alt="Loading" /></span>
+                    </a>
+                    <script type="text/javascript">
+                    <!--
+                        $(function() {
+                            $("#reindex-this").click(function() {
+                                $("#reindexloading").show();
+                                jQuery.post("$portalPath/actions/reharvest.ajax",
+                                    { func: "reindex", oid: "$oid" },
+                                    function(data) {
+                                        $("#reindexloading").hide();
+                                        window.location.reload();
+                                    },
+                                    "json");
+                                return false;
+                            });
+                        });
+                    -->
+                    </script>
+                </li>
+            #end
+            <li><a target="blank" href="/solr/fascinator/select?q=(id:$oid%20AND%20item_type:object)">View Solr Index</a></li>
+        #end
+    </ul>
+    #parseTemplate("wrapping/main-menu-close.vm")
+</div>
+
+## Simple (lazy) fix for empty actions menu
+<script type="text/javascript">
+<!--
+    $(function() {
+        var actionList = $("#actions-menu").find("li");
+        if (actionList.size() == 0) {
+            $("#actions-menu").hide();
+            $(".grid_12").attr("class", "grid_16");
+        }
+    });
+-->
+</script>
