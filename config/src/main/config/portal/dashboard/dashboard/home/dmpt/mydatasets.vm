@@ -1,14 +1,13 @@
 <div class="block">
 #if ($self.myDrafts && $self.myDrafts.size() > 0)
-	<p style="margin-bottom: 0px;">The following datasets (draft) have been linked to this plan.</p>
-<p><b>My drafts: </b></p>
+	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.draft.title')</p>
 <table>
     <thead>
         <tr>
-            <th>Dataset</th>
-            <th>Created</th>
-            <th>Modified</th>
-            <th>Manage</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.manage')</th>
         </tr>
     </thead>
     <tbody>
@@ -20,9 +19,9 @@
             #parseTemplate("home/dmpt/created_modified_date.vm")                
 		    </td>
 		    <td>$self.formatDate($item.get("last_modified"))</td>
-	        <td><a href="$portalPath/workflow/$oid"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png" title="Edit Dataset"></a>
-	            <a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>
-	            <a onclick="manage_access('$oid');" href="#" title="Set Permissions"><img alt="Manage Record" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
+	        <td><a href="$portalPath/workflow/$oid"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.edit')" src="$portalPath/images/icons/workflow_edit.png" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.edit')"></a>
+	            <!--<a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>-->
+	            <a onclick="manage_access('$oid');" href="#" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
 	       </td>
 	    </tr>
 	#end
@@ -31,16 +30,16 @@
 #end
 
 #if ($self.myDatasets && $slef.myDatasets.size() > 0)
-	<p style="margin-bottom: 0px;">The following datasets (submitted) have been linked to this plan.</p>
-<p><b>Submitted</b></p>
+	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.submitted.title')</p>
+
 <table>
     <thead>
         <tr>
-            <th>Dataset</th>
-            <th>Created</th>
-            <th>Modified</th>
-            <th>Manage</th>
-            <th>Status</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.manage')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.status')</th>
         </tr>
     </thead>
     <tbody>
@@ -52,7 +51,7 @@
         #parseTemplate("home/dmpt/created_modified_date.vm")                
 	    </td>
 	    <td>$self.formatDate($item.get("last_modified"))</td>
-        <td><a href="#" onclick="manage_access('$oid');"><img alt="Manage record" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a></td>
+        <td><a href="#" onclick="manage_access('$oid');" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a></td>
         <td>$item.get("workflow_step_label")</td>
         </tr>
     #end

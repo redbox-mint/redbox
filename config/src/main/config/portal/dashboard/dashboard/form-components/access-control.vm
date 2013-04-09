@@ -1,4 +1,4 @@
-## This added because local custom.css has hugh title bar height
+## This added because local custom.css has huge title bar height
 <script type="text/javascript">
 	var access_control_oid = null; // used for caller from myplans mydatasets to set oid
 	var access_control_users = null;
@@ -182,17 +182,18 @@
     }
 </script>
 
-<div id="dialog-form" title="Configuration">
-    <h2>View access</h2>
+<div id="dialog-form" title="#displayMessage('researcher-dashboard.home.access-control.intro')">
+    <!--<h2>#displayMessage("researcher-dashboard.home.access-control.title")</h2>-->
     ##set($item = $self.NewThing.get(0))
     ##if (! $item.security_exception)
     ##<p>We don't have list yet<br></p>
     ##end	
+	<p>#displayMessage("researcher-dashboard.home.access-control.intro")</p>
     <table id="access_userlist">
 	    <tr>
-	    	<td>Is owner</td>
-	        <td>User name</td>
-	        <td style="width:10%">Delete</td>
+	    	<td>#displayMessage("researcher-dashboard.home.access-control.userlist.owner")</td>
+	        <td>#displayMessage("researcher-dashboard.home.access-control.userlist.username")</td>
+	        <td style="width:10%">#displayMessage("researcher-dashboard.home.access-control.userlist.delete")</td>
 	    </tr>
 	    <tr>
 	    	<td><input type="radio" name="is_owner" /></td>
@@ -211,7 +212,7 @@
 	</table>
 	##<div id="user-list">input text here</div>
 	<input type="text" name="add_user" id="add_user" />
-	<button onclick="add_user()">Add</button>
-	<div id="user-list-help" class="pre-help-content">#displayMessage("access-control.help")</div>
-	<div id="action-warning-msg" style="display:none" >#displayMessage("access-control.action-warning")</div>
+	<button onclick="add_user()">#displayMessage("researcher-dashboard.home.access-control.userlist.add")</button>
+	<div id="user-list-help" class="pre-help-content">#displayMessage("researcher-dashboard.home.access-control.help")</div>
+	<div id="action-warning-msg" style="display:none" >#displayMessage("researcher-dashboard.home.access-control.action-warning")</div>
 </div>

@@ -13,7 +13,7 @@
 #set($pageTitle = "Home")
 
 <h2 id="page-heading">
-  <span>$page.portalName</span>
+  <span>#displayMessage("researcher-dashboard.home.title")</span>
 </h2>
 
 #parseTemplate("form-components/access-control.vm")
@@ -39,12 +39,11 @@ jQuery(document).ready(function prepareHelps() {
     <div class="grid_12">
        #parseTemplate("home/dmpt/myplans.vm")
        ## Below section is treated differently to myplans.vm because it has to be reused in other parts and there is no easy way to do it.
-	   <!--
-       #set($menuTitle = "My datasets")
+       #set($menuTitle = "#displayMessage('researcher-dashboard.home.mydatasets.title')")
        #parseTemplate("wrapping/info-box-open.vm")
        #parseTemplate("home/dmpt/mydatasets.vm")
        #parseTemplate("wrapping/info-box-close.vm")
-	   -->
+
     </div>
     <div class="clear"></div>
 #elseif(!$page.authentication.is_logged_in())

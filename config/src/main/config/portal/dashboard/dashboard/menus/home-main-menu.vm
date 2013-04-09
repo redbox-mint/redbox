@@ -1,11 +1,11 @@
 #if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
 <div class="grid_4">
-    #set($menuTitle = "Options")
+    #set($menuTitle = "#displayMessage('researcher-dashboard.home.menu.title')")
     #parseTemplate("wrapping/main-menu-open.vm")
     <ul class="menu">
         <li>
-            <a id="new-dmpt" href="#" title="Create a new data management plan for your project">#displayMessage("researcher-dashboard.add.new.plan")</a>
-            <a id="new-dataset" href="#" title="Create a description for your research data">Describe my data</a>
+            <a id="new-dmpt" href="#" title="New plan">#displayMessage("researcher-dashboard.home.menu.newplan")</a>
+            <a id="new-dataset" href="#" title="New dataset">#displayMessage("researcher-dashboard.home.menu.newdataset")</a>
         </li>
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")
@@ -38,11 +38,11 @@ $(function() {
                     }
                     setTimeout(redirect, 1500);
                 } else {
-                    alert("Failed to create record!");
+                    alert("#displayMessage('error-record-create-failed')");
                 }
             },
             error: function(xhr, status, e) {
-                alert("Failed to create record!");
+                alert("#displayMessage('error-record-create-failed')");
             },
             dataType: "json"
         });
@@ -75,11 +75,11 @@ $(function() {
                     }
                     setTimeout(redirect, 1500);
                 } else {
-                    alert("Failed to create record!");
+                    alert("#displayMessage('error-record-create-failed')");
                 }
             },
             error: function(xhr, status, e) {
-                alert("Failed to create record!");
+                alert("#displayMessage('error-record-create-failed')");
             },
             dataType: "json"
         });
