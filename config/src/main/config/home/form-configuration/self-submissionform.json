@@ -56,18 +56,6 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self-submission.field.label.dc-subject.anzsrc-toa",
-                            "help": "self-submission.field.help.dc-subject.anzsrc-toa"
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "dc:subject.anzsrc:toa",
-                            "label": "",
-                            "sourceUrl": "dmpt/data/projectActivityType.json"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
                             "content": "self-submission.field.label.dc-language",
                             "help": "self-submission.field.help.dc-language"
                         },
@@ -81,37 +69,29 @@
                             "idKey": "dc:identifier"
                         },
                         {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Identifier",
+                    "fields": [
+                    {
                             "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.dc-identifier.redbox-origin.label",
-                            "help": "self-submission.dc-identifier.redbox-origin.help"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "form.redbox:ManagementPlan.skos:note",
-                            "help": "help.redbox:ManagementPlan.skos:note"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "redbox:ManagementPlan.skos:note",
-                            "label": "",
-                            "additional-classes": ""
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.header.label.dc-identifier",
-                            "help": "self-submission.header.help.dc-identifier"
+                            "type": "h1",
+                            "content": "self-submission.header.label.dc-identifier"
                         },
                         {
                             "component-type": "checkbox",
                             "field-name": "self-submission.field.dc-identifier.redboxdmpt-doirequest",
-                            "button-for": "",
+                            "help": "self-submission.field.help.dc-identifier.redboxdmpt-doirequest",
+                            "box-for": "",
                             "boxes": [
                                 {
                                     "label": "self-submission.field.label.dc-identifier.redboxdmpt-doirequest"
@@ -121,7 +101,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self-submission.field.label.dc-identifier.rdf-PlainLiteral"
+                            "content": "self-submission.field.label.dc-identifier.rdf-PlainLiteral",
+                            "help": "self-submission.field.help.dc-identifier.rdf-PlainLiteral"
                         },
                         {
                             "component-type": "text-input",
@@ -130,14 +111,9 @@
                             "additional-classes": ""
                         },
                         {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
                             "component-type": "text-block",
-                            "type": "h3",
+                            "type": "h1",
                             "content": "self-submission.heading.label.location",
-                            "help": "self-submission.heading.help.location"
                         },
                         {
                             "component-type": "text-block",
@@ -168,13 +144,39 @@
                             "content": ""
                         },
                         {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Back"
+                                },
+                                {
+                                    "name": "Next",
+                                    "form-submit-action": "save"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading": "Subjects",
+                    "fields": [
                         {
                             "component-type": "text-block",
-                            "type": "h3",
+                            "type": "h1",
                             "content": "self-submission.heading.label.subject"
+                        },
+
+                        {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self-submission.field.label.dc-subject.anzsrc-toa",
+                            "help": "self-submission.field.help.dc-subject.anzsrc-toa"
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "field-name": "dc:subject.anzsrc:toa",
+                            "label": "",
+                            "sourceUrl": "dmpt/data/projectActivityType.json"
                         },
                         {
                             "component-type": "text-block",
@@ -234,6 +236,9 @@
                             "component-type": "transition-control",
                             "transitions": [
                                 {
+                                    "name": "Back"
+                                },
+                                {
                                     "name": "Next",
                                     "form-submit-action": "save"
                                 }
@@ -258,7 +263,7 @@
                         {
                             "component-type": "person",
                             "lookup-name": "dc:creator.foaf:Person",
-                            "lookup-only": "true",
+                            "lookup-only": "false",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -283,7 +288,7 @@
                         {
                             "component-type": "person",
                             "lookup-name": "locrel:prc.foaf:Person",
-                            "lookup-only": "true",
+                            "lookup-only": "false",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -318,7 +323,6 @@
                                             "suffix": "foaf:Agent"
                                         }
                                     }
-                                    
                                 ]
                             }
                         },
@@ -335,7 +339,7 @@
                         {
                             "component-type": "person",
                             "lookup-name": "swrc:supervisor.foaf:Person",
-                            "lookup-only": "true"
+                            "lookup-only": "false"
                         },
                         {
                             "component-type": "transition-control",
@@ -464,14 +468,9 @@
                             "listKey": "results"
                         },
                         {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.redbox-disposalDate"
-                        },
-                        {
                             "component-type": "text-input",
                             "field-name": "redbox:disposalDate",
-                            "label": "",
+                            "label": "self-submission.field.label.redbox-disposalDate",
                             "additional-classes": "dateYMD"
                         },
                         {
