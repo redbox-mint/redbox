@@ -1,0 +1,9 @@
+#sectionHeading("#displayMessage('self-submission.heading.label.subject')")
+<div class="meta">
+    <dl>
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-toa')")
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-for')")
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-seo')")
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.vivo-keyword')")
+    </dl>
+</div>

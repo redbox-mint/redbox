@@ -68,19 +68,16 @@
 	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
 </style>
 <section>
-	<h1>Overview</h1>
+	<h1>#displayMessage("self-submission.heading.label.overview")</h1>
     <table id="pdf-like">
-        #displayRow("dc:title" "Project name")
-        #displayRow("dc:identifier" "Project ID")
-        #displayRow("dc:relation.bibo:Website" "Project website")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date")
-        #displayRow("foaf:fundedBy.foaf:Agent" "Funding source")
-        #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
-        #displayRow("dc:subject.anzsrc:toa" "Activity type")
-        #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
-        #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+        #displayRow("dc:title" "#displayMessage('self-submission.field.label.dc-title')")
+        #displayRow("dc:type" "#displayMessage('self-submission.field.label.dc-type')")
+        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-language')")
+        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-identifier.redboxdmpt-doirequest')")
+        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-identifier.rdf-PlainLiteral')")
+        #displayRow("dc:language" "#displayMessage('self-submission.heading.label.location')")
+        #displayRow("dc:language" "#displayMessage('self-submission.field.label.bibo-Website')")
     </table>
-    <h4>Description</h4>
+    <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
 </section>
