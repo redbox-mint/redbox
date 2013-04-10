@@ -8,13 +8,13 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "self.Overview.heading"
+                            "content": "self-submission.heading.label.overview"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Title*",
-                            "help": "self.help.dc:title"
+                            "content": "self-submission.field.label.dc-title",
+                            "help": "self-submission.field.help.dc-title"
                         },
                         {
                             "component-type": "textarea",
@@ -26,8 +26,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Description *",
-                            "help": "self.help.dc:title"
+                            "content": "self-submission.field.label.dc-description",
+                            "help": "self-submission.field.help.dc-description"
                         },
                         {
                             "component-type": "textarea",
@@ -39,8 +39,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Type",
-                            "help": "dataset-type-help"
+                            "content": "self-submission.field.label.dc-type",
+                            "help": "self-submission.field.help.dc-type"
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -56,8 +56,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.Overview.activityType.label",
-                            "help": "form.help.dc:subject.anzsrc:toa: there is another one Jay defined"
+                            "content": "self-submission.field.label.dc-subject.anzsrc-toa",
+                            "help": "self-submission.field.help.dc-subject.anzsrc-toa"
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -68,7 +68,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Language"
+                            "content": "self-submission.field.label.dc-language",
+                            "help": "self-submission.field.help.dc-language"
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -78,6 +79,12 @@
                             "listKey": "results",
                             "labelKey": "dc:title",
                             "idKey": "dc:identifier"
+                        },
+                        {
+                            "component-type": "text-block",
+                            "type": "h3",
+                            "content": "self-submission.dc-identifier.redbox-origin.label",
+                            "help": "self-submission.dc-identifier.redbox-origin.help"
                         },
                         {
                             "component-type": "text-block",
@@ -98,26 +105,27 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Identifier",
-                            "help": "help.Identifier"
+                            "content": "self-submission.header.label.dc-identifier",
+                            "help": "self-submission.header.help.dc-identifier"
                         },
                         {
-                            "component-type": "radio-button",
-                            "field-name": "dc:identifier.redbox:origin",
+                            "component-type": "checkbox",
+                            "field-name": "self-submission.field.dc-identifier.redboxdmpt-doirequest",
                             "button-for": "",
-                            "buttons": [
+                            "boxes": [
                                 {
-                                    "label": "I would like a DOI created for this data",
-                                    "checked": "checked"
-                                },
-                                {
-                                    "label": "This data has been allocated on identifier (please provide below)"
+                                    "label": "self-submission.field.label.dc-identifier.redboxdmpt-doirequest"
                                 }
                             ]
                         },
                         {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self-submission.field.label.dc-identifier.rdf-PlainLiteral"
+                        },
+                        {
                             "component-type": "text-input",
-                            "field-name": "allocated.dc:identifier",
+                            "field-name": "dc:identifier.rdf:PlainLiteral",
                             "label": "",
                             "additional-classes": ""
                         },
@@ -128,14 +136,14 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Data location",
-                            "help": "Data location help message"
+                            "content": "self-submission.heading.label.location",
+                            "help": "self-submission.heading.help.location"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "URL:",
-                            "help": "bibo:Website"
+                            "content": "self-submission.field.label.bibo-Website",
+                            "help": "self-submission.field.help.bibo-Website"
                         },
                         {
                             "component-type": "repeatable-container",
@@ -149,7 +157,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Physical address"
+                            "content": "self-submission.field.label.vivo-Location.vivo-GeographicLocation.gn-name",
+                            "help":"self-submission.field.help.vivo-Location.vivo-GeographicLocation.gn-name"
                         },
                         {
                             "component-type": "text-input",
@@ -165,14 +174,13 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Subject",
-                            "help": "self.help.section.subject"
+                            "content": "self-submission.heading.label.subject"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.Overview.forCodes.label",
-                            "help": "self.help.dc:subject.anzsrc:for"
+                            "content": "self-submission.field.label.dc-subject.anzsrc-for",
+                            "help": "self-submission.field.help.dc-subject.anzsrc-for"
                         },
                         {
                             "component-type": "repeatable-anzsrc-selection",
@@ -191,8 +199,8 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.Overview.seoCodes.label",
-                            "help": "self.help.dc:subject.dc:subject.anzsrc:seo"
+                            "content": "self-submission.field.label.dc-subject.anzsrc-seo",
+                            "help": "self-submission.field.help.dc-subject.anzsrc-seo"
                         },
                         {
                             "component-type": "repeatable-anzsrc-selection",
@@ -211,7 +219,7 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "Key words"
+                            "content": "self-submission.field.label.dc-subject.vivo-keyword"
                         },
                         {
                             "component-type": "repeatable-container",
@@ -239,13 +247,13 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "self.people.heading"
+                            "content": "self-submission.heading.label.people"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.people.principalInvestigator.label",
-                            "help": "self.help.dc:creator.foaf:Person"
+                            "content": "self-submission.field.label.locrel-rth",
+                            "help": "self-submission.field.help.locrel-rth"
                         },
                         {
                             "component-type": "person",
@@ -263,19 +271,14 @@
                             }
                         },
                         {
-                            "component-type": "text-input",
-                            "field-name": "dc:creator.foaf:Person.foaf:email",
-                            "label": "self.people.emailAddress.label"
-                        },
-                        {
                             "component-type": "native-html",
                             "content": "<hr>"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.people.dataManager.label",
-                            "help": "self.help.locrel:prc.foaf:Person"
+                            "content": "self-submission.field.label.locrel-prc",
+                            "help": "self-submission.field.help.locrel-prc"
                         },
                         {
                             "component-type": "person",
@@ -293,19 +296,14 @@
                             }
                         },
                         {
-                            "component-type": "text-input",
-                            "field-name": "locrel:prc.foaf:Person.foaf:email",
-                            "label": "self.people.emailAddress.label"
-                        },
-                        {
                             "component-type": "native-html",
                             "content": "<hr>"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.people.collaborators.label",
-                            "help": "self.help.locrel:clb.foaf:Person"
+                            "content": "self-submission.field.label.locrel-clb",
+                            "help": "self-submission.field.help.locrel-clb"
                         },
                         {
                             "component-type": "repeatable-container",
@@ -319,14 +317,8 @@
                                             "class-list": "jaffa-field",
                                             "suffix": "foaf:Agent"
                                         }
-                                    },
-                                    {
-                                        "jaffaText": {
-                                            "label": "Email address",
-                                            "class-list": "jaffa-field",
-                                            "suffix": "email"
-                                        }
                                     }
+                                    
                                 ]
                             }
                         },
@@ -337,19 +329,13 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.people.supervisor.label",
-                            "help": "self.help.swrc:supervisor.foaf:Person"
+                            "content": "self-submission.field.label.swrc-supervisor",
+                            "help": "self-submission.field.help.swrc-supervisor"
                         },
                         {
                             "component-type": "person",
                             "lookup-name": "swrc:supervisor.foaf:Person",
                             "lookup-only": "true"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "swrc:supervisor.foaf:Person:foaf:email",
-                            "label": "self.people.emailAddress.label",
-                            "label-classes": "dmpt-supervisor-email"
                         },
                         {
                             "component-type": "transition-control",
@@ -371,18 +357,18 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "self.access.heading"
+                            "content": "self-submission.heading.label.access"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.access.licensing.heading"
+                            "content": "self-submission.heading.label.licensing",
+                            "help": "self-submission.heading.help.licensing"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "self.access.licence.label",
-                            "help": "self.help.dc:license"
+                            "content": "self-submission.field.label.dc-license.dc-identifier"
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -396,13 +382,13 @@
                         {
                             "component-type": "text-input",
                             "field-name": "dc:license.rdf:Alt.skos:prefLabel",
-                            "label": "dc:license.rdf:Alt.skos:prefLabel",
+                            "label": "self-submission.field.label.dc-license.rdf-Alt.skos-prefLabel",
                             "additional-classes": ""
                         },
                         {
                             "component-type": "text-input",
                             "field-name": "dc:license.rdf:Alt.dc:identifier",
-                            "label": "dc:license.rdf:Alt.dc:identifier",
+                            "label": "self-submission.field.label.dc-license.rdf-Alt.dc-identifier",
                             "additional-classes": ""
                         },
                         {
@@ -412,8 +398,8 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.access.accessRights.heading",
-                            "help": "dc:accessRights.dc:RightsStatement.skos:prefLabel"
+                            "content": "self-submission.heading.label.accessrights",
+                            "help": "self-submission.heading.help.accessrights"
                         },
                         {
                             "component-type": "text-input",
@@ -422,7 +408,7 @@
                         },
                         {
                             "component-type": "text-input",
-                            "label": "URL: ",
+                            "label": "self-submission.field.label.dc-accessRights.dc-RightsStatement.dc-identifier",
                             "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier"
                         },
                         {
@@ -432,8 +418,8 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Access conditions",
-                            "help": "dc:accessRights.skos:prefLabel"
+                            "content": "self-submission.heading.label.accessconditions",
+                            "help": "self-submission.heading.help.accessconditions"
                         },
                         {
                             "component-type": "text-input",
@@ -442,7 +428,7 @@
                         },
                         {
                             "component-type": "text-input",
-                            "label": "URL: ",
+                            "label": "self-submission.field.label.dc-accessRights.dc-identifier",
                             "field-name": "dc:accessRights.dc:identifier"
                         },
                         {
@@ -452,13 +438,12 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "self.dataRetention.heading"
+                            "content": "self-submission.heading.label.retention"
                         },
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "redbox:retentionPeriod",
-                            "help": "redbox:retentionPeriod"
+                            "content": "self-submission.field.label.redbox-retentionPeriod"
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -470,15 +455,9 @@
                             "listKey": "results"
                         },
                         {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "redbox:retentionPeriod.dc:date.skos:note",
-                            "help": "redbox:retentionPeriod.dc:date.skos:note"
-                        },
-                        {
                             "component-type": "data-source-dropdown",
                             "field-name": "redbox:retentionPeriod.dc:date.skos:note",
-                            "label": "",
+                            "label": "self-submission.field.label.redbox-retentionPeriod.dc-date.skos-note",
                             "sourceUrl": "workflows/forms/data/retentionPeriodJustification.json",
                             "idKey": "id",
                             "labelKey": "label",
@@ -487,8 +466,7 @@
                         {
                             "component-type": "text-block",
                             "type": "label",
-                            "content": "redbox:disposalDate",
-                            "help": "redbox:disposalDate"
+                            "content": "self-submission.field.label.redbox-disposalDate"
                         },
                         {
                             "component-type": "text-input",
@@ -516,34 +494,35 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "Coverage"
+                            "content": "self-submission.heading.label.coverage"
                         },
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Temporal (time) information"
+                            "content": "self-submission.heading.label.temporal",
+                            "help": "self-submission.heading.help.temporal"
                         },
                         {
                             "component-type": "text-input",
                             "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:start",
-                            "label": "Start date:",
+                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
                             "additional-classes": "dateYMD"
                         },
                         {
                             "component-type": "text-input",
                             "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:end",
-                            "label": "End date:",
+                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
                             "additional-classes": "dateYMD"
                         },
                         {
                             "component-type": "text-input",
                             "field-name": "dc:coverage.redbox:timePeriod",
-                            "label": "Time period:"
+                            "label": "self-submission.field.label.dc-coverage.redbox-timePeriod"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Geospatial Location"
+                            "content":"self-submission.heading.label.geospatial"
                         },
                         {
                             "component-type":"native-html",
@@ -610,74 +589,17 @@
                     ]
                 },
                 {
-                    "heading": "Furtherinfo",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "Further information"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "p",
-                            "content": "You can provide further information in the sub-sections belloow"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Data factors"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Funding information"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Related publications"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Related websites"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Related data"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "Related services"
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Back"
-                                },
-                                {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     "heading": "UserSubmit",
                     "fields": [
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "Submit"
+                            "content": "self-submission.heading.label.submission"
                         },
                         {
                             "component-type": "textarea",
                             "field-name": "skos:note.0.dc:description",
-                            "label": "Please add any further information/queries below - these will be followed up by the reviewer",
+                            "label": "self-submission.field.label.skos-note",
                             "content":""
                         },
 						{
@@ -686,7 +608,7 @@
 							"box-for": "",
 							"boxes": [
 								{
-									"label": "This collection is ready to be reviewed by a data librarian",
+									"label": "self-submission.field.label.readyforreview",
 									"value": "ready"
 								}
 							]
