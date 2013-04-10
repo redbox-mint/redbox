@@ -43,6 +43,21 @@
     </tr>
 #end
 
+#macro(displayRowLabel $key $name $labelFile)
+	<tr>
+    <td>$name</td>
+    <td>
+    #set($label = $self.getLabel($labelFile, $key))
+        #if ($label)
+          $label
+        #else
+    		  #noInformation()
+      #end 
+    
+    </td>
+    </tr>
+#end
+
 ## display a list in a row 
 #macro(displayRowList $label $baseKey $subKey)
 <tr>
@@ -77,7 +92,7 @@
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source")
         #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
-        #displayRow("dc:subject.anzsrc:toa" "Activity type")
+        #displayRowLabel("dc:subject.anzsrc:toa" "Activity type" "/../portal/dashboard/dashboard/dmpt/data/projectActivityType.json")
         #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
         #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
     </table>

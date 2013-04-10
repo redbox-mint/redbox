@@ -15,7 +15,17 @@
     </dd>
     #end
 #end
-
+#macro(displayLabel $key $name $labelFile)
+    <dt>$name: </dt>
+    #set($v= $self.getLabel($labelFile, $key))
+    <dd>
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	         
+    #end
+    </dd>
+#end
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");

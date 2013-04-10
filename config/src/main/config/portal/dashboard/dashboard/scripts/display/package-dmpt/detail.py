@@ -2,8 +2,8 @@ from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonObject, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
-from java.io import ByteArrayInputStream, ByteArrayOutputStream
-from java.lang import Exception
+from java.io import ByteArrayInputStream, ByteArrayOutputStream, File
+from java.lang import Exception, System
 from java.util import TreeMap, TreeSet, ArrayList
 
 from java.text import SimpleDateFormat
@@ -176,3 +176,16 @@ class DetailData:
                 value = value.get(0)
             data.put(dataIndex, value)
         return valueMap
+    # ability to add to pull the dropdown label off a json file using the value  
+    def getLabel(self, jsonFile, key):
+      value = self.metadata.get(key)
+      jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
+      entries = JsonSimple(File(jsonLabelFile)).getJsonArray()
+      for entry in entries:
+          entryJson = JsonSimple(entry)
+          if value == entryJson.getString("", "value"):
+              return entryJson.getString("", "label")
+      return None
+        
+      
+        
