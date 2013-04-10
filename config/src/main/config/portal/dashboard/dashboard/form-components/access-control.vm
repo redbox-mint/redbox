@@ -182,7 +182,7 @@
     }
 </script>
 
-<div id="dialog-form" title="#displayMessage('researcher-dashboard.home.access-control.intro')">
+<div id="dialog-form" title="#displayMessage('researcher-dashboard.home.access-control.title')">
     <!--<h2>#displayMessage("researcher-dashboard.home.access-control.title")</h2>-->
     ##set($item = $self.NewThing.get(0))
     ##if (! $item.security_exception)

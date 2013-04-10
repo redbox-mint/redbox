@@ -19,9 +19,9 @@
             #parseTemplate("home/dmpt/created_modified_date.vm")                
 		    </td>
 		    <td>$self.formatDate($item.get("last_modified"))</td>
-	        <td><a href="$portalPath/workflow/$oid"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.edit')" src="$portalPath/images/icons/workflow_edit.png" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.edit')"></a>
+	        <td><a href="$portalPath/workflow/$oid"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')" src="$portalPath/images/icons/workflow_edit.png" title="#displayMessage('researcher-dashboard.home.mydatasets.table.edit')"></a>
 	            <!--<a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>-->
-	            <a onclick="manage_access('$oid');" href="#" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
+	            <a onclick="manage_access('$oid');" href="#" title="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
 	       </td>
 	    </tr>
 	#end
@@ -38,7 +38,6 @@
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
-            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.manage')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.status')</th>
         </tr>
     </thead>
@@ -51,7 +50,6 @@
         #parseTemplate("home/dmpt/created_modified_date.vm")                
 	    </td>
 	    <td>$self.formatDate($item.get("last_modified"))</td>
-        <td><a href="#" onclick="manage_access('$oid');" title="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.table.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a></td>
         <td>$item.get("workflow_step_label")</td>
         </tr>
     #end

@@ -1,6 +1,14 @@
 {
     "steps": {
         "Overview": {
+            "Next": "Identifier"
+        },
+        "Identifier": {
+            "Back": "Overview",
+            "Next": "Subjects"
+        },
+        "Subjects": {
+            "Back": "Identifier",
             "Next": "People"
         },
         "People": {
@@ -13,10 +21,6 @@
         },
         "Coverage": {
         	"Back": "Access",
-            "Next": "UserSubmit"
-        },
-        "Furtherinfo": {
-            "Back": "Coverage",
             "Next": "UserSubmit"
         },
         "UserSubmit": {
