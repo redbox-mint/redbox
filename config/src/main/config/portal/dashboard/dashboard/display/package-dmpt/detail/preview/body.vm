@@ -26,6 +26,23 @@
     #end
     </dd>
 #end
+#macro(displayMintLabels $key $name $urlName, $suffix)
+    <dt>$name: </dt>
+    #set($labels= $self.getMintLabels($urlName, $key, $suffix))	
+	#if($labels)
+    	#foreach($v in $labels)			
+            #if($v && ("$!v" != ""))
+				<dd>
+					$v
+				</dd>
+    		#end
+    	#end
+	#else
+		<dd>
+		#noInformation()
+		</dd>
+	#end
+#end
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");

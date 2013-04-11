@@ -4,7 +4,8 @@ from com.googlecode.fascinator.common import JsonObject, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream, File
 from java.lang import Exception, System
-from java.util import TreeMap, TreeSet, ArrayList
+from java.util import TreeMap, TreeSet, ArrayList, HashMap
+from com.googlecode.fascinator.portal.lookup import MintLookupHelper
 
 from java.text import SimpleDateFormat
 
@@ -23,6 +24,7 @@ class DetailData:
         self.Services = context["Services"]
         self.indexer = self.Services.getIndexer()
         self.log = context["log"]
+        self.systemConfig = context["systemConfig"]
         self.__draftDatasets = ArrayList()
         self.__submittedDatasets = ArrayList()
         self.__getRelatedDataSets()
@@ -178,14 +180,36 @@ class DetailData:
         return valueMap
     # ability to add to pull the dropdown label off a json file using the value  
     def getLabel(self, jsonFile, key):
-      value = self.metadata.get(key)
-      jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
-      entries = JsonSimple(File(jsonLabelFile)).getJsonArray()
-      for entry in entries:
-          entryJson = JsonSimple(entry)
-          if value == entryJson.getString("", "value"):
-              return entryJson.getString("", "label")
-      return None
-        
+        value = self.metadata.get(key)
+        jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
+        entries = JsonSimple(File(jsonLabelFile)).getJsonArray()
+        for entry in entries:
+            entryJson = JsonSimple(entry)
+            if value == entryJson.getString("", "value"):
+                return entryJson.getString("", "label")
+        return None
+    # method for looking up Mint labels
+    def getMintLabels(self, urlName, key, suffix):
+        mapIds = HashMap()
+        valList = self.getList(key)
+        self.log.debug(valList.toString())
+        ids = ""
+        for eKey in valList.keySet():
+            entry = valList.get(eKey)
+            if len(ids) > 0: 
+               ids = "%s,"%ids            
+            ids = "%s%s" % (ids,entry.get(suffix))
+        if ids == "":
+            return None
+        else:           
+            labels = ArrayList()
+            mapIds.put("id", ids) 
+            labelsMint = MintLookupHelper.get(self.systemConfig, urlName, mapIds)            
+            self.log.debug(labelsMint.getJsonArray().toString())    
+            for label in labelsMint.getJsonArray():
+                 labelJson = JsonSimple(label)
+                 labels.add(labelJson.getString("", "label"))
+            return labels                    
+       
       
         
