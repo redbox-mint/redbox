@@ -148,7 +148,7 @@ Add more dataset:
 			var processing = false;
         	if (processing) return;
         	processing = true;
-        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6.1-SNAPSHOT/default/images/icons/loading.gif" />');
+        	jQuery("#create-selfsubmission").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
         	jQuery.ajax({
             	type: "POST",
             	url: "$portalPath/actions/packaging.ajax",
@@ -156,11 +156,9 @@ Add more dataset:
                 	ajax: 1,
                 	func: "create-new",
                 	packageType: "self-submission",
-                	metaList: ["dc:title", "dc:description", "redbox:newForm", "redbox:formVersion"],
-                	"dc:title": "[Untitled]",
-                	"dc:description" : "",
+                	metaList: ["redbox:newForm", "redbox:formVersion"],
                 	"redbox:newForm": "true",
-                	"redbox:formVersion": "1.6.1-SNAPSHOT"
+                	"redbox:formVersion": "$systemConfig.getString("Unknown", "redbox.version.string")"
             	}, success: function(data) {
                 if (data.status == "ok") {
                     function copyMetadata() {
