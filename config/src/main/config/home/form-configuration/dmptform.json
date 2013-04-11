@@ -210,7 +210,24 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next","form-submit-action":"save"}]
+                            "transitions":[{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -301,11 +318,27 @@
                         	"lookup-name":"swrc:supervisor.foaf:Person",
                         	"lookup-only":"true"
                         },
-                        
                         {
                             "component-type":"transition-control",
                             "transitions":[{"name":"Back"},
-                             			   {"name":"Next","form-submit-action":"save"}]
+                             			   {"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -420,6 +453,7 @@
         									{
             									"name": "Save and close",
             									"form-submit-action": "save",
+            									"type": "button",
             									"close": true,
             									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
@@ -461,8 +495,9 @@
  						   "component-type": "transition-control",
     					   "transitions": [
         									{
-            									"name": "Done",
+            									"name": "Save and close",
             									"form-submit-action": "save",
+            									"type": "button",
             									"close": true,
             									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
@@ -538,7 +573,24 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{"name":"Back"},{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -659,6 +711,7 @@
 							"transitions":[{
             									"name": "Save and close",
             									"form-submit-action": "save",
+            									"type": "button",
             									"close": true,
             									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
@@ -717,6 +770,7 @@
                             "component-type":"transition-control",
 							"transitions":[{
             									"name": "Save and close",
+            									"type": "button",
             									"form-submit-action": "save",
             									"close": true,
             									"closeUrl": "dmpt/details",
@@ -820,7 +874,24 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{"name":"Back"},{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -884,19 +955,30 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},
-											{"name":"Next",
-											 "form-submit-action":"save",
-											 "close":true,
-											 "closeUrl":"dmpt/planready",
-												"object-metadata-params": [
-                															{
-                    															"key": "generatePDF",
-                    															"value": "true"
-                															}
-            															 ]
-							
-							}]
+							"transitions":[{"name":"Back"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name":"Save",
+                                    "form-submit-action":"save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action":"save",
+                                    "type":"button",
+									"close":true,
+									"closeUrl":"dmpt/planready",
+									"object-metadata-params": [
+											{
+												"key": "generatePDF",
+												"value": "true"
+											}
+										 ]
+                                }
+                            ]
                         }
                     ]
                 },
