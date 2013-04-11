@@ -72,8 +72,24 @@
                             "component-type": "transition-control",
                             "transitions": [
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Next"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -113,7 +129,7 @@
                         {
                             "component-type": "text-block",
                             "type": "h1",
-                            "content": "self-submission.heading.label.location",
+                            "content": "self-submission.heading.label.location"
                         },
                         {
                             "component-type": "text-block",
@@ -146,12 +162,23 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
+                                { "name": "Back" }, { "name": "Next"}
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
                                 {
-                                    "name": "Back"
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 },
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -235,12 +262,23 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
+                                { "name": "Back" }, { "name": "Next"}
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
                                 {
-                                    "name": "Back"
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 },
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -344,12 +382,23 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
+                                { "name": "Back" }, { "name": "Next"}
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
                                 {
-                                    "name": "Back"
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 },
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -476,12 +525,23 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
+                                { "name": "Back" }, { "name": "Next"}
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
                                 {
-                                    "name": "Back"
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 },
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -576,12 +636,23 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
+                                { "name": "Back" }, { "name": "Next"}
+                            ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
                                 {
-                                    "name": "Back"
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 },
                                 {
-                                    "name": "Next",
-                                    "form-submit-action": "save"
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
@@ -614,15 +685,22 @@
 						},
                         {
                             "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Back"
-                                },
+                            "transitions": [ { "name": "Back" },
                                 {
                                     "name": "Submit",
                                     "form-submit-action": "save-next",
 									"close": true,
 									"closeUrl": "dmpt/details"
+                                }
+                             ]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
                                 }
                             ]
                         }

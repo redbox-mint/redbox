@@ -1,5 +1,5 @@
 #foreach( $transition in $transitions )
-	#if ($type == 'button') 
+	#if ($transition.type == 'button') 
 		<button 
 	 #else 
 		<a href="#" 
@@ -18,7 +18,7 @@
 			object-metadata-params="#foreach( $params in $transition.object-metadata-params)$params.key;$params.value:#end"		
 	#end
 	>$transition.name
-	#if ($type == 'button') </button>
+	#if ($transition.type == 'button') </button>
 	#else 	</a>
 	#end
 #end
