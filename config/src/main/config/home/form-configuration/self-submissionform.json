@@ -94,7 +94,8 @@
                             "box-for": "",
                             "boxes": [
                                 {
-                                    "label": "self-submission.field.label.dc-identifier.redboxdmpt-doirequest"
+                                    "label": "self-submission.field.label.dc-identifier.redboxdmpt-doirequest",
+                                    "value": "Yes"
                                 }
                             ]
                         },

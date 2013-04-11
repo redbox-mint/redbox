@@ -1,9 +1,9 @@
 #sectionHeading("#displayMessage('self-submission.heading.label.subject')")
 <div class="meta">
-    <dl>
-        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-toa')")
-        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-for')")
-        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-seo')")
-        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-subject.vivo-keyword')")
+    <dl>        
+		#displayLabel("dc:subject.anzsrc:toa" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-toa')" "/../portal/dashboard/dashboard/dmpt/data/projectActivityType.json")
+		#displayArrayList("#displayMessage('self-submission.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
+        #displayArrayList("#displayMessage('self-submission.field.label.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")        
+        #displayArrayList("#displayMessage('self-submission.field.label.dc-subject.vivo-keyword')" "dc:subject.vivo:keyword" "rdf:PlainLiteral")
     </dl>
 </div>
