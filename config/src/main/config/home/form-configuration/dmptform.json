@@ -164,8 +164,9 @@
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"dc:subject.anzsrc:toa",
+                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
                             "label":"",
+                            "field-name-label":"dc:subject.anzsrc:toa.skos:prefLabel",
                             "sourceUrl":"dmpt/data/projectActivityType.json"
                         },
                         {
@@ -434,6 +435,7 @@
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc.format",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc.format.prefLabel",
                             "sourceUrl":"dmpt/data/fileFormat.json"
                         },
                         {
@@ -533,7 +535,8 @@
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:extent",
                             "label":"",
-                            "sourceUrl":"dmpt/data/dataSize.json"
+                            "field-name-label":"vivo:Dataset.dc:extent.prefLabel",
+                            "sourceUrl":"workflows/forms/data/dataSize.json"
                         },
                         {
                             "component-type":"text-block",
@@ -545,6 +548,7 @@
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel",
                             "sourceUrl":"dmpt/data/storageLocation.json "
                         },
                         {
@@ -563,6 +567,7 @@
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel",
                             "sourceUrl":"dmpt/data/masterLocation.json"
                         },
                         {
@@ -655,6 +660,7 @@
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:license.dc:identifier",
+                            "field-name-label":"dc:license.skos:prefLabel",
                             "label":"",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
@@ -745,14 +751,22 @@
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date",
+                            "field-name-label":"redbox:retentionPeriod.dc:date.prefLabel",
                             "label":"",
-                            "sourceUrl":"dmpt/data/retentionPeriod.json"
+                            "sourceUrl":"workflows/forms/data/retentionPeriod.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date.skos:note",
+                            "field-name-label":"redbox:retentionPeriod.dc:date.skos:note.prefLabel",
                             "label":"dmpt.form.dataRetention.justification.label",
-                            "sourceUrl":"dmpt/data/retentionJustification.json"
+                            "sourceUrl":"workflows/forms/data/retentionPeriodJustification.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"text-block",
@@ -913,9 +927,12 @@
                             "component-type":"repeatable-container",
                             "containter-for":"dc:coverage.dc:identifier",
                             "sub-elements":{"settings":[
-                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"","class-list":"jaffa-field","suffix":"country"}}
-      												]
-      											}	
+                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"",
+                            					 "label-field":"dc:coverage.dc:identifier.prefLabel",
+                            					 "class-list":"jaffa-field","suffix":"country"}
+                            					 }
+      											]
+      										}	
                         },
                         {
                             "component-type":"text-block",
@@ -926,6 +943,7 @@
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:rightsHolder.dc:name",
+                            "field-name-label":"dc:rightsHolder.dc:name.prefLabel",
                             "label":"",
                             "sourceUrl":"dmpt/data/rightsOwner.json"
                         },
