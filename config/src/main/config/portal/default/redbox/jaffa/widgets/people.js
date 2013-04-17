@@ -27,10 +27,12 @@ var PeopleWidgetBuilder = function($, jaffa) {
             // Update DOM but constrain searches to container, since there may
             //  be very temporary duplicate IDs as sort orders swap
             var container = this.getContainer();
-            container.find("input[id=\""+this.oldField+".foaf:title\"]").attr("id", this.field+".foaf:title");
-            container.find("input[id=\""+this.oldField+".foaf:givenName \"]").attr("id", this.field+".foaf:givenName");
-            container.find("input[id=\""+this.oldField+".foaf:familyName\"]").attr("id", this.field+".foaf:familyName");
+            container.find("input[id=\""+this.oldField+"foaf:title\"]").attr("id", this.field+"foaf:title");
+            container.find("input[id=\""+this.oldField+"foaf:givenName \"]").attr("id", this.field+"foaf:givenName");
+            container.find("input[id=\""+this.oldField+"foaf:familyName\"]").attr("id", this.field+"foaf:familyName");
+            container.find("input[id=\""+this.oldField+"foaf:email\"]").attr("id", this.field+"foaf:email");
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
+            container.attr("id", container.attr("id").replace(from, to));
             
             // Tell Jaffa to ignore the field's this widget used to manage
             var titleFieldId= this.oldField+"foaf:title";

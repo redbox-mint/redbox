@@ -12,7 +12,7 @@
     "page-title": "New Research Data",    
     "transformer": {
         "curation": ["local"],
-        "metadata": ["jsonVelocity"]
+        "metadata": ["dmpToSelfSub"]
     },
     "curation": {
         "neverPublish": false,

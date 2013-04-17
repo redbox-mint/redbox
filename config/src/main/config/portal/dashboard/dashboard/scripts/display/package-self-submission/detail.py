@@ -178,28 +178,50 @@ class DetailData:
                 value = value.get(0)
             data.put(dataIndex, value)
         return valueMap
-    # ability to add to pull the dropdown label off a json file using the value  
-    def getLabel(self, jsonFile, key, listKey, valKey, labelKey):
+    
+    # ability to add to pull the dropdown label off a json file using the value
+    # Two formats are supported through the same two-argument interface
+    def getLabel(self, jsonFile, key):
         value = self.metadata.get(key)
         jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
-        jsonLabel = JsonSimple(File(jsonLabelFile))
-        entries = jsonLabel.getJsonArray()
-        # the structure of the json file is fun and complicated
+        jsonF = JsonSimple(File(jsonLabelFile))
+        entries = jsonF.getJsonArray()
         if entries is None:
-            entries = jsonLabel.getArray(listKey)
-        else:
-            valKey = "value"
-            labelKey = "label"
+            entries = jsonF.getArray('results')
+            if entries is None:
+                self.log.debug("Unknown data source format: JSON file {} or its 'results' has no array.", jsonLabelFile)
+                return None
+        
         for entry in entries:
             entryJson = JsonSimple(entry)
-            if value == entryJson.getString("", valKey):
-                return entryJson.getString("", labelKey)
+            if value == entryJson.getString("", "id"):
+                return entryJson.getString("", "label")
+            elif value == entryJson.getString("", "value"):
+                return entryJson.getString("", "label")
+            
         return None
+    
+#    def getLabel(self, jsonFile, key, listKey, valKey, labelKey):
+#        value = self.metadata.get(key)
+#        jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
+#        jsonLabel = JsonSimple(File(jsonLabelFile))
+#        entries = jsonLabel.getJsonArray()
+#        # the structure of the json file is fun and complicated
+#        if entries is None:
+#            entries = jsonLabel.getArray(listKey)
+#        else:
+#            valKey = "value"
+#            labelKey = "label"
+#        for entry in entries:
+#            entryJson = JsonSimple(entry)
+#            if value == entryJson.getString("", valKey):
+#                return entryJson.getString("", labelKey)
+#        return None
+    
     # method for looking up Mint labels
     def getMintLabels(self, urlName, key, suffix):
         mapIds = HashMap()
         valList = self.getList(key)
-        self.log.debug(valList.toString())
         ids = ""
         for eKey in valList.keySet():
             entry = valList.get(eKey)
@@ -217,9 +239,14 @@ class DetailData:
                  labelJson = JsonSimple(label)
                  labels.add(labelJson.getString("", "label"))
             return labels
-    def getMintLabelByLookup(self, urlName, key, resKey, valKey):                    
+        
+    def getMintLabelByLookup(self, urlName, key, resKey, valKey):
+        rawValue = self.metadata.get(key)                    
+        if not hasattr(rawValue, 'strip'):
+            return None
+        
         mapIds = HashMap()
-        value = String(self.metadata.get(key)).replace(":", "\:")
+        value = String().replace(":", "\:")
         if value is None:
             return None
         labels = ArrayList()        
@@ -233,5 +260,3 @@ class DetailData:
             labelJson = JsonSimple(result)
             labels.add(labelJson.getString("", valKey))            
         return labels
-      
-        

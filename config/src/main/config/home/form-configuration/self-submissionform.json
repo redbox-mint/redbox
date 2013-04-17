@@ -62,6 +62,7 @@
                         {
                             "component-type": "data-source-dropdown",
                             "field-name": "dc:language.dc:identifier",
+                            "field-name-label": "dc:language.skos:prefLabel",
                             "label": "",
                             "sourceUrl": "proxyGet.script?ns=Languages&qs=count%3D9999",
                             "listKey": "results",
@@ -151,7 +152,7 @@
                             "component-type": "text-block",
                             "type": "label",
                             "content": "self-submission.field.label.vivo-Location.vivo-GeographicLocation.gn-name",
-                            "help":"self-submission.field.help.vivo-Location.vivo-GeographicLocation.gn-name"
+                            "help": "self-submission.field.help.vivo-Location.vivo-GeographicLocation.gn-name"
                         },
                         {
                             "component-type": "text-input",
@@ -202,7 +203,8 @@
                         },
                         {
                             "component-type": "data-source-dropdown",
-                            "field-name": "dc:subject.anzsrc:toa",
+                            "field-name": "dc:subject.anzsrc:toa.rdf:resource",
+                            "field-name-label": "dc:subject.anzsrc:toa.skos:prefLabel",
                             "label": "",
                             "sourceUrl": "dmpt/data/projectActivityType.json"
                         },
@@ -427,6 +429,7 @@
                         {
                             "component-type": "data-source-dropdown",
                             "field-name": "dc:license.dc:identifier",
+                            "field-name-label": "dc:license.skos:prefLabel",
                             "label": "",
                             "sourceUrl": "workflows/forms/data/licences.json",
                             "idKey": "id",
@@ -502,6 +505,7 @@
                         {
                             "component-type": "data-source-dropdown",
                             "field-name": "redbox:retentionPeriod",
+                            "field-name-label": "redbox:retentionPeriod.dc:date.prefLabel",
                             "label": "",
                             "sourceUrl": "workflows/forms/data/retentionPeriod.json",
                             "idKey": "id",
@@ -511,6 +515,7 @@
                         {
                             "component-type": "data-source-dropdown",
                             "field-name": "redbox:retentionPeriod.dc:date.skos:note",
+                            "field-name-label": "redbox:retentionPeriod.dc:date.skos:note.prefLabel",
                             "label": "self-submission.field.label.redbox-retentionPeriod.dc-date.skos-note",
                             "sourceUrl": "workflows/forms/data/retentionPeriodJustification.json",
                             "idKey": "id",
