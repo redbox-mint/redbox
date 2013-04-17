@@ -1,0 +1,9 @@
+#sectionHeading("#displayMessage('self-submission.heading.label.coverage')")
+<div class="meta">
+    <dl>
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start')")
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end')")
+        #display("dc:accessRights" "#displayMessage('self-submission.field.label.dc-coverage.redbox-timePeriod')")
+        #display("dc:accessRights" "#displayMessage('self-submission.heading.label.geospatial')")
+    </dl>
+</div>

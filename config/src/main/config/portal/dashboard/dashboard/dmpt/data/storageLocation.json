@@ -1,0 +1,18 @@
+[
+    {
+        "value":"Personal equipment",
+        "label":"Personal equipment"
+    },
+    {
+        "value":"Shared university network drive",
+        "label":"Shared university network drive"
+    },
+    {
+        "value":"University provided collaboration space",
+        "label":"University provided collaboration space"
+    },
+    {
+        "value":"Other",
+        "label":"Other"
+    }
+]

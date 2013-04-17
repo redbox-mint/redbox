@@ -16,7 +16,7 @@ class IndexData:
         self.utils = context["pyUtils"]
         self.config = context["jsonConfig"]
         self.log = context["log"]
-
+        self.last_modified = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         self.log.debug("Indexing Metadata Record '{}' '{}'", self.object.getId(), self.payload.getId())
 
         # Common data
@@ -26,7 +26,7 @@ class IndexData:
         for pid in pidList:
             if pid.endswith(".tfpackage"):
                 self.packagePid = pid
-
+                
         # Real metadata
         if self.itemType == "object":
             self.__basicData()
@@ -53,7 +53,7 @@ class IndexData:
 
         self.utils.add(self.index, "id", self.oid)
         self.utils.add(self.index, "item_type", self.itemType)
-        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+        self.utils.add(self.index, "last_modified", self.last_modified)
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
 
@@ -171,6 +171,11 @@ class IndexData:
         self.relationDict = {}
         self.customFields = {}        
         self.creatorFullNameMap = HashMap()
+        self.grantNumberList = []
+        self.arrayBucket = HashMap()
+        self.compFields = ["dc:coverage.vivo:DateTimeInterval", "locrel:prc.foaf:Person"]
+        self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ","start":"start","end":"end"},"locrel:prc.foaf:Person":{"delim":", ","start":"familyName","end":"givenName"} }
+        self.reportingFieldPrefix = "reporting_"
         self.embargoedDate = None
 
         # Try our data sources, order matters
@@ -197,7 +202,12 @@ class IndexData:
             self.__indexList(key, self.customFields[key])
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
-        self.__indexList("creatorfullname", self.creatorFullNameMap.values())
+        if self.arrayBucket.size() > 0:
+            for arrFldName in self.arrayBucket.keySet():
+                if arrFldName.endswith("Person") or arrFldName.replace(self.reportingFieldPrefix, "") in self.compFields:
+                    self.__indexList(arrFldName, self.arrayBucket.get(arrFldName).values())
+                else:
+                    self.__indexList(arrFldName, self.arrayBucket.get(arrFldName))
         if self.embargoedDate is not None:
             self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
         
@@ -287,7 +297,12 @@ class IndexData:
                 if self.title is None:
                     self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
+        
+        #Used to make sure we have a created date
+        createdDateFlag  = False
+        
         formData = manifest.getJsonObject()
+        
         for field in formData.keySet():
             if field not in coreFields:
                 value = formData.get(field)
@@ -296,9 +311,11 @@ class IndexData:
                     # We want to sort by date of creation, so it
                     # needs to be indexed as a date (ie. 'date_*')
                     if field == "dc:created":
-                        parsedTime = time.strptime(value, "%Y-%m-%d")   
+                        parsedTime = time.strptime(value, "%Y-%m-%d")
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
+                        self.log.debug("Set created date to :%s" % solrTime)
+                        createdDateFlag = True
                     elif field == "redbox:embargo.dc:date":
                         self.embargoedDate = value
                     # try to extract some common fields for faceting
@@ -328,23 +345,69 @@ class IndexData:
                         # index keywords for lookup
                         if field.startswith("dc:subject.vivo:keyword."):
                             self.utils.add(self.index, "keywords", value)
-                    if field.startswith("dc:creator.foaf:Person."):
-                        ftrim = field[23:]
-                        self.log.debug("field name: %s , ftrim is: %s" % (field, ftrim))
-                        idx = ftrim[:ftrim.index(".")]
-                        self.log.debug("idx:%s" % idx)
-                        fullname = self.creatorFullNameMap.get(idx)
-                        if (fullname is None):
-                            fullName = ""
-                            self.creatorFullNameMap.put(idx, fullName)
-                        if (field.endswith("givenName")):
-                            fullName = "%s, %s" % (fullName, value)
-                        if (field.endswith("familyName")):
-                            fullName = "%s%s" % (value, fullName) 
-                        self.log.debug("fullname now is :%s" % fullName)
-                        self.creatorFullNameMap.put(idx, fullName)
+                    # check if this is an array field
+                    fnameparts = field.split(":")
+                    if fnameparts is not None and len(fnameparts) >= 3:
+                        if field.startswith("bibo") or field.startswith("skos"):
+                            arrParts = fnameparts[1].split(".")
+                        else:    
+                            arrParts = fnameparts[2].split(".")
+                        # we're not interested in: Relationship, Type and some redbox:origin 
+                        if arrParts is not None and len(arrParts) >= 2 and field.find(":Relationship.") == -1 and field.find("dc:type") == -1 and field.find("redbox:origin") == -1 and arrParts[1].isdigit():
+                            # we've got an array field
+                            fldPart = ":%s" % arrParts[0]
+                            prefixEndIdx = field.find(fldPart) + len(fldPart)
+                            suffixStartIdx = prefixEndIdx+len(arrParts[1])+1
+                            arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx] + field[suffixStartIdx:]
+                            if field.endswith("Name"):
+                                arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx]
+                            self.log.debug("Array Field name is:%s  from: %s, with value:%s" % (arrFldName, field, value))
+                            
+                            if field.endswith("Name"):
+                                fullFieldMap = self.arrayBucket.get(arrFldName)
+                                if fullFieldMap is None:
+                                    fullFieldMap = HashMap()
+                                    self.arrayBucket.put(arrFldName, fullFieldMap)
+                                idx = arrParts[1]
+                                fullField = fullFieldMap.get(idx)
+                                if (fullField is None):
+                                    fullField = ""
+                                if (field.endswith("givenName")):
+                                    fullField = "%s, %s" % (fullField, value)
+                                if (field.endswith("familyName")):
+                                    fullField = "%s%s" % (value, fullField) 
+                                self.log.debug("fullname now is :%s" % fullField)
+                                fullFieldMap.put(idx, fullField)
+                            else:
+                                fieldlist = self.arrayBucket.get(arrFldName)
+                                if fieldlist is None:
+                                    fieldlist = []
+                                    self.arrayBucket.put(arrFldName, fieldlist)
+                                fieldlist.append(value)
+                                
+                    for compfield in self.compFields:
+                        if field.startswith(compfield):    
+                            arrFldName = self.reportingFieldPrefix +compfield
+                            fullFieldMap = self.arrayBucket.get(arrFldName)
+                            if fullFieldMap is None:
+                                fullFieldMap = HashMap()
+                                self.arrayBucket.put(arrFldName, fullFieldMap)
+                            fullField = fullFieldMap.get("1")
+                            if fullField is None:
+                                fullField = ""
+                            if field.endswith(self.compFieldsConfig[compfield]["end"]):
+                                fullField = "%s%s%s" % (fullField, self.compFieldsConfig[compfield]["delim"] ,value)
+                            if field.endswith(self.compFieldsConfig[compfield]["start"]):
+                                fullField = "%s%s" % (value, fullField) 
+                            self.log.debug("full field now is :%s" % fullField)
+                            fullFieldMap.put("1", fullField)     
 
-        self.utils.add(self.index, "display_type", displayType)
+        self.utils.add(self.index, "display_type", displayType) 
+        
+        # Make sure we have a creation date
+        if not createdDateFlag:
+            self.utils.add(self.index, "date_created", self.last_modified)
+            self.log.debug("Forced creation date to %s because it was not explicitly set." % self.last_modified)
 
         # Workflow processing
         wfStep = wfMeta.getString(None, ["step"])

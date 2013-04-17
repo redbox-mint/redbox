@@ -15,7 +15,17 @@
     </dd>
     #end
 #end
-
+#macro(displayLabel $key $name $labelFile)
+    <dt>$name: </dt>
+    #set($v= $self.getLabel($labelFile, $key))
+    <dd>
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	         
+    #end
+    </dd>
+#end
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");
@@ -26,9 +36,23 @@ function manage_access(e) {
     #parseDisplayTemplate("detail/preview/sections/overview.vm")
 
     <div style="text-align:center">
-    <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
-    <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
-    </a>
+	    <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">Download a PDF of this plan
+	    	<img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
+	    </a>
+	    #set($pdfs = $self.getPlanVersions())
+	    #if ($pdfs.size() > 0)
+	        <br><a href="#" onclick="$('#plan-versions').toggle(); return false;">Previous versions</a>
+		    <div id="plan-versions" style="display:none">
+		    <ol>
+			#foreach($item in $pdfs.descendingKeySet())
+				<li><a target="_blank" href="$portalPath/download/$oid/$pdfs.get($item)">$item
+			    <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20" >
+			    </a>
+			    </li>
+			#end
+		    </ol>
+			</div>
+		#end
     </div>
     <table>
     <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">Data structure, collection and analysis</a></td><td>#if($self.getObjectMetaProperty("dataStructureComplete") == true)Completed #else Not completed #end</td></tr>
@@ -88,11 +112,15 @@ $(function(){
     addAccordion();
 });
 </script>
+
 <div class="article">
 <h1 style="margin-top:1.5em">Data Sets</h1>
-<p style="margin-bottom: 0px;">The following datasets have been linked to this plan.<br>
-You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"/></a></p>
 #parseTemplate("home/dmpt/mydatasets.vm")
+<p style="margin-bottom: 0px;">
+Add more dataset:
+	<a id='create-selfsubmission' href='#'><img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"/></a>
+</p>
+
 </div>
 <div class="clear"></div>
 
@@ -103,50 +131,47 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
 			var processing = false;
         	if (processing) return;
         	processing = true;
-        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6-SNAPSHOT/default/images/icons/loading.gif" />');
+        	jQuery("#create-selfsubmission").append('<img class="right" src="http://localhost:9000/redbox/verNum1.6.1-SNAPSHOT/default/images/icons/loading.gif" />');
         	jQuery.ajax({
             	type: "POST",
             	url: "$portalPath/actions/packaging.ajax",
             	data: {
                 	ajax: 1,
                 	func: "create-new",
-                	packageType: "simple",
-                	metaList: ["title", "dc:description", "redbox:newForm", "redbox:formVersion"],
-                	title: "[Untitled]",
-                	description: "",
+                	packageType: "self-submission",
+                	metaList: ["dc:title", "dc:description", "redbox:newForm", "redbox:formVersion"],
+                	"dc:title": "[Untitled]",
+                	"dc:description" : "",
                 	"redbox:newForm": "true",
-                	"redbox:formVersion": "1.6-SNAPSHOT"
+                	"redbox:formVersion": "1.6.1-SNAPSHOT"
             	}, success: function(data) {
                 if (data.status == "ok") {
                     function copyMetadata() {
                     	var oid = "$metadata.get('storage_id')";
                     	jQuery.ajax({
-            	type: "POST",
-            	url: "$portalPath/copyTfPackage.ajax",
-            	data: {
-                	ajax: 1,
-                	fromOid: oid,
-                	toOid: data.oid,
-                	tfMetaPropertyValue: "dmptToSimple"
-            		}, success: function(data) {
-            		 	                if (data.status == "ok") {
-                    function redirect() {
-                        window.location.href = data.url;
-                    }
-                    setTimeout(redirect, 1500);
-                } else {
-                    alert("Failed to copy record!");
-                }
-            		 	
-
-            		},error:  function(xhr, status, e) {
-                		alert("Failed to create record!"); 
-           		 },
-            	dataType: "json"
-        		});
-                    	
-                    	
-                
+			            	type: "POST",
+			            	url: "$portalPath/copyTfPackage.ajax",
+			            	data: {
+			                	ajax: 1,
+			                	fromOid: oid,
+			                	toOid: data.oid,
+			                	tfMetaPropertyValue: "dmpToSelfSub"
+			            	}, 
+			            	success: function(data) {
+			            		if (data.status == "ok") {
+				                    function redirect() {
+				                        window.location.href = data.url;
+				                    }
+				                    setTimeout(redirect, 1500);
+				                } else {
+				                    alert("Failed to transfer record! " + data.message);
+				                }
+			            	},
+			            	error:  function(xhr, status, e) {
+			                		alert("Failed to complete transferring record!"); 
+			           		 },
+			            	dataType: "json"
+			        		});
                     }
                     setTimeout(copyMetadata, 1500);
                 } else {
@@ -154,7 +179,7 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
                 }
             },
             error: function(xhr, status, e) {
-                alert("Failed to create record!");
+                alert("Failed to complete creating record!");
             },
             dataType: "json"
         });
@@ -164,3 +189,5 @@ You can also add more:<a id='create-selfsubmission' href='#'><img src="$portalPa
 	
 	});
 </script>
+
+<div class="clear"></div>

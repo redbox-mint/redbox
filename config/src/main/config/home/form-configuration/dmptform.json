@@ -107,8 +107,7 @@
                             "component-type":"text-input",
                             "field-name":"dc:relation.bibo:Website",
                             "label":"",
-                            "additional-classes":"",
-                            
+                            "additional-classes":""
                         },
                         {
                             "component-type":"text-block",
@@ -245,11 +244,6 @@
     						 			  }      
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"locrel:rth.foaf:Person.foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label"
-                        },
-                        {
                             "component-type":"native-html",
                             "content":"<hr>"
                         },
@@ -257,7 +251,7 @@
                             "component-type":"text-block",
                             "type":"h3",
                             "content":"dmpt.form.people.dataManager.label",
-                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
+                            "help":"dmpt.form.help.locrel:prc.foaf:Person"
                         },
                         {
                         	"component-type":"person",
@@ -275,11 +269,6 @@
     						 			  }  
                         },
                         {
-                            "component-type":"text-input",
-                            "field-name":"locrel:prc.foaf:Person.foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label"
-                        },
-                        {
                             "component-type":"native-html",
                             "content":"<hr>"
                         },
@@ -293,8 +282,7 @@
                             "component-type":"repeatable-container",
                             "containter-for":"locrel:clb.foaf:Person",
                             "sub-elements":{"settings":[
-                            					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}},
-												{"jaffaText":{"label": "Email address","class-list":"jaffa-field","suffix": "email"}}
+                            					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}}
 												]
 											}	
                         },
@@ -313,12 +301,7 @@
                         	"lookup-name":"swrc:supervisor.foaf:Person",
                         	"lookup-only":"true"
                         },
-                        {
-                            "component-type":"text-input",
-                            "field-name":"swrc:supervisor.foaf:Person:foaf:email",
-                            "label":"dmpt.form.people.emailAddress.label",
-                            "label-classes":"dmpt-supervisor-email"
-                        },
+                        
                         {
                             "component-type":"transition-control",
                             "transitions":[{"name":"Back"},
@@ -428,7 +411,8 @@
                         {
                             "component-type":"text-input",
                             "field-name":"vivo:Dataset.dc.format.other",
-                            "label":""
+                            "label":"",
+                            "additional-classes":""
                         },
                         {
                             "component-type":"transition-control",
@@ -437,6 +421,7 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -479,6 +464,7 @@
             									"name": "Done",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -509,27 +495,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:extent"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:extent",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Less than 10 GB",
-                                    "label":"Less than 10 GB"
-                                },
-                                {
-                                    "value":"10GB-20GB",
-                                    "label":"10GB-20GB"
-                                },
-                                {
-                                    "value":"20GB – 100GB",
-                                    "label":"20GB – 100GB"
-                                },
-                                {
-                                    "value":"20GB – 100GB",
-                                    "label":"100GB+"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/dataSize.json"
                         },
                         {
                             "component-type":"text-block",
@@ -538,27 +507,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:location"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Personal equipment",
-                                    "label":"Personal equipment"
-                                },
-                                {
-                                    "value":"Shared university network drive",
-                                    "label":"Shared university network drive"
-                                },
-                                {
-                                    "value":"University provided collaboration space",
-                                    "label":"University provided collaboration space"
-                                },
-                                {
-                                    "value":"Other",
-                                    "label":"Other"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/storageLocation.json "
                         },
                         {
                             "component-type":"textarea",
@@ -573,27 +525,10 @@
                             "help":"dmpt.form.help.vivo:Dataset.dc:source.dc:location"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"Personal equipment",
-                                    "label":"Personal equipment"
-                                },
-                                {
-                                    "value":"Shared university network drive",
-                                    "label":"Shared university network drive"
-                                },
-                                {
-                                    "value":"University provided collaboration space",
-                                    "label":"University provided collaboration space"
-                                },
-                                {
-                                    "value":"Other",
-                                    "label":"Other"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/masterLocation.json"
                         },
                         {
                             "component-type":"textarea",
@@ -725,6 +660,7 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -754,54 +690,16 @@
                             "help":"dmpt.form.help.redbox:retentionPeriod"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"12 months (short term projects for assessment purposes only)",
-                                    "label":"12 months (short term projects for assessment purposes only)"
-                                },
-                                {
-                                    "value":"5 years after publication (general research)",
-                                    "label":"5 years after publication (general research)"
-                                },
-                                {
-                                    "value":"15 years after publication (Clinical trials, research involving humans)",
-                                    "label":"15 years after publication (Clinical trials, research involving humans)"
-                                },
-                                {
-                                    "value":"Permanent (gene therapy or data with significant heritage value)",
-                                    "label":"Permanent (gene therapy or data with significant heritage value)"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/retentionPeriod.json"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date.skos:note",
                             "label":"dmpt.form.dataRetention.justification.label",
-                            "options":[
-                                {
-                                    "value":"It has community or heritage value",
-                                    "label":"It has community or heritage value"
-                                },
-                                {
-                                    "value":"It is controversial",
-                                    "label":"It is controversial"
-                                },
-                                {
-                                    "value":"It is of wide public interest",
-                                    "label":"It is of wide public interest"
-                                },
-                                {
-                                    "value":"It would be costly or impossible to reproduce",
-                                    "label":"It would be costly or impossible to reproduce"
-                                },
-                                {
-                                    "value":"There is a commercial obligation to do so",
-                                    "label":"There is a commercial obligation to do so"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/retentionJustification.json"
                         },
                         {
                             "component-type":"text-block",
@@ -811,7 +709,7 @@
                         },
                         {
                             "component-type":"text-input",
-                            "field-name":"dataRetention.disposalDate",
+                            "field-name":"redbox:disposalDate",
                             "label":"",
                             "additional-classes":"dateYMD"
                         },
@@ -821,13 +719,14 @@
             									"name": "Save and close",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
                     															"value": "true"
                 															},
                 															{
-                    															"key": "dataRetention",
+                    															"key": "dataRetentionComplete",
                     															"value": "true"
                 															}
             															 ]
@@ -857,6 +756,7 @@
                         {
                             "component-type":"text-input",
                             "label":"",
+                            "additional-classes":"",
                             "field-name":"agls:policy.dc:identifier"
                         },
                         {
@@ -898,7 +798,7 @@
 								},
 								{
 									"label": "Security classified",
-									"value": " agls:protectiveMarking.dc:type.redbox:SecurityClassified"
+									"value": "agls:protectiveMarking.dc:type.redbox:SecurityClassified"
 								},
 								{
 									"label": "Non-public",
@@ -937,17 +837,14 @@
                             "type":"label",
                             "content":"dmpt.form.ownership.location.label",
                             "help": "dmpt.form.help.dc:coverage"
-                        },
+                        },                        
                         {
-                            "component-type":"dropdown-fixedvalue",
-                            "field-name":"dc:coverage",
-                            "label":"",
-                            "options":[
-                                {
-                                    "value":"au",
-                                    "label":"Australia"
-                                }
-                            ]
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:coverage.dc:identifier",
+                            "sub-elements":{"settings":[
+                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"","class-list":"jaffa-field","suffix":"country"}}
+      												]
+      											}	
                         },
                         {
                             "component-type":"text-block",
@@ -956,24 +853,10 @@
                             "help": "dmpt.form.help.dc:rightsHolder.dc:name"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"dc:rightsHolder.dc:name",
                             "label":"",
-                            "options":[
-                                {
-                                    "value":"myUni",
-                                    "label":"My University"
-                                },
-                                {
-                                    "value":"myUnjount",
-                                    "label":"My University (joint ownership)"
-                                },
-                                {
-                                    "value":"student",
-                                    "label":"Higher Degree Research Student"
-                                }
-                                
-                            ]
+                            "sourceUrl":"dmpt/data/rightsOwner.json"
                         },
                         {
                             "component-type":"text-block",
@@ -1001,7 +884,19 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save","close":true,"closeUrl":"/redbox/dashboard/home/dmpt/planready"}]
+							"transitions":[{"name":"Back"},
+											{"name":"Next",
+											 "form-submit-action":"save",
+											 "close":true,
+											 "closeUrl":"dmpt/planready",
+												"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															}
+            															 ]
+							
+							}]
                         }
                     ]
                 },
@@ -1033,23 +928,10 @@
                             "content":"Language"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"finalLanguage",
                             "label":"What language is relevant to this data collection?",
-                            "options":[
-                                {
-                                    "value":"Extra.Language.1",
-                                    "label":"English"
-                                },
-                                {
-                                    "value":"Extra.Language.2",
-                                    "label":"Obtain approval by the owner"
-                                },
-                                {
-                                    "value":"Extra.Language.3",
-                                    "label":"Access is freely available"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/finalLanguage.json"
                         },
                         {
                             "component-type":"native-html",
@@ -1075,6 +957,7 @@
                         {
                             "component-type":"text-input",
                             "field-name":"finalCollection.tiemPeriod",
+                            "additional-classes":"",
                             "label":"Time period:"
                         },
                         {
@@ -1084,7 +967,7 @@
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<div id='mapholder' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder').innerHTML='<img src='+img_url+'>';</script>"
+                            "content":"<div id='mapholder_demo1' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo1').innerHTML='<img src='+img_url+'>';</script>"
                         },
                         {
                             "component-type":"transition-control",
@@ -1092,6 +975,7 @@
             									"name": "Done",
             									"form-submit-action": "save",
             									"close": true,
+            									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
                 															{
                     															"key": "generatePDF",
@@ -1127,23 +1011,10 @@
                             "content":"If you are using data that is generated by another party;"
                         },
                         {
-                            "component-type":"dropdown-fixedvalue",
+                            "component-type":"data-source-dropdown",
                             "field-name":"Extra.Data.Access",
                             "label":"How will you get access to the data?",
-                            "options":[
-                                {
-                                    "value":"Extra.Data.Access.1",
-                                    "label":"Purchase"
-                                },
-                                {
-                                    "value":"Extra.Data.Access.2",
-                                    "label":"Obtain approval by the owner"
-                                },
-                                {
-                                    "value":"Extra.Data.Access.3",
-                                    "label":"Access is freely available"
-                                }
-                            ]
+                            "sourceUrl":"dmpt/data/extraDataAccess.json"
                         },
                         {
                             "component-type":"text-input",
@@ -1180,7 +1051,7 @@
                         },
                         {
                             "component-type":"native-html",
-                            "content":"<div id='mapholder' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder').innerHTML='<img src='+img_url+'>';</script>"
+                            "content":"<div id='mapholder_demo2' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo2').innerHTML='<img src='+img_url+'>';</script>"
                         },
                         {
                             "component-type":"text-input",

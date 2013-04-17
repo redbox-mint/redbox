@@ -11,7 +11,7 @@
 #end
 
 #macro(getList $listName)
-    #set($items = $util.getList("$listName"))
+    #set($items = $util.getList($item, "$listName"))
     #if ($items && $items.size() > 0)
 		#set($i = 0)
 		#foreach($el in $items)
@@ -34,24 +34,9 @@
     #end
     </dd>
 #end
-#macro(displayList $listName $label)
-    <dt>$label</dt>
-    #set($items = $util.getList("$listName"))
-    <dd>
-    #if ($items && $items.size() > 0)
-		#set($i = 0)
-		#foreach($item in $items)
-			#if($i > 0) , #else #set($i = 1) #end
-			$item
-		#end
-    #else
-		#noInformation()
-    </dd>
-    #end
-#end
 #macro(displayNote $key $name)
    	<h4>$name</h4>
-	<p>#getValue("vivo:Dataset.dc:location.skos:note")</p>
+	<p>#getValue($key)</p>
 #end
 #macro(displayRow $key $name $c $type)
 	<tr class="$c">
@@ -60,7 +45,8 @@
     </tr>
 #end
 
-#set ($projectName = $util.get($item, "dc:title"))
+##this line seems not used
+##set ($projectName = $util.get($item, "dc:title"))
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -88,7 +74,7 @@ dd {
 	padding:4px 0 4px;
 }
 
-table { width:12cm }
+table { width:14cm }
 table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 .first_col { width: 4cm; }
 
@@ -161,7 +147,37 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     </dl>    
     #displayNote("agls:policy.skos:note" "Ethics considerations")
     <dl>    
-        #display("agls:protectiveMarking.dc:type" "Type of sensitivity")
+    ## agls:protectiveMarking.dc:type is saved from checkbox, sepecial treat
+    #set($itemList = $util.getList($item, "agls:protectiveMarking.dc:type"))
+    <dt>Type of sensitivity</dt>
+    <dd>
+    #if ($itemList.size() > 0)
+    	#set($i = 0)
+        #foreach($key in $itemList.keySet())
+            #set($display_value = "--")
+            #set($key_value = $itemList.get($key).get($key))
+            #if ($key_value == "agls:protectiveMarking.dc:type.redbox:CulturallySensitive") 			
+        	    #set($display_value = "Culturally sensitive")
+            #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive")
+			    #set($display_value = "Commercially sensitive")
+            #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:SecurityClassified")
+			    #set($display_value = "Security classified")
+		    #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:NonPublic")
+			    #set($display_value = "Non-public")
+            #elseif($key_value != 'null')
+         	   #set($display_value = $key_value)
+            #end
+            #if( $!display_value != "" && $display_value != "--") 
+         	   #if($i > 0) , #end
+         	   $display_value
+          	   #set($i = $i + 1)
+            #end	
+        #end
+    #else
+        #noInformation()
+    #end
+    </dd>
+
     </dl>    
     #displayNote("agls:protectiveMarking.skos:note" "Sensitivity note")
 </section>
@@ -173,7 +189,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     </dl>    
 	#displayNote("dc:rightsHolder.dc:name" "Copyright and intellectual property owners")
 	#displayNote("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
-	#displayNote("redbox:ContractualObligations" "Constractual obligations")
+	#displayNote("redbox:ContractualObligations" "Contractual obligations")
 </section>
 <hr />
 <section>
@@ -185,6 +201,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
     <dl>    
         #display("vivo:Dataset.dc.format" "Primary file format")
+        #display("vivo:Dataset.dc.format.other" "Other format used")
     </dl>
 </section>
 <hr />
@@ -192,7 +209,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <h1>Licensing and access</h1>
     <dl>
         #display("dc:accessRights" "Access")
-        #display("dc:license" "Licence")
+        #display("dc:license.dc:identifier" "Licence")
     </dl>
 	#displayNote("dc:RightsStatement" "Rights")
 	#displayNote("dc:rights.skos:note" "Access notes")

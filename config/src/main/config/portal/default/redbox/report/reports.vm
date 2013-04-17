@@ -20,11 +20,42 @@
 	<section>
 	#if($reportName)
 		<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a></div>
-		<h1>Edit Report</h1>
+		<h2 id="page-heading"><span>Edit Report</span>
+		</h2>
 	#else
-		<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
-		<h1>Create New Report</h1>
+	    <div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	    <h2 id="page-heading"><span>Create New Report</span>
+            <span class="helpWidget" data-help-content-id="help-reports">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-reports").toggle();'/>
+            </span>
+        </h2>
 	#end
+	<div class="help-content" id="help-reports" style="display: none;">
+        <p>The <i>Create New Report</i> functionality allows the user to build reports based on selected
+        criteria across a given date range where data is available within the specified time frame.
+        Reports are created by selecting from a sub-set of ReDBox metadata fields and searching on
+        their values, as they appear in ReDBox.</p>
+
+        Users can:
+        <ul>
+        <li>select the required <i>date range from</i> and <i>date range to</i> from the entry fields to
+        generate a customised report by date, where data is available.</li>
+        <li>select to create a report based on the created or modified date of the record. Note:
+        <i>Alerts</i> ingested into ReDBox will have both a created and modified date applied on
+        ingest, by default.</li>
+        <li>select specific and multiple fields for inclusion in the report. Field behaviours will
+        mimic those of the ReDBox forms, ie. controlled vocabularies, look-ups, etc.
+        limit specified fields to specific or exact values</li>
+        <li>include or exclude null values within specified fields</li>
+        <li>enter a report title.</li>
+        </ul>
+        <p>The <i>Create and Run</i> button will generate the report, providing the user with a preview
+        display of a subset of the records included in the report.</p>
+
+        <p>The report can be printed or saved as PDF and can also be exported as a CSV file. When the
+        report has been created it will then be visible on the Manage Reports page where the user
+        can delete, duplicate or run the report.</p>
+    </div>
 	<div class="errorbox">
 		#displayMessage("reports.create.report.validation.message")
 		<ul id="errorbox-list">
@@ -120,7 +151,7 @@ for (var i=1; i<reportCriteriaArray.length; i++) {
 reportCriteria = reportCriteriaArray[i];
 
 
-$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
+//$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
 $('[id="report-criteria.'+i+'.dropdown-input"]').val(reportCriteria['dropdownInput']);
 if(reportCriteria['matchContains'] != null) {
 if($('[id="report-criteria.'+i+'.match_contains"]').length ==0) {
@@ -132,11 +163,11 @@ $('[id="report-criteria.'+i+'.match_contains"]').val(reportCriteria['matchContai
 
 $
 if(reportCriteria['includeNulls'] != null) {
-if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
-	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\">Exclude null values</option></select>");
-	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
-}
-$('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
+    if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
+    	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\" selected>Exclude null values</option></select>");
+    	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
+    }
+    $('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
 }
 jaffa.form.ignoreField("report-criteria.'+i+'.searchcomponent", true);
 jaffa.form.addField("report-criteria.'+i+'.searchcomponent", "report-criteria."+i+".Container");
@@ -234,14 +265,13 @@ $('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomp
 							 	 };
 							 	 
 		$(document).ready(function(){ 
-		
-					$( ".datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });
-		
-		
-							 
-						});
+					  $(".datepicker").datepicker({
+					         dateFormat: "d/m/yy", 
+					         changeMonth: true, 
+					         changeYear: true, 
+					         showButtonPanel: false
+					     });
 
-		$(document).ready(function(){
 		$("#reportCriteria").jaffaReportCriteriaRepeatable({
 															"disable-numbers":true,
 															"disable-sorting":true,

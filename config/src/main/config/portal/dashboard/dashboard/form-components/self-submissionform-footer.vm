@@ -1,0 +1,220 @@
+<script src="$portalPath/js/wizard.js"></script>
+<script type="text/javascript">
+	var selfSubmission = {
+		submit_hidden: true,
+		toggle_submit: function () {
+			var btn_submit = document.querySelector('a[transition-name="Submit"]');
+			if (selfSubmission.submit_hidden) {
+				btn_submit.style.visibility = 'hidden';	
+			} else {
+				btn_submit.style.visibility = 'visible';
+			}
+			selfSubmission.submit_hidden = !selfSubmission.submit_hidden; 
+		}
+		
+	};
+	$(document).ready(function() {
+		var hidden_elements = document.getElementsByClassName('HiddenWidget');
+   		for( var i = 0; i < hidden_elements.length; i++) {
+   			hidden_elements[i].style.display = 'none';
+   		}
+		
+		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-self-submission.json", "dmptTabs");
+		
+		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');
+		
+		//on change event to set read only field in Data licensing and access with data manager
+		$("[id='locrel:prc.foaf:Person.foaf:familyName']").change(function() {
+			var dataManager= $("[id='locrel:prc.foaf:Person.foaf:title']").val() + " " +
+ 			$("[id='locrel:prc.foaf:Person.foaf:givenName']").val() + " " + $("[id='locrel:prc.foaf:Person.foaf:familyName']").val();
+			$("[id='dataLicensingAccess.manager']").val(dataManager);
+		});
+		
+		selfSubmission.toggle_submit();
+		// hide Submit link until user acknowledges 
+		document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
+		
+		prepareHelps();
+   	})
+</script>
+
+<!-- // For simpleform-footer.vm -->
+	
+<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
+	
+<script type="text/javascript">
+	(function($){
+	    // OpenLayers stylesheets
+	    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss1">');
+	    $('#openLayersCss1').attr('href', '$portalPath/openlayers/theme/default/style.css');
+	    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss2">');
+	    $('#openLayersCss2').attr('href', '$portalPath/openlayers/redbox.css');
+
+	    $(function(){
+	            // OpenLayers init, store it globally so the Geonames lookup can hit it later
+	            window["openLayersMap"] = loadOpenLayers();
+	    });
+	})(jQuery);
+</script>
+
+<script type="text/javascript">
+	//The following script is required for the GeoNames processing associated with the OpenStreeMap
+
+	    function cleanRdfToJs(input) {
+	        var output = input.replace(/\./g, "\\.");
+	        return output.replace(/\:/g, "\\:");
+	    }
+
+	    function getReDBoxById(redboxId) {
+	        var cleanId = cleanRdfToJs(redboxId);
+	        return $("#" + cleanId);
+	    }
+
+	$(function(){
+	    function splitGeonamesData(row) {
+	        var items = row[0].split("::");
+	        return {
+	            id: items[0],
+	            uri: items[1],
+	            display: items[2],
+	            north: items[3],
+	            east: items[4]
+	        };
+	    }
+	    
+	    $("#add-location").click(function(){
+	        getReDBoxById("dc:coverage.vivo:GeographicLocation.0.coords").hide();
+	    });
+
+	    $("#geonamesLookup").live("focus", function(){
+	        var elem = $(this);
+	        elem.unautocomplete();
+	            elem.autocomplete(
+	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+	                {
+	                    extraParams: {
+	                        qs: function() {
+	                            var userInput = elem.val();
+	                            var commaPos = userInput.indexOf(",");
+	                            if(commaPos!=-1){
+	                                userInput = userInput.substring(0,commaPos);
+	                            }
+	                            return "func=search&format=json&rows=25&q=" + escape(userInput);
+	                        }
+	                    },
+	                    formatItem: function(row) { return splitGeonamesData(row).display; },
+	                    formatResult: function(row) { return splitGeonamesData(row).display; },
+	                    width: "40em"
+	                }).result(function(event, row) {
+	                    if (row) {
+	                        var data = splitGeonamesData(row);
+	                        // Pan OpenLayers Map
+	                        if (window["openLayersMap"] != null) {
+	                            window["openLayersMap"].panTo(data.east, data.north, 10);
+	                        }
+	                    }
+	                })
+	        }).live("blur", function(){
+	            $(this).search();
+	        });
+	    
+	    $(".autocomplete-geonames").live("focus", function(){
+	        var elem = $(this);
+	        var baseId = elem.attr("id").replace(".rdf:PlainLiteral", "");
+	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+	        elem.unautocomplete();
+	        if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
+	            elem.autocomplete(
+	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+	                {
+	                    extraParams: {
+	                        qs: function() {
+	                            var userInput = elem.val();
+	                            var commaPos = userInput.indexOf(",");
+	                            if(commaPos!=-1){
+	                                userInput = userInput.substring(0,commaPos);
+	                            }
+	                            return "func=search&format=json&rows=25&q=" + escape(userInput);
+	                        }
+	                    },
+	                    formatItem: function(row) { return splitGeonamesData(row).display; },
+	                    formatResult: function(row) { return splitGeonamesData(row).display; },
+	                    width: "40em"
+	                }).result(function(event, row) {
+	                    if (row) {
+	                        var data = splitGeonamesData(row);
+	                        var coordsElem = getReDBoxById(baseId+".coords");
+	                        getReDBoxById(baseId+".dc:identifier").val(data.uri);
+	                        getReDBoxById(baseId+".geo:long").val(data.east);
+	                        getReDBoxById(baseId+".geo:lat").val(data.north);
+	                        coordsElem.find(".east").text(data.east);
+	                        coordsElem.find(".north").text(data.north);
+	                        coordsElem.show();
+	                    }
+	                })
+	            }
+	        }).live("blur", function(){
+	            $(this).search();
+	        });
+
+	    $(".map-link").live("click", function(){
+	        var p = $(this).parent();
+	        var baseId = p.attr("id").replace(".coords", "");
+	        var long = getReDBoxById(baseId+".geo:long").val();
+	        var lat = getReDBoxById(baseId+".geo:lat").val();
+	        window["openLayersMap"].panTo(long, lat, 10);
+	        return false;
+	    });
+
+	    $(".clear-link").live("click", function(){
+	        var p = $(this).parent();
+	        var baseId = p.attr("id").replace(".coords", "");
+	        getReDBoxById(baseId+".dc:identifier").removeAttr("value");
+	        getReDBoxById(baseId+".geo:long").removeAttr("value");
+	        getReDBoxById(baseId+".geo:lat").removeAttr("value");
+	        p.hide();
+	    });
+
+	    var lastTypeValue;
+	    $(".locationType").live("focus", function() {
+	        // This is only really useful on the first use of the drop-down
+	        lastTypeValue = $(this).val();
+	    }).live("change", function(e){
+	        var elem = $(this);
+	        var baseId = elem.attr("id").replace(".dc:type", "");
+	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+	        var wktString = wktElem.val();
+	        // OpenLayers Row
+	        if (wktString != "") {
+	            var outElem = getReDBoxById(baseId+".rdf:PlainLiteral");
+	            var type = elem.val();
+	            // The alert window causes focus changes... use this temp variable instead
+	            var lastType = lastTypeValue;
+	            var output = window["openLayersMap"].mapWktData(wktString, type);
+	            if (output != null) {
+	                outElem.val(output);
+	                // Fix the focus loss from the alert
+	                lastTypeValue = type;
+	            } else {
+	                elem.val(lastType);
+	                // Fix the focus loss from the alert
+	                lastTypeValue = lastType;
+	                return;
+	            }
+
+	        // Legacy input
+	        } else {
+	            var uriElem = getReDBoxById(baseId+".dc:identifier");
+	            if(elem.val() != "text" && uriElem.val() != ""){
+	                if (confirm("Are you sure you want to clear the Geonames linked location?")) {
+	                    getReDBoxById(baseId+".rdf:PlainLiteral").val("");
+	                    $("div[id='"+baseId+".coords'] .clear-link").click();
+	                } else {
+	                    $(this).val("text");
+	                }
+	            }
+	        }
+	    });
+	});
+	</script>
+	

@@ -9,6 +9,7 @@
         }
     },
     "workflow-id":"simple",
+    "page-title": "New Research Data",    
     "transformer": {
         "curation": ["local"],
         "metadata": ["jsonVelocity"]
@@ -17,7 +18,7 @@
         "neverPublish": false,
         "alreadyCurated": false
     },
-
+	"display-type":"package-simple",
     "transformerOverrides": {
         "local": {
             "template": "${server.url.base}published/detail/[[OID]]"

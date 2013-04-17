@@ -1,0 +1,34 @@
+#if($page.authentication.is_admin())
+#set($menuClass = "attachments")
+#set($menuTitle = '<a class="collapsible" href="#">Datastreams</a>')
+#parseTemplate("wrapping/menu-open.vm")
+<ul class="menu hidden">
+    #set($object = $parent.getObject())
+    #set($oid = $object.getId())
+    #foreach($pid in $object.getPayloadIdList())
+        #set($payload = $object.getPayload($pid))
+        #set($payloadType = $payload.getType().toString())
+        #set($contentType = $payload.getContentType())
+        <li class="payload" rel="$contentType">
+            <a href="$portalPath/download/$oid/$pid" rel="$payloadType" target="blank" title="$contentType">$pid</a>
+        </li>
+    #end
+</ul>
+#parseTemplate("wrapping/menu-close.vm")
+<script type="text/javascript">
+<!--
+    function collapsible(container, target) {
+        var trigger = $(container).find(".collapsible");
+        var target = $(container).find(target);
+        trigger.click(function() {
+            target.toggle("blind").toggleClass("visible").toggleClass("hidden");
+            trigger.toggleClass("visible");
+            return false;
+        });
+    }
+    $(function() {
+        collapsible(".attachments", "ul.menu");
+    });
+-->
+</script>
+#end

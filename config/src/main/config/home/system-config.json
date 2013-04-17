@@ -568,7 +568,7 @@
                   },
                   {
                     "name":"rb-collection-index",
-                    "label":"Records in ReDBox - (Collection type) Catalouge or Index",
+                    "label":"Records in ReDBox - (Collection type) Catalogue or Index",
                     "solr_field":"dc_type",
                     "solr_field_value":"catalogueOrIndex"                
                   },
@@ -600,7 +600,7 @@
                     "name":"rb-workflow-metadata",
                     "label":"Records in ReDBox - (workflow) Metadata Review",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"metadata"                
+                    "solr_field_value":"metadata-review"                
                   },
                   {                  
                     "name":"rb-workflow-investigation",

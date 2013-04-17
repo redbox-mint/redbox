@@ -1,0 +1,30 @@
+{
+    "steps": {
+        "Overview": {
+            "Next": "Identifier"
+        },
+        "Identifier": {
+            "Back": "Overview",
+            "Next": "Subjects"
+        },
+        "Subjects": {
+            "Back": "Identifier",
+            "Next": "People"
+        },
+        "People": {
+            "Back": "Overview",
+            "Next": "Access"
+        },
+        "Access": {
+        	"Back": "People",
+            "Next": "Coverage"
+        },
+        "Coverage": {
+        	"Back": "Access",
+            "Next": "UserSubmit"
+        },
+        "UserSubmit": {
+            "Back": "Coverage"
+        }
+    }
+}

@@ -72,6 +72,13 @@ class DetailData:
         else:
             return []
 
+    def getAllowedUsers(self):
+        metadata = self.getMetadata()
+        if metadata is not None:
+            return metadata.getList("security_exception")
+        else:
+            return []
+            
     def getAllPreviews(self):
         list = self.getAltPreviews()
         preview = self.getPreview()
@@ -140,12 +147,15 @@ class DetailData:
         return self.__inPackage
 
     def isAccessDenied(self):
+        current_user = self.page.authentication.get_username()
         # check if the current user is the record owner
-        if self.getObject() is not None:    
-            current_user = self.page.authentication.get_username()    
+        if self.getObject() is not None:        
             owner = self.getProperty("owner")
             if current_user == owner: 
                 return False
+        allowedUsers = self.getAllowedUsers()
+        if current_user in allowedUsers:
+            return False
         # check using role-based security
         myRoles = self.page.authentication.get_roles_list()
         allowedRoles = self.getAllowedRoles()
@@ -197,10 +207,14 @@ class DetailData:
     def __loadSolrData(self):
         portal = self.page.getPortal()
         query = 'id:"%s"' % self.__oid
+        current_user = self.page.authentication.get_username()
         if self.isDetail() and portal.getSearchQuery():
             query += " AND " + portal.getSearchQuery()
         req = SearchRequest(query)
         req.addParam("fq", 'item_type:"object"')
+        userRoles = self.page.authentication.get_roles_list()
+        current_roles = " OR ".join(userRoles)
+        req.addParam("fq", "owner:%s OR security_filter:(%s) OR security_exception:(%s)" % (current_user, current_roles, current_user))
         if self.isDetail():
             req.addParam("fq", portal.getQuery())
         out = ByteArrayOutputStream()

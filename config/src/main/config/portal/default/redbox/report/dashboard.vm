@@ -1,6 +1,36 @@
 #if($self.getErrorMsg()=="")
+#set($pageTitle = "Report dashboard")
 #set($portalPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
 <link rel="stylesheet" type="text/css" media="print" href="$portalPath/css/dashboard-print.css" />
+<h2 id="page-heading"><span>Admin dashboard</span>
+            <span class="helpWidget" data-help-content-id="help-dashboard">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-dashboard").toggle();'/>
+            </span>
+        </h2>
+        <div class="help-content" id="help-dashboard" style="display: none;">
+            <p>The Dashboard Report provides a static visual display of ReDBox metadata records for high
+    level reporting. When the Dashboard is selected it will automatically display a default date
+    range of <i>year to date</i> for the current year. Users can edit the <i>date range from</i> and <i>date
+    range to</i> entry fields to generate a customised report by date, where data is available across
+    the selected data range.</p>
+
+    <p>The four graphs presented in the Dashboard are:</p>
+    <ul>
+        <li><i>Records by Workflow Stage</i>: displays the total number of ReDBox records for a given
+        date range, by workflow stage.</li>
+        <li><i>Record Type by Workflow Stage</i>: displays the total number of ReDBox records, by
+        record Collection type (rif-cs schema) for each workflow stage.</li>
+        <li><i>Records Published by Month</i>: displays the total number of ReDBox records,
+        published in each month across a specified date range.</li>
+        <li><i>Published Records by Record Type</i>: displays the total number of ReDBox records, by
+        record Collection type (rif-cs schema), published.</li>
+    </ul>
+    <p>Users can customize a report title by entering a new title or editing the existing report
+    title. The report title will be updated to reflect the new information when the user hits the
+    <i>enter<i> key or <i>clicks</i> anywhere on the screen outside of the report title field. The report can
+    be printed or saved as PDF and can also be exported as a CSV file to provide a numerical
+    representation of the visual display.</p>
+        </div>
 <div>
 	<div id="reportDashboardForm">
 	<div>
@@ -55,3 +85,5 @@
 	<span>$self.getErrorMsg()</span>
 #end
 </div>
+
+

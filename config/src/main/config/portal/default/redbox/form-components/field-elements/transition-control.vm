@@ -9,7 +9,7 @@
 	#if ( $transition.close) 
 		#if ( $transition.closeUrl ) 
 			#set($oid = $velocityContext.get("formData").get("oid"))
-			close-transition="$transition.closeUrl?oid=$oid"
+			close-transition="$portalPath/$transition.closeUrl?oid=$oid"
 		#else 
 			close-transition="$portalPath/home"
 		#end

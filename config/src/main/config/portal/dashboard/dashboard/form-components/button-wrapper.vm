@@ -1,0 +1,47 @@
+#set($oid = $velocityContext.get('formData').get('oid'))
+<script type="text/javascript">
+  var action = null;
+  var objectMetadataParams = null;
+  var closeUrl = null; 
+</script>
+<span class="simple-workflow component-wrapper">
+$buttonHtml
+</span>
+<script type="text/javascript">
+   function saveData(functionName,unmanagedData, isValid, serverData) {
+   		if(isValid) {  
+   			var url = null, workflow_next = null;
+   			if(action == 'save-next') { 
+   				action = 'save'; workflow_next = 'next';
+   				console.debug("save-next has been processed: " + action + " " + workflow_next);
+   			}
+   			if(objectMetadataParams != null) {
+   				url = '$portalPath/workflows/simpleworkflow.ajax?func=action&action='+action+'&oid=$oid&objMeta='+objectMetadataParams;
+   			} else {
+         		url = '$portalPath/workflows/simpleworkflow.ajax?func=action&action='+action+'&oid=$oid';
+         	}
+         	jQuery.ajax({type:"POST", url:url, data:serverData,
+						 success:function(){
+							 if (workflow_next) {
+								 // Change stage of this workflow
+								 jQuery.ajax(
+									{type:"POST", 
+									 url:'$portalPath/workflows/simpleworkflow.ajax?func=action&action=next&oid=$oid',
+									 success:function() { setInterval(function() { window.location = closeUrl;}, 1500) },
+									 error:function(xhr, status, e) { alert("Failed to submit.\n" + e)}
+								   });
+							 } else if(closeUrl) {
+		 					 	var redirectUrl = closeUrl;
+		 					 	closeUrl= null;
+		 					 	// go to portal home
+								window.location = redirectUrl;
+							};
+							},
+						 error:function(xhr, status, e){},
+						 dataType:"json"
+					   });
+			action = null;
+			objectMetadataParams = null;
+		}
+    }
+</script>

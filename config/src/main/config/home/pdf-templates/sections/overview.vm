@@ -1,18 +1,43 @@
+## display a list in a row 
+#macro(displayRowList $label $baseKey $subKey)
+<tr>
+<td>$label</td>
+<td>
+#set($forList = $util.getList($item, "$baseKey"))
+#if ($forList.size() > 0)
+	#set($i = 0)
+    #foreach($key in $forList.keySet())
+        #if($i > 0) , #else #set($i = 1) #end
+        $forList.get($key).get("$subKey")
+    #end
+#else
+	#noInformation()
+#end
+</td>
+</tr>
+#end
+
 <section>
 	<h1>Overview</h1>
-    <table id="pdf-like">
+    <table>
         #displayRow("dc:title" "Project name" "odd_row")
         #displayRow("dc:identifier" "Project ID" "even_row")
         #displayRow("dc:relation.bibo:Website" "Project website" "odd_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date" "even_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
-        #displayRow("foaf:fundedBy.vivo:Grant.1." "Grant numbers" "odd_row" "list") ##not very correct
+        #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
         #displayRow("dc:subject.anzsrc:toa" "Activity type" "even_row")
-        #displayRow("dc:subject.anzsrc:for" "FOR codes" "odd_row" "list")
-        #displayRow("dc:subject.anzsrc:seo" "SEO codes" "even_row" "list")
+        #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
 	</table>
 	<h4>Description</h4>
-	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
+	#set($v = $util.get($item, 'dc:description'))
+	<p>    #if($v && ("$!v" != ""))
+		$v
+	    #else
+			#noInformation()	
+	    #end
+	 </p>
 </section>
 <hr />

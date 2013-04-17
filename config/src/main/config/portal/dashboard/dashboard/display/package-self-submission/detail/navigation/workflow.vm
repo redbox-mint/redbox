@@ -1,0 +1,8 @@
+#set($hasWorkflow = $self.hasWorkflow())
+#set($hasWorkflowAccess = $self.hasWorkflowAccess())
+#if($hasWorkflow && $hasWorkflowAccess)
+    #set($workflowStep = $self.getWorkflowStep())
+    <li>
+        <a href="$portalPath/workflow/$oid" title="$workflowStep">Edit my dataset</a>
+    </li>
+#end

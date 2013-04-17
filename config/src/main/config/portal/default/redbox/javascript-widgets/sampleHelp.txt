@@ -1,0 +1,2 @@
+This is same sample help text (or <b>HTML</b>) that is loaded on-demand via AJAX.
+

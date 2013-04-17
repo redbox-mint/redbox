@@ -7,7 +7,7 @@
 }
 
 #notifications {
-	display:none;
+	display:none !important;
 }
 
 .hidden {

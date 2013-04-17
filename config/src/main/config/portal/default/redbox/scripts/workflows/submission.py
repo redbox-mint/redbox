@@ -5,5 +5,5 @@ class SubmissionData:
         pass
 
     def getSubmitDate(self):
-        return time.strftime("%Y-%m-%d %I:%M:%S %p")
+        return time.strftime("%Y-%m-%d")
 

@@ -42,6 +42,42 @@
     <td>#if ( $type == "list" ) #getList($key) #else #getValue($key) #end </td>
     </tr>
 #end
+
+#macro(displayRowLabel $key $name $labelFile)
+	<tr>
+    <td>$name</td>
+    <td>
+    #set($label = $self.getLabel($labelFile, $key))
+        #if ($label)
+          $label
+        #else
+    		  #noInformation()
+      #end 
+    
+    </td>
+    </tr>
+#end
+
+## display a list in a row 
+#macro(displayRowList $label $baseKey $subKey)
+<tr>
+<td>$label</td>
+<td>
+#set($forList = $self.getList("$baseKey"))
+#if ($forList.isEmpty())
+#noInformation()
+#else
+	#set($i = 0)
+    #foreach($key in $forList.keySet())
+        #set($item = $forList.get($key))
+        #if($i > 0) , #else #set($i = 1) #end
+        $item.get("$subKey")
+    #end
+#end
+</td>
+</tr>
+#end
+
 <style>
 	#pdf-like { border: none; width: 40em }
 	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
@@ -49,17 +85,17 @@
 <section>
 	<h1>Overview</h1>
     <table id="pdf-like">
-        #displayRow("dc:title" "Project name" "odd_row")
-        #displayRow("dc:identifier" "Project ID" "even_row")
-        #displayRow("dc:relation.bibo:Website" "Project website" "odd_row")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date" "even_row")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
-        #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
-        #displayRow("foaf:fundedBy.vivo:Grant.1." "Grant numbers" "odd_row" "list") ##not very correct
-        #displayRow("dc:subject.anzsrc:toa" "Activity type" "even_row")
-        #displayRow("dc:subject.anzsrc:for.0.rdf:resource.1.skos:prefLabel" "FOR codes" "odd_row" "list")
-        #displayRow("dc:subject.anzsrc:seo.0.rdf:resource.1.skos:prefLabel" "SEO codes" "even_row" "list")
-	</table>
-	<h4>Description</h4>
+        #displayRow("dc:title" "Project name")
+        #displayRow("dc:identifier" "Project ID")
+        #displayRow("dc:relation.bibo:Website" "Project website")
+        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date")
+        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date")
+        #displayRow("foaf:fundedBy.foaf:Agent" "Funding source")
+        #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
+        #displayRowLabel("dc:subject.anzsrc:toa" "Activity type" "/../portal/dashboard/dashboard/dmpt/data/projectActivityType.json")
+        #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+    </table>
+    <h4>Description</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
-<section>
+</section>

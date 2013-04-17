@@ -1,5 +1,43 @@
 <script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
 
+<style>
+.containerLayout .jaffaListItem > div > div {
+    display:inline-block;
+    margin-right : 1em;
+    
+}
+
+.containerLayout .jaffaListItem > div > div {
+    vertical-align: top;
+}
+
+</style>
+
+<script type="text/javascript">
+//Buttons
+$(".nexttab").click(function() {
+
+    var validationPassed = validateTab(); 
+
+    if(validationPassed) {
+        jaffa.form.save();
+        var active = $("#simpleworkflow-form").tabs("option", "selected");
+        $("#simpleworkflow-form").tabs("option", "selected", active + 1);
+    }
+});
+
+$(".prevtab").click(function() {
+
+    var validationPassed = validateTab(); 
+
+    if(validationPassed) {
+        jaffa.form.save();
+        var active = $("#simpleworkflow-form").tabs("option", "selected");
+        $("#simpleworkflow-form").tabs("option", "selected", active - 1);
+    }
+});
+</script>
+
 <script type="text/javascript">
 #set($defaultIternal = "internal:id")
 #set($iternalId = $systemConfig.getString($defaultIternal, "redbox.identity", "internalGrantString"))
@@ -34,67 +72,6 @@ function getDateTime(){
     $(function(){
             // OpenLayers init, store it globally so the Geonames lookup can hit it later
             window["openLayersMap"] = loadOpenLayers();
-/*
-            widgetTabs = widgets.changeToTabLayout($(".inputscreens"));
-            widgetTabs.tabs({
-                select: function(event, ui){
-                    if(widgets.forms[0].hasChanges()){
-                        $(".form-fields-save:first").click();
-                    }
-                }
-            });
-            widgets.contentLoaded(function(){
-                try{
-                    widgets.formsById["main-form"].addListener("postOnRestore",
-                        function(ctx){
-                            nameLookup.init();
-                            // people
-                            ctx.findx(".lookup-show").each(function(){
-                                var e=$(this);
-                                e.find("a.nameLookup-lookup").text(e.find("input.nl").val()?" | change":"lookup");
-                                e.find(".identified-as-name").text(e.find("input.nl").val());
-                            });
-                            // grant numbers
-                            $(".internal-grant:checked").each(function() {
-                                var baseId = $(this).attr("id").replace(".redbox:internalGrant", "");
-                                $("input[id="+baseId+".dc:identifier]").unautocomplete();
-                                $("input[id="+baseId+".skos:prefLabel]").removeAttr("readonly").removeClass("label");
-                            });
-                            // geonames
-                            $(".autocomplete-geonames").each(function() {
-                                var baseId = $(this).attr("id").replace(".rdf:PlainLiteral", "");
-                                var uri = $("input[id='"+baseId+".dc:identifier']").val();
-                                if (uri != "") {
-                                    var east = $("input[id='"+baseId+".geo:long']").val();
-                                    var north = $("input[id='"+baseId+".geo:lat']").val();
-                                    var coordsElem = $("div[id='"+baseId+".coords']");
-                                    coordsElem.find(".east").text(east);
-                                    coordsElem.find(".north").text(north);
-                                    coordsElem.find(".map-link").attr("href", uri);
-                                    coordsElem.show();
-                                }
-                            });
-                            // insert date created if not exist
-                            var dcCreated = $("#dc\\:created");
-                            if(jQuery.trim(dcCreated.val())==""){
-                                dcCreated.val(getDate());
-                            }
-
-                            // Identifier, if not 'internal' or 'external' click() it
-                            var idOrigin = $("input[id=dc:identifier.redbox:origin]").val();
-                            if (idOrigin == "") {
-                                $("input[id=dc:identifier.checkbox]").click();
-                            }
-                        }
-                    );
-                    // Form data is ready, load features on the map
-                    window["openLayersMap"].loadData();
-
-                }catch(e){
-                    alert(e);
-                }
-            });
-  */
     });
 })(jQuery);
 </script>
@@ -115,15 +92,6 @@ function getDateTime(){
 	}
 	$(document).ready(function() {
    		$(widgets.contentLoaded);
-/*
-        var hidden_elements = document.getElementsByClassName('HiddenWidget');
-   		console.info("HiddenWidgets");
-   		console.info('length = ' + hidden_elements.length);
-   		for( var i = 0; i < hidden_elements.length; i++) {
-   			console.info(hidden_elements[i].id);
-   			hidden_elements[i].style.display = 'none';
-   		}
-*/
     })
 </script>
 

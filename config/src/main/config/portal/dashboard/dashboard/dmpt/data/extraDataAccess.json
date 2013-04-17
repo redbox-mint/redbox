@@ -1,0 +1,14 @@
+[
+    {
+        "value":"Extra.Data.Access.1",
+        "label":"Purchase"
+    },
+    {
+        "value":"Extra.Data.Access.2",
+        "label":"Obtain approval by the owner"
+    },
+    {
+        "value":"Extra.Data.Access.3",
+        "label":"Access is freely available"
+    }
+]

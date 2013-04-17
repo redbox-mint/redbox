@@ -1,29 +1,33 @@
-#set($menuTitle = "My plans")
+#set($menuTitle = "#displayMessage('researcher-dashboard.home.myplans.title')")
+#set($currentUser = $self.getUser())
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
 #if ($self.myPlans && $self.myPlans.size() > 0)
     <table>
         <thead>
             <tr>
-                <th>Project</th>
-                <th>Created</th>
-                <th>Modified</th>
-                <th>Manage</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.manage')</th>
             </tr>
         </thead>
         <tbody>
         #foreach($item in $self.myPlans)
             #set($oid = $item.get("id"))
           <tr>
-                <td><a href="$portalPath/detail/$oid">$item.get('dc:title')</a></td>
+        		#set($title = $item.get('dc:title'))
+        		<td><a href="$portalPath/detail/$oid">#if ($title) $title #else [Untitled] #end</a></td>
                 <td>
                 #parseTemplate("home/dmpt/created_modified_date.vm")                
                 </td>
                 <td>$self.formatDate($item.get("last_modified"))</td>
-                <td><a href="$portalPath/workflow/$oid" title="Edit Plan"><img alt="Edit" src="$portalPath/images/icons/workflow_edit.png"></a>
-                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
-                <a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete plan" src="$portalPath/images/icons/delete.png"></a>
-                <a href="#" onclick="manage_access('$oid');" title="Set Permissions"><img alt="Manage record" src="$portalPath/images/icons/application_key.png"></a>
+                <td><a href="$portalPath/workflow/$oid" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
+                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+				#if($currentUser != "admin")
+				<a href="#" onclick="change_owner('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.delete')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.delete')" src="$portalPath/images/icons/delete.png"></a>
+				#end
+                <a href="#" onclick="manage_access('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.access')" src="$portalPath/images/icons/application_key.png"></a>
                 </td>
             </tr>
         #end
@@ -34,29 +38,30 @@
 #parseTemplate("wrapping/info-box-close.vm")
 
 #if ($self.sharedPlans && $self.sharedPlans.size() > 0)
-#set($menuTitle = "Plans shared with me")
+#set($menuTitle = "#displayMessage('researcher-dashboard.home.sharedplans.title')" )
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
     <table>
         <thead>
             <tr>
-                <th>Project</th>
-                <th>Created</th>
-                <th>Modified</th>
-                <th>Plan</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.pdf')</th>
             </tr>
         </thead>
         <tbody>
         #foreach($item in $self.sharedPlans)
             #set($oid = $item.get("id"))
           <tr>
-                <td><a href="$portalPath/detail/$oid">$item.get('dc:title')</a></td>
+        		#set($title = $item.get('dc:title'))
+                <td><a href="$portalPath/detail/$oid">#if ($title) $title #else [Untitled] #end</a></td>
                 <td>
                 #parseTemplate("home/dmpt/created_modified_date.vm")                
                 </td>
                 <td>$self.formatDate($item.get("last_modified"))</td>
                 <td>
-                <a target="_blank href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="Download PDF"><img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                <a target="_blank href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
                 </td>
             </tr>
         #end

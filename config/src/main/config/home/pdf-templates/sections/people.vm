@@ -1,16 +1,41 @@
 #macro(displayPerson $key $name)
-    <dt>$name</dt>
-    <dd>
-    	#set($title = $metadata.get("$key:title"))
-		#set($givenName = $metadata.get("$key:givenName"))
-		#set($familyName = $metadata.get("$key:familyName"))
-		#set($email = $metadata.get("$key:email"))
+	<tr>
+    <td>$name</td>
+    <td>
+    	#set($title = $util.get($item,"$key:title"))
+		#set($givenName = $util.get($item,"$key:givenName"))
+		#set($familyName = $util.get($item,"$key:familyName"))
+		#set($email = $util.get($item,"$key:email"))
     #if ($familyName)
     	$!title $!givenName $familyName $!email
     #else	
 		#noInformation()
-    </dd>
     #end
+    </td>
+    </tr>
+#end
+
+#macro(missing $value)
+<i>{missing: "$value" }</i>
+#end
+
+#macro(displayKey $map $key $required)
+#set ($value = $map.get($key))
+#if ("$!value" != "")
+$value
+#else
+    #if ($required)
+#missing($key)
+    #end
+#end
+#end
+
+#macro(displayOptionalKey $map $key)
+#displayKey($map $key false)
+#end
+
+#macro(displayRequiredKey $map $key)
+#displayKey($map $key true)
 #end
 
 <section>
@@ -18,7 +43,28 @@
     <table id="people">
     #displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator")
     #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager")
-    #displayPerson("locrel:clb.foaf:Person.1.person.foaf" "Collaborators")
+    <tr>
+    #set($personList = $util.getList($item, "locrel:clb.foaf:Person"))
+    <td>Collaborators</td>
+    #if ($personList.size() > 0)
+        <td>
+    	<ol>
+    	#foreach($key in $personList.keySet())
+        	#set($person = $personList.get($key))
+        	<li>
+            	#displayOptionalKey($person "person.foaf:title")
+            	#displayRequiredKey($person "person.foaf:givenName")
+            	#displayRequiredKey($person "person.foaf:familyName")
+            	#displayOptionalKey($person "email")
+            </li>
+        #end
+        </ol>
+        </td>
+    #else
+        <td> #noInformation() </td>
+    #end
+    </tr>
+    
     #displayPerson("swrc:supervisor.foaf:Person.foaf" "Supervisor")
 	</table>
 </section>

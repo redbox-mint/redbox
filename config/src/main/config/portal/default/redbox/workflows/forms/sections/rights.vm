@@ -83,7 +83,7 @@
             </tr>
             <tr>
                 <th>Description:</th>
-                <td><textarea rows="5" cols="77" readonly="readonly" class="selection-added-desc"/></td>
+                <td><span class="selection-add-more-info selection-added-desc"></span><input type="hidden" class="selection-added-desc"/></td>
             </tr>
             <tr>
                 <th>&nbsp;</th>

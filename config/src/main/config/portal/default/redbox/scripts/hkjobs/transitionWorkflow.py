@@ -5,7 +5,7 @@ from com.googlecode.fascinator.common import FascinatorHome
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
-
+from java.lang import Integer
 sys.path.append(os.path.join(FascinatorHome.getPath(), "lib", "jython", "workflowlib")) 
 from TransitionWorkflow import TransitionWorkflow
 
@@ -23,6 +23,8 @@ class TransitionWorkflowData:
             self.indexer = context["Services"].getIndexer()
             self.systemConfig = context["systemConfig"]
             self.log = context["log"]
+            self.sessionState = context["sessionState"]
+            self.sessionState.set("username","admin")
             writer = response.getPrintWriter("text/plain; charset=UTF-8")
             try:
                 writer.println("Transition workflow script has been started")
@@ -30,18 +32,34 @@ class TransitionWorkflowData:
                 transitions = self.systemConfig.getArray("transitionWorkflow", "transitions").toArray()
                 for transition in transitions:                
                     fromWorkflowId = transition.get("from-workflow-id")
-                    fromWorkflowStage = transition.get("from-workflow-stage")
+                    fromWorkflowStage = transition.get("from-workflow-step")
                     packages = self.findPackagesToTransition(fromWorkflowId, fromWorkflowStage)
-                    for package in packages:
-                        writer.println("processing: " + package.get("storage_id"))
-                        self.log.debug("processing: " + package.get("storage_id"))
-                        transitionWorkflow = TransitionWorkflow()
-                        transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-stage"))
-                        
-                    self.log.debug("Transition workflow script processed "+ packages.size() + " records for transition " +  transition)
+#<<<<<<< HEAD
+#                    for package in packages:
+#                        writer.println("processing: " + package.get("storage_id"))
+#                        self.log.debug("processing: " + package.get("storage_id"))
+#                        transitionWorkflow = TransitionWorkflow()
+#                        transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-stage"))
+#                        
+#                    self.log.debug("Transition workflow script processed "+ Integer(packages.size()).toString() + " records for transition " +  transition.toString())
+#                    count = count + packages.size()
+#                self.log.info("Transition workflow script processed "+ Integer(count).toString())
+#                writer.println("Transition workflow script processed "+ Integer(count).toString())
+#=======
+                    if  (packages.size() == 0):
+                        self.log.debug("Transition workflow script processed 0 records for transition \"" + transition.get("name") + "\"" )
+                        writer.println("Transition workflow script processed 0 records for transition \"" + transition.get("name") + "\"")
+                    else:
+                        for package in packages:
+                            writer.println("processing: " + package.get("storage_id"))
+                            self.log.debug("processing: " + package.get("storage_id"))
+                            transitionWorkflow = TransitionWorkflow()
+                            transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-step"))
+                            self.log.debug("Transition workflow script processed "+ str(packages.size()) + " records for transition " +  transition.get("name"))
                     count = count + packages.size()
-                self.log.info("Transition workflow script processed "+ count)
-                writer.println("Transition workflow script processed "+ count)
+                self.log.info("Transition workflow script processed "+ str(count))
+                writer.println("Transition workflow script processed "+ str(count))
+#>>>>>>> Fix: Transition Workflow
                 self.log.info("Transition workflow script has completed")    
                 writer.println("Transition workflow script has completed")
             except Exception, e:
@@ -50,12 +68,12 @@ class TransitionWorkflowData:
                raise
             
             finally:
+               self.sessionState.remove("username")
                if writer is not None:
                    writer.close()
                 
         def findPackagesToTransition(self, fromWorkflowId, fromWorkflowStage):
-            req = SearchRequest("workflow_id:\""+fromWorkflowId+"\"")
-            req.setParam("fq", "workflow_stage:\""+fromWorkflowStage+"\"")
+            req = SearchRequest("workflow_id:"+fromWorkflowId+" AND _query_:\"workflow_step:"+fromWorkflowStage+"\"")
             req.setParam("fq", "owner:[* TO *]")
             req.setParam("fq", "security_filter:[* TO *]")
             out = ByteArrayOutputStream()

@@ -1,6 +1,6 @@
 from java.lang import String
 from com.googlecode.fascinator.portal.report import StatisticalReport
-
+import sys
 
 from java.lang import String
 class StatisticalReportsData:
@@ -18,9 +18,9 @@ class StatisticalReportsData:
         self.formData = context["formData"]
         self.systemConfig = context["systemConfig"]
         self.errorMsg = ""
-        self.resultFields = ["rb-total", "rb-collection", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-published", "rb-workflow-final", "rb-workflow-metadata", "rb-workflow-investigation", "rb-workflow-retired"]
+        self.resultFields = ["rb-total", "hdr-collection-type", "rb-collection-dataset", "rb-collection-collection", "rb-collection-index", "rb-collection-registry", "rb-collection-repository", "hdr-workflow", "rb-workflow-inbox", "rb-workflow-investigation", "rb-workflow-metadata", "rb-workflow-final", "rb-workflow-published", "rb-workflow-retired"]
         self.mintResultFields = ["mint-total", "hdr-party", "parties_people", "parties_groups", "activities:", "services:"]
-        self.headerText = {"hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
+        self.headerText = {"hdr-collection-type":"Records in Redbox (by Collection type)", "hdr-workflow":"Records in RedBox (by Workflow)", "hdr-party":"Records in Mint - PARTY (type)"} 
         self.isNew = False
         self.report = None
         if (self.auth.is_logged_in()):
@@ -73,7 +73,12 @@ class StatisticalReportsData:
     def showReport(self, reportName):
         format = self.request.getParameter("format")
         self.report = self.reportManager.getReport(reportName)
-        self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString())
+        try:
+            self.stats = self.reportStatsService.getStatCounts(self.indexer, self.report.getQueryAsString(), self.report)
+        except:
+            self.errorMsg = "Query failed - please refer to your system administrator."
+            self.log.debug("Statistical reporting threw an exception (report was %s): %s - %s" % (self.report.getLabel(), sys.exc_info()[0], sys.exc_info()[1]))
+            
         if format == "csv":
             self.response.setHeader("Content-Disposition", "attachment; filename=%s.csv" % self.report.getLabel())
             writer = self.response.getPrintWriter("text/csv; charset=UTF-8")

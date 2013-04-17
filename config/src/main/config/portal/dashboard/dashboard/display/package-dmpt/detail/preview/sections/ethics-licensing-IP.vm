@@ -1,9 +1,9 @@
-#sectionHeading("Ethics, licensiing and IP")
+#sectionHeading("Ethics, licensing and IP")
 <div class="meta">
     <dl>
         #display("dc:coverage" "Country of collection")
-        #display("dc:rightsHolder.dc:name" "Copyright and intellectual property owners")
+        #displayLabel("dc:rightsHolder.dc:name" "Copyright and intellectual property owners" "/../portal/dashboard/dashboard/dmpt/data/rightsOwner.json")
         #display("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
-        #display("redbox:ContractualObligations" "Constractual obligations")
+        #display("redbox:ContractualObligations" "Contractual obligations")
     </dl>
 </div>
