@@ -1,8 +1,8 @@
 #sectionHeading("Retention and disposal")
 <div class="meta">
     <dl>
-        #display("redbox:retentionPeriod.dc:date" "Application retention period")
-        #display("redbox:retentionPeriod.dc:date.skos:note" "Justification for extended retention period")
+        #display("redbox:retentionPeriod.dc:date.prefLabel" "Application retention period")
+        #display("redbox:retentionPeriod.dc:date.skos:note.prefLabel" "Justification for extended retention period")
         #display("redbox:disposalDate" "Earliest possible disposal date")
     </dl>
 </div>

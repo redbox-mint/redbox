@@ -27,7 +27,7 @@
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
         #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
-        #displayRow("dc:subject.anzsrc:toa" "Activity type" "even_row")
+        #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type" "even_row")
         #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
         #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
 	</table>

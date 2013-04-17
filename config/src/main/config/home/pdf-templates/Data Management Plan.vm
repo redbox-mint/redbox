@@ -35,8 +35,11 @@
     </dd>
 #end
 #macro(displayNote $key $name)
-   	<h4>$name</h4>
-	<p>#getValue($key)</p>
+    #set($v = $util.get($item, $key))
+    #if($v && ("$!v" != ""))
+    	<h4>$name</h4>
+    	<p>$v</p>
+    #end
 #end
 #macro(displayRow $key $name $c $type)
 	<tr class="$c">
@@ -45,8 +48,8 @@
     </tr>
 #end
 
-##this line seems not used
-##set ($projectName = $util.get($item, "dc:title"))
+##Used in footer
+#set ($projectName = $util.get($item, "dc:title"))
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -129,13 +132,12 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <section>
 <h1>Data storage</h1>
     <dl>
-        #display("vivo:Dataset.dc:extent" "Expected size of data collected")
-        #display("vivo:Dataset.dc:location.rdf:PlainLiteral" "Storage location")
+        #display("vivo:Dataset.dc:extent.prefLabel" "Expected size of data collected")
+        #display("vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel" "Storage location")
     </dl>
 	#displayNote("vivo:Dataset.dc:location.skos:note" "Storage location note")
-    ##display("vivo:Dataset.dc:location.skos:note" "Storage location note")
     <dl>    
-        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral" "Master location")
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel" "Master location")
     </dl>    
     #displayNote("vivo:Dataset.dc:source.dc:location.skos:note" "Master location note")
 </section>
@@ -185,9 +187,9 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <section>
 <h1>Ethics, licensing and IP</h1>
     <dl>
-        #display("dc:coverage" "Country of collection")
+        #display("dc:coverage.dc:identifier.prefLabel" "Country of collection")
     </dl>    
-	#displayNote("dc:rightsHolder.dc:name" "Copyright and intellectual property owners")
+	#displayNote("dc:rightsHolder.dc:name.prefLabel" "Copyright and intellectual property owners")
 	#displayNote("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
 	#displayNote("redbox:ContractualObligations" "Contractual obligations")
 </section>
@@ -200,7 +202,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 	#displayNote("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used for data collection/creation")
 	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
     <dl>    
-        #display("vivo:Dataset.dc.format" "Primary file format")
+        #display("vivo:Dataset.dc.format.prefLabel" "Primary file format")
         #display("vivo:Dataset.dc.format.other" "Other format used")
     </dl>
 </section>
@@ -209,7 +211,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <h1>Licensing and access</h1>
     <dl>
         #display("dc:accessRights" "Access")
-        #display("dc:license.dc:identifier" "Licence")
+        #display("dc:license.skos:prefLabel" "Licence")
     </dl>
 	#displayNote("dc:RightsStatement" "Rights")
 	#displayNote("dc:rights.skos:note" "Access notes")
@@ -218,10 +220,8 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <section>
 <h1>Retention and disposal</h1>
     <dl>
-        #display("redbox:retentionPeriod.dc:date" "Application retention period")
-    </dl>    
-    #displayNote("redbox:retentionPeriod.dc:date.skos:note" "Justification for extended retention period")
-    <dl>
+        #display("redbox:retentionPeriod.dc:date.prefLabel" "Application retention period")
+        #display("redbox:retentionPeriod.dc:date.skos:note.prefLabel" "Justification for extended retention period")
         #display("redbox:disposalDate" "Earliest possible disposal date")
     </dl>
 </section>

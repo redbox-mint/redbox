@@ -1,7 +1,7 @@
 #sectionHeading("Ethics, licensing and IP")
 <div class="meta">
     <dl>        
-		#displayMintLabels("dc:coverage.dc:identifier" "Country of collection" "Countries_Detail" "country")
+		#displayMintLabels("dc:coverage.dc:identifier.prefLabel" "Country of collection" "Countries_Detail" "country")
         #displayLabel("dc:rightsHolder.dc:name" "Copyright and intellectual property owners" "/../portal/dashboard/dashboard/dmpt/data/rightsOwner.json")
 		#display("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
         #display("redbox:ContractualObligations" "Contractual obligations")
