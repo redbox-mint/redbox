@@ -105,8 +105,6 @@
 	             "handlers": {
 	                 "csv": "CSVAlertHandler"
 	             },
-	             "owner": "admin",
-	             "ownerResolutionScript": "",
 	             "CSVAlertHandlerParams": {
 	                    "configMap": {
 	                        "csv": {
@@ -127,6 +125,10 @@
 	                                    "Supervisor_Family_Name": "swrc:supervisor.foaf:Person.0.foaf:familyName",
 	                                    "Supervisor_Honorific": "swrc:supervisor.foaf:Person.0.foaf:title",
 	                                    "Supervisor_Email": "swrc:supervisor.foaf:Person.0.foaf:email"
+	                            },
+	                            "multiValue": {
+	                            	"fields": ["Investigators"],
+	                            	"fieldDelimiter": ";"
 	                            }
 	                        }
 	                    }
