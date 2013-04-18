@@ -928,7 +928,6 @@
                             "containter-for":"dc:coverage.dc:identifier",
                             "sub-elements":{"settings":[
                             					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"",
-                            					 "label-field":"dc:coverage.dc:identifier.prefLabel",
                             					 "class-list":"jaffa-field","suffix":"country"}
                             					 }
       											]
