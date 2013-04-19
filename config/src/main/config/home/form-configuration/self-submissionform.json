@@ -504,7 +504,7 @@
                         },
                         {
                             "component-type": "data-source-dropdown",
-                            "field-name": "redbox:retentionPeriod",
+                            "field-name": "redbox:retentionPeriod.dc:date",
                             "field-name-label": "redbox:retentionPeriod.dc:date.prefLabel",
                             "label": "",
                             "sourceUrl": "workflows/forms/data/retentionPeriod.json",
