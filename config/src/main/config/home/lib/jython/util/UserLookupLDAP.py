@@ -4,6 +4,7 @@
 from java.util import Hashtable
 from javax.naming import Context
 from javax.naming.directory import InitialDirContext, SearchControls
+import sys
 
 class UserLookupLDAP:
     def __init__(self,url):
@@ -14,7 +15,7 @@ class UserLookupLDAP:
         ctx = InitialDirContext(env)
         self.ctx = ctx
 
-    def search(self, criteria,  returnField, default="admin"):
+    def search(self, criteria,  returnField, default="guest"):
         srch = SearchControls()
         srch.setSearchScope(SearchControls.SUBTREE_SCOPE)
         srch.setCountLimit(1)
@@ -27,7 +28,12 @@ class UserLookupLDAP:
         else:
             return default
 
-##Run with jython resolveOwnerLdapLookup.py                
-cn = LDAP("ldap://ldap.qut.edu.au:389")
-print cn.search("(&(mail=d.dickinson@qut.edu.au) (objectClass=user))", "uid")
+if __name__ == "__main__":
+    ##Run with jython UserLookupLDAP.py  
+    ## e.g. jython UserLookupLDAP.py ldap://ldap.qut.edu.au:389 mail=d.dickinson@qut.edu.au user uid
+    #cn = UserLookupLDAP("ldap://ldap.qut.edu.au:389")
+    #print cn.search("(&(mail=d.dickinson@qut.edu.au) (objectClass=user))", "uid")
+    cn = UserLookupLDAP(sys.argv[1])
+    uname = cn.search("(&(%s) (objectClass=%s))" % (sys.argv[2], sys.argv[3]), sys.argv[4])
+    print "User name is: %s" % uname
 
