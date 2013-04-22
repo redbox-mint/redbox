@@ -8,23 +8,23 @@
                         {
                             "component-type":"text-block",
                             "type":"h2",
-                            "content":"dmpt.form.welcome.heading"
+                            "content":"dmpt.heading.welcome"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"dmpt.form.welcome.paragraph1"
+                            "content":"dmpt.welcome.paragraph1"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"dmpt.form.welcome.paragraph2"
+                            "content":"dmpt.welcome.paragraph2"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"dmpt.form.welcome.paragraph3"
+                            "content":"dmpt.welcome.paragraph3"
                         },
                         {
                             "component-type":"paragraph",
-                            "content":"dmpt.form.welcome.paragraph4"
+                            "content":"dmpt.welcome.paragraph4"
                         },
                         {
                             "component-type":"transition-control",
@@ -38,13 +38,13 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.projectOverview.heading"
+                            "content":"dmpt.heading.projectOverview"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.projectName.label",
-                            "help":"dmpt.form.help.dc:title"
+                            "content":"dmpt.label.dc-title",
+                            "help":"dmpt.help.dc-title"
                         },
                         {
                             "component-type":"text-input",
@@ -65,8 +65,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.projectId.label",
-                            "help":"dmpt.form.help.dc:identifier"
+                            "content":"dmpt.label.dc-identifier",
+                            "help":"dmpt.help.dc-identifier"
                         },
                         {
                             "component-type":"text-input",
@@ -87,8 +87,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.description.label",
-                            "help":"dmpt.form.help.dc:description"
+                            "content":"dmpt.label.dc-description",
+                            "help":"dmpt.help.dc-description"
                         },
                         {
                             "component-type":"textarea",
@@ -100,8 +100,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.projectWebsite.label",
-                            "help":"dmpt.form.help.dc:relation.bibo:website"
+                            "content":"dmpt.label.dc-relation.bibo-website",
+                            "help":"dmpt.help.dc-relation.bibo-website"
                         },
                         {
                             "component-type":"text-input",
@@ -112,8 +112,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.startDate.label",
-                            "help":"dmpt.form.help.dc:coverage.vivo:DateTimeInterval.vivo:start"
+                            "content":"dmpt.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
+                            "help":"dmpt.help.dc-coverage.vivo-DateTimeInterval.vivo-start"
                         },
                         {
                             "component-type":"text-input",
@@ -124,8 +124,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.endDate.label",
-                            "help":"dmpt.form.help.dc:coverage.vivo:DateTimeInterval.vivo:end"
+                            "content":"dmpt.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
+                            "help":"dmpt.help.dc-coverage.vivo-DateTimeInterval.vivo-end"
                         },
                         {
                             "component-type":"text-input",
@@ -136,8 +136,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.fundingSource.label",
-                            "help":"dmpt.form.help.foaf:fundedBy.foaf:Agent"
+                            "content":"dmpt.label.foaf-fundedBy.foaf-Agent",
+                            "help":"dmpt.help.foaf-fundedBy.foaf-Agent"
                         },
                         {
                             "component-type":"text-input",
@@ -148,8 +148,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.grantNumbers.label",
-                            "help":"dmpt.form.help.foaf:fundedBy.vivo:Grant"
+                            "content":"dmpt.label.foaf-fundedBy.vivo-Grant",
+                            "help":"dmpt.help.foaf-fundedBy.vivo-Grant"
                         },
                         {
                             "component-type":"repeatable-text",
@@ -159,20 +159,21 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.activityType.label",
-                            "help": "dmpt.form.help.dc:subject.anzsrc:toa"
+                            "content":"dmpt.label.dc-subject.anzsrc-toa",
+                            "help": "dmpt.help.dc-subject.anzsrc-toa"
                         },
                         {
                             "component-type":"data-source-dropdown",
-                            "field-name":"dc:subject.anzsrc:toa",
+                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
                             "label":"",
+                            "field-name-label":"dc:subject.anzsrc:toa.skos:prefLabel",
                             "sourceUrl":"dmpt/data/projectActivityType.json"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.forCodes.label",
-                            "help":"dmpt.form.help.dc:subject.anzsrc:for"
+                            "content":"dmpt.label.dc-subject.anzsrc-for",
+                            "help":"dmpt.help.dc-subject.anzsrc-for"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -191,8 +192,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.projectOverview.seoCodes.label",
-                            "help":"dmpt.form.help.dc:subject.dc:subject.anzsrc:seo"
+                            "content":"dmpt.label.dc-subject.dc-subject.anzsrc-seo",
+                            "help":"dmpt.help.dc-subject.dc-subject.anzsrc-seo"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -210,7 +211,24 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next","form-submit-action":"save"}]
+                            "transitions":[{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -220,13 +238,13 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.people.heading"
+                            "content":"dmpt.heading.people"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.people.principalInvestigator.label",
-                            "help":"dmpt.form.help.locrel:rth.foaf:Person"
+                            "content":"dmpt.label.locrel-rth.foaf-Person",
+                            "help":"dmpt.help.locrel-rth.foaf-Person"
                         },
                         {
                         	"component-type":"person",
@@ -250,8 +268,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.people.dataManager.label",
-                            "help":"dmpt.form.help.locrel:prc.foaf:Person"
+                            "content":"dmpt.label.locrel-prc.foaf-Person",
+                            "help":"dmpt.help.locrel-prc.foaf-Person"
                         },
                         {
                         	"component-type":"person",
@@ -275,8 +293,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.people.collaborators.label",
-                            "help":"dmpt.form.help.locrel:clb.foaf:Person"
+                            "content":"dmpt.label.locrel-clb.foaf-Person",
+                            "help":"dmpt.help.locrel-clb.foaf-Person"
                         },
                         {
                             "component-type":"repeatable-container",
@@ -293,19 +311,35 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.people.supervisor.label",
-                            "help":"dmpt.form.help.swrc:supervisor.foaf:Person"
+                            "content":"dmpt.label.swrc-supervisor.foaf-Person",
+                            "help":"dmpt.help.swrc-supervisor.foaf-Person"
                         },
                         {
                         	"component-type":"person",
                         	"lookup-name":"swrc:supervisor.foaf:Person",
                         	"lookup-only":"true"
                         },
-                        
                         {
                             "component-type":"transition-control",
                             "transitions":[{"name":"Back"},
-                             			   {"name":"Next","form-submit-action":"save"}]
+                             			   {"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -315,18 +349,18 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.dataCollection.heading"
+                            "content":"dmpt.heading.dataCollection"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.dataCollection.dataStructure.heading"
+                            "content":"dmpt.heading.dataCollection.dataStructure"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataStructure.metadataStandards.label",
-                            "help":"dmpt.form.help.vivo:Dataset.redbox:MetadataStandard"
+                            "content":"dmpt.label.vivo-Dataset.redbox-MetadataStandard",
+                            "help":"dmpt.help.vivo-Dataset.redbox-MetadataStandard"
                         },
                         {
                             "component-type":"textarea",
@@ -337,8 +371,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataStructure.standards.label",
-                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataStructureStandard"
+                            "content":"dmpt.label.vivo-Dataset.redbox-DataStructureStandard",
+                            "help":"dmpt.help.vivo-Dataset.redbox-DataStructureStandard"
                         },
                         {
                             "component-type":"textarea",
@@ -353,13 +387,13 @@
                     	{
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.dataCollection.dataCollection.heading"
+                            "content":"dmpt.heading.dataCollection.dataCollection"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataCollection.methodology.label",
-                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataCollectionMethodology"
+                            "content":"dmpt.label.vivo-Dataset.redbox-DataCollectionMethodology",
+                            "help":"dmpt.help.vivo-Dataset.redbox-DataCollectionMethodology"
                         },
                         {
                             "component-type":"textarea",
@@ -370,8 +404,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataCollection.collectionResources.label",
-                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataCollectionResources"
+                            "content":"dmpt.label.vivo-Dataset.redbox-DataCollectionResources",
+                            "help":"dmpt.help.vivo-Dataset.redbox-DataCollectionResources"
                         },
                         {
                             "component-type":"textarea",
@@ -382,8 +416,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataCollection.analysisResources.label",
-                            "help":"dmpt.form.help.vivo:Dataset.redbox:DataAnalysisResources"
+                            "content":"dmpt.label.vivo-Dataset.redbox-DataAnalysisResources",
+                            "help":"dmpt.help.vivo-Dataset.redbox-DataAnalysisResources"
                         },
                         {
                             "component-type":"textarea",
@@ -394,19 +428,20 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataCollection.fileFormat.label",
-                            "help":"dmpt.form.help.vivo:Dataset.dc.format"
+                            "content":"dmpt.label.vivo-Dataset.dc.format",
+                            "help":"dmpt.help.vivo-Dataset.dc.format"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc.format",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc.format.prefLabel",
                             "sourceUrl":"dmpt/data/fileFormat.json"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataCollection.fileFormatOther.label"
+                            "content":"dmpt.label.vivo-Dataset.dc.format.other"
                         },
                         {
                             "component-type":"text-input",
@@ -420,6 +455,7 @@
         									{
             									"name": "Save and close",
             									"form-submit-action": "save",
+            									"type": "button",
             									"close": true,
             									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
@@ -438,107 +474,84 @@
                     ]
                 },
                 {
-                    "heading":"dataStructure",
-                    "fields":[
-                        {
-                            "component-type":"text-block",
-                            "type":"h1",
-                            "content":"dmpt.form.dataStructure.heading"
-                        },
-                        {
-                            "component-type":"textarea",
-                            "field-name":"dataStructure.metadataStandards",
-                            "label":"safsa",
-                            "content":""
-                        },
-                        {
-                            "component-type":"textarea",
-                            "field-name":"dataStructure.Standards",
-                            "label":"dmpt.form.dataStructure.standards.label",
-                            "content":""
-                        },
-                        {
- 						   "component-type": "transition-control",
-    					   "transitions": [
-        									{
-            									"name": "Done",
-            									"form-submit-action": "save",
-            									"close": true,
-            									"closeUrl": "dmpt/details",
-            									"object-metadata-params": [
-                															{
-                    															"key": "generatePDF",
-                    															"value": "true"
-                															},
-                															{
-                    															"key": "dataStructureComplete",
-                    															"value": "true"
-                															}
-            															 ]
-        									}
-    									 ]
-						   }
-                    ]
-                },
-                {
                     "heading":"dataStorage",
                     "fields":[
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.dataStorage.heading"
+                            "content":"dmpt.heading.dataStorage"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataStorage.size.label",
-                            "help":"dmpt.form.help.vivo:Dataset.dc:extent"
+                            "content":"dmpt.label.vivo-Dataset.dc-extent",
+                            "help":"dmpt.help.vivo-Dataset.dc-extent"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:extent",
                             "label":"",
-                            "sourceUrl":"dmpt/data/dataSize.json"
+                            "field-name-label":"vivo:Dataset.dc:extent.prefLabel",
+                            "sourceUrl":"workflows/forms/data/dataSize.json"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataStorage.storageLocation.label",
-                            "help":"dmpt.form.help.vivo:Dataset.dc:location"
+                            "content":"dmpt.label.vivo-Dataset.dc-location",
+                            "help":"dmpt.help.vivo-Dataset.dc-location"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel",
                             "sourceUrl":"dmpt/data/storageLocation.json "
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:location.skos:note",
-                            "label":"dmpt.form.dataStorage.storageLocation.otherNote.label",
+                            "label":"dmpt.label.dataStorage.storageLocation.otherNote",
                             "content":""
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataStorage.masterVersionLocation.label",
-                            "help":"dmpt.form.help.vivo:Dataset.dc:source.dc:location"
+                            "content":"dmpt.label.vivo-Dataset.dc-source.dc-location",
+                            "help":"dmpt.help.vivo-Dataset.dc-source.dc-location"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
                             "label":"",
+                            "field-name-label":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel",
                             "sourceUrl":"dmpt/data/masterLocation.json"
                         },
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
-                            "label":"dmpt.form.dataStorage.storageLocation.otherNote.label",
+                            "label":"dmpt.label.dataStorage.storageLocation.otherNote",
                             "content":""
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{"name":"Back"},{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -548,18 +561,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.dataLicensing.heading"
+                            "content":"dmpt.heading.dataLicensing"
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.dataLicensing.access.heading"
+                            "content":"dmpt.heading.dataLicensing.access"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataLicensing.accessRights.label",
-                            "help":"dmpt.form.help.dc:accessRights"
+                            "content":"dmpt.label.dc-accessRights",
+                            "help":"dmpt.help.dc-accessRights"
                         },
                         {
                             "component-type":"radio-button",
@@ -577,7 +590,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataLicensing.accessRights.label"
+                            "content":"dmpt.label.dataLicensingAccess.manager"
                         },
                         {
                             "component-type":"text-input",
@@ -592,17 +605,18 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.dataLicensing.licensing.heading"
+                            "content":"dmpt.heading.dataLicensing.licensing"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataLicensing.licence.label",
-                            "help":"dmpt.form.help.dc:license"
+                            "content":"dmpt.label.dc-license",
+                            "help":"dmpt.help.dc-license"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:license.dc:identifier",
+                            "field-name-label":"dc:license.skos:prefLabel",
                             "label":"",
                             "sourceUrl":"workflows/forms/data/licences.json",
                             "idKey":"id",
@@ -612,13 +626,13 @@
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.other",
-                            "label":"dmpt.form.dataLicensing.other.label",
+                            "label":"dmpt.label.dc-license.dc-identifier.other",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.url",
-                            "label":"dmpt.form.dataLicensing.url.label",
+                            "label":"dmpt.label.dc-license.dc-identifier.url",
                             "additional-classes":""
                         },
                         {
@@ -628,13 +642,13 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.dataLicensing.rights.heading"
+                            "content":"dmpt.heading.dataLicensing.rights"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataLicensing.rightsStatement.label",
-                            "help":"dmpt.form.help.dc:RightsStatement"
+                            "content":"dmpt.label.dc-RightsStatement",
+                            "help":"dmpt.help.dc-RightsStatement"
                         },
                         {
                             "component-type":"textarea",
@@ -645,8 +659,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataLicensing.relevantInfo.label",
-                            "help":"dmpt.form.help.dc:rights.skos:note"
+                            "content":"dmpt.label.dc-rights.skos-note",
+                            "help":"dmpt.help.dc-rights.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -659,6 +673,7 @@
 							"transitions":[{
             									"name": "Save and close",
             									"form-submit-action": "save",
+            									"type": "button",
             									"close": true,
             									"closeUrl": "dmpt/details",
             									"object-metadata-params": [
@@ -681,31 +696,39 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.dataRetention.heading"
+                            "content":"dmpt.heading.dataRetention"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataRetention.applicableRetention.label",
-                            "help":"dmpt.form.help.redbox:retentionPeriod"
+                            "content":"dmpt.label.redbox-retentionPeriod",
+                            "help":"dmpt.help.redbox-retentionPeriod"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date",
+                            "field-name-label":"redbox:retentionPeriod.dc:date.prefLabel",
                             "label":"",
-                            "sourceUrl":"dmpt/data/retentionPeriod.json"
+                            "sourceUrl":"workflows/forms/data/retentionPeriod.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date.skos:note",
-                            "label":"dmpt.form.dataRetention.justification.label",
-                            "sourceUrl":"dmpt/data/retentionJustification.json"
+                            "field-name-label":"redbox:retentionPeriod.dc:date.skos:note.prefLabel",
+                            "label":"dmpt.label.redbox-retentionPeriod.dc-date.skos-note",
+                            "sourceUrl":"workflows/forms/data/retentionPeriodJustification.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.dataRetention.disposalDate.label",
-                            "help":"dmpt.form.help.redbox:disposalDate"
+                            "content":"dmpt.label.redbox-disposalDate",
+                            "help":"dmpt.help.redbox-disposalDate"
                         },
                         {
                             "component-type":"text-input",
@@ -717,6 +740,7 @@
                             "component-type":"transition-control",
 							"transitions":[{
             									"name": "Save and close",
+            									"type": "button",
             									"form-submit-action": "save",
             									"close": true,
             									"closeUrl": "dmpt/details",
@@ -745,13 +769,13 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.EthicsSensitivities.ethics.heading"
+                            "content":"dmpt.heading.EthicsSensitivities.ethics"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.EthicsSensitivities.ethicsApproval.label",
-                            "help": "dmpt.form.help.agls:policy.dc:identifier"
+                            "content":"dmpt.label.EthicsSensitivities.ethicsApproval",
+                            "help": "dmpt.help.agls-policy.dc-identifier"
                         },
                         {
                             "component-type":"text-input",
@@ -762,8 +786,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.EthicsSensitivities.ethicsInfo.label",
-                            "help": "dmpt.form.help.agls:policy.skos:note"
+                            "content":"dmpt.label.EthicsSensitivities.ethicsInfo",
+                            "help": "dmpt.help.agls-policy.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -774,13 +798,13 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.form.EthicsSensitivities.sensitivities.heading"
+                            "content":"dmpt.heading.EthicsSensitivities.sensitivities"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.EthicsSensitivities.typeOfSensitivity.label",
-                            "help": "dmpt.form.help.agls:protectiveMarking"
+                            "content":"dmpt.label.EthicsSensitivities.typeOfSensitivity",
+                            "help": "dmpt.help.agls-protectiveMarking"
                         },
 						{
 							"component-type": "checkbox",
@@ -809,8 +833,8 @@
 						{
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.EthicsSensitivities.privacyInfo.label",
-                            "help": "dmpt.form.help.agls:protectiveMarking.skos:note"
+                            "content":"dmpt.label.EthicsSensitivities.privacyInfo",
+                            "help": "dmpt.help.agls-protectiveMarking.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -820,7 +844,24 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next","form-submit-action":"save"}]
+							"transitions":[{"name":"Back"},{"name":"Next"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -830,39 +871,42 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":"dmpt.form.ownership.heading"
+                            "content":"dmpt.heading.ownership"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.ownership.location.label",
-                            "help": "dmpt.form.help.dc:coverage"
+                            "content":"dmpt.label.ownership.location",
+                            "help": "dmpt.help.dc-coverage"
                         },                        
                         {
                             "component-type":"repeatable-container",
                             "containter-for":"dc:coverage.dc:identifier",
                             "sub-elements":{"settings":[
-                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"","class-list":"jaffa-field","suffix":"country"}}
-      												]
-      											}	
+                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"",
+                            					 "class-list":"jaffa-field","suffix":"country"}
+                            					 }
+      											]
+      										}	
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.ownership.copyright.label",
-                            "help": "dmpt.form.help.dc:rightsHolder.dc:name"
+                            "content":"dmpt.label.ownership.copyright",
+                            "help": "dmpt.help.dc-rightsHolder.dc-name"
                         },
                         {
                             "component-type":"data-source-dropdown",
                             "field-name":"dc:rightsHolder.dc:name",
+                            "field-name-label":"dc:rightsHolder.dc:name.prefLabel",
                             "label":"",
                             "sourceUrl":"dmpt/data/rightsOwner.json"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.ownership.ownerList.label",
-                            "help": "dmpt.form.help.dc:rightsHolder.dc:description"
+                            "content":"dmpt.label.ownership.ownerList",
+                            "help": "dmpt.help.dc-rightsHolder.dc-description"
                         },
                         {
                             "component-type":"textarea",
@@ -873,8 +917,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.form.ownership.obligations.label",
-                            "help": "dmpt.form.help.redbox:ContractualObligations"
+                            "content":"dmpt.label.ownership.obligations",
+                            "help": "dmpt.help.redbox-ContractualObligations"
                         },
                         {
                             "component-type":"textarea",
@@ -884,19 +928,30 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},
-											{"name":"Next",
-											 "form-submit-action":"save",
-											 "close":true,
-											 "closeUrl":"dmpt/planready",
-												"object-metadata-params": [
-                															{
-                    															"key": "generatePDF",
-                    															"value": "true"
-                															}
-            															 ]
-							
-							}]
+							"transitions":[{"name":"Back"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name":"Save",
+                                    "form-submit-action":"save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action":"save",
+                                    "type":"button",
+									"close":true,
+									"closeUrl":"dmpt/planready",
+									"object-metadata-params": [
+											{
+												"key": "generatePDF",
+												"value": "true"
+											}
+										 ]
+                                }
+                            ]
                         }
                     ]
                 },

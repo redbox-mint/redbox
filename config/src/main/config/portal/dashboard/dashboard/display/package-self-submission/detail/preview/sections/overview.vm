@@ -16,7 +16,7 @@
 
 #macro(getValue $key)
     #set($v = $metadata.get("$key"))
-    #if ($v)
+    #if ($v && "$v" != "null")
 		$v
     #else
 		#noInformation()
@@ -62,7 +62,19 @@
 </td>
 </tr>
 #end
-
+#macro(displayMintLabelByLookup $key $name $urlName, $resKey, $valKey)
+	<tr>
+    <td>$name</td>
+	#set($label= $self.getMintLabelByLookup($urlName, $key, $resKey, $valKey))
+    <td>
+		#if($label)
+			$label.get(0)
+		#else
+			#noInformation()
+		#end
+	</td>
+    </tr>
+#end
 <style>
 	#pdf-like { border: none; width: 40em }
 	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
@@ -71,12 +83,12 @@
 	<h1>#displayMessage("self-submission.heading.label.overview")</h1>
     <table id="pdf-like">
         #displayRow("dc:title" "#displayMessage('self-submission.field.label.dc-title')")
-        #displayRow("dc:type" "#displayMessage('self-submission.field.label.dc-type')")
-        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-language')")
-        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-identifier.redboxdmpt-doirequest')")
-        #displayRow("dc:language" "#displayMessage('self-submission.field.label.dc-identifier.rdf-PlainLiteral')")
-        #displayRow("dc:language" "#displayMessage('self-submission.heading.label.location')")
-        #displayRow("dc:language" "#displayMessage('self-submission.field.label.bibo-Website')")
+        #displayRow("dc:type.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-type')")        
+		#displayMintLabelByLookup("dc:language.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-language')")
+        #displayRow("self-submission.field.dc-identifier.redboxdmpt-doirequest.1" "#displayMessage('self-submission.field.label.dc-identifier.redboxdmpt-doirequest')")
+        #displayRow("dc:identifier.rdf:PlainLiteral" "#displayMessage('self-submission.field.label.dc-identifier.rdf-PlainLiteral')")
+        #displayRow("vivo:Location.vivo:GeographicLocation.gn:name" "#displayMessage('self-submission.heading.label.location')")
+		#displayRowList("#displayMessage('self-submission.field.label.bibo-Website')" "bibo:Website" "dc:identifier")
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>

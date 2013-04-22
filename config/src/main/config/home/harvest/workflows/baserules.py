@@ -283,7 +283,7 @@ class BaseIndexData(object):
         for field in formData.keySet():
             if field not in coreFields:
                 value = formData.get(field)
-                if value is not None and value.strip() != "":
+                if value is not None and hasattr(value, 'strip') and value.strip() != "":
                     self.utils.add(self.index, field, value)
                     if field == "dc:title":
                         self.title = value

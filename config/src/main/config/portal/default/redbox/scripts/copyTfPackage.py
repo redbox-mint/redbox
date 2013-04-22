@@ -31,23 +31,25 @@ class CopyTfPackageData:
         self.log = context["log"]
         self.reportManager = context["Services"].getService("reportManager")
             
+        fromOid = self.formData.get("fromOid")
+        fromObject = self.storage.getObject(fromOid)
+
         if (self.auth.is_logged_in()):
             if (self.auth.is_admin() == True):
                 pass
+            elif (self.__isOwner(fromObject)):
+                pass
             else:
-                self.errorMsg = "Requires Admin / Librarian / Reviewer access." 
+                self.errorMsg = "Requires Admin / Librarian / Reviewer / owner access." 
         else:
             self.errorMsg = "Please login."
         if self.errorMsg == "": 
-             fromOid = self.formData.get("fromOid")
              toOid = self.formData.get("toOid")
-             
-             fromObject = self.storage.getObject(fromOid)
              toObject = self.storage.getObject(toOid)
+
              fromTFPackage = self._getTFPackage(fromObject)
              toTFPackage = self._getTFPackage(toObject)
              fromInputStream = fromTFPackage.open()
-             
              
              try:
                  StorageUtils.createOrUpdatePayload(toObject, toTFPackage.getId(), fromInputStream)
@@ -87,8 +89,6 @@ class CopyTfPackageData:
         input = ByteArrayInputStream(output.toByteArray());
         StorageUtils.createOrUpdatePayload(object,"TF-OBJ-META",input);
         
-        
-                
     def _addRelatedOid(self, tfPackageJson, relatedOid):
         relatedOids = tfPackageJson.getArray("related.datasets")
         if relatedOids is None:
@@ -123,3 +123,12 @@ class CopyTfPackageData:
                 return None
  
             return None
+
+    def __isOwner(self, sourceObj):
+        try:
+            owner = sourceObj.getMetadata().getProperty("owner")
+            return owner == self.auth.get_username()
+            
+        except Exception, e:
+            self.log.error("Error during changing ownership of data. Exception: " + str(e))
+            return False

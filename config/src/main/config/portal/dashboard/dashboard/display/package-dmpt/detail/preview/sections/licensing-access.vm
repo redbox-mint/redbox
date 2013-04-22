@@ -2,7 +2,7 @@
 <div class="meta">
     <dl>
         #display("dc:accessRights" "Access")
-        #display("dc:license.dc:identifier" "Licence")
+        #display("dc:license.skos:prefLabel" "Licence")
         #display("dc:RightsStatement" "Rights")
         #display("dc:rights.skos:note" "Access notes")
     </dl>

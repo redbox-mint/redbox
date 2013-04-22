@@ -15,7 +15,72 @@
     </dd>
     #end
 #end
-
+#macro(displayArrayList $label $baseKey $subKey)
+    <dt>$label</dt>
+    #set($forList = $self.getList("$baseKey"))
+    #if ($forList.isEmpty())
+	<dd>
+    #noInformation()
+	</dd>
+    #else    	
+        #foreach($key in $forList.keySet())
+			<dd>
+            #set($item = $forList.get($key))            
+            $item.get("$subKey")
+			</dd>
+        #end
+    #end
+#end
+#macro(displayCompoundArrayList $label $baseKey $subKeys, $sep)
+    <dt>$label</dt>
+    #set($forList = $self.getList("$baseKey"))
+    #if ($forList.isEmpty())
+	<dd>
+    #noInformation()
+	</dd>
+    #else    	
+		<ol>
+        #foreach($key in $forList.keySet())
+			#set($i=0)
+			<li>
+            #set($item = $forList.get($key))			
+			#foreach($subkey in $subKeys)
+				#if($i>0)$sep #end$item.get("$subkey")
+				#set($i = $i+1)
+			#end
+			</li>
+		#end
+		</ol>
+    #end
+#end
+#macro(displayLabel $key $name $labelFile, $listKey, $idKey, $labelKey)
+    <dt>$name: </dt>
+    #set($v= $self.getLabel($labelFile, $key, $listKey, $idKey, $labelKey))
+    <dd>
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	         
+    #end
+    </dd>
+#end
+#macro(displayMintLabels $key $name $urlName, $suffix)
+    <dt>$name: </dt>
+    #set($labels= $self.getMintLabels($urlName, $key, $suffix))	
+	#if($labels)
+    	#foreach($v in $labels)			
+            #if($v && ("$!v" != ""))
+				<dd>
+					$v
+				</dd>
+    		#end
+    	#end
+	#else
+		<dd>
+		#noInformation()
+		</dd>
+	#end
+#end
 <script>
 function manage_access(e) {
 	$("#dialog-form").dialog("open");

@@ -92,7 +92,7 @@
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source")
         #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
-        #displayRowLabel("dc:subject.anzsrc:toa" "Activity type" "/../portal/dashboard/dashboard/dmpt/data/projectActivityType.json")
+        #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type")
         #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
         #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
     </table>

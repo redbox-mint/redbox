@@ -59,11 +59,11 @@ $value
 
 	##$!title $!givenName $familyName $!email
 
-	#displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator")
+	#displayPerson("dc:creator.foaf:Person.foaf" "Principal investigator")
     #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager")
     
     <dt>Collaborators</dt>
-    #set($personList = $self.getList("locrel:clb.foaf:Person"))
+    #set($personList = $self.getList("dc:contributor.locrel:clb"))
     #if ($personList.isEmpty())
     <dd>
     #noInformation()
@@ -74,10 +74,10 @@ $value
         #foreach($key in $personList.keySet())
             #set($person = $personList.get($key))
             <li>
-                #displayOptionalKey($person "person.foaf:title")
-                #displayRequiredKey($person "person.foaf:givenName")
-                #displayRequiredKey($person "person.foaf:familyName")
-                #displayOptionalKey($person "email")
+                #displayOptionalKey($person "foaf:Agent.foaf:title")
+                #displayRequiredKey($person "foaf:Agent.foaf:givenName")
+                #displayRequiredKey($person "foaf:Agent.foaf:familyName")
+                #displayOptionalKey($person "foaf:Agent.foaf:email")
             </li>
         #end
         </ol>
