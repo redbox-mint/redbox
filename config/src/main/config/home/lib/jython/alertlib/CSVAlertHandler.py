@@ -65,6 +65,12 @@ class CSVAlertHandler(AlertHandler):
                 raise AlertException("The multiValue option must contain a fieldDelimiter key.")
             
             self.multiValue = True
+            
+        if "scriptHandlers" in config:
+            self.scriptHandlers = config["scriptHandlers"]
+        else:
+            self.scriptHandlers = {}
+    
     
     def process(self):      
         '''Parse our CSV file
@@ -84,7 +90,11 @@ class CSVAlertHandler(AlertHandler):
             data = None
             for row in reader:
                 data = {}
-                print row
+                #print row
+                
+                #if "preProcess" in self.scriptHandlers:
+                    
+                
                 for col in self.fieldMap:
                     if col not in row:
                         raise AlertException("The requested field [%s] was not present in [%s]" % (col, self.file))
