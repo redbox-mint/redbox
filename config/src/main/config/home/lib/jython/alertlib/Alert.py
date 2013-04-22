@@ -185,14 +185,15 @@ class Alert:
                 jsonFile.close()
         
         #Determine the object's owner from the alert config
-        owner = "guest"
-        if self.config("owner"):
-            pass
+        #owner = "guest"
+        #if self.config("owner"):
+            #pass
         
         self.logInfo(file, "Submitting to harvest. Config file is %s and meta_file is %s" % (self.harvestConfig, meta_file))
         try:
             ## Now instantiate a HarvestClient just for this File.
-            harvester = HarvestClient(File(self.harvestConfig), File(meta_file), owner)
+            #harvester = HarvestClient(File(self.harvestConfig), File(meta_file), owner)
+            harvester = HarvestClient(File(self.harvestConfig), File(meta_file))
             harvester.start()
             ## And cleanup afterwards
             oid = harvester.getUploadOid() 
