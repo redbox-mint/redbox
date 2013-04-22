@@ -100,7 +100,7 @@
             },
             {
 	             "name": "Data plans",
-	             "path": "test-alerts/dataplan",
+	             "path": "test-alerts/dataplan1",
 	             "harvestConfig": "config/dmpt.json",
 	             "handlers": {
 	                 "csv": "CSVAlertHandler"
@@ -116,7 +116,7 @@
 	                                    "Description": ["description", "dc:description"],
 	                                    "ID": "dc:identifier",
 	                                    "Start": "dc:coverage.vivo:DateTimeInterval.vivo:start",
-	                                    "End": "dc:coverage.vivo:DateTimeInterval.vivo:start",
+	                                    "End": "dc:coverage.vivo:DateTimeInterval.vivo:end",
 	                                    "PI_Given_Name": "locrel:rth.foaf:Person.foaf:givenName",
 	                                    "PI_Family_Name": "locrel:rth.foaf:Person.foaf:familyName",
 	                                    "PI_Honorific": "locrel:rth.foaf:Person.foaf:title ",
@@ -127,22 +127,65 @@
 	                                    "Supervisor_Email": "swrc:supervisor.foaf:Person.0.foaf:email"
 	                            },
 	                            "multiValue": {
-	                            	"fields": ["Investigators"],
+	                            	"fields": [],
 	                            	"fieldDelimiter": ";"
 	                            }
 	                        }
 	                    }
 	             },
 	             "baseline": {
-	                    "viewId": "default",
+	                    "viewId": "dashboard",
 	                    "packageType": "dmpt",
-	                    "redbox:formVersion": "1.6-SNAPSHOT",
+	                    "redbox:formVersion": "1.6.1-SNAPSHOT",
 	                    "redbox:newForm": true,
 	                    "redbox:submissionProcess.redbox:submitted": true,
 	                	"workflow_source": "Default Alert"
 	            }
 	             
-            }
+            },
+            {
+	             "name": "Data plans 2",
+	             "path": "test-alerts/dataplan2",
+	             "harvestConfig": "config/dmpt.json",
+	             "handlers": {
+	                 "csv": "CSVAlertHandler"
+	             },
+	             "CSVAlertHandlerParams": {
+	                    "configMap": {
+	                        "csv": {
+	                        	"Dialect": {
+	                                "skipinitialspace": true
+	                            },
+	                            "fieldMap": {
+	                            	"ID": "dc:identifier",    
+	                            	"Submit Year": "flinders:submitYear",
+	                            	"Start Year": "dc:coverage.vivo:DateTimeInterval.vivo:start",
+	                            	"Title": ["title","dc:title"],
+	                            	"Description": ["description", "dc:description"],
+	                                "Institution": "flinders:Institution",
+                                    "ANZSRC-FOR": "dc:subject.anzsrc:for.0.rdf:resource.1.rdf:resource",
+                                    "Funding Agency": ""
+	                            },
+	                            "multiValue": {
+	                            	"fields": [],
+	                            	"fieldDelimiter": ";"
+	                            }
+	                        }
+	                    },
+	                    "scriptHandlers": {
+	                    	"preProcess": "home/lib/samples/preDMPTHandler.py"
+	   	             	}
+	             },
+	             "baseline": {
+	                    "viewId": "dashboard",
+	                    "packageType": "dmpt",
+	                    "redbox:formVersion": "1.6.1-SNAPSHOT",
+	                    "redbox:newForm": true,
+	                    "redbox:submissionProcess.redbox:submitted": true,
+	                	"workflow_source": "Default Alert"
+	            }
+	             
+           }
         ],
         "baseline": {
 
