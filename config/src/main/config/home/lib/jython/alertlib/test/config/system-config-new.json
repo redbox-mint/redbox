@@ -125,10 +125,6 @@
 	                                    "Supervisor_Family_Name": "swrc:supervisor.foaf:Person.0.foaf:familyName",
 	                                    "Supervisor_Honorific": "swrc:supervisor.foaf:Person.0.foaf:title",
 	                                    "Supervisor_Email": "swrc:supervisor.foaf:Person.0.foaf:email"
-	                            },
-	                            "multiValue": {
-	                            	"fields": [],
-	                            	"fieldDelimiter": ";"
 	                            }
 	                        }
 	                    }
@@ -165,10 +161,6 @@
 	                                "Institution": "flinders:Institution",
                                     "ANZSRC-FOR": "dc:subject.anzsrc:for.0.rdf:resource.1.rdf:resource",
                                     "Funding Agency": ""
-	                            },
-	                            "multiValue": {
-	                            	"fields": [],
-	                            	"fieldDelimiter": ";"
 	                            }
 	                        }
 	                    },
