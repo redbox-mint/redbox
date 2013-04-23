@@ -72,9 +72,9 @@ function manage_access(e) {
 		#end
     </div>
     <table>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">Data structure, collection and analysis</a></td><td>#if($self.getObjectMetaProperty("dataStructureComplete") == true)Completed #else Not completed #end</td></tr>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataAccess">Licensing and access</a></td><td>#if($self.getObjectMetaProperty("dataAccessComplete") == true)Completed #else Not completed #end</td></tr>
-    <tr><td><a href="$portalPath/workflow/$oid?flow=dataRetention">Retention and disposal</a></td><td>#if($self.getObjectMetaProperty("dataRetentionComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">#displayMessage('dmpt.heading.dataCollection')</a></td><td>#if($self.getObjectMetaProperty("dataStructureComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataAccess">#displayMessage('dmpt.heading.dataLicensing')</a></td><td>#if($self.getObjectMetaProperty("dataAccessComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataRetention">#displayMessage('dmpt.heading.dataRetention')</a></td><td>#if($self.getObjectMetaProperty("dataRetentionComplete") == true)Completed #else Not completed #end</td></tr>
     </table>
     <p>You can add information to your plan to assist us in working with you to manage your research data.</p>
 </div>
@@ -87,7 +87,7 @@ function manage_access(e) {
     #parseDisplayTemplate("detail/preview/sections/people.vm")
     #parseDisplayTemplate("detail/preview/sections/data-storage.vm")
     #parseDisplayTemplate("detail/preview/sections/ethics-sensitivities.vm")
-    #parseDisplayTemplate("detail/preview/sections/ethics-licensing-IP.vm")
+    #parseDisplayTemplate("detail/preview/sections/ownership.vm")
     #parseDisplayTemplate("detail/preview/sections/data-strucure.vm")
     #parseDisplayTemplate("detail/preview/sections/licensing-access.vm")
     #parseDisplayTemplate("detail/preview/sections/retention-disposal.vm")

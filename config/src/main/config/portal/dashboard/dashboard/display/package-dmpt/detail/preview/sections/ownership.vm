@@ -1,0 +1,9 @@
+#sectionHeading("#displayMessage('dmpt.heading.ownership')")
+<div class="meta">
+    <dl>        
+		#displayMintLabels("dc:coverage.dc:identifier" "#displayMessage('dmpt.field.label.dc-coverage')" "Countries_Detail" "country")
+        #displayLabel("dc:rightsHolder.dc:name" "#displayMessage('dmpt.field.label.dc-rightsHolder.dc-name')" "/../portal/dashboard/dashboard/dmpt/data/rightsOwner.json")
+		#display("dc:rightsHolder.dc:description" "#displayMessage('dmpt.field.label.dc-rightsHolder.dc-description')")
+        #display("redbox:ContractualObligations" "#displayMessage('dmpt.field.label.redbox-ContractualObligations')")
+    </dl>
+</div>

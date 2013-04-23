@@ -100,8 +100,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.dc-relation.bibo-website",
-                            "help":"dmpt.field.help.dc-relation.bibo-website"
+                            "content":"dmpt.field.label.dc-relation.bibo-Website",
+                            "help":"dmpt.field.help.dc-relation.bibo-Website"
                         },
                         {
                             "component-type":"text-input",
@@ -580,10 +580,12 @@
                             "button-for":"",
                             "buttons":[
                                 {
-                                    "label":"permission from the data manager"
+                                    "label":"permission from the data manager",
+                                    "value":"permission from the data manager"
                                 },
                                 {
-                                    "label":"open, free access to all"
+                                    "label":"open, free access to all",
+                                    "value":"open, free access to all"
                                 }
                             ]
                         },
@@ -764,17 +766,12 @@
                         {
                             "component-type":"text-block",
                             "type":"h1",
-                            "content":""
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"h3",
                             "content":"dmpt.heading.EthicsSensitivities.ethics"
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.EthicsSensitivities.ethicsApproval",
+                            "content":"dmpt.field.label.agls-policy.dc-identifier",
                             "help": "dmpt.field.help.agls-policy.dc-identifier"
                         },
                         {
@@ -786,7 +783,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.EthicsSensitivities.ethicsInfo",
+                            "content":"dmpt.field.label.agls-policy.skos-note",
                             "help": "dmpt.field.help.agls-policy.skos-note"
                         },
                         {
@@ -803,7 +800,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.EthicsSensitivities.typeOfSensitivity",
+                            "content":"dmpt.field.label.agls-protectiveMarking",
                             "help": "dmpt.field.help.agls-protectiveMarking"
                         },
 						{
@@ -833,7 +830,7 @@
 						{
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.EthicsSensitivities.privacyInfo",
+                            "content":"dmpt.field.label.agls-protectiveMarking.skos-note",
                             "help": "dmpt.field.help.agls-protectiveMarking.skos-note"
                         },
                         {
@@ -876,7 +873,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.ownership.location",
+                            "content":"dmpt.field.label.dc-coverage",
                             "help": "dmpt.field.help.dc-coverage"
                         },                        
                         {
@@ -892,7 +889,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.ownership.copyright",
+                            "content":"dmpt.field.label.dc-rightsHolder.dc-name",
                             "help": "dmpt.field.help.dc-rightsHolder.dc-name"
                         },
                         {
@@ -905,7 +902,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.ownership.ownerList",
+                            "content":"dmpt.field.label.dc-rightsHolder.dc-description",
                             "help": "dmpt.field.help.dc-rightsHolder.dc-description"
                         },
                         {
@@ -917,7 +914,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.field.label.ownership.obligations",
+                            "content":"dmpt.field.label.redbox-ContractualObligations",
                             "help": "dmpt.field.help.redbox-ContractualObligations"
                         },
                         {

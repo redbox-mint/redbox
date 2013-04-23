@@ -1,9 +1,12 @@
-#sectionHeading("Licensing and access")
+#sectionHeading("#displayMessage('dmpt.heading.dataLicensing')")
 <div class="meta">
     <dl>
-        #display("dc:accessRights" "Access")
-        #display("dc:license.skos:prefLabel" "Licence")
-        #display("dc:RightsStatement" "Rights")
-        #display("dc:rights.skos:note" "Access notes")
+        #display("dc:accessRights" "#displayMessage('dmpt.field.label.dc-accessRights')")
+		#display("dataLicensingAccess.manager" "#displayMessage('dmpt.field.label.dataLicensingAccess.manager')")
+        #display("dc:license.skos:prefLabel" "#displayMessage('dmpt.field.label.dc-license')")
+		#display("dc:license.dc:identifier.other" "#displayMessage('dmpt.field.label.dc-license.dc-identifier.other')")
+		#display("dc:license.dc:identifier.url" "#displayMessage('dmpt.field.label.dc-license.dc-identifier.url')")
+        #display("dc:RightsStatement" "#displayMessage('dmpt.field.label.dc-RightsStatement')")
+        #display("dc:rights.skos:note" "#displayMessage('dmpt.field.label.dc-rights.skos-note')")
     </dl>
 </div>

@@ -79,23 +79,23 @@
 #end
 
 <style>
-	#pdf-like { border: none; width: 40em }
+	#pdf-like { border: none; }
 	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
 </style>
 <section>
-	<h1>Overview</h1>
+	<h1>#displayMessage('dmpt.heading.projectOverview')</h1>
     <table id="pdf-like">
-        #displayRow("dc:title" "Project name")
-        #displayRow("dc:identifier" "Project ID")
-        #displayRow("dc:relation.bibo:Website" "Project website")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date")
-        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date")
-        #displayRow("foaf:fundedBy.foaf:Agent" "Funding source")
-        #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
-        #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type")
-        #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
-        #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+        #displayRow("dc:title" "#displayMessage('dmpt.field.label.dc-title')")
+        #displayRow("dc:identifier" "#displayMessage('dmpt.field.label.dc-identifier')")
+        #displayRow("dc:relation.bibo:Website" "#displayMessage('dmpt.field.label.dc-relation.bibo-Website')")
+        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "#displayMessage('dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start')")
+        #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "#displayMessage('dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end')")
+        #displayRow("foaf:fundedBy.foaf:Agent" "#displayMessage('dmpt.field.label.foaf-fundedBy.foaf-Agent')")
+        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant" "")
+        #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "#displayMessage('dmpt.field.label.dc-subject.anzsrc-toa')")
+        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
     </table>
-    <h4>Description</h4>
+    <h4>#displayMessage('dmpt.field.label.dc-description')</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
 </section>
