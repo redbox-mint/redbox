@@ -43,8 +43,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-title",
-                            "help":"dmpt.help.dc-title"
+                            "content":"dmpt.field.label.dc-title",
+                            "help":"dmpt.field.help.dc-title"
                         },
                         {
                             "component-type":"text-input",
@@ -65,8 +65,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-identifier",
-                            "help":"dmpt.help.dc-identifier"
+                            "content":"dmpt.field.label.dc-identifier",
+                            "help":"dmpt.field.help.dc-identifier"
                         },
                         {
                             "component-type":"text-input",
@@ -87,8 +87,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-description",
-                            "help":"dmpt.help.dc-description"
+                            "content":"dmpt.field.label.dc-description",
+                            "help":"dmpt.field.help.dc-description"
                         },
                         {
                             "component-type":"textarea",
@@ -100,8 +100,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-relation.bibo-website",
-                            "help":"dmpt.help.dc-relation.bibo-website"
+                            "content":"dmpt.field.label.dc-relation.bibo-website",
+                            "help":"dmpt.field.help.dc-relation.bibo-website"
                         },
                         {
                             "component-type":"text-input",
@@ -112,8 +112,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
-                            "help":"dmpt.help.dc-coverage.vivo-DateTimeInterval.vivo-start"
+                            "content":"dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
+                            "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-start"
                         },
                         {
                             "component-type":"text-input",
@@ -124,8 +124,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
-                            "help":"dmpt.help.dc-coverage.vivo-DateTimeInterval.vivo-end"
+                            "content":"dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
+                            "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-end"
                         },
                         {
                             "component-type":"text-input",
@@ -136,8 +136,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.foaf-fundedBy.foaf-Agent",
-                            "help":"dmpt.help.foaf-fundedBy.foaf-Agent"
+                            "content":"dmpt.field.label.foaf-fundedBy.foaf-Agent",
+                            "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
                         },
                         {
                             "component-type":"text-input",
@@ -148,8 +148,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.foaf-fundedBy.vivo-Grant",
-                            "help":"dmpt.help.foaf-fundedBy.vivo-Grant"
+                            "content":"dmpt.field.label.foaf-fundedBy.vivo-Grant",
+                            "help":"dmpt.field.help.foaf-fundedBy.vivo-Grant"
                         },
                         {
                             "component-type":"repeatable-text",
@@ -159,8 +159,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-subject.anzsrc-toa",
-                            "help": "dmpt.help.dc-subject.anzsrc-toa"
+                            "content":"dmpt.field.label.dc-subject.anzsrc-toa",
+                            "help": "dmpt.field.help.dc-subject.anzsrc-toa"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -172,8 +172,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-subject.anzsrc-for",
-                            "help":"dmpt.help.dc-subject.anzsrc-for"
+                            "content":"dmpt.field.label.dc-subject.anzsrc-for",
+                            "help":"dmpt.field.help.dc-subject.anzsrc-for"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -192,8 +192,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-subject.dc-subject.anzsrc-seo",
-                            "help":"dmpt.help.dc-subject.dc-subject.anzsrc-seo"
+                            "content":"dmpt.field.label.dc-subject.dc-subject.anzsrc-seo",
+                            "help":"dmpt.field.help.dc-subject.dc-subject.anzsrc-seo"
                         },
                         {
                             "component-type":"repeatable-anzsrc-selection",
@@ -243,8 +243,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.label.locrel-rth.foaf-Person",
-                            "help":"dmpt.help.locrel-rth.foaf-Person"
+                            "content":"dmpt.field.label.locrel-rth.foaf-Person",
+                            "help":"dmpt.field.help.locrel-rth.foaf-Person"
                         },
                         {
                         	"component-type":"person",
@@ -268,8 +268,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.label.locrel-prc.foaf-Person",
-                            "help":"dmpt.help.locrel-prc.foaf-Person"
+                            "content":"dmpt.field.label.locrel-prc.foaf-Person",
+                            "help":"dmpt.field.help.locrel-prc.foaf-Person"
                         },
                         {
                         	"component-type":"person",
@@ -293,8 +293,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.label.locrel-clb.foaf-Person",
-                            "help":"dmpt.help.locrel-clb.foaf-Person"
+                            "content":"dmpt.field.label.locrel-clb.foaf-Person",
+                            "help":"dmpt.field.help.locrel-clb.foaf-Person"
                         },
                         {
                             "component-type":"repeatable-container",
@@ -311,8 +311,8 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"dmpt.label.swrc-supervisor.foaf-Person",
-                            "help":"dmpt.help.swrc-supervisor.foaf-Person"
+                            "content":"dmpt.field.label.swrc-supervisor.foaf-Person",
+                            "help":"dmpt.field.help.swrc-supervisor.foaf-Person"
                         },
                         {
                         	"component-type":"person",
@@ -359,8 +359,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.redbox-MetadataStandard",
-                            "help":"dmpt.help.vivo-Dataset.redbox-MetadataStandard"
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-MetadataStandard",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-MetadataStandard"
                         },
                         {
                             "component-type":"textarea",
@@ -371,8 +371,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.redbox-DataStructureStandard",
-                            "help":"dmpt.help.vivo-Dataset.redbox-DataStructureStandard"
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataStructureStandard",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataStructureStandard"
                         },
                         {
                             "component-type":"textarea",
@@ -392,8 +392,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.redbox-DataCollectionMethodology",
-                            "help":"dmpt.help.vivo-Dataset.redbox-DataCollectionMethodology"
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataCollectionMethodology",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataCollectionMethodology"
                         },
                         {
                             "component-type":"textarea",
@@ -404,8 +404,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.redbox-DataCollectionResources",
-                            "help":"dmpt.help.vivo-Dataset.redbox-DataCollectionResources"
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataCollectionResources",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataCollectionResources"
                         },
                         {
                             "component-type":"textarea",
@@ -416,8 +416,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.redbox-DataAnalysisResources",
-                            "help":"dmpt.help.vivo-Dataset.redbox-DataAnalysisResources"
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataAnalysisResources",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataAnalysisResources"
                         },
                         {
                             "component-type":"textarea",
@@ -428,8 +428,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.dc.format",
-                            "help":"dmpt.help.vivo-Dataset.dc.format"
+                            "content":"dmpt.field.label.vivo-Dataset.dc.format",
+                            "help":"dmpt.field.help.vivo-Dataset.dc.format"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -441,7 +441,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.dc.format.other"
+                            "content":"dmpt.field.label.vivo-Dataset.dc.format.other"
                         },
                         {
                             "component-type":"text-input",
@@ -484,8 +484,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.dc-extent",
-                            "help":"dmpt.help.vivo-Dataset.dc-extent"
+                            "content":"dmpt.field.label.vivo-Dataset.dc-extent",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-extent"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -497,8 +497,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.dc-location",
-                            "help":"dmpt.help.vivo-Dataset.dc-location"
+                            "content":"dmpt.field.label.vivo-Dataset.dc-location",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-location"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -510,14 +510,14 @@
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:location.skos:note",
-                            "label":"dmpt.label.dataStorage.storageLocation.otherNote",
+                            "label":"dmpt.field.label.dataStorage.storageLocation.otherNote",
                             "content":""
                         },
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.vivo-Dataset.dc-source.dc-location",
-                            "help":"dmpt.help.vivo-Dataset.dc-source.dc-location"
+                            "content":"dmpt.field.label.vivo-Dataset.dc-source.dc-location",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-source.dc-location"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -529,7 +529,7 @@
                         {
                             "component-type":"textarea",
                             "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
-                            "label":"dmpt.label.dataStorage.storageLocation.otherNote",
+                            "label":"dmpt.field.label.dataStorage.storageLocation.otherNote",
                             "content":""
                         },
                         {
@@ -571,8 +571,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-accessRights",
-                            "help":"dmpt.help.dc-accessRights"
+                            "content":"dmpt.field.label.dc-accessRights",
+                            "help":"dmpt.field.help.dc-accessRights"
                         },
                         {
                             "component-type":"radio-button",
@@ -590,7 +590,7 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dataLicensingAccess.manager"
+                            "content":"dmpt.field.label.dataLicensingAccess.manager"
                         },
                         {
                             "component-type":"text-input",
@@ -610,8 +610,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-license",
-                            "help":"dmpt.help.dc-license"
+                            "content":"dmpt.field.label.dc-license",
+                            "help":"dmpt.field.help.dc-license"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -626,13 +626,13 @@
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.other",
-                            "label":"dmpt.label.dc-license.dc-identifier.other",
+                            "label":"dmpt.field.label.dc-license.dc-identifier.other",
                             "additional-classes":""
                         },
                         {
                             "component-type":"text-input",
                             "field-name":"dc:license.dc:identifier.url",
-                            "label":"dmpt.label.dc-license.dc-identifier.url",
+                            "label":"dmpt.field.label.dc-license.dc-identifier.url",
                             "additional-classes":""
                         },
                         {
@@ -647,8 +647,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-RightsStatement",
-                            "help":"dmpt.help.dc-RightsStatement"
+                            "content":"dmpt.field.label.dc-RightsStatement",
+                            "help":"dmpt.field.help.dc-RightsStatement"
                         },
                         {
                             "component-type":"textarea",
@@ -659,8 +659,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.dc-rights.skos-note",
-                            "help":"dmpt.help.dc-rights.skos-note"
+                            "content":"dmpt.field.label.dc-rights.skos-note",
+                            "help":"dmpt.field.help.dc-rights.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -701,8 +701,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.redbox-retentionPeriod",
-                            "help":"dmpt.help.redbox-retentionPeriod"
+                            "content":"dmpt.field.label.redbox-retentionPeriod",
+                            "help":"dmpt.field.help.redbox-retentionPeriod"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -718,7 +718,7 @@
                             "component-type":"data-source-dropdown",
                             "field-name":"redbox:retentionPeriod.dc:date.skos:note",
                             "field-name-label":"redbox:retentionPeriod.dc:date.skos:note.prefLabel",
-                            "label":"dmpt.label.redbox-retentionPeriod.dc-date.skos-note",
+                            "label":"dmpt.field.label.redbox-retentionPeriod.dc-date.skos-note",
                             "sourceUrl":"workflows/forms/data/retentionPeriodJustification.json",
                             "idKey":"id",
                             "labelKey":"label",
@@ -727,8 +727,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.redbox-disposalDate",
-                            "help":"dmpt.help.redbox-disposalDate"
+                            "content":"dmpt.field.label.redbox-disposalDate",
+                            "help":"dmpt.field.help.redbox-disposalDate"
                         },
                         {
                             "component-type":"text-input",
@@ -774,8 +774,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.EthicsSensitivities.ethicsApproval",
-                            "help": "dmpt.help.agls-policy.dc-identifier"
+                            "content":"dmpt.field.label.EthicsSensitivities.ethicsApproval",
+                            "help": "dmpt.field.help.agls-policy.dc-identifier"
                         },
                         {
                             "component-type":"text-input",
@@ -786,8 +786,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.EthicsSensitivities.ethicsInfo",
-                            "help": "dmpt.help.agls-policy.skos-note"
+                            "content":"dmpt.field.label.EthicsSensitivities.ethicsInfo",
+                            "help": "dmpt.field.help.agls-policy.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -803,8 +803,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.EthicsSensitivities.typeOfSensitivity",
-                            "help": "dmpt.help.agls-protectiveMarking"
+                            "content":"dmpt.field.label.EthicsSensitivities.typeOfSensitivity",
+                            "help": "dmpt.field.help.agls-protectiveMarking"
                         },
 						{
 							"component-type": "checkbox",
@@ -833,8 +833,8 @@
 						{
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.EthicsSensitivities.privacyInfo",
-                            "help": "dmpt.help.agls-protectiveMarking.skos-note"
+                            "content":"dmpt.field.label.EthicsSensitivities.privacyInfo",
+                            "help": "dmpt.field.help.agls-protectiveMarking.skos-note"
                         },
                         {
                             "component-type":"textarea",
@@ -876,8 +876,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.ownership.location",
-                            "help": "dmpt.help.dc-coverage"
+                            "content":"dmpt.field.label.ownership.location",
+                            "help": "dmpt.field.help.dc-coverage"
                         },                        
                         {
                             "component-type":"repeatable-container",
@@ -892,8 +892,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.ownership.copyright",
-                            "help": "dmpt.help.dc-rightsHolder.dc-name"
+                            "content":"dmpt.field.label.ownership.copyright",
+                            "help": "dmpt.field.help.dc-rightsHolder.dc-name"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -905,8 +905,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.ownership.ownerList",
-                            "help": "dmpt.help.dc-rightsHolder.dc-description"
+                            "content":"dmpt.field.label.ownership.ownerList",
+                            "help": "dmpt.field.help.dc-rightsHolder.dc-description"
                         },
                         {
                             "component-type":"textarea",
@@ -917,8 +917,8 @@
                         {
                             "component-type":"text-block",
                             "type":"label",
-                            "content":"dmpt.label.ownership.obligations",
-                            "help": "dmpt.help.redbox-ContractualObligations"
+                            "content":"dmpt.field.label.ownership.obligations",
+                            "help": "dmpt.field.help.redbox-ContractualObligations"
                         },
                         {
                             "component-type":"textarea",
