@@ -171,6 +171,7 @@ class BaseIndexData(object):
         self.fulltext = []
         self.relationDict = {}
         self.customFields = {}
+        self.createTimeStamp = None
 
         # Try our data sources, order matters
         self.__workflow()
@@ -196,6 +197,8 @@ class BaseIndexData(object):
             self.__indexList(key, self.customFields[key])
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
+        if self.createTimeStamp is None:
+            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
 
     def __workflow(self):
         # Workflow data
@@ -293,6 +296,8 @@ class BaseIndexData(object):
                         parsedTime = time.strptime(value, "%Y-%m-%d")   
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
+                    elif field == "create_timestamp":
+                        self.createTimeStamp = value
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \

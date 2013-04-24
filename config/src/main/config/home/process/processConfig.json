@@ -1,0 +1,29 @@
+[
+    {
+        "id":"notifyNewRecords",
+        "pre" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.NewRecordProcessor",
+                "config":"${fascinator.home}/process/newRecords.json",
+                "inputKey":"",
+                "outputKey":"newOids"
+            }
+        ],
+        "process" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.EmailNotifier",
+                "config":"${fascinator.home}/process/emailer.json",
+                "inputKey":"newOids",
+                "outputKey":"failedOids"
+            }
+        ],
+        "post" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.NewRecordProcessor",
+                "config":"${fascinator.home}/process/newRecords.json",
+                "inputKey":"failedOids",
+                "outputKey":""
+            }
+        ]
+    }
+]

@@ -177,6 +177,7 @@ class IndexData:
         self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ","start":"start","end":"end"},"locrel:prc.foaf:Person":{"delim":", ","start":"familyName","end":"givenName"} }
         self.reportingFieldPrefix = "reporting_"
         self.embargoedDate = None
+        self.createTimeStamp = None
 
         # Try our data sources, order matters
         self.__workflow()
@@ -210,7 +211,8 @@ class IndexData:
                     self.__indexList(arrFldName, self.arrayBucket.get(arrFldName))
         if self.embargoedDate is not None:
             self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
-        
+        if self.createTimeStamp is None:
+            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
     def __workflow(self):
         # Workflow data
         WORKFLOW_ID = "dataset"
@@ -318,6 +320,8 @@ class IndexData:
                         createdDateFlag = True
                     elif field == "redbox:embargo.dc:date":
                         self.embargoedDate = value
+                    elif field == "create_timestamp":
+                        self.createTimeStamp = value
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \
