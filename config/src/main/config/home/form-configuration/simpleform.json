@@ -8,7 +8,7 @@
                         {
                             "component-type": "text-block",
                             "type": "h3",
-                            "content": "Title"
+                            "content": "Title *"
                         },
                         {
                             "component-type": "text-input",
@@ -20,12 +20,12 @@
                                             "validation-id": "dc:title",
                                             "focus-id": "dc:title",
                                             "validation-messages":{"required": "Title is required"}
-                                          }
+                                           }
                         },
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Descriptions"
+                            "content":"Descriptions *"
                         },
                         {
                             "component-type":"repeatable-container",
@@ -34,7 +34,8 @@
                                                 {"jaffaDropDown":{"label":"Type",
                                                                   "suffix":"type", 
                                                                   "field":"type", 
-                                                                  "label-field":"rif:description.0.label", 
+                                                                  "label-field":"label",
+                                                                  "label-field-suffix":"label",                                                                  
                                                                   "json-data-url":"http://127.0.0.1:9000/redbox/default/workflows/forms/data/types.json",
                                                                   "data-id-key":"id",
                                                                   "data-label-key":"label",
@@ -48,7 +49,7 @@
                         {
                             "component-type":"text-block",
                             "type":"h3",
-                            "content":"Collection Type"
+                            "content":"Collection Type *"
                         },
                         {
                             "component-type":"data-source-dropdown",
@@ -245,7 +246,13 @@
                                     "value":"Indefinitely",
                                     "label":"Indefinitely"
                                 }
-                            ]
+                            ],
+                            "validation": {
+                                            "save-rules": ["required"],
+                                            "validation-id": "redbox:retentionPeriod",
+                                            "focus-id": "redbox:retentionPeriod",
+                                            "validation-messages":{"required": "Please select the applicable Retention Period"}
+                                           }                        
                         },
                         {
                             "component-type":"text-input",
@@ -332,7 +339,9 @@
                                                                   "data-id-key":"id", "data-label-key":"label", "data-list-key":"results", "mandatory":"true"}},                            
                                                 {"jaffaText":{"label":"Title: ", "class-list":"jaffa-field", "suffix":"dc:title"}},
                                                 {"jaffaText":{"label":"Identifier: ", "class-list":"jaffa-field", "suffix":"dc:identifier"}},
-                                                {"jaffaText":{"label":"Notes: ", "class-list":"jaffa-field", "suffix":"skos:note"}}
+                                                {"jaffaText":{"label":"Notes: ", "class-list":"jaffa-field", "suffix":"skos:note"}},
+                                                {"jaffaText":{"label":"Local related data", "class-list":"jaffa-field", "type":"checkbox", "suffix":"redbox:origin"}},
+                                                {"jaffaText":{"label":"publish to RDA", "class-list":"jaffa-field", "type":"checkbox", "suffix":"redbox:publish"}}
                                                 ]
                                            },
                             "additional-classes":"containerLayout"                                           
@@ -374,17 +383,8 @@
                         },         
                         {
                             "component-type":"repeatable-anzsrc-selection",
-                            "label":"",
-                            "fieldName":"dc:subject.anzsrc:for.0.rdf:resource",
-                            "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
-                            "sourceUrl":"proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
-                            "dataLevel":"top",
-                            "mandatory":"false",
-                            "idKey":"rdf:about",
-                            "labelKey":"skos:prefLabel",
-                            "listKey":"results",
-                            "defaultValue":"skos:narrower",
-                            "anzsrcType":"for"
+                            "fieldName":"dc:subject.anzsrc:for",
+                            "sourceUrl":"proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
                         },
                         {
                             "component-type":"text-block",
@@ -393,17 +393,8 @@
                         },                        
                         {
                             "component-type":"repeatable-anzsrc-selection",
-                            "label":"",
-                            "fieldName":"dc:subject.anzsrc:seo.0.rdf:resource",
-                            "fieldNameLabel":"dc:subject.anzsrc:seo.0.skos:prefLabel",
-                            "sourceUrl":"proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
-                            "dataLevel":"top",
-                            "mandatory":"false",
-                            "idKey":"rdf:about",
-                            "labelKey":"skos:prefLabel",
-                            "listKey":"results",
-                            "defaultValue":"skos:narrower",
-                            "anzsrcType":"seo"
+                            "fieldName":"dc:subject.anzsrc:seo",
+                            "sourceUrl":"proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
                         },
                         {
                             "component-type":"text-block",

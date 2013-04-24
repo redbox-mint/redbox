@@ -394,8 +394,12 @@ div.meta ol, div.meta ul {
 	padding-bottom:0.5em;
 }
 
-button.anzsrcSelection {
+.editing button.anzsrcSelection {
 	margin-top:1.5em
+}
+
+button.anzsrcSelection {
+    margin-top:0
 }
 
 .reportImages { 

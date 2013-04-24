@@ -17,7 +17,7 @@ $(document).ready(function() {
 										"sub-fields": {
 														"field":""
 											},
-										"add-item-text":"Add",
+										"add-item-text":"Add another code",
 										"delete-item-html":"<button class='anzsrcSelection'>Remove</button>",
 										"min-size":1,
 										"child-config":config
