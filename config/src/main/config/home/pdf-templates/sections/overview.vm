@@ -18,18 +18,18 @@
 #end
 
 <section>
-	<h1>Overview</h1>
+	<h1>Project overview</h1>
     <table>
-        #displayRow("dc:title" "Project name" "odd_row")
-        #displayRow("dc:identifier" "Project ID" "even_row")
+        #displayRow("dc:title" "Project name (*)" "odd_row")
+        #displayRow("dc:identifier" "Project ID (*)" "even_row")
         #displayRow("dc:relation.bibo:Website" "Project website" "odd_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date" "even_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
         #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
-        #displayRowList("Grant numbers" "foaf:fundedBy.vivo:Grant" "")
+        #displayRowList("Grant number(s)" "foaf:fundedBy.vivo:Grant" "")
         #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type" "even_row")
-        #displayRowList("FOR codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
-        #displayRowList("SEO codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("FoR Codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("SEO Codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
 	</table>
 	<h4>Description</h4>
 	#set($v = $util.get($item, 'dc:description'))

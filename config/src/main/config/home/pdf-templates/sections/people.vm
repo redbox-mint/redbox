@@ -7,7 +7,8 @@
 		#set($familyName = $util.get($item,"$key:familyName"))
 		#set($email = $util.get($item,"$key:email"))
     #if ($familyName)
-    	$!title $!givenName $familyName $!email
+    	$!title $!givenName $familyName 
+    	#if ("$!email" != "") [ $email ] #end
     #else	
 		#noInformation()
     #end
@@ -41,8 +42,8 @@ $value
 <section>
 <h1>People</h1>
     <table id="people">
-    #displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator")
-    #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager")
+    #displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator (*)")
+    #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager (*)")
     <tr>
     #set($personList = $util.getList($item, "locrel:clb.foaf:Person"))
     <td>Collaborators</td>

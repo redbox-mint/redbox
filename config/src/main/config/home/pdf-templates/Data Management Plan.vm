@@ -77,7 +77,7 @@ dd {
 	padding:4px 0 4px;
 }
 
-table { width:14cm }
+##table { width:14cm }
 table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 .first_col { width: 4cm; }
 
@@ -132,14 +132,14 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <section>
 <h1>Data storage</h1>
     <dl>
-        #display("vivo:Dataset.dc:extent.prefLabel" "Expected size of data collected")
+        #display("vivo:Dataset.dc:extent.prefLabel" "Expected size of the data collected")
         #display("vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel" "Storage location")
     </dl>
 	#displayNote("vivo:Dataset.dc:location.skos:note" "Storage location note")
     <dl>    
-        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel" "Master location")
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel" "Location of the master version")
     </dl>    
-    #displayNote("vivo:Dataset.dc:source.dc:location.skos:note" "Master location note")
+    #displayNote("vivo:Dataset.dc:source.dc:location.skos:note" "Location of the master version note")
 </section>
 <hr />
 <section>
@@ -147,7 +147,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     <dl>
         #display("agls:policy.dc:identifier" "Ethics approval number")
     </dl>    
-    #displayNote("agls:policy.skos:note" "Ethics considerations")
+    #displayNote("agls:policy.skos:note" "Information about ethical considerations relevant to this project and how they will be managed")
     <dl>    
     ## agls:protectiveMarking.dc:type is saved from checkbox, sepecial treat
     #set($itemList = $util.getList($item, "agls:protectiveMarking.dc:type"))
@@ -181,46 +181,50 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     </dd>
 
     </dl>    
-    #displayNote("agls:protectiveMarking.skos:note" "Sensitivity note")
+    #displayNote("agls:protectiveMarking.skos:note" "Information about privacy, confidentiality or sensitivity to the data and how it will be managed")
 </section>
 <hr />
 <section>
-<h1>Ethics, licensing and IP</h1>
+<h1>Ownership, licensing and IP</h1>
     <dl>
-        #display("dc:coverage.dc:identifier.prefLabel" "Country of collection")
+        #display("dc:coverage.dc:identifier.prefLabel" "In which country will your data be collected")
     </dl>    
 	#displayNote("dc:rightsHolder.dc:name.prefLabel" "Copyright and intellectual property owners")
-	#displayNote("dc:rightsHolder.dc:description" "Copyright and intellectual property owners - other")
-	#displayNote("redbox:ContractualObligations" "Contractual obligations")
+	#displayNote("dc:rightsHolder.dc:description" "List of any other owners")
+	#displayNote("redbox:ContractualObligations" "Information about contractual obligations that apply to this data")
 </section>
 <hr />
 <section>
-<h1>Data structure, collection and analysis</h1>
+<h1>About the data</h1>
 	#displayNote("vivo:Dataset.redbox:MetadataStandard" "Metadata standards used")
 	#displayNote("vivo:Dataset.redbox:DataStructureStandard" "Standards applied to the data structure")
-	#displayNote("vivo:Dataset.redbox:DataCollectionMethodology" "Data collection methodology")
-	#displayNote("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used for data collection/creation")
-	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment for analysis")
+	#displayNote("vivo:Dataset.redbox:DataCollectionMethodology" "Please provide a brief description of your data collection methodology")
+	#displayNote("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used to create/collect the data")
+	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment used to manipulate/analyse the data")
     <dl>    
-        #display("vivo:Dataset.dc.format.prefLabel" "Primary file format")
+        #display("vivo:Dataset.dc.format.prefLabel" "Predominant file format")
         #display("vivo:Dataset.dc.format.other" "Other format used")
     </dl>
 </section>
 <hr />
 <section>
-<h1>Licensing and access</h1>
+<h1>Data licensing and access</h1>
     <dl>
-        #display("dc:accessRights" "Access")
-        #display("dc:license.skos:prefLabel" "Licence")
+        #display("dc:accessRights" "Access will be managed by")
+        #display("dataLicensingAccess.manager" "The data manager is recorded as")
+        #display("dc:license.skos:prefLabel" "Licensing")
+		#display("dc:license" "The data will be licensed under")
+		#display("dc:license.dc:identifier.other" "Other")
+		#display("dc:license.dc:identifier.url" "URL")
     </dl>
-	#displayNote("dc:RightsStatement" "Rights")
-	#displayNote("dc:rights.skos:note" "Access notes")
+	#displayNote("dc:RightsStatement" "Additional asserted statement of rights")
+	#displayNote("dc:rights.skos:note" "Other relevant information (e.g. access procedures)")
 </section>
 <hr />
 <section>
-<h1>Retention and disposal</h1>
+<h1>Data retention and disposal</h1>
     <dl>
-        #display("redbox:retentionPeriod.dc:date.prefLabel" "Application retention period")
+        #display("redbox:retentionPeriod.dc:date.prefLabel" "Applicable retention period (*)")
         #display("redbox:retentionPeriod.dc:date.skos:note.prefLabel" "Justification for extended retention period")
         #display("redbox:disposalDate" "Earliest possible disposal date")
     </dl>
