@@ -187,7 +187,41 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 <section>
 <h1>Ownership, licensing and IP</h1>
     <dl>
-        #display("dc:coverage.dc:identifier.prefLabel" "In which country will your data be collected")
+        <dt>In which country will your data be collected: </dt>
+## Convert country codes to labels 
+    ## pseudo code
+    ## prepare all keys which need values
+    ## get key and value pairs
+    ## loop through 
+##http://115.146.93.157/mint/default/api/query.script?callType=countries&func=detail&id=http://id.loc.gov/vocabulary/countries/ag,http://id.loc.gov/vocabulary/countries/at
+	#set($forList = $util.getList($item, "dc:coverage.dc:identifier"))
+	#if ($forList.size() > 0)
+		#set($codes = "")
+	    #foreach($key in $forList.keySet())
+	    	#set($code = $forList.get($key).get("country"))
+	        #if($codes == "") 
+	        	#set($codes = $code) 
+	        #else 
+	        	#set($codes = "$codes,$code")
+	        #end
+	    #end
+	    #set($labels = $util.getMintLabels($systemConfig, "Countries_Detail", $codes))
+	    #if ($labels.size() > 0)
+	    	<dd>
+	    	#set($i = 0)
+	    	#foreach($v in $labels)			
+				#if ($i > 0) , #end
+				$v
+				#set($i = $i +1)
+	    	#end
+	    	</dd>
+	    #else
+	    	#noInformation()
+	    #end
+	#else
+		#noInformation()
+	#end
+        
     </dl>    
 	#displayNote("dc:rightsHolder.dc:name.prefLabel" "Copyright and intellectual property owners")
 	#displayNote("dc:rightsHolder.dc:description" "List of any other owners")
