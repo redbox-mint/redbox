@@ -28,7 +28,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next"}]
+                            "transitions":[{"name":"Next", "type": "button"}]
                         }
                     ]
                 },
@@ -211,7 +211,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next"}]
+                            "transitions":[{"name":"Next", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -321,8 +321,8 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Back"},
-                             			   {"name":"Next"}]
+                            "transitions":[{"name":"Back", "type": "button"},
+                             			   {"name":"Next", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -534,7 +534,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next"}]
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -841,7 +841,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"},{"name":"Next"}]
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -925,7 +925,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back"}]
+							"transitions":[{"name":"Back", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
