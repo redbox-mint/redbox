@@ -1,5 +1,8 @@
 {
     "steps": {
+        "Welcome": {
+            "Next": "Overview"
+        },
         "Overview": {
             "Next": "People"
         },

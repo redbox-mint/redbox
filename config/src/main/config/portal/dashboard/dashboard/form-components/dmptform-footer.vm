@@ -17,12 +17,14 @@
 		#set($flowName = $velocityContext.get("request").getParameter("flow"))
 		#if($flowName == "dataAccess")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-licensingandaccessflow.json", "dmptTabs");
+		#elseif ($flowName == "mainflow")
+			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-mainflow.json", "dmptTabs");
 		#elseif ($flowName == "dataStructure")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-datastructureflow.json", "dmptTabs");
 		#elseif ($flowName == "dataRetention")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-dataretentionflow.json", "dmptTabs");
 		#else
-			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-mainflow.json", "dmptTabs");
+			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-iniflow.json", "dmptTabs");
 		#end
 		
 		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');

@@ -3,6 +3,6 @@
 #if($hasWorkflow && $hasWorkflowAccess)
     #set($workflowStep = $self.getWorkflowStep())
     <li>
-        <a href="$portalPath/workflow/$oid" title="$workflowStep">Edit my plan (<em>$workflowStep</em>)</a>
+        <a href="$portalPath/workflow/$oid?flow=mainflow" title="$workflowStep">Edit my plan (<em>$workflowStep</em>)</a>
     </li>
 #end
