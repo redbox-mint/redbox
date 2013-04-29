@@ -6,7 +6,7 @@ from java.util import HashMap
 from java.io import File
 from java.lang import Class
 import sys
-
+#
 class LaunchData:
 
     def __init__(self):
@@ -14,11 +14,11 @@ class LaunchData:
     def __activate__(self, context):
         self.log = context["log"]
         self.request = context["request"]
+        self.sessionState = context["sessionState"]
+        self.sessionState.set("username","admin")
         processingSet = self.request.getParameter("processingSet")
         self.procMsg = None
-        # check for auth
-        
-        # read configuration and trigger all processing stream sets
+        # read configuration and trigger processing stream sets
         # storing the return object on the map
         configFilePath = FascinatorHome.getPath("process")+"/processConfig.json"
         procConfigFile = File(configFilePath)
