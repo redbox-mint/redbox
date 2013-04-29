@@ -22,6 +22,7 @@
 	"viewId": "dashboard",
     "packageType": "self-submission",
     "viewId": "dashboard",
+    #mapTo('dc:title', 'redbox:ManagementPlan.skos:note')
 #foreach( $key in ["swrc:supervisor.foaf:Person.foaf:title","swrc:supervisor.foaf:Person.foaf:givenName","swrc:supervisor.foaf:Person.foaf:familyName"
                    ,"swrc:supervisor.foaf:Person:foaf:email","swrc:supervisor.foaf:Person.dc:identifier"
                    ,"locrel:prc.foaf:Person.foaf:title","locrel:prc.foaf:Person.foaf:givenName","locrel:prc.foaf:Person.foaf:familyName"

@@ -105,6 +105,19 @@
                             "content": "self-submission.header.label.dc-identifier"
                         },
                         {
+                            "component-type": "text-block",
+                            "type": "label",
+                            "content": "self-submission.field.label.redbox-ManagementPlan.skos-note",
+                            "help": "self-submission.field.help.redbox-ManagementPlan.skos-note"
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "redbox:ManagementPlan.skos:note",
+                            "disabled": "disabled",
+                            "label": "",
+                            "additional-classes": ""
+                        },                        
+                        {
                             "component-type": "checkbox",
                             "field-name": "self-submission.field.dc-identifier.redboxdmpt-doirequest",
                             "help": "self-submission.field.help.dc-identifier.redboxdmpt-doirequest",
