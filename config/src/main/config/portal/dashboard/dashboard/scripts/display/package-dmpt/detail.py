@@ -6,7 +6,7 @@ from java.io import ByteArrayInputStream, ByteArrayOutputStream, File
 from java.lang import Exception, System
 from java.util import TreeMap, TreeSet, ArrayList, HashMap
 from com.googlecode.fascinator.portal.lookup import MintLookupHelper
-
+from com.googlecode.fascinator.api.storage import PayloadType
 from java.text import SimpleDateFormat
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
