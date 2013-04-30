@@ -720,6 +720,13 @@
                                     "name": "Save",
                                     "form-submit-action": "save",
                                     "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
                                 }
                             ]
                         }
