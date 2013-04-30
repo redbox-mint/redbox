@@ -33,7 +33,7 @@
 		    	table_html += "</tr>";
 		    }
 		}
-	    document.getElementById("access_userlist").innerHTML = table_html;
+	    $("#access_userlist").html(table_html);
 	}
 	
 	function change_owner(oid) {
