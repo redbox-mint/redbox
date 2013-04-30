@@ -1,6 +1,6 @@
 ## display a list in a row 
-#macro(displayRowList $label $baseKey $subKey)
-<tr>
+#macro(displayRowList $label $baseKey $subKey $class)
+<tr class="$!class">
 <td>$label</td>
 <td>
 #set($forList = $util.getList($item, "$baseKey"))
@@ -25,11 +25,11 @@
         #displayRow("dc:relation.bibo:Website" "Project website" "odd_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "Start date" "even_row")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "End date" "odd_row")
-        #displayRow("foaf:fundedBy.foaf:Agent" "Funding source" "even_row")
-        #displayRowList("Grant number(s)" "foaf:fundedBy.vivo:Grant" "")
+        #displayRowList("Funding source" "foaf:fundedBy.foaf:Agent" "" "even_row")
+        #displayRowList("Grant number(s)" "foaf:fundedBy.vivo:Grant" ""  "odd_row")
         #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type" "even_row")
-        #displayRowList("FoR Codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
-        #displayRowList("SEO Codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("FoR Codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel"  "odd_row")
+        #displayRowList("SEO Codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel" "even_row")
 	</table>
 	<h4>Description</h4>
 	#set($v = $util.get($item, 'dc:description'))
