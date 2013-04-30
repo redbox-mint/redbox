@@ -140,7 +140,7 @@
                             "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"repeatable-text",
                             "field-name":"foaf:fundedBy.foaf:Agent",
                             "label":"",
                             "additional-classes":""
