@@ -64,7 +64,7 @@ class HomeData:
     		security_exceptions = 'security_exception:"' + current_user + '"'
     		owner_query = 'owner:"' + current_user + '"'
     		self.__myPlans = self._searchSets(indexer, "dmpt", isAdmin, owner_query)
-    		self.__sharedPlans = self._searchSets(indexer, "dmpt", isAdmin, security_exceptions)
+    		self.__sharedPlans = self._searchSets(indexer, "dmpt", isAdmin, security_exceptions + " -"+owner_query)
     
     		security_query = "(" + security_exceptions + ") OR (" + owner_query + ")"
     		self.__myDrafts = self._searchSets(indexer, "self-submission", isAdmin, security_query)
