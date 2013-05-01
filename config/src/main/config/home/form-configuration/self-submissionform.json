@@ -64,6 +64,7 @@
                             "field-name": "dc:language.dc:identifier",
                             "field-name-label": "dc:language.skos:prefLabel",
                             "label": "",
+                            "defaultValue": "http://id.loc.gov/vocabulary/iso639-2/eng",
                             "sourceUrl": "proxyGet.script?ns=Languages&qs=count%3D9999",
                             "listKey": "results",
                             "labelKey": "dc:title",
