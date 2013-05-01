@@ -193,7 +193,7 @@ class Alert:
         try:
             ## Now instantiate a HarvestClient just for this File.
             #harvester = HarvestClient(File(self.harvestConfig), File(meta_file), owner)
-            harvester = HarvestClient(File(self.harvestConfig), File(meta_file))
+            harvester = HarvestClient(File(self.harvestConfig), File(meta_file), None)
             harvester.start()
             ## And cleanup afterwards
             oid = harvester.getUploadOid() 
