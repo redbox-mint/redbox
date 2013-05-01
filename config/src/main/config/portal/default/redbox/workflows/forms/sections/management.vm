@@ -310,12 +310,13 @@ $(function() {
             "$portalPath/proxyGet.script?ns=Activities&autocomplete=true&fields=grant_number,dc:title,repository_name,dc:identifier",
             {
                 extraParams: {
-                    qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
+                    qs: function() { return "count=2500&searchTerms=" + escape(elem.val().toLowerCase()); }
                 },
                 formatItem: function(row) { return splitGrantData(row).display; },
                 formatResult: function(row) { return splitGrantData(row).id; },
                 mustMatch: true,
-                width: "40em"
+                width: "40em",
+				max:2500
             }).result(function(event, row) {
                 var uri = $(this).next();
                 var label = $(this).parent().next().find(".autocomplete-grant-label")
