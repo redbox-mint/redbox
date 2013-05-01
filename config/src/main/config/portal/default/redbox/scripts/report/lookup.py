@@ -38,7 +38,6 @@ class LookupData:
             self.handleRecordType()
             return
         if (self.field=="workflowStep"):
-#
             self.handleWorkflowStep()
             return
         if (self.field=="grantNumber"):
@@ -47,10 +46,10 @@ class LookupData:
         if (self.field=="fundingBody"):
             self.handleFundingBody()
             return
-
-    def handleFundingBody(self):
+    
+    def handleQuery(self, query, fieldName, formatStr):
         out = ByteArrayOutputStream()
-        req = SearchRequest("reporting_foaf\:fundedBy.foaf\:Agent.skos\:prefLabel:%s*" % self.term)
+        req = SearchRequest(query)
         req.setParam("fq", 'item_type:"object"')
         req.setParam("fq", 'workflow_id:"dataset"')
         req.setParam("rows", "1000")
@@ -58,145 +57,48 @@ class LookupData:
         res = SolrResult(ByteArrayInputStream(out.toByteArray()))
         hits = HashSet()
         if (res.getNumFound() > 0):
-            grantNumberResults = res.getResults()
-            for grantNumberRes in grantNumberResults:
-                grantNumberList = grantNumberRes.getList("reporting_foaf:fundedBy.foaf:Agent.skos:prefLabel")
-                if (grantNumberList.isEmpty()==False):
-                    for hit in grantNumberList:
-                        hits.add(hit)
-            self.writer.print("[")
-            hitnum = 0
-            for hit in hits:
-                if (hitnum > 0):
-                    self.writer.print(",\"%s\"" % hit)
-                else:    
-                    self.writer.print("\"%s\"" % hit)
-                hitnum += 1
-            self.writer.print("]")
-        else:   
-             self.writer.println("[\"\"]")
-        self.writer.close()
-        
-    def handleGrantNumber(self):
-        out = ByteArrayOutputStream()
-        req = SearchRequest("reporting_foaf\:fundedBy.vivo\:Grant.redbox\:grantNumber:%s*" % self.term)
-        req.setParam("fq", 'item_type:"object"')
-        req.setParam("fq", 'workflow_id:"dataset"')
-        req.setParam("rows", "1000")
-        self.indexer.search(req, out)
-        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        hits = HashSet()
-        if (res.getNumFound() > 0):
-            grantNumberResults = res.getResults()
-            for grantNumberRes in grantNumberResults:
-                grantNumberList = grantNumberRes.getList("reporting_foaf:fundedBy.vivo:Grant.redbox:grantNumber")
-                if (grantNumberList.isEmpty()==False):
-                    for hit in grantNumberList:
-                        hits.add(hit)
-            self.writer.print("[")
-            hitnum = 0
-            for hit in hits:
-                if (hitnum > 0):
-                    self.writer.print(",\"%s\"" % hit)
-                else:    
-                    self.writer.print("\"%s\"" % hit)
-                hitnum += 1
-            self.writer.print("]")
-        else:   
-             self.writer.println("[\"\"]")
-        self.writer.close()
-        
-    def handleWorkflowStep(self):
-        out = ByteArrayOutputStream()
-        req = SearchRequest("workflow_step_label:[* TO *]" )
-        req.setParam("fq", 'item_type:"object"')
-        req.setParam("fq", 'workflow_id:"dataset"')
-        req.setParam("rows", "1000")
-        self.indexer.search(req, out)
-        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        hits = HashSet()
-        if (res.getNumFound() > 0):
-            recordTypeResults = res.getResults()
-            for recordTypeResult in recordTypeResults:
-                recordTypeList = recordTypeResult.getList("workflow_step_label")
-                if (recordTypeList.isEmpty()==False):
-                    for hit in recordTypeList:
-                        hits.add(hit)
-            self.writer.println("[")
-            
-            hitnum = 0
-            for hit in hits:
-                if (hitnum > 0):
-                    self.writer.println(",{\"value\": \"%s\",\n\"label\": \"%s\"}" % (hit,hit))
-                else:    
-                    self.writer.println("{\"value\": \"%s\",\n\"label\": \"%s\"}" % (hit,hit))
-                hitnum += 1
-            self.writer.println("]")
-        else:   
-             self.writer.println("[\"\"]")
-        self.writer.close()
-        
-    def handleRecordType(self):
-        out = ByteArrayOutputStream()
-        req = SearchRequest("dc\:type.skos\:prefLabel\:[* TO *]" )
-        req.setParam("fq", 'item_type:"object"')
-        req.setParam("fq", 'workflow_id:"dataset"')
-        req.setParam("rows", "1000")
-        self.indexer.search(req, out)
-        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        hits = HashSet()
-        if (res.getNumFound() > 0):
-            recordTypeResults = res.getResults()
-            for recordTypeResult in recordTypeResults:
-                recordTypeList = recordTypeResult.getList("dc:type.skos:prefLabel")
-                if (recordTypeList.isEmpty()==False):
-                    for hit in recordTypeList:
-                        hits.add(hit)
-            self.writer.println("[")
-            
-            hitnum = 0
-            for hit in hits:
-                if (hitnum > 0):
-                    self.writer.println(",{\"value\": \"%s\",\n\"label\": \"%s\"}" % (hit,hit))
-                else:    
-                    self.writer.println("{\"value\": \"%s\",\n\"label\": \"%s\"}" % (hit,hit))
-                hitnum += 1
-            self.writer.println("]")
-        else:   
-             self.writer.println("[\"\"]")
-        self.writer.close()
-        
-        
-    def handleCreator(self):
-        out = ByteArrayOutputStream()
-        req = SearchRequest("reporting_dc\:creator.foaf\:Person:%s*" % self.term)
-        req.setParam("fq", 'item_type:"object"')
-        req.setParam("fq", 'workflow_id:"dataset"')
-        req.setParam("rows", "1000")
-        self.indexer.search(req, out)
-        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
-        hits = HashSet()
-        if (res.getNumFound() > 0):
-            creatorResults = res.getResults()
-            for creatorRes in creatorResults:
-                creatorList = creatorRes.getList("reporting_dc:creator.foaf:Person")
-                if (creatorList.isEmpty()==False):
-                    for hit in creatorList:
-                        if hit.find(self.term) != -1:
+            results = res.getResults()
+            for searchRes in results:
+                searchResList = searchRes.getList(fieldName)
+                if (searchResList.isEmpty()==False):
+                    for hit in searchResList:
+                        if self.term is not None:
+                            if hit.find(self.term) != -1:
+                                hits.add(hit)
+                        else:
                             hits.add(hit)
             self.writer.print("[")
             hitnum = 0
             for hit in hits:
                 if (hitnum > 0):
-                    self.writer.print(",\"%s\"" % hit)
+                    self.writer.print(","+formatStr % {"hit":hit})
                 else:    
-                    self.writer.print("\"%s\"" % hit)
+                    self.writer.print(formatStr % {"hit":hit})
                 hitnum += 1
             self.writer.print("]")
         else:   
              self.writer.println("[\"\"]")
         self.writer.close()
         
+    def handleFundingBody(self):
+        term = "(%(term)s OR %(term)s*)" % {"term":self.term} 
+        self.handleQuery("reporting_foaf\:fundedBy.foaf\:Agent.skos\:prefLabel:"+ term, "reporting_foaf:fundedBy.foaf:Agent.skos:prefLabel", '\"%(hit)s\"')
+        
+    def handleGrantNumber(self):
+        term = "(%(term)s OR %(term)s*)" % {"term":self.term}
+        self.handleQuery("reporting_foaf\:fundedBy.vivo\:Grant.redbox\:grantNumber:"+ term, "reporting_foaf:fundedBy.vivo:Grant.redbox:grantNumber", '\"%(hit)s\"')
+        
+    def handleWorkflowStep(self):
+        self.term = None
+        self.handleQuery("workflow_step_label:[* TO *]", "workflow_step_label", '{\"value\": \"%(hit)s\",\n\"label\": \"%(hit)s\"}')
+        
+    def handleRecordType(self):
+        self.term = None
+        self.handleQuery("dc\:type.skos\:prefLabel\:[* TO *]", "dc:type.skos:prefLabel", '{\"value\": \"%(hit)s\",\n\"label\": \"%(hit)s\"}')
+        
+    def handleCreator(self):
+        term = "(%(term)s OR %(term)s*)" % {"term":self.term}
+        self.handleQuery("reporting_dc\:creator.foaf\:Person:"+ term, "reporting_dc:creator.foaf:Person", '\"%(hit)s\"')
         
     def getErrorMsg(self):
         return self.errorMsg
