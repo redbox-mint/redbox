@@ -43,10 +43,14 @@ class LookupData:
             return
         if (self.field=="grantNumber"):
             self.handleGrantNumber()
+            return
+        if (self.field=="fundingBody"):
+            self.handleFundingBody()
+            return
 
-    def handleGrantNumber(self):
+    def handleFundingBody(self):
         out = ByteArrayOutputStream()
-        req = SearchRequest("grant_numbers:%s*" % self.term)
+        req = SearchRequest("reporting_foaf\:fundedBy.foaf\:Agent.skos\:prefLabel:%s*" % self.term)
         req.setParam("fq", 'item_type:"object"')
         req.setParam("fq", 'workflow_id:"dataset"')
         req.setParam("rows", "1000")
@@ -54,11 +58,40 @@ class LookupData:
         res = SolrResult(ByteArrayInputStream(out.toByteArray()))
         hits = HashSet()
         if (res.getNumFound() > 0):
-            creatorResults = res.getResults()
-            for creatorRes in creatorResults:
-                creatorList = creatorRes.getList("grant_numbers")
-                if (creatorList.isEmpty()==False):
-                    for hit in creatorList:
+            grantNumberResults = res.getResults()
+            for grantNumberRes in grantNumberResults:
+                grantNumberList = grantNumberRes.getList("reporting_foaf:fundedBy.foaf:Agent.skos:prefLabel")
+                if (grantNumberList.isEmpty()==False):
+                    for hit in grantNumberList:
+                        hits.add(hit)
+            self.writer.print("[")
+            hitnum = 0
+            for hit in hits:
+                if (hitnum > 0):
+                    self.writer.print(",\"%s\"" % hit)
+                else:    
+                    self.writer.print("\"%s\"" % hit)
+                hitnum += 1
+            self.writer.print("]")
+        else:   
+             self.writer.println("[\"\"]")
+        self.writer.close()
+        
+    def handleGrantNumber(self):
+        out = ByteArrayOutputStream()
+        req = SearchRequest("reporting_foaf\:fundedBy.vivo\:Grant.redbox\:grantNumber:%s*" % self.term)
+        req.setParam("fq", 'item_type:"object"')
+        req.setParam("fq", 'workflow_id:"dataset"')
+        req.setParam("rows", "1000")
+        self.indexer.search(req, out)
+        res = SolrResult(ByteArrayInputStream(out.toByteArray()))
+        hits = HashSet()
+        if (res.getNumFound() > 0):
+            grantNumberResults = res.getResults()
+            for grantNumberRes in grantNumberResults:
+                grantNumberList = grantNumberRes.getList("reporting_foaf:fundedBy.vivo:Grant.redbox:grantNumber")
+                if (grantNumberList.isEmpty()==False):
+                    for hit in grantNumberList:
                         hits.add(hit)
             self.writer.print("[")
             hitnum = 0

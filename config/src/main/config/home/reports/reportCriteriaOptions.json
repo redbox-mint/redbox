@@ -134,6 +134,30 @@
             "label": "ANZSRC-SEO",
             "key" : "seo",
             "solrField": "dc_subject"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "grant",
+                    "lookup-data":"lookup?field=grantNumber"
+                }
+            },
+            "label": "Grant Number",
+            "key" : "grant",
+            "solrField": "reporting_foaf\\:fundedBy.vivo\\:Grant.redbox\\:grantNumber"
+        },
+        {
+            "value": {
+                "jaffaText": {
+                    "field": "",
+                    "key": "fundingBody",
+                    "lookup-data":"lookup?field=fundingBody"
+                }
+            },
+            "label": "Funding Body",
+            "key" : "fundingBody",
+            "solrField": "reporting_foaf\\:fundedBy.foaf\\:Agent.skos\\:prefLabel"
         }
     ]
 }
