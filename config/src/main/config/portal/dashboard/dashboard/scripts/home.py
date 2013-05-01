@@ -5,6 +5,8 @@ from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.text import SimpleDateFormat
 from java.util import ArrayList
 
+import glob
+
 class HomeData:
     def __init__(self):
         pass
@@ -54,21 +56,21 @@ class HomeData:
 
         isAdmin = self.vc("page").authentication.is_admin()
         if isAdmin:
-    		self.__myDrafts = self._searchSets(indexer, "self-submission")
-    		self.__myDatasets = self._searchSets(indexer, "dataset")
-    		self.__myPlans = self._searchSets(indexer, "dmpt")
-    	else:
+            self.__myDrafts = self._searchSets(indexer, "self-submission")
+            self.__myDatasets = self._searchSets(indexer, "dataset")
+            self.__myPlans = self._searchSets(indexer, "dmpt")
+        else:
             # Security prep work
-    		current_user = self.vc("page").authentication.get_username()
-    		security_roles = self.vc("page").authentication.get_roles_list()
-    		security_exceptions = 'security_exception:"' + current_user + '"'
-    		owner_query = 'owner:"' + current_user + '"'
-    		self.__myPlans = self._searchSets(indexer, "dmpt", isAdmin, owner_query)
-    		self.__sharedPlans = self._searchSets(indexer, "dmpt", isAdmin, security_exceptions + " -"+owner_query)
+            current_user = self.vc("page").authentication.get_username()
+            security_roles = self.vc("page").authentication.get_roles_list()
+            security_exceptions = 'security_exception:"' + current_user + '"'
+            owner_query = 'owner:"' + current_user + '"'
+            self.__myPlans = self._searchSets(indexer, "dmpt", isAdmin, owner_query)
+            self.__sharedPlans = self._searchSets(indexer, "dmpt", isAdmin, security_exceptions + " -"+owner_query)
     
-    		security_query = "(" + security_exceptions + ") OR (" + owner_query + ")"
-    		self.__myDrafts = self._searchSets(indexer, "self-submission", isAdmin, security_query)
-    		self.__myDatasets = self._searchSets(indexer, "dataset", isAdmin, security_query)
+            security_query = "(" + security_exceptions + ") OR (" + owner_query + ")"
+            self.__myDrafts = self._searchSets(indexer, "self-submission", isAdmin, security_query)
+            self.__myDatasets = self._searchSets(indexer, "dataset", isAdmin, security_query)
     
     def getUser(self):
         current_user = self.vc("page").authentication.get_username()
@@ -94,3 +96,9 @@ class HomeData:
             if(stage.get("name") == stageId) :
                 return stage.get("label")
         return stageId
+
+    def hasPlanPDF(self, oid):
+        object = Services.getStorage().getObject(oid)
+        path = object.getPath()
+        allPDFs = glob.glob(path+"/Data*.pdf")
+        return len(allPDFs) > 0
