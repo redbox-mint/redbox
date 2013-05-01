@@ -70,6 +70,11 @@ class DetailData:
         payload.close()
         return __tfpackage
         
+    def hasPlanPDF(self):
+        path = self._getObject().getPath()
+        allPDFs = glob.glob(path+"/Data*.pdf")
+        return len(allPDFs) > 0
+
     def getPlanVersions(self):
         pdfs = TreeMap()
         path = self._getObject().getPath()
@@ -210,6 +215,3 @@ class DetailData:
                  labelJson = JsonSimple(label)
                  labels.add(labelJson.getString("", "label"))
             return labels                    
-       
-      
-        
