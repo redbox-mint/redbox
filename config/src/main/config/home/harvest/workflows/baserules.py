@@ -20,8 +20,9 @@ class BaseIndexData(object):
         self.log = context["log"]
         
         self.log.debug("Indexing Metadata Record '{}' '{}'", self.object.getId(), self.payload.getId())
-
+        
         # Common data
+        self.user_id = "" # Used for setting ownership when data is harvested by (New)Alert with user_id instead of user is available
         self.__newDoc()
         self.packagePid = None
         pidList = self.object.getPayloadIdList()
@@ -126,10 +127,15 @@ class BaseIndexData(object):
                 self.utils.add(self.index, "security_exception", user)
 
         # Ownership
-        if self.owner is None:
-            self.utils.add(self.index, "owner", "system")
-        else:
-            self.utils.add(self.index, "owner", self.owner)
+        owner = 'system'
+        if self.owner:
+            if self.owner == 'guest' and self.user_id != "":
+                self.log.debug("Assign ownership: user_id to user mapping: default guest owner and user_id found.")
+                owner = self.__getUser(self.user_id)
+                self.params['owner'] = owner
+            else:
+                owner = self.owner
+        self.utils.add(self.index, "owner", owner)
 
     def __indexList(self, name, values):
         # convert to set so no duplicate values
@@ -159,6 +165,7 @@ class BaseIndexData(object):
         schema.setRecordId(self.oid)
         schema.set("user", oldUser)
         self.utils.removeAccessSchema(schema, "derby")
+        
     def __metadata(self):
         self.title = None
         self.dcType = None
@@ -284,7 +291,9 @@ class BaseIndexData(object):
         self.descriptionList = [manifest.getString("", ["description"])]
         formData = manifest.getJsonObject()
         for field in formData.keySet():
-            if field not in coreFields:
+            if field == 'user_id':
+                self.user_id = formData.get(field) # transitional info: save for mapping it to assign owner 
+            elif field not in coreFields:
                 value = formData.get(field)
                 if value is not None and hasattr(value, 'strip') and value.strip() != "":
                     self.utils.add(self.index, field, value)
@@ -354,3 +363,10 @@ class BaseIndexData(object):
         json = self.utils.getJsonObject(payload.open())
         payload.close()
         return json
+    
+    def __getUser(self, user_id):
+        self.log.debug("Assign ownership: mapping id {} to user", user_id)
+        if (user_id == '1000'): # if mapping is successful, return real owner
+            return "researcher"
+        else: # otherwise, assign admin as the owner
+            return "admin"        
