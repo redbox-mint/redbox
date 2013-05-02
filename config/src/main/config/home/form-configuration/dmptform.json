@@ -714,7 +714,17 @@
                             "sourceUrl":"workflows/forms/data/retentionPeriod.json",
                             "idKey":"id",
                             "labelKey":"label",
-                            "listKey":"results"
+                            "listKey":"results",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "redbox:retentionPeriod.dc:date",
+        									"focus-id": "redbox:retentionPeriod.dc:date",
+        									 "validation-messages":{
+        									 						"required": "Retention Period must be specified"
+        									 						}
+    						 			  } 
                         },
                         {
                             "component-type":"data-source-dropdown",
