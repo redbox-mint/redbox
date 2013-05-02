@@ -22,8 +22,11 @@
                 #parseTemplate("home/dmpt/created_modified_date.vm")                
                 </td>
                 <td>$self.formatDate($item.get("last_modified"))</td>
-                <td><a href="$portalPath/workflow/$oid?flow=mainflow" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
+                <td>
+                #if ($self.hasPlanPDF($oid))
+                <a href="$portalPath/workflow/$oid?flow=mainflow" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
                 <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                #end
 				#if($currentUser != "admin")
 				<a href="#" onclick="change_owner('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.delete')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.delete')" src="$portalPath/images/icons/delete.png"></a>
 				#end
