@@ -98,7 +98,7 @@ class HomeData:
         return stageId
 
     def hasPlanPDF(self, oid):
-        object = Services.getStorage().getObject(oid)
+        object = self.vc("Services").getStorage().getObject(oid)
         path = object.getPath()
         allPDFs = glob.glob(path+"/Data*.pdf")
         return len(allPDFs) > 0
