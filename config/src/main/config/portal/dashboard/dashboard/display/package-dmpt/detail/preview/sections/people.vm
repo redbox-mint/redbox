@@ -42,7 +42,11 @@ $value
 #end
 
 #macro(displayOptionalKey $map $key)
-#displayKey($map $key false)
+	#if ($key == "person.foaf:email")
+		[ #displayKey($map $key false) ]
+	#else
+		#displayKey($map $key false)
+	#end
 #end
 
 #macro(displayRequiredKey $map $key)
@@ -70,7 +74,7 @@ $value
                 #displayOptionalKey($person "person.foaf:title")
                 #displayRequiredKey($person "person.foaf:givenName")
                 #displayRequiredKey($person "person.foaf:familyName")
-                #displayOptionalKey($person "email")
+                #displayOptionalKey($person "person.foaf:email")
             </li>
         #end
         </ol>
