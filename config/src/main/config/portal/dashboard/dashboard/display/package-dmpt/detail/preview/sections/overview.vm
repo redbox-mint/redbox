@@ -80,7 +80,6 @@
 
 <style>
 	#pdf-like { border: none; }
-	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
 </style>
 <section>
 	<h1>#displayMessage('dmpt.heading.projectOverview')</h1>

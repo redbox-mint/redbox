@@ -15,11 +15,14 @@ from com.googlecode.fascinator.common import JsonSimple
 from org.json.simple import JSONArray
 from java.io import ByteArrayInputStream
 from java.io import ByteArrayOutputStream
+from com.googlecode.fascinator.common.messaging import MessagingServices
+from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 
 class CopyTfPackageData:
 
     def __init__(self):
-        pass
+        self.messaging = MessagingServices.getInstance()        
+
     def __activate__(self, context):
         self.auth = context["page"].authentication
         self.errorMsg = "" 
@@ -69,6 +72,8 @@ class CopyTfPackageData:
              
              tfMetaPropertyValue = self.formData.get("tfMetaPropertyValue")
              self._addPropertyValueToTFMeta(toObject, tfMetaPropertyValue)
+             
+             self._reharvestPackage()
                  
              result = '{"status": "ok", "url": "%s/workflow/%s", "oid": "%s" }' % (context["portalPath"], toOid , toOid)
         else:
@@ -80,9 +85,16 @@ class CopyTfPackageData:
     def getErrorMsg(self):
         return self.errorMsg
     
+    def _reharvestPackage(self):
+        message = JsonObject()
+        message.put("oid", self.formData.get("toOid"))
+        message.put("task", "reharvest")
+        self.messaging.queueMessage( TransactionManagerQueueConsumer.LISTENER_ID, message.toString())
+        
     def _addPropertyValueToTFMeta(self, object, tfMetaPropertyValue):
         objectMetadata = object.getMetadata()
         objectMetadata.setProperty("copyTFPackage", tfMetaPropertyValue)
+        objectMetadata.setProperty("render-pending", "true")
         
         output = ByteArrayOutputStream();
         objectMetadata.store(output, None);
