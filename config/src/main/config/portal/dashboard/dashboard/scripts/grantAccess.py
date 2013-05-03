@@ -9,12 +9,14 @@ class GrantAccessData:
     """Grant access/change ownership of a package"""
     def __init__(self):
         pass
+    
     def __activate__(self, context):
         self.log = context["log"]
+        self.services = context["Services"]
         formData = context["formData"]
         oid = formData.get("oid")
         action = formData.get("action")
-        self.log.debug("Action = " + action)
+        self.log.debug("grantAccess.py: Action = " + action)
         if action == 'get':
             result = self.__getUsers(oid)
         elif action == "change":
@@ -25,9 +27,9 @@ class GrantAccessData:
         self.__respond(context["response"], result)    
 
     def __getUsers(self, oid):
-        indexer = Services.getIndexer()
-        req = SearchRequest("id:"+oid)
-        req.setParam("fl","security_exception,owner")
+        indexer = self.services.getIndexer()
+        req = SearchRequest("id:" + oid)
+        req.setParam("fl", "security_exception,owner")
         out = ByteArrayOutputStream()
         indexer.search(req, out)
         rtJson = ""
@@ -39,8 +41,8 @@ class GrantAccessData:
             if secException is None:
                 secException = JSONArray()
                 
-            self.log.debug("Owner of object: " + owner)
-            self.log.debug("Viewer(s) of object: " + secException.toString())
+            self.log.debug("grantAccess.py: Owner of object: " + owner)
+            self.log.debug("grantAccess.py: Viewer(s) of object: " + secException.toString())
             if secException.contains(owner):
                 secException.remove(owner)
             return '{"owner":"' + owner + '", "viewers": ' + secException.toString() + '}'
@@ -48,9 +50,9 @@ class GrantAccessData:
             self.log.error("Error during query/package ownership data" + str(e))
             
     def getViewers(self, oid):
-        indexer = Services.getIndexer()
-        req = SearchRequest("id:"+oid)
-        req.setParam("fl","security_exception,owner")
+        indexer = self.services.getIndexer()
+        req = SearchRequest("id:" + oid)
+        req.setParam("fl", "security_exception,owner")
         out = ByteArrayOutputStream()
         indexer.search(req, out)
         try:
@@ -70,76 +72,46 @@ class GrantAccessData:
             self.log.error("Error during query/package ownership data" + str(e))
                 
     def __change(self, context, oid, new_owner):
+        storage = self.services.getStorage()
+        object = storage.getObject(oid)
+        objectMetadata = object.getMetadata()
+        owner = objectMetadata.getProperty("owner")
+        objectMetadata.setProperty("owner", new_owner)
+        self.log.debug("grantAccess.py: Changing ownership to : " + new_owner)
+        output = ByteArrayOutputStream()
+        objectMetadata.store(output, None)
+        input = ByteArrayInputStream(output.toByteArray())
+        StorageUtils.createOrUpdatePayload(object, "TF-OBJ-META", input)
+        
         try:
-            storage = context["Services"].getStorage()
-            object = storage.getObject(oid)
-            objectMetadata = object.getMetadata()
-            owner = objectMetadata.getProperty("owner")
-            objectMetadata.setProperty("owner", new_owner)
-            self.log.debug("Changing ownership to : " + new_owner)
-            output = ByteArrayOutputStream()
-            objectMetadata.store(output, None)
-            input = ByteArrayInputStream(output.toByteArray())
-            StorageUtils.createOrUpdatePayload(object,"TF-OBJ-META",input)
-
             auth = context["page"].authentication
-            
-            #special condition when setting admin as owner - revoke all viewers
+            source = context["formData"].get("source")
+            self.log.debug("grantAccess.py: authentication plugin:  = {}", source)
+            auth.set_access_plugin(source)
+            # special condition when setting admin as owner - revoke all viewers
             if new_owner == "admin":
-              self.log.debug("New owner is admin, revoking all viewers") 
-              viewers = self.getViewers(oid)
-              self.log.debug("Viewers: " + viewers.toString())
-              for viewer in viewers:
-                 self.log.debug("Revoking:%s" % viewer)
-                 auth.revoke_user_access(oid, viewer)
-              auth.revoke_user_access(oid, owner)
-            # don't know what's going on but this was originally set to "owner", changed it to new_owner. 
-            auth.grant_user_access(oid, new_owner)
+                self.log.debug("New owner is admin, revoking all viewers") 
+                auth.revoke_user_access(oid, owner)
+                viewers = self.getViewers(oid)
+                self.log.debug("Viewers: " + viewers.toString())
+                for viewer in viewers:
+                   self.log.debug("Revoking:%s" % viewer)
+                   auth.revoke_user_access(oid, viewer)
+                
+            auth.grant_user_access(oid, owner)  # give previous owner read access
             
             err = auth.get_error()
             if err is None or err == 'Duplicate! That user has already been applied to this record.':
-                Services.indexer.index(oid)
-                Services.indexer.commit()
-                return '{"status":"ok", "new_owner": "' + new_owner + '"}'
+              Services.indexer.index(oid)
+              Services.indexer.commit()
+              return '{"status":"ok", "new_owner": "' + new_owner + '"}'
             else:    
-                self.log.error("Error during changing ownership of data. Exception: " + err)
+              self.log.error("grantAccess.py: Error raised during calling authentication for changing ownership. Exception: " + err)
             
         except Exception, e:
-            self.log.error("Error during changing ownership of data. Exception: " + str(e))
+             self.log.error("grantAccess.py: Unexpected error raised during changing ownership of data. Exception: " + str(e))
 
     def __respond(self, response, result):
         writer = response.getPrintWriter("application/json; charset=UTF-8")
         writer.println(result)
         writer.close()        
-
-    def updatePackageType(self, tfPackage, toWorkflowId):
-        tfPackageJson = JsonSimple(tfPackage.open()).getJsonObject()
-        tfPackageJson.put("packageType", toWorkflowId)
-        
-        inStream = IOUtils.toInputStream(tfPackageJson.toString(), "UTF-8")
-        try:
-            StorageUtils.createOrUpdatePayload(self.object, tfPackage.getId(), inStream)
-        except StorageException:
-            print " ERROR updating dataset payload"            
-
-    # Retrieve and parse the Fascinator Package from storage
-    def __getTFPackage(self, context, oid):
-        payload = None
-
-        try:
-            storage = context["Services"].getStorage()
-            object = storage.getObject(oid)
-            sourceId = object.getSourceId()
-            if sourceId is None or not sourceId.endswith(".tfpackage"):
-                # The package is not the source... look for it
-                for pid in object.getPayloadIdList():
-                    if pid.endswith(".tfpackage"):
-                        payload = object.getPayload(pid)
-                        payload.setType(PayloadType.Source)
-            else:
-                payload = object.getPayload(sourceId)
-
-        except Exception, e:
-            self.log.error("Error during package access" + str(e))
-
-        return payload

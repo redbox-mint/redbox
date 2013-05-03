@@ -1,10 +1,14 @@
-## This added because local custom.css has huge title bar height
 <script type="text/javascript">
 	var access_control_oid = null; // used for caller from myplans mydatasets to set oid
 	var access_control_users = null;
+	// table_components: to enable language file to be used later
+	var table_components = '<tr><th>#displayMessage("researcher-dashboard.home.access-control.userlist.owner")</th>';
+	table_components += '<th>#displayMessage("researcher-dashboard.home.access-control.userlist.username")</th>';
+	table_components += '<th style="width:10%">#displayMessage("researcher-dashboard.home.access-control.userlist.delete")</th>';
+	table_components += '</tr>';
 
 	function build_users_table(results) {
-		var table_html = "<td>Is owner</td><td>User name</td><td style='width:10%'>Delete</td></tr>"
+		var table_html = "<table>" + table_components; //table_components is built from language file
 
 		var owner = results.owner;
 		table_html += "<tr>";
@@ -33,19 +37,65 @@
 		    	table_html += "</tr>";
 		    }
 		}
-	    $("#access_userlist").html(table_html);
+		table_html += "</table>"
+	    $("#table_holder").html(table_html);
 	}
 	
+	function manage_access(oid) {
+		access_control_oid = oid;
+		// This ajax call is for initialising user list
+		jQuery.ajax({
+			url: "$portalPath/grantAccess.ajax",
+			data: { oid:access_control_oid,
+					action:"get"
+				  },
+			error: function(j, s) {alert(s)},	  
+			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
+			});
+	}
+	
+    function add_user() {
+    	var added_user = document.getElementById('add_user').value;
+    	
+    	if (added_user) {
+			jQuery.ajax({
+				type : "POST",
+				url : "$portalPath/actions/admin.ajax",
+				error: function (req) {
+					alert("Attention please:\n" + req.responseText);
+				},
+				data: {
+					record: access_control_oid,
+					user: added_user,
+					source: "derby",
+					verb: "grant-access"
+				},
+        		dataType:"text",	
+        		success: function() {
+	    			jQuery.ajax({
+	    				url: "$portalPath/grantAccess.ajax",
+	    				data: { oid:access_control_oid,
+	    						action:"get"
+	    					  },
+	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
+	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
+	    				});
+        			}
+        		});
+    	}
+    }
+
 	function change_owner(oid) {
 		var change = "change", new_owner = "admin";
 		jQuery.ajax({
 			url: "$portalPath/grantAccess.ajax",
-			data: { action:change,
+			data: { action:"change",
 					oid:oid,
+					source: "derby",
 					new_owner:"admin"
 				  },
 			dataType:'json',
-			success: function(data) {
+			success: function() {
 				window.location.reload();
 			},
 			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }
@@ -53,20 +103,37 @@
 
 	}
 
-	function manage_access(oid) {
-		access_control_oid = oid;
-		// This ajax call is for initialise user list
-		var action = "get"; 
-		jQuery.ajax({
-			url: "$portalPath/grantAccess.ajax",
-			data: { oid:access_control_oid,
-					action:action
-				  },
-			error: function(j, s) {alert(s)},	  
-			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
-			});
-	}
-	
+    function revoke_user(user_name) {
+    	var r=confirm("Are you sure to remove?");
+		if (r==false) {
+		  return;
+		}
+    	jQuery.ajax({
+    		type : "POST",
+    		url : "$portalPath/actions/admin.ajax",
+    		dataType:"text",
+    		success: function() {
+	    			jQuery.ajax({
+	    				url: "$portalPath/grantAccess.ajax",
+	    				data: { oid:access_control_oid,
+	    						action:"get"
+	    					  },
+	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
+	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
+	    				});
+	    		},
+    		error:	function (req) {
+	    			alert("Deletion failed.\n" + req.responseText)
+	    		},
+    		data: {
+		    		record: access_control_oid,
+		    		user: user_name,
+		    		source: "derby",
+		    		verb: "revoke-access"
+	    		}
+    		}); 
+    }
+
 	$(function () {
         $("#dialog-form").dialog({
             autoOpen: false,
@@ -84,16 +151,17 @@
                           } 
                 	}
                 	if (new_owner !== 'old-owner') {
-                		var action = "change"
                     	jQuery.ajax({
                     		url: "$portalPath/grantAccess.ajax",
-                    		data: { action:action,
+                    		data: { action:"change",
+                    				source:"derby",
                     				oid:access_control_oid,
                     				new_owner:new_owner
                     			  },
                     		dataType:'json'
                     		});
                 	}
+                	setInterval(function() { window.location.reload() }, 1500)
                 	$(this).dialog("close");
                 },
                 "Close": function () {
@@ -101,95 +169,26 @@
                 },
                 "Reload": function () {
                 	$("#action-warning-msg").hide();
-            		var action = "get"; 
             		jQuery.ajax({
             			url: "$portalPath/grantAccess.ajax",
             			data: { oid:access_control_oid,
-            					action:action
+            					action:"get"
             				  },
-            			error: function(j, s) {alert(s)},	  
+            			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }	  
             			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
             			});
                 }
             }
         });
     });
-    
-    
-    function revoke_user(user_name) {
-    	var r=confirm("Are you sure to remove?");
-		if (r==false) {
-		  return;
-		}
-    	jQuery.ajax({
-    		type : "POST",
-    		url : "$portalPath/actions/admin.ajax",
-    		dataType:"text",
-    		success: function(data, status) {
-	    			var action = "get"; 
-	    			jQuery.ajax({
-	    				url: "$portalPath/grantAccess.ajax",
-	    				data: { oid:access_control_oid,
-	    						action:action
-	    					  },
-	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
-	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
-	    				});
-	    		},
-    		error:	function (req) {
-	    			alert("Deletion failed.\n" + req.responseText)
-	    		},
-    		data: {
-		    		record: access_control_oid,
-		    		user: user_name,
-		    		source: "derby",
-		    		verb: "revoke-access"
-	    		}
-    		}); 
-    }
-    
-    function add_user() {
-    	var added_user = document.getElementById('add_user').value;
-    	
-    	var action = "grant"; 
-    	if (added_user) {
-			jQuery.ajax({
-				type : "POST",
-				url : "$portalPath/actions/admin.ajax",
-				error: function (req) {
-					alert("Attention please:\n" + req.responseText);
-				},
-				data: {
-					record: access_control_oid,
-					user: added_user,
-					source: "derby",
-					verb: "grant-access"
-				},
-        		dataType:"text",	
-        		success: function() {
-	    			var action = "get"; 
-	    			jQuery.ajax({
-	    				url: "$portalPath/grantAccess.ajax",
-	    				data: { oid:access_control_oid,
-	    						action:action
-	    					  },
-	    				error: function(req) { alert("Attention please:\n" + req.responseText); },
-	    				success: function(d) { build_users_table(d); $("#action-warning-msg").show(); }
-	    				});
-        			}
-        		});
-    	}
-    }
 </script>
 
 <div id="dialog-form" title="#displayMessage('researcher-dashboard.home.access-control.title')">
     <!--<h2>#displayMessage("researcher-dashboard.home.access-control.title")</h2>-->
-    ##set($item = $self.NewThing.get(0))
-    ##if (! $item.security_exception)
-    ##<p>We don't have list yet<br></p>
-    ##end	
 	<p>#displayMessage("researcher-dashboard.home.access-control.intro")</p>
-    <table id="access_userlist">
+	<div id = "table_holder">
+	## below is just an example of how table look like. The actual table is built dynamically
+    <table>
 	    <tr>
 	    	<td>#displayMessage("researcher-dashboard.home.access-control.userlist.owner")</td>
 	        <td>#displayMessage("researcher-dashboard.home.access-control.userlist.username")</td>
@@ -210,6 +209,7 @@
 	    -->
 	    #end
 	</table>
+	</div>
 	##<div id="user-list">input text here</div>
 	<input type="text" name="add_user" id="add_user" />
 	<button onclick="add_user()">#displayMessage("researcher-dashboard.home.access-control.userlist.add")</button>
