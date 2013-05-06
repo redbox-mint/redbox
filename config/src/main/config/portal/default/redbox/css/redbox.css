@@ -382,6 +382,10 @@ div.meta ol, div.meta ul {
 	padding-left:0.3em;
 }
 
+.component-wrapper .grant-description{
+	width:400px;
+}
+
 .simple-workflow.component-wrapper > label {
     font-size: 105%;
     font-weight: bold;

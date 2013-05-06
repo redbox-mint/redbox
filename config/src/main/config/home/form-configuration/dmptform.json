@@ -51,6 +51,8 @@
                             "field-name":"dc:title",
                             "label":"",
                             "additional-classes":"",
+                            
+                            
                             "validation": {
         									"save-rules": [
             									"required"
@@ -140,7 +142,7 @@
                             "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
                         },
                         {
-                            "component-type":"repeatable-text",
+                            "component-type":"funding-body",
                             "field-name":"foaf:fundedBy.foaf:Agent",
                             "label":"",
                             "additional-classes":""
@@ -152,7 +154,7 @@
                             "help":"dmpt.field.help.foaf-fundedBy.vivo-Grant"
                         },
                         {
-                            "component-type":"repeatable-text",
+                            "component-type":"grants",
                             "field-name":"foaf:fundedBy.vivo:Grant",
                             "label":""
                         },

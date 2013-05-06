@@ -1,0 +1,52 @@
+<div id="repeat-textbox-of-$field-name">
+<p></p>
+</div>
+#if ($help)
+		<div id="${field-name}-help" class="help-content">#displayMessage($help)</div>
+#end
+
+<script>
+var widgetListBranding = {
+	"" : "control-group",
+	".jaffaValidationError" : ["alert", "alert-error"]
+};
+$(document).ready(function() {
+$("[id='repeat-textbox-of-$field-name']").jaffaFundingBodyRepeatable({
+	"disable-numbers":true,
+	"disable-sorting":true,
+	"base-field":"$field-name",
+	"sub-fields": {
+		"field":"",
+		
+	},
+	"add-item-text":"Add",
+	"delete-item-html":"<button>Remove</button>",
+	"min-size":1,
+	"child-config":{
+		"label":"#displayMessage($label)",
+		"field":"",
+		"lookup-data":"$portalPath/proxyGet.script?ns=Funding_Bodies&fields=dc:identifier,dc:title&jaffa2autocomplete=true",
+    "lookup-request": {
+        "data-type": "json",
+        "term-field": "qs",
+        "term-quote": false
+    },
+    "lookup-parser": {
+        "results-path": ["results"],
+        "fields": {
+            "name": ["rdfs\:label"],
+            "identifier": ["dc\:identifier"]
+        },
+        "outputs": {
+            "label": "\${name}",
+            "value": "\${name}"
+        }
+        }
+	},
+	"class-list":widgetListBranding,
+	#if ($help)
+	"help-content": "[id='${field-name}-help']"
+	#end
+});});
+
+</script>

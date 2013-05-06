@@ -19,7 +19,10 @@ class ProxyGetData:
         if queryStr == "searchTerms={searchTerms}":
             queryStr = None
         if queryStr:
-            url += "?%s" % queryStr
+            if formData.get("jaffa2autocomplete", "false") == "true":
+                url += "?searchTerms=%s" % queryStr
+            else:
+                url += "?%s" % queryStr
         self.vc("log").debug("Proxy URL = '{}'", url)
 
         data = None
