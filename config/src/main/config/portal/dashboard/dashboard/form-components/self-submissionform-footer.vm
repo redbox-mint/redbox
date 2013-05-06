@@ -4,12 +4,18 @@
 		submit_hidden: true,
 		toggle_submit: function () {
 			var btn_submit = document.querySelector('a[transition-name="Submit"]');
-			if (selfSubmission.submit_hidden) {
-				btn_submit.style.visibility = 'hidden';	
-			} else {
-				btn_submit.style.visibility = 'visible';
+			if (! btn_submit) { 
+				btn_submit = document.querySelector('button[transition-name="Submit"]');
+				if (! btn_submit) { alert('Error exists in self-submissionfooter.pm: Submit is either a link or a button.'); } 
 			}
-			selfSubmission.submit_hidden = !selfSubmission.submit_hidden; 
+			try {
+				if (selfSubmission.submit_hidden) {
+					btn_submit.style.visibility = 'hidden';	
+				} else {
+					btn_submit.style.visibility = 'visible';
+				}
+				selfSubmission.submit_hidden = !selfSubmission.submit_hidden;
+			} catch (e) {}
 		}
 		
 	};

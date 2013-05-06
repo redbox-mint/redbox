@@ -16,7 +16,7 @@
 
 #macro(getValue $key)
     #set($v = $metadata.get("$key"))
-    #if ($v && "$v" != "null")
+    #if ($v && "$!v" != "")
 		$v
     #else
 		#noInformation()
@@ -76,8 +76,8 @@
     </tr>
 #end
 <style>
-	#pdf-like { border: none; width: 40em }
-	#pdf-like tr:nth-child(even), tr:nth-child(even) > td { background-color: gray }
+	#pdf-like a { text-decoration: underline; }
+	#pdf-like td:first-child { width: 17em; }
 </style>
 <section>
 	<h1>#displayMessage("self-submission.heading.label.overview")</h1>
@@ -90,6 +90,15 @@
         #displayRow("dc:identifier.rdf:PlainLiteral" "#displayMessage('self-submission.field.label.dc-identifier.rdf-PlainLiteral')")
         #displayRow("vivo:Location.vivo:GeographicLocation.gn:name" "#displayMessage('self-submission.heading.label.location')")
 		#displayRowList("#displayMessage('self-submission.field.label.bibo-Website')" "bibo:Website" "dc:identifier")
+		#set($v = $metadata.get("redbox:ManagementPlan.oid"))
+	    #if ($v && "$!v" != "")
+			<tr>
+		    <td>#displayMessage('self-submission.field.label.redbox-ManagementPlan.skos-note')</td>
+		    <!-- <a href="$portalPath/detail/$v">#displayMessage('self-submission.text.redbox-ManagementPlan.link')</a> -->
+		    #set($plan_name = $metadata.get('redbox:ManagementPlan.skos:note'))
+		    <td><a href="$portalPath/detail/$v">$!plan_name</a></td>
+		    </tr>
+	    #end
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>

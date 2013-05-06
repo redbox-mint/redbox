@@ -74,7 +74,8 @@
                             "component-type": "transition-control",
                             "transitions": [
                                 {
-                                    "name": "Next"
+                                    "name": "Next",
+                                    "type": "button"
                                 }
                             ]
                         },
@@ -105,19 +106,6 @@
                             "type": "h1",
                             "content": "self-submission.header.label.dc-identifier"
                         },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.redbox-ManagementPlan.skos-note",
-                            "help": "self-submission.field.help.redbox-ManagementPlan.skos-note"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "redbox:ManagementPlan.skos:note",
-                            "disabled": "disabled",
-                            "label": "",
-                            "additional-classes": ""
-                        },                        
                         {
                             "component-type": "checkbox",
                             "field-name": "self-submission.field.dc-identifier.redboxdmpt-doirequest",
@@ -178,7 +166,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back" }, { "name": "Next"}
+                                { "name": "Back", "type": "button" }, { "name": "Next" , "type": "button"}
                             ]
                         },
                         {
@@ -279,7 +267,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back" }, { "name": "Next"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
                             ]
                         },
                         {
@@ -399,7 +387,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back" }, { "name": "Next"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
                             ]
                         },
                         {
@@ -545,7 +533,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back" }, { "name": "Next"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
                             ]
                         },
                         {
@@ -656,7 +644,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back" }, { "name": "Next"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
                             ]
                         },
                         {
@@ -705,9 +693,10 @@
 						},
                         {
                             "component-type": "transition-control",
-                            "transitions": [ { "name": "Back" },
+                            "transitions": [ { "name": "Back", "type": "button" },
                                 {
                                     "name": "Submit",
+                                    "type": "button",
                                     "form-submit-action": "save-next",
 									"close": true,
 									"closeUrl": "dmpt/details"
