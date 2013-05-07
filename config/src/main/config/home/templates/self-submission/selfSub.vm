@@ -6,10 +6,26 @@
 #end
 #end
 
+#macro(Grants $map $key $order)
+#set($queryKey = "${key}")
+#set ($value = $map.get($queryKey))
+#if ("$!value" != "")
+	"foaf:fundedBy.vivo:Grant.${order}.${key}": "$value",
+#end
+#end
+
+#macro(FundingSources $map $key $order)
+#set($queryKey = "${key}")
+#set ($value = $map.get($queryKey))
+#if ("$!value" != "")
+	"foaf:fundedBy.foaf:Agent.${order}.${key}": "$value",
+#end
+#end
+
 #macro(copyCodes $map $key $order $type)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-	"dc:subject.anzsrc:${type}.0.rdf:resource.${order}.${key}": "$value",	
+	"dc:subject.anzsrc:${type}.${order}.${key}": "$value",	
 #end
 #end
 
@@ -19,6 +35,7 @@
     #end
 #end
 {
+	"test": "test",
 	"viewId": "dashboard",
     "packageType": "self-submission",
     "viewId": "dashboard",
@@ -62,10 +79,35 @@
     	#set($order = $order + 1)
     #end
 #end
+
+#set($cList = $util.getList($item, "foaf:fundedBy.foaf:Agent"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#FundingSources($slot "skos:prefLabel" $order)
+    	#FundingSources($slot "dc:identifier" $order)
+    	#set($order = $order + 1)
+    #end
+#end
+
+#set($cList = $util.getList($item, "foaf:fundedBy.vivo:Grant"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#Grants($slot "skos:prefLabel" $order)
+    	#Grants($slot "dc:identifier" $order)
+    	#Grants($slot "redbox:grantNumber" $order)
+    	#set($order = $order + 1)
+    #end
+#end
+
 #mapTo("dc:license.dc:identifier.other" "dc:license.rdf:Alt.skos:prefLabel") 
 ##mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
 #mapTo("dc:license.dc:identifier.url" "dc:license.rdf:Alt.dc:identifier") 
-#set($cList = $util.getList($item, "dc:subject.anzsrc:for.0.rdf:resource"))
+
+#set($cList = $util.getList($item, "dc:subject.anzsrc:for"))
 #set($order = 1)
 #if ($cList.size() > 0)
 	#foreach($key in $cList.keySet())
@@ -78,7 +120,9 @@
     	#set($order = $order + 1)
     #end
 #end
-#set($cList = $util.getList($item, "dc:subject.anzsrc:seo.0.rdf:resource"))
+
+
+#set($cList = $util.getList($item, "dc:subject.anzsrc:seo"))
 #set($order = 1)
 #if ($cList.size() > 0)
 	#foreach($key in $cList.keySet())

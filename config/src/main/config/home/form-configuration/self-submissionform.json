@@ -71,6 +71,29 @@
                             "idKey": "dc:identifier"
                         },
                         {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.foaf-fundedBy.foaf-Agent",
+                            "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
+                        },
+                        {
+                            "component-type":"funding-body",
+                            "field-name":"foaf:fundedBy.foaf:Agent",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.foaf-fundedBy.vivo-Grant",
+                            "help":"dmpt.field.help.foaf-fundedBy.vivo-Grant"
+                        },
+                        {
+                            "component-type":"grants",
+                            "field-name":"foaf:fundedBy.vivo:Grant",
+                            "label":""
+                        }
+                        {
                             "component-type": "transition-control",
                             "transitions": [
                                 {
@@ -219,7 +242,7 @@
                         {
                             "component-type": "repeatable-anzsrc-selection",
                             "label": "FoR code(s)",
-                            "fieldName": "dc:subject.anzsrc:for.0.rdf:resource",
+                            "fieldName": "dc:subject.anzsrc:for",
                             "fieldNameLabel": "dc:subject.anzsrc:for.0.skos:prefLabel",
                             "sourceUrl": "proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
                             "dataLevel": "top",
@@ -239,7 +262,7 @@
                         {
                             "component-type": "repeatable-anzsrc-selection",
                             "label": "SEO code(s)",
-                            "fieldName": "dc:subject.anzsrc:seo.0.rdf:resource",
+                            "fieldName": "dc:subject.anzsrc:seo.0",
                             "fieldNameLabel": "dc:subject.anzsrc:seo.0.skos:prefLabel",
                             "sourceUrl": "proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
                             "dataLevel": "top",

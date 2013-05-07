@@ -92,8 +92,8 @@
         #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.foaf-Agent')" "foaf:fundedBy.foaf:Agent" "skos:prefLabel")
         #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant" "skos:prefLabel")
         #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "#displayMessage('dmpt.field.label.dc-subject.anzsrc-toa')")
-        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel")
-        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel")
+        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for" "skos:prefLabel")
+        #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo" "skos:prefLabel")
     </table>
     <h4>#displayMessage('dmpt.field.label.dc-description')</h4>
 	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>

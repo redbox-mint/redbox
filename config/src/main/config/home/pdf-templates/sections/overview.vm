@@ -28,8 +28,8 @@
         #displayRowList("Funding source" "foaf:fundedBy.foaf:Agent" "skos:prefLabel" "even_row")
         #displayRowList("Grant number(s)" "foaf:fundedBy.vivo:Grant" "skos:prefLabel"  "odd_row")
         #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "Activity type" "even_row")
-        #displayRowList("FoR Codes" "dc:subject.anzsrc:for.0.rdf:resource" "skos:prefLabel"  "odd_row")
-        #displayRowList("SEO Codes" "dc:subject.anzsrc:seo.0.rdf:resource" "skos:prefLabel" "even_row")
+        #displayRowList("FoR Codes" "dc:subject.anzsrc:for" "skos:prefLabel"  "odd_row")
+        #displayRowList("SEO Codes" "dc:subject.anzsrc:seo" "skos:prefLabel" "even_row")
 	</table>
 	<h4>Description</h4>
 	#set($v = $util.get($item, 'dc:description'))
