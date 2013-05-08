@@ -24,7 +24,6 @@
             "template": "${server.url.base}published/detail/[[OID]]"
         }
     },
-
     "indexer": {
         "script": {
             "type": "python",

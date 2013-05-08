@@ -5,6 +5,7 @@ from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
 from java.util import HashSet
 from org.apache.commons.io import IOUtils
+import imp
 
 class BaseIndexData(object):
 
@@ -127,15 +128,28 @@ class BaseIndexData(object):
                 self.utils.add(self.index, "security_exception", user)
 
         # Ownership
-        owner = 'system'
-        if self.owner:
+        if self.owner is None:
+            self.utils.add(self.index, "owner", "system")
+        else:
             if self.owner == 'guest' and self.user_id != "":
-                self.log.debug("Assign ownership: user_id to user mapping: default guest owner and user_id found.")
-                owner = self.__getUser(self.user_id)
-                self.params['owner'] = owner
-            else:
-                owner = self.owner
-        self.utils.add(self.index, "owner", owner)
+                self.log.debug("baseRule.py: Need to assign ownership by mapping user_id to user because user_id and default owner 'guest' are found.")
+                newOwner = self.__getUser()
+                if newOwner is not None:
+                    self.log.debug("baseRule.py: now reassign it to {}.", newOwner)
+                    self.params["owner"] = newOwner
+                    self.owner = newOwner
+            self.utils.add(self.index, "owner", self.owner) 
+#         owner = 'system'
+#         if self.owner:
+#             if self.owner == 'guest' and self.user_id != "":
+#                 self.log.debug("baseRule.py: Need to assign ownership by mapping user_id to user because user_id and default owner 'guest' are found.")
+#                 newOwner = self.__getUser(self.user_id)
+#                 if newOwner is not None:
+#                     self.params['owner'] = newOwner
+#                     owner = newOwner
+#             else:
+#                 owner = self.owner
+#         self.utils.add(self.index, "owner", owner)
 
     def __indexList(self, name, values):
         # convert to set so no duplicate values
@@ -363,9 +377,75 @@ class BaseIndexData(object):
         payload.close()
         return json
     
-    def __getUser(self, user_id):
-        self.log.debug("Assign ownership: mapping id {} to user", user_id)
-        if (user_id == '1000'): # if mapping is successful, return real owner
-            return "researcher"
+    def __getUser(self):
+        self.log.debug("baserule.py: Assign ownership: mapping id to user")
+        
+        mapConfig = self.config.getObject(["user-assignment"])
+        if mapConfig is None:
+            self.log.debug("baserule.py: no configuration has been set for mapping id to user.")
+            return None
+
+        uname = None
+        try:
+            userAssignment = JsonSimple(mapConfig)
+            self.log.debug("baserule.py: user_id to user mapping configuration")
+    
+            modulePath = userAssignment.getString(None, ["module-path"])
+            self.log.debug("baserule.py: module-path = {}", modulePath)
+            
+            className = userAssignment.getString(None, ["class-name"])
+            self.log.debug("baserule.py: className = {}", className)
+            
+            initParams = userAssignment.getArray(["init-params"])
+            self.log.debug("baserule.py: init-params (list) = {}", ' ,'.join(initParams))
+            
+            actionMethodName = userAssignment.getString(None, ["action-method-name"])
+            self.log.debug("baserule.py: action-method-name = {}", actionMethodName)
+            
+            # JsonArray
+            actionMethodParams = userAssignment.getArray(["action-method-params"])
+      
+            # This block may be used to mapping method params to internal variables?    
+            try:
+                self.log.debug("baserule.py: read parameters from tfpackage.")
+                params = self.__getItems(actionMethodParams)
+            except Exception, e:
+                self.log.debug("baserule.py: read parameters failed. Reason: {}", str(e))
+            
+            if params is None or len(params) == 0:
+                self.log.debug("baserule.py: read parameters returned None. Cannot carry on.")
+                return None
+                
+            lookupPk = imp.load_source('', modulePath)
+            lookupClass = getattr(lookupPk, className)
+            lookupObj = lookupClass(*initParams)
+            lookupMethod = getattr(lookupObj, actionMethodName)
+            uname = lookupMethod(*params)
+            
+            self.log.debug("baserule.py: external lookup module returns: {}", uname)
+        except Exception, e:
+            self.log.debug("baserule.py: Cannot call user lookup module. More: {}", str(e))
+        
+        if (uname is None): # if mapping is successful, return real owner
+            self.log.debug("baserule.py: did not map correctly, return None")
+            return None
         else: # otherwise, assign admin as the owner
-            return "admin"        
+            self.log.debug("baserule.py: mapped successfully, return owner: '{}'", uname)
+            return uname
+        
+    def __getItems(self, itemList):
+        manifest = self.__getJsonPayload(self.packagePid).getJsonObject()
+        params = []
+        try:
+            for field in itemList:
+                self.log.debug("baserule.py: field in mapping params asking list: {}", field)
+                v = manifest.get(field)
+                if v is None:
+                    raise KeyError("baserule.py: invalid field name:" + field)
+                params.append(v)
+            
+#             for field in manifest.keySet():    
+#                 self.log.debug("baserule.py: field in tfpackage: {} and its value = {}", field, manifest.get(field))
+            return params    
+        except Exception, e:
+            return None            
