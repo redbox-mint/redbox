@@ -128,7 +128,7 @@
                             "component-type": "transition-control",
                             "transitions": [
                                 {
-                                    "name": "Next",
+                                    "name": "Next", "form-submit-action":"save"
                                     "type": "button"
                                 }
                             ]
@@ -316,12 +316,22 @@
                                                 {"jaffaText":{"label":"", "class-list":"jaffa-field", "suffix":"rdf:PlainLiteral"}}
                                                 ]
                                            },
-                            "additional-classes":""                                           
+                            "additional-classes":"",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:subject.vivo:keyword.1.rdf:PlainLiteral",
+        									"focus-id": "dc:subject.vivo:keyword.1.rdf:PlainLiteral",
+        									 "validation-messages":{
+        									 						"required": "At least one keyword is required"
+        									 						}
+    						 			  }                                            
                         },
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
                             ]
                         },
                         {
@@ -441,7 +451,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
                             ]
                         },
                         {
@@ -517,12 +527,33 @@
                         {
                             "component-type": "text-input",
                             "field-name": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
-                            "label": ""
+                            "label": "",
+                            "validation":{
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
+        									"focus-id": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
+        									 "validation-messages":{
+        									 						"required": "Access Rights statement is required"
+        									 						}
+    						 			  }    
                         },
                         {
                             "component-type": "text-input",
                             "label": "self-submission.field.label.dc-accessRights.dc-RightsStatement.dc-identifier",
-                            "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier"
+                            "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:accessRights.dc:RightsStatement.dc:identifier",
+        									"focus-id": "dc:accessRights.dc:RightsStatement.dc:identifier",
+        									 "validation-messages":{
+        									 						"required": "Access Rights url is required"
+        									 						}
+    						 			  }      
+                            
                         },
                         {
                             "component-type": "native-html",
@@ -537,12 +568,32 @@
                         {
                             "component-type": "text-input",
                             "label": "",
-                            "field-name": "dc:accessRights.skos:prefLabel"
+                            "field-name": "dc:accessRights.skos:prefLabel",
+                            "validation":{
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:accessRights.skos:prefLabel",
+        									"focus-id": "dc:accessRights.skos:prefLabel",
+        									 "validation-messages":{
+        									 						"required": "Access Conditions statement is required"
+        									 						}
+    						 			  }    
                         },
                         {
                             "component-type": "text-input",
                             "label": "self-submission.field.label.dc-accessRights.dc-identifier",
-                            "field-name": "dc:accessRights.dc:identifier"
+                            "field-name": "dc:accessRights.dc:identifier",
+                            "validation":{
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:accessRights.dc:identifier",
+        									"focus-id": "dc:accessRights.dc:identifier",
+        									 "validation-messages":{
+        									 						"required": "Access Conditions url is required"
+        									 						}
+    						 			  }    
                         },
                         {
                             "component-type": "native-html",
@@ -566,7 +617,17 @@
                             "sourceUrl": "workflows/forms/data/retentionPeriod.json",
                             "idKey": "id",
                             "labelKey": "label",
-                            "listKey": "results"
+                            "listKey": "results",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "redbox:retentionPeriod.dc:date",
+        									"focus-id": "redbox:retentionPeriod.dc:date",
+        									 "validation-messages":{
+        									 						"required": "Retention period is required"
+        									 						}
+    						 			  }      
                         },
                         {
                             "component-type": "data-source-dropdown",
@@ -587,7 +648,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
                             ]
                         },
                         {
@@ -698,7 +759,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
                             ]
                         },
                         {
