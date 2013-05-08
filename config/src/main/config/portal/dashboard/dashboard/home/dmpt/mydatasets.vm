@@ -27,9 +27,8 @@
 	#end
     </tbody>
 </table>
-#end
-
-#if ($self.myDatasets && $slef.myDatasets.size() > 0)
+#end       
+#if ($self.myDatasets && $self.myDatasets.size() > 0)
 	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.submitted.title')</p>
 
 <table>

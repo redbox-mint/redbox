@@ -70,7 +70,7 @@ class HomeData:
     
             security_query = "(" + security_exceptions + ") OR (" + owner_query + ")"
             self.__myDrafts = self._searchSets(indexer, "self-submission", isAdmin, security_query)
-            self.__myDatasets = self._searchSets(indexer, "dataset", isAdmin, security_query)
+            self.__myDatasets = self._searchSets(indexer, "dataset", isAdmin,  security_query + " AND " +owner_query)
     
     def getUser(self):
         current_user = self.vc("page").authentication.get_username()
