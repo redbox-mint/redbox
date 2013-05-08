@@ -65,6 +65,7 @@
 #mapTo("locrel:rth.foaf:Person.foaf:familyName" "dc:creator.foaf:Person.foaf:familyName")
 #mapTo("locrel:rth.foaf:Person.foaf:email" "dc:creator.foaf:Person.foaf:email")
 #mapTo("locrel:rth.foaf:Person.dc:identifier" "dc:creator.foaf:Person.dc:identifier")
+#mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
 #set($cList = $util.getList($item, "locrel:clb.foaf:Person"))
 #set($order = 1)
 #if ($cList.size() > 0)
