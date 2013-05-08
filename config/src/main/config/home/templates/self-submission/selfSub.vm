@@ -35,7 +35,6 @@
     #end
 #end
 {
-	"test": "test",
 	"viewId": "dashboard",
     "packageType": "self-submission",
     "viewId": "dashboard",

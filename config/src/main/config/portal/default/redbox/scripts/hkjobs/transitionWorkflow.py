@@ -32,34 +32,18 @@ class TransitionWorkflowData:
                 transitions = self.systemConfig.getArray("transitionWorkflow", "transitions").toArray()
                 for transition in transitions:                
                     fromWorkflowId = transition.get("from-workflow-id")
-                    fromWorkflowStage = transition.get("from-workflow-step")
+                    fromWorkflowStage = transition.get("from-workflow-stage")
                     packages = self.findPackagesToTransition(fromWorkflowId, fromWorkflowStage)
-#<<<<<<< HEAD
-#                    for package in packages:
-#                        writer.println("processing: " + package.get("storage_id"))
-#                        self.log.debug("processing: " + package.get("storage_id"))
-#                        transitionWorkflow = TransitionWorkflow()
-#                        transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-stage"))
-#                        
-#                    self.log.debug("Transition workflow script processed "+ Integer(packages.size()).toString() + " records for transition " +  transition.toString())
-#                    count = count + packages.size()
-#                self.log.info("Transition workflow script processed "+ Integer(count).toString())
-#                writer.println("Transition workflow script processed "+ Integer(count).toString())
-#=======
-                    if  (packages.size() == 0):
-                        self.log.debug("Transition workflow script processed 0 records for transition \"" + transition.get("name") + "\"" )
-                        writer.println("Transition workflow script processed 0 records for transition \"" + transition.get("name") + "\"")
-                    else:
-                        for package in packages:
-                            writer.println("processing: " + package.get("storage_id"))
-                            self.log.debug("processing: " + package.get("storage_id"))
-                            transitionWorkflow = TransitionWorkflow()
-                            transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-step"))
-                            self.log.debug("Transition workflow script processed "+ str(packages.size()) + " records for transition " +  transition.get("name"))
+                    for package in packages:
+                        writer.println("processing: " + package.get("storage_id"))
+                        self.log.debug("processing: " + package.get("storage_id"))
+                        transitionWorkflow = TransitionWorkflow()
+                        transitionWorkflow.run(context, package.get("storage_id"), fromWorkflowId, fromWorkflowStage, transition.get("to-workflow-id"), transition.get("to-workflow-stage"), transition.get("to-workflow-page-title"), transition.get("to-workflow-label"))
+                        
+                    self.log.debug("Transition workflow script processed "+ Integer(packages.size()).toString() + " records for transition " +  transition.toString())
                     count = count + packages.size()
-                self.log.info("Transition workflow script processed "+ str(count))
-                writer.println("Transition workflow script processed "+ str(count))
-#>>>>>>> Fix: Transition Workflow
+                self.log.info("Transition workflow script processed "+ Integer(count).toString())
+                writer.println("Transition workflow script processed "+ Integer(count).toString())
                 self.log.info("Transition workflow script has completed")    
                 writer.println("Transition workflow script has completed")
             except Exception, e:

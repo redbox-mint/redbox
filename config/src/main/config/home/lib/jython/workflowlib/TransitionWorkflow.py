@@ -18,7 +18,7 @@ class TransitionWorkflow:
     def __init__(self):
         self.messaging = MessagingServices.getInstance()
             
-    def run(self, context,  oid, fromWorkflowId, fromWorkflowStage, toWorkflowId, toWorkflowStage):
+    def run(self, context,  oid, fromWorkflowId, fromWorkflowStage, toWorkflowId, toWorkflowStage, pageTitle, label):
         self.log = context["log"]        
         self.storage = context["Services"].getStorage()
         self.object = self.storage.getObject(oid)
@@ -26,7 +26,7 @@ class TransitionWorkflow:
         self.__tfpackage = None
 
         if(self.workflowMetadata is not None):
-            self.updateWorkFlowMetadata(self.workflowMetadata, toWorkflowId, toWorkflowStage)
+            self.updateWorkFlowMetadata(self.workflowMetadata, toWorkflowId, toWorkflowStage, pageTitle, label)
             self.updatePackageType(self._getTFPackage(), toWorkflowId)
             self.objectMetadata = self.object.getMetadata()            
             self.updateObjectMetadata(self.objectMetadata, toWorkflowId)
@@ -40,10 +40,12 @@ class TransitionWorkflow:
         message.put("task", "reharvest")
         self.messaging.queueMessage(TransactionManagerQueueConsumer.LISTENER_ID, message.toString())
                 
-    def updateWorkFlowMetadata(self, workflowMetadata, toWorkflowId, toWorkflowStage):
+    def updateWorkFlowMetadata(self, workflowMetadata, toWorkflowId, toWorkflowStage, pageTitle, label):
         workflowMetaDataJson = JsonSimple(workflowMetadata.open()).getJsonObject()
         workflowMetaDataJson.put("id", toWorkflowId)
         workflowMetaDataJson.put("step", toWorkflowStage)
+        workflowMetaDataJson.put("pageTitle", pageTitle)
+        workflowMetaDataJson.put("label", label)
         inStream = IOUtils.toInputStream(workflowMetaDataJson.toString(), "UTF-8")
         try:
             StorageUtils.createOrUpdatePayload(self.object, "workflow.metadata", inStream)
