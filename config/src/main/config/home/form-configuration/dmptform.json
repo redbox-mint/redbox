@@ -28,7 +28,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next", "type": "button"}]
+                            "transitions":[{"name":"Next", "form-submit-action":"save", "type": "button"}]
                         }
                     ]
                 },
@@ -213,7 +213,7 @@
                         },
                         {
                             "component-type":"transition-control",
-                            "transitions":[{"name":"Next", "type": "button"}]
+                            "transitions":[{"name":"Next", "form-submit-action":"save", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -324,7 +324,7 @@
                         {
                             "component-type":"transition-control",
                             "transitions":[{"name":"Back", "type": "button"},
-                             			   {"name":"Next", "type": "button"}]
+                             			   {"name":"Next", "form-submit-action":"save", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -536,7 +536,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "type": "button"}]
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "form-submit-action":"save", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
@@ -853,7 +853,7 @@
                         },
                         {
                             "component-type":"transition-control",
-							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "type": "button"}]
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "form-submit-action":"save", "type": "button"}]
                         },
                         {
                             "component-type": "transition-control",
