@@ -174,7 +174,7 @@
             			data: { oid:access_control_oid,
             					action:"get"
             				  },
-            			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }	  
+            			error: function (req ) { alert("Attention is needed:\n" + req.responseText) },	  
             			success: function(aj_data) { build_users_table(aj_data); $("#dialog-form").dialog("open"); }
             			});
                 }
