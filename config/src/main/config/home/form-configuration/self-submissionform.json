@@ -262,7 +262,7 @@
                         {
                             "component-type": "repeatable-anzsrc-selection",
                             "label": "SEO code(s)",
-                            "fieldName": "dc:subject.anzsrc:seo.0",
+                            "fieldName": "dc:subject.anzsrc:seo",
                             "fieldNameLabel": "dc:subject.anzsrc:seo.0.skos:prefLabel",
                             "sourceUrl": "proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
                             "dataLevel": "top",

@@ -44,7 +44,7 @@
     #mapTo('oid', 'redbox:ManagementPlan.oid')
     #mapTo('dc:title', 'redbox:ManagementPlan.skos:note')
 #foreach( $key in ["swrc:supervisor.foaf:Person.foaf:title","swrc:supervisor.foaf:Person.foaf:givenName","swrc:supervisor.foaf:Person.foaf:familyName"
-                   ,"swrc:supervisor.foaf:Person:foaf:email","swrc:supervisor.foaf:Person.dc:identifier"
+                   ,"swrc:supervisor.foaf:Person.foaf:email","swrc:supervisor.foaf:Person.dc:identifier"
                    ,"locrel:prc.foaf:Person.foaf:title","locrel:prc.foaf:Person.foaf:givenName","locrel:prc.foaf:Person.foaf:familyName"
                    ,"locrel:prc.foaf:Person.dc:identifier","locrel:prc.foaf:Person.foaf:email"
                    ,"dc:coverage.vivo:DateTimeInterval.vivo:start","dc:coverage.vivo:DateTimeInterval.vivo:end","dc:coverage.redbox:timePeriod"

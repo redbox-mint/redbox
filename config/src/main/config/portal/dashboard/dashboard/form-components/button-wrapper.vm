@@ -20,6 +20,7 @@ $buttonHtml
    			} else {
          		url = '$portalPath/workflows/simpleworkflow.ajax?func=action&action='+action+'&oid=$oid';
          	}
+			delete serverData["related.datasets"];
          	jQuery.ajax({type:"POST", url:url, data:serverData,
 						 success:function(){
 							 if (workflow_next) {
