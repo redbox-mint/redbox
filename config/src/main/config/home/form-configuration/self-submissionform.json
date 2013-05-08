@@ -21,7 +21,17 @@
                             "field-name": "dc:title",
                             "label": "",
                             "content": "",
-                            "additional-classes": "mandatory"
+                            "additional-classes": "mandatory",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:title",
+        									"focus-id": "dc:title",
+        									 "validation-messages":{
+        									 						"required": "Title is required"
+        									 						}
+    						 			  }      
                         },
                         {
                             "component-type": "text-block",
@@ -34,7 +44,17 @@
                             "field-name": "dc:description",
                             "label": "",
                             "content": "",
-                            "additional-classes": "mandatory"
+                            "additional-classes": "mandatory",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:description",
+        									"focus-id": "dc:description",
+        									 "validation-messages":{
+        									 						"required": "Description is required"
+        									 						}
+    						 			  }    
                         },
                         {
                             "component-type": "text-block",
@@ -51,7 +71,18 @@
                             "mandatory": "true",
                             "idKey": "id",
                             "labelKey": "label",
-                            "listKey": "results"
+                            "listKey": "results",                           
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:type.rdf:PlainLiteral",
+        									"focus-id": "dc:type.rdf:PlainLiteral",
+        									 "validation-messages":{
+        									 						"required": "Type is required"
+        									 						}
+    						 			  }      
+                      
                         },
                         {
                             "component-type": "text-block",
