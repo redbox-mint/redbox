@@ -2,7 +2,7 @@
 <i>Not provided</i>
 #end
 #macro(getValue $key)
-    #set($v = $util.get($item, $key))
+    #set($v = $util.get($item, $key).trim())
     #if($v && ("$!v" != ""))
 		$v
     #else
@@ -25,7 +25,7 @@
 
 #macro(display $key $name)
     <dt>$name: </dt>
-    #set($v = $util.get($item, $key))
+    #set($v = $util.get($item, $key).trim())
     <dd>
     #if($v && ("$!v" != ""))
 		$v
@@ -35,7 +35,7 @@
     </dd>
 #end
 #macro(displayNote $key $name)
-    #set($v = $util.get($item, $key))
+    #set($v = $util.get($item, $key).trim())
     #if($v && ("$!v" != ""))
     	<h4>$name</h4>
     	<p>$v</p>
@@ -246,8 +246,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
     <dl>
         #display("dc:accessRights" "Access will be managed by")
         #display("dataLicensingAccess.manager" "The data manager is recorded as")
-        #display("dc:license.skos:prefLabel" "Licensing")
-		#display("dc:license" "The data will be licensed under")
+        #display("dc:license.skos:prefLabel" "The data will be licensed under")
 		#display("dc:license.dc:identifier.other" "Other")
 		#display("dc:license.dc:identifier.url" "URL")
     </dl>

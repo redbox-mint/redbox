@@ -104,6 +104,7 @@
 #end
 
 #mapTo("dc:license.dc:identifier.other" "dc:license.rdf:Alt.skos:prefLabel") 
+#mapTo("dc:rights.skos:note" "dc:accessRights.skos:prefLabel")
 ##mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
 #mapTo("dc:license.dc:identifier.url" "dc:license.rdf:Alt.dc:identifier") 
 
