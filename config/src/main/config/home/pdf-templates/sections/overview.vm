@@ -32,7 +32,7 @@
         #displayRowList("SEO Codes" "dc:subject.anzsrc:seo" "skos:prefLabel" "even_row")
 	</table>
 	<h4>Description</h4>
-	#set($v = $util.get($item, 'dc:description'))
+	#set($v = $util.get($item, 'dc:description').trim())
 	<p>    #if($v && ("$!v" != ""))
 		$v
 	    #else
