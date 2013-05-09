@@ -20,6 +20,18 @@
 		
 	};
 	$(document).ready(function() {
+		
+
+
+       $("button[form-action='save']").click(function() {
+
+    			var label = $("[id='dc:language.dc:identifier']").find(":selected").text();
+                $("[id='dc:language.skos:prefLabel']").val(label);
+                transition_click(this);
+		});
+
+   
+		
 		var hidden_elements = document.getElementsByClassName('HiddenWidget');
    		for( var i = 0; i < hidden_elements.length; i++) {
    			hidden_elements[i].style.display = 'none';
@@ -210,15 +222,9 @@
 
 	        // Legacy input
 	        } else {
-	            var uriElem = getReDBoxById(baseId+".dc:identifier");
-	            if(elem.val() != "text" && uriElem.val() != ""){
-	                if (confirm("Are you sure you want to clear the Geonames linked location?")) {
-	                    getReDBoxById(baseId+".rdf:PlainLiteral").val("");
-	                    $("div[id='"+baseId+".coords'] .clear-link").click();
-	                } else {
-	                    $(this).val("text");
-	                }
-	            }
+	            var uriElem = getReDBoxById(baseId+".dc:identifier");           
+                $(this).val("text");
+	            
 	        }
 	    });
 	});
