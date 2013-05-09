@@ -46,7 +46,7 @@
 
 <!-- // For simpleform-footer.vm -->
 	
-<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.pack.js"></script>
+<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.old.js"></script>
 	
 <script type="text/javascript">
 	(function($){
@@ -95,7 +95,7 @@
 	    $("#geonamesLookup").live("focus", function(){
 	        var elem = $(this);
 	        elem.unautocomplete();
-	            elem.autocomplete(
+	            elem.autocompleteold(
 	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
 	                {
 	                    extraParams: {
@@ -130,7 +130,7 @@
 	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
 	        elem.unautocomplete();
 	        if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
-	            elem.autocomplete(
+	            elem.autocompleteold(
 	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
 	                {
 	                    extraParams: {
