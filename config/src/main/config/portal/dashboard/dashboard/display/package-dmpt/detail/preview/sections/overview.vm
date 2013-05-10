@@ -6,7 +6,7 @@
 		#set($i = 0)
 		#foreach($item in $items)
 			#if($i > 0) , #else #set($i = 1) #end
-			$item
+			$!item
 		#end
     #else
 		#noInformation()
@@ -29,7 +29,7 @@
 		#set($i = 0)
 		#foreach($item in $items)
 			#if($i > 0) , #else #set($i = 1) #end
-			$item
+			$!item
 		#end
     #else
 		#noInformation()
@@ -49,11 +49,10 @@
     <td>
     #set($label = $self.getLabel($labelFile, $key))
         #if ($label)
-          $label
+          $!label
         #else
-    		  #noInformation()
+    	  #noInformation()
       #end 
-    
     </td>
     </tr>
 #end
@@ -71,7 +70,8 @@
     #foreach($key in $forList.keySet())
         #set($item = $forList.get($key))
         #if($i > 0) , #else #set($i = 1) #end
-        $item.get("$subKey")
+        #set($subv = $item.get("$subKey"))
+        $!subv
     #end
 #end
 </td>
