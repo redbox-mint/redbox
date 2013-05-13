@@ -64,7 +64,9 @@
                 </td>
                 <td>$self.formatDate($item.get("last_modified"))</td>
                 <td>
+                #if ($self.hasPlanPDF($oid))
                 <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                #end
                 </td>
             </tr>
         #end

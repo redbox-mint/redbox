@@ -226,6 +226,11 @@ function NameLookUp(ids, lookup_source) {
 		// National Library Integration
 		$(".nameLookup-waiting").hide();
 		$(".nlaLookup-progress").hide();
+        if (data.error) { 
+            console.log(data.error);
+            nlaResultsDiv.append("No results.");
+            return;
+        }
 		var searchMetadata = data.metadata;
 		var pageStart = searchMetadata.startRecord-0;
 		var pageRows = searchMetadata.rowsReturned-0;
@@ -352,10 +357,10 @@ function NameLookUp(ids, lookup_source) {
 		if (lookup_source.indexOf('nla') == -1) { return; }
 		var nlaQuery = "start="+start+"&rows="+rows;
 		if (nlaSurname != null && nlaSurname != "") {
-			nlaQuery += "&surname=" + escape(nlaSurname) + "";
+			nlaQuery += "&surname=" + encodeURIComponent(nlaSurname) + "";
 		}
 		if (nlaFirstname != null && nlaFirstname != "") {
-			nlaQuery += "&firstName=" + escape(nlaFirstname) + "";
+			nlaQuery += "&firstName=" + encodeURIComponent(nlaFirstname) + "";
 		}
 		var url = nlaUrl.replace("{searchTerms}", escape(nlaQuery));
 		$(".nameLookup-waiting").show();
@@ -371,7 +376,7 @@ function NameLookUp(ids, lookup_source) {
 	}
 
 	function constructQueryUrl(queryTerm) {
-		return mintUrl.replace("{searchTerms}", escape(escape(queryTerm)));
+		return mintUrl.replace("{searchTerms}", escape(encodeURIComponent(queryTerm)));
 	}
 
 	function displayDetails(name, details, pos, link, nla) {
@@ -459,7 +464,7 @@ function NameLookUp(ids, lookup_source) {
 			searchNla(1, 10);
 		}
 		if(lookup_source.length > 1) {
-			dlgMint.find('[href=#mintLookupDialog]')[0].click();
+			$(dlgMint.find('[href=#mintLookupDialog]')[0]).click();
 		}
 		dlgMint.dialog('open'); 
 	}

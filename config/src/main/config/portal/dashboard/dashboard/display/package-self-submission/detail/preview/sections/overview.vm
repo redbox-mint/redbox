@@ -83,7 +83,10 @@
 	<h1>#displayMessage("self-submission.heading.label.overview")</h1>
     <table id="pdf-like">
         #displayRow("dc:title" "#displayMessage('self-submission.field.label.dc-title')")
-        #displayRow("dc:type.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-type')")        
+        #displayRow("dc:type.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-type')")
+        #displayRow("dc:extent" "#displayMessage('self-submission.field.label.dc-extent')")
+        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.foaf-Agent')" "foaf:fundedBy.foaf:Agent" "skos:prefLabel")
+        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant" "redbox:grantNumber")
         #displayRow("dc:language.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-language')")        
 		##displayMintLabelByLookup("dc:language.dc:identifier" "#displayMessage('self-submission.field.label.dc-language')" "Languages" "results" "dc:title") 
         #displayRow("self-submission.field.dc-identifier.redboxdmpt-doirequest.1" "#displayMessage('self-submission.field.label.dc-identifier.redboxdmpt-doirequest')")

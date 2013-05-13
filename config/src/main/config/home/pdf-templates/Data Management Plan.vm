@@ -4,7 +4,7 @@
 #macro(getValue $key)
     #set($v = $util.get($item, $key).trim())
     #if($v && ("$!v" != ""))
-		$v
+		<![CDATA[ $v ]]>
     #else
 		#noInformation()	
     #end
@@ -16,7 +16,7 @@
 		#set($i = 0)
 		#foreach($el in $items)
 			#if($i > 0) , #else #set($i = 1) #end
-			$el
+			<![CDATA[ $el ]]>
 		#end
     #else
 		#noInformation()
@@ -28,7 +28,7 @@
     #set($v = $util.get($item, $key).trim())
     <dd>
     #if($v && ("$!v" != ""))
-		$v
+		<![CDATA[ $v ]]>
     #else
 		#noInformation()	
     #end
@@ -38,7 +38,7 @@
     #set($v = $util.get($item, $key).trim())
     #if($v && ("$!v" != ""))
     	<h4>$name</h4>
-    	<p>$v</p>
+    	<p><![CDATA[ $v ]]></p>
     #end
 #end
 #macro(displayRow $key $name $c $type)
@@ -211,7 +211,7 @@ table, td, th {	border: none; border-collapse:collapse; padding:8px;}
 	    	#set($i = 0)
 	    	#foreach($v in $labels)			
 				#if ($i > 0) , #end
-				$v
+				<![CDATA[ $v ]]>
 				#set($i = $i +1)
 	    	#end
 	    	</dd>

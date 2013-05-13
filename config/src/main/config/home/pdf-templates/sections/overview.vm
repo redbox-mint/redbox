@@ -8,7 +8,7 @@
 	#set($i = 0)
     #foreach($key in $forList.keySet())
         #if($i > 0) , #else #set($i = 1) #end
-        $forList.get($key).get("$subKey")
+        <![CDATA[ $forList.get($key).get("$subKey") ]]>
     #end
 #else
 	#noInformation()
@@ -34,7 +34,7 @@
 	<h4>Description</h4>
 	#set($v = $util.get($item, 'dc:description').trim())
 	<p>    #if($v && ("$!v" != ""))
-		$v
+		<![CDATA[ $v ]]>
 	    #else
 			#noInformation()	
 	    #end

@@ -77,7 +77,7 @@ class GrantAccessData:
         objectMetadata = object.getMetadata()
         owner = objectMetadata.getProperty("owner")
         objectMetadata.setProperty("owner", new_owner)
-        self.log.debug("grantAccess.py: Changing ownership to : " + new_owner)
+        self.log.debug("grantAccess.py: Changed ownership from {} to {} ", owner, new_owner)
         output = ByteArrayOutputStream()
         objectMetadata.store(output, None)
         input = ByteArrayInputStream(output.toByteArray())
@@ -90,15 +90,15 @@ class GrantAccessData:
             auth.set_access_plugin(source)
             # special condition when setting admin as owner - revoke all viewers
             if new_owner == "admin":
-                self.log.debug("New owner is admin, revoking all viewers") 
-                auth.revoke_user_access(oid, owner)
                 viewers = self.getViewers(oid)
-                self.log.debug("Viewers: " + viewers.toString())
+                self.log.debug("grantAccess.py: New owner is admin, revoking all viewers")
+                self.log.debug("grantAccess.py: Viewers: " + viewers.toString())
                 for viewer in viewers:
                    self.log.debug("Revoking:%s" % viewer)
                    auth.revoke_user_access(oid, viewer)
-                
-            auth.grant_user_access(oid, owner)  # give previous owner read access
+            else:
+                self.log.info("Grant previous owner {} view access by adding them to security_execption.", owner)       
+                auth.grant_user_access(oid, owner)  # give previous owner read access
             
             err = auth.get_error()
             if err is None or err == 'Duplicate! That user has already been applied to this record.':
@@ -107,7 +107,6 @@ class GrantAccessData:
               return '{"status":"ok", "new_owner": "' + new_owner + '"}'
             else:    
               self.log.error("grantAccess.py: Error raised during calling authentication for changing ownership. Exception: " + err)
-            
         except Exception, e:
              self.log.error("grantAccess.py: Unexpected error raised during changing ownership of data. Exception: " + str(e))
 

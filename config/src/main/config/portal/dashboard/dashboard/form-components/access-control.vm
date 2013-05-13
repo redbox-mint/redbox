@@ -96,7 +96,7 @@
 				  },
 			dataType:'json',
 			success: function() {
-				window.location.reload();
+				setInterval(function() { window.location.reload() }, 1500)
 			},
 			error: function (req ) { alert("Attention is needed:\n" + req.responseText) }
 		});
@@ -161,7 +161,7 @@
                     		dataType:'json'
                     		});
                 	}
-                	setInterval(function() { window.location.reload() }, 1500)
+                	setInterval(function() { window.location.reload() }, 1500);
                 	$(this).dialog("close");
                 },
                 "Close": function () {

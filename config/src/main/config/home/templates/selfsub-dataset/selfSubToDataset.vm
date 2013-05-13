@@ -224,7 +224,8 @@
              "dc:identifier.dc:type.skos:prefLabel","dc:identifier.redbox:origin", "vivo:Location.vivo:GeographicLocation.gn:name",
              "dc:extent","redbox:disposalDate","locrel:dtm.foaf:Agent.foaf:name","foaf:Organization.dc:identifier",
              "foaf:Organization.skos:prefLabel","swrc:ResearchProject.dc:title","locrel:dpt.foaf:Person.foaf:name","dc:SizeOrDuration",
-             "dc:Policy","dc:accessRights.dc:RightsStatement.skos:prefLabel","dc:accessRights.dc:RightsStatement.dc:identifier","dc:accessRights.skos:prefLabel","dc:accessRights.dc:identifier"
+             "dc:Policy","dc:accessRights.dc:RightsStatement.skos:prefLabel","dc:accessRights.dc:RightsStatement.dc:identifier","dc:accessRights.skos:prefLabel","dc:accessRights.dc:identifier",
+             "dc:subject.anzsrc:toa.rdf:resource","dc:subject.anzsrc:toa.skos:prefLabel"
              ])
     #set($v = $util.get($item, $key))
     #if ($v) "$key": "$!v",
