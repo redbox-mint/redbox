@@ -24,7 +24,7 @@ $buttonHtml
 			for (var key in serverData) {
                 // hack for dropdown widget returning the label instead of the empty value...
                 if (serverData[key] == "Please select one...") {
-                    delete serverData[key];
+                    serverData[key] = "";
                 }
             }
          	jQuery.ajax({type:"POST", url:url, data:serverData,
