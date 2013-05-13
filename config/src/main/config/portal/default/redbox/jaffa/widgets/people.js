@@ -28,7 +28,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             //  be very temporary duplicate IDs as sort orders swap
             var container = this.getContainer();
             container.find("input[id=\""+this.oldField+"foaf:title\"]").attr("id", this.field+"foaf:title");
-            container.find("input[id=\""+this.oldField+"foaf:givenName \"]").attr("id", this.field+"foaf:givenName");
+            container.find("input[id=\""+this.oldField+"foaf:givenName\"]").attr("id", this.field+"foaf:givenName");
             container.find("input[id=\""+this.oldField+"foaf:familyName\"]").attr("id", this.field+"foaf:familyName");
             container.find("input[id=\""+this.oldField+"foaf:email\"]").attr("id", this.field+"foaf:email");
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
@@ -45,6 +45,17 @@ var PeopleWidgetBuilder = function($, jaffa) {
             jaffa.form.ignoreField(familyNameFieldId);
             jaffa.form.ignoreField(emailFieldId);
             jaffa.form.ignoreField(dcIdentifierId);
+            
+            titleFieldId= this.field+"foaf:title";
+            givenNameFieldId= this.field+"foaf:givenName";
+            familyNameFieldId= this.field+"foaf:familyName";
+            emailFieldId= this.field+"foaf:email";
+            dcIdentifierId = this.field+"dc:identifier";
+            jaffa.form.addField(titleFieldId, this.id());
+           	jaffa.form.addField(givenNameFieldId, this.id());
+            jaffa.form.addField(familyNameFieldId, this.id());
+            jaffa.form.addField(emailFieldId, this.id());
+            jaffa.form.addField(dcIdentifierId, this.id());
             
         },
         // Notify Jaffa that field <=> widget relations need to be updated
