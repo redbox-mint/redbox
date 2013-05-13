@@ -6,6 +6,8 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
 
         deleteWidget: function() {
             jaffa.form.ignoreField(this.field);
+            jaffa.form.ignoreField(this.field+"skos:prefLabel");
+            jaffa.form.ignoreField(this.field+"dc:identifier");
             this.getContainer().remove();
         },
         // Identity has been altered, adjust the DOM for all fields
@@ -22,6 +24,8 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
             // Tell Jaffa to ignore the field's this widget used to manage
             jaffa.form.ignoreField(this.oldField);
+            jaffa.form.ignoreField(this.oldField+"skos:prefLabel");
+            jaffa.form.ignoreField(this.oldField+"dc:identifier");
             // TODO: Testing
         },
         // Notify Jaffa that field <=> widget relations need to be updated

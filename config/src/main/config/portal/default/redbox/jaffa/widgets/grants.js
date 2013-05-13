@@ -28,7 +28,11 @@ var GrantWidgetBuilder = function($, jaffa) {
            
             // Tell Jaffa to ignore the field's this widget used to manage
             jaffa.form.ignoreField(this.oldField);
-            // TODO: Testing
+            jaffa.form.ignoreField(this.oldField+".displayLabel");
+            jaffa.form.ignoreField(this.oldField+"skos:prefLabel");
+            jaffa.form.ignoreField(this.oldField+"redbox:grantNumber");
+            jaffa.form.ignoreField(this.oldField+"dc:identifier");
+            
         },
         // Notify Jaffa that field <=> widget relations need to be updated
         //  This is called separately from above to avoid duplicate IDs that
