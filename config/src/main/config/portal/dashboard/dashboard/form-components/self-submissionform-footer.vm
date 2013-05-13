@@ -21,7 +21,11 @@
 	};
 	$(document).ready(function() {
 		
-
+	   //unhook old save button handling and rehook with code to set language label.
+	   var saveButtons = $("button[form-action='save']");
+		for(var i =0; i< saveButtons.length; i++) {
+ 		 saveButtons[i].onclick = null;
+		}
 
        $("button[form-action='save']").click(function() {
 
