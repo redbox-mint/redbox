@@ -76,6 +76,9 @@ function NameLookUp(ids, lookup_source) {
 
 	var myTable; // For mint results
 	var nlaFirstname, nlaSurname
+    nlaFirstname = document.getElementById(ids[1]).value
+    nlaSurname  = document.getElementById(ids[2]).value
+
 	var nlaResultsDiv = $("<div/>");
 	search_show();
 
