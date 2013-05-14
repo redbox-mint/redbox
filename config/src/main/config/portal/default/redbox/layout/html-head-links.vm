@@ -1,2 +1,5 @@
 <link rel="stylesheet" type="text/css" href="$portalPath/css/redbox.css" />
 <link rel="stylesheet" type="text/css" href="$portalPath/js/autocomplete/jquery.autocomplete.css" />
+<!--[if (gte IE6)|!(IE)]><!-->
+    <link rel="stylesheet" type="text/css" href="$portalPath/css/redbox-ie.css" />
+<![endif]-->
