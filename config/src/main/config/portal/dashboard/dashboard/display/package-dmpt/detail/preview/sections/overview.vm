@@ -78,6 +78,30 @@
 </tr>
 #end
 
+## Special treat for Grant Numbers 
+#macro(displayGrantNumbers $label $baseKey)
+<tr>
+<td>$label</td>
+<td>
+#set($forList = $self.getList("$baseKey"))
+#if ($forList.isEmpty())
+#noInformation()
+#else
+	#set($i = 0)
+    #foreach($key in $forList.keySet())
+        #set($item = $forList.get($key))
+        #if($i > 0) , #else #set($i = 1) #end
+        #set($subv = $item.get("skos:prefLabel"))
+        #if ("$!subv" != "") $!subv
+        #else
+	        #set($subv = $item.get("redbox:grantNumber"))
+	        $!subv
+	    #end    
+    #end
+#end
+</td>
+</tr>
+#end
 <style>
 	#pdf-like { border: none; }
 </style>
@@ -90,7 +114,7 @@
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:start" "#displayMessage('dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start')")
         #displayRow("dc:coverage.vivo:DateTimeInterval.vivo:end" "#displayMessage('dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end')")
         #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.foaf-Agent')" "foaf:fundedBy.foaf:Agent" "skos:prefLabel")
-        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant" "skos:prefLabel")
+        #displayGrantNumbers("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant")
         #displayRow("dc:subject.anzsrc:toa.skos:prefLabel" "#displayMessage('dmpt.field.label.dc-subject.anzsrc-toa')")
         #displayRowList("#displayMessage('dmpt.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for" "skos:prefLabel")
         #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo" "skos:prefLabel")
