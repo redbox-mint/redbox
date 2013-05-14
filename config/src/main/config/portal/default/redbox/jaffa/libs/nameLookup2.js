@@ -15,6 +15,15 @@ function showMintNlaLookupDialog(e, lookup_source) {
 	NameLookUp(ids, lookup_source.split(','))
 }
 
+function clearPeopleElements(e, lookup_source) {
+	var input_sibs = $(e).parent().find('input');
+	var ids = new Array();
+    for (i = 0; i < input_sibs.length; i++) {
+        $(input_sibs[i]).val('')
+    }
+	
+}
+
 function NameLookUp(ids, lookup_source) {
 	var queryTerm = document.getElementById(ids[1]).value;
 	for (var i = 2; i< ids.length-1; i++) { // skip the last hidden field: dcIdentifier
