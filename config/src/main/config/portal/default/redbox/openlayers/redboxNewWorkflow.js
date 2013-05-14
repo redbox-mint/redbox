@@ -355,16 +355,7 @@ function loadOpenLayers() {
             return;
         }
 
-        // Is this an existing feature?
-        featureTable.find(".redboxGeoDataFid").each(function(i, elem) {
-            element = $(elem);
-            // Find the row we want
-            if (fId == element.val()) {
-                fIdElement = element;
-                rowElement = element.parents(".redboxGeoDataRow");
-                found = true;
-            }
-        });
+        
         // Or a new feature?
         if (found) {
         	completeFeatureUpdate(event, fIdElement, rowElement);
@@ -408,7 +399,7 @@ function loadOpenLayers() {
         	//this function was added to ensure the combo had loaded before setting its value to 'text'.
         	function setValue(rowElement){
             	var number = rowElement.find(".jaffaItemNumber").text();
-            	var searchFor = "dc:coverage.vivo:GeographicLocation." + number + ".type";
+            	var searchFor = "dc:coverage.vivo:GeographicLocation." + number + ".dc:type";
         		var dropDown = $(document.getElementById(searchFor));
         		        		
         		if (dropDown.length == 0){
@@ -418,7 +409,12 @@ function loadOpenLayers() {
             		dropDown.val("text");
         		}
         	}
-			setValue(rowElement);
+        	
+			var intervalId = window.setInterval(function() {
+             if(rowElement.find(".jaffaItemNumber").length > 0) {
+    			setValue(rowElement);
+   				window.clearInterval(intervalId); }
+       		},500);
 
         	rowElement.find(".redboxGeoDataOutput").val(value);
         }
