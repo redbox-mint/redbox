@@ -9,10 +9,14 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
         dropDownDataMapped: null,
 
         deleteWidget: function() {
-            jaffa.form.ignoreField(this.field);
             if (this.labelField != null) {
               jaffa.form.ignoreField(this.labelField);
             }
+            jaffa.form.ignoreField(this.field+"skos:prefLabel");
+            jaffa.form.ignoreField(this.field+"rdf:resource");
+            jaffa.form.ignoreField(this.field+".top.dropdown");
+            jaffa.form.ignoreField(this.field+".middle.dropdown");
+            jaffa.form.ignoreField(this.field+".bottom.dropdown");
             this.getContainer().remove();
         },
         // Identity has been altered, adjust the DOM for all fields
@@ -36,7 +40,13 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
             container.find("span[id=\""+this.oldField+".bottom\"]").attr("id", this.field+".bottom");
             // Tell Jaffa to ignore the field's this widget used to manage
             jaffa.form.ignoreField(this.oldField);
-
+            jaffa.form.ignoreField(this.oldField+"skos:prefLabel");
+            jaffa.form.ignoreField(this.oldField+"rdf:resource");
+            jaffa.form.ignoreField(this.oldField+".top.dropdown");
+            jaffa.form.ignoreField(this.oldField+".middle.dropdown");
+            jaffa.form.ignoreField(this.oldField+".bottom.dropdown");
+    
+            
             // TODO: Testing
             // Do it all again for labels if they are stored
             if (this.labelField != null) {
@@ -56,6 +66,11 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
             }
             if (this.oldField != null) {
                 jaffa.form.addField(this.field, this.id());
+                jaffa.form.addField(this.field+"skos:prefLabel",this.id());
+			    jaffa.form.addField(this.field+"rdf:resource",this.id());
+                jaffa.form.addField(this.field+".top.dropdown",this.id());
+                jaffa.form.addField(this.field+".middle.dropdown",this.id());
+                jaffa.form.addField(this.field+".bottom.dropdown",this.id());
                 this.oldField = null;
             }
             if (this.oldLabelField != null) {
@@ -84,8 +99,7 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
             ui.append("<span id='"+this.field+".displayLabel'>Please select a code from the dropdown below<span>");
             ui.append("<input type='hidden'  id='"+this.field+"skos:prefLabel' />");
             ui.append("<input type='hidden'  id='"+this.field+"rdf:resource' />");
-           	//ui.append("<div><span id='"+this.field+".top'></span><span id='"+this.field+".middle'></span><span id='"+this.field+".bottom'></span></div>");
-           	ui.append("<div><span id='"+this.field+".top'></span><span id='"+this.field+".select1' style='display: none;'><button id='"+this.field+".selectButton1' class='widgetListBranding'>Select</button> or </span><span id='"+this.field+".middle'></span><span id='"+this.field+".select2' style='display: none;'><button id='"+this.field+".selectButton2' class='widgetListBranding'>Select</button> or </span><span id='"+this.field+".bottom'></span><span id='"+this.field+".select3' style='display: none;'><button id='"+this.field+".selectButton3' class='widgetListBranding'>Select</button></span></div>");           	
+           	ui.append("<div><span id='"+this.field+".top'></span><span id='"+this.field+".middle'></span><span id='"+this.field+".bottom'></span></div>");
 			var jsonDataUrl = this.getConfig("json-data-url");
 			var topCombo= {};
     		topCombo["field"] = this.field+".top.dropdown";
@@ -102,7 +116,10 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
     												$("[id='"+field+".bottom.dropdown']").hide();
     												var comboValue = $(this).val();
     												if(comboValue != "") {
-    													$("[id='"+field+".select1']").show();
+    													var labelValue = $(this).find("option:selected").text()
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
     													
 												   		var nextCombo= {};
     													nextCombo["field"] = field+".middle.dropdown";
@@ -113,23 +130,21 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
         												nextCombo["data-list-key"] = 'results';
         												nextCombo["default-value"] = 'skos:narrower';           
     													nextCombo["class-list"] = 'widgetListBranding';
-    													nextCombo["empty-text"] = 'Refine further...';
     													$("span[id='"+field+".middle']").jaffaDropDown(nextCombo);
     												}
     												if(comboValue == "") {
     													$("[id='"+field+".middle.dropdown']").hide();
-    													$("[id='"+field+".select1']").hide();
-    													$("[id='"+field+".select2']").hide();
-    													$("[id='"+field+".select3']").hide();    													
     												}
 												});
 												
     		$("[id='"+this.id()+"']").on("change","[id='"+this.field+".middle.dropdown']",function(){
     												var comboValue = $(this).val();
     												if(comboValue != "") {
-    													$("[id='"+field+".select2']").show();
-    													$("[id='"+field+".select1']").hide();
-    													
+    													var labelValue = $(this).find("option:selected").text();
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
+													
 												   		var nextCombo= {};
     													nextCombo["field"] = field+".bottom.dropdown";
     													nextCombo["json-data-url"] = jsonDataUrl;
@@ -139,119 +154,30 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
         												nextCombo["data-list-key"] = 'results';
         												nextCombo["default-value"] = 'skos:narrower';           
     													nextCombo["class-list"] = 'widgetListBranding';
-    													nextCombo["empty-text"] = 'Refine further...';
     													$("span[id='"+field+".bottom']").jaffaDropDown(nextCombo);
     												}
     												if(comboValue == "") {
     													//Set the top dropdown box's value and hide the bottom dropdown
+    													comboValue = $("[id='"+field+".top.dropdown']").val();
+    													var labelValue = $("[id='"+field+".top.dropdown']").find("option:selected").text();
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
     													$("[id='"+field+".bottom.dropdown']").hide();
-    													$("[id='"+field+".select1']").show();
-    													$("[id='"+field+".select2']").hide();
-    													$("[id='"+field+".select3']").hide();
     												}
 												});
 												
 			$("[id='"+this.id()+"']").on("change","[id='"+this.field+".bottom.dropdown']",function(){
     												var comboValue = $(this).val();
     												if(comboValue != "") {
-    													$("[id='"+field+".select3']").show();
-    													$("[id='"+field+".select2']").hide();
-    												}
-
-    												if(comboValue == "") {
-    													$("[id='"+field+".select3']").hide();
+    													var labelValue = $(this).find("option:selected").text()
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
     												}
 												});									
+												
 
-			$("[id='"+this.id()+"']").on("click","[id='"+this.field+".selectButton1']",function(){
-
-				var labelValue = $("[id='"+field+".top.dropdown']").find("option:selected").text()
-				$("[id='"+field+"skos:prefLabel']").val(labelValue);
-				$("[id='"+field+".displayLabel']").text(labelValue);
-				var comboValue = $("[id='"+field+".top.dropdown']").val();
-				$("[id='"+field+"rdf:resource']").val(comboValue);
-				
-				$("[id='"+field+".select1']").hide();
-				$(ui).parent().removeClass("editing");
-				
-				var bottomComboValue = $("[id='"+field+".top.dropdown']").val();
-				if (bottomComboValue != null){
-					$("[id='"+field+".top.dropdown']").hide();
-				}
-				
-				var bottomComboValue = $("[id='"+field+".bottom.dropdown']").val();
-				if (bottomComboValue != null){
-					$("[id='"+field+".bottom.dropdown']").hide();
-				}
-					
-				var middleComboValue = $("[id='"+field+".middle.dropdown']").val();
-				if (middleComboValue != null){
-					$("[id='"+field+".middle.dropdown']").hide();
-				}
-			});					
-
-			$("[id='"+this.id()+"']").on("click","[id='"+this.field+".selectButton2']",function(){
-
-				var labelValue = $("[id='"+field+".middle.dropdown']").find("option:selected").text()
-				$("[id='"+field+"skos:prefLabel']").val(labelValue);
-				$("[id='"+field+".displayLabel']").text(labelValue);
-				var comboValue = $("[id='"+field+".middle.dropdown']").val();
-				$("[id='"+field+"rdf:resource']").val(comboValue);
-
-				$("[id='"+field+".select2']").hide();
-				$(ui).parent().removeClass("editing");
-
-				
-				var bottomComboValue = $("[id='"+field+".bottom.dropdown']").val();
-				if (bottomComboValue != null){
-					$("[id='"+field+".bottom.dropdown']").hide();
-				}
-					
-				var middleComboValue = $("[id='"+field+".middle.dropdown']").val();
-				if (middleComboValue != null){
-					$("[id='"+field+".middle.dropdown']").hide();
-				}
-
-				var topComboValue = $("[id='"+field+".top.dropdown']").val();
-				if (topComboValue != null){
-					$("[id='"+field+".top.dropdown']").hide()
-				}
-				
-			});					
-			
-			$("[id='"+this.id()+"']").on("click","[id='"+this.field+".selectButton3']",function(){
-
-				var labelValue = $("[id='"+field+".bottom.dropdown']").find("option:selected").text()
-				$("[id='"+field+"skos:prefLabel']").val(labelValue);
-				$("[id='"+field+".displayLabel']").text(labelValue);
-				var comboValue = $("[id='"+field+".bottom.dropdown']").val();				
-				$("[id='"+field+"rdf:resource']").val(comboValue);
-				
-				$("[id='"+field+".select3']").hide();
-				$(ui).parent().removeClass("editing");
-				
-				var bottomComboValue = $("[id='"+field+".bottom.dropdown']").val();
-				if (bottomComboValue != null){
-					$("[id='"+field+".bottom.dropdown']").hide();
-				}
-					
-				var middleComboValue = $("[id='"+field+".middle.dropdown']").val();
-				if (middleComboValue != null){
-					$("[id='"+field+".middle.dropdown']").hide();
-				}
-
-				var topComboValue = $("[id='"+field+".top.dropdown']").val();
-				if (topComboValue != null){
-					$("[id='"+field+".top.dropdown']").hide()
-				}
-				
-			});					
-			
-			$(ui).parent().addClass("editing");
-			
-			jaffa.form.ignoreField(this.field+".top.dropdown",false);
-			jaffa.form.ignoreField(this.field+".middle.dropdown",false);
-			jaffa.form.ignoreField(this.field+".bottom.dropdown",false);
 			jaffa.form.addField(this.field+"skos:prefLabel",this.id());
 			jaffa.form.addField(this.field+"rdf:resource",this.id());
 			
