@@ -758,9 +758,42 @@
                             "add-item-text":"Add location",
                             "sub-elements":{"settings":[
                                                 {"jaffaDropDown":{"label":"Location Type", "suffix":"dc:type", "field":"dc:type", "label-field":"dc:type", 
-                                                                  "json-data-url":"/redbox/default/workflows/forms/data/locationTypes.json", 
-                                                                  "data-id-key":"id", "data-label-key":"label", "data-list-key":"results", "mandatory":"true",
-                                                                  "class-list":"locationType"}},
+                                                                   "option-data": [
+        {
+            "value":"gml",
+            "label":"OpenGIS Geography Markup Language"
+        },
+        {
+            "value":"kml",
+            "label":"Keyhole Markup Language"
+        },
+        {
+            "value":"iso19139dcmiBox",
+            "label":"DCMI Box notation (iso19139)"
+        },
+        {
+            "value":"gpx",
+            "label":"GPS Exchange Format"
+        },
+        {
+            "value":"iso31661",
+            "label":"Country code (iso31661)"
+        },
+        {
+            "value":"kmlPolyCoords",
+            "label":"KML long/lat co-ordinates"
+        },
+        {
+            "value":"gmlKmlPolyCoords",
+            "label":"KML long/lat co-ordinates derived from GML"
+        },
+        {
+            "value":"text",
+            "label":"Free text"
+        }
+    ], 
+                                                                   "mandatory":"true",
+                                                                  "class-list":"locationType","defaultValue":"text"}},
                                                  {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataFid","suffix": "redbox:Fid"}},
                                                  {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataWkt","suffix": "redbox:wktRaw"}},                 
                                                  {"jaffaText":{"label":"","type":"text","class-list":"jaffa-field redboxGeoDataOutput autocomplete-geonames","suffix":"rdf:PlainLiteral",
