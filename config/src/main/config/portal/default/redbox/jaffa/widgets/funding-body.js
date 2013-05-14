@@ -110,7 +110,7 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
 
                     // How to parse a response
                     var responseParser = this.getConfig("lookup-parser") || {};
-                    responseParser["outputs"]["[id='"+ hiddenInput.attr('id')+"']"]= "${identifier}";
+                    responseParser["outputs"][hiddenInput.attr('id')]= "${identifier}";
                     var resultsPath = responseParser["results-path"] || [];
 
                     var thisWidget = this;
@@ -149,7 +149,44 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
                             }
                         });
                     }
-                    select = thisWidget.onSelectItemHandling;
+                    select = function(event, ui) {
+                    var targetId = $(event.target).attr('id');
+            	targetId = targetId.substring(0,targetId.length-15);
+           		 for (var field in ui.item) {
+            	
+                if (field != "label" && field != "value") {
+                    var value = ui.item[field];
+                    var found = false;
+                    // First, is the target a Jaffa field?
+                    if(field.indexOf(targetId) == 0) {
+                    var target = jaffa.form.field(field);
+                    if (target != null) {
+                        jaffa.form.value(field, value);
+                        $("[id='"+field+"']").change();
+                        found = true;
+                    }
+
+                    // Second, is it in our document as a selector?
+                    target = $(field);
+                    if (found == false && target != null) {
+                    	if(target.is("input")) {
+                    		target.val(value);
+                    	} else {
+                        	target.html(value);
+                        }
+                        target.change();
+                        found = true;
+                    }
+					
+                    // Hmm, log something
+                    if (!found) {
+                        jaffa.logWarning("Unable to send output to '"+field+"', could not find anything meaningful with that value.");
+                    }
+                    }
+
+                }
+            }
+        };
                 }
 
                 input.autocomplete({
