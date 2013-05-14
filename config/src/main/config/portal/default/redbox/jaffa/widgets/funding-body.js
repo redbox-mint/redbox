@@ -84,6 +84,19 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
 
             ui.append(input);
             
+            // Save current value of element
+  			input.attr('oldVal', input.val());
+   			// Look for changes in the value
+   			var fieldId = this.field;
+   			input.bind("propertychange keyup input paste", function(event){
+      				// If value has changed...
+      				if (input.attr('oldVal') != input.val()) {
+       					// Updated stored value
+       					input.attr('oldVal', input.val());
+       					$("[id='"+fieldId+"dc:identifier']").val('');
+			     }
+  		   });
+            
             var hiddenInput = $("<input type=\"hidden\" id=\""+this.field+"dc:identifier\" />");
             ui.append(hiddenInput);
             // Are we tying any data lookups to the control?
