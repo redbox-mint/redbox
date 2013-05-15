@@ -891,6 +891,8 @@
                         {
                             "component-type":"repeatable-container",
                             "containter-for":"dc:coverage.dc:identifier",
+                            "min-size":"1",
+                            "suffix":"country",
                             "sub-elements":{"settings":[
                             					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"",
                             					 "class-list":"jaffa-field","suffix":"country"}
