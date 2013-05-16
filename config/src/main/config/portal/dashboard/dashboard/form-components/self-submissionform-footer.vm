@@ -1,3 +1,8 @@
+<style>
+div[id^="dc:coverage.vivo:GeographicLocation"] label.widgetLabel { display:none }
+div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
+.olControlModifyFeatureItemActive { display:none;}
+</style> 
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
 	var selfSubmission = {
@@ -31,6 +36,7 @@
 
     			var label = $("[id='dc:language.dc:identifier']").find(":selected").text();
                 $("[id='dc:language.skos:prefLabel']").val(label);
+                jaffa.form.synch(false);
                 transition_click(this);
 		});
 

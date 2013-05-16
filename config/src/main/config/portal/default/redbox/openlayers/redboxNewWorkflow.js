@@ -190,9 +190,13 @@ function loadOpenLayers() {
             }
             return null;
         },
+        initialising: false,
         loadData: function() {
+            this.initialising = true;
             loadFeatures();
-        }
+            this.initialising = false;
+        },
+        deleteFeature: deleteFeature
     };
 
     function olStyles() {
@@ -343,7 +347,8 @@ function loadOpenLayers() {
     var featureTable = $(".redboxGeoData");
     var closeIcon = "<span class=\"ui-button-icon-primary ui-icon ui-icon-closethick\"></span>";
     var selectIcon = "<span class=\"ui-button-icon-primary ui-icon ui-icon-arrow-4\"></span>";
-    var deleteButton = "<button class=\"deleteFeature ui-button ui-widget ui-state-default ui-corner-all\">"+closeIcon+"</span></button>";
+    //var deleteButton = "<button class=\"deleteFeature ui-button ui-widget ui-state-default ui-corner-all\">"+closeIcon+"</span></button>";
+    var deleteButton = "<button class=\"deleteFeature\">Remove</button>";
     var selectButton = "<button class=\"selectFeature ui-button ui-widget ui-state-default ui-corner-all\">"+selectIcon+"</span></button>";
     function featureUpdate(event) {
         var element, rowElement, fIdElement;
@@ -361,6 +366,7 @@ function loadOpenLayers() {
         	completeFeatureUpdate(event, fIdElement, rowElement);
         }
         else{
+        if(!window["openLayersMap"].initialising) {
         	mapCatchUp = function() {
 		        rowElement = featureTable.find(".jaffaList").last();
 		        rowElement.addClass("redboxGeoDataRow");
@@ -371,7 +377,8 @@ function loadOpenLayers() {
         	}
         	$(".redboxGeoData .jaffaAddItem button").click(mapCatchUp);
             $(".redboxGeoData .jaffaAddItem button").click();
-            $(".redboxGeoData .jaffaAddItem button").unbind("click", mapCatchUp);            
+            $(".redboxGeoData .jaffaAddItem button").unbind("click", mapCatchUp); 
+            }           
         }
     }
     function completeFeatureUpdate(event, fIdElement, rowElement){
@@ -443,13 +450,13 @@ function loadOpenLayers() {
             trapDiv.click(trapClick);
 
             // Click to select
-            var selectLink = $(selectButton);
-            trapDiv.append(selectLink);
-            selectLink.click(clickFeature);
+           // var selectLink = $(selectButton);
+           // trapDiv.append(selectLink);
+           // selectLink.click(clickFeature);
             // Delete links
             var deleteLink = $(deleteButton);
             trapDiv.append(deleteLink);
-            deleteLink.click(deleteFeature);
+            deleteLink.click(deleteFeatureInternal);
         }    	
     }
     function loadFeatures() {
@@ -527,7 +534,12 @@ function loadOpenLayers() {
         // Stop bubbling
         return false;
     }
-    function deleteFeature() {
+    function deleteFeatureInternal() {
+    	deleteFeature(this);
+    	// Remove from Jaffa
+        $(this).parents(".redboxGeoDataRow").find(".jaffaDeleteItem").click();
+    }
+    function deleteFeature(target) {
         // Works around a graphical glitch on
         //  selected objects that get deleted.
         drawPoint.deactivate();
@@ -539,16 +551,18 @@ function loadOpenLayers() {
         grippy.activate();
 
         // Get Jaffa DOM elements
-        var rowElement = $(this).parents(".redboxGeoDataRow");
+        var rowElement = $(target).parents(".redboxGeoDataRow");
         var fIdElement = rowElement.find(".redboxGeoDataFid");
         var fId = fIdElement.val();
-
-        // Remove from OpenLayers
+		
+		
+        	// Remove from OpenLayers
         var feature = vLayer.getFeatureById(fId);
-        vLayer.removeFeatures([feature]);
+        if(feature !=null) {
+        	vLayer.removeFeatures([feature]);
+        }
 
-        // Remove from Jaffa
-        rowElement.find(".jaffaDeleteItem").click();
+        
         return false;
     }
 

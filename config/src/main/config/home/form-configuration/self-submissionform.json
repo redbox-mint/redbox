@@ -1,906 +1,244 @@
-{
-    "stages": {
-        "self-submission-draft": {
-            "divs": [
-                {
-                    "heading": "Overview",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.overview"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-title",
-                            "help": "self-submission.field.help.dc-title"
-                        },
-                        {
-                            "component-type": "textarea",
-                            "field-name": "dc:title",
-                            "label": "",
-                            "content": "",
-                            "additional-classes": "mandatory",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:title",
-        									"focus-id": "dc:title",
-        									 "validation-messages":{
-        									 						"required": "Title is required"
-        									 						}
-    						 			  }      
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-description",
-                            "help": "self-submission.field.help.dc-description"
-                        },
-                        {
-                            "component-type": "textarea",
-                            "field-name": "dc:description",
-                            "label": "",
-                            "content": "",
-                            "additional-classes": "mandatory",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:description",
-        									"focus-id": "dc:description",
-        									 "validation-messages":{
-        									 						"required": "Description is required"
-        									 						}
-    						 			  }    
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-type",
-                            "help": "self-submission.field.help.dc-type"
-                        },
-                        
-                        {
-                            "component-type": "data-source-dropdown",
-                            "label": "",
-                            "field-name": "dc:type.rdf:PlainLiteral",
-                            "field-name-label": "dc:type.skos:prefLabel",
-                            "sourceUrl": "workflows/forms/data/types.json",
-                            "mandatory": "true",
-                            "idKey": "id",
-                            "labelKey": "label",
-                            "listKey": "results",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:type.rdf:PlainLiteral",
-        									"focus-id": "dc:type.rdf:PlainLiteral",
-        									 "validation-messages":{
-        									 						"required": "Type is required"
-        									 						}
-    						 			  }      
-                      
-                        },
-                         {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-extent",
-                            "help": "self-submission.field.help.dc-extent"
-                        },
-                        
-                        {
-                            "component-type": "text-input",
-                            "label": "",
-                            "field-name": "dc:extent",
-                            "field-name-label": "dc:extent",
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:extent",
-        									"focus-id": "dc:extent",
-        									 "validation-messages":{
-        									 						"required": "Extent or quantity is required"
-        									 						}
-    						 			  }      
-                      
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-language",
-                            "help": "self-submission.field.help.dc-language"
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "dc:language.dc:identifier",
-                            "field-name-label": "dc:language.skos:prefLabel",
-                            "label": "",
-                            "defaultValue": "http://id.loc.gov/vocabulary/iso639-2/eng",
-                            "sourceUrl": "proxyGet.script?ns=Languages&qs=count%3D9999",
-                            "listKey": "results",
-                            "labelKey": "dc:title",
-                            "idKey": "dc:identifier"
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"label",
-                            "content":"dmpt.field.label.foaf-fundedBy.foaf-Agent",
-                            "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
-                        },
-                        {
-                            "component-type":"funding-body",
-                            "field-name":"foaf:fundedBy.foaf:Agent",
-                            "label":"",
-                            "additional-classes":""
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"label",
-                            "content":"dmpt.field.label.foaf-fundedBy.vivo-Grant",
-                            "help":"dmpt.field.help.foaf-fundedBy.vivo-Grant"
-                        },
-                        {
-                            "component-type":"grants",
-                            "field-name":"foaf:fundedBy.vivo:Grant",
-                            "label":""
-                        }
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Next", "form-submit-action":"save"
-                                    "type": "button"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "Identifier",
-                    "fields": [
-                    {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.header.label.dc-identifier"
-                        },
-                        {
-                            "component-type": "checkbox",
-                            "field-name": "self-submission.field.dc-identifier.redboxdmpt-doirequest",
-                            "help": "self-submission.field.help.dc-identifier.redboxdmpt-doirequest",
-                            "box-for": "",
-                            "boxes": [
-                                {
-                                    "label": "self-submission.field.label.dc-identifier.redboxdmpt-doirequest",
-                                    "value": "Yes"
-                                }
-                            ]
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-identifier.rdf-PlainLiteral",
-                            "help": "self-submission.field.help.dc-identifier.rdf-PlainLiteral"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:identifier.rdf:PlainLiteral",
-                            "label": "",
-                            "additional-classes": ""
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.location"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.bibo-Website",
-                            "help": "self-submission.field.help.bibo-Website"
-                        },
-                        {
-                            "component-type": "repeatable-container",
-                            "containter-for": "bibo:Website",
-                            "sub-elements":{"settings":[
-                                                {"jaffaText":{"label":"", "class-list": "jaffa-field", "suffix":"dc:identifier"}}
-                                                ]
-                                           },
-                            "additional-classes": ""                                           
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.vivo-Location.vivo-GeographicLocation.gn-name",
-                            "help": "self-submission.field.help.vivo-Location.vivo-GeographicLocation.gn-name"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "vivo:Location.vivo:GeographicLocation.gn:name",
-                            "label": "",
-                            "additional-classes": "",
-                            "content": ""
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                { "name": "Back", "type": "button" }, { "name": "Next" , "type": "button"}
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "Subjects",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.subject"
-                        },
+<style>
+div[id^="dc:coverage.vivo:GeographicLocation"] label.widgetLabel { display:none }
+div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
+.olControlModifyFeatureItemActive { display:none;}
+</style> 
+<script src="$portalPath/js/wizard.js"></script>
+<script type="text/javascript">
+	var selfSubmission = {
+		submit_hidden: true,
+		toggle_submit: function () {
+			var btn_submit = document.querySelector('a[transition-name="Submit"]');
+			if (! btn_submit) { 
+				btn_submit = document.querySelector('button[transition-name="Submit"]');
+				if (! btn_submit) { alert('Error exists in self-submissionfooter.pm: Submit is either a link or a button.'); } 
+			}
+			try {
+				if (selfSubmission.submit_hidden) {
+					btn_submit.style.visibility = 'hidden';	
+				} else {
+					btn_submit.style.visibility = 'visible';
+				}
+				selfSubmission.submit_hidden = !selfSubmission.submit_hidden;
+			} catch (e) {}
+		}
+		
+	};
+	$(document).ready(function() {
+		
+	   //unhook old save button handling and rehook with code to set language label.
+	   var saveButtons = $("button[form-action='save']");
+		for(var i =0; i< saveButtons.length; i++) {
+ 		 saveButtons[i].onclick = null;
+		}
 
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-subject.anzsrc-toa",
-                            "help": "self-submission.field.help.dc-subject.anzsrc-toa"
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "dc:subject.anzsrc:toa.rdf:resource",
-                            "field-name-label": "dc:subject.anzsrc:toa.skos:prefLabel",
-                            "label": "",
-                            "sourceUrl": "dmpt/data/projectActivityType.json"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-subject.anzsrc-for",
-                            "help": "self-submission.field.help.dc-subject.anzsrc-for"
-                        },
-                        {
-                            "component-type": "repeatable-anzsrc-selection",
-                            "label": "FoR code(s)",
-                            "fieldName": "dc:subject.anzsrc:for",
-                            "fieldNameLabel": "dc:subject.anzsrc:for.0.skos:prefLabel",
-                            "sourceUrl": "proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
-                            "dataLevel": "top",
-                            "mandatory": "false",
-                            "idKey": "rdf:about",
-                            "labelKey": "skos:prefLabel",
-                            "listKey": "results",
-                            "defaultValue": "skos:narrower",
-                            "anzsrcType": "for"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-subject.anzsrc-seo",
-                            "help": "self-submission.field.help.dc-subject.anzsrc-seo"
-                        },
-                        {
-                            "component-type": "repeatable-anzsrc-selection",
-                            "label": "SEO code(s)",
-                            "fieldName": "dc:subject.anzsrc:seo",
-                            "fieldNameLabel": "dc:subject.anzsrc:seo.0.skos:prefLabel",
-                            "sourceUrl": "proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
-                            "dataLevel": "top",
-                            "mandatory": "false",
-                            "idKey": "rdf:about",
-                            "labelKey": "skos:prefLabel",
-                            "listKey": "results",
-                            "defaultValue": "skos:narrower",
-                            "anzsrcType": "seo"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-subject.vivo-keyword"
-                        },
-                        {
-                            "component-type": "repeatable-container",
-                            "containter-for": "dc:subject.vivo:keyword",
-                            "sub-elements":{"settings":[
-                                                {"jaffaText":{"label":"", "class-list":"jaffa-field", "suffix":"rdf:PlainLiteral"}}
-                                                ]
-                                           },
-                            "additional-classes":"",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:subject.vivo:keyword.1.rdf:PlainLiteral",
-        									"focus-id": "dc:subject.vivo:keyword.1.rdf:PlainLiteral",
-        									 "validation-messages":{
-        									 						"required": "At least one keyword is required"
-        									 						}
-    						 			  }                                            
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "People",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.people"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.field.label.locrel-rth",
-                            "help": "self-submission.field.help.locrel-rth"
-                        },
-                        {
-                            "component-type": "person",
-                            "lookup-name": "dc:creator.foaf:Person",
-                            "lookup-only": "false",
-                            "validation": {
-                                "save-rules": [
-                                    "required"
-                                ],
-                                "validation-id": "dc:creator.foaf:Person.dc:identifier",
-                                "focus-id": "dc:creator.foaf:Person.foaf:title",
-                                "validation-messages": {
-                                    "required": "Principal investigator is required"
-                                }
-                            }
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.field.label.locrel-prc",
-                            "help": "self-submission.field.help.locrel-prc"
-                        },
-                        {
-                            "component-type": "person",
-                            "lookup-name": "locrel:prc.foaf:Person",
-                            "lookup-only": "false",
-                            "validation": {
-                                "save-rules": [
-                                    "required"
-                                ],
-                                "validation-id": "locrel:prc.foaf:Person.dc:identifier",
-                                "focus-id": "locrel:prc.foaf:Person.foaf:title",
-                                "validation-messages": {
-                                    "required": "Data manager is required"
-                                }
-                            }
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.field.label.locrel-clb",
-                            "help": "self-submission.field.help.locrel-clb"
-                        },
-                        {
-                            "component-type": "repeatable-container",
-                            "containter-for": "dc:contributor.locrel:clb",
-                            "sub-elements": {
-                                "settings": [
-                                    {
-                                        "jaffaPeople": {
-                                            "source": "nla,mint",
-                                            "label": "",
-                                            "class-list": "jaffa-field",
-                                            "suffix": "foaf:Agent"
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.field.label.swrc-supervisor",
-                            "help": "self-submission.field.help.swrc-supervisor"
-                        },
-                        {
-                            "component-type": "person",
-                            "lookup-name": "swrc:supervisor.foaf:Person",
-                            "lookup-only": "false"
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "Access",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.access"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.heading.label.licensing",
-                            "help": "self-submission.heading.help.licensing"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.dc-license.dc-identifier"
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "dc:license.dc:identifier",
-                            "field-name-label": "dc:license.skos:prefLabel",
-                            "label": "",
-                            "sourceUrl": "workflows/forms/data/licences.json",
-                            "idKey": "id",
-                            "labelKey": "label",
-                            "listKey": "results"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:license.rdf:Alt.skos:prefLabel",
-                            "label": "self-submission.field.label.dc-license.rdf-Alt.skos-prefLabel",
-                            "additional-classes": ""
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:license.rdf:Alt.dc:identifier",
-                            "label": "self-submission.field.label.dc-license.rdf-Alt.dc-identifier",
-                            "additional-classes": ""
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.heading.label.accessrights",
-                            "help": "self-submission.heading.help.accessrights"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
-                            "label": "",
-                            "validation":{
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
-        									"focus-id": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
-        									 "validation-messages":{
-        									 						"required": "Access Rights statement is required"
-        									 						}
-    						 			  }    
-                        },
-                        {
-                            "component-type": "text-input",
-                            "label": "self-submission.field.label.dc-accessRights.dc-RightsStatement.dc-identifier",
-                            "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:accessRights.dc:RightsStatement.dc:identifier",
-        									"focus-id": "dc:accessRights.dc:RightsStatement.dc:identifier",
-        									 "validation-messages":{
-        									 						"required": "Access Rights url is required"
-        									 						}
-    						 			  }      
-                            
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.heading.label.accessconditions",
-                            "help": "self-submission.heading.help.accessconditions"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "label": "",
-                            "field-name": "dc:accessRights.skos:prefLabel",
-                            "validation":{
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:accessRights.skos:prefLabel",
-        									"focus-id": "dc:accessRights.skos:prefLabel",
-        									 "validation-messages":{
-        									 						"required": "Access Conditions statement is required"
-        									 						}
-    						 			  }    
-                        },
-                        {
-                            "component-type": "text-input",
-                            "label": "self-submission.field.label.dc-accessRights.dc-identifier",
-                            "field-name": "dc:accessRights.dc:identifier",
-                            "validation":{
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "dc:accessRights.dc:identifier",
-        									"focus-id": "dc:accessRights.dc:identifier",
-        									 "validation-messages":{
-        									 						"required": "Access Conditions url is required"
-        									 						}
-    						 			  }    
-                        },
-                        {
-                            "component-type": "native-html",
-                            "content": "<hr>"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.heading.label.retention"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "label",
-                            "content": "self-submission.field.label.redbox-retentionPeriod"
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "redbox:retentionPeriod.dc:date",
-                            "field-name-label": "redbox:retentionPeriod.dc:date.prefLabel",
-                            "label": "",
-                            "sourceUrl": "workflows/forms/data/retentionPeriod.json",
-                            "idKey": "id",
-                            "labelKey": "label",
-                            "listKey": "results",                           
-                            "validation": {
-        									"save-rules": [
-            									"required"
-        									],
-        									"validation-id": "redbox:retentionPeriod.dc:date",
-        									"focus-id": "redbox:retentionPeriod.dc:date",
-        									 "validation-messages":{
-        									 						"required": "Retention period is required"
-        									 						}
-    						 			  }      
-                        },
-                        {
-                            "component-type": "data-source-dropdown",
-                            "field-name": "redbox:retentionPeriod.dc:date.skos:note",
-                            "field-name-label": "redbox:retentionPeriod.dc:date.skos:note.prefLabel",
-                            "label": "self-submission.field.label.redbox-retentionPeriod.dc-date.skos-note",
-                            "sourceUrl": "workflows/forms/data/retentionPeriodJustification.json",
-                            "idKey": "id",
-                            "labelKey": "label",
-                            "listKey": "results"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "redbox:disposalDate",
-                            "label": "self-submission.field.label.redbox-disposalDate",
-                            "additional-classes": "dateYMD"
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "Coverage",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.coverage"
-                        },
-                        {
-                            "component-type": "text-block",
-                            "type": "h3",
-                            "content": "self-submission.heading.label.temporal",
-                            "help": "self-submission.heading.help.temporal"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:start",
-                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
-                            "additional-classes": "dateYMD"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:end",
-                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
-                            "additional-classes": "dateYMD"
-                        },
-                        {
-                            "component-type": "text-input",
-                            "field-name": "dc:coverage.redbox:timePeriod",
-                            "label": "self-submission.field.label.dc-coverage.redbox-timePeriod"
-                        },
-                        {
-                            "component-type":"text-block",
-                            "type":"h3",
-                            "content":"self-submission.heading.label.geospatial"
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"<div class='openLayersHolder'>
-        <div class='article'>
-            <p class='meta attribution'>Map Credits: <span id='attribution'></span></p>
-            <div id='polygonHelp' class='hidden'>
-                <div><span class='ui-button-icon-primary ui-icon ui-icon-lightbulb'></span></div>
-                Use double-click to 'close' your polygon.
-            </div>
-            <div class='mapHolder'>
-                <div id='panel' class='olControlEditingToolbar'></div>
-                <div id='map' class='smallmap' style='width:512px; height:256px'></div>
-            </div>
-            <div class='lookupHolder'>
-                <label for='geonamesLookup'>Find location: </label>
-                <input type='text' size='40' placeholder='Place name' id='geonamesLookup' />
-            </div>
-        </div>
-    </div>"
-                        },
-                        {
-                            "component-type":"repeatable-container",
-                            "containter-for":"dc:coverage.vivo:GeographicLocation",
-                            "additional-classes":"containerLayout redboxGeoData",
-                            "add-item-text":"Add location",
-                            "sub-elements":{"settings":[
-                                                {"jaffaDropDown":{"label":"Location Type", "suffix":"dc:type", "field":"dc:type", "label-field":"dc:type", 
-                                                                   "option-data": [
-        {
-            "value":"gml",
-            "label":"OpenGIS Geography Markup Language"
-        },
-        {
-            "value":"kml",
-            "label":"Keyhole Markup Language"
-        },
-        {
-            "value":"iso19139dcmiBox",
-            "label":"DCMI Box notation (iso19139)"
-        },
-        {
-            "value":"gpx",
-            "label":"GPS Exchange Format"
-        },
-        {
-            "value":"iso31661",
-            "label":"Country code (iso31661)"
-        },
-        {
-            "value":"kmlPolyCoords",
-            "label":"KML long/lat co-ordinates"
-        },
-        {
-            "value":"gmlKmlPolyCoords",
-            "label":"KML long/lat co-ordinates derived from GML"
-        },
-        {
-            "value":"text",
-            "label":"Free text"
-        }
-    ], 
-                                                                   "mandatory":"true",
-                                                                  "class-list":"locationType","defaultValue":"text"}},
-                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataFid","suffix": "redbox:Fid"}},
-                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field redboxGeoDataWkt","suffix": "redbox:wktRaw"}},                 
-                                                 {"jaffaText":{"label":"","type":"text","class-list":"jaffa-field redboxGeoDataOutput autocomplete-geonames","suffix":"rdf:PlainLiteral",
-                                                               "placeholder":"eg. coordinates or placename","size":"60"}},
-                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"dc:identifier"}},
-                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:long"}},
-                                                 {"jaffaText":{"label":"","type":"hidden","class-list":"jaffa-field","suffix":"geo:lat"}}
-                                                ]
-                                            }
-                        },
-                        {
-                            "component-type":"native-html",
-                            "content":"
-                                        <div class='hidden coords' id='dc:coverage.vivo:GeographicLocation.0.coords'>
-                                            <a class='map-link' target='_blank' href=''>map</a>
-                                            @ longitude: <span class='east'> </span>
-                                            , latitude: <span class='north'> </span>
-                                            | <a class='clear-link' href='#'>clear</a>
-                                        </div>"
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
-                            ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "heading": "UserSubmit",
-                    "fields": [
-                        {
-                            "component-type": "text-block",
-                            "type": "h1",
-                            "content": "self-submission.heading.label.submission"
-                        },
-                        {
-                            "component-type": "textarea",
-                            "field-name": "skos:note.0.dc:description",
-                            "label": "self-submission.field.label.skos-note",
-                            "content":""
-                        },
-						{
-							"component-type": "checkbox",
-							"field-name": "readyforreview",
-							"box-for": "",
-							"boxes": [
-								{
-									"label": "self-submission.field.label.readyforreview",
-									"value": "ready"
-								}
-							]
-						},
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [ { "name": "Back", "type": "button" },
-                                {
-                                    "name": "Submit",
-                                    "type": "button",
-                                    "form-submit-action": "save-next",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                             ]
-                        },
-                        {
-                            "component-type": "transition-control",
-                            "transitions": [
-                                {
-                                    "name": "Save",
-                                    "form-submit-action": "save",
-                                    "type": "button"
-                                },
-                                {
-                                    "name": "Save and close",
-                                    "form-submit-action": "save",
-                                    "type": "button",
-									"close": true,
-									"closeUrl": "dmpt/details"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "buttons": [],
-            "form-footer": "self-submissionform-footer",
-            "validation": {
-                "required": "title"
-            }
-        }
-    }
-}
+       $("button[form-action='save']").click(function() {
+
+    			var label = $("[id='dc:language.dc:identifier']").find(":selected").text();
+                $("[id='dc:language.skos:prefLabel']").val(label);
+                jaffa.form.synch(false);
+                transition_click(this);
+		});
+
+   
+		
+		var hidden_elements = document.getElementsByClassName('HiddenWidget');
+   		for( var i = 0; i < hidden_elements.length; i++) {
+   			hidden_elements[i].style.display = 'none';
+   		}
+		
+		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-self-submission.json", "dmptTabs");
+		
+		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');
+		
+		//on change event to set read only field in Data licensing and access with data manager
+		$("[id='locrel:prc.foaf:Person.foaf:familyName']").change(function() {
+			var dataManager= $("[id='locrel:prc.foaf:Person.foaf:title']").val() + " " +
+ 			$("[id='locrel:prc.foaf:Person.foaf:givenName']").val() + " " + $("[id='locrel:prc.foaf:Person.foaf:familyName']").val();
+			$("[id='dataLicensingAccess.manager']").val(dataManager);
+		});
+		
+		selfSubmission.toggle_submit();
+		// hide Submit link until user acknowledges 
+		document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
+		
+		prepareHelps();
+   	})
+</script>
+
+<!-- // For simpleform-footer.vm -->
+	
+<script type="text/javascript" src="$portalPath/js/autocomplete/jquery.autocomplete.old.js"></script>
+	
+<script type="text/javascript">
+	(function($){
+	    // OpenLayers stylesheets
+	    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss1">');
+	    $('#openLayersCss1').attr('href', '$portalPath/openlayers/theme/default/style.css');
+	    $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss2">');
+	    $('#openLayersCss2').attr('href', '$portalPath/openlayers/redbox.css');
+
+	    $(function(){
+	            // OpenLayers init, store it globally so the Geonames lookup can hit it later
+	            window["openLayersMap"] = loadOpenLayers();
+	    });
+	})(jQuery);
+</script>
+
+<script type="text/javascript">
+	//The following script is required for the GeoNames processing associated with the OpenStreeMap
+
+	    function cleanRdfToJs(input) {
+	        var output = input.replace(/\./g, "\\.");
+	        return output.replace(/\:/g, "\\:");
+	    }
+
+	    function getReDBoxById(redboxId) {
+	        var cleanId = cleanRdfToJs(redboxId);
+	        return $("#" + cleanId);
+	    }
+
+	$(function(){
+	    function splitGeonamesData(row) {
+	        var items = row[0].split("::");
+	        return {
+	            id: items[0],
+	            uri: items[1],
+	            display: items[2],
+	            north: items[3],
+	            east: items[4]
+	        };
+	    }
+	    
+	    $("#add-location").click(function(){
+	        getReDBoxById("dc:coverage.vivo:GeographicLocation.0.coords").hide();
+	    });
+
+	    $("#geonamesLookup").live("focus", function(){
+	        var elem = $(this);
+	        elem.unautocomplete();
+	            elem.autocompleteold(
+	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+	                {
+	                    extraParams: {
+	                        qs: function() {
+	                            var userInput = elem.val();
+	                            var commaPos = userInput.indexOf(",");
+	                            if(commaPos!=-1){
+	                                userInput = userInput.substring(0,commaPos);
+	                            }
+	                            return "func=search&format=json&rows=25&q=" + escape(userInput);
+	                        }
+	                    },
+	                    formatItem: function(row) { return splitGeonamesData(row).display; },
+	                    formatResult: function(row) { return splitGeonamesData(row).display; },
+	                    width: "40em"
+	                }).result(function(event, row) {
+	                    if (row) {
+	                        var data = splitGeonamesData(row);
+	                        // Pan OpenLayers Map
+	                        if (window["openLayersMap"] != null) {
+	                            window["openLayersMap"].panTo(data.east, data.north, 10);
+	                        }
+	                    }
+	                })
+	        }).live("blur", function(){
+	            $(this).search();
+	        });
+	    
+	    $(".autocomplete-geonames").live("focus", function(){
+	        var elem = $(this);
+	        var baseId = elem.attr("id").replace(".rdf:PlainLiteral", "");
+	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+	        elem.unautocomplete();
+	        if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
+	            elem.autocompleteold(
+	                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+	                {
+	                    extraParams: {
+	                        qs: function() {
+	                            var userInput = elem.val();
+	                            var commaPos = userInput.indexOf(",");
+	                            if(commaPos!=-1){
+	                                userInput = userInput.substring(0,commaPos);
+	                            }
+	                            return "func=search&format=json&rows=25&q=" + escape(userInput);
+	                        }
+	                    },
+	                    formatItem: function(row) { return splitGeonamesData(row).display; },
+	                    formatResult: function(row) { return splitGeonamesData(row).display; },
+	                    width: "40em"
+	                }).result(function(event, row) {
+	                    if (row) {
+	                        var data = splitGeonamesData(row);
+	                        var coordsElem = getReDBoxById(baseId+".coords");
+	                        getReDBoxById(baseId+".dc:identifier").val(data.uri);
+	                        getReDBoxById(baseId+".geo:long").val(data.east);
+	                        getReDBoxById(baseId+".geo:lat").val(data.north);
+	                        coordsElem.find(".east").text(data.east);
+	                        coordsElem.find(".north").text(data.north);
+	                        coordsElem.show();
+	                    }
+	                })
+	            }
+	        }).live("blur", function(){
+	            $(this).search();
+	        });
+
+	    $(".map-link").live("click", function(){
+	        var p = $(this).parent();
+	        var baseId = p.attr("id").replace(".coords", "");
+	        var long = getReDBoxById(baseId+".geo:long").val();
+	        var lat = getReDBoxById(baseId+".geo:lat").val();
+	        window["openLayersMap"].panTo(long, lat, 10);
+	        return false;
+	    });
+
+	    $(".clear-link").live("click", function(){
+	        var p = $(this).parent();
+	        var baseId = p.attr("id").replace(".coords", "");
+	        getReDBoxById(baseId+".dc:identifier").removeAttr("value");
+	        getReDBoxById(baseId+".geo:long").removeAttr("value");
+	        getReDBoxById(baseId+".geo:lat").removeAttr("value");
+	        p.hide();
+	    });
+
+	    var lastTypeValue;
+	    $(".locationType").live("focus", function() {
+	        // This is only really useful on the first use of the drop-down
+	        lastTypeValue = $(this).val();
+	    }).live("change", function(e){
+	        var elem = $(this);
+	        var baseId = elem.attr("id").replace(".dc:type", "");
+	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+	        var wktString = wktElem.val();
+	        // OpenLayers Row
+	        if (wktString != "") {
+	            var outElem = getReDBoxById(baseId+".rdf:PlainLiteral");
+	            var type = elem.val();
+	            // The alert window causes focus changes... use this temp variable instead
+	            var lastType = lastTypeValue;
+	            var output = window["openLayersMap"].mapWktData(wktString, type);
+	            if (output != null) {
+	                outElem.val(output);
+	                // Fix the focus loss from the alert
+	                lastTypeValue = type;
+	            } else {
+	                elem.val(lastType);
+	                // Fix the focus loss from the alert
+	                lastTypeValue = lastType;
+	                return;
+	            }
+
+	        // Legacy input
+	        } else {
+	            var uriElem = getReDBoxById(baseId+".dc:identifier");           
+                $(this).val("text");
+	            
+	        }
+	    });
+	    
+	   
+	});
+	</script>
+	
