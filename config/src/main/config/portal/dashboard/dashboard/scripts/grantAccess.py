@@ -96,6 +96,9 @@ class GrantAccessData:
                 for viewer in viewers:
                    self.log.debug("Revoking:%s" % viewer)
                    auth.revoke_user_access(oid, viewer)
+                # when there are viewers, the previous owner somehow joins the read-only list, revoke access to the previous owner as well. 
+                if viewers.size() > 0:
+                    auth.revoke_user_access(oid, owner)
             else:
                 self.log.info("Grant previous owner {} view access by adding them to security_execption.", owner)       
                 auth.grant_user_access(oid, owner)  # give previous owner read access
