@@ -6,9 +6,9 @@
 #set($forList = $util.getList($item, "$baseKey"))
 #if ($forList.size() > 0)
 	#set($i = 0)
-    #foreach($key in $forList.keySet())        
-        <![CDATA[ $forList.get($key).get("$subKey") ]]>#if($i != $forList.size()-1), #else #set($i = $i+1) #end
-    #end
+#foreach($key in $forList.keySet())
+#if($i > 0), #else #set($i = 1) #end
+<![CDATA[$forList.get($key).get("$subKey")]]>#end
 #else
 	#noInformation()
 #end
@@ -24,15 +24,11 @@
 #set($forList = $util.getList($item, "$baseKey"))
 #if ($forList.size() > 0)
 	#set($i = 0)
-    #foreach($key in $forList.keySet())
-        #if($i > 0) , #else #set($i = 1) #end
-        #set($subv = $forList.get($key).get("skos:prefLabel"))
-        #if ("$!subv" != "") <![CDATA[ $!subv ]]>
-        #else
-	        #set($subv = $forList.get($key).get("redbox:grantNumber"))
-	        <![CDATA[ $!subv ]]>
-	    #end            
-    #end
+#foreach($key in $forList.keySet())
+#if($i > 0), #else #set($i = 1) #end
+#set($subv = $forList.get($key).get("skos:prefLabel"))
+#if ("$!subv" == "") #set($subv = $forList.get($key).get("redbox:grantNumber")) #end            
+<![CDATA[$!subv]]>#end            
 #else
 	#noInformation()
 #end

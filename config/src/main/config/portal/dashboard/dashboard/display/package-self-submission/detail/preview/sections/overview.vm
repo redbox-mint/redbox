@@ -4,10 +4,8 @@
     <dd>
     #if ($items && $items.size() > 0)
 		#set($i = 0)
-		#foreach($item in $items)
-			#if($i > 0) , #else #set($i = 1) #end
-			$item
-		#end
+#foreach($item in $items)
+#if($i > 0),#else #set($i = 1) #end	$item#end
     #else
 		#noInformation()
     </dd>
@@ -27,10 +25,8 @@
 	#set($items = $metadata.getList("$listName"))
     #if ($items && $items.size() > 0)
 		#set($i = 0)
-		#foreach($item in $items)
-			#if($i > 0) , #else #set($i = 1) #end
-			$item
-		#end
+#foreach($item in $items)
+#if($i > 0),#else #set($i = 1) #end	$item#end
     #else
 		#noInformation()
 	#end	
@@ -53,11 +49,9 @@
 #noInformation()
 #else
 	#set($i = 0)
-    #foreach($key in $forList.keySet())
-        #set($item = $forList.get($key))
-        #if($i > 0) , #else #set($i = 1) #end
-        $item.get("$subKey")
-    #end
+#foreach($key in $forList.keySet())
+#set($item = $forList.get($key))
+#if($i > 0), #else #set($i = 1) #end $item.get("$subKey")#end
 #end
 </td>
 </tr>

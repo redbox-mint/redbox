@@ -11,26 +11,22 @@
     #noInformation()
     #else
      #set($i = 0)
-        #foreach($key in $itemList.keySet())
-         #set($display_value = "--")
-         #set($key_value = $itemList.get($key).get('value'))
-         #if ($key_value == "agls:protectiveMarking.dc:type.redbox:CulturallySensitive")
-         #set($display_value = "Culturally sensitive")
-         #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive")
-			#set($display_value = "Commercially sensitive")
-         #elseif($key_value == "agls:protectiveMarking.dc:type.redbox:SecurityClassified")
-			#set($display_value = "Security classified")
-		#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:NonPublic")
-			#set($display_value = "Non-public")
-         #elseif($key_value != 'null')
-          	#set($display_value = $key_value)
-         #end
-         #if( $display_value != "--")
-          #if($i > 0) , #end
-          $display_value
-           #set($i = $i + 1)
-         #end
-        #end
+#foreach($key in $itemList.keySet())
+#set($display_value = "--")
+#set($key_value = $itemList.get($key).get('value'))
+#if ($key_value == "agls:protectiveMarking.dc:type.redbox:CulturallySensitive")
+#set($display_value = "Culturally sensitive")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive")
+#set($display_value = "Commercially sensitive")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:SecurityClassified")
+#set($display_value = "Security classified")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:NonPublic")
+#set($display_value = "Non-public")
+#elseif($key_value != 'null')
+#set($display_value = $key_value)
+#end
+#if( $display_value != "--")#if($i > 0),#end $display_value#set($i = $i + 1)#end
+#end
     #end
     </dd>
         #display("agls:protectiveMarking.skos:note" "#displayMessage('dmpt.field.label.agls-protectiveMarking.skos-note')")

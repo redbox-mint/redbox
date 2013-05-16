@@ -45,12 +45,10 @@
 			#set($i=0)
 			<li>
             #set($item = $forList.get($key))			
-			#foreach($subKey in $subKeys)
-				#if($i>0)$sep #end 
-				#set($subv = $item.get("$subKey"))
-				#set($i = $i+1)
-				$!subv
-			#end
+#foreach($subKey in $subKeys)
+#if($i>0)$sep #end 
+#set($subv = $item.get("$subKey"))
+#set($i = $i+1)$!subv#end
 			</li>
 		#end
 		</ol>
