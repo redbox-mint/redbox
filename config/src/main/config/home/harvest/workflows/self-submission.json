@@ -9,7 +9,8 @@
         }
     },
     "workflow-id":"self-submission",
-    "page-title": "New Research Data",    
+    "page-title": "New Research Data",
+    "default-owner":"admin",    
     "transformer": {
         "curation": ["local"],
         "metadata": ["dmpToSelfSub"]

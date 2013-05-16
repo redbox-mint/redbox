@@ -6,9 +6,8 @@
 #set($forList = $util.getList($item, "$baseKey"))
 #if ($forList.size() > 0)
 	#set($i = 0)
-    #foreach($key in $forList.keySet())
-        #if($i > 0) , #else #set($i = 1) #end
-        <![CDATA[ $forList.get($key).get("$subKey") ]]>
+    #foreach($key in $forList.keySet())        
+        <![CDATA[ $forList.get($key).get("$subKey") ]]>#if($i != $forList.size()-1), #else #set($i = $i+1) #end
     #end
 #else
 	#noInformation()

@@ -62,7 +62,7 @@ class BaseIndexData(object):
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
 
         self.item_security = []
-        self.owner = self.params.getProperty("owner", "guest")
+        self.owner = self.params.getProperty("owner", self.config.getString("guest", ["default-owner"]))
 
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
@@ -111,8 +111,8 @@ class BaseIndexData(object):
         # No existing security
         else:
             if self.item_security is None:
-                # Guest access if none provided so far
-                self.__grantRoleAccess("guest")
+                # set the default owner to have access if none provided so far
+                self.__grantRoleAccess(self.config.getString("guest", ["default-owner"]))
                 self.utils.add(self.index, "security_filter", role)
             else:
                 # Otherwise use workflow security

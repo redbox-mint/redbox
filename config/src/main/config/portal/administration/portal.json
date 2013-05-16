@@ -1,8 +1,8 @@
 {
   "portal" : {
-    "name" : "default",
-    "description" : "Everything",
-    "query" : "-display_type:attachment AND packageType:dataset",
+    "name" : "administration",
+    "description" : "Administration",
+    "query" : "-display_type:attachment",
     "records-per-page" : "25",
     "facet-count" : "100",
     "facet-sort-by-count" : "false",
