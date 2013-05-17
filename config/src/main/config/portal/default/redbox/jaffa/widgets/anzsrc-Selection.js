@@ -7,6 +7,13 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
 
         dropDownData: {},
         dropDownDataMapped: null,
+        
+        clearServerData: function(id) {
+            var suffixes = ["skos:prefLabel", "rdf:resource", ".top.dropdown", ".middle.dropdown", ".bottom.dropdown"];
+            for (var i = 0; i < 5; i++) {
+                jaffa.serverData[id+suffixes[i]] = "";
+            }
+        },
 
         deleteWidget: function() {
             if (this.labelField != null) {
@@ -17,6 +24,7 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
             jaffa.form.ignoreField(this.field+".top.dropdown");
             jaffa.form.ignoreField(this.field+".middle.dropdown");
             jaffa.form.ignoreField(this.field+".bottom.dropdown");
+            this.clearServerData(this.field);
             this.getContainer().remove();
         },
         // Identity has been altered, adjust the DOM for all fields
