@@ -1,18 +1,18 @@
 [
     {
-        "value": "pbr",
+        "value": "pure",
         "label": "Pure basic research"
     },
     {
-        "value": "sbr",
+        "value": "strategic",
         "label": "Strategic basic research"
     },
     {
-        "value": "ar",
+        "value": "applied",
         "label": "Applied research"
     },
     {
-        "value": "ed",
+        "value": "experimental",
         "label": "Experimental development"
     }
 ]

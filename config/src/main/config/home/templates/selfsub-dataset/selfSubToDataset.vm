@@ -55,7 +55,7 @@
     #mapTo('dc:description', 'description')
 	"redbox:newForm": "$util.get($item, 'redbox:newForm')",
 	"redbox:formVersion": "$util.get($item, 'redbox:formVersion')",
-	"dc:title": "[untitled]",
+	"dc:title": "$util.get($item, 'dc:title')",
 	#foreach( $key in ["dc:type.rdf:PlainLiteral","dc:type.skos:prefLabel","dc:created",
 			 "dc:modified","dc:language.dc:identifier","dc:language.skos:prefLabel",
 			 "dc:coverage.vivo:DateTimeInterval.vivo:start","dc:coverage.vivo:DateTimeInterval.vivo:end",

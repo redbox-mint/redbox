@@ -359,8 +359,18 @@ function loadOpenLayers() {
         if (fId in ignoredFeatures) {
             return;
         }
+		
+        var locationElements = featureTable.find(".jaffaList");
+		for(var i=0; i < locationElements.size(); i++) {
+    		var textField = $(locationElements[i]).find(".autocomplete-geonames");
+    		if(textField.val().trim() == "" ) {
+        		found = true;
+        		fIdElement = $(locationElements[i]).find(".redboxGeoDataFid").first();
+        		rowElement = $(locationElements[i]);
+        		break;
+    		}
+		}
 
-        
         // Or a new feature?
         if (found) {
         	completeFeatureUpdate(event, fIdElement, rowElement);

@@ -2,6 +2,7 @@
 div[id^="dc:coverage.vivo:GeographicLocation"] label.widgetLabel { display:none }
 div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 .olControlModifyFeatureItemActive { display:none;}
+.olControlModifyFeatureItemInactive {display:none;}
 </style> 
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
@@ -150,6 +151,8 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 	        var elem = $(this);
 	        var baseId = elem.attr("id").replace(".rdf:PlainLiteral", "");
 	        var wktElem = getReDBoxById(baseId+".redbox:wktRaw");
+	        //Ensure the text box is always free text
+	        getReDBoxById(baseId+".dc:type").val("text");
 	        elem.unautocomplete();
 	        if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
 	            elem.autocompleteold(

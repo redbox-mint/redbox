@@ -33,7 +33,7 @@
                     #if ("$!url" != "" || "$!url" != "")
                         <li><b>Geonames</b>: <a href="$self.escapeHtml($url)">$self.escapeHtml($title)</a></li>
                     #else
-                        <li><b>Text</b>: $self.escapeHtml($title)</li>
+                        <li><b>Text</b>: #if ("$!title" != "" || "$!title" != "")$self.escapeHtml($title)#end</li>
                     #end
 
                 #### Everything else
