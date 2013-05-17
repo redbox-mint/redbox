@@ -201,10 +201,10 @@ var globalObject = this;
             function searchNla(start, rows) {
                 var nlaQuery = "start="+start+"&rows="+rows;
                 if (nlaSurname != null && nlaSurname != "") {
-                    nlaQuery += "&surname=" + escape(nlaSurname) + "";
+                    nlaQuery += "&surname=" + encodeURIComponent(nlaSurname) + "";
                 }
                 if (nlaFirstname != null && nlaFirstname != "") {
-                    nlaQuery += "&firstName=" + escape(nlaFirstname) + "";
+                    nlaQuery += "&firstName=" + encodeURIComponent(nlaFirstname) + "";
                 }
                 var url = nlaUrl.replace("{searchTerms}", escape(nlaQuery));
                 $(".nameLookup-waiting").show();
@@ -464,7 +464,7 @@ var globalObject = this;
             };
             // curry getJson
             cGetJson = function(queryTerm, callback) {
-                queryUrl = url.replace("{searchTerms}", escape(escape(queryTerm)));
+                queryUrl = url.replace("{searchTerms}", escape(encodeURIComponent(queryTerm)));
                 debug("clicked queryUrl=" + queryUrl);
                 getJson(queryUrl, 6, callback);
             };
