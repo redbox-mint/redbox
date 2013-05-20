@@ -11,8 +11,8 @@
 		#set($familyName = $metadata.get("$key:familyName"))
 		#set($email = $metadata.get("$key:email"))
     #if ($familyName || $givenName)
-    	$!title $!givenName $!familyName
-    	#if ( $!email != "") [ $email ] #end
+    	$page.escapeHtml($!title) $page.escapeHtml($!givenName) $page.escapeHtml($!familyName)
+    	#if ( $!email != "") [ $page.escapeHtml($email) ] #end
     #else	
     ##if ($items && $items.size > 0)
 		##set($i = 0)

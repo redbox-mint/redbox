@@ -14,7 +14,7 @@
 	#foreach($item in $self.myDrafts)
 	    #set($oid = $item.get("id"))
 	    <tr>
-	    	<td><a href="$portalPath/detail/$oid">$item.get("dc_title")</a></td>
+	    	<td><a href="$portalPath/detail/$oid">$page.escapeHtml($item.get("dc_title"))</a></td>
 		    <td>
             #parseTemplate("home/dmpt/created_modified_date.vm")                
 		    </td>

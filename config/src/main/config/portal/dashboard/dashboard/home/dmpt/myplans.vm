@@ -17,7 +17,7 @@
             #set($oid = $item.get("id"))
           <tr>
         		#set($title = $item.get('dc:title'))
-        		<td><a href="$portalPath/detail/$oid">#if ($title) $title #else [Untitled] #end</a></td>
+        		<td><a href="$portalPath/detail/$oid">#if ($title) $page.escapeHtml($title) #else [Untitled] #end</a></td>
                 <td>
                 #parseTemplate("home/dmpt/created_modified_date.vm")                
                 </td>
