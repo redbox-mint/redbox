@@ -9,7 +9,7 @@
     #set($v = $metadata.get("$key"))
     <dd>
     #if ($v)
-		$!v
+		$page.escapeHtml($!v)
     #else
 		#noInformation()
     </dd>

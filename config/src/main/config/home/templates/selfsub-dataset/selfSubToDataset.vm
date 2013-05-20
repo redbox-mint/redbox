@@ -32,7 +32,9 @@
 #macro(multiValuedMappedProperty $map $prefix $key $suffix $order)
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
+#if ("$!value" != "") 
 "${prefix}.${order}.${suffix}": "$value",
+#end
 #end
 
 
@@ -55,7 +57,7 @@
     #mapTo('dc:description', 'description')
 	"redbox:newForm": "$util.get($item, 'redbox:newForm')",
 	"redbox:formVersion": "$util.get($item, 'redbox:formVersion')",
-	"dc:title": "$util.get($item, 'dc:title')",
+	"dc:title": "[untitled]",
 	#foreach( $key in ["dc:type.rdf:PlainLiteral","dc:type.skos:prefLabel","dc:created",
 			 "dc:modified","dc:language.dc:identifier","dc:language.skos:prefLabel",
 			 "dc:coverage.vivo:DateTimeInterval.vivo:start","dc:coverage.vivo:DateTimeInterval.vivo:end",
@@ -126,13 +128,14 @@
 	#mapTo('dc:creator.foaf:Person.foaf:title', 'dc:creator.foaf:Person.1.foaf:title')
 	#mapTo('dc:creator.foaf:Person.foaf:givenName', 'dc:creator.foaf:Person.1.foaf:givenName')
 	#mapTo('dc:creator.foaf:Person.foaf:familyName', 'dc:creator.foaf:Person.1.foaf:familyName')
-	"dc:creator.foaf:Person.1.redbox:isPrimaryInvestigator": "on",
+	"dc:creator.foaf:Person.1.redbox:isCoPrimaryInvestigator": "on",
 	
 	#set($cList = $util.getList($item, "dc:contributor.locrel:clb"))
 	#set($order = 2)
 	#if ($cList.size() > 0)
 	#foreach($key in $cList.keySet())
     	#set($slot = $cList.get($key))
+    	
     	#multiValuedMappedProperty($slot "dc:creator.foaf:Person" "foaf:Agent.foaf:title"  "foaf:title" $order)
     	#multiValuedMappedProperty($slot "dc:creator.foaf:Person" "foaf:Agent.foaf:givenName" "foaf:givenName" $order)
     	#multiValuedMappedProperty($slot "dc:creator.foaf:Person" "foaf:Agent.foaf:familyName" "foaf:familyName" $order)
@@ -217,6 +220,8 @@
     #end
 	#end
 	
+	
+	
 	#foreach( $key in ["dc:description",
 			 "locrel:prc.foaf:Person.foaf:title","locrel:prc.foaf:Person.foaf:givenName","locrel:prc.foaf:Person.foaf:familyName",
              "locrel:prc.foaf:Person.dc:identifier","locrel:prc.foaf:Person.foaf:email", "dc:license.skos:prefLabel" ,"dc:license.dc:identifier",
@@ -235,7 +240,12 @@
 	#end
 	
 	
-	
+	#set($noteValue = $util.get($item, "skos:note.0.dc:description"))
+    #if ("$!noteValue" != "") 
+     "skos:note.1.dc:description": "$!noteValue",
+     "skos:note.1.dc:created": "1970-01-01 00:00:00",
+     "skos:note.1.foaf:name": "Self-submission User"
+    #end
 	
 	
 "xmlns:dc": "http://dublincore.org/documents/2008/01/14/dcmi-terms/",

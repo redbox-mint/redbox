@@ -15,7 +15,7 @@
 #macro(getValue $key)
     #set($v = $metadata.get("$key"))
     #if ($v && "$!v" != "")
-		$v
+		$page.escapeHtml($v)
     #else
 		#noInformation()
     #end
@@ -26,7 +26,7 @@
     #if ($items && $items.size() > 0)
 		#set($i = 0)
 #foreach($item in $items)
-#if($i > 0),#else #set($i = 1) #end	$item#end
+#if($i > 0),#else #set($i = 1) #end	$page.escapeHtml($item)#end
     #else
 		#noInformation()
 	#end	
