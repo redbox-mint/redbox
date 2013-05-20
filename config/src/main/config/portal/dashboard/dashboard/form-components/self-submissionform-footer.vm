@@ -59,9 +59,9 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 			$("[id='dataLicensingAccess.manager']").val(dataManager);
 		});
 		
-		selfSubmission.toggle_submit();
+		//selfSubmission.toggle_submit();
 		// hide Submit link until user acknowledges 
-		document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
+		//document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
 		
 		prepareHelps();
    	})
