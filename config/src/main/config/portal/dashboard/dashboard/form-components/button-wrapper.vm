@@ -13,7 +13,7 @@ $buttonHtml
    			var url = null, workflow_next = null;
    			if(action == 'save-next') { 
    				action = 'save'; workflow_next = 'next';
-   				console.debug("save-next has been processed: " + action + " " + workflow_next);
+   				console.log("save-next has been processed: " + action + " " + workflow_next);
    			}
    			if(objectMetadataParams != null) {
    				url = '$portalPath/workflows/simpleworkflow.ajax?func=action&action='+action+'&oid=$oid&objMeta='+objectMetadataParams;

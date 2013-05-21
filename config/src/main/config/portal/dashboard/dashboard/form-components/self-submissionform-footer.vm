@@ -9,19 +9,11 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 	var selfSubmission = {
 		submit_hidden: true,
 		toggle_submit: function () {
-			var btn_submit = document.querySelector('a[transition-name="Submit"]');
-			if (! btn_submit) { 
-				btn_submit = document.querySelector('button[transition-name="Submit"]');
-				if (! btn_submit) { alert('Error exists in self-submissionfooter.pm: Submit is either a link or a button.'); } 
+			if($("[id='readyforreview.1']").attr('checked') == null) { 
+				$("[transition-name='Submit']").hide(); 
+			} else {
+			   $("[transition-name='Submit']").show();
 			}
-			try {
-				if (selfSubmission.submit_hidden) {
-					btn_submit.style.visibility = 'hidden';	
-				} else {
-					btn_submit.style.visibility = 'visible';
-				}
-				selfSubmission.submit_hidden = !selfSubmission.submit_hidden;
-			} catch (e) {}
 		}
 		
 	};
@@ -59,10 +51,9 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 			$("[id='dataLicensingAccess.manager']").val(dataManager);
 		});
 		
-		//selfSubmission.toggle_submit();
 		// hide Submit link until user acknowledges 
-		//document.getElementById('readyforreview.1').onclick = selfSubmission.toggle_submit ;
-		
+		$("[transition-name='Submit']").hide();
+		$("[id='readyforreview.1']").change(selfSubmission.toggle_submit);	
 		prepareHelps();
    	})
 </script>

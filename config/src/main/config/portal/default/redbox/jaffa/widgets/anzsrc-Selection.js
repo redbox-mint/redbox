@@ -54,6 +54,72 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
             jaffa.form.ignoreField(this.oldField+".middle.dropdown");
             jaffa.form.ignoreField(this.oldField+".bottom.dropdown");
     
+    		var field = this.field;
+    		var jsonDataUrl = this.getConfig("json-data-url");
+    		$("[id='"+this.id()+"']").on("change","[id='"+this.field+".top.dropdown']",function(){
+    												$("[id='"+field+".bottom.dropdown']").hide();
+    												var comboValue = $(this).val();
+    												if(comboValue != "") {
+    													var labelValue = $(this).find("option:selected").text()
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
+    													
+												   		var nextCombo= {};
+    													nextCombo["field"] = field+".middle.dropdown";
+    													nextCombo["json-data-url"] = jsonDataUrl;
+       													nextCombo["data-top-level-id"] = comboValue;
+        												nextCombo["data-id-key"] = 'rdf:about';       
+            											nextCombo["data-label-key"] = 'skos:prefLabel';
+        												nextCombo["data-list-key"] = 'results';
+        												nextCombo["default-value"] = 'skos:narrower';           
+    													nextCombo["class-list"] = 'widgetListBranding';
+    													$("span[id='"+field+".middle']").jaffaDropDown(nextCombo);
+    												}
+    												if(comboValue == "") {
+    													$("[id='"+field+".middle.dropdown']").hide();
+    												}
+												});
+												
+    		$("[id='"+this.id()+"']").on("change","[id='"+this.field+".middle.dropdown']",function(){
+    												var comboValue = $(this).val();
+    												if(comboValue != "") {
+    													var labelValue = $(this).find("option:selected").text();
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
+													
+												   		var nextCombo= {};
+    													nextCombo["field"] = field+".bottom.dropdown";
+    													nextCombo["json-data-url"] = jsonDataUrl;
+       													nextCombo["data-top-level-id"] = comboValue;
+        												nextCombo["data-id-key"] = 'rdf:about';       
+            											nextCombo["data-label-key"] = 'skos:prefLabel';
+        												nextCombo["data-list-key"] = 'results';
+        												nextCombo["default-value"] = 'skos:narrower';           
+    													nextCombo["class-list"] = 'widgetListBranding';
+    													$("span[id='"+field+".bottom']").jaffaDropDown(nextCombo);
+    												}
+    												if(comboValue == "") {
+    													//Set the top dropdown box's value and hide the bottom dropdown
+    													comboValue = $("[id='"+field+".top.dropdown']").val();
+    													var labelValue = $("[id='"+field+".top.dropdown']").find("option:selected").text();
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
+    													$("[id='"+field+".bottom.dropdown']").hide();
+    												}
+												});
+												
+			$("[id='"+this.id()+"']").on("change","[id='"+this.field+".bottom.dropdown']",function(){
+    												var comboValue = $(this).val();
+    												if(comboValue != "") {
+    													var labelValue = $(this).find("option:selected").text()
+    													$("[id='"+field+"skos:prefLabel']").val(labelValue);
+    													$("[id='"+field+".displayLabel']").text(labelValue);
+    													$("[id='"+field+"rdf:resource']").val(comboValue);
+    												}
+												});		
             
             // TODO: Testing
             // Do it all again for labels if they are stored
