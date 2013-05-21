@@ -157,7 +157,12 @@
 	#mapTo('swrc:supervisor.foaf:Person.foaf:title', 'swrc:supervisor.foaf:Person.1.foaf:title')
 	#mapTo('swrc:supervisor.foaf:Person.foaf:givenName', 'swrc:supervisor.foaf:Person.1.foaf:givenName')
 	#mapTo('swrc:supervisor.foaf:Person.foaf:familyName', 'swrc:supervisor.foaf:Person.1.foaf:familyName')
-
+	#mapTo('swrc:supervisor.foaf:Person.dc:identifier', 'swrc:supervisor.foaf:Person.1.dc:identifier')
+	#set($supFamilyName = $util.get($item, "swrc:supervisor.foaf:Person.foaf:familyName"))
+	#set($supGivenName = $util.get($item, "swrc:supervisor.foaf:Person.foaf:givenName"))
+	#if ("$!supFamilyName" != "") 
+		"swrc:supervisor.foaf:Person.1.foaf:name": "$supFamilyName, $supGivenName",
+	#end
 
 	
 	

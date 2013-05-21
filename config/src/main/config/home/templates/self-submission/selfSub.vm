@@ -75,7 +75,7 @@
     	#Collaborators($slot "foaf:givenName" $order)
     	#Collaborators($slot "foaf:familyName" $order)
     	#Collaborators($slot "foaf:email" $order)
-    	#Collaborators($slot "foaf:dc:identifier" $order)
+    	#Collaborators($slot "dc:identifier" $order)
     	#set($order = $order + 1)
     #end
 #end

@@ -118,6 +118,8 @@ function NameLookUp(ids, lookup_source) {
 					$(document.getElementById(ids[1])).change();
 					document.getElementById(ids[2]).value = result["surname"];
 					$(document.getElementById(ids[2])).change();
+					document.getElementById(ids[4]).value = result["nlaId"];
+					$(document.getElementById(ids[4])).change();
 					// Mint Identity
 				} else {
 					// Mint Only
