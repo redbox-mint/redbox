@@ -2,7 +2,7 @@
 
 #parseTemplate("elements/atom-link.vm")
 <h2 id="page-heading">
-  <span>$page.portalName</span> $atomHtml
+  <span>$page.escapeHtml($page.portalName)</span> $atomHtml  
 </h2>
 
 #parseTemplate("menus/home-main-menu.vm")

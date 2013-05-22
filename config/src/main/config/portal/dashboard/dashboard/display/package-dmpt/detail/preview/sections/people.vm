@@ -33,7 +33,7 @@
 #macro(displayKey $map $key $required)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-$value
+$page.escapeHtml($value)
 #else
     #if ($required)
 #missing($key)

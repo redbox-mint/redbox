@@ -14,6 +14,24 @@
 <script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/jquery-ui.1.8.18.min.js"></script>
 #end
+<script type="text/javascript">
+var __entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
+String.prototype.escapeHTML = function() {
+    return String(this).replace(/[&<>"'\/]/g, function (s) {
+        return __entityMap[s];
+    });
+}
+</script>
+
 $!pageHeader
+
 #parse($page.getTemplate('layout/html-head-links.vm'))
 #parse($page.getTemplate('layout/html-head-scripts.vm'))
