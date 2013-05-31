@@ -47,7 +47,7 @@
       <artifactId>fascinator-portal</artifactId>
       <type>war</type>
       <classifier>skinny</classifier>
-      <version>1.1.4</version>
+      <version>1.1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.redbox-mint</groupId>
@@ -130,7 +130,7 @@
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-indexer-solr</artifactId>
-      <version>1.1.4</version>
+      <version>1.1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
@@ -262,7 +262,7 @@
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>
           <type>warpath</type>
-          <version>1.1.4</version>
+          <version>1.1.5-SNAPSHOT</version>
         </dependency>
       </dependencies>
       <!-- The standard build/deploy process for making a server -->
