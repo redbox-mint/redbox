@@ -1530,7 +1530,7 @@ var widgets={forms:[], globalObject:this};
                                 function(i){return /\S/.test(i)});
         getValue=function(i){
           e = getById(i);
-          if(e.size()==0) e=ctxInputs.filter("[name="+i+"]");
+          if(e.size()==0) e=ctxInputs.filter("[name='"+i+"']");
           if(e.size()==0){return null;}
           v = e.val();
           if(e.attr("type")==="checkbox"){
