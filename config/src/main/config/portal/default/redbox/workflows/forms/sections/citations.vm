@@ -78,18 +78,18 @@
                                 <td>Identifier:</td>
                                 <td>
                                     <label for="useCuration">
-                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" />
+                                        <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useCuration" checked/>
                                         Use the Identifier provided during curation
                                     </label>
                                     ## DOI Integration is disabled pending v1.1 of
                                     ##  ANDS 'Cite My Data' service being released
-                                    <!--
+                                    <span id="doiOptionSpan" style="display:none;">
                                     <strong>OR</strong>
                                     <label for="useDoi">
                                         <input type="radio" name="${citePart}.dc:identifier.skos:note" value="useDoi" />
                                         <span><button>Get me a DOI using ANDS 'Cite My Data'</button></span>
                                     </label>
-                                    -->
+                                    </span>
                                 </td>
                             </tr>
                             <tr><td colspan="2"><hr/></td></tr>
@@ -355,6 +355,7 @@
 
         var prefillBtn = getReDBoxById("${cite}.prefillBtn");
         prefillBtn.live("click", function() {
+			$(".validation-err-msg").hide();
             ### Collection Title
             var title = getReDBoxById("dc:title");
             if (title.size() != 0) {

@@ -218,7 +218,7 @@ $(function(){
         var elem = $(this);
         elem.unautocomplete();
             elem.autocomplete(
-                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+                "$portalPath/proxyGet.script?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
                 {
                     extraParams: {
                         qs: function() {
@@ -253,7 +253,7 @@ $(function(){
         elem.unautocomplete();
         if(getReDBoxById(baseId+".dc:type").val() == "text" && wktElem.val() == ""){
             elem.autocomplete(
-                "$portalPath/proxyGet?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
+                "$portalPath/proxyGet.script?ns=Geonames&autocomplete=true&fields=id,geonames_uri,display,latitude,longitude",
                 {
                     extraParams: {
                         qs: function() {

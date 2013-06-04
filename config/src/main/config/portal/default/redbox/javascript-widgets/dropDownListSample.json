@@ -1,0 +1,38 @@
+{
+  "namespace":"addThisToTheIds.",
+  "selectable":0,
+  "default":"",
+  "list": [
+          {"label":"GroupA", "id":"gA", "children":1},
+          {"label":"GroupB", "id":"gB", "children":"GroupB"},
+          {"label":"GroupC", "id":"gC", "children":"GroupC.json"}
+        ],
+  "gA":     {
+            "list": [
+                    {"label":"Light-Red", "id":"gA-red"},
+                    {"label":"Light-Green", "id":"gA-green"},
+                    {"label":"Light-Blue", "id":"gA-blue"}
+                  ], "selectable":1, "default":"gA-blue"
+          },
+  "GroupB": {
+            "list": [
+                    {"label":"Dark-Red", "id":"gB-red"},
+                    {"label":"Dark-Green", "id":"gB-green"},
+                    {"label":"Dark-Blue", "id":"gB-blue"}
+                  ], "selectable":1, "default":""
+          },
+  "GroupC.json": {
+            "list": [
+                    {"label":"Lime-Red", "id":"gC-red"},
+                    {"label":"Lime-Green", "id":"gC-green", "children":"lGreenTypes"},
+                    {"label":"Lime-Blue", "id":"gC-blue"}
+                  ], "selectable":1, "default":"gC-green"
+          },
+  "lGreenTypes": {
+            "list": [
+                    {"label":"Green Go", "id":"gC-go"},
+                    {"label":"Green Goo", "id":"gC-goo"},
+                    {"label":"Green Stuff", "id":"gC-stuff"}
+                  ], "selectable":1, "default":""
+          }
+}

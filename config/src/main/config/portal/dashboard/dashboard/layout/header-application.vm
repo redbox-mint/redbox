@@ -1,0 +1,14 @@
+<div class="grid_16">
+    <ul class="nav main">
+        <li><a href="$portalPath/home">Home</a></li>
+        <li class="secondary">
+            #if($page.authentication.is_logged_in())
+                <span id="user-info" class="status">Welcome <a class="user-data" href="#">$page.authentication.get_name()</a>, <a href="#" id="logout-now">Logout</a></span>
+            #else
+                <span id="user-info" class="status"><a class="login-now" href="#">Login</a></span>
+            #end
+        </li>
+        $!navContent
+    </ul>
+</div>
+

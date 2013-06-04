@@ -1,0 +1,12 @@
+#sectionHeading("#displayMessage('dmpt.heading.dataCollection')")
+<div class="meta">
+    <dl>
+        #display("vivo:Dataset.redbox:MetadataStandard" "#displayMessage('dmpt.field.label.vivo-Dataset.redbox-MetadataStandard')")
+        #display("vivo:Dataset.redbox:DataStructureStandard" "#displayMessage('dmpt.field.label.vivo-Dataset.redbox-DataStructureStandard')")
+        #display("vivo:Dataset.redbox:DataCollectionMethodology" "#displayMessage('dmpt.field.label.vivo-Dataset.redbox-DataCollectionMethodology')")
+        #display("vivo:Dataset.redbox:DataCollectionResources" "#displayMessage('dmpt.field.label.vivo-Dataset.redbox-DataCollectionResources')")
+        #display("vivo:Dataset.redbox:DataAnalysisResources" "#displayMessage('dmpt.field.label.vivo-Dataset.redbox-DataAnalysisResources')")
+        #display("vivo:Dataset.dc.format" "#displayMessage('dmpt.field.label.vivo-Dataset.dc.format')")
+        #display("vivo:Dataset.dc.format.other" "#displayMessage('dmpt.field.label.vivo-Dataset.dc.format.other')")
+    </dl>
+</div>

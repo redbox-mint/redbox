@@ -1,0 +1,12 @@
+{
+  "Query":{"role":"request", "searchTerms":"one"},
+  "query":"one",
+  "totalResults":2,
+  "startIndex":1,
+  "itemsPerPage":10,
+  "items": [
+            {"title":"Fred Smith", "description":"", "uri":"http:nicnames/smith/fred", "details":{"email":"smith.fred@newcastle.edu.au", "affiliation":"Newcastle"}},
+            {"title":"Frank Smith", "uri":"http:nicnames/smith/frank", "details":{"affiliation":"Newcastle", "email":"smith.frank@newcastle.edu.au", "faculty":"busniess"}}
+          ]
+}
+

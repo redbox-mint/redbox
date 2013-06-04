@@ -1,0 +1,87 @@
+##    locrel:rth.foaf:Person.foaf:title 
+##    locrel:rth.foaf:Person.foaf:givenName 
+##    locrel:rth.foaf:Person.foaf:familyName 
+##    locrel:rth.foaf:Person.foaf:email    
+    
+#macro(displayPerson $key $name)
+    <dt>$name</dt>
+    <dd>
+    	#set($title = $metadata.get("$key:title"))
+		#set($givenName = $metadata.get("$key:givenName"))
+		#set($familyName = $metadata.get("$key:familyName"))
+		#set($email = $metadata.get("$key:email"))
+    #if ($familyName || $givenName)
+    	$page.escapeHtml($!title) $page.escapeHtml($!givenName) $page.escapeHtml($!familyName)
+    	#if ( $!email != "") [ $page.escapeHtml($email) ] #end
+    #else	
+    ##if ($items && $items.size > 0)
+		##set($i = 0)
+		##foreach($item in $items)
+			##if($i > 0), #else #set($i = 1) #end
+			##$item
+		##end
+    ##else
+		#noInformation()
+    </dd>
+    #end
+#end
+
+#macro(missing $value)
+<i>{missing: "$value" }</i>
+#end
+
+#macro(displayKey $map $key $required)
+#set ($value = $map.get($key))
+#if ("$!value" != "")
+$value
+#else
+    #if ($required)
+#missing($key)
+    #end
+#end
+#end
+
+#macro(displayOptionalKey $map $key)
+	#if ($key == "person.foaf:email")
+		[ #displayKey($map $key false) ]
+	#else
+		#displayKey($map $key false)
+	#end
+#end
+
+#macro(displayRequiredKey $map $key)
+#displayKey($map $key true)
+#end
+
+#sectionHeading("#displayMessage('dmpt.heading.people')")
+<div class="meta">
+    <dl>
+	#displayPerson("locrel:rth.foaf:Person.foaf" "#displayMessage('dmpt.field.label.locrel-rth.foaf-Person')")
+    #displayPerson("locrel:prc.foaf:Person.foaf" "#displayMessage('dmpt.field.label.locrel-prc.foaf-Person')")
+    
+    <dt>#displayMessage('dmpt.field.label.locrel-clb.foaf-Person')</dt>
+    #set($personList = $self.getList("locrel:clb.foaf:Person"))
+    #if ($personList.isEmpty())
+    <dd>
+    #noInformation()
+    </dd>
+    #else
+    <dd>
+        <ol>
+        #foreach($key in $personList.keySet())
+            #set($person = $personList.get($key))
+            <li>
+                #displayOptionalKey($person "person.foaf:title")
+                #displayRequiredKey($person "person.foaf:givenName")
+                #displayRequiredKey($person "person.foaf:familyName")
+                #displayOptionalKey($person "person.foaf:email")
+            </li>
+        #end
+        </ol>
+    </dd>
+    #end
+
+    #displayPerson("swrc:supervisor.foaf:Person.foaf" "#displayMessage('dmpt.field.label.swrc-supervisor.foaf-Person')")
+        
+    </dl>
+</div>

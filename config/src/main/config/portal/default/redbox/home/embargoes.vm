@@ -1,0 +1,29 @@
+#set($menuTitle = "embargoes")
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+    #if($self.embargoes.isEmpty())
+    <p>No current embargoed records.</p>
+    #else
+    <p>#displayMessage("dataset.home.embargoes.message")</p>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Embargoed until</th>
+        </tr>
+        </thead>
+        #foreach($embargo in $self.embargoes)
+            #set($oid = $embargo.get("id"))
+            #set($title = $embargo.get("dc_title"))
+            #set($date_embargoed = $self.formatDate($embargo.get("date_embargoed")))
+            <tr>
+                <td>$velocityCount</td>
+                <td width="50%"><a class="titleText" href="$portalPath/workflow/$oid">$page.escapeHtml($title)</a></td>
+                <td>$!date_embargoed</td>
+            </tr>
+        #end
+    </table>
+    #end
+</div>
+#parseTemplate("wrapping/info-box-close.vm")

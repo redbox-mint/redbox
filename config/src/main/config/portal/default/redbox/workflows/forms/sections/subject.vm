@@ -6,7 +6,7 @@
     </div>
     #mintMultiSelectField("dc:subject.anzsrc:for.0.rdf:resource"
                           "dc:subject.anzsrc:for.0.skos:prefLabel"
-                          "$portalPath/proxyGet?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
+                          "$portalPath/proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D"
                           "rdf:about"
                           "skos:prefLabel"
                           "results"
@@ -18,7 +18,7 @@
     </div>
     #mintMultiSelectField("dc:subject.anzsrc:seo.0.rdf:resource"
                           "dc:subject.anzsrc:seo.0.skos:prefLabel"
-                          "$portalPath/proxyGet?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
+                          "$portalPath/proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D"
                           "rdf:about"
                           "skos:prefLabel"
                           "results"

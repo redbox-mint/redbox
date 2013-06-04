@@ -1,0 +1,63 @@
+<div class="grid_16">
+    <ul class="nav main">
+        <li><a href="$portalPath/home">Home</a></li>
+        <li><a href="$portalPath/search">Browse</a></li>
+        <li>
+            <a href="#">Views</a>
+            <ul>
+                #foreach($portal in $page.portals)
+                    #if($portal.name != $portalId)
+                        <li><a href="$urlBase$portal.name/$page.getRelativePath()">$portal.description</a></li>
+                    #else
+                        <li class="selected-view"><a href="#" onclick="return false">$portal.description</a></li>
+                    #end
+                #end
+            </ul>
+        </li>
+        #if($page.authentication.is_admin())
+        <li>
+            <a href="#">Admin</a>
+            <ul class="dropdown">
+				#if($systemConfig.getString("false", "redbox-reports", "enabled") == "true")
+				<li><a href="$portalPath/report/dashboard">Dashboard</a></li>
+				<li><a href="$portalPath/report/manageReports">Reports</a></li>
+				#end
+                <li><a href="$portalPath/settings">Settings</a></li>
+                <li><a href="$portalPath/admin">Security</a></li>
+                <li><a href="$portalPath/batchprocess">Batch</a></li>
+                #parseTemplate("elements/queues.vm")
+            </ul>
+        </li>
+        #end
+        <li><a href="$portalPath/about">About</a></li>
+        <li class="secondary">
+            <a class="search" href="#"><img src="$portalPath/images/icons/magnifier.png" alt="Search" /></a>
+        </li>
+        <li class="secondary">
+            <form action="$portalPath/search" class="search" method="get">
+                <input class="text" type="text" id="query" name="query" size="25" value="$page.getQuery()" />
+            </form>
+        </li>
+        <li class="secondary">
+            <span class="status">View: $page.portalName</span>
+        </li>
+        <li class="secondary">
+            #if($page.authentication.is_logged_in())
+                <span id="user-info" class="status">Welcome <a class="user-data" href="#">$page.authentication.get_name()</a>, <a href="#" id="logout-now">Logout</a></span>
+            #else
+                <span id="user-info" class="status"><a class="login-now" href="#">Login</a></span>
+            #end
+        </li>
+        $!navContent
+    </ul>
+</div>
+<script type="text/javascript">
+<!--
+    $(function() {
+        $("a.search").click(function() {
+            $("form.search").submit();
+            return false;
+        });
+    });
+-->
+</script>

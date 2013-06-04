@@ -21,6 +21,7 @@
     </label>
 #end
 
+
 #macro(mintSelectField $id $labelId $sourceUrl $idKey $labelKey $listKey $defaultValue)
     <span class="data-source-drop-down"
           data-json-source-url="$sourceUrl"
@@ -257,7 +258,14 @@
         redbox:submissionProcess.locrel:prc.foaf:Person.foaf:phone,
         redbox:submissionProcess.locrel:prc.foaf:Person.foaf:mbox,
         redbox:submissionProcess.dc:title,
-        redbox:submissionProcess.skos:note
+        redbox:submissionProcess.skos:note,
+        redbox:embargo.redbox:isEmbargoed,
+        redbox:embargo.dc:date,
+        redbox:embargo.skos:note,
+        dc:relation.redbox:TechnicalMetadata.0.dc:identifier,
+        dc:relation.redbox:TechnicalMetadata.0.dc:title,
+        dc:relation.redbox:TechnicalMetadata.0.dc:type,
+        dc:relation.redbox:TechnicalMetadata.0.dc:conformsTo
     " />
     <input type="hidden" class="form-fields-readonly" value="xmlns:dc, xmlns:foaf, xmlns:anzsrc, metaList" />
     <input type="hidden" id="metaList" value="[]" />
@@ -352,6 +360,9 @@ $(function(){
 
     $(".form-fields-save-close").click(function() {
         saveAndClose = true;
+		$(".save-note").each(function(idx){ 
+			this.click();
+		});
         $(".form-fields-save").click();
     });
 

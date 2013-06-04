@@ -86,7 +86,7 @@
     <p>
         #mintSelectField("dc:language.dc:identifier"
                          "dc:language.skos:prefLabel"
-                         "$portalPath/proxyGet?ns=Languages&qs=count%3D9999"
+                         "$portalPath/proxyGet.script?ns=Languages&qs=count%3D9999"
                          "dc:identifier"
                          "dc:title"
                          "results"

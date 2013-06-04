@@ -1,0 +1,226 @@
+#if($self.getErrorMsg()=="")
+#set($pageTitle = "Report result")
+#set($portalPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/myJaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/container.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
+
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<h2 id="page-heading"><span>Statistical report</span>
+            <span class="helpWidget" data-help-content-id="help-stats">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-stats").toggle();'/>
+            </span>
+        </h2>
+        <div class="help-content" id="help-stats" style="display: none;">
+        <p>The <i>Create a New Statistical Report</i> function will allow the user to create a statistical report
+across both the ReDBox and the Mint systems for a selected date range and where data is
+available within the specified time frame.</p>
+<p>Users can:</p>
+<ul>
+<li>select the required <i>date range from</i> and <i>date range to</i> from the entry fields to
+generate a customised report by date, where data is available.</li>
+<li>select to create a report based on the created or modified date of the record. Note:
+<i>Alerts</i> ingested into ReDBox will have both a created and modified date applied on
+ingest, by default.</li>
+</ul>
+
+<p>ReDBox System Statistical Report provides statistics of records in ReDBox by:</p>
+<ul>
+<li>Collection type</li>
+<li>Workflow stage</li>
+</ul>
+The MINT System Statistical Report provides statistics of records in the MINT by:
+<ul>
+<li>Party type</li>
+<li>Activity type</li>
+<li>Service type</li>
+</ul>
+        </div>
+	<section>
+		<div class="errorbox">
+    		#displayMessage("reports.create.report.validation.message")
+    		<ul id="errorbox-list">
+    		<ul>
+    	</div>
+	<form method="POST" action="$portalPath/report/statisticalReports">		
+		<fieldset style="margin-top:20px;">
+			<legend>Date Range</legend>
+			<label style="margin-right:7px;">From</label>
+			<input id="dateFrom" name="dateFrom" type="text" class="datepicker" value="$self.getReportFilter('dateFrom')" /> 
+			<label>To<input id="dateTo" name="dateTo" type="text" class="datepicker" value="$self.getReportFilter('dateTo')"/></label><br>
+			<label>Date</label>
+			<label><input type="radio" name="dateCreatedModified" value="created" $self.getSelectedOpt("dateCreatedModified","created", "checked='checked'") />Created</label>
+			<label><input type="radio" name="dateCreatedModified" value="modified" $self.getSelectedOpt("dateCreatedModified","modified", "checked='checked'")/>Modified</label><br>
+			<label>Show
+			<select name="showOption">
+				<option value="" $self.getSelectedOpt("showOption","all", "selected")>All records</option>
+				<option value="published" $self.getSelectedOpt("showOption","published", "selected")>Published records</option>
+			</select>
+			</label>
+		</fieldset>
+		<label>Report Name: <input id="reportLabel" type="text" name="reportLabel" value="$self.getReportLabel()"/></label><br>
+		<input type="submit" name="save" value="Save and Run" onclick="return preSave()"/>
+		<input type="button" name="clear" value="Clear" onclick="window.location.reload()"/>
+		#if($self.getIsNew())
+		<input type="hidden" name="isNew" value="newreport" />
+		#else
+		<input type="button" name="clear" value="CSV Export" onclick="window.location.assign('$portalPath/report/statisticalReports?format=csv&reportName=$self.getReportName()')"/>
+		<input type="hidden" name="reportName" value="$self.getReportName()" />
+		#end
+	</form>
+	<style type="text/css"> table.demo td {width:200em;} table.demo {margin-top:20px;} </style>
+#if(!$self.getIsNew())
+<div id='redbox'>
+	<table class="demo">
+		<tr>
+			<th>REDBOX System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		#foreach($field in $self.getResultFields())
+			#if($self.isHeader($field))
+				#set($label = $self.getHeaderText($field))
+    			#set($value = "&nbsp;")
+			#else
+    			#set($label = $self.getStatsLabel($field, "redbox-all"))
+    			#set($value = $self.getStatsCount($field, "redbox-all"))
+			#end
+			<tr>			
+    			<td> $label </td>
+    			<td> $value </td>
+    		</tr>
+		#end
+</table>
+</div>
+<div id='mint'>
+	<table class="demo">
+		<tr>
+			<th>MINT System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		#foreach($field in $self.getMintResultFields())
+			#if($self.isHeader($field))
+				#set($label = $self.getHeaderText($field))
+    			#set($value = "&nbsp;")
+				<tr>			
+            		<td>$self.getHeaderText($field)</td>
+            		<td> &nbsp; </td>
+    			</tr>
+			#else
+				#if ($self.isGroupField($field))
+					<tr>			
+            			<td> $self.getStatsLabel($field, "mint-all")</td>
+            			<td> &nbsp; </td>
+    				</tr>
+					#foreach ($groupField in $self.getGroupFields($field, "mint-all"))
+						#set($label = $self.getGroupLabel($groupField, $field))
+						#set($value = $self.getGfStatsCount($groupField, $field, "mint-all"))
+						<tr>			
+                			<td> $label </td>
+                			<td> $value </td>
+						</tr>
+					#end
+				#else
+					#set($label = $self.getStatsLabel($field, "mint-all"))
+					#set($value = $self.getStatsCount($field, "mint-all"))
+					<tr>			
+            			<td> $label </td>
+            			<td> $value </td>
+            		</tr>
+				#end
+			#end
+		#end
+</table>
+</div>
+#end
+</section>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		  $(".datepicker").datepicker({
+		         dateFormat: "d/m/yy", 
+		         changeMonth: true, 
+		         changeYear: true, 
+		         showButtonPanel: false
+		     });
+		});  	
+				          
+   /** commented out - jaffa validation             
+          var jaffa = jaffaFactory({
+        debuggingEnabled: true,
+        formSelector: "#reportForm",        
+        callbackPreSave: preSave
+    });
+    
+    jaffa.form.addField("dateFrom","dateFrom");
+    jaffa.form.addField("dateTo","dateTo");
+    jaffa.form.addField("reportName","reportName");
+    
+    jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
+    */	    
+    function preSave() {
+		$("#errorbox-list").empty();
+		var testsfailed = ["required"];
+		var validDateFrom = validate("dateFrom", testsfailed);
+		var validDateTo = validate("dateTo", testsfailed);
+		var validLabel = validate("reportLabel" , testsfailed); 
+    	return  validDateFrom && validDateTo && validLabel; 				
+    }
+    
+	function validate(id, testsFailed) {		
+		var inputval = $("#"+id).val();		
+		if (inputval == null || jQuery.trim(inputval) == "") {
+			validationFail(id, testsFailed);
+			return false;
+		}		
+		return true;
+	}
+    function focus(elementId) {
+		$("[id='"+elementId+"']").focus();
+	}
+    
+    function validationFail(fieldId, testsFailed) {
+    $(".errorbox").show();
+    if (fieldId == "dateFrom") {
+        if (jQuery.inArray("required", testsFailed) != -1) {
+            $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
+        }
+    }
+    if (fieldId == "dateTo") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+        	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateTo-errorButton").click(function() { focus("dateTo");});
+        }
+    }
+    if (fieldId == "reportLabel") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportLabel-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#reportLabel-errorButton").click(function() { focus("reportLabel");});
+            
+        }
+    }
+    
+}
+
+
+	</script>	
+#else
+	#set($pageTitle = "Reporting error")
+	<h2 id="page-heading"><span>Reporting error</span></h2>
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<div class="grid_16">	
+	$self.getErrorMsg()</div>
+#end

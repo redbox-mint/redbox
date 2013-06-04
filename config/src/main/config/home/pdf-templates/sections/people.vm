@@ -1,0 +1,76 @@
+#macro(displayPerson $key $name)
+	<tr>
+    <td>$name</td>
+    <td>
+    	#set($title = $util.get($item,"$key:title"))
+		#set($givenName = $util.get($item,"$key:givenName"))
+		#set($familyName = $util.get($item,"$key:familyName"))
+		#set($email = $util.get($item,"$key:email"))
+    #if ($familyName)
+    	$!title $!givenName $familyName 
+    	#if ("$!email" != "") [ $email ] #end
+    #else	
+		#noInformation()
+    #end
+    </td>
+    </tr>
+#end
+
+#macro(missing $value)
+<i>{missing: "$value" }</i>
+#end
+
+#macro(displayKey $map $key $required)
+#set ($value = $map.get($key))
+#if ("$!value" != "")
+$value
+#else
+    #if ($required)
+#missing($key)
+    #end
+#end
+#end
+
+#macro(displayOptionalKey $map $key)
+	#if ($key == "person.foaf:email")
+		[ #displayKey($map $key false) ]
+	#else
+		#displayKey($map $key false)
+	#end
+#end
+
+#macro(displayRequiredKey $map $key)
+#displayKey($map $key true)
+#end
+
+<section>
+<h1>People</h1>
+    <table id="people">
+    #displayPerson("locrel:rth.foaf:Person.foaf" "Principal investigator (*)")
+    #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager (*)")
+    <tr>
+    #set($personList = $util.getList($item, "locrel:clb.foaf:Person"))
+    <td>Collaborators</td>
+    #if ($personList.size() > 0)
+        <td>
+    	<ol>
+    	#foreach($key in $personList.keySet())
+        	#set($person = $personList.get($key))
+        	<li>
+            	#displayOptionalKey($person "person.foaf:title")
+            	#displayRequiredKey($person "person.foaf:givenName")
+            	#displayRequiredKey($person "person.foaf:familyName")
+            	#displayOptionalKey($person "person.foaf:email")
+            </li>
+        #end
+        </ol>
+        </td>
+    #else
+        <td> #noInformation() </td>
+    #end
+    </tr>
+    
+    #displayPerson("swrc:supervisor.foaf:Person.foaf" "Supervisor")
+	</table>
+</section>
+<hr />

@@ -1,7 +1,7 @@
 <h3><a href="#people">People</a></h3>
 <div id="people" class="inputscreen nameLookup-section">
-    <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
-    <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet?ns=NLA_SRU&qs={searchTerms}" />
+    <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet.script?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
+    <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
     #fieldTitle("dc:creator" "Creators" true)
@@ -73,11 +73,12 @@
                             </tr>
                             <tr>
                                 <td colspan="6">
-                                    <label class="validation-err-msg"
+                                    <label class="validation-err-msg"				
+										id="dc:creator.foaf:Person.0.foaf:givenNameErrMsg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(blur,change,submit);
                                                                 jsTest(
-                                                                    var fid, gid, f, g;
+                                                                    var fid, gid, f, g, lid;
                                                                     fid=id.replace('given', 'family');
                                                                     gid=id.replace('family', 'given');
                                                                     f=ctx.find('input[id='+fid+']').val();
@@ -85,6 +86,7 @@
                                                                     f=jQ.trim(f); g=jQ.trim(g);
                                                                     r=(g=='')&&(f=='');
                                                                     id=gid;
+																	lid=id+'ErrMsg';
                                                                 );
                                                                 liveFor(.creatorName);">
                                         A creator's given name or family name is required!
@@ -98,7 +100,7 @@
                                 <td colspan="3">
                                     <span class="data-source-drop-down"
                                           data-delay="1"
-                                          data-json-source-url="$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
+                                          data-json-source-url="$portalPath/proxyGet.script?ns=Parties_Groups&qs=count%3D9999"
                                           data-id-key="dc:identifier"
                                           data-label-key="rdfs:label"
                                           data-list-key="results">

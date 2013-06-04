@@ -1,0 +1,89 @@
+#if($self.getErrorMsg()=="")
+#set($pageTitle = "Report dashboard")
+#set($portalPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
+<link rel="stylesheet" type="text/css" media="print" href="$portalPath/css/dashboard-print.css" />
+<h2 id="page-heading"><span>Admin dashboard</span>
+            <span class="helpWidget" data-help-content-id="help-dashboard">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-dashboard").toggle();'/>
+            </span>
+        </h2>
+        <div class="help-content" id="help-dashboard" style="display: none;">
+            <p>The Dashboard Report provides a static visual display of ReDBox metadata records for high
+    level reporting. When the Dashboard is selected it will automatically display a default date
+    range of <i>year to date</i> for the current year. Users can edit the <i>date range from</i> and <i>date
+    range to</i> entry fields to generate a customised report by date, where data is available across
+    the selected data range.</p>
+
+    <p>The four graphs presented in the Dashboard are:</p>
+    <ul>
+        <li><i>Records by Workflow Stage</i>: displays the total number of ReDBox records for a given
+        date range, by workflow stage.</li>
+        <li><i>Record Type by Workflow Stage</i>: displays the total number of ReDBox records, by
+        record Collection type (rif-cs schema) for each workflow stage.</li>
+        <li><i>Records Published by Month</i>: displays the total number of ReDBox records,
+        published in each month across a specified date range.</li>
+        <li><i>Published Records by Record Type</i>: displays the total number of ReDBox records, by
+        record Collection type (rif-cs schema), published.</li>
+    </ul>
+    <p>Users can customize a report title by entering a new title or editing the existing report
+    title. The report title will be updated to reflect the new information when the user hits the
+    <i>enter<i> key or <i>clicks</i> anywhere on the screen outside of the report title field. The report can
+    be printed or saved as PDF and can also be exported as a CSV file to provide a numerical
+    representation of the visual display.</p>
+        </div>
+<div>
+	<div id="reportDashboardForm">
+	<div>
+		<form action="dashboard?action=export&format=csv&$self.getDateRange()" method="POST" >
+        <span>Date Range		
+			<label for="dateFrom">From</label>
+            <input type="text" placeholder="Start Date" id="dateFrom" name="dateFrom" value="$self.getFromDt()" onchange="updateChart('#dateTo')(this.value, $('#dateFrom'))"/>			
+            <label for="dateTo">To</label>
+            <input type="text" placeholder="End Date" id="dateTo" name="dateTo" value="$self.getToDt()" onchange="updateChart('#dateFrom')(this.value, $('#dateTo'))"/>
+			<label for="reportName">Report Name</label>
+			<input type="text" placeholder="Report Name" id="reportName" name="reportName" value="$self.getReportName()" />
+			<input type="submit" value="Export as CSV" />			
+		</span>		
+		</form>
+	</div>
+	<div style="width:50%;margin:0px auto 0px auto;">
+		<span class='validation-err-msg' style='visibility:hidden'>
+			Invalid date range
+		</span>
+	</div>
+	</div>
+	<div class="reportImages">
+	<h1 id="reportTitle" style="text-align:center">$self.getReportName()</h1>
+		<div class="report-img">
+			<img class="reportDashboardChart" src="chart?chartName=records-by-stage-1&$self.getDateRange()" />
+		</div>
+		<div class="report-img">
+			<img class="reportDashboardChart" src="chart?chartName=records-by-stage-2&$self.getDateRange()" />
+		</div>		
+	</div>
+	<div class="reportImages">
+		<div class="report-img">
+			<img class="reportDashboardChart" src="chart?chartName=records-by-month-1&$self.getDateRange()" />
+		</div>
+		<div class="report-img">
+			<img class="reportDashboardChart" src="chart?chartName=records-by-month-2&$self.getDateRange()" />
+		</div>		
+	</div>
+	<script type="text/javascript" src="$portalPath/js/reportdashboard.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#reportName").blur(function() {$("#reportTitle").text($(this).val());});
+		$("#reportName").keypress(function(event) {
+ 				 if ( event.which == 13 ) {
+     					$("#reportTitle").text($(this).val());
+     					return false;
+  			 } 
+  		});
+	}); 
+	</script>
+#else
+	<span>$self.getErrorMsg()</span>
+#end
+</div>
+
+

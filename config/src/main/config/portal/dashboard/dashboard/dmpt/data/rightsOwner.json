@@ -1,0 +1,15 @@
+[
+    {
+        "value":"myUni",
+        "label":"My University"
+    },
+    {
+        "value":"myUnjount",
+        "label":"My University (joint ownership)"
+    },
+    {
+        "value":"student",
+        "label":"Higher Degree Research Student"
+    }
+    
+]

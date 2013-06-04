@@ -1,0 +1,54 @@
+## Introduce jaffa to dashboard
+<script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+
+#if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
+#set($pageTitle = "Home")
+
+<h2 id="page-heading">
+  <span>#displayMessage("researcher-dashboard.home.title")</span>
+</h2>
+
+#parseTemplate("form-components/access-control.vm")
+<script>
+jQuery(document).ready(function prepareHelps() {
+	var help_contents = $('.pre-help-content');
+	for (var i = 0; i < help_contents.length; i++ ) {
+		$(help_contents[i]).hide().attr("class","help-content");
+		var helpToggleHtml = "<button class=\"jaffaHelpToggle\"></button>";
+	    helpToggle = $(helpToggleHtml);
+	    helpToggle.button({icons: {primary:'ui-icon-help'}});
+
+	    // Setup click logic
+	    helpToggle.click(function(){$(this).next().toggle('fast');});
+
+	    // And attach to our container
+	    helpToggle.insertBefore(help_contents[i]);	
+	}
+});
+</script>
+
+#parseTemplate("menus/home-main-menu.vm")
+    <div class="grid_12">
+       #parseTemplate("home/dmpt/myplans.vm")
+       ## Below section is treated differently to myplans.vm because it has to be reused in other parts and there is no easy way to do it.
+       #set($menuTitle = "#displayMessage('researcher-dashboard.home.mydatasets.title')")
+       #parseTemplate("wrapping/info-box-open.vm")
+       #parseTemplate("home/dmpt/mydatasets.vm")
+       #parseTemplate("wrapping/info-box-close.vm")
+
+    </div>
+    <div class="clear"></div>
+#elseif(!$page.authentication.is_logged_in())
+ ##prompt user to login
+ <script type="text/javascript">
+ 	$(document).ready(function() {$(".login-now").click();});
+ </script>
+#end

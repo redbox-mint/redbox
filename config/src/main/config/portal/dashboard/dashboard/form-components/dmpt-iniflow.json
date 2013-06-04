@@ -1,0 +1,25 @@
+{
+    "steps": {
+        "Welcome": {
+            "Next": "Overview"
+        },
+        "Overview": {
+            "Next": "People"
+        },
+        "People": {
+            "Next": "dataStorage",
+            "Back": "Overview"
+        },
+        "dataStorage": {
+        	"Back": "People",
+            "Next": "EthicsSensitivities"
+        },
+        "EthicsSensitivities": {
+        	"Back": "People",
+            "Next": "Ownership"
+        },
+        "Ownership": {
+            "Back": "EthicsSensitivities"
+        }
+    }
+}

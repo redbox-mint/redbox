@@ -1,0 +1,102 @@
+#macro(displayList $listName $label)
+    <dt>$label</dt>
+	#set($items = $metadata.getList("$listName"))
+    <dd>
+    #if ($items && $items.size() > 0)
+		#set($i = 0)
+#foreach($item in $items)
+#if($i > 0),#else #set($i = 1) #end	$item#end
+    #else
+		#noInformation()
+    </dd>
+    #end
+#end
+
+#macro(getValue $key)
+    #set($v = $metadata.get("$key"))
+    #if ($v && "$!v" != "")
+		$page.escapeHtml($v)
+    #else
+		#noInformation()
+    #end
+#end
+
+#macro(getList $listName)
+	#set($items = $metadata.getList("$listName"))
+    #if ($items && $items.size() > 0)
+		#set($i = 0)
+#foreach($item in $items)
+#if($i > 0),#else #set($i = 1) #end	$page.escapeHtml($item)#end
+    #else
+		#noInformation()
+	#end	
+#end
+
+#macro(displayRow $key $name $type)
+	<tr>
+    <td>$name</td>
+    <td>#if ( $type == "list" ) #getList($key) #else #getValue($key) #end </td>
+    </tr>
+#end
+
+## display a list in a row 
+#macro(displayRowList $label $baseKey $subKey)
+<tr>
+<td>$label</td>
+<td>
+#set($forList = $self.getList("$baseKey"))
+#if ($forList.isEmpty())
+#noInformation()
+#else
+	#set($i = 0)
+#foreach($key in $forList.keySet())
+#set($item = $forList.get($key))
+#if($i > 0), #else #set($i = 1) #end $item.get("$subKey")#end
+#end
+</td>
+</tr>
+#end
+#macro(displayMintLabelByLookup $key $name $urlName, $resKey, $valKey)
+	<tr>
+    <td>$name</td>
+	#set($label= $self.getMintLabelByLookup($urlName, $key, $resKey, $valKey))
+    <td>
+		#if($label)
+			$label.get(0)
+		#else
+			#noInformation()
+		#end
+	</td>
+    </tr>
+#end
+<style>
+	#pdf-like a { text-decoration: underline; }
+	#pdf-like td:first-child { width: 17em; }
+</style>
+<section>
+	<h1>#displayMessage("self-submission.heading.label.overview")</h1>
+    <table id="pdf-like">
+        #displayRow("dc:title" "#displayMessage('self-submission.field.label.dc-title')")
+        #displayRow("dc:type.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-type')")
+        #displayRow("dc:extent" "#displayMessage('self-submission.field.label.dc-extent')")
+        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.foaf-Agent')" "foaf:fundedBy.foaf:Agent" "skos:prefLabel")
+        #displayRowList("#displayMessage('dmpt.field.label.foaf-fundedBy.vivo-Grant')" "foaf:fundedBy.vivo:Grant" "redbox:grantNumber")
+        #displayRow("dc:language.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-language')")        
+		##displayMintLabelByLookup("dc:language.dc:identifier" "#displayMessage('self-submission.field.label.dc-language')" "Languages" "results" "dc:title") 
+        #displayRow("self-submission.field.dc-identifier.redboxdmpt-doirequest.1" "#displayMessage('self-submission.field.label.dc-identifier.redboxdmpt-doirequest')")
+        #displayRow("dc:identifier.rdf:PlainLiteral" "#displayMessage('self-submission.field.label.dc-identifier.rdf-PlainLiteral')")
+        #displayRow("vivo:Location.vivo:GeographicLocation.gn:name" "#displayMessage('self-submission.heading.label.location')")
+		#displayRowList("#displayMessage('self-submission.field.label.bibo-Website')" "bibo:Website" "dc:identifier")
+		#set($v = $metadata.get("redbox:ManagementPlan.oid"))
+	    #if ($v && "$!v" != "")
+			<tr>
+		    <td>#displayMessage('self-submission.field.label.redbox-ManagementPlan.skos-note')</td>
+		    <!-- <a href="$portalPath/detail/$v">#displayMessage('self-submission.text.redbox-ManagementPlan.link')</a> -->
+		    #set($plan_name = $metadata.get('redbox:ManagementPlan.skos:note'))
+		    <td><a href="$portalPath/detail/$v">$!plan_name</a></td>
+		    </tr>
+	    #end
+    </table>
+    <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
+	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
+</section>

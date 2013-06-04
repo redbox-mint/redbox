@@ -1,0 +1,30 @@
+<span id='repeated-$fieldName'></span>
+        
+<script>
+var widgetListBranding = {
+    "":"control-group",
+    ".jaffaValidationError":["alert", "alert-error"]
+};
+
+$(document).ready(function() {
+			var config= {};
+    		config["field"] = "";
+    		config["json-data-url"] = '$portalPath/$sourceUrl';    		
+    		$("[id='repeated-$fieldName']").jaffaAnzsrcSelectionRepeatable({
+										"disable-numbers":true,
+										"disable-sorting":true,
+										"base-field":"$fieldName",
+										"sub-fields": {
+														"field":""
+											},
+										"add-item-text":"Add another code",
+										"delete-item-html":"<button class='anzsrcSelection'>Remove</button>",
+										"min-size":1,
+										"child-config":config
+	
+										});
+				 
+   
+});
+
+</script>

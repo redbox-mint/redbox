@@ -1,0 +1,57 @@
+<div id="repeat-textbox-of-$field-name">
+<p></p>
+</div>
+#if ($help)
+		<div id="${field-name}-help" class="help-content">#displayMessage($help)</div>
+#end
+
+<script>
+var widgetListBranding = {
+	"" : "control-group",
+	".jaffaValidationError" : ["alert", "alert-error"]
+};
+$(document).ready(function() {
+$("$[id='{field-name}-selectedGrantNumber']").change(function() { });
+$("[id='repeat-textbox-of-$field-name']").jaffaGrantRepeatable({
+	"disable-numbers":true,
+	"disable-sorting":true,
+	"base-field":"$field-name",
+	"sub-fields": {
+		"field":"",
+		
+	},
+	"add-item-text":"Add",
+	"delete-item-html":"<button>Remove</button>",
+	"min-size":1,
+	"child-config":{
+		"label":"#displayMessage($label)",
+		"field":"",
+		"lookup-data":"$portalPath/proxyGet?ns=Activities&fields=grant_number,dc:title,repository_name,dc:identifier&jaffa2autocomplete=true",
+    "lookup-request": {
+        "data-type": "json",
+        "term-field": "qs",
+        "term-quote": false
+    },
+    "lookup-parser": {
+        "results-path": ["results"],
+        "fields": {
+            "name": ["rdfs\:label"],
+            "identifier": ["dc\:identifier"],
+            "repoName": ["result-metadata","all","repository_name"],
+            "grantNumber": ["grant_number"]
+        },
+        "outputs": {
+            "label": "[${grantNumber}] (${repoName}) ${name}",
+            "value": "${grantNumber}",
+            "[id='${field-name}-selectedGrantNumber']": "${grantNumber}",
+            
+        }
+        }
+	},
+	"class-list":widgetListBranding,
+	#if ($help)
+	"help-content": "[id='${field-name}-help']"
+	#end
+});});
+
+</script>

@@ -1,0 +1,218 @@
+#macro(sectionHeading $heading)
+<span class="accordion-header">$heading</span>
+#end
+#macro(noInformation)
+<i>Not provided</i>
+#end
+#macro(display $key $name)
+    <dt>$name</dt>
+    #set($v = $metadata.get("$key"))
+    <dd>
+    #if ($v)
+		$page.escapeHtml($!v)
+    #else
+		#noInformation()
+    </dd>
+    #end
+#end
+#macro(displayLabel $key $name $labelFile)
+    <dt>$name: </dt>
+    #set($v= $self.getLabel($labelFile, $key))
+    <dd>
+    #if($v && ("$!v" != ""))
+		$v
+    #else
+		#noInformation()	         
+    #end
+    </dd>
+#end
+#macro(displayMintLabels $key $name $urlName, $suffix)
+    <dt>$name: </dt>
+    #set($labels= $self.getMintLabels($urlName, $key, $suffix))	
+	#if($labels)
+    	#foreach($v in $labels)			
+            #if($v && ("$!v" != ""))
+				<dd>
+					$v
+				</dd>
+    		#end
+    	#end
+	#else
+		<dd>
+		#noInformation()
+		</dd>
+	#end
+#end
+<script>
+function manage_access(e) {
+	$("#dialog-form").dialog("open");
+}
+</script>
+<div>
+    #set($oid = $metadata.get("id"))
+    #parseDisplayTemplate("detail/preview/sections/overview.vm")
+    
+	<div style="text-align:center">
+	#set($hasPlanPDF = $self.hasPlanPDF())
+	#if ($self.getObjectMetaProperty('generatePDF'))
+		#if($hasPlanPDF)
+			<p class="loading-data">#displayMessage('dmpt.text.pdfIsGenerating')</p>
+		#else
+			<p class="loading-data">#displayMessage('dmpt.text.1stPDFIsGenerating')</p>
+		#end
+	#elseif($hasPlanPDF)
+		<a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf">
+			Download a PDF of this plan <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20">
+		</a>
+		#set($pdfs = $self.getPlanVersions()) 
+		#if ($pdfs.size() > 0) <br>
+		<a href="#" onclick="$('#plan-versions').toggle(); return false;">Previous versions</a>
+		<div id="plan-versions" style="display:none">
+			<ol>
+				 #foreach($item in $pdfs.descendingKeySet())
+				<li><a target="_blank" href="$portalPath/download/$oid/$pdfs.get($item)">$item <img alt="Get PDF" src="$portalPath/images/icons/mimetype/application/pdf/icon.png" height="20" width="20">
+				</a>
+				</li>
+				 #end
+			</ol>
+		</div>
+		 #end
+	#else	
+		<p class="loading-data">#displayMessage('dmpt.text.noPDF')</p>
+	#end
+	</div>
+    <table>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataStructure">#displayMessage('dmpt.heading.dataCollection')</a></td><td>#if($self.getObjectMetaProperty("dataStructureComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataAccess">#displayMessage('dmpt.heading.dataLicensing')</a></td><td>#if($self.getObjectMetaProperty("dataAccessComplete") == true)Completed #else Not completed #end</td></tr>
+    <tr><td><a href="$portalPath/workflow/$oid?flow=dataRetention">#displayMessage('dmpt.heading.dataRetention')</a></td><td>#if($self.getObjectMetaProperty("dataRetentionComplete") == true)Completed #else Not completed #end</td></tr>
+    </table>
+    <p>You can add information to your plan to assist us in working with you to manage your research data.</p>
+</div>
+
+<div id="toggle-accordion" class="toggle-accordion">
+    <span id="toggle-accordion-icon" class="ui-icon ui-icon-triangle-1-e"></span>
+    <span id="toggle-accordion-text">Show all sections</span>
+</div>
+<div class="accordion">
+    #parseDisplayTemplate("detail/preview/sections/people.vm")
+    #parseDisplayTemplate("detail/preview/sections/data-storage.vm")
+    #parseDisplayTemplate("detail/preview/sections/ethics-sensitivities.vm")
+    #parseDisplayTemplate("detail/preview/sections/ownership.vm")
+    #parseDisplayTemplate("detail/preview/sections/data-strucure.vm")
+    #parseDisplayTemplate("detail/preview/sections/licensing-access.vm")
+    #parseDisplayTemplate("detail/preview/sections/retention-disposal.vm")
+</div>
+
+<script type="text/javascript">
+$(function(){
+    function addAccordion() {
+        $(".accordion").accordion({
+            autoHeight:false,
+            clearStyle:true,
+            collapsible:false,
+            header:".accordion-header"
+        });
+    }
+    $("#toggle-accordion").click(function(){
+        if ($(".ui-accordion").length > 0) {
+            $(".accordion").fadeOut(function(){
+                $(this).accordion("destroy");
+                $(".accordion-header").each(function() {
+                    $(this).addClass("accordion-reset");
+                });
+                $(this).fadeIn();
+            });
+            $("#toggle-accordion-text").text("Show sections individually");
+        } else {
+            $(".accordion").fadeOut(function(){
+                addAccordion();
+                $(".accordion-header").each(function() {
+                    $(this).removeClass("accordion-reset");
+                });
+                $(this).fadeIn();
+            });
+            $("#toggle-accordion-text").text("Show all sections");
+        }
+        $("#toggle-accordion-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s");
+        return false;
+    });
+    addAccordion();
+});
+</script>
+
+<div class="article">
+<h1 style="margin-top:1.5em">Data Sets</h1>
+#parseTemplate("home/dmpt/mydatasets.vm")
+<p style="margin-bottom: 0px;">
+Add more dataset:
+	<a id='create-selfsubmission' href='#'><img src="$portalPath/images/icons/package_add.png" alt="Create a dataset based on this plan"/></a>
+</p>
+
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    
+	$(document).ready(function() {
+		$('#create-selfsubmission').click(function () {
+			var processing = false;
+        	if (processing) return;
+        	processing = true;
+        	jQuery("#create-selfsubmission").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        	jQuery.ajax({
+            	type: "POST",
+            	url: "$portalPath/actions/packaging.ajax",
+            	data: {
+                	ajax: 1,
+                	func: "create-new",
+                	packageType: "self-submission",
+                	metaList: ["redbox:newForm", "redbox:formVersion"],
+                	"redbox:newForm": "true",
+                	"redbox:formVersion": "$systemConfig.getString("Unknown", "redbox.version.string")"
+            	}, success: function(data) {
+                if (data.status == "ok") {
+                    function copyMetadata() {
+                    	var oid = "$metadata.get('storage_id')";
+                    	jQuery.ajax({
+			            	type: "POST",
+			            	url: "$portalPath/copyTfPackage.ajax",
+			            	data: {
+			                	ajax: 1,
+			                	fromOid: oid,
+			                	toOid: data.oid,
+			                	tfMetaPropertyValue: "dmpToSelfSub"
+			            	}, 
+			            	success: function(data) {
+			            		if (data.status == "ok") {
+				                    function redirect() {
+				                        window.location.href = data.url;
+				                    }
+				                    setTimeout(redirect, 1500);
+				                } else {
+				                    alert("Failed to transfer record! " + data.message);
+				                }
+			            	},
+			            	error:  function(xhr, status, e) {
+			                		alert("Failed to complete transferring record!"); 
+			           		 },
+			            	dataType: "json"
+			        		});
+                    }
+                    setTimeout(copyMetadata, 1500);
+                } else {
+                    alert("Failed to create record!");
+                }
+            },
+            error: function(xhr, status, e) {
+                alert("Failed to complete creating record!");
+            },
+            dataType: "json"
+        });
+        	return false;
+		});
+	
+	
+	});
+</script>
+
+<div class="clear"></div>

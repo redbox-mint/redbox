@@ -1,0 +1,18 @@
+[
+    {
+        "value": "pure",
+        "label": "Pure basic research"
+    },
+    {
+        "value": "strategic",
+        "label": "Strategic basic research"
+    },
+    {
+        "value": "applied",
+        "label": "Applied research"
+    },
+    {
+        "value": "experimental",
+        "label": "Experimental development"
+    }
+]

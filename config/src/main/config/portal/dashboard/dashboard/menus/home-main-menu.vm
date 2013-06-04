@@ -1,0 +1,91 @@
+#if($page.authentication.is_logged_in() && $page.authentication.has_role('researcher'))
+<div class="grid_4">
+    #set($menuTitle = "#displayMessage('researcher-dashboard.home.menu.title')")
+    #parseTemplate("wrapping/main-menu-open.vm")
+    <ul class="menu">
+        <li>
+            <a id="new-dmpt" href="#" title="New plan">#displayMessage("researcher-dashboard.home.menu.newplan")</a>
+            <a id="new-dataset" href="#" title="New dataset">#displayMessage("researcher-dashboard.home.menu.newdataset")</a>
+        </li>
+    </ul>
+    #parseTemplate("wrapping/main-menu-close.vm")
+</div>
+<script type="text/javascript">
+$(function() {
+    var jQ = $;
+    var processing = false;
+    jQ("#new-dataset").click(function() {
+        if (processing) return;
+        processing = true;
+        jQ("#new-dataset").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        jQ.ajax({
+            type: "POST",
+            url: "$portalPath/actions/packaging.ajax",
+            data: {
+                ajax: 1,
+                func: "create-new",
+                packageType: "self-submission",
+                metaList: ["title", "description", "redbox:newForm", "redbox:formVersion"],
+                title: "[Untitled]",
+                description: "",
+                "redbox:newForm": "true",
+                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")"
+            },
+            success: function(data) {
+                if (data.status == "ok") {
+                    function redirect() {
+                        window.location.href = data.url;
+                    }
+                    setTimeout(redirect, 1500);
+                } else {
+                    alert("#displayMessage('error-record-create-failed')");
+                }
+            },
+            error: function(xhr, status, e) {
+                alert("#displayMessage('error-record-create-failed')");
+            },
+            dataType: "json"
+        });
+        return false;
+    });
+    
+    jQ("#new-dmpt").click(function() {
+        if (processing) return;
+        processing = true;
+        jQ("#new-dmpt").append('<img class="right" src="$portalPath/images/icons/loading.gif" />');
+        jQ.ajax({
+            type: "POST",
+            url: "$portalPath/actions/packaging.ajax",
+            data: {
+                ajax: 1,
+                func: "create-new",
+                packageType: "dmpt",
+                metaList: ["title", "dc:description", "redbox:newForm", "redbox:formVersion","project.name"],
+                title: "[Untitled]",
+                description: "",
+                "project.name": "New Project",
+                "redbox:newForm": "true",
+                "redbox:formVersion": "$systemConfig.getString("", "redbox.version.string")",
+				"access_plugin":"derby"
+            },
+            success: function(data) {
+                if (data.status == "ok") {
+                    function redirect() {
+                        window.location.href = data.url;
+                    }
+                    setTimeout(redirect, 1500);
+                } else {
+                    alert("#displayMessage('error-record-create-failed')");
+                }
+            },
+            error: function(xhr, status, e) {
+                alert("#displayMessage('error-record-create-failed')");
+            },
+            dataType: "json"
+        });
+        return false;
+    });
+});
+
+</script>
+#end

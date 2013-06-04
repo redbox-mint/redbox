@@ -1,0 +1,125 @@
+#if($self.getErrorMsg()=="")
+	<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/myJaffa.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets/container.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
+    <script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
+	<div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	<section>
+		<h1>Statistical Report</h1>
+	<form method="post" action="$portalPath/report/statisticalReportResult" onsubmit="preSave()">
+		<div class="errorbox">
+    		#displayMessage("reports.create.report.validation.message")
+    		<ul id="errorbox-list">
+    		<ul>
+    	</div>
+		<fieldset style="margin-top:20px;">
+			<legend>Date Range</legend>
+			<label style="margin-right:7px;">From</label>
+			<input name="dateFrom" type="text" class="datepicker" value="$self.getReportFilter('dateFrom')" /> 
+			<label>To<input name="dateTo" type="text" class="datepicker" value="$self.getReportFilter('dateTo')"/></label><br>
+			<label>Date</label>
+			<label><input type="radio" name="dateCreatedModified" value="created" $self.getSelectedOpt("dateCreatedModified","created", "checked='checked'") />Created</label>
+			<label><input type="radio" name="dateCreatedModified" value="modified" $self.getSelectedOpt("dateCreatedModified","modified", "checked='checked'")/>Modified</label><br>
+			<label>Show
+			<select name="showOption">
+				<option value="all" $self.getSelectedOpt("showOption","all", "selected")>All records</option>
+				<option value="published" $self.getSelectedOpt("showOption","published", "selected")>Published records</option>
+			</select>
+			</label>
+			<label>Report Name: <input type="text" name="reportName" value="$self.getReport().getLabel()"/></label><br>
+		</fieldset>
+		<input type="submit" name="submit" value="Save and Run"/>
+		<input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/>
+		<input type="submit" name="clear" value="CSV Export"/>
+	</form>
+	<style type="text/css"> table.demo td {width:200em;} table.demo {margin-top:20px;} </style>
+<div id='redbox'>
+	<table class="demo">
+		<tr>
+			<th>REDBOX System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		#foreach($field in $self.getResultFields())
+			<!-- $field -->
+			#set($label = $self.getRedboxStatsLabel($field))
+			#set($value = $self.getRedboxStatsCount($field))
+		<tr>			
+			<td> $label </td>
+			<td> $value </td>
+		</tr>	
+		#end
+</table>
+</div>		
+<div id='mint'>
+	<table class="demo">
+		<tr>
+			<th>MINT System Statistical Report</th>
+			<th>Count</th>
+		</tr>
+		<tr>
+			<td>Total</td>
+			<td>100</td>
+		</tr>
+		<tr>
+			<td>Party</td>
+			<td>100</td>
+		</tr>
+		<tr>
+			<td>(Party type) Person</td>
+			<td>100</td>
+		</tr>
+</table>
+</div>		
+	</section>
+	<script type="text/javascript">
+		 $(function() {$( ".datepicker" ).datepicker();});		
+		 
+          var jaffa = jaffaFactory({
+                debuggingEnabled: true
+            });
+		jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
+        jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
+        jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
+        
+        
+        function preSave() {
+        	return jaffa.valid.okToSave();
+        }
+		
+		function validationFail(fieldId, testsFailed) {
+            $(".errorbox").show();
+            if (fieldId == "dateFrom") {
+                if (jQuery.inArray("required", testsFailed) != -1) {
+                    $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+                    $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
+                }
+            }
+            if (fieldId == "dateTo") {
+                 if (jQuery.inArray("required", testsFailed) != -1) {
+                	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+                    $("#dateTo-errorButton").click(function() { focus("dateTo");});
+                }
+            }
+            if (fieldId == "reportName") {
+                 if (jQuery.inArray("required", testsFailed) != -1) {
+                 	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportName-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+                    $("#reportName-errorButton").click(function() { focus("reportName");});
+                    
+                }
+           	}
+		}
+	</script>
+#else
+	<div>$self.getErrorMsg()</div>
+#end

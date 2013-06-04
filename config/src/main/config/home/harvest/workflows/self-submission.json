@@ -1,0 +1,59 @@
+{
+    "presentation-settings": {
+       "hide-funding-body-label" : "false"
+     },
+    "harvester": {
+        "type": "workflow-harvester",
+        "workflow-harvester": {
+            "force-storage": "true"
+        }
+    },
+    "workflow-id":"self-submission",
+    "page-title": "New Research Data",
+    "default-owner":"admin",    
+    "transformer": {
+        "curation": ["local"],
+        "metadata": ["dmpToSelfSub"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
+    },
+	"display-type":"package-self-submission",
+    "transformerOverrides": {
+        "local": {
+            "template": "${server.url.base}published/detail/[[OID]]"
+        }
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "simpleworkflow-rules.py"
+        },
+        "params": {
+            "repository.name": "ReDBox",
+            "repository.type": "Data Management Portal"
+        }
+    },
+	"form-configuration": "form-configuration/self-submissionform.json",
+    "stages": [
+        {
+            "name": "self-submission-draft",
+            "label": "Researcher dataset - Draft",
+            "description": "Potential records for investigation.",
+            "owner_edit_allowed": "true",	
+            "security": ["admin"],
+            "visibility": ["admin"],
+            "actions" :[ { "action-name" : "next",
+                           "target-step" : "self-submission-submitted" }]
+        },
+        {
+            "name": "self-submission-submitted",
+            "label": "Researcher dataset - Submitted",
+            "description": "Records for review",
+            "security": ["admin"],
+            "visibility": ["admin"],
+            "template": "workflows/simpleworkflow"
+        }	
+    ]
+}

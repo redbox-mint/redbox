@@ -1,0 +1,9 @@
+#sectionHeading("#displayMessage('self-submission.heading.label.subject')")
+<div class="meta">
+    <dl>        
+		#display("dc:subject.anzsrc:toa.skos:prefLabel" "#displayMessage('self-submission.field.label.dc-subject.anzsrc-toa')")
+		#displayArrayList("#displayMessage('self-submission.field.label.dc-subject.anzsrc-for')" "dc:subject.anzsrc:for" "skos:prefLabel")
+        #displayArrayList("#displayMessage('self-submission.field.label.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo" "skos:prefLabel")        
+        #displayArrayList("#displayMessage('self-submission.field.label.dc-subject.vivo-keyword')" "dc:subject.vivo:keyword" "rdf:PlainLiteral")
+    </dl>
+</div>

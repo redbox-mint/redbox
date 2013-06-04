@@ -1,0 +1,10 @@
+#sectionHeading("#displayMessage('dmpt.heading.dataStorage')")
+<div class="meta">
+    <dl>
+        #display("vivo:Dataset.dc:extent.prefLabel" "#displayMessage('dmpt.field.label.vivo-Dataset.dc-extent')")
+        #display("vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel" "#displayMessage('dmpt.field.label.vivo-Dataset.dc-location')")
+        #display("vivo:Dataset.dc:location.skos:note" "#displayMessage('dmpt.field.label.dataStorage.storageLocation.otherNote')")
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel" "#displayMessage('dmpt.field.label.vivo-Dataset.dc-source.dc-location')")
+        #display("vivo:Dataset.dc:source.dc:location.skos:note" "#displayMessage('dmpt.field.label.dataStorage.storageLocation.otherNote')")
+    </dl>
+</div>

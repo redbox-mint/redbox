@@ -1,0 +1,1177 @@
+{
+    "stages":{
+        "dmpt-draft":{
+            "divs":[
+                {
+                    "heading":"Welcome",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"dmpt.heading.welcome"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"dmpt.welcome.paragraph1"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"dmpt.welcome.paragraph2"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"dmpt.welcome.paragraph3"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"dmpt.welcome.paragraph4"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "transitions":[{"name":"Next", "form-submit-action":"save", "type": "button"}]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Overview",
+                    "fields":[
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.projectOverview"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-title",
+                            "help":"dmpt.field.help.dc-title"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:title",
+                            "label":"",
+                            "additional-classes":"",
+                            
+                            
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:title",
+        									"focus-id": "dc:title",
+        									 "validation-messages":{
+        									 						"required": "Project name is required"
+        									 						}
+    						 			  }                          
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-identifier",
+                            "help":"dmpt.field.help.dc-identifier"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:identifier",
+                            "label":"",
+                            "additional-classes":"",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "dc:identifier",
+        									"focus-id": "dc:identifier",
+        									 "validation-messages":{
+        									 						"required": "Project ID is required"
+        									 						}
+    						 			  }                          
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-description",
+                            "help":"dmpt.field.help.dc-description"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"dc:description",
+                            "label":"",
+                            "content":"",
+                            "additional-classes":"mandatory"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-relation.bibo-Website",
+                            "help":"dmpt.field.help.dc-relation.bibo-Website"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:relation.bibo:Website",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
+                            "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-start"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
+                            "label": "",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
+                            "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-end"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
+                            "label":"",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.foaf-fundedBy.foaf-Agent",
+                            "help":"dmpt.field.help.foaf-fundedBy.foaf-Agent"
+                        },
+                        {
+                            "component-type":"funding-body",
+                            "field-name":"foaf:fundedBy.foaf:Agent",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.foaf-fundedBy.vivo-Grant",
+                            "help":"dmpt.field.help.foaf-fundedBy.vivo-Grant"
+                        },
+                        {
+                            "component-type":"grants",
+                            "field-name":"foaf:fundedBy.vivo:Grant",
+                            "label":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-subject.anzsrc-toa",
+                            "help": "dmpt.field.help.dc-subject.anzsrc-toa"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"dc:subject.anzsrc:toa.rdf:resource",
+                            "label":"",
+                            "field-name-label":"dc:subject.anzsrc:toa.skos:prefLabel",
+                            "sourceUrl":"dmpt/data/projectActivityType.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-subject.anzsrc-for",
+                            "help":"dmpt.field.help.dc-subject.anzsrc-for"
+                        },
+                        {
+                            "component-type":"repeatable-anzsrc-selection",
+                            "label":"FoR code(s)",
+                            "fieldName":"dc:subject.anzsrc:for",
+                            "fieldNameLabel":"dc:subject.anzsrc:for.0.skos:prefLabel",
+                            "sourceUrl":"proxyGet.script?ns=ANZSRC_FOR&qs=count%3D999%26level%3D",
+                            "dataLevel":"top",
+                            "mandatory":"false",
+                            "idKey":"rdf:about",
+                            "labelKey":"skos:prefLabel",
+                            "listKey":"results",
+                            "defaultValue":"skos:narrower",
+                            "anzsrcType":"for"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-subject.dc-subject.anzsrc-seo",
+                            "help":"dmpt.field.help.dc-subject.dc-subject.anzsrc-seo"
+                        },
+                        {
+                            "component-type":"repeatable-anzsrc-selection",
+                            "label":"SEO code(s)",
+                            "fieldName":"dc:subject.anzsrc:seo",
+                            "fieldNameLabel":"dc:subject.anzsrc:seo.0.skos:prefLabel",
+                            "sourceUrl":"proxyGet.script?ns=ANZSRC_SEO&qs=count%3D999%26level%3D",
+                            "dataLevel":"top",
+                            "mandatory":"false",
+                            "idKey":"rdf:about",
+                            "labelKey":"skos:prefLabel",
+                            "listKey":"results",
+                            "defaultValue":"skos:narrower",
+                            "anzsrcType":"seo"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "transitions":[{"name":"Next", "form-submit-action":"save", "type": "button"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"People",
+                    "fields":[
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.people"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.field.label.locrel-rth.foaf-Person",
+                            "help":"dmpt.field.help.locrel-rth.foaf-Person"
+                        },
+                        {
+                        	"component-type":"person",
+                        	"lookup-name":"locrel:rth.foaf:Person",
+                        	"lookup-only":"true",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "locrel:rth.foaf:Person.dc:identifier",
+        									"focus-id": "locrel:rth.foaf:Person.foaf:title",
+        									 "validation-messages":{
+        									 						"required": "Principal investigator is required"
+        									 						}
+    						 			  }      
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.field.label.locrel-prc.foaf-Person",
+                            "help":"dmpt.field.help.locrel-prc.foaf-Person"
+                        },
+                        {
+                        	"component-type":"person",
+                        	"lookup-name":"locrel:prc.foaf:Person",
+                        	"lookup-only":"true",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "locrel:prc.foaf:Person.dc:identifier",
+        									"focus-id": "locrel:prc.foaf:Person.foaf:title",
+        									 "validation-messages":{
+        									 						"required": "Data manager is required"
+        									 						}
+    						 			  }  
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.field.label.locrel-clb.foaf-Person",
+                            "help":"dmpt.field.help.locrel-clb.foaf-Person"
+                        },
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"locrel:clb.foaf:Person",
+                            "sub-elements":{"settings":[
+                            					{"jaffaPeople":{"source":"nla,mint","label":"","class-list":"jaffa-field","suffix":"person"}}
+												]
+											}	
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.field.label.swrc-supervisor.foaf-Person",
+                            "help":"dmpt.field.help.swrc-supervisor.foaf-Person"
+                        },
+                        {
+                        	"component-type":"person",
+                        	"lookup-name":"swrc:supervisor.foaf:Person",
+                        	"lookup-only":"true"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "transitions":[{"name":"Back", "type": "button"},
+                             			   {"name":"Next", "form-submit-action":"save", "type": "button"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"dataCollection",
+                    "fields":[
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.dataCollection"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.heading.dataCollection.dataStructure"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-MetadataStandard",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-MetadataStandard"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:MetadataStandard",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataStructureStandard",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataStructureStandard"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:DataStructureStandard",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                    	{
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.dataCollection.dataCollection"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataCollectionMethodology",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataCollectionMethodology"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:DataCollectionMethodology",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataCollectionResources",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataCollectionResources"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:DataCollectionResources",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.redbox-DataAnalysisResources",
+                            "help":"dmpt.field.help.vivo-Dataset.redbox-DataAnalysisResources"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.redbox:DataAnalysisResources",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.dc.format",
+                            "help":"dmpt.field.help.vivo-Dataset.dc.format"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"vivo:Dataset.dc.format",
+                            "label":"",
+                            "field-name-label":"vivo:Dataset.dc.format.prefLabel",
+                            "sourceUrl":"dmpt/data/fileFormat.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.dc.format.other"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"vivo:Dataset.dc.format.other",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"transition-control",
+    					   "transitions": [
+        									{
+            									"name": "Save and close",
+            									"form-submit-action": "save",
+            									"type": "button",
+            									"close": true,
+            									"closeUrl": "dmpt/details",
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataStructureComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}
+    									 ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"dataStorage",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.dataStorage"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.dc-extent",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-extent"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"vivo:Dataset.dc:extent",
+                            "label":"",
+                            "field-name-label":"vivo:Dataset.dc:extent.prefLabel",
+                            "sourceUrl":"workflows/forms/data/dataSize.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.dc-location",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-location"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"vivo:Dataset.dc:location.rdf:PlainLiteral",
+                            "label":"",
+                            "field-name-label":"vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel",
+                            "sourceUrl":"dmpt/data/storageLocation.json "
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.dc:location.skos:note",
+                            "label":"dmpt.field.label.dataStorage.storageLocation.otherNote",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.vivo-Dataset.dc-source.dc-location",
+                            "help":"dmpt.field.help.vivo-Dataset.dc-source.dc-location"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral",
+                            "label":"",
+                            "field-name-label":"vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel",
+                            "sourceUrl":"dmpt/data/masterLocation.json"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"vivo:Dataset.dc:source.dc:location.skos:note",
+                            "label":"dmpt.field.label.dataStorage.storageLocation.otherNote",
+                            "content":""
+                        },
+                        {
+                            "component-type":"transition-control",
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "form-submit-action":"save", "type": "button"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"dataLicensingAccess",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.dataLicensing"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.heading.dataLicensing.access"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-accessRights",
+                            "help":"dmpt.field.help.dc-accessRights"
+                        },
+                        {
+                            "component-type":"radio-button",
+                            "field-name":"dc:accessRights",
+                            "button-for":"",
+                            "buttons":[
+                                {
+                                    "label":"permission from the data manager",
+                                    "value":"permission from the data manager"
+                                },
+                                {
+                                    "label":"open, free access to all",
+                                    "value":"open, free access to all"
+                                }
+                            ]
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dataLicensingAccess.manager"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dataLicensingAccess.manager",
+                            "label":"",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.heading.dataLicensing.licensing"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-license",
+                            "help":"dmpt.field.help.dc-license"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"dc:license.dc:identifier",
+                            "field-name-label":"dc:license.skos:prefLabel",
+                            "label":"",
+                            "sourceUrl":"workflows/forms/data/licences.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:license.dc:identifier.other",
+                            "label":"dmpt.field.label.dc-license.dc-identifier.other",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"dc:license.dc:identifier.url",
+                            "label":"dmpt.field.label.dc-license.dc-identifier.url",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.heading.dataLicensing.rights"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-RightsStatement",
+                            "help":"dmpt.field.help.dc-RightsStatement"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"dc:RightsStatement",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-rights.skos-note",
+                            "help":"dmpt.field.help.dc-rights.skos-note"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"dc:rights.skos:note",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"transition-control",
+							"transitions":[{
+            									"name": "Save and close",
+            									"form-submit-action": "save",
+            									"type": "button",
+            									"close": true,
+            									"closeUrl": "dmpt/details",
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataAccessComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Retention",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.dataRetention"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.redbox-retentionPeriod",
+                            "help":"dmpt.field.help.redbox-retentionPeriod"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"redbox:retentionPeriod.dc:date",
+                            "field-name-label":"redbox:retentionPeriod.dc:date.prefLabel",
+                            "label":"",
+                            "sourceUrl":"workflows/forms/data/retentionPeriod.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results",
+                            "validation": {
+        									"save-rules": [
+            									"required"
+        									],
+        									"validation-id": "redbox:retentionPeriod.dc:date",
+        									"focus-id": "redbox:retentionPeriod.dc:date",
+        									 "validation-messages":{
+        									 						"required": "Retention Period must be specified"
+        									 						}
+    						 			  } 
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"redbox:retentionPeriod.dc:date.skos:note",
+                            "field-name-label":"redbox:retentionPeriod.dc:date.skos:note.prefLabel",
+                            "label":"dmpt.field.label.redbox-retentionPeriod.dc-date.skos-note",
+                            "sourceUrl":"workflows/forms/data/retentionPeriodJustification.json",
+                            "idKey":"id",
+                            "labelKey":"label",
+                            "listKey":"results"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.redbox-disposalDate",
+                            "help":"dmpt.field.help.redbox-disposalDate"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"redbox:disposalDate",
+                            "label":"",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"transition-control",
+							"transitions":[{
+            									"name": "Save and close",
+            									"type": "button",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"closeUrl": "dmpt/details",
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															},
+                															{
+                    															"key": "dataRetentionComplete",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
+                        }
+                    ]
+                },
+                {
+                    "heading":"EthicsSensitivities",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.EthicsSensitivities.ethics"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.agls-policy.dc-identifier",
+                            "help": "dmpt.field.help.agls-policy.dc-identifier"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"",
+                            "additional-classes":"",
+                            "field-name":"agls:policy.dc:identifier"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.agls-policy.skos-note",
+                            "help": "dmpt.field.help.agls-policy.skos-note"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"agls:policy.skos:note",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"dmpt.heading.EthicsSensitivities.sensitivities"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.agls-protectiveMarking",
+                            "help": "dmpt.field.help.agls-protectiveMarking"
+                        },
+						{
+							"component-type": "checkbox",
+							"field-name": "agls:protectiveMarking.dc:type",
+							"box-for": "",
+							"multiline": true,
+							"boxes": [
+								{
+									"label": "Commercially sensitive",
+									"value": "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive"
+								},
+								{
+									"label": "Culturally sensitive",
+									"value": "agls:protectiveMarking.dc:type.redbox:CulturallySensitive"
+								},
+								{
+									"label": "Security classified",
+									"value": "agls:protectiveMarking.dc:type.redbox:SecurityClassified"
+								},
+								{
+									"label": "Non-public",
+									"value": "agls:protectiveMarking.dc:type.redbox:NonPublic"
+								}
+							]
+						},
+						{
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.agls-protectiveMarking.skos-note",
+                            "help": "dmpt.field.help.agls-protectiveMarking.skos-note"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"agls:protectiveMarking.skos:note",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"transition-control",
+							"transitions":[{"name":"Back", "type": "button"},{"name":"Next", "form-submit-action":"save", "type": "button"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name": "Save",
+                                    "form-submit-action": "save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action": "save",
+                                    "type": "button",
+									"close": true,
+									"closeUrl": "dmpt/details"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Ownership",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"dmpt.heading.ownership"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-coverage",
+                            "help": "dmpt.field.help.dc-coverage"
+                        },                        
+                        {
+                            "component-type":"repeatable-container",
+                            "containter-for":"dc:coverage.dc:identifier",
+                            "min-size":"1",
+                            "suffix":"country",
+                            "sub-elements":{"settings":[
+                            					{"jaffaDropDown":{"json-data-url":"$portalPath/proxyGet.script?ns=Countries","label":"",
+                            					 "class-list":"jaffa-field","suffix":"country"}
+                            					 }
+      											]
+      										}	
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-rightsHolder.dc-name",
+                            "help": "dmpt.field.help.dc-rightsHolder.dc-name"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"dc:rightsHolder.dc:name",
+                            "field-name-label":"dc:rightsHolder.dc:name.prefLabel",
+                            "label":"",
+                            "sourceUrl":"dmpt/data/rightsOwner.json"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.dc-rightsHolder.dc-description",
+                            "help": "dmpt.field.help.dc-rightsHolder.dc-description"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"dc:rightsHolder.dc:description",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"label",
+                            "content":"dmpt.field.label.redbox-ContractualObligations",
+                            "help": "dmpt.field.help.redbox-ContractualObligations"
+                        },
+                        {
+                            "component-type":"textarea",
+                            "field-name":"redbox:ContractualObligations",
+                            "label":"",
+                            "content":""
+                        },
+                        {
+                            "component-type":"transition-control",
+							"transitions":[{"name":"Back", "type": "button"}]
+                        },
+                        {
+                            "component-type": "transition-control",
+                            "transitions": [
+                                {
+                                    "name":"Save",
+                                    "form-submit-action":"save",
+                                    "type": "button"
+                                },
+                                {
+                                    "name": "Save and close",
+                                    "form-submit-action":"save",
+                                    "type":"button",
+									"close":true,
+									"closeUrl":"dmpt/planready",
+									"object-metadata-params": [
+											{
+												"key": "generatePDF",
+												"value": "true"
+											}
+										 ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "heading":"furtherinfo",
+                    "fields":[
+                        {
+                            "component-type":"text-block",
+                            "type":"h1",
+                            "content":"Further information"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Keywords"
+                        },
+                        {
+                            "component-type":"repeatable-text",
+                            "field-name":"finalKeywords",
+                            "label":"keyword"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Language"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"finalLanguage",
+                            "label":"What language is relevant to this data collection?",
+                            "sourceUrl":"dmpt/data/finalLanguage.json"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<hr>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Temporal (time) information"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"finalCollection.Date.From",
+                            "label":"Start date:",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"finalCollection.Date.To",
+                            "label":"End date:",
+                            "additional-classes":"dateYMD"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"finalCollection.tiemPeriod",
+                            "additional-classes":"",
+                            "label":"Time period:"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h3",
+                            "content":"Geographic/spatial information"
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<div id='mapholder_demo1' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo1').innerHTML='<img src='+img_url+'>';</script>"
+                        },
+                        {
+                            "component-type":"transition-control",
+                            "transitions":[{"name":"Back"},{
+            									"name": "Done",
+            									"form-submit-action": "save",
+            									"close": true,
+            									"closeUrl": "dmpt/details",
+            									"object-metadata-params": [
+                															{
+                    															"key": "generatePDF",
+                    															"value": "true"
+                															}
+            															 ]
+        									}]
+                        }
+                    ]
+                },
+                {
+                    "heading":"Extra",
+                    "fields":[
+                        {
+                            "component-type":"native-html",
+                            "content":"<a id='extra'></a>"
+                        },
+                        {
+                            "component-type":"text-block",
+                            "type":"h2",
+                            "content":"Great! Thank you for deciding to add more information at this stage."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":" None of the fields are compulsory and some will not be added to a Data Management Plan, but they will help describe and give context to your dataset. You can come back to change or add information at any time during the research project."
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"About the data"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"If you are using data that is generated by another party;"
+                        },
+                        {
+                            "component-type":"data-source-dropdown",
+                            "field-name":"Extra.Data.Access",
+                            "label":"How will you get access to the data?",
+                            "sourceUrl":"dmpt/data/extraDataAccess.json"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"extra.meta.link",
+                            "label":"Is metadata already available for this data? If yes, please provide a link.",
+                            "additional-classes":"link"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"For ALL data collections"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"What keywords or tags would you use to describe the data?"
+                        },
+                        {
+                            "component-type":"repeatable-text",
+                            "field-name":"keyword",
+                            "label":"Keyword"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"What date or date range will this data cover?"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "field-name":"Extra.Collection.OtherDescription",
+                            "label":"Include another way to describe the period, if relevant (eg World War II)",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"What is the geographic location relevant to this dataset? Interactive map might be used later."
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<div id='mapholder_demo2' class='mapholder'></div><script>var latlon = '-34.961372,138.639221';var img_url = 'http://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=10&size=400x300&sensor=false';document.getElementById('mapholder_demo2').innerHTML='<img src='+img_url+'>';</script>"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Links to websites related to this data collection",
+                            "field-name":"Extra.Website.URL",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Links to datasets related to this collection",
+                            "field-name":"Extra.DataSet.URL",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Supervisors associated with this data collection",
+                            "field-name":"Extra.Collection.Supervisor",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"Link to this data collection",
+                            "field-name":"Extra.Links",
+                            "additional-classes":"url"
+                        },
+                        {
+                            "component-type":"paragraph",
+                            "content":"Data Collection Methodology",
+                            "additional-classes":"h2"
+                        },
+                        {
+                            "component-type":"text-input",
+                            "label":"What software or equipment is used to create the data?",
+                            "field-name":"Extra.Software.Equipment",
+                            "additional-classes":""
+                        },
+                        {
+                            "component-type":"textarea",
+                            "label":"Please provide a description of the data collection methodology",
+                            "field-name":"Extra.Collection.Methodology",
+                            "content":""
+                        },
+                        {
+                            "component-type":"native-html",
+                            "content":"<button id='done_button' onclick=done_forms()>Done</button><div id='thanks'></div><script>function done_forms(){ document.getElementById('done_button').setAttribute('hidden', 'hidden');document.getElementById('thanks').innerHTML = '<h3>Thank you.</h3>'+'<p>By completing this information, you have not only created a more complete Data Management Plan, you have gone some way to establishing a description of your dataset.</p>'+'<p>If you have any questions about this process, please do not hesitate to contact the Research Data Support team.</p>';}</script>"
+                        }
+                    ]
+                }
+            ],
+            "buttons":[],
+            "form-footer":"dmptform-footer",
+            "validation":{
+                "required":"title"
+            }
+        }
+    }
+}

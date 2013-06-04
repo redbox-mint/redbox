@@ -38,7 +38,7 @@ class XMLAlertHandler(AlertHandler):
         xmlMappings = JsonSimple(inStream)
         self.map = xmlMappings.getObject(["mappings"])
         self.exceptions = xmlMappings.getObject(["exceptions"])
-        self.defaultNamespace = xmlMappings.getString(None, ["defaultNamespace"])
+        self.defaultNamespace = xmlMappings.getObject(["defaultNamespace"])
         
         self.mappedExceptionCount = 0
         
@@ -86,7 +86,7 @@ class XMLAlertHandler(AlertHandler):
             if xpath != "":
                 xpathobj = DefaultXPath(xpath)
                 if not self.defaultNamespace is None:
-                    xpathobj.setNamespaceContext(SimpleNamespaceContext(defaultNS))
+                    xpathobj.setNamespaceContext(SimpleNamespaceContext(self.defaultNamespace))
                     
                 nodes = xpathobj.selectNodes(sourceData)
                 
@@ -129,7 +129,13 @@ class XMLAlertHandler(AlertHandler):
                 fieldString = field.replace(".0.", ".%s."%index, 1)
             
         for node in xmlNodes:
-            text = node.getTextTrim()
+            try:
+                text = node.getTextTrim()
+            except:
+            	try:
+                    text = node.getValue().strip()
+                except:
+                    text = node
                 
             if fieldString != "" and text != "":
                 if excepted:

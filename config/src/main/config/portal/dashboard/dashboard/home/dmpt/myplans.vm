@@ -1,0 +1,77 @@
+#set($menuTitle = "#displayMessage('researcher-dashboard.home.myplans.title')")
+#set($currentUser = $self.getUser())
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+#if ($self.myPlans && $self.myPlans.size() > 0)
+    <table>
+        <thead>
+            <tr>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.manage')</th>
+            </tr>
+        </thead>
+        <tbody>
+        #foreach($item in $self.myPlans)
+            #set($oid = $item.get("id"))
+          <tr>
+        		#set($title = $item.get('dc:title'))
+        		<td><a href="$portalPath/detail/$oid">#if ($title) $page.escapeHtml($title) #else [Untitled] #end</a></td>
+                <td>
+                #parseTemplate("home/dmpt/created_modified_date.vm")                
+                </td>
+                <td>$self.formatDate($item.get("last_modified"))</td>
+                <td>
+                <a href="$portalPath/workflow/$oid?flow=mainflow" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
+                #if ($self.hasPlanPDF($oid))
+                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                #end
+				#if($currentUser != "admin")
+				<a href="#" onclick="change_owner('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.delete')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.delete')" src="$portalPath/images/icons/delete.png"></a>
+				#end
+                <a href="#" onclick="manage_access('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.access')" src="$portalPath/images/icons/application_key.png"></a>
+                </td>
+            </tr>
+        #end
+        </tbody>
+    </table>
+#end
+</div>    
+#parseTemplate("wrapping/info-box-close.vm")
+
+#if ($self.sharedPlans && $self.sharedPlans.size() > 0)
+#set($menuTitle = "#displayMessage('researcher-dashboard.home.sharedplans.title')" )
+#parseTemplate("wrapping/info-box-open.vm")
+<div class="block">
+    <table>
+        <thead>
+            <tr>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+                <th>#displayMessage('researcher-dashboard.home.myplans.table.pdf')</th>
+            </tr>
+        </thead>
+        <tbody>
+        #foreach($item in $self.sharedPlans)
+            #set($oid = $item.get("id"))
+          <tr>
+        		#set($title = $item.get('dc:title'))
+                <td><a href="$portalPath/detail/$oid">#if ($title) $title #else [Untitled] #end</a></td>
+                <td>
+                #parseTemplate("home/dmpt/created_modified_date.vm")                
+                </td>
+                <td>$self.formatDate($item.get("last_modified"))</td>
+                <td>
+                #if ($self.hasPlanPDF($oid))
+                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
+                #end
+                </td>
+            </tr>
+        #end
+        </tbody>
+    </table>
+</div>
+#parseTemplate("wrapping/info-box-close.vm")
+#end

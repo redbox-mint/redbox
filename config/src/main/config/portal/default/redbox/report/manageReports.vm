@@ -1,0 +1,134 @@
+#if($self.getErrorMsg()=="")
+#set($pageTitle = "Manage Reports")
+<h2 id="page-heading"><span>Manage Reports</span>
+            <span class="helpWidget" data-help-content-id="help-manage">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-manage").toggle();'/>
+            </span>
+        </h2>
+<div class="help-content" id="help-manage" style="display: none;">
+<p>User is able to select option to:</p>
+<ul>
+<li>Create New Report</li>
+<li>Create New Statistical Report</li>
+</ul>
+
+<p>Previously created reports are available on the Manage Reports page. For existing reports
+users are able to:</p>
+<ul>
+<li>Duplicate the report</li>
+<li>Delete the report</li>
+<li>Run the report</li>
+</ul>
+
+<p><b>Duplicate</b></p>
+
+<p>The duplicate functionality can be used to create a new report based on amending details of
+an existing report, i.e date range, and to re-use the existing report criteria.</p>
+
+<p>To duplicate report, the user can select the check box corresponding to the relevant report
+and click the <i>Duplicate</i> button to duplicate an existing report. Only one report can be
+duplicated at a time using this functionality.</p>
+
+<p><b>Delete</b></p>
+
+<p>To delete one or more reports, the user can select one or more check boxes corresponding
+to the relevant reports and click the <i>Delete</i> button to remove the reports from the system.</p>
+</div>
+<div class="grid_4">
+	<div class="box menu">
+	    <h2>Options</h2>
+	    <ul class="menu">
+	        <li><a href="$portalPath/report/reports">Create New Report</a></li>
+	        <li><a href="$portalPath/report/statisticalReports">Create New Statistical Report</a></li>
+	    </ul>
+    </div>
+</div>  
+<div class="grid_12">
+	<table>
+		<tr>
+			<th>Select</th>
+			<th>Report</th>
+			<th>Report Type</th>
+			<th>Run</th>
+		</tr>
+		#set ($reports = $self.getReports())
+		#if($reports)
+			#foreach($report in $reports.values())
+				#set($link = $self.getReportRunLink($report))
+				#set($editlink = $self.getReportEditLink($report))
+		<tr>
+			<td><input name="selected_report" type="checkbox" value="$report.getReportName()" /></td>
+			<td><a href="$portalPath/report/$editlink">$report.getLabel()</a></td>
+			<td>#if($report.getClass().getName() == "com.googlecode.fascinator.portal.report.RedboxReport")Report #else Statistical Report#end</a></td>				
+			<td><a href="$portalPath/report/$link">Run</a></td>
+		</tr>
+			#end
+		#else
+		<tr>
+			<td colspan=3>No Reports</td>
+		</tr>
+		#end
+	</table>
+	<button id='duplicateButton'>Duplicate</button>
+	<button id='deleteButton'>Delete</button>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#deleteButton").click(function() {
+	     var checkedElements = $("[name='selected_report']:checked");
+		 var checkedReportNames = new Array();
+		 for(var i =0; i < checkedElements.length; i++) {
+    			checkedReportNames.push(checkedElements[i].value);
+		 }
+		 var checkedReportNamesRequest={};
+		 checkedReportNamesRequest["reportName"] = checkedReportNames.join();
+		 var url = '$portalPath/report/manageReports.ajax?func=action&action=delete';
+         jQuery.ajax({type:"POST", url:url, data:checkedReportNamesRequest,
+			success:function(data, status){ 			
+				var checkedElements = $("[name='selected_report']:checked");
+				for(var i =0; i < checkedElements.length; i++) {
+    				$(checkedElements[i]).attr('checked',false);
+    			}
+    			location.reload();
+		 
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		});
+		 
+									
+							});
+	$("#duplicateButton").click(function() {
+		var checkedElements = $("[name='selected_report']:checked");
+		if (checkedElements.length == 0) {
+			alert("Please select a report to duplicate");
+			return;
+		}
+		if (checkedElements.length > 1) {
+			alert("Please select just one report");
+			return;
+		}
+		var checkedReportNames = new Array();
+        for(var i =0; i < checkedElements.length; i++) {
+        	checkedReportNames.push(checkedElements[i].value);
+        }
+        var checkedReportNamesRequest={};
+        checkedReportNamesRequest["reportName"] = checkedReportNames.join();
+		var url = '$portalPath/report/manageReports.ajax?func=action&action=duplicate';
+		jQuery.ajax({type:"POST", url:url, data:checkedReportNamesRequest,
+			success:function(data, status){ 			
+    			location.reload();
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		});
+	});
+});
+</script>
+#else
+	<div>$self.getErrorMsg()</div>
+#end

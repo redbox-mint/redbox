@@ -1,0 +1,14 @@
+[
+    {
+        "value": "csv",
+        "label": "CSV"
+    },
+    {
+        "value": "XLS",
+        "label": "XLS"
+    },
+    {
+        "value": "XML",
+        "label": "XML"
+    }
+]

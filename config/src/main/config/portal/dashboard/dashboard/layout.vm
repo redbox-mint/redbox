@@ -1,0 +1,16 @@
+#if($noLayout)$!pageContent#else
+<!DOCTYPE html>
+<html>
+    <head>
+        #parseTemplate("layout/html-head.vm")
+        <style>
+        .component-wrapper > label { diplay:inline; /* to allow help content next to it */} 
+        </style>
+    </head>
+    <body>
+        #parseTemplate("layout/jquery-settings.vm")
+        #parseTemplate("layout/page-structure.vm")
+        #parseTemplate("layout/action-form.vm")
+    </body>
+</html>
+#end

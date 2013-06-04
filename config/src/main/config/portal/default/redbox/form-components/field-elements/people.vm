@@ -1,0 +1,30 @@
+<div>
+<input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet.script?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
+<input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
+</div>
+
+<div id="$lookup-name">&nbsp;</div>
+<script type="text/javascript">
+$(document).ready(function() {$("[id='$lookup-name']").jaffaPeopleRepeatable({
+	"disable-numbers":false,
+	"disable-sorting":false,
+	"base-field":"$lookup-name",
+	"sub-fields": {
+		"field":""
+	},
+	"add-item-text":"Add",
+	"delete-item-html":"<button>Remove</button>",
+	"min-size":1,
+	"child-config":{
+#if ($source)		
+		"source":"$source",
+#end	
+		"label":"Name",
+		"class-list":"jaffa-field",
+		"field":""
+	},
+	"class-list":widgetListBranding
+	});
+
+});
+</script>

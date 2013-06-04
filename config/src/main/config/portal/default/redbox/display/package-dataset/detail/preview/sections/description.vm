@@ -117,5 +117,42 @@
                 </dd>
             #end
         #end
+        
+        <dt>Technical metadata</dt>
+        #set($dataList = $self.getList("dc:relation.redbox:TechnicalMetadata"))
+        #if ($dataList.isEmpty())
+        <dd>
+            #noInformation()
+        </dd>
+        #else
+            #set($firstData = $dataList.get("1").get("dc:identifier"))
+            #if("$!firstData"!="")
+                <dd>
+                    <ol>
+                    #foreach($key in $dataList.keySet())
+                        #set($techmeta = $dataList.get($key))
+                         <li>
+                            <b>#displayRequiredKey($techmeta "dc:title")</b>
+                            <ul>
+                                <li><b>ID</b>: #displayRequiredKey($techmeta "dc:identifier")</li>
+                                #set($format = $techmeta.get("dc:type"))
+                                #if("$!format"!="")
+                                    <li><b>Format</b>: <em>$self.escapeHtml($format)</em></li>
+                                #end
+                                #set($schema = $techmeta.get("dc:conformsTo"))
+                                #if("$!schema"!="")
+                                    <li><b>Schema</b>: <em>$self.escapeHtml($schema)</em></li>
+                                #end
+                            </ul>
+                        </li>
+                    #end
+                    </ol>
+                </dd>
+            #else
+                <dd>
+                #noInformation()
+                </dd>
+            #end
+        #end
     </dl>
 </div>

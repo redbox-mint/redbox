@@ -28,4 +28,10 @@
         #parseTemplate("home/alerts.vm")
     </div>
     <div class="clear"></div>
+    <div class="grid_4">&nbsp;</div>
+    <div class="grid_6">&nbsp;</div>
+    <div class="grid_6">
+        #parseTemplate("home/embargoes.vm")
+    </div>
+    <div class="clear"></div>
 #end

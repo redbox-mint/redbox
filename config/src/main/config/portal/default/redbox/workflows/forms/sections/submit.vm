@@ -2,11 +2,39 @@
 #set($isPublished = ($stage == "live"))
 <h3><a href="#submit">Submit</a></h3>
 <div id="submit" class="inputscreen">
+	<div id="embargo-section" style="display:none">
+	
+	#if($languageService)	#set($embargoTitle = $languageService.displayMessage("dataset.embargo.heading")) #end
+	#fieldTitle("embargo" $embargoTitle false)
+	<div class="help-content" id="help-embargo">
+        #displayMessage("dataset.embargo.help")
+    </div>
+    <p>
+	<input id="redbox:embargo.redbox:isEmbargoed" type="checkbox" />  
+    <label id="embargoLabel" for="redbox:embargo.redbox:isEmbargoed">#displayMessage("dataset.embargo.checkbox.label")</label>
+	</p>
+    <p>
+    	<h2>
+        <label id="embargoDateLabel" for="redbox:embargo.dc:date">#displayMessage("dataset.embargo.date.label")</label>
+    	</h2>
+    	<input type="text" placeholder="#displayMessage("dataset.embargo.date.placeholder")" class="dateYMD" id="redbox:embargo.dc:date" />
+        #dateValidation("redbox:embargo.dc:date")
+    </p>
+    <p>
+    	<h2>
+        <label id="embargoNotesLabel" for="redbox:embargo.skos:note">#displayMessage("dataset.embargo.notes.label")</label>
+    	</h2>
+    	<textarea rows="12" cols="80" id="redbox:embargo.skos:note" style="vertical-align: text-top;"
+                placeholder="#displayMessage("dataset.embargo.notes.placeholder")"></textarea>
+    </p>
+    </div>
     #fieldTitle("agreement" "Progress" false)
     <div class="help-content" id="help-agreement">
         Progress the record through the workflow as required.
     </div>
     <p>
+    	<div id="embargoed-explanation" style="display:none">This record cannot be published until the embargo checkbox is unchecked.</div>
+    	<div id="progression-section">
         #if($canProgress)
         <input id="agreement" type="checkbox" />
         #end
@@ -16,6 +44,12 @@
         <input type="hidden" class="submit-result-func" value="submitted_ok" />
         <div class="submitted-result" style="padding-left: 2em; font-size: 120%;"></div>
         #end
+        </div>
+    </p>
+     <p>
+        
+        
+        
     </p>
     #if($isPublished)
     #fieldTitle("retire" "Retire" false)
@@ -150,6 +184,34 @@
 
 <script type="text/javascript">
 $(function() {
+
+	$("[id='redbox:embargo.redbox:isEmbargoed']").change(function () {
+    var isChecked = $(this).is(':checked'); 
+    
+    if(isChecked) {
+        //enable notes and date
+        $("[id='redbox:embargo.dc:date']").attr('disabled','');
+        $("[id='redbox:embargo.skos:note']").attr('disabled','');
+        $("#embargoed-explanation").hide();
+        $("#progression-section").show();
+        #if($stage == "final-review")
+        	//Final review stage don't allow movement to final stage
+        	$("#embargoed-explanation").show();
+        	$("#progression-section").hide();
+        	$("#agreement").attr("checked", false);
+        	$("#agreement").attr('disabled','disabled');
+        #end
+    } else {
+        $("[id='redbox:embargo.dc:date']").attr('disabled','disabled');
+        $("[id='redbox:embargo.skos:note']").attr('disabled','disabled');
+        $("#agreement").attr('disabled','');
+        $("#embargoed-explanation").hide();
+        $("#progression-section").show();
+    }
+ 
+
+});
+  
    $('#agreementLabel').wikiText(packageData.nextStageMessage);
     if (packageData.stage == "live") {
         $("#agreement,#retire").hide();
@@ -187,6 +249,7 @@ $(function() {
         });
     });
 
+	
     $("#validation-summary label").click(function() {
         var i, id;
         try{
@@ -215,5 +278,6 @@ $(function() {
         setTimeout(function() {widgets.forms[0].validator.onValidationListeners.push(onValidation);},
                 500);
     } catch(e) {}
+    
 });
 </script>

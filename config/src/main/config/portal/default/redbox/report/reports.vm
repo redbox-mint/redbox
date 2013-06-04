@@ -1,0 +1,368 @@
+#if($self.getErrorMsg()=="")
+#set($reportName = $velocityContext.get("request").getParameter("reportName"))
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaRegexes.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUtilities.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaValidation.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaWidgets.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaUI.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/jaffaForm.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/libs/validatious/validatious.2.0.min.0.9.1.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/jaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/myJaffa.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/text.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/container.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/reportCriteria.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/dropDown.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/radioGroup.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets/anzsrc-SelectionReportCriteria.js"></script>
+<script type="text/javascript" src="$portalPath/jaffa/widgets-ini.js"></script>
+	<div id="reportForm">
+	<section>
+	#if($reportName)
+		<div><a href='$portalPath/report/manageReports'>View Reports</a>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a></div>
+		<h2 id="page-heading"><span>Edit Report</span>
+		</h2>
+	#else
+	    <div><a href='$portalPath/report/manageReports'>View Reports</a></div>
+	    <h2 id="page-heading"><span>Create New Report</span>
+            <span class="helpWidget" data-help-content-id="help-reports">
+                <img src="$portalPath/images/icons/help.png" onclick='$("#help-reports").toggle();'/>
+            </span>
+        </h2>
+	#end
+	<div class="help-content" id="help-reports" style="display: none;">
+        <p>The <i>Create New Report</i> functionality allows the user to build reports based on selected
+        criteria across a given date range where data is available within the specified time frame.
+        Reports are created by selecting from a sub-set of ReDBox metadata fields and searching on
+        their values, as they appear in ReDBox.</p>
+
+        Users can:
+        <ul>
+        <li>select the required <i>date range from</i> and <i>date range to</i> from the entry fields to
+        generate a customised report by date, where data is available.</li>
+        <li>select to create a report based on the created or modified date of the record. Note:
+        <i>Alerts</i> ingested into ReDBox will have both a created and modified date applied on
+        ingest, by default.</li>
+        <li>select specific and multiple fields for inclusion in the report. Field behaviours will
+        mimic those of the ReDBox forms, ie. controlled vocabularies, look-ups, etc.
+        limit specified fields to specific or exact values</li>
+        <li>include or exclude null values within specified fields</li>
+        <li>enter a report title.</li>
+        </ul>
+        <p>The <i>Create and Run</i> button will generate the report, providing the user with a preview
+        display of a subset of the records included in the report.</p>
+
+        <p>The report can be printed or saved as PDF and can also be exported as a CSV file. When the
+        report has been created it will then be visible on the Manage Reports page where the user
+        can delete, duplicate or run the report.</p>
+    </div>
+	<div class="errorbox">
+		#displayMessage("reports.create.report.validation.message")
+		<ul id="errorbox-list">
+		<ul>
+	</div>
+	<div>
+		<fieldset>
+			<legend>Date Range</legend>
+			<div>
+			<label>From<input type="text" id="dateFrom" class="datepicker jaffa-field" /></label>	 
+			<label>To<input type="text"  id="dateTo" class="datepicker jaffa-field" /></label>
+			</div>
+			<div id="dateCreatedContainer"></div>
+			<div id="showOptionsContainer"></div>
+			<!--label>Show
+			<select>
+				<option>All records</option>
+				<option>Published records</option>
+			</select>
+			</label-->
+		</fieldset>
+		<label>Report Name: <input type="text" id="reportName" class="jaffa-field"/></label><br>
+		
+		<div id="reportCriteria"></div>
+		#if($reportName)
+			#set($buttonName = "Save & Run")
+		#else
+			#set($buttonName = "Create & Run")	
+		#end
+		<input type="submit" name="submit" value="$buttonName" id="submitButton"/>
+		<!--input type="submit" name="clear" value="Clear" onclick="window.location.reload()"/-->
+	</div>
+		
+	</section>
+	
+	</div>
+		<script type="text/javascript">
+  var jaffa = jaffaFactory({
+        debuggingEnabled: true,
+        #if($reportName)
+        	urlDataSource: "$portalPath/report/reports.ajax?func=action&action=get-json&reportName=$reportName",
+        #end
+        formSelector: "#reportForm",
+        functionSaveData: saveData,
+        callbackStartupComplete: startupComplete,
+        callbackPreSave: preSave
+    });
+    
+    function startupComplete() {
+	
+	if(jaffa) {
+	var dataSource = jaffa.config("urlDataSource");
+
+		if (dataSource != null && dataSource != "") {
+			// Get the JSON Data and run this callback
+			jaffa.util.loadJsonUrl(dataSource, function(data) {
+				for (var field in data) {
+					jaffa.serverData[field] = data[field];
+				}
+				
+				reportCriteriaArray = [];
+
+for(key in jaffa.serverData) {
+if(key.indexOf('report-criteria') != -1){
+var index = key.charAt(16);
+var reportCriteria = reportCriteriaArray[index];
+if(reportCriteria == null) {
+reportCriteria = {};
+}
+if(key.indexOf('logicalOp') != -1) {
+reportCriteria['logicalOp'] = jaffa.serverData[key];
+}
+if(key.indexOf('dropdown') != -1 && key.indexOf('dropdown-input') == -1) {
+reportCriteria['dropdown'] = jaffa.serverData[key];
+}
+if(key.indexOf('dropdown-input') != -1) {
+reportCriteria['dropdownInput'] = jaffa.serverData[key];
+}
+if(key.indexOf('searchcomponent') != -1) {
+reportCriteria['searchcomponent'] = jaffa.serverData[key];
+}
+if(key.indexOf('match_contains') != -1) {
+reportCriteria['matchContains'] = jaffa.serverData[key];
+}
+if(key.indexOf('include_nulls') != -1) {
+reportCriteria['includeNulls'] = jaffa.serverData[key];
+}
+reportCriteriaArray[index] = reportCriteria;
+}
+}
+
+for (var i=1; i<reportCriteriaArray.length; i++) {
+reportCriteria = reportCriteriaArray[i];
+
+
+//$('[id="report-criteria.'+i+'.dropdown"]').val(reportCriteria['dropdown']);
+$('[id="report-criteria.'+i+'.dropdown-input"]').val(reportCriteria['dropdownInput']);
+if(reportCriteria['matchContains'] != null) {
+if($('[id="report-criteria.'+i+'.match_contains"]').length ==0) {
+	$("[id=\"report-criteria."+i+".containsdropdown-span\"]").html("<select id=\"report-criteria."+i+".match_contains\"><option value=\"field_match\">Exact match</option><option value=\"field_contains\">Match contains</option></select>");
+	jaffa.form.addField("report-criteria."+i+".match_contains", "report-criteria."+i+".Container");
+}
+$('[id="report-criteria.'+i+'.match_contains"]').val(reportCriteria['matchContains']);
+}
+
+$
+if(reportCriteria['includeNulls'] != null) {
+    if($('[id="report-criteria.'+i+'.include_nulls"]').length ==0) {
+    	$("[id=\"report-criteria."+i+".includeNullsDropDown-span\"]").html("<select id=\"report-criteria."+i+".include_nulls\"><option value=\"field_include_null\">Include null values</option><option value=\"field_exclude_null\" selected>Exclude null values</option></select>");
+    	jaffa.form.addField("report-criteria."+i+".include_nulls", "report-criteria."+i+".Container");
+    }
+    $('[id="report-criteria.'+i+'.include_nulls"]').val(reportCriteria['includeNulls']);
+}
+jaffa.form.ignoreField("report-criteria.'+i+'.searchcomponent", true);
+jaffa.form.addField("report-criteria.'+i+'.searchcomponent", "report-criteria."+i+".Container");
+$('[id="report-criteria.'+i+'.searchcomponent"]').val(reportCriteria['searchcomponent']);
+}		
+	});
+	}
+	
+	}
+}
+    
+    jaffa.form.addField("dateFrom","dateFrom");
+    jaffa.form.addField("dateTo","dateTo");
+    jaffa.form.addField("reportName","reportName");
+    
+    jaffa.valid.setSaveRules("dateFrom",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("dateTo",  ["required"], null, validationFail);
+    jaffa.valid.setSaveRules("reportName",  ["required"], null, validationFail);
+    
+    
+    function preSave() {
+    	return jaffa.valid.okToSave();
+    }
+    
+    function saveData(unmanagedData, isValid,something, serverData) {
+    	$(".errorbox").hide();
+    	$("#errorbox-list").html('');  
+    	if(jaffa.valid.okToSave()) {
+    	 #if($reportName)
+			var url = '$portalPath/report/reports.ajax?func=action&action=edit&reportId=$reportName';
+		 #else
+			var url = '$portalPath/report/reports.ajax?func=action&action=create';	
+		 #end
+         
+         jQuery.ajax({type:"POST", url:url, data:serverData,
+			success:function(data, status){ 
+			document.location.href = '$portalPath/report/reportResult?id='+data['id'];
+			},
+			error:function(xhr, status, e){
+				alert(e);
+			},
+			dataType:"json"
+		}); 
+		}
+    }
+    
+    function preSave() {
+    	return true;
+    }
+    function focus(elementId) {
+		$("[id='"+elementId+"']").focus();
+	}
+
+    
+    function validationFail(fieldId, testsFailed) {
+    $(".errorbox").show();
+    if (fieldId == "dateFrom") {
+        if (jQuery.inArray("required", testsFailed) != -1) {
+            $("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateFrom")<button id="dateFrom-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateFrom-errorButton").click(function() { focus("dateFrom");});
+        }
+    }
+    if (fieldId == "dateTo") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+        	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.dateTo")<button id="dateTo-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#dateTo-errorButton").click(function() { focus("dateTo");});
+        }
+    }
+    if (fieldId == "reportName") {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportName")<button id="reportName-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("#reportName-errorButton").click(function() { focus("reportName");});
+            
+        }
+    }
+    if (fieldId.indexOf("report-criteria") == 0) {
+         if (jQuery.inArray("required", testsFailed) != -1) {
+         	$("#errorbox-list").append('<li>#displayMessage("reports.create.report.validation.message.reportCriteria")<button id="'+fieldId+'-errorButton" class="jaffaHelpToggle ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false"><span class="ui-button-icon-primary ui-icon ui-icon-circle-arrow-e"></span><span class="ui-button-text"></span></button></li>');
+            $("[id='"+fieldId+"-errorButton']").click(function() { focus(fieldId);});
+            
+        }
+    }
+    
+}
+
+
+
+
+</script>
+	
+	<script>
+		var widgetListBranding = {
+								"" : "control-group",
+								".jaffaValidationError" : ["alert", "alert-error"]
+							 	 };
+							 	 
+		$(document).ready(function(){ 
+					  $(".datepicker").datepicker({
+					         dateFormat: "d/m/yy", 
+					         changeMonth: true, 
+					         changeYear: true, 
+					         showButtonPanel: false
+					     });
+
+		$("#reportCriteria").jaffaReportCriteriaRepeatable({
+															"disable-numbers":true,
+															"disable-sorting":true,
+															"base-field":"report-criteria",
+															"sub-fields": {
+																			"field":""
+																		   },
+															"add-item-text":"Add",
+															"delete-item-html":"<button>Remove</button>",
+														    "min-size":1,
+															"child-config":{
+																			"label":"Select field:",
+																			"field":"",
+																			"json-data-url": "$portalPath/report/reports.ajax?func=action&action=options"
+																			},
+															"class-list":widgetListBranding
+															});
+
+
+		$("#dateCreatedContainer").jaffaRadioGroup({
+    												"label": "",
+    												"field": "dateCreatedModified",
+    												"label-field": "formRadioLabel",
+    												"radio-data": {
+        															"created": "Date created",
+        															"modified": "Date modified"
+    												  			   },
+													"default-value": "created"    												  			   
+													});	
+	
+		$("#showOptionsContainer").jaffaDropDown({
+    												"label": "Show:",
+    												"field": "showOption",
+    												"allow-empty": false,
+    												"option-data": [
+        															{"value": "all",  "label": "All records"},
+        															{"value": "published",  "label": "Published records"}
+    															   ],    
+												});										
+		});
+		
+		$(document).ready(function(){
+		
+		var dataSource = jaffa.config("urlDataSource");
+
+		if (dataSource != null && dataSource != "") {
+			// Get the JSON Data and run this callback
+			jaffa.util.loadJsonUrl(dataSource, function(data) {
+																var numberOfReportCriteria = 0;
+																for (var field in data) {
+																	if(field.indexOf("report-criteria") != -1) {
+   																		var index = field.split(".")[1];
+   																		if(index > (numberOfReportCriteria+1)){
+     																		numberOfReportCriteria = index -1;
+   																		}
+																	}
+																	jaffa.serverData[field] = data[field];
+															  	}
+
+																for(var i=0; i<numberOfReportCriteria;i++) {
+    																$("#reportCriteria .jaffaAddItem button").click();
+																}
+		
+																jaffa.form.synch(true);
+															});
+													}
+	
+	$('#submitButton').click(function () {
+											jQuery.each($("[id^=report-criteria]").find("[id$=dropdown]"),function(index,value) {
+													 var id = $(value).attr('id');
+													 //we only want the id of the select field dropdown
+													 if(id.match("report-criteria\\.[0-9]+\\.dropdown")) {
+   													 	jaffa.valid.setSaveRules(id, ["required"], null, validationFail);
+   													 }
+											});
+											
+											jaffa.form.save();
+											return false;
+										});
+}); 
+
+
+	
+
+
+
+
+		
+</script>
+
+
+#else
+	<span>$self.getErrorMsg()</span>
+#end

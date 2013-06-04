@@ -3,7 +3,7 @@ import time
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
-from java.util import HashSet
+from java.util import HashSet, HashMap
 from org.apache.commons.io import IOUtils
 
 class IndexData:
@@ -16,7 +16,7 @@ class IndexData:
         self.utils = context["pyUtils"]
         self.config = context["jsonConfig"]
         self.log = context["log"]
-
+        self.last_modified = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         self.log.debug("Indexing Metadata Record '{}' '{}'", self.object.getId(), self.payload.getId())
 
         # Common data
@@ -26,7 +26,7 @@ class IndexData:
         for pid in pidList:
             if pid.endswith(".tfpackage"):
                 self.packagePid = pid
-
+                
         # Real metadata
         if self.itemType == "object":
             self.__basicData()
@@ -53,7 +53,7 @@ class IndexData:
 
         self.utils.add(self.index, "id", self.oid)
         self.utils.add(self.index, "item_type", self.itemType)
-        self.utils.add(self.index, "last_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+        self.utils.add(self.index, "last_modified", self.last_modified)
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
         self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
 
@@ -96,26 +96,33 @@ class IndexData:
                         self.utils.add(self.index, "security_filter", role)
                     else:
                         # Their access has been revoked
-                        self.__revokeAccess(role)
+                        self.__revokeRoleAccess(role)
             # Now for every role that the new step allows access
             for role in self.item_security:
                 if role not in roles:
                     # Grant access if new
-                    self.__grantAccess(role)
+                    self.__grantRoleAccess(role)
                     self.utils.add(self.index, "security_filter", role)
 
         # No existing security
         else:
             if self.item_security is None:
                 # Guest access if none provided so far
-                self.__grantAccess("guest")
+                self.__grantRoleAccess("guest")
                 self.utils.add(self.index, "security_filter", role)
             else:
                 # Otherwise use workflow security
                 for role in self.item_security:
                     # Grant access if new
-                    self.__grantAccess(role)
+                    self.__grantRoleAccess(role)
                     self.utils.add(self.index, "security_filter", role)
+        
+        users = self.utils.getUsersWithAccess(self.oid)
+        if users is not None:
+            # For every role currently with access
+            for user in users:
+                self.utils.add(self.index, "security_exception", user)
+
         # Ownership
         if self.owner is None:
             self.utils.add(self.index, "owner", "system")
@@ -127,16 +134,28 @@ class IndexData:
         for value in HashSet(values):
             self.utils.add(self.index, name, value)
 
-    def __grantAccess(self, newRole):
+    def __grantRoleAccess(self, newRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
         self.utils.setAccessSchema(schema, "derby")
+        
+    def __grantUserAccess(self, newUser):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("user", newUser)
+        self.utils.setAccessSchema(schema, "derby")
 
-    def __revokeAccess(self, oldRole):
+    def __revokeRoleAccess(self, oldRole):
         schema = self.utils.getAccessSchema("derby");
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
+        self.utils.removeAccessSchema(schema, "derby")
+        
+    def __revokeUserAccess(self, oldUser):
+        schema = self.utils.getAccessSchema("derby");
+        schema.setRecordId(self.oid)
+        schema.set("user", oldUser)
         self.utils.removeAccessSchema(schema, "derby")
 
     def __metadata(self):
@@ -150,7 +169,15 @@ class IndexData:
         self.formatList = ["application/x-fascinator-package"]
         self.fulltext = []
         self.relationDict = {}
-        self.customFields = {}
+        self.customFields = {}        
+        self.creatorFullNameMap = HashMap()
+        self.grantNumberList = []
+        self.arrayBucket = HashMap()
+        self.compFields = ["dc:coverage.vivo:DateTimeInterval", "locrel:prc.foaf:Person"]
+        self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ","start":"start","end":"end"},"locrel:prc.foaf:Person":{"delim":", ","start":"familyName","end":"givenName"} }
+        self.reportingFieldPrefix = "reporting_"
+        self.embargoedDate = None
+        self.createTimeStamp = None
 
         # Try our data sources, order matters
         self.__workflow()
@@ -176,7 +203,16 @@ class IndexData:
             self.__indexList(key, self.customFields[key])
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
-
+        if self.arrayBucket.size() > 0:
+            for arrFldName in self.arrayBucket.keySet():
+                if arrFldName.endswith("Person") or arrFldName.replace(self.reportingFieldPrefix, "") in self.compFields:
+                    self.__indexList(arrFldName, self.arrayBucket.get(arrFldName).values())
+                else:
+                    self.__indexList(arrFldName, self.arrayBucket.get(arrFldName))
+        if self.embargoedDate is not None:
+            self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
+        if self.createTimeStamp is None:
+            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
     def __workflow(self):
         # Workflow data
         WORKFLOW_ID = "dataset"
@@ -263,7 +299,12 @@ class IndexData:
                 if self.title is None:
                     self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
+        
+        #Used to make sure we have a created date
+        createdDateFlag  = False
+        
         formData = manifest.getJsonObject()
+        
         for field in formData.keySet():
             if field not in coreFields:
                 value = formData.get(field)
@@ -272,9 +313,15 @@ class IndexData:
                     # We want to sort by date of creation, so it
                     # needs to be indexed as a date (ie. 'date_*')
                     if field == "dc:created":
-                        parsedTime = time.strptime(value, "%Y-%m-%d")   
+                        parsedTime = time.strptime(value, "%Y-%m-%d")
                         solrTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", parsedTime)
                         self.utils.add(self.index, "date_created", solrTime)
+                        self.log.debug("Set created date to :%s" % solrTime)
+                        createdDateFlag = True
+                    elif field == "redbox:embargo.dc:date":
+                        self.embargoedDate = value
+                    elif field == "create_timestamp":
+                        self.createTimeStamp = value
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \
@@ -302,8 +349,69 @@ class IndexData:
                         # index keywords for lookup
                         if field.startswith("dc:subject.vivo:keyword."):
                             self.utils.add(self.index, "keywords", value)
+                    # check if this is an array field
+                    fnameparts = field.split(":")
+                    if fnameparts is not None and len(fnameparts) >= 3:
+                        if field.startswith("bibo") or field.startswith("skos"):
+                            arrParts = fnameparts[1].split(".")
+                        else:    
+                            arrParts = fnameparts[2].split(".")
+                        # we're not interested in: Relationship, Type and some redbox:origin 
+                        if arrParts is not None and len(arrParts) >= 2 and field.find(":Relationship.") == -1 and field.find("dc:type") == -1 and field.find("redbox:origin") == -1 and arrParts[1].isdigit():
+                            # we've got an array field
+                            fldPart = ":%s" % arrParts[0]
+                            prefixEndIdx = field.find(fldPart) + len(fldPart)
+                            suffixStartIdx = prefixEndIdx+len(arrParts[1])+1
+                            arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx] + field[suffixStartIdx:]
+                            if field.endswith("Name"):
+                                arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx]
+                            self.log.debug("Array Field name is:%s  from: %s, with value:%s" % (arrFldName, field, value))
+                            
+                            if field.endswith("Name"):
+                                fullFieldMap = self.arrayBucket.get(arrFldName)
+                                if fullFieldMap is None:
+                                    fullFieldMap = HashMap()
+                                    self.arrayBucket.put(arrFldName, fullFieldMap)
+                                idx = arrParts[1]
+                                fullField = fullFieldMap.get(idx)
+                                if (fullField is None):
+                                    fullField = ""
+                                if (field.endswith("givenName")):
+                                    fullField = "%s, %s" % (fullField, value)
+                                if (field.endswith("familyName")):
+                                    fullField = "%s%s" % (value, fullField) 
+                                self.log.debug("fullname now is :%s" % fullField)
+                                fullFieldMap.put(idx, fullField)
+                            else:
+                                fieldlist = self.arrayBucket.get(arrFldName)
+                                if fieldlist is None:
+                                    fieldlist = []
+                                    self.arrayBucket.put(arrFldName, fieldlist)
+                                fieldlist.append(value)
+                                
+                    for compfield in self.compFields:
+                        if field.startswith(compfield):    
+                            arrFldName = self.reportingFieldPrefix +compfield
+                            fullFieldMap = self.arrayBucket.get(arrFldName)
+                            if fullFieldMap is None:
+                                fullFieldMap = HashMap()
+                                self.arrayBucket.put(arrFldName, fullFieldMap)
+                            fullField = fullFieldMap.get("1")
+                            if fullField is None:
+                                fullField = ""
+                            if field.endswith(self.compFieldsConfig[compfield]["end"]):
+                                fullField = "%s%s%s" % (fullField, self.compFieldsConfig[compfield]["delim"] ,value)
+                            if field.endswith(self.compFieldsConfig[compfield]["start"]):
+                                fullField = "%s%s" % (value, fullField) 
+                            self.log.debug("full field now is :%s" % fullField)
+                            fullFieldMap.put("1", fullField)     
 
-        self.utils.add(self.index, "display_type", displayType)
+        self.utils.add(self.index, "display_type", displayType) 
+        
+        # Make sure we have a creation date
+        if not createdDateFlag:
+            self.utils.add(self.index, "date_created", self.last_modified)
+            self.log.debug("Forced creation date to %s because it was not explicitly set." % self.last_modified)
 
         # Workflow processing
         wfStep = wfMeta.getString(None, ["step"])

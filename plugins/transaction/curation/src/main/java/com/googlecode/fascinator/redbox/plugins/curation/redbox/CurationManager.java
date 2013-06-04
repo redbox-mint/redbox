@@ -113,14 +113,16 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Initialise method
      * 
-     * @throws TransactionException if there was an error during initialisation
+	 * @throws TransactionException
+	 *             if there was an error during initialisation
      */
     @Override
     public void init() throws TransactionException {
         systemConfig = getJsonConfig();
 
         // Load the storage plugin
-        String storageId = systemConfig.getString("file-system", "storage", "type");
+		String storageId = systemConfig.getString("file-system", "storage",
+				"type");
         if (storageId == null) {
             throw new TransactionException("No Storage ID provided");
         }
@@ -160,8 +162,8 @@ public class CurationManager extends GenericTransactionManager {
         }
 
         // Where should emails be sent?
-        emailAddress = systemConfig.getString(null,
-                "curation", "curationEmailAddress");
+		emailAddress = systemConfig.getString(null, "curation",
+				"curationEmailAddress");
         if (emailAddress == null) {
             throw new TransactionException("An admin email is required!");
         }
@@ -173,8 +175,8 @@ public class CurationManager extends GenericTransactionManager {
         }
 
         // Do admin staff want to confirm each curation?
-        manualConfirmation = systemConfig.getBoolean(false,
-                "curation", "curationRequiresConfirmation");
+		manualConfirmation = systemConfig.getBoolean(false, "curation",
+				"curationRequiresConfirmation");
 
         // Find the address of our broker
         brokerUrl = systemConfig.getString(null, "messaging", "url");
@@ -185,8 +187,7 @@ public class CurationManager extends GenericTransactionManager {
         // We also need Mint's AMQ url
         mintBroker = systemConfig.getString(null, "curation", "mintBroker");
         if (mintBroker == null) {
-            throw new TransactionException(
-                    "Cannot find Mint's message broker.");
+			throw new TransactionException("Cannot find Mint's message broker.");
         }
 
         /** Relationship mapping */
@@ -200,7 +201,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Shutdown method
      * 
-     * @throws PluginException if any errors occur
+	 * @throws PluginException
+	 *             if any errors occur
      */
     @Override
     public void shutdown() throws PluginException {
@@ -225,8 +227,10 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Assess a workflow event to see how it effects curation
      * 
-     * @param response The response object
-     * @param message The incoming message
+	 * @param response
+	 *            The response object
+	 * @param message
+	 *            The incoming message
      */
     private void workflowCuration(JsonSimple response, JsonSimple message) {
         String oid = message.getString(null, "oid");
@@ -239,7 +243,8 @@ public class CurationManager extends GenericTransactionManager {
             JSONArray relations = mapRelations(oid);
             // Unless there was an error, we should be good to go
             if (relations != null) {
-                JsonObject request = createTask(response, oid, "curation-request");
+				JsonObject request = createTask(response, oid,
+						"curation-request");
                 if (!relations.isEmpty()) {
                     request.put("relationships", relations);
                 }
@@ -270,7 +275,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Map all the relationships buried in this record's data
      * 
-     * @param oid The object ID being curated
+	 * @param oid
+	 *            The object ID being curated
      * @returns True is ready to proceed, otherwise False
      */
     private JSONArray mapRelations(String oid) {
@@ -307,13 +313,12 @@ public class CurationManager extends GenericTransactionManager {
             Object object = formData.getPath(basePath.toArray());
             if (object instanceof JsonObject) {
                 // And process it
-                JsonObject newRelation = lookForRelation(
-                        oid, baseField, relationConfig,
-                        new JsonSimple((JsonObject) object));
-                if (newRelation != null &&
-                        !isKnownRelation(relations, newRelation)) {
-                    log.info("Adding relation: '{}' => '{}'",
-                            baseField, newRelation.get("identifier"));
+				JsonObject newRelation = lookForRelation(oid, baseField,
+						relationConfig, new JsonSimple((JsonObject) object));
+				if (newRelation != null
+						&& !isKnownRelation(relations, newRelation)) {
+					log.info("Adding relation: '{}' => '{}'", baseField,
+							newRelation.get("identifier"));
                     relations.add(newRelation);
                     changed = true;
                 }
@@ -323,11 +328,11 @@ public class CurationManager extends GenericTransactionManager {
                 // Try every entry
                 for (Object loopObject : (JSONArray) object) {
                     if (loopObject instanceof JsonObject) {
-                        JsonObject newRelation = lookForRelation(
-                                oid, baseField, relationConfig,
-                                new JsonSimple((JsonObject) loopObject));
-                        if (newRelation != null &&
-                                !isKnownRelation(relations, newRelation)) {
+						JsonObject newRelation = lookForRelation(oid,
+								baseField, relationConfig, new JsonSimple(
+										(JsonObject) loopObject));
+						if (newRelation != null
+								&& !isKnownRelation(relations, newRelation)) {
                             log.info("Adding relation: '{}' => '{}'",
                                     baseField, newRelation.get("identifier"));
                             relations.add(newRelation);
@@ -354,10 +359,14 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Look through part of the form data for a relationship.
      * 
-     * @param oid The object ID of the current object
-     * @param field The full field String to store for comparisons
-     * @param config The config relating to the relationship we are looking for
-     * @param baseNode The JSON node the relationship should be under
+	 * @param oid
+	 *            The object ID of the current object
+	 * @param field
+	 *            The full field String to store for comparisons
+	 * @param config
+	 *            The config relating to the relationship we are looking for
+	 * @param baseNode
+	 *            The JSON node the relationship should be under
      * @return JsonObject A relationship in JSON, or null if not found
      */
     private JsonObject lookForRelation(String oid, String field,
@@ -376,7 +385,8 @@ public class CurationManager extends GenericTransactionManager {
                 return null;
             }
         }
-        String exStartsWith = config.getString(null, "excludeCondition", "startsWith");
+		String exStartsWith = config.getString(null, "excludeCondition",
+				"startsWith");
         if (exPath != null && !exPath.isEmpty() && exStartsWith != null) {
             String value = baseNode.getString(null, exPath.toArray());
             if (value != null && value.startsWith(exStartsWith)) {
@@ -410,8 +420,7 @@ public class CurationManager extends GenericTransactionManager {
             relPath = config.getStringList("relationship");
         }
         // But we have to have one.
-        if (staticRelation == null &&
-                (relPath == null || relPath.isEmpty())) {
+		if (staticRelation == null && (relPath == null || relPath.isEmpty())) {
             log.error("Ignoring invalid relationship '{}'. No relationship"
                     + " String of path in configuration", field);
             return null;
@@ -465,13 +474,15 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Test whether the field provided is already a known relationship
      * 
-     * @param relations The list of current relationships
-     * @param field The cleaned field to provide some context
-     * @param id The ID of the related object
+	 * @param relations
+	 *            The list of current relationships
+	 * @param field
+	 *            The cleaned field to provide some context
+	 * @param id
+	 *            The ID of the related object
      * @returns True is it is a known relationship
      */
-    private boolean isKnownRelation(JSONArray relations,
-            JsonObject newRelation) {
+	private boolean isKnownRelation(JSONArray relations, JsonObject newRelation) {
         // Does it have an OID? Highest priority. Avoids infinite loops
         // between ReDBox collections pointing at each other, so strict
         if (newRelation.containsKey("oid")) {
@@ -511,10 +522,11 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * This method encapsulates the logic for curation in ReDBox
      * 
-     * @param oid The object ID being curated
+	 * @param oid
+	 *            The object ID being curated
+	 * @returns JsonSimple The response object to send back to the queue
+	 *          consumer
      * @throws TransactionException 
-     * @returns JsonSimple The response object to send back to the
-     * queue consumer
      */
     private JsonSimple curation(JsonSimple message, String task, String oid) throws TransactionException {
         JsonSimple response = new JsonSimple();
@@ -546,8 +558,8 @@ public class CurationManager extends GenericTransactionManager {
 
         // Check object state
         boolean curated = false;
-        boolean alreadyCurated = itemConfig.getBoolean(false,
-                "curation", "alreadyCurated");
+		boolean alreadyCurated = itemConfig.getBoolean(false, "curation",
+				"alreadyCurated");
         boolean errors = false;
 
         // Can we already see this PID?
@@ -596,7 +608,9 @@ public class CurationManager extends GenericTransactionManager {
 
         // Errors have occurred, email someone and do nothing
         if (errors) {
-            emailObjectLink(response, oid,
+			emailObjectLink(
+					response,
+					oid,
                     "An error occurred curating this object, some"
                     + " manual intervention may be required; please see"
                     + " the system logs.");
@@ -644,7 +658,9 @@ public class CurationManager extends GenericTransactionManager {
                     } catch (StorageException ex) {
                         log.error("Error accessing object '{}' in storage: ",
                                 oid, ex);
-                        emailObjectLink(response, oid,
+						emailObjectLink(
+								response,
+								oid,
                                 "This object is ready for publication, but an"
                                 + " error occured writing to storage. Please"
                                 + " see the system log");
@@ -653,8 +669,8 @@ public class CurationManager extends GenericTransactionManager {
                     // Since the flag hasn't been set we also know this is the
                     //   first time through, so generate some notifications
                     emailObjectLink(response, oid,
-                            "This email is confirming that the object linked" +
-                            " below has completed curation.");
+							"This email is confirming that the object linked"
+									+ " below has completed curation.");
                     audit(response, oid, "Curation completed.");
 
                     // Schedule a followup to re-index and transform
@@ -683,9 +699,10 @@ public class CurationManager extends GenericTransactionManager {
                     isReady = checkChildren(response, data, oid, thisPid,
                             false, childOid, childId, curatedPid);
                 } catch (TransactionException ex) {
-                    log.error("Error updating related objects '{}': ",
-                            oid, ex);
-                    emailObjectLink(response, oid,
+					log.error("Error updating related objects '{}': ", oid, ex);
+					emailObjectLink(
+							response,
+							oid,
                             "An error occurred curating this object, some"
                             + " manual intervention may be required; please see"
                             + " the system logs.");
@@ -706,9 +723,11 @@ public class CurationManager extends GenericTransactionManager {
                 try {
                     isReady = checkChildren(response, data, oid, thisPid, true);
                 } catch (TransactionException ex) {
-                    log.error("Error processing related objects '{}': ",
-                            oid, ex);
-                    emailObjectLink(response, oid,
+					log.error("Error processing related objects '{}': ", oid,
+							ex);
+					emailObjectLink(
+							response,
+							oid,
                             "An error occurred curating this object, some"
                             + " manual intervention may be required; please see"
                             + " the system logs.");
@@ -730,13 +749,15 @@ public class CurationManager extends GenericTransactionManager {
 
             // Since it is already curated, we are just storing any new
             //  relationships / responses and passing things along
-            if (task.equals("curation-request") ||
-                    task.equals("curation-query")) {
+			if (task.equals("curation-request")
+					|| task.equals("curation-query")) {
                 try {
                     storeRequestData(message, oid);
                 } catch (TransactionException ex) {
                     log.error("Error storing request data '{}': ", oid, ex);
-                    emailObjectLink(response, oid,
+					emailObjectLink(
+							response,
+							oid,
                             "An error occurred curating this object, some"
                             + " manual intervention may be required; please see"
                             + " the system logs.");
@@ -777,13 +798,19 @@ public class CurationManager extends GenericTransactionManager {
             }
 
         //***
-        // What should happen per task if we have *NOT* already been curated?
+			// What should happen per task if we have *NOT* already been
+			// curated?
         } else {
-            // Whoops! We shouldn't be confirming or responding to a non-curated item!!!
-            if (task.equals("curation-confirm") ||
-                    task.equals("curation-pending")) {
-                emailObjectLink(response, oid,
-                        "NOTICE: The system has received a '" + task + "'"
+			// Whoops! We shouldn't be confirming or responding to a non-curated
+			// item!!!
+			if (task.equals("curation-confirm")
+					|| task.equals("curation-pending")) {
+				emailObjectLink(
+						response,
+						oid,
+						"NOTICE: The system has received a '"
+								+ task
+								+ "'"
                         + " event, but the record does not appear to be"
                         + " curated. If your system is configured for VITAL"
                         + " integration this should clear by itself soon.");
@@ -796,7 +823,9 @@ public class CurationManager extends GenericTransactionManager {
                     storeRequestData(message, oid);
                 } catch (TransactionException ex) {
                     log.error("Error storing request data '{}': ", oid, ex);
-                    emailObjectLink(response, oid,
+					emailObjectLink(
+							response,
+							oid,
                             "An error occurred curating this object, some"
                             + " manual intervention may be required; please see"
                             + " the system logs.");
@@ -812,10 +841,12 @@ public class CurationManager extends GenericTransactionManager {
                 }
 
                 if (manualConfirmation) {
-                    emailObjectLink(response, oid,
-                            "A curation request has been recieved for this" +
-                            " object. You can find a link below to approve" +
-                            " the request.");
+					emailObjectLink(
+							response,
+							oid,
+							"A curation request has been recieved for this"
+									+ " object. You can find a link below to approve"
+									+ " the request.");
                     audit(response, oid, "Curation request received. Pending");
                 } else {
                     createTask(response, oid, "curation");
@@ -829,7 +860,9 @@ public class CurationManager extends GenericTransactionManager {
                     storeRequestData(message, oid);
                 } catch (TransactionException ex) {
                     log.error("Error storing request data '{}': ", oid, ex);
-                    emailObjectLink(response, oid,
+					emailObjectLink(
+							response,
+							oid,
                             "An error occurred curating this object, some"
                             + " manual intervention may be required; please see"
                             + " the system logs.");
@@ -842,8 +875,8 @@ public class CurationManager extends GenericTransactionManager {
             // The actual curation event
             if (task.equals("curation")) {
                 audit(response, oid, "Object curation requested.");
-                List<String> list = itemConfig.getStringList(
-                        "transformer", "curation");
+				List<String> list = itemConfig.getStringList("transformer",
+						"curation");
 
                 // Pass through whichever curation transformer are configured
                 if (list != null && !list.isEmpty()) {
@@ -881,16 +914,21 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Look through all known related objects and assess their readiness.
-     * Can optionally send downstream curation requests if required, and update
-     * a relationship based on responses.
+	 * Look through all known related objects and assess their readiness. Can
+	 * optionally send downstream curation requests if required, and update a
+	 * relationship based on responses.
      * 
-     * @param response The response currently being built
-     * @param data The object's data
-     * @param oid The object's ID
-     * @param sendRequests True if curation requests should be sent out
+	 * @param response
+	 *            The response currently being built
+	 * @param data
+	 *            The object's data
+	 * @param oid
+	 *            The object's ID
+	 * @param sendRequests
+	 *            True if curation requests should be sent out
      * @returns boolean True if all 'children' have been curated.
-     * @throws TransactionException If an error occurs
+	 * @throws TransactionException
+	 *             If an error occurs
      */
     private boolean checkChildren(JsonSimple response, JsonSimple data,
             String thisOid, String thisPid, boolean sendRequests)
@@ -900,17 +938,22 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Look through all known related objects and assess their readiness.
-     * Can optionally send downstream curation requests if required, and update
-     * a relationship based on responses.
+	 * Look through all known related objects and assess their readiness. Can
+	 * optionally send downstream curation requests if required, and update a
+	 * relationship based on responses.
      * 
-     * @param response The response currently being built
-     * @param data The object's data
-     * @param oid The object's ID
-     * @param sendRequests True if curation requests should be sent out
+	 * @param response
+	 *            The response currently being built
+	 * @param data
+	 *            The object's data
+	 * @param oid
+	 *            The object's ID
+	 * @param sendRequests
+	 *            True if curation requests should be sent out
      * @param childOid 
      * @returns boolean True if all 'children' have been curated.
-     * @throws TransactionException If an error occurs
+	 * @throws TransactionException
+	 *             If an error occurs
      */
     private boolean checkChildren(JsonSimple response, JsonSimple data,
             String thisOid, String thisPid, boolean sendRequests,
@@ -933,23 +976,22 @@ public class CurationManager extends GenericTransactionManager {
             if (relatedOid == null && localRecord) {
                 String identifier = json.getString(null, "identifier");
                 if (identifier == null) {
-                    throw new TransactionException(
-                            "NULL identifer provided!");
+					throw new TransactionException("NULL identifer provided!");
                 }
                 relatedOid = idToOid(identifier);
                 if (relatedOid == null) {
-                    throw new TransactionException(
-                            "Cannot resolve identifer: " + identifier);
+					throw new TransactionException("Cannot resolve identifer: "
+							+ identifier);
                 }
                 ((JsonObject) relation).put("oid", relatedOid);
                 saveData = true;
             }
 
             // Are we updating a relationship... and is it this one?
-            boolean updatingById =
-                    (childId != null && childId.equals(relatedId));
-            boolean updatingByOid =
-                    (childOid != null && childOid.equals(relatedOid));
+			boolean updatingById = (childId != null && childId
+					.equals(relatedId));
+			boolean updatingByOid = (childOid != null && childOid
+					.equals(relatedOid));
             if (curatedPid != null && (updatingById || updatingByOid)) {
                 log.debug("Updating...");
                 ((JsonObject) relation).put("isCurated", true);
@@ -1064,9 +1106,12 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Store the important parts of the request data for later use.
      * 
-     * @param message The JsonSimple message to store
-     * @param oid The Object to store the message in
-     * @throws TransactionException If an error occurred
+	 * @param message
+	 *            The JsonSimple message to store
+	 * @param oid
+	 *            The Object to store the message in
+	 * @throws TransactionException
+	 *             If an error occurred
      */
     private void storeRequestData(JsonSimple message, String oid)
             throws TransactionException {
@@ -1133,7 +1178,8 @@ public class CurationManager extends GenericTransactionManager {
                 for (JsonSimple relation : JsonSimple.toJavaList(relations)) {
                     String storedId = relation.getString(null, "identifier");
                     if (identifier.equals(storedId)) {
-                        log.debug("Ignoring duplicate relationship '{}'", identifier);
+						log.debug("Ignoring duplicate relationship '{}'",
+								identifier);
                         duplicate = true;
                     }
                 }
@@ -1160,13 +1206,16 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Get the requested object ready for publication. This would typically
-     * just involve setting a flag
+	 * Get the requested object ready for publication. This would typically just
+	 * involve setting a flag
      * 
-     * @param message The incoming message
-     * @param oid The object identifier to publish
+	 * @param message
+	 *            The incoming message
+	 * @param oid
+	 *            The object identifier to publish
      * @return JsonSimple The response object
-     * @throws TransactionException If an error occurred
+	 * @throws TransactionException
+	 *             If an error occurred
      */
     private JsonSimple publish(JsonSimple message, String oid)
             throws TransactionException {
@@ -1185,8 +1234,8 @@ public class CurationManager extends GenericTransactionManager {
                 log.info("Publication flag is already set '{}'", oid);
             }
         } catch (StorageException ex) {
-            throw new TransactionException(
-                    "Error setting publish property: ", ex);
+			throw new TransactionException("Error setting publish property: ",
+					ex);
         }
 
         // Make a final pass through the curation tool(s),
@@ -1195,8 +1244,8 @@ public class CurationManager extends GenericTransactionManager {
         if (itemConfig == null) {
             log.error("Error accessing item configuration!");
         } else {
-            List<String> list = itemConfig.getStringList(
-                    "transformer", "curation");
+			List<String> list = itemConfig.getStringList("transformer",
+					"curation");
 
             if (list != null && !list.isEmpty()) {
                 for (String id : list) {
@@ -1219,7 +1268,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Send out requests to all relations to publish
      * 
-     * @param oid The object identifier to publish
+	 * @param oid
+	 *            The object identifier to publish
      * @throws TransactionException 
      */
     private void publishRelations(JsonSimple response, String oid) throws TransactionException {
@@ -1271,8 +1321,8 @@ public class CurationManager extends GenericTransactionManager {
 
                     // Or remote
                     } else {
-                        JsonObject task = createTask(response, broker, relatedOid,
-                                "publish");
+						JsonObject task = createTask(response, broker,
+								relatedOid, "publish");
                         // We won't know OIDs for remote systems
                         task.remove("oid") ;
                         task.put("identifier", relatedId);
@@ -1302,9 +1352,11 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Processing method
      * 
-     * @param message The JsonSimple message to process
+	 * @param message
+	 *            The JsonSimple message to process
      * @return JsonSimple The actions to take in response
-     * @throws TransactionException If an error occurred
+	 * @throws TransactionException
+	 *             If an error occurred
      */
     @Override
     public JsonSimple parseMessage(JsonSimple message)
@@ -1355,7 +1407,8 @@ public class CurationManager extends GenericTransactionManager {
                 if (newStep != null || eventType.equals("ReIndex")) {
                     // For housekeeping, we need to alter the
                     //   Solr index fairly speedily
-                    boolean quickIndex = message.getBoolean(false, "quickIndex");
+					boolean quickIndex = message
+							.getBoolean(false, "quickIndex");
                     if (quickIndex) {
                         JsonObject order = newIndex(response, oid);
                         order.put("forceCommit", true);
@@ -1463,8 +1516,10 @@ public class CurationManager extends GenericTransactionManager {
      * Generate a fairly common list of orders to transform and index an object.
      * This mirrors the traditional tool chain.
      * 
-     * @param message The response to modify
-     * @param message The message we received
+	 * @param message
+	 *            The response to modify
+	 * @param message
+	 *            The message we received
      */
     private void reharvest(JsonSimple response, JsonSimple message) {
         String oid = message.getString(null, "oid");
@@ -1495,14 +1550,15 @@ public class CurationManager extends GenericTransactionManager {
     }
 
     /**
-     * Generate an order to send an email to the intended recipient with a
-     * link to an object
+	 * Generate an order to send an email to the intended recipient with a link
+	 * to an object
      * 
-     * @param response The response to add an order to
-     * @param message The message we want to send
+	 * @param response
+	 *            The response to add an order to
+	 * @param message
+	 *            The message we want to send
      */
-    private void emailObjectLink(JsonSimple response, String oid,
-            String message) {
+	private void emailObjectLink(JsonSimple response, String oid, String message) {
         String link = urlBase + "default/detail/" + oid;
         String text = "This is an automated message from the ";
         text += "ReDBox Curation Manager.\n\n" + message;
@@ -1513,8 +1569,10 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Generate an order to send an email to the intended recipient
      * 
-     * @param response The response to add an order to
-     * @param message The message we want to send
+	 * @param response
+	 *            The response to add an order to
+	 * @param message
+	 *            The message we want to send
      */
     private void email(JsonSimple response, String oid, String text) {
         JsonObject object = newMessage(response,
@@ -1528,9 +1586,12 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Generate an order to add a message to the System's audit log
      * 
-     * @param response The response to add an order to
-     * @param oid The object ID we are logging
-     * @param message The message we want to log
+	 * @param response
+	 *            The response to add an order to
+	 * @param oid
+	 *            The object ID we are logging
+	 * @param message
+	 *            The message we want to log
      */
     private void audit(JsonSimple response, String oid, String message) {
         JsonObject order = newSubscription(response, oid);
@@ -1542,15 +1603,17 @@ public class CurationManager extends GenericTransactionManager {
      * Generate orders for the list of normal transformers scheduled to execute
      * on the tool chain
      * 
-     * @param message The incoming message, which contains the tool chain config
-     * for this object
-     * @param response The response to edit
-     * @param oid The object to schedule for clearing
+	 * @param message
+	 *            The incoming message, which contains the tool chain config for
+	 *            this object
+	 * @param response
+	 *            The response to edit
+	 * @param oid
+	 *            The object to schedule for clearing
      */
     private void scheduleTransformers(JsonSimple message, JsonSimple response) {
         String oid = message.getString(null, "oid");
-        List<String> list = message.getStringList(
-                "transformer", "metadata");
+		List<String> list = message.getStringList("transformer", "metadata");
         if (list != null && !list.isEmpty()) {
             for (String id : list) {
                 JsonObject order = newTransform(response, id, oid);
@@ -1568,7 +1631,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Clear the render flag for objects that have finished in the tool chain
      * 
-     * @param oid The object to clear
+	 * @param oid
+	 *            The object to clear
      */
     private void clearRenderFlag(String oid) {
         try {
@@ -1584,7 +1648,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Set the render flag for objects that are starting in the tool chain
      * 
-     * @param oid The object to set
+	 * @param oid
+	 *            The object to set
      */
     private void setRenderFlag(String oid) {
         try {
@@ -1601,9 +1666,12 @@ public class CurationManager extends GenericTransactionManager {
      * Create a task. Tasks are basically just trivial messages that will come
      * back to this manager for later action.
      * 
-     * @param response The response to edit
-     * @param oid The object to schedule for clearing
-     * @param task The task String to use on receipt
+	 * @param response
+	 *            The response to edit
+	 * @param oid
+	 *            The object to schedule for clearing
+	 * @param task
+	 *            The task String to use on receipt
      * @return JsonObject Access to the 'message' node of this task to provide
      * further details after creation.
      */
@@ -1615,10 +1683,14 @@ public class CurationManager extends GenericTransactionManager {
      * Create a task. This is a more detailed option allowing for tasks being
      * sent to remote brokers.
      * 
-     * @param response The response to edit
-     * @param broker The broker URL to use
-     * @param oid The object to schedule for clearing
-     * @param task The task String to use on receipt
+	 * @param response
+	 *            The response to edit
+	 * @param broker
+	 *            The broker URL to use
+	 * @param oid
+	 *            The object to schedule for clearing
+	 * @param task
+	 *            The task String to use on receipt
      * @return JsonObject Access to the 'message' node of this task to provide
      * further details after creation.
      */
@@ -1654,8 +1726,7 @@ public class CurationManager extends GenericTransactionManager {
     }
     private JsonObject newSubscription(JsonSimple response, String oid) {
         JsonObject order = createNewOrder(response,
-                TransactionManagerQueueConsumer.OrderType.
-                SUBSCRIBER.toString());
+				TransactionManagerQueueConsumer.OrderType.SUBSCRIBER.toString());
         order.put("oid", oid);
         JsonObject message = new JsonObject();
         message.put("oid", oid);
@@ -1665,14 +1736,22 @@ public class CurationManager extends GenericTransactionManager {
         order.put("message", message);
         return order;
     }
-    private JsonObject newTransform(
-            JsonSimple response, String target, String oid) {
+
+	private JsonObject newTransform(JsonSimple response, String target,
+			String oid) {
         JsonObject order = createNewOrder(response,
-                TransactionManagerQueueConsumer.OrderType.
-                TRANSFORMER.toString());
+				TransactionManagerQueueConsumer.OrderType.TRANSFORMER
+						.toString());
         order.put("target", target);
         order.put("oid", oid);
+		JsonObject config = systemConfig.getObject("transformerDefaults",
+				target);
+		if (config == null) {
         order.put("config", new JsonObject());
+		} else {
+			order.put("config", config);
+		}
+
         return order;
     }
     private JsonObject createNewOrder(JsonSimple response, String type) {
@@ -1685,7 +1764,8 @@ public class CurationManager extends GenericTransactionManager {
      * Get the stored harvest configuration from storage for the indicated
      * object.
      * 
-     * @param oid The object we want config for
+	 * @param oid
+	 *            The object we want config for
      */
     private JsonSimple getConfigFromStorage(String oid) {
         String configOid = null;
@@ -1732,7 +1812,8 @@ public class CurationManager extends GenericTransactionManager {
      * Get the form data from storage for the indicated object and parse it into
      * a JSON structure.
      * 
-     * @param oid The object we want
+	 * @param oid
+	 *            The object we want
      */
     private JsonSimple parsedFormData(String oid) {
         // Get our data from Storage
@@ -1764,7 +1845,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Get the stored data from storage for the indicated object.
      * 
-     * @param oid The object we want
+	 * @param oid
+	 *            The object we want
      */
     private JsonSimple getDataFromStorage(String oid) {
         // Get our data from Storage
@@ -1796,7 +1878,8 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Get the metadata properties for the indicated object.
      * 
-     * @param oid The object we want config for
+	 * @param oid
+	 *            The object we want config for
      */
     private Properties getObjectMetadata(String oid) {
         try {
@@ -1811,8 +1894,10 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Save the provided object data back into storage
      * 
-     * @param data The data to save
-     * @param oid The object we want it saved in
+	 * @param data
+	 *            The data to save
+	 * @param oid
+	 *            The object we want it saved in
      */
     private void saveObjectData(JsonSimple data, String oid)
             throws TransactionException {
@@ -1839,9 +1924,11 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Get the data payload (ending in '.tfpackage') from the provided object.
      * 
-     * @param object The digital object holding our payload
+	 * @param object
+	 *            The digital object holding our payload
      * @return Payload The payload requested
-     * @throws StorageException if an errors occurs or the payload is not found
+	 * @throws StorageException
+	 *             if an errors occurs or the payload is not found
      */
     private JsonSimple getWorkflowData(String oid) {
         // Get our data from Storage
@@ -1873,9 +1960,11 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Get the data payload (ending in '.tfpackage') from the provided object.
      * 
-     * @param object The digital object holding our payload
+	 * @param object
+	 *            The digital object holding our payload
      * @return Payload The payload requested
-     * @throws StorageException if an errors occurs or the payload is not found
+	 * @throws StorageException
+	 *             if an errors occurs or the payload is not found
      */
     private Payload getDataPayload(DigitalObject object)
             throws StorageException {
@@ -1890,9 +1979,12 @@ public class CurationManager extends GenericTransactionManager {
     /**
      * Update the data payload (ending in '.tfpackage') in the provided object.
      * 
-     * @param object The digital object holding our payload
-     * @param input The String to store
-     * @throws StorageException if an errors occurs or the payload is not found
+	 * @param object
+	 *            The digital object holding our payload
+	 * @param input
+	 *            The String to store
+	 * @throws StorageException
+	 *             if an errors occurs or the payload is not found
      */
     private void updateDataPayload(DigitalObject object, String input)
             throws StorageException {

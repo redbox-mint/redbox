@@ -165,7 +165,7 @@
     <p>
         #mintSelectField("foaf:Organization.dc:identifier"
                          "foaf:Organization.skos:prefLabel"
-                         "$portalPath/proxyGet?ns=Parties_Groups&qs=count%3D9999"
+                         "$portalPath/proxyGet.script?ns=Parties_Groups&qs=count%3D9999"
                          "dc:identifier"
                          "rdfs:label"
                          "results"
@@ -307,15 +307,16 @@ $(function() {
 
     function addAutocompleteGrant(elem) {
         elem.autocomplete(
-            "$portalPath/proxyGet?ns=Activities&autocomplete=true&fields=grant_number,dc:title,repository_name,dc:identifier",
+            "$portalPath/proxyGet.script?ns=Activities&autocomplete=true&fields=grant_number,dc:title,repository_name,dc:identifier",
             {
                 extraParams: {
-                    qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
+                    qs: function() { return "count=2500&searchTerms=" + escape(elem.val().toLowerCase()); }
                 },
                 formatItem: function(row) { return splitGrantData(row).display; },
                 formatResult: function(row) { return splitGrantData(row).id; },
                 mustMatch: true,
-                width: "40em"
+                width: "40em",
+				max:2500
             }).result(function(event, row) {
                 var uri = $(this).next();
                 var label = $(this).parent().next().find(".autocomplete-grant-label")
@@ -382,7 +383,7 @@ $(function() {
         var elem = $(this);
         $(this).unautocomplete();
         $(this).autocomplete(
-            "$portalPath/proxyGet?ns=Funding_Bodies&autocomplete=true&fields=dc:identifier,dc:title",
+            "$portalPath/proxyGet.script?ns=Funding_Bodies&autocomplete=true&fields=dc:identifier,dc:title",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }

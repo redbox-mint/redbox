@@ -1,0 +1,58 @@
+<div class="block">
+#if ($self.myDrafts && $self.myDrafts.size() > 0)
+	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.draft.title')</p>
+<table>
+    <thead>
+        <tr>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.manage')</th>
+        </tr>
+    </thead>
+    <tbody>
+	#foreach($item in $self.myDrafts)
+	    #set($oid = $item.get("id"))
+	    <tr>
+	    	<td><a href="$portalPath/detail/$oid">$page.escapeHtml($item.get("dc_title"))</a></td>
+		    <td>
+            #parseTemplate("home/dmpt/created_modified_date.vm")                
+		    </td>
+		    <td>$self.formatDate($item.get("last_modified"))</td>
+	        <td><a href="$portalPath/workflow/$oid"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')" src="$portalPath/images/icons/workflow_edit.png" title="#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')"></a>
+	            <!--<a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>-->
+	            <a onclick="manage_access('$oid');" href="#" title="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
+	       </td>
+	    </tr>
+	#end
+    </tbody>
+</table>
+#end       
+#if ($self.myDatasets && $self.myDatasets.size() > 0)
+	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.submitted.title')</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.mydatasets.table.status')</th>
+        </tr>
+    </thead>
+    <tbody>
+    #foreach($item in $self.myDatasets)
+    #set($oid = $item.get("id"))
+	    <tr>
+    	<td><a href="$portalPath/detail/$oid">$item.get("dc_title")</a></td>
+	    <td>
+        #parseTemplate("home/dmpt/created_modified_date.vm")                
+	    </td>
+	    <td>$self.formatDate($item.get("last_modified"))</td>
+        <td>$item.get("workflow_step_label")</td>
+        </tr>
+    #end
+    </tbody>
+</table>
+#end
+</div>

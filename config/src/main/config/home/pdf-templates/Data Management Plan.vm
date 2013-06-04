@@ -1,0 +1,260 @@
+#macro(noInformation)
+<i>Not provided</i>
+#end
+#macro(getValue $key)
+    #set($v = $util.get($item, $key).trim())
+    #if($v && ("$!v" != ""))
+		<![CDATA[ $v ]]>
+    #else
+		#noInformation()	
+    #end
+#end
+
+#macro(getList $listName)
+    #set($items = $util.getList($item, "$listName"))
+    #if ($items && $items.size() > 0)
+		#set($i = 0)
+#foreach($el in $items)
+#if($i > 0), #else #set($i = 1) #end
+<![CDATA[$el]]>#end
+    #else
+		#noInformation()
+    #end
+#end
+
+#macro(display $key $name)
+    <dt>$name: </dt>
+    #set($v = $util.get($item, $key).trim())
+    <dd>
+    #if($v && ("$!v" != ""))
+		<![CDATA[ $v ]]>
+    #else
+		#noInformation()	
+    #end
+    </dd>
+#end
+#macro(displayNote $key $name)
+    #set($v = $util.get($item, $key).trim())
+    #if($v && ("$!v" != ""))
+    	<h4>$name</h4>
+    	<p><![CDATA[ $v ]]></p>
+    #end
+#end
+#macro(displayRow $key $name $c $type)
+	<tr class="$c">
+    <td class="first_col">$name: </td>
+    <td>#if ( $type == "list" ) #getList($key) #else #getValue($key) #end </td>
+    </tr>
+#end
+
+##Used in footer
+#set ($projectName = $util.get($item, "dc:title"))
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Data management plan</title>
+<style type='text/css'>
+body {width: 18cm; }
+p { margin-top: 2px; }
+hr { margin:0px; margin-top:10px; }
+
+h1 { text-align:center; }
+section h1 { text-align:left; font-size: x-large; margin-top:1px; margin-bottom:5px; }
+h4 { font-wight:bold; margin-top: 10px; margin-bottom: 2px;}
+
+dl { margin-top: 1px; margin-bottom: 1px; }
+dt  {
+	clear:left;
+	float:left;
+	line-height:26px;
+	font-weight:bold;
+	margin-right: 1em;
+}
+dd {
+	clear:right;
+	padding:4px 0 4px;
+}
+
+##table { width:14cm }
+table, td, th {	border: none; border-collapse:collapse; padding:8px;}
+.first_col { width: 4cm; }
+
+#people {	border: solid 1px; margin-bottom:5px; }
+#people td { border-right: solid 1px; }
+.odd_row { background-color: white }
+.even_row { background-color: #EEEEEE }
+
+@page { 
+	size:8.27in 11.69in; 
+	margin: 0.5in 0.25in 0.5in 0.25in; 
+	-fs-flow-top: "header";
+	-fs-flow-bottom: "footer";
+	-fs-flow-left: "left";
+	-fs-flow-right: "right";
+	padding: 1em;
+	@top-center { content: element(header)}
+	@bottom-center { content: element(footer) }
+}
+
+#header {
+	font: bold serif;
+	position: running(header); 
+	-fs-move-to-flow: "header";
+	text-align: left;
+}
+
+#footer {
+	font-size: 90%; font-style: italic; 
+	position: running(footer);
+	display: block; 
+	text-align: right;
+}
+
+#pagenumber:before {
+	content: counter(page); 
+}
+
+#pagecount:before {
+	content: counter(pages);  
+}
+
+	</style>
+	</head>
+<body>
+<div id="header"><img src='../../portal/default/redbox/images/redboxicon.png' height="30"/> Data management planning toolkit</div>
+<div id="footer">Project: <![CDATA[ $projectName ]]><br/>Page: <span id="pagenumber"/></div>
+
+<h1>Data management plan</h1>
+#parse( "sections/overview.vm" )
+#parse( "sections/people.vm" )
+<section>
+<h1>Data storage</h1>
+    <dl>
+        #display("vivo:Dataset.dc:extent.prefLabel" "Expected size of the data collected")
+        #display("vivo:Dataset.dc:location.rdf:PlainLiteral.prefLabel" "Storage location")
+    </dl>
+	#displayNote("vivo:Dataset.dc:location.skos:note" "Storage location note")
+    <dl>    
+        #display("vivo:Dataset.dc:source.dc:location.rdf:PlainLiteral.prefLabel" "Location of the master version")
+    </dl>    
+    #displayNote("vivo:Dataset.dc:source.dc:location.skos:note" "Location of the master version note")
+</section>
+<hr />
+<section>
+<h1>Ethics and sensitivities</h1>
+    <dl>
+        #display("agls:policy.dc:identifier" "Ethics approval number")
+    </dl>    
+    #displayNote("agls:policy.skos:note" "Information about ethical considerations relevant to this project and how they will be managed")
+    <dl>    
+    ## agls:protectiveMarking.dc:type is saved from checkbox, sepecial treat
+    #set($itemList = $util.getList($item, "agls:protectiveMarking.dc:type"))
+    <dt>Type of sensitivity</dt>
+    <dd>
+    #if ($itemList.size() > 0)
+    	#set($i = 0)
+#foreach($key in $itemList.keySet())
+#set($display_value = "--")
+#set($key_value = $itemList.get($key).get($key))
+#if ($key_value == "agls:protectiveMarking.dc:type.redbox:CulturallySensitive") 			
+#set($display_value = "Culturally sensitive")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:CommerciallySensitive")
+#set($display_value = "Commercially sensitive")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:SecurityClassified")
+#set($display_value = "Security classified")
+#elseif($key_value == "agls:protectiveMarking.dc:type.redbox:NonPublic")
+#set($display_value = "Non-public")
+#elseif($key_value != 'null')
+#set($display_value = $key_value)
+#end
+#if( $!display_value != "" && $display_value != "--") 
+#if($i > 0),#end $display_value#set($i = $i + 1)#end	
+#end
+    #else
+        #noInformation()
+    #end
+    </dd>
+
+    </dl>    
+    #displayNote("agls:protectiveMarking.skos:note" "Information about privacy, confidentiality or sensitivity to the data and how it will be managed")
+</section>
+<hr />
+<section>
+<h1>Ownership, licensing and IP</h1>
+    <dl>
+        <dt>In which country will your data be collected: </dt>
+## Convert country codes to labels 
+    ## pseudo code
+    ## prepare all keys which need values
+    ## get key and value pairs
+    ## loop through 
+##http://115.146.93.157/mint/default/api/query.script?callType=countries&func=detail&id=http://id.loc.gov/vocabulary/countries/ag,http://id.loc.gov/vocabulary/countries/at
+	#set($forList = $util.getList($item, "dc:coverage.dc:identifier"))
+	#if ($forList.size() > 0)
+		#set($codes = "")
+	    #foreach($key in $forList.keySet())
+	    	#set($code = $forList.get($key).get("country"))
+	        #if($codes == "") 
+	        	#set($codes = $code) 
+	        #else 
+	        	#set($codes = "$codes,$code")
+	        #end
+	    #end
+	    #set($labels = $util.getMintLabels($systemConfig, "Countries_Detail", $codes))
+	    #if ($labels.size() > 0)
+	    	<dd>
+	    	#set($i = 0)
+#foreach($v in $labels)			
+#if ($i > 0),#end <![CDATA[$v]]>#set($i = $i +1)
+#end
+	    	</dd>
+	    #else
+	    	#noInformation()
+	    #end
+	#else
+		#noInformation()
+	#end
+        
+    </dl>    
+	#displayNote("dc:rightsHolder.dc:name.prefLabel" "Copyright and intellectual property owners")
+	#displayNote("dc:rightsHolder.dc:description" "List of any other owners")
+	#displayNote("redbox:ContractualObligations" "Information about contractual obligations that apply to this data")
+</section>
+<hr />
+<section>
+<h1>About the data</h1>
+	#displayNote("vivo:Dataset.redbox:MetadataStandard" "Metadata standards used")
+	#displayNote("vivo:Dataset.redbox:DataStructureStandard" "Standards applied to the data structure")
+	#displayNote("vivo:Dataset.redbox:DataCollectionMethodology" "Please provide a brief description of your data collection methodology")
+	#displayNote("vivo:Dataset.redbox:DataCollectionResources" "Software/equipment used to create/collect the data")
+	#displayNote("vivo:Dataset.redbox:DataAnalysisResources" "Software/equipment used to manipulate/analyse the data")
+    <dl>    
+        #display("vivo:Dataset.dc.format.prefLabel" "Predominant file format")
+        #display("vivo:Dataset.dc.format.other" "Other format used")
+    </dl>
+</section>
+<hr />
+<section>
+<h1>Data licensing and access</h1>
+    <dl>
+        #display("dc:accessRights" "Access will be managed by")
+        #display("dataLicensingAccess.manager" "The data manager is recorded as")
+        #display("dc:license.skos:prefLabel" "The data will be licensed under")
+		#display("dc:license.dc:identifier.other" "Other")
+		#display("dc:license.dc:identifier.url" "URL")
+    </dl>
+	#displayNote("dc:RightsStatement" "Additional asserted statement of rights")
+	#displayNote("dc:rights.skos:note" "Other relevant information (e.g. access procedures)")
+</section>
+<hr />
+<section>
+<h1>Data retention and disposal</h1>
+    <dl>
+        #display("redbox:retentionPeriod.dc:date.prefLabel" "Applicable retention period (*)")
+        #display("redbox:retentionPeriod.dc:date.skos:note.prefLabel" "Justification for extended retention period")
+        #display("redbox:disposalDate" "Earliest possible disposal date")
+    </dl>
+</section>
+</body>
+</html>

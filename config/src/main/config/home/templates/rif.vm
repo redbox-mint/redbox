@@ -2,8 +2,8 @@
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set($value = $valueMap.get($key))     
-            #if ($label != "")
-                #set($labelVal = $value.get($label))
+            #if ($label != "" && $value.get($label)!= "")				
+                #set($labelVal = $value.get($label))				
                 #if ($anzsrc == "anzsrc")
                     #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
                     #set($labelVal = $labelVal.substring($lastIndex) )
@@ -138,7 +138,7 @@
 #set($lang = "xml:lang=${quote}en${quote}")
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://services.ands.org.au/documentation/rifcs/1.3/schema/registryObjects.xsd">
+            xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.3/schema/registryObjects.xsd">
     <rif:registryObject group="$util.encodeXml($group)">
 
         <rif:key>$identifier</rif:key>

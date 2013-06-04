@@ -1,0 +1,80 @@
+#if($self.getErrorMsg()=="")
+    #set($pageTitle = "Report result")
+    <div>
+        <a href='$portalPath/report/manageReports'>View Reports</a>
+        &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;<a href='$portalPath/report/reports?reportName=$self.urlEncode($self.getReportName())'>$self.getReportLabel()</a>
+        &nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp; <span style='font-weight:bold'>Preview</span>
+    </div>
+	<h2 id="page-heading"><span>Report results</span></h2>
+    <div class="grid_16">
+        #if($self.getRowsFound() == 0)
+            <p>No results found</p>
+            #else
+                <p>Rows found: 
+                $self.getRowsFound() 
+                (below is a preview of up to 10 results)</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Record Title</th>
+                            <th>Type</th>
+                            <th>Workflow</th>
+                            <th>Date Created</th>
+                            <th>Creators</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #set($i = 0)
+                        #foreach($item in $self.getProcessedResultsList())
+                            #set($oid = $item.get("id"))
+                            #set($i = $i + 1)
+                            #if($i < 11)
+                                <tr>
+                                    <!-- <td>$item.get('dc_title')</td>  -->
+                                    <td>$item.get("dc_title")</td>
+                                    <td>#if($item.get('dc:type.skos:prefLabel')) $item.get('dc:type.skos:prefLabel') #end</td>
+                                        <td>$item.get("workflow_step_label")</td>
+                                        <td>#if($item.get('dc:created')) $item.get('dc:created') #end</td>
+                                            <td>
+                                                #set($creatorList = $item.getList("reporting_dc:creator.foaf:Person"))
+                                                #if ($creatorList.isEmpty())
+                                                    <dd>
+                                                    </dd>
+                                                    #else
+                                                        <dd>
+                                                            <ol>
+                                                                #foreach($value in $creatorList)               				                 			
+                                                                    <li>
+                                                                        $self.escapeHtml($value)
+                                                                    </li>
+                                                                #end
+                                                            </ol>
+                                                        </dd>
+                                                #end                    
+                                            </td>
+                                </tr>
+                            #end
+                        #end
+                    </tbody>
+                </table>
+                <button id='exportCsvBtn'>Export CSV</button>
+        #end
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $("#exportCsvBtn").click(function() {
+        window.location.assign(window.location.href+"&format=csv");
+        });
+        });
+    </script>
+#else
+		#set($pageTitle = "Reporting error")
+		<div>
+            <a href='$portalPath/report/manageReports'>View Reports</a>
+        </div>
+		<h2 id="page-heading"><span>Reporting error</span></h2>
+        
+        <div class="grid_12">	
+            $self.getErrorMsg()</div>
+#end
+    

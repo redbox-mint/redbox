@@ -1,0 +1,84 @@
+<section>
+	<h1>Create New System Ingest Report</h1>
+	<form>
+		<fieldset>
+			<legend>Report Parameters</legend>
+
+			<label style="display:block;">Report Name: <input type="text"></label>
+
+			<label style="display:block;">Date From<input style="margin-left: 22px;" id="dp1359076140024" class="datepicker hasDatepicker" type="date"></label> 
+			<label>Date To<input style="margin-left: 36px;" id="dp1359076140025" class="datepicker hasDatepicker" type="date"></label><br>
+			<label>Type<input name="date_type" checked="checked" style="margin-left: 52px;" type="radio">Date created</label>
+			<label style=""><input name="date_type" type="radio">Date modified</label><br>
+			<label>Show
+				<select style="margin-left: 42px;">
+					<option>All records</option>
+					<option>Published records</option>
+				</select>
+			</label>
+			<div style="margin-top: 6px;">
+				<input name="submit" value="Create" onclick="getresults();" type="submit">
+				<input name="clear" value="Clear" onclick="window.location.reload()" type="submit">
+				<input name="clear" value="CSV Export" type="submit"> </div>
+		</fieldset>
+	</form>
+	<style type="text/css"> table.demo td {width:200em;} table.demo {margin-top:20px;} </style>
+	<div id="redbox">
+		<table class="demo">
+			<tr>
+				<th style="width:200em;">REDBOX System Statistical Report</th>
+				<th>Count</th>
+			</tr>
+			<tr>
+				<td>Total</td>
+				<td>100</td>
+			</tr>
+			<tr>
+				<td>Collection</td>
+				<td>100</td>
+			</tr>
+		</table>
+		<h6>Display REDBOX System Statistical Report</h6>
+		<ul>
+			<li>record 1</li>
+			<li>record 2</li>
+		</ul>
+	</div>		
+
+	<div id="mint">
+		<table id="mint" class="demo">
+			<tbody><tr>
+				<th>MINT System Statistical Report</th>
+				<th>Count</th>
+			</tr>
+			<tr>
+				<td>Total</td>
+				<td>100</td>
+			</tr>
+			<tr>
+				<td>Party</td>
+				<td>100</td>
+			</tr>
+			<tr>
+				<td>(Party type) Person</td>
+				<td>100</td>
+			</tr>
+			</tbody>
+		</table>
+		<h6>Display MINT System Statistical Report</h6>
+		<ul>
+			<li>record 1</li>
+			<li>record 2</li>
+		</ul>
+	</div>		
+</section>
+<script>
+	$(function() {$( ".datepicker" ).datepicker();});
+	$('form').submit(function() { return false;}); 
+	$('#redbox').hide();
+	$('#mint').hide();
+	function getresults() {
+		$('#redbox').show();
+		$('#mint').show();
+	}		
+</script>

@@ -34,6 +34,46 @@
     </table>
 #end
 
+#macro(showTechnicalMetadata $id $addLabel)
+    <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>#displayMessage("dataset.technicalMetadata.url.label")</th>
+                <th>#displayMessage("dataset.technicalMetadata.title.label")</th>
+                <th>#displayMessage("dataset.technicalMetadata.mediaType.label")</th>
+                <th>#displayMessage("dataset.technicalMetadata.schemaURL.label")</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="item-input-display sortable-item">
+                <td class="sort-number"></td>
+                <td>
+                    <input type="text" size="60" placeholder="#displayMessage("dataset.technicalMetadata.url.placeholder")" id="${id}.0.dc:identifier" />
+                </td>
+                <td>
+                    <input type="text" size="60" placeholder="#displayMessage("dataset.technicalMetadata.title.placeholder")" id="${id}.0.dc:title" />
+                </td>
+                <td>
+                    <input type="text" size="15" placeholder="#displayMessage("dataset.technicalMetadata.mediaType.placeholder")" id="${id}.0.dc:type" />
+                </td>
+                <td>
+                    <input type="text" size="43" placeholder="#displayMessage("dataset.technicalMetadata.schemaURL.placeholder")" id="${id}.0.dc:conformsTo" />
+                </td>
+                <td class="delete-item" style="width: 100%;"><a href="#">delete</a></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><input type="button" class="button add-another-item" value="$addLabel" /></td>
+                <td colspan="4"></td>
+            </tr>
+        </tfoot>
+    </table>
+#end
+
 <h3><a href="#description">Description</a></h3>
 <div id="description" class="inputscreen">
     #fieldTitle("dc:description" "Description" true)
@@ -85,6 +125,20 @@
     </div>
     #relatedInfoField("dc:relation.bibo:Website" "website url" "Add website")
 
+	<div id="technical-metadata-section" style="display:none">
+	#if($languageService)
+	#set($technicalMetadataTitle = $languageService.displayMessage("dataset.technicalMetadata.title"))
+	#set($technicalMetadataAddButtonLabel = $languageService.displayMessage("dataset.technicalMetadata.addButton.label"))
+	#else
+	 #set($technicalMetadataTitle = "Technical Metadata")
+	#set($technicalMetadataAddButtonLabel = "Add Technical Metadata")
+	#end
+	#fieldTitle("dc:relation.redbox:TechnicalMetadata" $technicalMetadataTitle false)
+    <div id="help-dc:relation.redbox:TechnicalMetadata" class="help-content">
+        #displayMessage("dataset.technicalMetadata.help")
+    </div>
+    #showTechnicalMetadata("dc:relation.redbox:TechnicalMetadata" $technicalMetadataAddButtonLabel)
+	</div>
     #fieldTitle("dc:relation.vivo:Dataset" "Related Data" false)
     <div class="help-content" id="help-dc:relation.vivo:Dataset">
         <p>Link to any sources of third party data used/re-used. By default this
@@ -299,7 +353,7 @@ $(function() {
         var baseId = elem.attr("id").replace(".dc:title", "");
         elem.unautocomplete();
         elem.autocomplete(
-            "$portalPath/proxyGet?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
+            "$portalPath/proxyGet.script?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }

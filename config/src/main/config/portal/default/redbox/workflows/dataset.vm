@@ -1,6 +1,7 @@
 #set($oid = $self.getFormData("oid"))
 #set($title = $self.getFormData("title"))
 #set($pageTitle = $title)
+#set($languageService = $Services.getService("languageService"))
 <div class="grid_16" id="inputForms">
     <p class="loading-data">Loading form data, please wait...</p>
 </div>
@@ -32,6 +33,8 @@ if('$self.getPresentationConfig('hide-funding-body-label')' == '') {
 	hideFundingBodyLabel = Boolean("$self.getPresentationConfig('hide-funding-body-label')");
 }
 
+
+
 function pad(s,len,c){
     c = c || "0";
     var ps = s.toString();
@@ -55,7 +58,8 @@ function getDateTime(){
     $('#openLayersCss1').attr('href', '$portalPath/openlayers/theme/default/style.css');
     $('head').append('<link rel="stylesheet" type="text/css" id="openLayersCss2">');
     $('#openLayersCss2').attr('href', '$portalPath/openlayers/redbox.css');
-
+	
+	
     $(function(){
         function onContentLoaded(){
             // OpenLayers init, store it globally so the Geonames lookup can hit it later
@@ -136,6 +140,22 @@ function getDateTime(){
                 }catch(e){
                     alert(e);
                 }
+                if('$self.getPresentationConfig('use-ands-doi')' == 'true') {
+					$('#doiOptionSpan').show();
+				}
+				
+				if('$self.getPresentationConfig('use-embargoes')' == 'true') {
+					$("[id='embargo-section']").show();
+					$("[id='redbox:embargo.redbox:isEmbargoed']").change();
+				}
+				
+				if('$self.getPresentationConfig('use-technical-metadata')' == 'true') {
+					$("[id='technical-metadata-section']").show();
+				}
+				
+				var selectbox = $('#attachmentType-span select');
+        			selectbox.attr('id', 'attachmentType');
+        			selectbox.find('option[value=""]').remove();
             });
             
             //Hide the first date in the citations list, this one is reserved for Publication Date which has it's own field

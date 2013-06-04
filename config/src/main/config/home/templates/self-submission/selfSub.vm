@@ -1,0 +1,141 @@
+#macro(Collaborators $map $key $order)
+#set($queryKey = "person.${key}")
+#set ($value = $map.get($queryKey))
+#if ("$!value" != "")
+	"dc:contributor.locrel:clb.${order}.foaf:Agent.${key}": "$value",
+#end
+#end
+
+#macro(Grants $map $key $order)
+#set($queryKey = "${key}")
+#set ($value = $map.get($queryKey))
+#if ("$!value" != "")
+	"foaf:fundedBy.vivo:Grant.${order}.${key}": "$value",
+#end
+#end
+
+#macro(FundingSources $map $key $order)
+#set($queryKey = "${key}")
+#set ($value = $map.get($queryKey))
+#if ("$!value" != "")
+	"foaf:fundedBy.foaf:Agent.${order}.${key}": "$value",
+#end
+#end
+
+#macro(copyCodes $map $key $order $type)
+#set ($value = $map.get($key))
+#if ("$!value" != "")
+	"dc:subject.anzsrc:${type}.${order}.${key}": "$value",	
+#end
+#end
+
+#macro(mapTo $from $to)
+    #set($v = $util.get($item, $from))
+    #if ($v) "$to": "$!v",
+    #end
+#end
+{
+	"viewId": "dashboard",
+    "packageType": "self-submission",
+    "viewId": "dashboard",
+    "dc:title": "[untitled]",
+    "dc:description": "",
+    #mapTo('oid', 'redbox:ManagementPlan.oid')
+    #mapTo('dc:title', 'redbox:ManagementPlan.skos:note')
+#foreach( $key in ["swrc:supervisor.foaf:Person.foaf:title","swrc:supervisor.foaf:Person.foaf:givenName","swrc:supervisor.foaf:Person.foaf:familyName"
+                   ,"swrc:supervisor.foaf:Person.foaf:email","swrc:supervisor.foaf:Person.dc:identifier"
+                   ,"locrel:prc.foaf:Person.foaf:title","locrel:prc.foaf:Person.foaf:givenName","locrel:prc.foaf:Person.foaf:familyName"
+                   ,"locrel:prc.foaf:Person.dc:identifier","locrel:prc.foaf:Person.foaf:email"
+                   ,"dc:coverage.vivo:DateTimeInterval.vivo:start","dc:coverage.vivo:DateTimeInterval.vivo:end","dc:coverage.redbox:timePeriod"
+                   ,"dc:license.dc:identifier"
+                   ,"dc:license.skos:prefLabel"
+                   ,"dc:subject.anzsrc:toa.rdf:resource","dc:subject.anzsrc:toa.skos:prefLabel"
+                   ,"redbox:retentionPeriod.dc:date"
+                   ,"redbox:retentionPeriod.dc:date.prefLabel"
+                   ,"redbox:retentionPeriod.dc:date.skos:note"
+                   ,"redbox:retentionPeriod.dc:date.skos:note.prefLabel"
+                   ,"redbox:disposalDate"
+                   ])
+    #set($v = $util.get($item, $key))
+    #if ($v) "$key": "$!v",
+    #end
+#end
+#mapTo("locrel:rth.foaf:Person.foaf:title" "dc:creator.foaf:Person.foaf:title")
+#mapTo("locrel:rth.foaf:Person.foaf:givenName" "dc:creator.foaf:Person.foaf:givenName")
+#mapTo("locrel:rth.foaf:Person.foaf:familyName" "dc:creator.foaf:Person.foaf:familyName")
+#mapTo("locrel:rth.foaf:Person.foaf:email" "dc:creator.foaf:Person.foaf:email")
+#mapTo("locrel:rth.foaf:Person.dc:identifier" "dc:creator.foaf:Person.dc:identifier")
+#mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
+#set($cList = $util.getList($item, "locrel:clb.foaf:Person"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#Collaborators($slot "foaf:title" $order)
+    	#Collaborators($slot "foaf:givenName" $order)
+    	#Collaborators($slot "foaf:familyName" $order)
+    	#Collaborators($slot "foaf:email" $order)
+    	#Collaborators($slot "dc:identifier" $order)
+    	#set($order = $order + 1)
+    #end
+#end
+
+#set($cList = $util.getList($item, "foaf:fundedBy.foaf:Agent"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#FundingSources($slot "skos:prefLabel" $order)
+    	#FundingSources($slot "dc:identifier" $order)
+    	#set($order = $order + 1)
+    #end
+#end
+
+#set($cList = $util.getList($item, "foaf:fundedBy.vivo:Grant"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#Grants($slot "skos:prefLabel" $order)
+    	#Grants($slot "dc:identifier" $order)
+    	#Grants($slot "redbox:grantNumber" $order)
+    	#set($order = $order + 1)
+    #end
+#end
+
+#mapTo("dc:license.dc:identifier.other" "dc:license.rdf:Alt.skos:prefLabel") 
+#mapTo("dc:rights.skos:note" "dc:accessRights.skos:prefLabel")
+##mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
+#mapTo("dc:license.dc:identifier.url" "dc:license.rdf:Alt.dc:identifier") 
+
+#set($cList = $util.getList($item, "dc:subject.anzsrc:for"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#copyCodes($slot "skos:prefLabel" $order 'for')
+    	#copyCodes($slot "rdf:resource" $order 'for')
+    	#copyCodes($slot ".top.dropdown" $order 'for')
+    	#copyCodes($slot ".middle.dropdown" $order 'for')
+    	#copyCodes($slot ".bottom.dropdown" $order 'for')
+    	#set($order = $order + 1)
+    #end
+#end
+
+
+#set($cList = $util.getList($item, "dc:subject.anzsrc:seo"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+    	#set($slot = $cList.get($key))
+    	#copyCodes($slot "skos:prefLabel" $order 'seo')
+    	#copyCodes($slot "rdf:resource" $order 'seo')
+    	#copyCodes($slot ".top.dropdown" $order 'seo')
+    	#copyCodes($slot ".middle.dropdown" $order 'seo')
+    	#copyCodes($slot ".bottom.dropdown" $order 'seo')
+    	#set($order = $order + 1)
+    #end
+#end
+"redbox:newForm": "$util.get($item, 'redbox:newForm')",
+"redbox:formVersion": "$util.get($item, 'redbox:formVersion')"
+}

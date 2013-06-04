@@ -1,0 +1,11 @@
+#sectionHeading("#displayMessage('self-submission.heading.label.access')")
+<div class="meta">
+    <dl>
+        #display("dc:license.skos:prefLabel" "#displayMessage('self-submission.heading.label.licensing')")
+        #display("dc:accessRights.dc:RightsStatement.skos:prefLabel" "#displayMessage('self-submission.heading.label.accessrights')")
+        #display("dc:accessRights.skos:prefLabel" "#displayMessage('self-submission.heading.label.accessconditions')")
+		#display("redbox:retentionPeriod.dc:date.prefLabel" "#displayMessage('self-submission.field.label.redbox-retentionPeriod')")        
+		#display("redbox:retentionPeriod.dc:date.skos:note.prefLabel" "#displayMessage('self-submission.field.label.redbox-retentionPeriod.dc-date.skos-note')")
+        #display("redbox:disposalDate" "#displayMessage('self-submission.field.label.redbox-disposalDate')")
+    </dl>
+</div>
