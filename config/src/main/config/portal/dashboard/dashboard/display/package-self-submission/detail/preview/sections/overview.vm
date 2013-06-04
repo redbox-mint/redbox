@@ -51,7 +51,7 @@
 	#set($i = 0)
 #foreach($key in $forList.keySet())
 #set($item = $forList.get($key))
-#if($i > 0), #else #set($i = 1) #end $item.get("$subKey")#end
+#if($i > 0), #else #set($i = 1) #end $page.escapeHtml($item.get("$subKey"))#end
 #end
 </td>
 </tr>
@@ -98,5 +98,5 @@
 	    #end
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
-	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description') #else #noInformation() #end</p>
+	<p>#if($metadata.get('dc:description')) $page.escapeHtml($metadata.get('dc:description')) #else #noInformation() #end</p>
 </section>

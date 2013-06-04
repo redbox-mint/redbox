@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.redbox-mint</groupId>
   <artifactId>redbox</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.6.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ReDBox</name>
   <parent>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-project</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.2-SNAPSHOT</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
   <modules>
@@ -47,12 +47,12 @@
       <artifactId>fascinator-portal</artifactId>
       <type>war</type>
       <classifier>skinny</classifier>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.redbox-mint</groupId>
       <artifactId>redbox-reports</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.1</version>
     </dependency>
     <!-- Solr Web App -->
     <dependency>
@@ -110,47 +110,47 @@
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-access-derby</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-authentication-internal</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-oai-pmh</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-workflow</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-indexer-solr</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-roles-internal</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-storage-filesystem</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-subscriber-solrEventLog</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
@@ -262,7 +262,7 @@
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>
           <type>warpath</type>
-          <version>1.1.4-SNAPSHOT</version>
+          <version>1.1.5-SNAPSHOT</version>
         </dependency>
       </dependencies>
       <!-- The standard build/deploy process for making a server -->

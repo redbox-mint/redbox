@@ -27,7 +27,7 @@
 			<dd>
             #set($item = $forList.get($key))            
             #set($subv = $item.get("$subKey"))
-            $!subv
+            $page.escapeHtml($!subv)
 			</dd>
         #end
     #end
@@ -48,7 +48,7 @@
 #foreach($subKey in $subKeys)
 #if($i>0)$sep #end 
 #set($subv = $item.get("$subKey"))
-#set($i = $i+1)$!subv#end
+#set($i = $i+1)$page.escapeHtml($!subv)#end
 			</li>
 		#end
 		</ol>

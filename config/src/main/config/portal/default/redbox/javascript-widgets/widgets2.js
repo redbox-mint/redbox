@@ -526,7 +526,13 @@ var widgets={forms:[], globalObject:this};
                 target = ctx.find(lf);
                 label=dict.label;
                 if(label){
-                    t="r?label.show():label.hide();"
+                	if (Object.prototype.hasOwnProperty.call(label[0],'id')) {
+						// Display to its own error message label: people lookup widgets
+						t="";
+					} else {
+						// Display to common error message label;
+						t="r?label.show():label.hide();"
+					}
                 }
                 testFunc = "testFunc=function(){var r,e,zid,v;"+
                     "v=$.trim($(this).val());"+

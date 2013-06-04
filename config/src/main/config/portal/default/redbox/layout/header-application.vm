@@ -35,7 +35,7 @@
         </li>
         <li class="secondary">
             <form action="$portalPath/search" class="search" method="get">
-                <input class="text" type="text" id="query" name="query" size="25" value="$page.getQuery()" />
+                <input class="text" type="text" id="query" name="query" size="25" value="$page.escapeHtml($page.getQuery())" />
             </form>
         </li>
         <li class="secondary">
@@ -43,7 +43,7 @@
         </li>
         <li class="secondary">
             #if($page.authentication.is_logged_in())
-                <span id="user-info" class="status">Welcome <a class="user-data" href="#">$page.authentication.get_name()</a>, <a href="#" id="logout-now">Logout</a></span>
+                <span id="user-info" class="status">Welcome <a class="user-data" href="#">$page.escapeHtml($page.authentication.get_name())</a>, <a href="#" id="logout-now">Logout</a></span>
             #else
                 <span id="user-info" class="status"><a class="login-now" href="#">Login</a></span>
             #end
