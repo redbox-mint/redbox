@@ -436,3 +436,7 @@ button.anzsrcSelection {
 .jaffa2Loading{
 	color:green;
 }
+
+.HiddenWidget {
+	display:none;
+}

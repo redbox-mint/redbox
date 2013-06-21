@@ -33,13 +33,6 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 transition_click(this);
 		});
 
-   
-		
-		var hidden_elements = document.getElementsByClassName('HiddenWidget');
-   		for( var i = 0; i < hidden_elements.length; i++) {
-   			hidden_elements[i].style.display = 'none';
-   		}
-		
 		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-self-submission.json", "dmptTabs");
 		
 		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');
@@ -54,7 +47,6 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 		// hide Submit link until user acknowledges 
 		$("[transition-name='Submit']").hide();
 		$("[id='readyforreview.1']").change(selfSubmission.toggle_submit);	
-		prepareHelps();
    	})
 </script>
 
