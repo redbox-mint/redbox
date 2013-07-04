@@ -35,7 +35,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 
    
 		
-		var hidden_elements = document.getElementsByClassName('HiddenWidget');
+		var hidden_elements = $('.HiddenWidget');
    		for( var i = 0; i < hidden_elements.length; i++) {
    			hidden_elements[i].style.display = 'none';
    		}
