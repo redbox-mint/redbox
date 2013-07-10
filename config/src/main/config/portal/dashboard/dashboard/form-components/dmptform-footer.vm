@@ -1,6 +1,7 @@
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+
 		#set($flowName = $velocityContext.get("request").getParameter("flow"))
 		#if($flowName == "dataAccess")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-licensingandaccessflow.json", "dmptTabs");

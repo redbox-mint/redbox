@@ -33,6 +33,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 transition_click(this);
 		});
 
+
 		wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-self-submission.json", "dmptTabs");
 		
 		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');
