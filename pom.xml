@@ -154,12 +154,12 @@
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity</artifactId>
-      <version>1.1.4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity-pdf</artifactId>
-      <version>0.1</version>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
