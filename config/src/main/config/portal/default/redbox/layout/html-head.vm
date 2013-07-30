@@ -11,8 +11,9 @@
 <script type="text/javascript" src="$portalPath/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/jquery-ui-1.7.2.custom.min.js"></script>
 #else
-<script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
-<script type="text/javascript" src="$portalPath/js/jquery-ui.1.8.18.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 #end
 <script type="text/javascript">
 var __entityMap = {

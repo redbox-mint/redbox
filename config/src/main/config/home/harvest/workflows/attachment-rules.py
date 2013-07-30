@@ -65,7 +65,8 @@ class IndexData:
         self.__index("display_type", "attachment")
 
     def __metadata(self):
-        wfMeta = self.__getJsonPayload("workflow.metadata")
+        #wfMeta = self.__getJsonPayload("workflow.metadata")
+        wfMeta = self.__getJsonPayload("attachments.metadata")        
         self.log.debug("__metadata() wfMeta={}", wfMeta.toString(True))
         # Form processing
         formData = wfMeta.getObject(["formData"])
