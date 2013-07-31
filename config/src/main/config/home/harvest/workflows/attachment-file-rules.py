@@ -23,7 +23,7 @@ class IndexData:
             self.__newDoc() # sets: self.oid, self.pid, self.itemType
             self.item_security = []
             self.owner = self.params.getProperty("owner", "system")
-            self.log.debug("Running attachment-rules.py... itemType='{}'", self.itemType)
+            self.log.debug("Running attachment-file-rules.py... itemType='{}'", self.itemType)
 
             # Real metadata
             if self.itemType == "object":
@@ -65,25 +65,34 @@ class IndexData:
         self.__index("display_type", "attachment")
 
     def __metadata(self):
-        wfMeta = self.__getJsonPayload("workflow.metadata")
-        self.log.debug("__metadata() wfMeta={}", wfMeta.toString(True))
-        # Form processing
-        formData = wfMeta.getObject(["formData"])
-        if formData is not None:
-            for key in formData.keySet():
-                self.__index(key, formData.get(key))
-            filename = wfMeta.getString(None, ["formData", "filename"])
-            if filename is None:
-                self.log.warn("No filename for attachment!")
-                filename = "UNKNOWN"
-            self.__index("dc_title", "Attachment-%s" % filename)
+        #wfMeta = self.__getJsonPayload("workflow.metadata")
+        wfMeta = self.__getJsonPayload("attachments.metadata")
+        if wfMeta is None:        
+            self.log.debug("Without formdata...")
+        else:            
+            self.log.debug("Processing formdata...")
+            try:
+              self.log.debug("__metadata() wfMeta={}", wfMeta.toString(True))
+              # Form processing
+              formData = wfMeta.getObject(["formData"])
+              if formData is not None:
+                  for key in formData.keySet():
+                      self.__index(key, formData.get(key))
+                  filename = wfMeta.getString(None, ["formData", "filename"])
+                  if filename is None:
+                      self.log.warn("No filename for attachment!")
+                      filename = "UNKNOWN"
+                  self.__index("dc_title", "Attachment-%s" % filename)
+                  #if wfMeta.getString("private", ["formData", "access_rights"]) == "public":
+                  #    self.item_security.append("guest")
+                  #    self.__index("workflow_security", "guest")
+            except:
+                self.log.warn("Form data not available.")
 
-            # Security
-            self.item_security.append("admin")
-            self.__index("workflow_security", "admin")
-            if wfMeta.getString("private", ["formData", "access_rights"]) == "public":
-                self.item_security.append("guest")
-                self.__index("workflow_security", "guest")
+        # Security        
+        self.item_security.append("admin")
+        self.__index("workflow_security", "admin")
+        
 
     def __getJsonPayload(self, pid):
         payload = None

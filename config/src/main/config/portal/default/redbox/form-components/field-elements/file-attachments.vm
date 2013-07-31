@@ -25,7 +25,7 @@ var ${widgetname}_formData = {
     ajax:"1",
     oid:"$oid",
     func:"attach-file",
-    "upload-file-workflow":"attachment-upload",
+    "upload-file-workflow":"attachment-file",
     metaDataList:["uploadFiles","attachmentType","accessRights","ajax","oid","func","upload-file-workflow","metaDataList","upload-file-context"
 #if($enableDescription.equals("true"))
     ,"description"
@@ -59,7 +59,8 @@ var ${widgetname}_initUploader = function() {
                 var errmsg = /already exists in storage/.test(data.result.error) ? "This file already exists in the storage!\n Please select another file." : data.result.error;   
                 alert(errmsg);
                 return;
-            }               
+            }
+            data.result.file.url = "$portalPath/detail/"+data.result.file.oid+"/"+data.result.file.filename+"?preview=false";                                       
             ${widgetname}_fileRows.push(data.result.file);
             $addFunction(data.result.file);
             ${widgetname}_clearUploader();                                    
@@ -74,14 +75,14 @@ var ${widgetname}_initUploader = function() {
         },        
         progress: function(e, data) {
             var uploaded = parseInt(data.loaded / data.total * 100, 10);
-            jQ("#${widgetname}_fileupload-progressbar div").width(uploaded + "%");
+            jQ(".fileupload-progressbar div").width(uploaded + "%");
         }       
     });    
 };
 
 var ${widgetname}_clearUploader = function() {
 #if($enableDescription.equals("true"))
-jQ("#${widgetname}_filedesc").val("");    
+    jQ("#${widgetname}_filedesc").val("");    
 #end        
     jQ('#${widgetname}_startupload').attr("disabled", true);
     jQ('#${widgetname}_filename').text('No file selected.');
@@ -98,7 +99,8 @@ var ${widgetname}_getUploadedFiles = function() {
                 alert(data.error);
                 return;
             }                            
-            for (i in data.files) {                
+            for (i in data.files) {
+                data.files[i].url = "$portalPath/detail/"+data.files[i].oid+"/"+data.files[i].filename+"?preview=false";                            
                 ${widgetname}_fileRows.push(data.files[i]);
             }
         }

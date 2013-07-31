@@ -13,7 +13,7 @@ handy all over the place to handle the multitude of json models we get via ajax 
     </thead>
     <tbody data-bind="foreach: rows">
         <tr>
-        	<td data-bind="text: filename"/>
+        	<td><a data-bind="text: filename, attr: {href: url} " target="_upload" ></a></td>
         	<td data-bind="text: description"/>	
             <td><a href="#" data-bind="click: $parent.remove">Remove</a> </td>
         </tr>
@@ -22,9 +22,9 @@ handy all over the place to handle the multitude of json models we get via ajax 
 </div>
 
 <script>
-startupCompleteListeners.push("initialiseFileUploadTable");
+startupCompleteListeners.push("initialise_$modelName");
 
-function initialiseFileUploadTable() {
+function initialise_$modelName() {
 	var rows = $initialiseFunctionName(); 
 	//put all the row models in the row array
 	for(var i =0; i<rows.length; i++) {
@@ -35,8 +35,7 @@ function initialiseFileUploadTable() {
 function $modelName() {
     var self = this;
  
-    self.rows = ko.observableArray([  	
-    ]);
+    self.rows = ko.observableArray([]);
 
     self.remove = function() {
         $removeFunction(this, self.removeFunc(this));        
