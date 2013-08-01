@@ -45,7 +45,7 @@ class Alert:
         #These directories are used to hold files during/after processing
         self.__DIR_PROCESSED = os.path.join(self.path, ".processed")
         self.__DIR_ALERT = os.path.join(self.__DIR_PROCESSED, time.strftime("%Y_%m_%d_%H_%M_%S"))
-        self.__DIR_PROCESSING = os.path.join(self.__DIR_ALERT, "processing/")
+        self.__DIR_PROCESSING = os.path.join(self.__DIR_PROCESSED, "processing/")
         self.__DIR_SUCCESS = os.path.join(self.__DIR_ALERT, "success/")
         self.__DIR_FAILED = os.path.join(self.__DIR_ALERT, "failed/")
         self.__DIR_ORIGINAL = os.path.join(self.__DIR_ALERT, "original/")
