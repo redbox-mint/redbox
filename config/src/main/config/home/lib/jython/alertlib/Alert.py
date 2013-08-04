@@ -7,7 +7,7 @@ import time
 import shutil
 from com.googlecode.fascinator import HarvestClient
 from com.googlecode.fascinator.common import FascinatorHome
-from com.googlecode.fascinator.api.harvester import HarvesterException
+from java.lang import Exception
 from java.io import File
 from org.apache.commons.io import FileUtils
 from org.apache.commons.lang.text import StrSubstitutor
@@ -146,10 +146,11 @@ class Alert:
             try:
                 oid = self.__ingestJson(file, meta_file, json)
                 successCount += 1
-            except HarvesterException, e:
+            except Exception, e:
                 failedCount += 1
                 self.logInfo(file, "Moving failed metadata file [%s] to %s." % (meta_file, self.__DIR_FAILED))
-                shutil.move(meta_file, os.path.join(self.__DIR_SUCCESS,meta_file_name))
+                filepath = os.path.join(self.__DIR_FAILED,meta_file_name)
+                FileUtils.moveFile(File(meta_file),File(filepath));
                 continue
             
             self.logInfo(file, "Moving successful metadata file [%s] to %s." % (meta_file, self.__DIR_SUCCESS))
@@ -183,7 +184,7 @@ class Alert:
         finally:
             if jsonFile is not None:
                 jsonFile.close()
-        
+            
         #Determine the object's owner from the alert config
         #owner = "guest"
         #if self.config("owner"):
@@ -198,7 +199,7 @@ class Alert:
             ## And cleanup afterwards
             oid = harvester.getUploadOid() 
             
-        except HarvesterException, e:     
+        except Exception, e:     
             self.logException(file, e) 
             raise
         finally:
