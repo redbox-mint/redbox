@@ -1342,7 +1342,8 @@ public class CurationManager extends GenericTransactionManager {
 
 		// A standard harvest event
 		JsonObject harvester = message.getObject("harvester");
-		if (harvester != null) {
+		String repoType= message.getString("", "indexer", "params", "repository.type");
+		if (harvester != null && !"Attachment".equalsIgnoreCase(repoType)) {
 			try {
 				String oid = message.getString(null, "oid");
 				JsonSimple response = new JsonSimple();
@@ -1361,6 +1362,8 @@ public class CurationManager extends GenericTransactionManager {
 			} catch (Exception ex) {
 				throw new TransactionException(ex);
 			}
+		} else {
+			log.debug("Is type attachment, ignoring...");
 		}
 
 		// It's not a harvest, what else could be asked for?
