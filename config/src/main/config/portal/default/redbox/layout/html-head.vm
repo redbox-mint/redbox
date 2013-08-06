@@ -2,6 +2,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="icon" type="image/vnd.microsoft.com" href="$portalPath/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/screen.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="$portalPath/css/jquery-fileupload/fileupload.css" />
 <!--[if IE 6]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie6.css" media="screen" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie.css" media="screen" /><![endif]-->
 <link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness/jquery-ui-1.7.2.custom.css" media="screen" />
@@ -14,6 +15,10 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="$portalPath/js/jquery-fileupload/vendor/jquery.ui.widget.js"></script>
+<script src="$portalPath/js/jquery-fileupload/jquery.iframe-transport.js"></script>
+<script src="$portalPath/js/jquery-fileupload/jquery.fileupload.js"></script>
+<script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js'></script>
 #end
 <script type="text/javascript">
 var __entityMap = {

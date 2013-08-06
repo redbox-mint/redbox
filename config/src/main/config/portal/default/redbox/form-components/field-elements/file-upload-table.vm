@@ -1,6 +1,3 @@
-<!--Note: I'm going to remove this script call to our header as I think it's 
-handy all over the place to handle the multitude of json models we get via ajax around the place-->
-<script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js'></script>
 <div id="$tableName">
 <table>
     <thead>

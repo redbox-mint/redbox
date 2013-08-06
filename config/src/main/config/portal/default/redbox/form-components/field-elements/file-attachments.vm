@@ -1,7 +1,5 @@
 #set($oid = $velocityContext.get('formData').get('oid'))
-<link rel="stylesheet" type="text/css" href="$portalPath/css/jquery-fileupload/fileupload.css" />
 <div>
-
 <span id="${widgetname}_filename" class="filename"></span>
 <span class="btn btn-success fileinput-button">
     <span>Select file...</span>
@@ -9,16 +7,13 @@
     <input id="${widgetname}_fileupload" type="file" name="files" >
 </span>
 #if($enableDescription.equals("true"))
-<label for="filedesc">Description:</label><input type="text" id="${widgetname}_filedesc" />
+<label for="${widgetname}_filedesc">Description:</label><input type="text" id="${widgetname}_filedesc" />
 #end
 <input type="button" id="${widgetname}_startupload" value="Start upload" />
 
 </div>
-<script src="$portalPath/js/jquery-fileupload/vendor/jquery.ui.widget.js"></script>
-<script src="$portalPath/js/jquery-fileupload/jquery.iframe-transport.js"></script>
-<script src="$portalPath/js/jquery-fileupload/jquery.fileupload.js"></script>
 <script>    
-var jQ = $
+var jQ = $;
 var ${widgetname}_formData = {       
     attachmentType:"$attachType",
     accessRights:"$accessRights",
@@ -38,11 +33,16 @@ var ${widgetname}_listUrl = "$portalPath/attachments.ajax?ajax=true&func=&oid=$o
 var ${widgetname}_delUrl = "$portalPath/attachments.ajax?ajax=true&func=delete-attach-file&oid=$oid&attachmentType=$attachType";
 var ${widgetname}_uploadData = {};
 var ${widgetname}_fileRows = [];
+var ${widgetname}_blockmsg = {message:"<div style='font-size:16px;'>msgtoreplace<img src='$portalPath/images/ajax-loader.gif'/></div><div class='fileupload-progressbar'><div>&nbsp;</div></div>"};
+var ${widgetname}_getblockmsg = function (msg) {
+    var clonedBlock = jQ.extend({}, ${widgetname}_blockmsg);
+    clonedBlock.message = clonedBlock.message.replace("msgtoreplace",msg);
+	return clonedBlock;
+};
 var ${widgetname}_initUploader = function() {
     ${widgetname}_clearUploader();    
-    jQ('#${widgetname}_startupload').click(function() {
-        var blockmsg = {message:"<div style='font-size:16px;'>Uploading file...</div><div class='fileupload-progressbar'><div>&nbsp;</div></div>"};
-        jQ.blockUI(blockmsg);
+    jQ('#${widgetname}_startupload').click(function() {        
+        jQ.blockUI(${widgetname}_getblockmsg("Uploading file..."));
 #if($enableDescription.equals("true"))
         ${widgetname}_uploadData.formData.description = jQ("#${widgetname}_filedesc").val();
         ${widgetname}_uploadData.formData.json = JSON.stringify(${widgetname}_uploadData.formData);
@@ -117,7 +117,11 @@ var ${widgetname}_deleteFile = function(file, cb) {
         data:{
             foid:file.oid
         },
+		beforeSend: function(xhr, settings) {
+		  jQ.blockUI(${widgetname}_getblockmsg("Deleting file..."));
+		},
         success: function(data, status, xhr) {
+			jQ.unblockUI();
             if (data.error != null) {
                 alert(data.error);
                 return;
