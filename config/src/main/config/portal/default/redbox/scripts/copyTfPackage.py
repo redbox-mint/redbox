@@ -49,7 +49,7 @@ class CopyTfPackageData:
         if self.errorMsg == "": 
              toOid = self.formData.get("toOid")
              toObject = self.storage.getObject(toOid)
-
+             storeRelatedData = self.formData.get("relatedData")
              fromTFPackage = self._getTFPackage(fromObject)
              toTFPackage = self._getTFPackage(toObject)
              fromInputStream = fromTFPackage.open()
@@ -60,8 +60,10 @@ class CopyTfPackageData:
                  print "error setting tfPackage"
                  
              fromTFPackage.close()
-             # add relatedOid info
-             fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()), toOid)
+             
+             if storeRelatedData == "false" :
+                # add relatedOid info
+                fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()), toOid)
              
              inStream = IOUtils.toInputStream(fromTFPackageJson.toJSONString(), "UTF-8")
              
