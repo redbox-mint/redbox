@@ -63,6 +63,8 @@ class IndexData:
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
         self.utils.add(self.index, "repository_type", self.params["repository.type"])
+        if self.params["date_transitioned"] is not None:
+            self.utils.add(self.index, "date_transitioned", self.params["date_transitioned"])
         # VITAL integration
         vitalPid = self.params["vitalPid"]
         if vitalPid is not None:
