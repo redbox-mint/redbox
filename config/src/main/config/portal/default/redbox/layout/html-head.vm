@@ -5,13 +5,15 @@
 <link rel="stylesheet" type="text/css" href="$portalPath/css/jquery-fileupload/fileupload.css" />
 <!--[if IE 6]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie6.css" media="screen" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" type="text/css" href="$portalPath/css/fluid960gs/ie.css" media="screen" /><![endif]-->
-<link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness/jquery-ui-1.7.2.custom.css" media="screen" />
+
 <link rel="stylesheet" type="text/css" href="$portalPath/css/styles.css" />
 <script type="text/javascript" src="$portalPath/js/json2.min.js"></script>
-#if($pageTitle.equals("Metadata Record") || $pageTitle.equals("Notify us about a dataset") || $pageTitle.equals("Administration")) 
+#if($pageTitle.equals("Metadata Record") || $pageTitle.equals("Notify us about a dataset") || $pageTitle.equals("Administration"))
+<link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness/jquery-ui-1.7.2.custom.css" media="screen" /> 
 <script type="text/javascript" src="$portalPath/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="$portalPath/js/jquery-ui-1.7.2.custom.min.js"></script>
 #else
+<link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness-1.10.3/jquery-ui-1.10.3.custom.css" media="screen" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
