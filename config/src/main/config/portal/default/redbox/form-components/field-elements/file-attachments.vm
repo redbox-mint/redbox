@@ -6,6 +6,7 @@
     <!-- The file input field used as target for the file upload widget -->
     <input id="${widgetname}_fileupload" type="file" name="files" >
 </span>
+
 #if($enableDescription.equals("true"))
 <label for="${widgetname}_filedesc">Description:</label><input type="text" id="${widgetname}_filedesc" />
 #end
