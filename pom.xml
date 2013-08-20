@@ -420,7 +420,7 @@
                   <goal>unpack</goal>
                 </goals>
                 <configuration>
-                  <includes>portal/**</includes>
+                  <includes>portal/**,home/**</includes>                  
                   <outputDirectory>${project.home}</outputDirectory>
                   <artifactItems>
                     <artifactItem>
