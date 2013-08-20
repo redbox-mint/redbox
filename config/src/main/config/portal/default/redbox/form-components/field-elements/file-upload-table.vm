@@ -1,4 +1,4 @@
-<div id="$tableName">
+<div id="$tableName" data-bind="stopBindings: true">
 <table>
     <thead>
     	<tr>
