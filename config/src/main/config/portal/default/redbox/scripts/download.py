@@ -58,11 +58,7 @@ class DownloadData:
             self.__metadata.getJsonObject().put("id", oid)
         #print "URI='%s' OID='%s' PID='%s'" % (uri, object.getId(), payload.getId())
 
-        # Security check
-        if self.isAccessDenied(uri):
-            # Redirect to the object page for standard access denied error
-            self.response.sendRedirect(context["portalPath"] + "/detail/" + object.getId())
-            return
+        
 
         ## The byte range cache will check for byte range requests first
         self.cache = self.services.getByteRangeCache()
@@ -119,49 +115,7 @@ class DownloadData:
             return []
         
     def getMetadata(self):
-        return self.__metadata
-
-    def isAccessDenied(self,uri):
-        # Admins always have access
-        if self.page.authentication.is_admin():
-            return False
-        
-        slash = uri.find("/")
-        if slash == -1:
-            return None, None
-        oid = uri[:slash]
-        objectMetadata = self.services.getStorage().getObject(oid).getMetadata()
-        current_user = self.page.authentication.get_username()  
-        if objectMetadata is not None:    
-            owner = objectMetadata.getProperty("owner")
-            if current_user == owner: 
-                return False
-        
-        viewUsers = self.getViewUsers()
-        self.log.error("View Users!!!! %s" % self.getMetadata().toString())
-        if viewUsers is None:
-            self.log.error("no view users....")
-            return True
-        for user in viewUsers:
-            self.log.error("checking user: " + user)
-            if current_user == user:
-                return  False
-         
-        self.log.error("past view user check")    
-        # Check for normal access
-        myRoles = self.page.authentication.get_roles_list()
-        allowedRoles = self.getAllowedRoles()
-        self.log.error("allowedRoles!!!! %s" % len(allowedRoles))
-        if myRoles is None or allowedRoles is None:
-            return True
-        for role in myRoles:
-            if role in allowedRoles:
-                return  False
-            
-        
-        
-            
-        return True
+        return self.__metadata      
 
     def isDetail(self):
         preview = Boolean.parseBoolean(self.formData.get("preview", "false"))
