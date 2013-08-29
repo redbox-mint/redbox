@@ -15,12 +15,12 @@
 #else
 <link rel="stylesheet" type="text/css" href="$portalPath/css/ui-lightness-1.10.3/jquery-ui-1.10.3.custom.css" media="screen" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="$portalPath/js/jquery-fileupload/vendor/jquery.ui.widget.js"></script>
 <script src="$portalPath/js/jquery-fileupload/jquery.iframe-transport.js"></script>
 <script src="$portalPath/js/jquery-fileupload/jquery.fileupload.js"></script>
-<script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js'></script>
+<script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js'></script>
 #end
 <script type="text/javascript">
 var __entityMap = {
