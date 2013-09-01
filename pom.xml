@@ -49,6 +49,13 @@
       <classifier>skinny</classifier>
       <version>1.2-SNAPSHOT</version>
     </dependency>
+        <dependency>
+      <groupId>com.googlecode.the-fascinator</groupId>
+      <artifactId>fascinator-portal</artifactId>
+      <type>jar</type>
+      <classifier>classes</classifier>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>com.googlecode.redbox-mint</groupId>
       <artifactId>redbox-reports</artifactId>
