@@ -157,28 +157,29 @@ class BaseIndexData(object):
             self.utils.add(self.index, name, value)
 
     def __grantRoleAccess(self, newRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
         
     def __grantUserAccess(self, newUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", newUser)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
 
     def __revokeRoleAccess(self, oldRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
         
     def __revokeUserAccess(self, oldUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", oldUser)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
+
         
     def __metadata(self):
         self.title = None
