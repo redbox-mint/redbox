@@ -42,7 +42,13 @@
                 "config":"${fascinator.home}/process/emailer.json",
                 "inputKey":"newOids",
                 "outputKey":"failedOids"
-            }
+            },
+            {   
+		        "class":"com.googlecode.fascinator.portal.process.HomeInstitutionNotifier",
+		        "config":"${fascinator.home}/process/notification/homeInstitutions.json",
+		        "inputKey":"newOids",
+		        "outputKey":"failedOids"
+		    }            
         ],
         "post" : [
             {   
@@ -52,5 +58,5 @@
                 "outputKey":""
             }
         ]
-    }
+    }    
 ]

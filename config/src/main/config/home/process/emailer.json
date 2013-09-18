@@ -22,10 +22,10 @@
           "mapping": {
               "$oid":"id",
               "$title":"dc_title",
-              "$lname":"requester:foaf:familyName",
-              "$fname":"requester:foaf:givenName",        
+              "$lname":"requester:familyName",
+              "$fname":"requester:givenName",        
               "$viewId":"viewId",
-              "$piEmail":"requester:foaf:email"
+              "$piEmail":"requester:email"
           }
       },
       {
@@ -62,10 +62,10 @@
           "mapping": {
               "$oid":"id",
               "$title":"dc_title",
-              "$lname":"requester:foaf:familyName",
-              "$fname":"requester:foaf:givenName",        
+              "$lname":"requester:familyName",
+              "$fname":"requester:givenName",        
               "$viewId":"viewId",
-              "$piEmail":"requester:foaf:email"
+              "$piEmail":"requester:email"
           }
       },
       {
