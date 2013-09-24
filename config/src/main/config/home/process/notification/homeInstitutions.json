@@ -30,11 +30,7 @@
 		},
 		{
 			"name":"Organization 2",
-			"channel":"notify_homeinst_messageq"
-		},
-		{
-			"name":"Home 1",
-			"channel":"notify_homeinst_messageq"
+			"channel":"notify_homeinst_messageq_org2"
 		}		
 	]
 }
