@@ -11,15 +11,7 @@ class CsvData:
     def __init__(self):
         pass
     def __activate__(self, context):        
-        # should be removed when using Spring Security
-        self.auth = context["page"].authentication
-        if (self.auth.is_logged_in()):
-            if (self.auth.is_admin()==False):
-                self.errorMsg = "Requires Admin access." 
-                return
-        else:
-            self.errorMsg = "Please login."
-            return
+        
         # end removal suggestion
         self.request = context["request"]
         self.response = context["response"]
