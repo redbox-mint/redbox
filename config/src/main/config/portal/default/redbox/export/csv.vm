@@ -1,0 +1,18 @@
+#if($self.getErrorMsg()=="")
+	<form method="POST" action="csv">
+    	<div>
+    		<span>Export Type: 
+				<select id="facetval" name="facetval">
+					#foreach ($facet in $self.facetFields.keySet()):
+						<option value="$facet">$facet</option>
+                    #end
+				</select> 
+			</span>
+			<span>
+				<input type="submit" value="Export CSV" />
+			</span>
+    	</div>
+	</form>
+#else
+	<span>$self.getErrorMsg()</span>
+#end

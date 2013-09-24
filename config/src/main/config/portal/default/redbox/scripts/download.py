@@ -182,7 +182,7 @@ class DownloadData:
             security_exceptions = 'security_exception:"' + current_user + '"'
             owner_query = 'owner:"' + current_user + '"'
             security_query = "(" + security_exceptions + ") OR (" + owner_query + ") OR ("+ security_exceptions +")"    
-        req.addParam("fq", security_query)
+            req.addParam("fq", security_query)
         out = ByteArrayOutputStream()
         self.log.error("searching to get solrData")
         self.services.getIndexer().search(req, out)

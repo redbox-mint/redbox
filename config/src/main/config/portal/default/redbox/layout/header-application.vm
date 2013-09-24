@@ -25,6 +25,7 @@
                 <li><a href="$portalPath/settings">Settings</a></li>
                 <li><a href="$portalPath/admin">Security</a></li>
                 <li><a href="$portalPath/batchprocess">Batch</a></li>
+                <li><a href="$portalPath/export/csv">Export</a></li>
                 #parseTemplate("elements/queues.vm")
             </ul>
         </li>
