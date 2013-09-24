@@ -13,6 +13,7 @@ from org.json.simple import JSONArray
 import os
 import shutil
 import sys
+import time
 
 class TransitionWorkflow:
     def __init__(self):
@@ -76,6 +77,7 @@ class TransitionWorkflow:
         objectMetaData.setProperty("rulesPid", rulesFileName)
         objectMetaData.setProperty("rulesOid", rulesObject.getId())
         objectMetaData.setProperty("workflowTransitioned", "true")
+        objectMetaData.setProperty("date_transitioned", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
         
         
     
