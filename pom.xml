@@ -262,7 +262,7 @@
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>
           <type>warpath</type>
-          <version>1.1.5-SNAPSHOT</version>
+          <version>1.1.5</version>
         </dependency>
       </dependencies>
       <!-- The standard build/deploy process for making a server -->
