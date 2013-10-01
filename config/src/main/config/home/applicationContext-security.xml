@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.0.3.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<http auto-config="false"  disable-url-rewriting="true" access-decision-manager-ref="fascinatorAccessDecisionManagerBean" use-expressions="true" entry-point-ref="authenticationEntryPoint">
+		<intercept-url pattern="/**/login" access="permitAll" />
+		<intercept-url pattern="/**/sso/*" access="permitAll" />
+		<intercept-url pattern="/**/accessDenied" access="permitAll" />
+		<intercept-url pattern="/**/dashboards/user" access="hasRole('requester')" />
+		<intercept-url pattern="/**/dashboards/admin" access="hasRole('admin')" />
+		<intercept-url pattern="/**/dashboards/reviewer" access="hasRole('reviewer')" />
+		<intercept-url pattern="/**/dashboards/commitee" access="hasRole('commitee')" />
+		<intercept-url pattern="/**/history/*" access="hasRole('admin')" />
+		<intercept-url pattern="/**/admin" access="hasRole('admin')" />                                                         
+		<intercept-url pattern="/**/settings" access="hasRole('admin')" />
+		<intercept-url pattern="/**/batchprocesses" access="hasRole('admin')" />
+		<intercept-url pattern="/**/queues" access="hasRole('admin')" />
+		<intercept-url pattern="/**/workflow/*" access="hasWorkflowAccess()" />
+		<intercept-url pattern="/**/workflows/simpleworkflow.script" access="hasWorkflowAccess()" />
+		<intercept-url pattern="/**/workflows/simpleworkflow.ajax" access="hasWorkflowAccess()" />
+		<intercept-url pattern="/**/workflows/simpleworkflow*" access="hasWorkflowAccess()" />
+		<intercept-url pattern="/**/download/**/*.tfPackage" access="hasRole('admin')" />
+		<intercept-url pattern="/**/download/**/reviewer.pdf" access="hasDownloadAccess() and (hasAnyRole('reviewer','admin'))" />
+		<intercept-url pattern="/**/download/**/request.pdf" access="hasDownloadAccess()" />
+		<intercept-url pattern="/**/download/**/*" access="hasDownloadAccess()" />
+		<intercept-url pattern="/**/detail/*" access="hasViewAccess() or hasRole('commitee')"/>		
+		<intercept-url pattern="/**/*.*" access="permitAll" />
+		<intercept-url pattern="/*/**" access="isAuthenticated()" />
+		<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="fascinatorAuthInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
+		<access-denied-handler ref="accessDeniedHandler"/>
+
+	</http>
+
+	<beans:bean id="fascinatorWebSecurityExpressionHandler" class="com.googlecode.fascinator.portal.security.FascinatorWebSecurityExpressionHandler">
+		<beans:property name="storage" ref="fascinatorStorage"/>
+		<beans:property name="accessControl" ref="fascinatorAccess"/>
+	</beans:bean>
+
+	<beans:bean id="fascinatorAccessDecisionManagerBean" class="org.springframework.security.access.vote.AffirmativeBased">
+	    <beans:property name="decisionVoters">
+    	 <beans:list>
+            <beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter">
+                <beans:property name="expressionHandler" ref="fascinatorWebSecurityExpressionHandler" />
+            </beans:bean>
+        </beans:list>
+    </beans:property>
+</beans:bean>
+
+	<authentication-manager />
+  
+</beans:beans>
