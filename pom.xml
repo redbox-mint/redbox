@@ -155,7 +155,7 @@
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
-      <artifactId>plugin-subscriber-solrEventLog</artifactId>
+      <artifactId>plugin-subscriber-dbEventLog</artifactId>
       <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>

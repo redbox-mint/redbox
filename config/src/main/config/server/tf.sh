@@ -62,7 +62,7 @@ stop() {
 	if [ -f $PID_FILE ]; then
 		echo "   - Found PID file: $PID_FILE"
 		PID=`cat $PID_FILE`
-		if [ -z "`ps -p $PID -o pid=`" ]; then
+		if [ -z "`ps -p $PID`" ]; then
 			echo "   - Process $PID not found! Removing PID file..."
 		else
 			kill $PID
