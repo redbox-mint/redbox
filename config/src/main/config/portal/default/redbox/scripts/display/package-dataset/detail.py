@@ -48,23 +48,25 @@ class DetailData:
         metadata = self.metadata.getJsonObject()
         for key in [k for k in metadata.keySet() if k.startswith(baseKey)]:
             value = metadata.get(key)
-            field = key[len(baseKey):]
-            index = field[:field.find(".")]
-            if index == "":
-                valueMapIndex = field[:key.rfind(".")]
-                dataIndex = "value"
-            else:
-                valueMapIndex = index
-                dataIndex = field[field.find(".")+1:]
-            #print "%s. '%s'='%s' ('%s','%s')" % (index, key, value, valueMapIndex, dataIndex)
-            data = valueMap.get(valueMapIndex)
-            #print "**** ", data
-            if not data:
-                data = TreeMap()
-                valueMap.put(valueMapIndex, data)
-            if len(value) == 1:
-                value = value.get(0)
-            data.put(dataIndex, value)
+            ## adding test below since UI is moving away from SOLR data storage, please add to detail scripts to prevent a "missing" output. 
+            if value:
+                field = key[len(baseKey):]
+                index = field[:field.find(".")]
+                if index == "":
+                    valueMapIndex = field[:key.rfind(".")]
+                    dataIndex = "value"
+                else:
+                    valueMapIndex = index
+                    dataIndex = field[field.find(".")+1:]
+                #print "%s. '%s'='%s' ('%s','%s')" % (index, key, value, valueMapIndex, dataIndex)
+                data = valueMap.get(valueMapIndex)
+                #print "**** ", data
+                if not data:
+                    data = TreeMap()
+                    valueMap.put(valueMapIndex, data)
+                if len(value) == 1:
+                    value = value.get(0)
+                data.put(dataIndex, value)
         return valueMap
 
     def getSortedKeySet(self):
