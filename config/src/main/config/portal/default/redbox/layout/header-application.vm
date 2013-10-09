@@ -6,12 +6,14 @@
             <a href="#">Views</a>
             <ul>
                 #foreach($portal in $page.portals)
+                #if($portal.getBoolean(true, "portal", "show-in-view-menu"))
                     #if($portal.name != $portalId)
                         <li><a href="$urlBase$portal.name/$page.getRelativePath()">$portal.description</a></li>
                     #else
                         <li class="selected-view"><a href="#" onclick="return false">$portal.description</a></li>
                     #end
-                #end
+                   #end 
+                 #end
             </ul>
         </li>
         #if($page.authentication.is_admin())
