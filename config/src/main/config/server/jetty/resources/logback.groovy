@@ -17,6 +17,7 @@ import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
 
+import static ch.qos.logback.classic.Level.TRACE
 import static ch.qos.logback.classic.Level.DEBUG
 import static ch.qos.logback.classic.Level.INFO
 import static ch.qos.logback.classic.Level.OFF
@@ -86,7 +87,7 @@ appender("SPRING", RollingFileAppender) {
 appender("HIBERNATE", RollingFileAppender) {
 	file = "${logHome}/logs/hibernate.log"
 	rollingPolicy(TimeBasedRollingPolicy) {
-	  fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_spring.zip"
+	  fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_hibernate.zip"
 	  maxHistory = 30
 	}
 	encoder(PatternLayoutEncoder) {
@@ -98,5 +99,5 @@ logger("com.googlecode.fascinator", DEBUG, ["SIFT"])
 logger("org.apache.activemq", WARN, ["AMQ"])
 logger("org.apache.solr", INFO, ["SOLR"])
 logger("org.springframework", DEBUG, ["SPRING"])
-logger("org.springframework", DEBUG, ["HIBERNATE"])
+logger("org.hibernate", DEBUG, ["HIBERNATE"])
 logger("au.com.redboxresearchdata", DEBUG, ["SIFT"])
