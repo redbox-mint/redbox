@@ -9,6 +9,8 @@ from java.util import TreeMap, TreeSet
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
+import preview
+from java.io import File
 
 class DetailData:
     def __init__(self):
@@ -20,6 +22,19 @@ class DetailData:
         self.Services = context["Services"]
         self.formData = context["formData"]
         self.log = context["log"]
+        storage = context["Services"].getStorage()
+        storedObj = storage.getObject(context["metadata"].getFirst("storage_id"))
+        request = context["request"]
+        version = request.getParameter("version")
+        versionTfPackage = request.getParameter("versionParked")
+        if version is not None:
+            self.item = JsonSimple(File(storedObj.getPath() + "/version_tfpackage_" + version))
+            self.version = preview.formatDate(version, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss") 
+            self.versionStr = "This version was created on " + self.version  
+        else:
+            self.version = None
+            self.versionStr = ""
+            self.item = preview.loadPackage(storedObj)
 
     def hasWorkflow(self):
         self.__workflowStep = self.metadata.getList("workflow_step_label")
