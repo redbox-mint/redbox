@@ -283,11 +283,7 @@
     <div class="clear"></div>
     <div id="form-heading">
 		<span class="right">
-			<a id="view-record-link" href="$portalPath/detail/$oid">View record</a>
-    		#set($parkedPayload = $self.getParkedPayload($oid))
-    		#if("$parkedPayload" != "")
-    			&nbsp;&nbsp;&nbsp;<a id="view-parked-link" target="_blank" class="right" href="$portalPath/detail/$oid/?payloadId=$parkedPayload">View parked record</a>
-    		#end
+			<a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>    		
 		</span>
         <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
     </div>

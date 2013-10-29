@@ -3,8 +3,9 @@ import time
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
-from java.util import HashSet, HashMap
+from java.util import HashSet, HashMap, Date
 from org.apache.commons.io import IOUtils
+from java.text import SimpleDateFormat
 
 class IndexData:
     def __activate__(self, context):
@@ -59,6 +60,8 @@ class IndexData:
 
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
+        formatter = SimpleDateFormat('yyyyMMddHHmmss')
+        self.params.setProperty("last_modified", formatter.format(Date()))
 
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])

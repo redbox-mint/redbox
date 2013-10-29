@@ -1,10 +1,17 @@
 import time
 from org.apache.commons.lang import StringEscapeUtils
+from java.io import File
+from java.util import Date
+from java.text import SimpleDateFormat
+from com.googlecode.fascinator.common import JsonSimple
+import preview
 
 class DatasetData:
     def __activate__(self, context):
         self.formData = context["formData"]
         self.Services = context["Services"]
+        self.metadata = context["metadata"]
+        self.log = context["log"]
 
     def getFormData(self, field):
         return StringEscapeUtils.escapeHtml(self.formData.get(field, ""))
@@ -28,3 +35,26 @@ class DatasetData:
                 parkedPayload = pid
         object.close()
         return parkedPayload
+    
+    def getPendingUpdates(self, oid):
+        storage = self.Services.getStorage()
+        object = storage.getObject(oid)
+        indexFile = File(object.getPath() + "/parked_Version_Index.json")
+        self.pendingUpdates = []
+        if indexFile.exists():
+            dateFormatter = SimpleDateFormat("yyyyMMddHHmmss")            
+            modifiedDate = dateFormatter.parse(object.getMetadata().getProperty("last_modified"))
+            parkedVersions = JsonSimple(indexFile).getJsonArray()            
+            for version in parkedVersions:
+                ts = version.get("timestamp")
+                versionDate = dateFormatter.parse(ts)
+                if versionDate.after(modifiedDate):
+                    self.pendingUpdates.append( ts)
+            
+        object.close()
+        self.pendingUpdateSize = len(self.pendingUpdates)
+        
+        return self.pendingUpdates
+        
+    def formatDate(self, date):
+        return preview.formatDate(date, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss")
