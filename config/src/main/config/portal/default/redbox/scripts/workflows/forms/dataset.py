@@ -41,6 +41,7 @@ class DatasetData:
         object = storage.getObject(oid)
         indexFile = File(object.getPath() + "/parked_Version_Index.json")
         self.pendingUpdates = []
+        self.allUpdates = []
         if indexFile.exists():
             dateFormatter = SimpleDateFormat("yyyyMMddHHmmss")            
             modifiedDate = dateFormatter.parse(object.getMetadata().getProperty("last_modified"))
@@ -48,13 +49,18 @@ class DatasetData:
             for version in parkedVersions:
                 ts = version.get("timestamp")
                 versionDate = dateFormatter.parse(ts)
+                self.allUpdates.append(ts)
                 if versionDate.after(modifiedDate):
                     self.pendingUpdates.append( ts)
             
         object.close()
         self.pendingUpdateSize = len(self.pendingUpdates)
+        self.allUpdateSize = len(self.allUpdates)
         
         return self.pendingUpdates
         
     def formatDate(self, date):
         return preview.formatDate(date, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss")
+    
+    def getAllUpdates(self):
+        return self.allUpdates

@@ -92,17 +92,6 @@
                          "results"
                          "http://id.loc.gov/vocabulary/iso639-2/eng")
     </p>
-	<p>
-		#set($updateList = $self.getPendingUpdates($oid))
-		#if ($self.pendingUpdateSize > 0)
-			There are $self.pendingUpdateSize update(s) available for review:
-			<br/>
-    		#foreach($update in $updateList)
-				<br/>
-    			<a id="view-parked-link" target="_blank" href="$portalPath/detail/$oid/?payloadId=version_parked_$update">Version created on $self.formatDate($update)</a>
-			#end
-		#end
-	</p>
 </div>
 
 <script type="text/javascript">
