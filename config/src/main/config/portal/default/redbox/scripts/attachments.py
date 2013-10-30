@@ -109,7 +109,8 @@ class AttachmentsData:
                     "filename": fname,
                     "access_rights": attachFormData.getString("private", ["accessRights"]),
                     "attachment_type": attachType,
-                    "description" : attachFormData.getString("", ["description"])
+                    "description" : attachFormData.getString("", ["description"]),
+                    "owner" : self.vc("page").authentication.get_username()
                 }
             }
 
