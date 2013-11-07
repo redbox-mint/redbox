@@ -4,7 +4,6 @@ from java.io import File
 from java.util import Date
 from java.text import SimpleDateFormat
 from com.googlecode.fascinator.common import JsonSimple
-import preview
 
 class DatasetData:
     def __activate__(self, context):
@@ -60,7 +59,12 @@ class DatasetData:
         return self.pendingUpdates
         
     def formatDate(self, date):
-        return preview.formatDate(date, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss")
+        return self.previewFormatDate(date, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss")
     
     def getAllUpdates(self):
         return self.allUpdates
+    
+    def previewFormatDate(self, date, sfmt="yyyy-MM-dd'T'HH:mm:ss", tfmt="dd/MM/yyyy"):    
+        dfSource = SimpleDateFormat(sfmt)
+        dfTarget = SimpleDateFormat(tfmt)
+        return dfTarget.format(dfSource.parse(date))
