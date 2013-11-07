@@ -26,12 +26,10 @@
 		<intercept-url pattern="/**/workflows/simpleworkflow.ajax" access="hasWorkflowAccess()" />
 		<intercept-url pattern="/**/workflows/simpleworkflow*" access="hasWorkflowAccess()" />
 		<intercept-url pattern="/**/download/**/*.tfPackage" access="hasRole('admin')" />
-		<intercept-url pattern="/**/download/**/reviewer.pdf" access="hasDownloadAccess() and (hasAnyRole('reviewer','admin'))" />
-		<intercept-url pattern="/**/download/**/request.pdf" access="hasDownloadAccess()" />
 		<intercept-url pattern="/**/download/**/*" access="hasDownloadAccess()" />
-		<intercept-url pattern="/**/detail/*" access="hasViewAccess() or hasRole('commitee')"/>		
+		<intercept-url pattern="/**/detail/*" access="hasViewAccess() or hasRole('admin')"/>		
 		<intercept-url pattern="/**/*.*" access="permitAll" />
-		<intercept-url pattern="/*/**" access="isAuthenticated()" />
+		<intercept-url pattern="/*/**" access="permitAll" />
 		<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
 		<custom-filter ref="fascinatorAuthInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
 		<access-denied-handler ref="accessDeniedHandler"/>
