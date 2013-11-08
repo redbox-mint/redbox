@@ -1,0 +1,43 @@
+<link rel="stylesheet" type="text/css" href="$portalPath/print/css/print.css"/>
+<link rel="stylesheet" type="text/css" href="$portalPath/print/css/redbox.css"/>
+<link rel="stylesheet" type="text/css" href="$portalPath/js/autocomplete/jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="$portalPath/print/css/print.css"/>
+<!--[if gte IE 6]>
+<link rel="stylesheet" type="text/css" href="$portalPath/css/redbox-ie.css"/>
+<![endif]-->
+#set($pageTitle = "Home")
+#parseTemplate("elements/atom-link.vm")
+<h2 id="page-heading">
+  <span>$page.escapeHtml($page.portalName)</span> $atomHtml  
+</h2>
+
+#parseTemplate("menus/home-main-menu.vm")
+
+<div class="grid_12">
+    #if($page.authentication.is_admin())
+        #parseTemplate("dialogs/view-reharvest.vm")
+        #parseTemplate("dialogs/view-delete.vm")
+    #end
+    #parseTemplate("dialogs/basic-search-form.vm")
+</div>
+<div class="clear"></div>
+
+<!-- IE7 needs a blank div here, class="prefix_4" doesn't work -->
+<div class="grid_4">&nbsp;</div>
+
+#if($page.authentication.is_logged_in())
+    <div class="grid_6">
+        #parseTemplate("home/stages.vm")
+        ##parseTemplate("menus/home-new-items.vm")
+    </div>
+    <div class="grid_6">
+        #parseTemplate("home/alerts.vm")
+    </div>
+    <div class="clear"></div>
+    <div class="grid_4">&nbsp;</div>
+    <div class="grid_6">&nbsp;</div>
+    <div class="grid_6">
+        #parseTemplate("home/embargoes.vm")
+    </div>
+    <div class="clear"></div>
+#end

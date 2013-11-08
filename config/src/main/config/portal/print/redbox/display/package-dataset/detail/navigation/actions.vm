@@ -1,0 +1,12 @@
+## Simple (lazy) fix for empty actions menu
+<script type="text/javascript">
+<!--
+    $(function() {
+        var actionList = $("#actions-menu").find("li");
+        if (actionList.size() == 0) {
+            $("#actions-menu").hide();
+            $(".grid_12").attr("class", "grid_16");
+        }
+    });
+-->
+</script>
