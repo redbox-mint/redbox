@@ -321,6 +321,7 @@ class BaseIndexData(object):
                         self.utils.add(self.index, "date_created", solrTime)
                     elif field == "create_timestamp":
                         self.createTimeStamp = value
+			                  self.utils.add(self.index, "create_timestamp", value)
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \
