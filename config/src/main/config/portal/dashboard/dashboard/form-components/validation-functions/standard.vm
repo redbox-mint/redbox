@@ -5,7 +5,7 @@
 */
 function doValidation() {
 		
-		var activeTabHref = $("[id='$tabHeaderIdentifier'] > li.ui-state-active > a").attr('href');
+		var activeTabHref = $("[id='dmptTabs'] > li.ui-state-active > a").attr('href');
 		var tabId = activeTabHref.substring(1,activeTabHref.length);
 		var ids = [];
 
