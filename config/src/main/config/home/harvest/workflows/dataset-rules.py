@@ -61,7 +61,10 @@ class IndexData:
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
         formatter = SimpleDateFormat('yyyyMMddHHmmss')
-        self.params.setProperty("last_modified", formatter.format(Date()))
+        self.params.setProperty("last_modified", formatter.format(Date()))        
+        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
+        self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )
+        self.utils.add(self.index, "date_object_modified",  self.params.getProperty("date_object_modified"))
 
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])

@@ -220,7 +220,10 @@ class BaseIndexData(object):
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
         if self.createTimeStamp is None:
-            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
+            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))        
+        self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )        
+        self.utils.add(self.index, "date_object_modified", self.params.getProperty("date_object_modified"))
+        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
 
     def __workflow(self):
         # Workflow data
