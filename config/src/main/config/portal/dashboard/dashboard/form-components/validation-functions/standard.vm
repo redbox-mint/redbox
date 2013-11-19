@@ -1,0 +1,48 @@
+/**
+*	Validation function that looks for the active tab and only validates the elements that appear on that tab
+*	Required params:
+*	tabHeaderIdentifier: the id for the tab link container. Should be the same as the value specified in the tabbed or wizard form-layout config.
+*/
+function doValidation() {
+		
+		var activeTabHref = $("[id='$tabHeaderIdentifier'] > li.ui-state-active > a").attr('href');
+		var tabId = activeTabHref.substring(1,activeTabHref.length);
+		var ids = [];
+
+		//get all input ids
+		var inputs = $("[id='"+tabId+"']").find(".component-wrapper input");
+		for(var i=0; i < inputs.length; i++) {
+    		ids.push($(inputs[i]).attr('id'));
+		}
+		//get all textarea ids
+		var textareas = $("[id='"+tabId+"']").find(".component-wrapper textarea");
+		for(var i=0; i < textareas.length; i++) {
+    		ids.push($(textareas[i]).attr('id'));
+		}
+		
+		//get all select ids
+		var selects = $("[id='"+tabId+"']").find(".component-wrapper select");
+		for(var i=0; i < selects.length; i++) {
+    		ids.push($(selects[i]).attr('id'));
+		}
+		
+		//get all radiobutton names
+		var radios = $("[id='"+tabId+"']").find(".component-wrapper input[type='radio']");
+		for(var i=0; i < radios.length; i++) {
+    		var name = $(radios[i]).attr('name');
+    		if(ids.indexOf(name) == -1) {
+    			ids.push(name);
+    		}
+		}
+		
+		//get all checkbox names
+		var checkboxes = $("[id='"+tabId+"']").find(".component-wrapper input[type='checkbox']");
+		for(var i=0; i < checkboxes.length; i++) {
+    		var name = $(checkboxes[i]).attr('name');
+    		if(ids.indexOf(name) == -1) {
+    			ids.push(name);
+    		}
+		}
+		
+		return jaffa.valid.test("save", ids);
+		}
