@@ -7,9 +7,13 @@ from com.googlecode.fascinator.common.solr import SolrResult
 from com.googlecode.fascinator.messaging import TransactionManagerQueueConsumer
 from org.apache.commons.fileupload.disk import DiskFileItemFactory
 from org.apache.commons.fileupload.servlet import ServletFileUpload
+from org.apache.commons.io import IOUtils
+from org.json.simple import JSONArray
 
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Exception
+
+## Known issue: when description or filename has utf-8 code, these fields in Solr could be corrupted
 
 class AttachmentsData:
     def __init__(self):
@@ -113,6 +117,11 @@ class AttachmentsData:
                     "owner" : self.vc("page").authentication.get_username()
                 }
             }
+
+            # Record an attachment in attachments.metadata
+            attachment = self.__createAttachmentJson(foid, attachMetadata["formData"]["attachment_type"], attachMetadata["formData"]["description"], attachMetadata["formData"]["filename"])
+            # print "Attaching %s" % attachment.toString().encode('utf-8')
+            self.__createOrUpdateArrayPayload(oid, "attachments.metadata", attachment)
 
             # We are going to send an update on all attachments back with our response
             attachedFiles = self.__getAttachedFiles(oid, attachType)
@@ -250,3 +259,73 @@ class AttachmentsData:
         else:
             log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
             return None
+    
+    def __createOrUpdateArrayPayload(self, oid, payloadName, newObject):
+        """
+            Create or update a payload object in storage defined by oid
+            The content of this digital object is a JsonArray of objects
+            payloadName: name of the payload
+            newObject: new object to be appended, e.g. a JsonObject
+        """
+        objList = self.__getPayloadJsonArray(oid, payloadName)
+        objList.add(newObject)
+        storedObj = self.Services.getStorage().getObject(oid)
+        StorageUtils.createOrUpdatePayload(storedObj, payloadName,IOUtils.toInputStream(objList.toString(), "UTF-8"))
+
+    def __createAttachmentJson(self, oid, attachment_type, description, filename, access_right="public"):
+        """
+            Create a JsonObject which contains basic information of an attachment
+            # An attachment is a JsonObject with keys:
+            #    {
+            #        "access_rights": "public",
+            #        "attachment_type": "review-attachments",
+            #        "description": "fileA",
+            #        "filename": "boto.config",
+            #        "oid": "ad8fa8238ce10813ef156a0a88262174"
+            #    }
+        """
+        attachment = JsonObject()
+        attachment.put("oid", oid)
+        attachment.put("attachment_type", attachment_type)
+        attachment.put("description", description)
+        attachment.put("filename", filename)
+        attachment.put("access_right", access_right)
+        return attachment
+
+    # Currently not used in this class    
+    def readAttachementsMeta(self, oid, attachType):
+        """ Read the content of attachments.metadata
+        
+            Like __getAttachedFiles but sorce from attachments.metadata instead of Solr 
+            The results are filtered by attachType 
+            Return a list as __getAttachedFiles does
+        """
+        files = self.__getPayloadJsonArray(oid, "attachments.metadata")
+        # print files.toString().encode('utf-8')
+        filteredFiles = []
+        for f in files:
+            # print "f %s" % f.toString().encode('utf-8')
+            if f.get("attachment_type") == attachType:
+                filteredFiles.append(f)
+
+        return filteredFiles
+
+    def __getPayloadJsonArray(self, oid, payloadName):
+        """
+        Get the content (JsonArray) of a payload
+        return the JSONArray or an empty (new) one 
+        """
+        storedObj = self.Services.getStorage().getObject(oid)
+        
+        payloadList = storedObj.getPayloadIdList()
+        if payloadList.contains(payloadName):
+            # print "Updating existing"
+            payloadObj = storedObj.getPayload(payloadName)
+            payloadJson = JsonSimple(payloadObj.open())
+            objList = payloadJson.getJsonArray()
+        else:
+            # print "Creating new one"
+            objList = JSONArray()
+        
+        return objList
+         
