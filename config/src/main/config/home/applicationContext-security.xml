@@ -12,10 +12,6 @@
 		<intercept-url pattern="/**/login" access="permitAll" />
 		<intercept-url pattern="/**/sso/*" access="permitAll" />
 		<intercept-url pattern="/**/accessDenied" access="permitAll" />
-		<intercept-url pattern="/**/dashboards/user" access="hasRole('requester')" />
-		<intercept-url pattern="/**/dashboards/admin" access="hasRole('admin')" />
-		<intercept-url pattern="/**/dashboards/reviewer" access="hasRole('reviewer')" />
-		<intercept-url pattern="/**/dashboards/commitee" access="hasRole('commitee')" />
 		<intercept-url pattern="/**/history/*" access="hasRole('admin')" />
 		<intercept-url pattern="/**/admin" access="hasRole('admin')" />                                                         
 		<intercept-url pattern="/**/settings" access="hasRole('admin')" />
@@ -27,7 +23,8 @@
 		<intercept-url pattern="/**/workflows/simpleworkflow*" access="hasWorkflowAccess()" />
 		<intercept-url pattern="/**/download/**/*.tfPackage" access="hasRole('admin')" />
 		<intercept-url pattern="/**/download/**/*" access="hasDownloadAccess()" />
-		<intercept-url pattern="/**/detail/*" access="hasViewAccess() or hasRole('admin')"/>		
+		<intercept-url pattern="/**/detail/*" access="hasViewAccess()"/>
+		<intercept-url pattern="/dashboard/**" access="isAuthenticated()"/>		
 		<intercept-url pattern="/**/*.*" access="permitAll" />
 		<intercept-url pattern="/*/**" access="permitAll" />
 		<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
