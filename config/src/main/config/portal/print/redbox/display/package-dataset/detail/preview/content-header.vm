@@ -1,0 +1,7 @@
+<div id="anno-root" class="content-preview">
+    #if($page.authentication.is_logged_in())
+    <div rel="${oid}-tags">
+        <div class="object-tag-list">Tags: <span class="object-tags"></span></div>
+        ##<div class="location-tag-list">Location: <span class="location-tags"></span></div>
+    </div>
+    #end

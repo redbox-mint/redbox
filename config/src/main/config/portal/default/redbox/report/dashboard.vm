@@ -1,7 +1,17 @@
 #if($self.getErrorMsg()=="")
 #set($pageTitle = "Report dashboard")
 #set($portalPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
-<link rel="stylesheet" type="text/css" media="print" href="$portalPath/css/dashboard-print.css" />
+<script type="text/javascript">
+$( document ).ready(function() { 
+     $(".printDetailLink").click(function() {
+          myWindow = window.open('../../print/report/dashboard', "DetailPrintPreview", "width=590,height=700, scrollbars=yes");
+          myWindow.focus();
+	      myWindow.history.go(0);
+	      setTimeout(function(){myWindow.window.print();}, 3000);	
+	      mywindow.focus();      
+     });
+ });
+</script>
 <h2 id="page-heading"><span>Admin dashboard</span>
             <span class="helpWidget" data-help-content-id="help-dashboard">
                 <img src="$portalPath/images/icons/help.png" onclick='$("#help-dashboard").toggle();'/>
@@ -42,14 +52,13 @@
             <input type="text" placeholder="End Date" id="dateTo" name="dateTo" value="$self.getToDt()" onchange="updateChart('#dateFrom')(this.value, $('#dateTo'))"/>
 			<label for="reportName">Report Name</label>
 			<input type="text" placeholder="Report Name" id="reportName" name="reportName" value="$self.getReportName()" />
-			<input type="submit" value="Export as CSV" />			
-		</span>		
+			<input type="submit" value="Export as CSV" />	
+            <a class="printDetailLink" title="$page.escapeHtml($title)" href="#">
+              Print this Page
+              <img alt='Print this Page' src='$portalPath/images/icons/printer.png'/>
+             </a>
+         </span>		
 		</form>
-	</div>
-	<div style="width:50%;margin:0px auto 0px auto;">
-		<span class='validation-err-msg' style='visibility:hidden'>
-			Invalid date range
-		</span>
 	</div>
 	</div>
 	<div class="reportImages">
@@ -85,5 +94,3 @@
 	<span>$self.getErrorMsg()</span>
 #end
 </div>
-
-

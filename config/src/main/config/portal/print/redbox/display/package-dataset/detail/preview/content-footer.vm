@@ -1,0 +1,6 @@
+    #if($page.authentication.is_logged_in())
+    <div class="object-comments">
+        <div class="annotatable">Comment on this item:</div>
+    </div>
+    #end
+</div>
