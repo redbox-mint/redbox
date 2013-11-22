@@ -1,5 +1,6 @@
 #set($oid = $metadata.get("id"))
 <div id="anno-root" class="content-preview">
+#if($systemConfig.getString("false", "portal", "displayPrintLinks") == "true")
 <script type="text/javascript">
 $( document ).ready(function() { 
      $(".printDetailLink").click(function() {
@@ -15,6 +16,7 @@ $( document ).ready(function() {
        Print this Page
        <img alt='Print this Page' src='$portalPath/images/icons/printer.png'/>
    </a>
+   #end
     #if($page.authentication.is_logged_in())
     <div rel="${oid}-tags">
         <div class="object-tag-list">Tags: <span class="object-tags"></span></div>
