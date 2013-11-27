@@ -1,0 +1,6 @@
+#parseDisplayTemplate("detail/common.vm")
+#parseDisplayTemplate("detail/navigation/actions.vm")
+#parseDisplayTemplate("detail/navigation/custom.vm")
+#parseDisplayTemplate("detail/navigation/metadata.vm")
+#parseDisplayTemplate("detail/navigation/attachments.vm")
+#renderObject($metadata "detail/navigation/versions")

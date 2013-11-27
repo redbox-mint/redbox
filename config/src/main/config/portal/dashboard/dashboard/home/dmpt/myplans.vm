@@ -19,9 +19,9 @@
         		#set($title = $item.get('dc:title'))
         		<td><a href="$portalPath/detail/$oid">#if ($title) $page.escapeHtml($title) #else [Untitled] #end</a></td>
                 <td>
-                #parseTemplate("home/dmpt/created_modified_date.vm")                
+					$self.formatDate($item.get("date_object_created"))                
                 </td>
-                <td>$self.formatDate($item.get("last_modified"))</td>
+                <td>$self.formatDate($item.get("date_object_modified"))</td>
                 <td>
                 <a href="$portalPath/workflow/$oid?flow=mainflow" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
                 #if ($self.hasPlanPDF($oid))

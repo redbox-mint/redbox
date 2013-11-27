@@ -3,8 +3,9 @@ import time
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
-from java.util import HashSet, HashMap
+from java.util import HashSet, HashMap, Date
 from org.apache.commons.io import IOUtils
+from java.text import SimpleDateFormat
 
 class IndexData:
     def __activate__(self, context):
@@ -59,6 +60,11 @@ class IndexData:
 
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
+        formatter = SimpleDateFormat('yyyyMMddHHmmss')
+        self.params.setProperty("last_modified", formatter.format(Date()))        
+        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
+        self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )
+        self.utils.add(self.index, "date_object_modified",  self.params.getProperty("date_object_modified"))
 
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
@@ -137,28 +143,28 @@ class IndexData:
             self.utils.add(self.index, name, value)
 
     def __grantRoleAccess(self, newRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
         
     def __grantUserAccess(self, newUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", newUser)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
 
     def __revokeRoleAccess(self, oldRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
         
     def __revokeUserAccess(self, oldUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", oldUser)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
 
     def __metadata(self):
         self.title = None

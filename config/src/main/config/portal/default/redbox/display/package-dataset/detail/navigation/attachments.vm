@@ -8,9 +8,11 @@
     #foreach($pid in $object.getPayloadIdList())
         #set($payload = $object.getPayload($pid))
         #set($payloadType = $payload.getType().toString())
-        #set($contentType = $payload.getContentType())
+        #set($contentType = $payload.getContentType())		
         <li class="payload" rel="$contentType">
-            <a href="$portalPath/download/$oid/$pid" rel="$payloadType" target="blank" title="$contentType">$pid</a>
+			#if(!$pid.matches("(.*)[Vv]ersion(.*)"))
+				<a href="$portalPath/download/$oid/$pid" rel="$payloadType" target="blank" title="$contentType">$pid</a>
+			#end
         </li>
     #end
 </ul>

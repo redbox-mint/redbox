@@ -1,3 +1,4 @@
+#set($languageService = $Services.getService("languageService"))
 #macro(fieldTitle $id $label $required)
     <h2>
         <label for="$id">$label#if($required)<span class="required">(*)</span>#end</label>
@@ -281,9 +282,73 @@
     <input type="hidden" id="xmlns:vivo" value="http://vivoweb.org/ontology/core#" />
     <input type="hidden" id="submitted" value="$self.getFormData('submitted')"/>
     <div class="clear"></div>
-    <div id="form-heading">
-        <a id="view-record-link" class="right" href="$portalPath/detail/$oid">View record</a>
+
+    #set($updateLinkMsg = $languageService.displayMessage("dataset.dsupdates.linkmsg"))
+    #set($updateNotifyMsg= $languageService.displayMessage("dataset.dsupdates.updatenotifymsg"))
+    #set($updateLinkMsg2 = $languageService.displayMessage("dataset.dsupdates.linkmsg2"))
+    #set($updateDlgTitle= $languageService.displayMessage("dataset.dsupdates.dlgtitle"))
+    #set($updatePendingHdr= $languageService.displayMessage("dataset.dsupdates.pendingHdr"))
+    #set($updatePendingVersionLbl= $languageService.displayMessage("dataset.dsupdates.pendingVersionLbl"))
+    #set($updatePendingVersionNoneLbl= $languageService.displayMessage("dataset.dsupdates.pendingVersionNoneLbl"))
+    #set($updateAllVersionHdr= $languageService.displayMessage("dataset.dsupdates.allVersionHdr"))
+    #set($updateAllVersionLbl= $languageService.displayMessage("dataset.dsupdates.allVersionLbl"))
+    #set($updateAllVersionNoneLbl= $languageService.displayMessage("dataset.dsupdates.allVersionNoneLbl"))
+        
+    <div id="form-heading" >
+		<span class="right">
+			<a id="view-record-link" href="$portalPath/detail/$oid">View record</a>
+			&nbsp;&nbsp;&nbsp;<a class="updateDlgLink" href="#">$updateLinkMsg</a>
+		</span>
         <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
+		#set($updateList = $self.getPendingUpdates($oid))
+		#if ($self.pendingUpdateSize > 0)
+			<span><br/>
+			$self.pendingUpdateSize $updateNotifyMsg <a class="updateDlgLink" href="#">$updateLinkMsg2</a>
+			</span>
+		#end
+        <script type="text/javascript">
+			$(function(){
+				$(".updateDlgLink").click(function() {
+                     $("[id='parked-updates-list']").dialog({
+                        title: "$updateDlgTitle",
+                        autoOpen: false,
+                        hide: "blind",
+                        modal: true,
+                        width: "auto",
+                        height: "auto"
+                    });
+					$("[id='parked-updates-list']").dialog('open');
+				});
+                $(".updateLink").click(function() {
+                    $("[id='parked-updates-list']").dialog('close');                    
+                });    
+			});
+		</script>
+		<div id="parked-updates-list" style="display:none">
+			<span>$updatePendingHdr</span>
+			#if ($self.pendingUpdateSize > 0)
+    			#foreach($update in $updateList)
+    			    <span>
+        		      <br /> <a target="_blank" class="updateLink" href="$portalPath/detail/$oid/?payloadId=version_parked_$update">$updatePendingVersionLbl $self.formatDate($update)</a>
+					</span>
+				#end
+			#else
+				<span>$updatePendingVersionNoneLbl</span>
+			#end
+			<span><br/> <br/>
+			$updateAllVersionHdr
+			</span>
+			#if ($self.allUpdateSize > 0)
+    			#foreach ($update in $self.allUpdates)
+    				<span>
+    				    <br /> <a target="_blank" class="updateLink" href="$portalPath/detail/$oid/?payloadId=version_parked_$update">$updateAllVersionLbl $self.formatDate($update)</a>
+					</span>
+				#end
+			#else
+				<span>$updateAllVersionNoneLbl</span>
+			#end
+		</div>
+		
     </div>
 
     <script type="text/javascript">

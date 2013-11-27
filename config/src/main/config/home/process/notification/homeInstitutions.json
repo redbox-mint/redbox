@@ -1,0 +1,36 @@
+{
+	"notify_homeinst_email":{
+		"from":"${admin.email}",
+		"to":"$piEmail",
+		"subject":"Request approval: '$title'",
+		"body":"$fname $lname,\n\n This is to notify you that your request: '$title' has been approved. To view your request, use this link: ${server.url.base}$viewId/detail/$oid \n\nCheers,\nRequest Notifier",
+		"vars":[
+		      "$oid",
+		      "$title",
+		      "$fname",
+		      "$lname",        
+		      "$viewId",
+		      "$piEmail"
+		],
+		"mapping": {
+		    "$oid":"id",
+		    "$title":"dc_title",
+		    "$lname":"dataprovider:familyName",
+		    "$fname":"dataprovider:givenName",        
+		    "$viewId":"viewId",
+		    "$piEmail":"dataprovider:email"
+		},
+		"attachDesc":"Test description",
+		"attachType":"text/xml"
+	},
+	"institutions" : [
+		{
+			"name":"Organization 1",
+			"channel":"notify_homeinst_email"
+		},
+		{
+			"name":"Organization 2",
+			"channel":"notify_homeinst_messageq_org2"
+		}		
+	]
+}

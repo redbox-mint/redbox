@@ -148,12 +148,12 @@
                             "component-type":"grants",
                             "field-name":"foaf:fundedBy.vivo:Grant",
                             "label":""
-                        }
+                        },
                         {
                             "component-type": "transition-control",
                             "transitions": [
                                 {
-                                    "name": "Next", "form-submit-action":"save"
+                                    "name": "Next", "form-submit-action":"save",
                                     "type": "button"
                                 }
                             ]
@@ -245,7 +245,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button" }, { "name": "Next" , "type": "button"}
+                                { "name": "Back", "type": "button" }, { "name": "Next", "form-submit-action":"save", "type": "button"}
                             ]
                         },
                         {
@@ -356,7 +356,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save", "type": "button"}
                             ]
                         },
                         {
@@ -476,7 +476,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save", "type": "button"}
                             ]
                         },
                         {
@@ -665,15 +665,14 @@
                             "listKey": "results"
                         },
                         {
-                            "component-type": "text-input",
+                            "component-type": "date-picker",
                             "field-name": "redbox:disposalDate",
-                            "label": "self-submission.field.label.redbox-disposalDate",
-                            "additional-classes": "dateYMD"
+                            "label": "self-submission.field.label.redbox-disposalDate"
                         },
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save", "type": "button"}
                             ]
                         },
                         {
@@ -710,16 +709,14 @@
                             "help": "self-submission.heading.help.temporal"
                         },
                         {
-                            "component-type": "text-input",
+                            "component-type": "date-picker",
                             "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:start",
-                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start",
-                            "additional-classes": "dateYMD"
+                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-start"
                         },
                         {
-                            "component-type": "text-input",
+                            "component-type": "date-picker",
                             "field-name": "dc:coverage.vivo:DateTimeInterval.vivo:end",
-                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end",
-                            "additional-classes": "dateYMD"
+                            "label": "self-submission.field.label.dc-coverage.vivo-DateTimeInterval.vivo-end"
                         },
                         {
                             "component-type": "text-input",
@@ -797,7 +794,7 @@
                         {
                             "component-type": "transition-control",
                             "transitions": [
-                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save" "type": "button"}
+                                { "name": "Back", "type": "button"}, { "name": "Next", "form-submit-action":"save", "type": "button"}
                             ]
                         },
                         {
@@ -850,7 +847,7 @@
                                 {
                                     "name": "Submit",
                                     "type": "button",
-                                    "form-submit-action": "save-next",
+                                    "form-submit-action": "next",
 									"close": true,
 									"closeUrl": "dmpt/details"
                                 }
