@@ -1,0 +1,52 @@
+<div id="$tableName" data-bind="stopBindings: true">
+<table>
+    <thead>
+    	<tr>
+        <th>File name</th>
+        <th>Description</th>
+        <th>Actions</th>
+        </tr>
+        
+    </thead>
+    <tbody data-bind="foreach: rows">
+        <tr>
+        	<td><a data-bind="text: filename, attr: {href: url} " target="_upload" ></a></td>
+        	<td data-bind="text: description"/>	
+            <td><a href="#" data-bind="click: $parent.remove">Remove</a> </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<script>
+startupCompleteListeners.push("initialise_$modelName");
+
+function initialise_$modelName() {
+	var rows = $initialiseFunctionName(); 
+	//put all the row models in the row array
+	for(var i =0; i<rows.length; i++) {
+		${modelName}.rows.push(rows[i]);
+	}
+}
+
+function $modelName() {
+    var self = this;
+ 
+    self.rows = ko.observableArray([]);
+
+    self.remove = function() {
+        $removeFunction(this, self.removeFunc(this));        
+    };
+    
+    self.removeFunc = function(row) { return function() {
+      self.rows.remove(row);  
+    }};
+}
+
+function add${modelName}Row(model) {
+    ${modelName}.rows.push(model);    
+}
+   
+var $modelName = new $modelName();
+ko.applyBindings($modelName, $("[id='$tableName']")[0]);
+</script>

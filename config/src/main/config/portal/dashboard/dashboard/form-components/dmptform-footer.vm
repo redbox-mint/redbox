@@ -1,19 +1,7 @@
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
-	function hide_no_option() { 
-  		document.getElementById('delegation_sec').style.display='none';
-	} 
-
-	function show_no_option() { 
-		document.getElementById('delegation_sec').style.display='block'; 
-	}
-	
 	$(document).ready(function() {
-		var hidden_elements = $('.HiddenWidget');
-   		for( var i = 0; i < hidden_elements.length; i++) {
-   			hidden_elements[i].style.display = 'none';
-   		}
-		
+
 		#set($flowName = $velocityContext.get("request").getParameter("flow"))
 		#if($flowName == "dataAccess")
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-licensingandaccessflow.json", "dmptTabs");
@@ -35,8 +23,5 @@
  			$("[id='locrel:prc.foaf:Person.foaf:givenName']").val() + " " + $("[id='locrel:prc.foaf:Person.foaf:familyName']").val();
 			$("[id='dataLicensingAccess.manager']").val(dataManager);
 		});
-		
-		
-		prepareHelps();
    	})
 </script>

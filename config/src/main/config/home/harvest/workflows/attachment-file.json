@@ -1,0 +1,30 @@
+{
+    "harvester": {
+        "type": "workflow-harvester",
+        "workflow-harvester": { "force-storage": "true" }
+    },
+    "transformer": {
+        "harvestQueue": [],
+        "renderQueue": []
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "attachment-file-rules.py"
+        },
+        "params": {
+            "repository.name": "Attachment",
+            "repository.type": "Attachment",
+            "workflow.source": "ReDBox"            
+        }
+    },
+    "stages": [
+        {
+            "name": "uploaded",
+            "label": "Uploaded",
+            "description": "Uploaded file attachments.",
+            "security": ["librarian", "reviewer", "admin"],
+            "visibility": ["librarian", "reviewer", "admin"]
+        }
+    ]
+}

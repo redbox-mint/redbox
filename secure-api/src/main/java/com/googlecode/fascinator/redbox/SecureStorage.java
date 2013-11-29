@@ -88,7 +88,10 @@ public class SecureStorage implements Storage {
 
     @Override
     public void removeObject(String oid) throws StorageException {
-        getObject(oid);
+        DigitalObject tempObj = getObject(oid);
+        log.debug("Closing temp object.");
+        tempObj.close();
+        log.debug("Temp object closed.");
         storage.removeObject(oid);
     }
 

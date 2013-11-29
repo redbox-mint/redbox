@@ -1,0 +1,12 @@
+{
+    "harvester": {        
+      "idField": "datasetId",
+      "recordIDPrefix": "",
+      "mainPayloadId":"harvestClient.json",
+      "rulesConfig":"${fascinator.home}/harvest/workflows/dataset.json",
+      "handlingType":"park",
+      "payloadMetaKey":"file.path",
+      "payloadBase":"${fascinator.home}/packages/",      
+      "commit":true
+    }
+}

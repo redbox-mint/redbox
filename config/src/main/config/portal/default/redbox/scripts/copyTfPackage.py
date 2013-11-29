@@ -60,8 +60,8 @@ class CopyTfPackageData:
                  print "error setting tfPackage"
                  
              fromTFPackage.close()
-             
-             if storeRelatedData == "false" :
+             fromTFPackageJson = JsonSimple(fromTFPackage.open()).getJsonObject()
+             if storeRelatedData != "false" :
                 # add relatedOid info
                 fromTFPackageJson = self._addRelatedOid(JsonSimple(fromTFPackage.open()), toOid)
              

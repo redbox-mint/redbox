@@ -5,22 +5,84 @@
     "password":"",
     "tls":"true",
     "ssl":"true",
-    "from":"${admin.email}",
-    "to":"$piEmail",
-    "subject":"New ReDBox record added: '$title'",
-    "body":"Dear User,\n\nThis is a notification of a newly created record: '$title' on $createTime. \n\n ${server.url.base}$viewId/detail/$oid \n\nCheers,\nEmailNotifier",
-    "vars":[
-        "$oid",
-        "$title",
-        "$createTime",
-        "$viewId",
-        "$piEmail"
+    "notifyNewSubmission" : [             
+        {
+          "from":"${admin.email}",
+          "to":"$piEmail",
+          "subject":"Request submission acknowledgement: '$title'",
+          "body":"$fname $lname,\n\nThis email acknowledges your request: '$title'. To view your request, use this link: ${server.url.base}$viewId/detail/$oid \n\nCheers,\nRequest Notifier",
+          "vars":[
+              "$oid",
+              "$title",
+              "$fname",
+              "$lname",        
+              "$viewId",
+              "$piEmail"
+          ],
+          "mapping": {
+              "$oid":"id",
+              "$title":"dc_title",
+              "$lname":"requester:familyName",
+              "$fname":"requester:givenName",        
+              "$viewId":"viewId",
+              "$piEmail":"requester:email"
+          }
+      },
+      {
+          "from":"${admin.email}",
+          "to":"${admin.email}",
+          "subject":"Approval needed - New Request submission: '$title'",
+          "body":"Reviewer,\n\nA new submission is waiting for your approval: '$title'. To view this request, use this link: ${server.url.base}$viewId/detail/$oid \n\nCheers,\nRequest Notifier",
+          "vars":[
+              "$oid",
+              "$title",
+              "$viewId"              
+          ],
+          "mapping": {
+              "$oid":"id",
+              "$title":"dc_title",
+              "$viewId":"viewId"
+          }
+      }
     ],
-    "mapping": {
-        "$oid":"id",
-        "$title":"dc_title",
-        "$createTime":"create_timestamp",
-        "$viewId":"viewId",
-        "$piEmail":"locrel:rth.foaf:Person.foaf:email"
-    }
+    "notifyApproval" : [             
+        {
+          "from":"${admin.email}",
+          "to":"$piEmail",
+          "subject":"Request approved: '$title'",
+          "body":"$fname $lname,\n\n Your request: '$title' has been approved. To view your request, use this link: ${server.url.base}$viewId/detail/$oid \n\nCheers,\nRequest Notifier",
+          "vars":[
+              "$oid",
+              "$title",
+              "$fname",
+              "$lname",        
+              "$viewId",
+              "$piEmail"
+          ],
+          "mapping": {
+              "$oid":"id",
+              "$title":"dc_title",
+              "$lname":"requester:familyName",
+              "$fname":"requester:givenName",        
+              "$viewId":"viewId",
+              "$piEmail":"requester:email"
+          }
+      },
+      {
+          "from":"${admin.email}",
+          "to":"${admin.email}",
+          "subject":"Request '$title' has been approved.",
+          "body":"Admin,\n\nA request has been approved: '$title'. To view this request, use this link: ${server.url.base}$viewId/detail/$oid \n\nCheers,\nRequest Notifier",
+          "vars":[
+              "$oid",
+              "$title",
+              "$viewId"              
+          ],
+          "mapping": {
+              "$oid":"id",
+              "$title":"dc_title",
+              "$viewId":"viewId"
+          }
+      }
+    ]    
 }

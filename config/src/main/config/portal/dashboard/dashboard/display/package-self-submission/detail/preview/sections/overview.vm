@@ -12,7 +12,7 @@
     #end
 #end
 
-#macro(getValue $key)
+#macro(getSingleValue $key)
     #set($v = $metadata.get("$key"))
     #if ($v && "$!v" != "")
 		$page.escapeHtml($v)
@@ -21,7 +21,7 @@
     #end
 #end
 
-#macro(getList $listName)
+#macro(getListValues $listName)
 	#set($items = $metadata.getList("$listName"))
     #if ($items && $items.size() > 0)
 		#set($i = 0)
@@ -35,7 +35,7 @@
 #macro(displayRow $key $name $type)
 	<tr>
     <td>$name</td>
-    <td>#if ( $type == "list" ) #getList($key) #else #getValue($key) #end </td>
+    <td>#if ( $type == "list" ) #getListValues($key) #else #getSingleValue($key) #end </td>
     </tr>
 #end
 
@@ -44,7 +44,7 @@
 <tr>
 <td>$label</td>
 <td>
-#set($forList = $self.getList("$baseKey"))
+#set($forList = $self.getListValues("$baseKey"))
 #if ($forList.isEmpty())
 #noInformation()
 #else

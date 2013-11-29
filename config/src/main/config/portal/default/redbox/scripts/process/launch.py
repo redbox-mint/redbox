@@ -41,7 +41,7 @@ class LaunchData:
             
     def execProcSet(self, procId, configJson):
         self.execProcessors(procId, configJson, self.dataMap, "pre")
-        self.execProcessors(procId, configJson, self.dataMap, "process")
+        self.execProcessors(procId, configJson, self.dataMap, "main")
         self.execProcessors(procId, configJson, self.dataMap, "post")
         
     def execProcessors(self, procId, configJson, dataMap, stageName):

@@ -1,15 +1,15 @@
 [
     {
-        "id":"notifyNewRecords",
+        "id":"notifyNewSubmission",
         "pre" : [
             {   
-                "class":"com.googlecode.fascinator.portal.process.NewRecordProcessor",
+                "class":"com.googlecode.fascinator.portal.process.RecordProcessor",
                 "config":"${fascinator.home}/process/newRecords.json",
                 "inputKey":"",
                 "outputKey":"newOids"
             }
         ],
-        "process" : [
+        "main" : [
             {   
                 "class":"com.googlecode.fascinator.portal.process.EmailNotifier",
                 "config":"${fascinator.home}/process/emailer.json",
@@ -19,11 +19,44 @@
         ],
         "post" : [
             {   
-                "class":"com.googlecode.fascinator.portal.process.NewRecordProcessor",
+                "class":"com.googlecode.fascinator.portal.process.RecordProcessor",
                 "config":"${fascinator.home}/process/newRecords.json",
                 "inputKey":"failedOids",
                 "outputKey":""
             }
         ]
-    }
+    },
+    {
+        "id":"notifyApproval",
+        "pre" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.RecordProcessor",
+                "config":"${fascinator.home}/process/approvedRecords.json",
+                "inputKey":"",
+                "outputKey":"newOids"
+            }
+        ],
+        "main" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.EmailNotifier",
+                "config":"${fascinator.home}/process/emailer.json",
+                "inputKey":"newOids",
+                "outputKey":"failedOids"
+            },
+            {   
+		        "class":"com.googlecode.fascinator.portal.process.HomeInstitutionNotifier",
+		        "config":"${fascinator.home}/process/notification/homeInstitutions.json",
+		        "inputKey":"newOids",
+		        "outputKey":"failedOids"
+		    }            
+        ],
+        "post" : [
+            {   
+                "class":"com.googlecode.fascinator.portal.process.RecordProcessor",
+                "config":"${fascinator.home}/process/approvedRecords.json",
+                "inputKey":"failedOids",
+                "outputKey":""
+            }
+        ]
+    }    
 ]

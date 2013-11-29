@@ -1,0 +1,22 @@
+#if($page.authentication.is_admin())
+#set($menuClass = "versions")
+#set($menuTitle = '<a class="collapsible" href="#">Versions</a>')
+#parseTemplate("wrapping/menu-open.vm")
+<ul class="menu hidden">
+#set($portalFormPath = $portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/",""))
+#foreach($k in $self.versions)
+  <li class="payload">
+      <a href="$portalFormPath/detail/$self.oid/?version=$k.timestamp">$self.formatDate($k.timestamp)</a>
+  </li>
+#end
+</ul>
+
+#parseTemplate("wrapping/menu-close.vm")
+<script type="text/javascript">
+<!--
+    $(function() {
+        collapsible(".versions", "ul.menu");
+    });
+-->
+</script>
+#end
