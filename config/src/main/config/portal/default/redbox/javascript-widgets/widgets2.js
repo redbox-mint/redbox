@@ -821,6 +821,14 @@ var widgets={forms:[], globalObject:this};
           tmp.find(".delete-item").not(tmp.find(".input-list .delete-item")).click(getDelFuncFor(tmp));
           if(count>=maxSize){addButton.attr("disabled", true);}
           contentSetup(tmp);
+          defFocus = tmp.find(".focusAfterClone");
+          if (defFocus) {
+            defFocus.focus();
+          }
+          tmp.find(".validation-err-msg").each(function(c,i) {
+            i=$(i);
+            i.hide();
+          }); 
         };
         for(var x=0;x<minSize;x++){
             add();

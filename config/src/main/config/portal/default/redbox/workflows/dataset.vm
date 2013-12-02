@@ -69,7 +69,10 @@ function getDateTime(){
             widgetTabs.tabs({
                 select: function(event, ui){
                     if(widgets.forms[0].hasChanges()){
-                        $(".form-fields-save:first").click();
+                        $(".form-fields-save:first").click();						
+                    }
+					if (ui.panel.onActivate) {                        
+                        ui.panel.onActivate();                        
                     }
                 }
             });
