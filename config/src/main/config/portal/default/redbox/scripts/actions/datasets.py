@@ -38,7 +38,7 @@ class DatasetsData:
             title = doc.getFirst("dc_title")
             #oid   = doc.getFirst("storage_id")
             oid = doc.getFirst("pidProperty")
-            list.append(oid+"::"+title)
+            list.append("%s::%s" % (oid, title))
         result = "\n".join(list)
 
         writer = response.getPrintWriter("text/plain; charset=UTF-8")
