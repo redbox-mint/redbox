@@ -84,7 +84,7 @@
                                                                     f=ctx.find('input[id='+fid+']').val();
                                                                     g=ctx.find('input[id='+gid+']').val();
                                                                     f=jQ.trim(f); g=jQ.trim(g);
-                                                                    r=(g=='')||(f=='');
+                                                                    r=(g=='')&&(f=='');
                                                                     id=gid;
 																	lid=id+'ErrMsg';																	                                                                   
                                                                     label=$('.'+lid);
