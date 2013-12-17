@@ -59,7 +59,7 @@
                                 </td>
                                 <td>
                                     <input type="text" placeholder="given name" size="25"
-                                           class="nameLookup-name creatorGivenName creatorName givenName"
+                                           class="nameLookup-name creatorGivenName creatorName givenName focusAfterClone"
                                            id="dc:creator.foaf:Person.0.foaf:givenName" />
                                 </td>
                                 <td>
@@ -86,7 +86,8 @@
                                                                     f=jQ.trim(f); g=jQ.trim(g);
                                                                     r=(g=='')&&(f=='');
                                                                     id=gid;
-																	lid=id+'ErrMsg';
+																	lid=id+'ErrMsg';																	                                                                   
+                                                                    label=$('.'+lid);
                                                                 );
                                                                 liveFor(.creatorName);">
                                         A creator's given name or family name is required!
@@ -375,4 +376,10 @@ function pcLookupCleared(target,data){
     lookupCleared(target,data);
     $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val("");
 }
+
+$(function(){    
+    $("#people")[0].onActivate = function() {
+        setTimeout(function(){$(".creatorGivenName")[$(".creatorGivenName").length -1].focus();}, 200);        
+    };    
+});
 </script>
