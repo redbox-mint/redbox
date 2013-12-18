@@ -8,18 +8,25 @@ class GetData:
       self.request = context['request']
       self.response = context['response']
       self.services = context['Services']
-      self.storage = self.services.storage
-      oid = self.request.getParameter("oid")
-      tfPackage = self.getTfPackage(oid,self.getTFPackagePid(oid))
-      objectMeta = self.getObjectMeta(oid)
-      workflowMeta = self.getWorkflowMeta(oid)
-      jsonObject = JsonObject()
-      jsonObject.put("tfPackage",tfPackage.getJsonObject())
-      jsonObject.put("workflow.metadata",workflowMeta.getJsonObject())
-      jsonObject.put("TF-OBJ-META",self.getObjectMetaJson(objectMeta))
-      writer = self.response.getPrintWriter("application/json; charset=UTF-8")
-      writer.println(JsonSimple(jsonObject).toString(True))
-      writer.close()
+      
+      self.sessionState = context["sessionState"]
+      #Assumption for time being is that users have admin access
+      try:
+          self.sessionState.set("username", "admin")
+          self.storage = self.services.storage
+          oid = self.request.getParameter("oid")
+          tfPackage = self.getTfPackage(oid, self.getTFPackagePid(oid))
+          objectMeta = self.getObjectMeta(oid)
+          workflowMeta = self.getWorkflowMeta(oid)
+          jsonObject = JsonObject()
+          jsonObject.put("tfPackage", tfPackage.getJsonObject())
+          jsonObject.put("workflow.metadata", workflowMeta.getJsonObject())
+          jsonObject.put("TF-OBJ-META", self.getObjectMetaJson(objectMeta))
+          writer = self.response.getPrintWriter("application/json; charset=UTF-8")
+          writer.println(JsonSimple(jsonObject).toString(True))
+          writer.close()
+      finally:
+          self.sessionState.remove("username")
       
     def getObjectMetaJson(self,objectMeta):
         objMetaJson = JsonObject()
