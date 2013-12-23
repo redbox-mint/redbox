@@ -133,8 +133,8 @@ public class PortalModule {
                         rolesList.add(GUEST_ROLE);
                     }
 
-                    request.addParam("fq", "owner:" + username
-                            + " OR security_filter:("
+                    request.addParam("fq", "owner:\"" + username
+                            + "\" OR security_filter:("
                             + StringUtils.join(rolesList, " OR ") + ")");
                     invocation.override(0, request);
                 }
