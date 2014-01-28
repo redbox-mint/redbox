@@ -195,10 +195,10 @@ public class SecureStorage implements Storage {
                 String query = "storage_id:" + oid;
                 SearchRequest req = new SearchRequest(query);
                 req.setParam("fl", "id");
-                req.setParam("fq", "owner:" + username
-                        + " OR security_filter:("
+                req.addParam("fq", "owner:\"" + username
+                        + "\" OR security_filter:("
                         + StringUtils.join(rolesList, " OR ") + ")"
-                        + " OR security_exception:(" + username + ")");
+                        + " OR security_exception:(\"" + username + "\")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
                 JsonSimple json = new JsonSimple(
