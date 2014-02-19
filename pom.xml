@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.redbox-mint</groupId>
 	<artifactId>redbox</artifactId>
-	<version>1.7</version>
+	<version>1.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ReDBox</name>
 	<parent>
 		<groupId>com.googlecode.redbox-mint</groupId>
 		<artifactId>redbox-project</artifactId>
-		<version>1.7</version>
+		<version>1.8-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 	<modules>
@@ -529,6 +529,6 @@
 		<url>scm:git://github.com/redbox-mint/redbox.git</url>
 		<connection>scm:git://github.com/redbox-mint/redbox.git</connection>
 		<developerConnection>scm:git:https://github.com/redbox-mint/redbox.git</developerConnection>
-		<tag>redbox-1.7</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
