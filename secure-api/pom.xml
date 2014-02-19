@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-secure-api</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
     <name>ReDBox - Secure API</name>
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>1.7-SNAPSHOT</version>
+        <version>1.7</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
     <dependencies>
@@ -19,7 +19,7 @@
             <artifactId>fascinator-portal</artifactId>
             <type>jar</type>
             <classifier>classes</classifier>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
