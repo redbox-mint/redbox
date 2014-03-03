@@ -1357,7 +1357,6 @@ public class CurationManager extends GenericTransactionManager {
      * @return JsonSimple The actions to take in response
 	 * @throws TransactionException
 	 *             If an error occurred
-<<<<<<< HEAD
      */
     @Override
     public JsonSimple parseMessage(JsonSimple message)
@@ -1366,7 +1365,8 @@ public class CurationManager extends GenericTransactionManager {
 
         // A standard harvest event
         JsonObject harvester = message.getObject("harvester");
-        if (harvester != null) {
+		String repoType= message.getString("", "indexer", "params", "repository.type");
+		if (harvester != null && !"Attachment".equalsIgnoreCase(repoType)) {
             try {
                 String oid = message.getString(null, "oid");
                 JsonSimple response = new JsonSimple();
@@ -1385,7 +1385,9 @@ public class CurationManager extends GenericTransactionManager {
             } catch (Exception ex) {
                 throw new TransactionException(ex);
             }
-        }
+		} else {
+			log.debug("Is type attachment, ignoring...");
+		}
 
         // It's not a harvest, what else could be asked for?
         String task = message.getString(null, "task");
@@ -1408,61 +1410,6 @@ public class CurationManager extends GenericTransactionManager {
                 if (newStep != null || eventType.equals("ReIndex")) {
                     // For housekeeping, we need to alter the
                     //   Solr index fairly speedily
-=======
-	 */
-	@Override
-	public JsonSimple parseMessage(JsonSimple message)
-			throws TransactionException {
-		log.debug("\n{}", message.toString(true));
-
-		// A standard harvest event
-		JsonObject harvester = message.getObject("harvester");
-		String repoType= message.getString("", "indexer", "params", "repository.type");
-		if (harvester != null && !"Attachment".equalsIgnoreCase(repoType)) {
-			try {
-				String oid = message.getString(null, "oid");
-				JsonSimple response = new JsonSimple();
-				audit(response, oid, "Tool Chain");
-
-				// Standard transformers... ie. not related to curation
-				scheduleTransformers(message, response);
-
-				// Solr Index
-				JsonObject order = newIndex(response, oid);
-				order.put("forceCommit", true);
-
-				// Send a message back here
-				createTask(response, oid, "clear-render-flag");
-				return response;
-			} catch (Exception ex) {
-				throw new TransactionException(ex);
-			}
-		} else {
-			log.debug("Is type attachment, ignoring...");
-		}
-
-		// It's not a harvest, what else could be asked for?
-		String task = message.getString(null, "task");
-		if (task != null) {
-			String oid = message.getString(null, "oid");
-
-			// ######################
-			// Workflow related events
-			if (task.equals("workflow-curation")) {
-				JsonSimple response = new JsonSimple();
-				workflowCuration(response, message);
-				return response;
-			}
-			if (task.equals("workflow")) {
-				JsonSimple response = new JsonSimple();
-
-				String eventType = message.getString(null, "eventType");
-				String newStep = message.getString(null, "newStep");
-				// The workflow has altered data, run the tool chain
-				if (newStep != null || eventType.equals("ReIndex")) {
-					// For housekeeping, we need to alter the
-					// Solr index fairly speedily
->>>>>>> upstream/master
 					boolean quickIndex = message
 							.getBoolean(false, "quickIndex");
                     if (quickIndex) {
