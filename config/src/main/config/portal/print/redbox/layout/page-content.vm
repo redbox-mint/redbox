@@ -1,0 +1,8 @@
+#set($hasRenderMessages = ($renderMessages && !$renderMessages.isEmpty()))
+<div class="grid_16">    
+    #parseTemplate("dialogs/login.vm")   
+        #if($pageContent && (!$blockingNotifications || $renderSettingsForms))
+            $pageContent
+        #end
+</div>
+<div class="clear"></div>

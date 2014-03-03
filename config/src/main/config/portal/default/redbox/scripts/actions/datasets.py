@@ -20,7 +20,7 @@ class DatasetsData:
         # And we're not interested in attachments
         query += " AND display_type:\"package-dataset\""
         req = SearchRequest(query)
-        req.setParam("fl", "dc_title,storage_id")
+        req.setParam("fl", "dc_title,storage_id,pidProperty")
         limit = formData.get("limit")
         if limit is None:
             limit = 10
@@ -36,8 +36,9 @@ class DatasetsData:
         list = []
         for doc in result.getResults():
             title = doc.getFirst("dc_title")
-            oid   = doc.getFirst("storage_id")
-            list.append(oid+"::"+title)
+            #oid   = doc.getFirst("storage_id")
+            oid = doc.getFirst("pidProperty")
+            list.append("%s::%s" % (oid, title))
         result = "\n".join(list)
 
         writer = response.getPrintWriter("text/plain; charset=UTF-8")

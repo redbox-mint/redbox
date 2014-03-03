@@ -1,4 +1,22 @@
+#set($oid = $metadata.get("id"))
 <div id="anno-root" class="content-preview">
+#if($systemConfig.getString("false", "portal", "displayPrintLinks") == "true")
+<script type="text/javascript">
+$( document ).ready(function() { 
+     $(".printDetailLink").click(function() {
+          myWindow = window.open('../../../print/detail/'+'${oid}'+'/', "DetailPrintPreview", "width=650,height=700, scrollbars=yes");
+          myWindow.focus();
+	      myWindow.history.go(0);
+	      setTimeout(function(){myWindow.window.print();}, 3000);	
+	      mywindow.focus();      
+     });
+ });
+</script>
+  <a class="printDetailLink" title="$page.escapeHtml($title)" href="#">
+       Print this Page
+       <img alt='Print this Page' src='$portalPath/images/icons/printer.png'/>
+   </a>
+   #end
     #if($page.authentication.is_logged_in())
     <div rel="${oid}-tags">
         <div class="object-tag-list">Tags: <span class="object-tags"></span></div>

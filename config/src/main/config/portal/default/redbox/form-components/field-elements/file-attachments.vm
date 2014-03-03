@@ -1,0 +1,138 @@
+#set($oid = $velocityContext.get('formData').get('oid'))
+<div>
+<span id="${widgetname}_filename" class="filename"></span>
+<span class="btn btn-success fileinput-button">
+    <span>Select file...</span>
+    <!-- The file input field used as target for the file upload widget -->
+    <input id="${widgetname}_fileupload" type="file" name="files" >
+</span>
+
+#if($enableDescription.equals("true"))
+<label for="${widgetname}_filedesc">Description:</label><input type="text" id="${widgetname}_filedesc" />
+#end
+<input type="button" id="${widgetname}_startupload" value="Start upload" />
+
+</div>
+<script>    
+var jQ = $;
+var ${widgetname}_formData = {       
+    attachmentType:"$attachType",
+    accessRights:"$accessRights",
+    ajax:"1",
+    oid:"$oid",
+    func:"attach-file",
+    "upload-file-workflow":"attachment-file",
+    metaDataList:["uploadFiles","attachmentType","accessRights","ajax","oid","func","upload-file-workflow","metaDataList","upload-file-context"
+#if($enableDescription.equals("true"))
+    ,"description"
+#end
+    ],
+    "upload-file-context":"$oid"
+};
+var ${widgetname}_uploadUrl = "$portalPath/attachments.ajax?ajax=true&func=attach-file&oid=$oid";
+var ${widgetname}_listUrl = "$portalPath/attachments.ajax?ajax=true&func=&oid=$oid&attachmentType=$attachType";
+var ${widgetname}_delUrl = "$portalPath/attachments.ajax?ajax=true&func=delete-attach-file&oid=$oid&attachmentType=$attachType";
+var ${widgetname}_uploadData = {};
+var ${widgetname}_fileRows = [];
+var ${widgetname}_blockmsg = {message:"<div style='font-size:16px;'>msgtoreplace<img src='$portalPath/images/ajax-loader.gif'/></div><div class='fileupload-progressbar'><div>&nbsp;</div></div>"};
+var ${widgetname}_getblockmsg = function (msg) {
+    var clonedBlock = jQ.extend({}, ${widgetname}_blockmsg);
+    clonedBlock.message = clonedBlock.message.replace("msgtoreplace",msg);
+	return clonedBlock;
+};
+var ${widgetname}_initUploader = function() {
+    ${widgetname}_clearUploader();    
+    jQ('#${widgetname}_startupload').click(function() {        
+        jQ.blockUI(${widgetname}_getblockmsg("Uploading file..."));
+#if($enableDescription.equals("true"))
+        ${widgetname}_uploadData.formData.description = jQ("#${widgetname}_filedesc").val();
+        ${widgetname}_uploadData.formData.json = JSON.stringify(${widgetname}_uploadData.formData);
+#end
+        ${widgetname}_uploadData.submit();
+    });   
+    jQ('#${widgetname}_fileupload').fileupload({
+        url : ${widgetname}_uploadUrl,
+        dataType: 'json',
+        autoUpload: false,                 
+        done: function (e, data) {            
+            jQ.unblockUI();            
+            if (data.result.error != null) {                              
+                var errmsg = /already exists in storage/.test(data.result.error) ? "This file already exists in the storage!\n Please select another file." : data.result.error;   
+                alert(errmsg);
+                return;
+            }
+            data.result.file.url = "$portalPath/detail/"+data.result.file.oid+"/"+data.result.file.filename+"?preview=false";                                       
+            ${widgetname}_fileRows.push(data.result.file);
+            $addFunction(data.result.file);
+            ${widgetname}_clearUploader();                                    
+        },
+        add: function (e, data) {            
+            data.formData = jQ.extend({}, ${widgetname}_formData);
+            data.formData.uploadFile = data.files[0].name;  
+            data.formData.json = JSON.stringify(data.formData);
+            ${widgetname}_uploadData = data;
+            jQ('#${widgetname}_startupload').attr("disabled", false);
+            jQ('#${widgetname}_filename').text(data.formData.uploadFile);
+        },        
+        progress: function(e, data) {
+            var uploaded = parseInt(data.loaded / data.total * 100, 10);
+            jQ(".fileupload-progressbar div").width(uploaded + "%");
+        }       
+    });    
+};
+
+var ${widgetname}_clearUploader = function() {
+#if($enableDescription.equals("true"))
+    jQ("#${widgetname}_filedesc").val("");    
+#end        
+    jQ('#${widgetname}_startupload').attr("disabled", true);
+    jQ('#${widgetname}_filename').text('No file selected.');
+};
+
+var ${widgetname}_getUploadedFiles = function() {    
+	// Ajax call to server to fetch attachment metadata and build row models (putting them into row variable). 
+    jQ.ajax(${widgetname}_listUrl,
+    {
+        async:false,
+        dataType:"json",
+        success: function(data, status, xhr) {
+            if (data.error != null) {
+                alert(data.error);
+                return;
+            }                            
+            for (i in data.files) {
+                data.files[i].url = "$portalPath/detail/"+data.files[i].oid+"/"+data.files[i].filename+"?preview=false";                            
+                ${widgetname}_fileRows.push(data.files[i]);
+            }
+        }
+    });	
+	return ${widgetname}_fileRows;
+};
+
+var ${widgetname}_deleteFile = function(file, cb) {
+    jQ.ajax(${widgetname}_delUrl,
+    {
+        async:true,
+        dataType:"json",
+        type:"POST",
+        data:{
+            foid:file.oid
+        },
+		beforeSend: function(xhr, settings) {
+		  jQ.blockUI(${widgetname}_getblockmsg("Deleting file..."));
+		},
+        success: function(data, status, xhr) {
+			jQ.unblockUI();
+            if (data.error != null) {
+                alert(data.error);
+                return;
+            }
+            cb();                                        
+        }
+    });        
+};
+
+jQ(function () {
+    ${widgetname}_initUploader();
+});
+</script>

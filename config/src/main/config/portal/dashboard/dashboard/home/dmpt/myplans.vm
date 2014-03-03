@@ -1,77 +1,112 @@
 #set($menuTitle = "#displayMessage('researcher-dashboard.home.myplans.title')")
 #set($currentUser = $self.getUser())
+#parseTemplate("page-components/pagedSection.vm")
+
+
 #parseTemplate("wrapping/info-box-open.vm")
-<div class="block">
 #if ($self.myPlans && $self.myPlans.size() > 0)
-    <table>
-        <thead>
-            <tr>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.manage')</th>
-            </tr>
-        </thead>
-        <tbody>
-        #foreach($item in $self.myPlans)
-            #set($oid = $item.get("id"))
-          <tr>
-        		#set($title = $item.get('dc:title'))
-        		<td><a href="$portalPath/detail/$oid">#if ($title) $page.escapeHtml($title) #else [Untitled] #end</a></td>
-                <td>
-                #parseTemplate("home/dmpt/created_modified_date.vm")                
-                </td>
-                <td>$self.formatDate($item.get("last_modified"))</td>
-                <td>
-                <a href="$portalPath/workflow/$oid?flow=mainflow" title="#displayMessage('researcher-dashboard.home.myplans.manage.edit')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.edit')" src="$portalPath/images/icons/workflow_edit.png"></a>
-                #if ($self.hasPlanPDF($oid))
-                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
-                #end
-				#if($currentUser != "admin")
-				<a href="#" onclick="change_owner('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.delete')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.delete')" src="$portalPath/images/icons/delete.png"></a>
-				#end
-                <a href="#" onclick="manage_access('$oid');" title="#displayMessage('researcher-dashboard.home.myplans.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.access')" src="$portalPath/images/icons/application_key.png"></a>
-                </td>
-            </tr>
-        #end
-        </tbody>
-    </table>
+#############################
+## Begin Paged Table - MyPlans
+#############################
+#set($plansRecUrl = "$portalPath/getRecords.script?packageType=dmpt")
+#set($plansTblStruct = "
+    <thead>
+        <tr>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.manage')</th>
+        </tr>
+    </thead>
+     <tbody data-bind=${q}foreach: rows${q}>
+  	<tr>
+      	    <td><a data-bind=${q}attr: {href: detailUrl}, text: dc_title${q}></a></td>
+      	    <td data-bind=${q}text: create_timestamp${q}/>
+      	    <td data-bind=${q}text: last_modified${q} />
+              <td>
+              <a data-bind=${q}attr: {href:editUrl}${q}>					
+  			<img title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.edit')${q} alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.edit')'${q} src=${q}$portalPath/images/icons/workflow_edit.png${q}>
+  		</a>
+            <a data-bind=${q}if: planPdfUrl, attr:{href: planPdfUrl}${q} target=${q}_blank${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q} src=${q}$portalPath/images/icons/mimetype/application/pdf/icon.png${q}></a>
+  		<a data-bind=${q}if: currentUser!='admin', click:$parent.changeOwner${q} href=${q}#${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q} src=${q}$portalPath/images/icons/delete.png${q}></a> 
+  		<a href=${q}#${q} data-bind=${q}click: $parent.manageAccess${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.access')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.access')${q} src=${q}$portalPath/images/icons/application_key.png${q}></a>
+  		</td>
+          </tr>				
+  </tbody>    
+")
+<script>
+var currentUser = "$currentUser";
+function plansMapFn(mod, rawdata) {
+  var data = rawdata.response.docs;  
+  for(var i=0; i < data.length; i++) {
+    data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
+  	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
+  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
+  	data[i]["editUrl"] = '$portalPath/workflow/' + data[i].id;
+    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/Data%20Management%20Plan.pdf' : null;
+    data[i]["currentUser"] = currentUser; 
+  	mod.rows.push(data[i]);
+  }
+};
+var plansFuncFn = {};
+plansFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
+plansFuncFn['changeOwner'] = function(item) { change_owner(item.id); };
+
+</script>
+<div class="block">
+#insertPagedTable('myPlans' $plansRecUrl $plansTblStruct 'plansMapFn' 'plansFuncFn')
+</div>
+#############################
+## End Paged Table - MyPlans
+#############################
 #end
-</div>    
 #parseTemplate("wrapping/info-box-close.vm")
 
 #if ($self.sharedPlans && $self.sharedPlans.size() > 0)
+#############################
+## Begin Paged Table - Shared Plans
+#############################
+#set($sharedPlansRecUrl = "$portalPath/getRecords.script?packageType=dmpt&isShared=true")
+#set($sharedPlansTblStruct = "
+    <thead>
+        <tr>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
+            <th>#displayMessage('researcher-dashboard.home.myplans.table.pdf')</th>
+        </tr>
+    </thead>
+     <tbody data-bind=${q}foreach: rows${q}>          
+        <tr>
+      		<td><a data-bind=${q}attr: {href: detailUrl}, text: dc_title${q}></a></td>
+      	    <td data-bind=${q}text: create_timestamp${q}/>
+      	    <td data-bind=${q}text: last_modified${q} />
+            <td>
+            <a data-bind=${q}if: planPdfUrl, attr:{href: planPdfUrl}${q} target=${q}_blank${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q} src=${q}$portalPath/images/icons/mimetype/application/pdf/icon.png${q}></a>
+            </td>
+          </tr>				
+  </tbody>    
+")
+<script>
+function sharedPlansMapFn(mod, rawdata) {
+  var data = rawdata.response.docs;  
+  for(var i=0; i < data.length; i++) {
+    data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
+  	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
+  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);  	
+    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/Data%20Management%20Plan.pdf' : null;     
+  	mod.rows.push(data[i]);
+  }
+};
+
+</script>
 #set($menuTitle = "#displayMessage('researcher-dashboard.home.sharedplans.title')" )
 #parseTemplate("wrapping/info-box-open.vm")
 <div class="block">
-    <table>
-        <thead>
-            <tr>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.project')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.created')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.modified')</th>
-                <th>#displayMessage('researcher-dashboard.home.myplans.table.pdf')</th>
-            </tr>
-        </thead>
-        <tbody>
-        #foreach($item in $self.sharedPlans)
-            #set($oid = $item.get("id"))
-          <tr>
-        		#set($title = $item.get('dc:title'))
-                <td><a href="$portalPath/detail/$oid">#if ($title) $title #else [Untitled] #end</a></td>
-                <td>
-                #parseTemplate("home/dmpt/created_modified_date.vm")                
-                </td>
-                <td>$self.formatDate($item.get("last_modified"))</td>
-                <td>
-                #if ($self.hasPlanPDF($oid))
-                <a target="_blank" href="$portalPath/download/$oid/Data%20Management%20Plan.pdf" title="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')"><img alt="#displayMessage('researcher-dashboard.home.myplans.manage.pdf')" src="$portalPath/images/icons/mimetype/application/pdf/icon.png"></a>
-                #end
-                </td>
-            </tr>
-        #end
-        </tbody>
-    </table>
+#insertPagedTable('mySharedPlans' $sharedPlansRecUrl $sharedPlansTblStruct 'sharedPlansMapFn' 'null')
 </div>
 #parseTemplate("wrapping/info-box-close.vm")
+#############################
+## End Paged Table - Shared Plans
+#############################
 #end

@@ -11,7 +11,7 @@ var widgetListBranding = {
 	".jaffaValidationError" : ["alert", "alert-error"]
 };
 $(document).ready(function() {
-$("$[id='{field-name}-selectedGrantNumber']").change(function() { });
+$("[id='${field-name}-selectedGrantNumber']").change(function() { });
 $("[id='repeat-textbox-of-$field-name']").jaffaGrantRepeatable({
 	"disable-numbers":true,
 	"disable-sorting":true,

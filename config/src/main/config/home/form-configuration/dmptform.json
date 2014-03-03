@@ -118,10 +118,9 @@
                             "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-start"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"date-picker",
                             "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:start",
-                            "label": "",
-                            "additional-classes":"dateYMD"
+                            "label": ""
                         },
                         {
                             "component-type":"text-block",
@@ -130,10 +129,9 @@
                             "help":"dmpt.field.help.dc-coverage.vivo-DateTimeInterval.vivo-end"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"date-picker",
                             "field-name":"dc:coverage.vivo:DateTimeInterval.vivo:end",
-                            "label":"",
-                            "additional-classes":"dateYMD"
+                            "label":""
                         },
                         {
                             "component-type":"text-block",
@@ -745,10 +743,9 @@
                             "help":"dmpt.field.help.redbox-disposalDate"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"date-picker",
                             "field-name":"redbox:disposalDate",
-                            "label":"",
-                            "additional-classes":"dateYMD"
+                            "label":""
                         },
                         {
                             "component-type":"transition-control",
@@ -1009,16 +1006,14 @@
                             "content":"Temporal (time) information"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"date-picker",
                             "field-name":"finalCollection.Date.From",
-                            "label":"Start date:",
-                            "additional-classes":"dateYMD"
+                            "label":"Start date:"
                         },
                         {
-                            "component-type":"text-input",
+                            "component-type":"date-picker",
                             "field-name":"finalCollection.Date.To",
-                            "label":"End date:",
-                            "additional-classes":"dateYMD"
+                            "label":"End date:"
                         },
                         {
                             "component-type":"text-input",

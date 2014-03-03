@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.redbox-mint</groupId>
   <artifactId>redbox</artifactId>
-  <version>1.6.1</version>
+  <version>1.7</version>
   <packaging>pom</packaging>
   <name>ReDBox</name>
   <parent>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-project</artifactId>
-    <version>1.6.1</version>
+    <version>1.7</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
   <modules>
@@ -47,7 +47,19 @@
       <artifactId>fascinator-portal</artifactId>
       <type>war</type>
       <classifier>skinny</classifier>
-      <version>1.1.4</version>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>com.googlecode.the-fascinator</groupId>
+        <artifactId>fascinator-portal</artifactId>
+        <type>jar</type>
+        <classifier>classes</classifier>
+        <version>1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>com.googlecode.the-fascinator</groupId>
+        <artifactId>fascinator-config-db</artifactId>
+        <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.redbox-mint</groupId>
@@ -83,6 +95,10 @@
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
         </exclusion>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -110,52 +126,52 @@
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-access-derby</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-authentication-internal</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-oai-pmh</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-harvester-workflow</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-indexer-solr</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-roles-internal</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-storage-filesystem</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-subscriber-solrEventLog</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity</artifactId>
-      <version>1.1.4</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.the-fascinator.plugins</groupId>
       <artifactId>plugin-transformer-jsonVelocity-pdf</artifactId>
-      <version>0.1</version>
+      <version>1.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -262,7 +278,7 @@
           <groupId>com.googlecode.the-fascinator</groupId>
           <artifactId>fascinator-portal</artifactId>
           <type>warpath</type>
-          <version>1.1.4</version>
+          <version>1.2</version>
         </dependency>
       </dependencies>
       <!-- The standard build/deploy process for making a server -->
@@ -416,7 +432,7 @@
                   <goal>unpack</goal>
                 </goals>
                 <configuration>
-                  <includes>portal/**</includes>
+                  <includes>portal/**,home/**</includes>
                   <outputDirectory>${project.home}</outputDirectory>
                   <artifactItems>
                     <artifactItem>

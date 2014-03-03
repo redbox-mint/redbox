@@ -1,10 +1,11 @@
 #sectionHeading("General")
 <div class="meta">
+	$self.versionStr
     <dl>
         #displayFirst("dc:title" "Title")
         #displayFirst("dc:type.skos:prefLabel" "Type")
         #displayFirst("dc:created" "Date Record Created")
         #displayFirst("dc:modified" "Date Record Modified")
         #displayFirst("dc:language.skos:prefLabel" "Language")
-    </dl>
+    </dl>	
 </div>

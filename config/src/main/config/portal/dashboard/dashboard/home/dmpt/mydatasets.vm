@@ -1,37 +1,65 @@
+#parseTemplate("page-components/pagedSection.vm")
+
+
 <div class="block">
+
 #if ($self.myDrafts && $self.myDrafts.size() > 0)
-	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.draft.title')</p>
-<table>
+#############################
+## Begin Paged Table - MyDrafts
+#############################
+#set($draftsRecUrl = "$portalPath/getRecords.script?packageType=self-submission")
+#set($draftsTblStruct = "
     <thead>
-        <tr>
+       <tr>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.created')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.modified')</th>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.manage')</th>
         </tr>
     </thead>
-    <tbody>
-	#foreach($item in $self.myDrafts)
-	    #set($oid = $item.get("id"))
+    <tbody data-bind='foreach: rows'>
 	    <tr>
-	    	<td><a href="$portalPath/detail/$oid">$page.escapeHtml($item.get("dc_title"))</a></td>
-		    <td>
-            #parseTemplate("home/dmpt/created_modified_date.vm")                
-		    </td>
-		    <td>$self.formatDate($item.get("last_modified"))</td>
-	        <td><a href="$portalPath/workflow/$oid"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')" src="$portalPath/images/icons/workflow_edit.png" title="#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')"></a>
-	            <!--<a href="#" onclick="change_owner('$oid');" title="Delete Plan"><img alt="Delete Record" src="$portalPath/images/icons/delete.png" title="Delete Record"></a>-->
-	            <a onclick="manage_access('$oid');" href="#" title="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')"><img alt="#displayMessage('researcher-dashboard.home.mydatasets.manage.access')" src="$portalPath/images/icons/application_key.png" title="Manage Record"></a>
-	       </td>
-	    </tr>
-	#end
-    </tbody>
-</table>
-#end       
-#if ($self.myDatasets && $self.myDatasets.size() > 0)
-	<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.submitted.title')</p>
+    	   <td><a data-bind='attr: {href: detailUrl}, text: dc_title'></a></td>
+	       <td data-bind='text: create_timestamp'/>
+           <td data-bind='text: last_modified' />
+           <td>
+                <a data-bind='attr: {href:editUrl}'>
+                    <img alt=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')${q} src='$portalPath/images/icons/workflow_edit.png' title=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.edit')${q}>
+                </a>
+                <a data-bind='click: $parent.manageAccess' href='#' title=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.access')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.access')${q} src='$portalPath/images/icons/application_key.png' title='Manage Record'></a>
+           </td>
+        </tr>
+    </tbody>    
+")
+<script>
+function draftsMapFn(mod, rawdata) {
+  var data = rawdata.response.docs;
+  for(var i=0; i < data.length; i++) {
+    data[i]["editUrl"] = '$portalPath/workflow/' + data[i].id;
+    data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
+  	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
+  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
+  	mod.rows.push(data[i]);
+  }
+};
+var draftFuncFn = {};
+draftFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
+</script>
 
-<table>
+<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.draft.title')</p>
+#insertPagedTable('myDrafts' $draftsRecUrl $draftsTblStruct 'draftsMapFn' 'draftFuncFn')
+
+#############################
+## End Paged Table - Drafts
+#############################
+#end
+
+#if ($self.myDatasets && $self.myDatasets.size() > 0)
+#############################
+## Begin Paged Table - Datasets
+#############################
+#set($dsRecUrl = "$portalPath/getRecords.script?packageType=dataset")
+#set($dsTblStruct = "
     <thead>
         <tr>
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.dataset')</th>
@@ -40,19 +68,34 @@
             <th>#displayMessage('researcher-dashboard.home.mydatasets.table.status')</th>
         </tr>
     </thead>
-    <tbody>
-    #foreach($item in $self.myDatasets)
-    #set($oid = $item.get("id"))
+    <tbody data-bind='foreach: rows'>
 	    <tr>
-    	<td><a href="$portalPath/detail/$oid">$item.get("dc_title")</a></td>
-	    <td>
-        #parseTemplate("home/dmpt/created_modified_date.vm")                
-	    </td>
-	    <td>$self.formatDate($item.get("last_modified"))</td>
-        <td>$item.get("workflow_step_label")</td>
+    	   <td><a data-bind='attr: {href: detailUrl}, text: dc_title'></a></td>
+	       <td data-bind='text: create_timestamp'/>
+           <td data-bind='text: last_modified' />
+           <td data-bind='text: workflow_step_label' />
         </tr>
-    #end
-    </tbody>
-</table>
+    </tbody>    
+")
+<script>
+function dsMapFn(mod, rawdata) {
+  var data = rawdata.response.docs;
+  for(var i=0; i < data.length; i++) {
+    data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
+  	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
+  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
+  	mod.rows.push(data[i]);
+  }
+};
+
+</script>
+
+<p style="margin-bottom: 0px;">#displayMessage('researcher-dashboard.home.mydatasets.submitted.title')</p>
+#insertPagedTable('myDatasets' $dsRecUrl $dsTblStruct 'dsMapFn' 'null')
+
+#############################
+## End Paged Table - Datasets
+#############################
 #end
+       
 </div>

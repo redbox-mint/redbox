@@ -137,6 +137,7 @@ $(function(){
     function addAccordion() {
         $(".accordion").accordion({
             autoHeight:false,
+            heightStyle:content,
             clearStyle:true,
             collapsible:false,
             header:".accordion-header"

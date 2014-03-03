@@ -1,0 +1,6 @@
+#set($contentId = $oid)
+#set($contentTitle = "Details")
+#parseTemplate("wrapping/content-block-open.vm")
+<div class="article first" id="content">
+    ##<div class="article-heading">$title</div>
+    #parseDisplayTemplate("detail/preview/content-header.vm")

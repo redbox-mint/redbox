@@ -73,7 +73,7 @@
                     </script>
                 </li>
             #end
-            <li><a target="blank" href="/solr/fascinator/select?q=(id:$oid%20AND%20item_type:object)">View Solr Index</a></li>
+            <li><a target="blank" href="/solr/fascinator/select?q=(id:$oid%20AND%20item_type:object)">View Solr Index</a></li>						
         #end
     </ul>
     #parseTemplate("wrapping/main-menu-close.vm")

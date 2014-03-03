@@ -1,3 +1,3 @@
-#if ($item.get("created_date")) $self.formatDate($item.get("date_created"))
+#if ($item.get("create_timestamp")) $self.formatDate($item.get("create_timestamp"))
  #else $self.formatDate($item.get("last_modified"))
  #end

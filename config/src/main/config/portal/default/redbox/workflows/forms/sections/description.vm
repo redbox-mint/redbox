@@ -104,8 +104,8 @@
         <script type="text/javascript">
         $(function(){
             $("#dc\\:description").jqEasyCounter({
-                maxChars: 4000,
-                maxCharsWarning: 3990,
+                maxChars: 12000,
+                maxCharsWarning: 11990,
                 msgTextAlign: 'left'
             });
         });

@@ -157,28 +157,29 @@ class BaseIndexData(object):
             self.utils.add(self.index, name, value)
 
     def __grantRoleAccess(self, newRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
         
     def __grantUserAccess(self, newUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", newUser)
-        self.utils.setAccessSchema(schema, "derby")
+        self.utils.setAccessSchema(schema)
 
     def __revokeRoleAccess(self, oldRole):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
         
     def __revokeUserAccess(self, oldUser):
-        schema = self.utils.getAccessSchema("derby");
+        schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
         schema.set("user", oldUser)
-        self.utils.removeAccessSchema(schema, "derby")
+        self.utils.removeAccessSchema(schema)
+
         
     def __metadata(self):
         self.title = None
@@ -219,7 +220,10 @@ class BaseIndexData(object):
         for key in self.relationDict:
             self.__indexList(key, self.relationDict[key])
         if self.createTimeStamp is None:
-            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
+            self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))        
+        self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )        
+        self.utils.add(self.index, "date_object_modified", self.params.getProperty("date_object_modified"))
+        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
 
     def __workflow(self):
         # Workflow data
@@ -321,6 +325,7 @@ class BaseIndexData(object):
                         self.utils.add(self.index, "date_created", solrTime)
                     elif field == "create_timestamp":
                         self.createTimeStamp = value
+                        self.utils.add(self.index, "create_timestamp", value)
                     # try to extract some common fields for faceting
                     if field.startswith("dc:") and \
                             not (field.endswith(".dc:identifier.rdf:PlainLiteral") \

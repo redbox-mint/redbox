@@ -88,7 +88,10 @@ public class SecureStorage implements Storage {
 
     @Override
     public void removeObject(String oid) throws StorageException {
-        getObject(oid);
+        DigitalObject tempObj = getObject(oid);
+        log.debug("Closing temp object.");
+        tempObj.close();
+        log.debug("Temp object closed.");
         storage.removeObject(oid);
     }
 
@@ -192,10 +195,10 @@ public class SecureStorage implements Storage {
                 String query = "storage_id:" + oid;
                 SearchRequest req = new SearchRequest(query);
                 req.setParam("fl", "id");
-                req.setParam("fq", "owner:" + username
-                        + " OR security_filter:("
+                req.addParam("fq", "owner:\"" + username
+                        + "\" OR security_filter:("
                         + StringUtils.join(rolesList, " OR ") + ")"
-                        + " OR security_exception:(" + username + ")");
+                        + " OR security_exception:(\"" + username + "\")");
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 indexer.search(req, out);
                 JsonSimple json = new JsonSimple(

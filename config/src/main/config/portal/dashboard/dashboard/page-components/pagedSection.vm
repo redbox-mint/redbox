@@ -1,0 +1,96 @@
+#set($q='"')
+## Set up a pagination control with a given ID when there is a need
+## Reference search-paging.vm from fascinator
+##
+## $pagingCtrlID : the CSS ID for control's div
+##
+#macro(insertPagingCtrl $pagingCtrlID)
+  <div id="$pagingCtrlID" class="paging">
+    <ul>    
+    </ul>
+  </div>
+#end
+
+## Macro for creating tables that list paginated data
+#macro(insertPagedTable $prefix $dataUrl $tblStruct $mapperJsFunc $funcMap) 
+<script>
+var ${prefix}Results = new dataRowsModel('${dataUrl}', '${prefix}PagingCtrl', '$mapperJsFunc', $funcMap);
+
+jQuery(document).ready(function() { 
+	ko.applyBindings(${prefix}Results, jQuery('#${prefix}ResultsTbl')[0]);
+	${prefix}Results.reloadRecords();
+});
+</script>
+
+<table id="${prefix}ResultsTbl" data-bind="stopBindings: true">
+    $tblStruct
+</table>
+#insertPagingCtrl("${prefix}PagingCtrl")
+
+#end
+
+<script>
+function setupPagingCtrls(ctrlID, modelInst, data) {
+    fillPaging(ctrlID, data);
+	$("#"+ ctrlID +" a").click(function() {        
+	    $("#"+ ctrlID +" .selected-page").addClass("select-page").removeClass("selected-page").attr("href","#");
+  		$(this).removeClass("select-page").addClass("selected-page").removeAttr("href");
+		var pN = $(this).attr("rel");
+  		modelInst.reloadRecords(pN);
+        return false;
+    });
+}
+
+function fillPaging(pagingId, data) {
+    var ul = jQuery("#" + pagingId  + " ul");
+    ul.empty();        
+    for (var i=1; i<=data.lastPage; i++) {
+        var clName = "select-page";
+        var href = 'href="#"';
+        if (i==data.curPage) {
+            clName = "selected-page";
+            href = "";
+        }         
+        ul.append("<li><a class='"+clName+"' "+href+" rel='"+i+"'>"+i+"</a></li>");
+    }             
+}
+
+//only has data and reload function
+function dataRowsModel(dataUrl, pagingCtrlId, mapperJsFunc, funcMap) {
+	var self = this
+	self.rows = ko.observableArray([]);
+    self.pagingCtrlId = pagingCtrlId;
+    if (funcMap!=null) {
+      for (fn in funcMap) {
+          self[fn] = funcMap[fn];
+      }
+    }
+
+	self.reloadRecords = function(pageN) {
+		self.rows.removeAll();
+		if (pageN == null) { pageN = 1; }
+		jQuery.getJSON(dataUrl+'&pageNum='+pageN, function(data) {
+			eval(mapperJsFunc+"(self, data);"); // mapper function can be specific to a table
+            setupPagingCtrls(pagingCtrlId, self, data);
+		});
+	};
+}
+
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}
+
+// Convert a full UTC date into format of dd/mm/yyyy
+function formatDate(od) {
+    var d = new Date(od);
+    var newD = zeroFill(d.getUTCDate(),2) + '/' + zeroFill(parseInt(d.getUTCMonth())+1,2) + '/' + d.getUTCFullYear();
+    return newD;
+}
+
+</script>

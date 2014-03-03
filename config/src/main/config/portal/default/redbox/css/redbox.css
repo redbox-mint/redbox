@@ -407,11 +407,11 @@ button.anzsrcSelection {
  }
 
 .report-img { 
-				display:inline-block; 
-				border: solid 1px; 
-				margin:5px; 
-				padding:10px 
-			}
+  display:inline-block; 
+  border: solid 1px; 
+  margin:5px; 
+  padding:10px 
+}
 
 .errorbox{
    display:none;
@@ -433,6 +433,15 @@ button.anzsrcSelection {
 	padding-right: 5px;
 }
 
+.printDetailLink{
+   font-family: Arial,Helvetica,sans-serif;
+   font-size: 1.02em;
+   font-weight: normal;
+}
 .jaffa2Loading{
 	color:green;
+}
+
+.HiddenWidget {
+	display:none;
 }
