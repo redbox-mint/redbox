@@ -47,14 +47,14 @@
 			<artifactId>fascinator-portal</artifactId>
 			<type>war</type>
 			<classifier>skinny</classifier>
-			<version>1.2</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.the-fascinator</groupId>
 			<artifactId>fascinator-portal</artifactId>
 			<type>jar</type>
 			<classifier>classes</classifier>
-			<version>1.2</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.the-fascinator</groupId>
@@ -280,7 +280,7 @@
 					<groupId>com.googlecode.the-fascinator</groupId>
 					<artifactId>fascinator-portal</artifactId>
 					<type>warpath</type>
-					<version>1.2</version>
+					<version>1.3-SNAPSHOT</version>
 				</dependency>
 			</dependencies>
 			<!-- The standard build/deploy process for making a server -->
