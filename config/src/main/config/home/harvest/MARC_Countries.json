@@ -1,0 +1,29 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/MARC_Countries.tsv",
+            "idColumn": "URI",
+            "headerRow": true,
+            "delimiter": "\t",
+            "ignoredFields": [],
+            "includedFields" : ["URI","code","Label (English)","Label (French)"]
+        }
+    },
+
+    "curation": {
+        "neverPublish": true,
+        "alreadyCurated": true
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "MARC_Countries.py"
+        },
+        "params": {
+            "repository.name": "Countries",
+            "repository.type": "Country codes"
+        }
+    }
+}

@@ -1,0 +1,47 @@
+#set($noLayout = true)
+#set($results = $self.getResults())
+#if($formData.get("simple"))
+    #foreach($result in $results)
+        $self.getValue($result, "dc_title")
+    #end
+#else
+{
+    "OpenSearchResponse": {
+        "title": "Research Activities search",
+        "link": "$self.getLink()",
+        "totalResults": "$self.getTotalResults()",
+        "startIndex" : "$self.getStartIndex()",
+        "itemsPerPage": "$self.getItemsPerPage()",
+        "query": {
+            "role": "$self.getRole()",
+            "searchTerms": "$self.getSearchTerms()",
+            "startPage": "$self.getStartPage()"
+        }
+    },
+    "namespaces": {
+        "dc": "http://purl.org/dc/terms",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+    },
+    "results": [
+        #foreach($result in $results)
+            #set($dctitles = $result.getList('dc_title'))
+            {
+                "result-metadata": {
+                    "relevance": $result.get('score'),
+                    "all": $result
+                },
+                "rdf:about": "$self.getBaseUrl()/detail/$result.get('id')",
+                "rdfs:type": ["owl:Thing"],
+                "rdfs:label": "$self.getValue($result, 'dc_title')",
+                "dc:title": "$self.getValue($result, 'dc_title')",
+                "dc:description": "$self.getValue($result, 'dc_description')",
+                "dc:identifier": "$self.getValue($result, 'dc_identifier')",
+                "grant_number": "$self.getValue($result, 'grant_number')"
+            }
+            #if($velocityCount < $results.size()),#end
+        #end
+    ]
+}
+#end

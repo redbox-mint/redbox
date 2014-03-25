@@ -1,0 +1,20 @@
+{
+    "harvester": {
+        "type": "skos",
+        "skos": {
+            "baseFile": "${fascinator.home}/data/skos/seo08.rdf",
+            "baseUri": "http://purl.org/asc/1297.0/2008/seo/",
+            "rootNode": "anzsrc/seo"
+        }
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "ANZSRC.py"
+        },
+        "params": {
+            "repository.name": "Socio-Economic Objective",
+            "repository.type": "ANZSRC"
+        }
+    }
+}

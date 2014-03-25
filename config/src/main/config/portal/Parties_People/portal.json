@@ -1,0 +1,21 @@
+{
+  "portal" : {
+    "name" : "Parties_People",
+    "description" : "Parties - People",
+    "query" : "repository_type:\"Parties\" AND repository_name:\"People\"",
+    "facet-fields" : {
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

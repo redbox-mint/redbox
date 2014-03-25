@@ -1,0 +1,21 @@
+{
+  "portal" : {
+    "name" : "Languages",
+    "description" : "Languages",
+    "query" : "repository_name:\"Languages\" AND repository_type:\"Language Codes\"",
+    "facet-fields" : {
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

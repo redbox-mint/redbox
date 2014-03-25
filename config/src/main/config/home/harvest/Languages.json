@@ -1,0 +1,29 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/Languages.csv",
+            "idColumn": "alpha3",
+            "recordIDPrefix": "http://id.loc.gov/vocabulary/iso639-2/",
+            "headerRow": false,
+            "headerList": ["alpha3", "alpha3_alt", "alpha2", "english", "french"],
+            "delimiter": "|",
+            "ignoredFields": [],
+            "includedFields" : ["alpha3", "alpha3_alt", "alpha2", "english", "french"]
+        }
+    },
+    "curation": {
+        "neverPublish": true,
+        "alreadyCurated": true
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "Languages.py"
+        },
+        "params": {
+            "repository.name": "Languages",
+            "repository.type": "Language Codes"
+        }
+    }
+}

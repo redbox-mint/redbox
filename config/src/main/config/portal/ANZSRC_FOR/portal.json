@@ -1,0 +1,21 @@
+{
+  "portal" : {
+    "name" : "ANZSRC_FOR",
+    "description" : "ANZSRC FOR",
+    "query" : "repository_type:\"ANZSRC\" AND repository_name:\"Fields of Research\"",
+    "facet-fields" : {
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

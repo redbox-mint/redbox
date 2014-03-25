@@ -1,0 +1,21 @@
+{
+  "portal" : {
+    "name" : "Parties_Groups",
+    "description" : "Parties - Groups",
+    "query" : "repository_type:\"Parties\" AND repository_name:\"Groups\"",
+    "facet-fields" : {
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

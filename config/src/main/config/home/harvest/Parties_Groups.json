@@ -1,0 +1,66 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/Group_Sample.csv",
+            "idColumn": "ID",
+            "recordIDPrefix": "redbox-mint.googlecode.com/parties/group/",
+            "headerRow": true,
+            "delimiter": ",",
+            "ignoredFields": [],
+            "includedFields" : ["ID", "Name", "Email", "Phone", "Parent_Group_ID", "URI", "NLA_Party_Identifier", "Homepage", "Description"]
+        }
+    },
+
+    "transformer": {
+        "curation": [],
+        "metadata": ["ingest-relations", "jsonVelocity"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
+    },
+
+    "transformerOverrides": {
+        "ingest-relations": {
+            "sourcePid": "metadata.json",
+            "sourcePath": ["data"],
+            "relations": {
+                "Parent_Group_ID": {
+                    "prefix": "redbox-mint.googlecode.com/parties/group/",
+                    "relation": "isPartOf",
+                    "reverseRelation": "hasPart"
+                }
+            }
+        },
+        "handle": {
+            "source": "metadata.json",
+            "description": {
+                "seperator": "",
+                "paths": [
+                    ["data", "Name"]
+                ]
+            },
+            "output": {
+                "path": ["metadata"],
+                "field": "rdf:resource"
+            },
+            "template": "[[INC]]"
+        },
+        "jsonVelocity": {
+            "templatesPath" : "${fascinator.home}/templates/groups",
+            "portalId": "Parties_Groups"
+        }
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "Parties_Groups.py"
+        },
+        "params": {
+            "repository.name": "Groups",
+            "repository.type": "Parties"
+        }
+    }
+}

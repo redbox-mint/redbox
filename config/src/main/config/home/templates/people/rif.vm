@@ -1,0 +1,115 @@
+#set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+#set($group = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
+
+##### START Identifier resolution
+#set($pidProperty = $systemConfig.getString($defaultOnError, "curation", "pidProperty"))
+#set ($pid = $util.getMetadata($object, $pidProperty))
+#if ("$!pid" == "")
+    #set ($pid = $util.get($item, "metadata", "rdf:resource"))
+    #if ("$!pid" == "")
+        #set ($pid = $util.get($item, "metadata", "dc.identifier"))
+    #end
+#end
+##### END Identifier resolution
+
+<registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.3/schema/registryObjects.xsd">
+    <registryObject group="$util.encodeXml($group)">
+        <key>$util.encodeXml($pid)</key>
+        <originatingSource>$urlBase</originatingSource>
+        <party type="person">
+            <identifier type="uri">$util.encodeXml($pid)</identifier>
+
+			#set ($nla_id = $util.getMetadata($object, "nlaPid"))
+            #if ("$!nla_id" != "") 
+            	<identifier type="AU-ANL:PEAU">$util.encodeXml($nla_id)</identifier> 
+            #end
+            
+            
+            ### Name
+            <name type="primary">
+                <namePart type="given">$util.encodeXml($util.get($item, 'data', 'Given_Name'))</namePart>
+
+                #set ($value = $util.get($item, "data", "Family_Name"))
+                #if ("$!value" != "")
+                <namePart type="family">$util.encodeXml($value)</namePart>
+                #end
+
+                #set ($value = $util.get($item, "data", "Honorific"))
+                #if ("$!value" != "")
+                <namePart type="title">$util.encodeXml($value)</namePart>
+                #end
+            </name>
+
+            <location>
+            ### Home Page
+            #set ($value = $util.get($item, "data", "Staff_Profile_Homepage"))
+            #if ("$!value" != "")
+                <address>
+                    <electronic type="url">
+                        <value>$util.encodeXml($value)</value>
+                    </electronic>
+                </address>
+            #else
+                #set ($value = $util.get($item, "data", "Personal_Homepage"))
+                #if ("$!value" != "")
+                <address>
+                    <electronic type="url">
+                        <value>$util.encodeXml($value)</value>
+                    </electronic>
+                </address>
+                #end
+            #end
+
+            ### Email address
+            #set ($value = $util.get($item, "data", "Email"))
+            #if ("$!value" != "")
+                <address>
+                    <electronic type="email">
+                        <value>$util.encodeXml($value)</value>
+                    </electronic>
+                </address>
+            #end
+            </location>
+
+            ### ANZSRC
+            #set ($value = $util.get($item, "data", "ANZSRC_FOR_1"))
+            #if ("$!value" != "")
+            <subject type="anzsrc-for">$util.encodeXml($value)</subject>
+            #end
+            #set ($value = $util.get($item, "data", "ANZSRC_FOR_2"))
+            #if ("$!value" != "")
+            <subject type="anzsrc-for">$util.encodeXml($value)</subject>
+            #end
+            #set ($value = $util.get($item, "data", "ANZSRC_FOR_3"))
+            #if ("$!value" != "")
+            <subject type="anzsrc-for">$util.encodeXml($value)</subject>
+            #end
+
+            ### Description
+            #set ($value = $util.get($item, "data", "Description"))
+            #if ("$!value" != "")
+            <description type="full">$util.encodeXml($value)</description>
+            #else
+            <description type="full">$util.encodeXml($util.get($item, "data", "Name"))</description>
+            #end
+
+            ### Relations
+            #set($valueList = $item.getJsonSimpleList("relationships"))
+            #if($valueList)
+                #foreach($value in $valueList)
+                    #if ($value.getBoolean(false, "isCurated"))
+                        #set($key = $value.getString("empty", "curatedPid"))
+                        #set($rel = $value.getString("hasAssociationWith", "relationship"))
+                        #if ($key != "empty")
+            <relatedObject>
+                <key>$util.encodeXml($key)</key>
+                <relation type="$util.encodeXml($rel)"/>
+            </relatedObject>
+                        #end
+                    #end
+                #end
+            #end
+
+        </party>
+    </registryObject>
+</registryObjects>

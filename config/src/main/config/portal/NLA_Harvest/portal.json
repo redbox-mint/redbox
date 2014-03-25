@@ -1,0 +1,30 @@
+{
+    "portal": {
+        "name": "NLA_Harvest",
+        "description": "National Library Harvest",
+        "query": "repository_type:\"Parties\" AND repository_name:\"People\" AND ready_for_nla:\"ready\"",
+        "searchQuery": "*:*",
+        "facet-fields": {
+            "recordtype": {
+                "label": "Record type",
+                "display": "list"
+            },
+            "repository_name": {
+                "label": "Source",
+                "display": "list"
+            },
+            "repository_type": {
+                "label": "Source type",
+                "display": "list"
+            },
+            "workflow_step_label": {
+                "label": "Workflow Step",
+                "display": "list"
+            }
+        },
+        "records-per-page": "10",
+        "facet-count": "25",
+        "facet-display": "10",
+        "facet-sort-by-count": false
+    }
+}

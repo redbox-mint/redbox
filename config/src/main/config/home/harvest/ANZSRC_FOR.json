@@ -1,0 +1,20 @@
+{
+    "harvester": {
+        "type": "skos",
+        "skos": {
+            "baseFile": "${fascinator.home}/data/skos/for08.rdf",
+            "baseUri": "http://purl.org/asc/1297.0/2008/for/",
+            "rootNode": "anzsrc/for"
+        }
+    },
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "ANZSRC.py"
+        },
+        "params": {
+            "repository.name": "Fields of Research",
+            "repository.type": "ANZSRC"
+        }
+    }
+}

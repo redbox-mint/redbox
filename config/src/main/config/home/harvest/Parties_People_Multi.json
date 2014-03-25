@@ -1,0 +1,69 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/People_Sample_Multi.csv",
+            "idColumn": "ID",
+            "recordIDPrefix": "redbox-mint.googlecode.com/parties/people/",
+            "headerRow": true,
+            "delimiter": ",",
+            "ignoredFields": [],
+            "includedFields" : ["ID", "Given_Name", "Other_Names", "Family_Name", "Pref_Name", "Honorific", "Email", "Job_Title", "Groups", "ANZSRC_FOR", "URI", "NLA_Party_Identifier", "ResearcherID", "openID", "Personal_URI", "Personal_Homepage", "Staff_Profile_Homepage", "Description"],
+            "multiValueFields": ["Groups", "ANZSRC_FOR"]
+        }
+    },
+
+    "transformer": {
+        "curation": [],
+        "metadata": ["ingest-relations", "jsonVelocity"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
+    },
+
+    "transformerOverrides": {
+        "ingest-relations": {
+            "sourcePid": "metadata.json",
+            "sourcePath": ["data"],
+            "relations": {
+                "Groups": {
+                    "prefix": "redbox-mint.googlecode.com/parties/group/",
+                    "relation": "isMemberOf",
+                    "reverseRelation": "hasMember"
+                }
+            }
+        },
+        "handle": {
+            "source": "metadata.json",
+            "description": {
+                "seperator": " ",
+                "paths": [
+                    ["data", "Honorific"],
+                    ["data", "Given_Name"],
+                    ["data", "Family_Name"]
+                ]
+            },
+            "output": {
+                "path": ["metadata"],
+                "field": "rdf:resource"
+            },
+            "template": "[[INC]]"
+        },
+        "jsonVelocity": {
+            "templatesPath" : "${fascinator.home}/templates/people",
+            "portalId": "Parties_People"
+        }
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "Parties_People_Multi.py"
+        },
+        "params": {
+            "repository.name": "People",
+            "repository.type": "Parties"
+        }
+    }
+}

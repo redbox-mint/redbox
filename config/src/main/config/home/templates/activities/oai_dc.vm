@@ -1,0 +1,22 @@
+#set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+##### START Identifier resolution
+#set($pidProperty = $systemConfig.getString($defaultOnError, "curation", "pidProperty"))
+#set ($pid = $util.getMetadata($object, $pidProperty))
+#if ("$!pid" == "")
+    #set ($pid = $util.get($item, "metadata", "rdf:resource"))
+    #if ("$!pid" == "")
+        #set ($pid = $util.get($item, "metadata", "dc.identifier"))
+    #end
+#end
+##### END Identifier resolution
+
+<oai_dc:dc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd" 
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+    <dc:identifier>$util.encodeXml($pid)</dc:identifier>
+    <dc:title>$util.encodeXml($util.get($item, "data", "Title"))</dc:title>
+    <dc:description>'Activities' entry for '$util.encodeXml($util.get($item, "data", "Title"))'</dc:description>
+
+</oai_dc:dc>

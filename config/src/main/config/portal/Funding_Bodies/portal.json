@@ -1,0 +1,21 @@
+{
+  "portal" : {
+    "name" : "Funding_Bodies",
+    "description" : "Funding Bodies",
+    "query" : "repository_type:\"Funding Bodies\"",
+    "facet-fields" : {
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}

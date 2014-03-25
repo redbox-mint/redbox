@@ -1,0 +1,55 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/Services.csv",
+            "idColumn": "ID",
+            "recordIDPrefix": "redbox-mint.googlecode.com/services/",
+            "headerRow": true,
+            "delimiter": ",",
+            "ignoredFields": [],
+            "includedFields" : ["ID", "Name", "Type", "ANZSRC_FOR_1", "ANZSRC_FOR_2", "ANZSRC_FOR_3", "Location", "Coverage_Temporal_From", "Coverage_Temporal_To", "Coverage_Spatial_Type", "Coverage_Spatial_Value", "Existence_Start", "Existence_End", "Website", "Data_Quality_Information", "Reuse_Information", "Access_Policy", "URI", "Description"]
+        }
+    },
+
+    "transformer": {
+        "curation": [],
+        "metadata": ["jsonVelocity"]
+    },
+    "curation": {
+        "neverPublish": false,
+        "alreadyCurated": false
+    },
+
+    "transformerOverrides": {
+        "handle": {
+            "source": "metadata.json",
+            "description": {
+                "seperator": " ",
+                "paths": [
+                    ["data", "Description"]
+                ]
+            },
+            "output": {
+                "path": ["metadata"],
+                "field": "rdf:resource"
+            },
+            "template": "[[INC]]"
+        },
+        "jsonVelocity": {
+            "templatesPath" : "${fascinator.home}/templates/services",
+            "portalId": "Services"
+        }
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "Services.py"
+        },
+        "params": {
+            "repository.name": "Local Services",
+            "repository.type": "Services"
+        }
+    }
+}

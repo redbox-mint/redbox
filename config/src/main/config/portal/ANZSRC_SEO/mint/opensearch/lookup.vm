@@ -1,0 +1,41 @@
+#set($noLayout = true)
+#set($results = $self.getResultsByCode())
+{
+    "OpenSearchResponse": {
+        "title": "ANZSRC SEO Search",
+        "link": "$self.getLink()",
+        "totalResults": "$self.getTotalResults()",
+        "startIndex" : "$self.getStartIndex()",
+        "itemsPerPage": "$self.getItemsPerPage()",
+        "query": {
+            "role": "$self.getRole()",
+            "searchTerms": "$self.getSearchTerms()",
+            "startPage": "$self.getStartPage()"
+        }
+    },
+    "namespaces": {
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "results": [
+        #foreach($result in $results)
+            #set($dctitles = $result.getList("dc_title"))
+            {
+                "result-metadata": {
+                    "relevance": $result.get("score")
+                },
+                #set($uri = $self.getValue($result, 'dc_identifier'))
+                "rdf:about": "$uri",
+                "rdf:type": "skos:Concept",
+                "skos:inScheme": "$self.getValue($result, 'skos_inScheme')",
+                "skos:broader": "$self.getValue($result, 'skos_broader')",
+                "skos:narrower": $self.getValueList($result, "skos_narrower"),
+                #set($lastIndex = $uri.lastIndexOf('/') + 1 )
+                #set($code = $uri.substring($lastIndex) )
+                "skos:prefLabel": "$code - $self.getValue($result, 'skos_prefLabel')"
+            }
+            #if($velocityCount < $results.size()),#end
+        #end
+    ]
+}
+

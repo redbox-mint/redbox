@@ -1,0 +1,50 @@
+{
+    "harvester": {
+        "type": "csv",
+        "csv": {
+            "fileLocation": "${fascinator.home}/data/Activities_NGCP_New_Ongoing_UoN.csv",
+            "idColumn": "ID",
+            "recordIDPrefix": "http://purl.org/au-research/grants/arc/",
+            "headerRow": true,
+            "delimiter": ",",
+            "ignoredFields": [],
+            "includedFields" : [
+                "ID",
+                "Submit Year",
+                "Start Year",
+                "Title",
+                "Description",
+                "Institution",
+                "Investigators",
+                "Discipline"
+            ]
+        }
+    },
+
+    "transformer": {
+        "curation": [],
+        "metadata": []
+    },
+    "curation": {
+        "neverPublish": true,
+        "alreadyCurated": true
+    },
+
+    "transformerOverrides": {
+        "jsonVelocity": {
+            "templatesPath" : "${fascinator.home}/templates/activities",
+            "portalId": "Activities"
+        }
+    },
+
+    "indexer": {
+        "script": {
+            "type": "python",
+            "rules": "Activities.py"
+        },
+        "params": {
+            "repository.name": "ARC NGCP New and Ongoing Projects",
+            "repository.type": "Research Activities"
+        }
+    }
+}

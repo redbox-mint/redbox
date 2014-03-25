@@ -1,0 +1,69 @@
+#set($defaultOnError = "&Invalid XML placeholder... prevents Harvesting records in error&")
+#set($group = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
+
+##### START Identifier resolution
+#set($pidProperty = $systemConfig.getString($defaultOnError, "curation", "pidProperty"))
+#set ($pid = $util.getMetadata($object, $pidProperty))
+#if ("$!pid" == "")
+    #set ($pid = $util.get($item, "metadata", "rdf:resource"))
+    #if ("$!pid" == "")
+        #set ($pid = $util.get($item, "metadata", "dc.identifier"))
+    #end
+#end
+##### END Identifier resolution
+
+<eac-cpf xmlns="urn:isbn:1-931666-33-4"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="urn:isbn:1-931666-33-4 http://eac.staatsbibliothek-berlin.de/schema/cpf.xsd">
+
+    <control>
+        <recordId>$oid</recordId>
+        <maintenanceStatus>new</maintenanceStatus>
+        <maintenanceAgency>
+            #set($agencyCode = $systemConfig.getString($defaultOnError, "curation", "nlaIntegration", "agencyCode"))
+            <agencyCode>$util.encodeXml($agencyCode)</agencyCode>
+            #set($agencyName = $systemConfig.getString($defaultOnError, "curation", "nlaIntegration", "agencyName"))
+            <agencyName>$util.encodeXml($agencyName)</agencyName>
+        </maintenanceAgency>
+        <languageDeclaration>
+            <language languageCode="eng">English</language>
+            <script scriptCode="Latn">Latin</script>
+        </languageDeclaration>
+
+        #set($creationDate = $util.getMetadata($object, "eac_creation_date"))
+        <maintenanceHistory>
+            <maintenanceEvent>
+                <eventType>created</eventType>
+                <eventDateTime standardDateTime="$util.encodeXml($creationDate)" />
+                <agentType>machine</agentType>
+                <agent>Mint Name Authority - $util.encodeXml($group)</agent>
+            </maintenanceEvent>
+        </maintenanceHistory>
+    </control>
+
+    <cpfDescription>
+        <identity>
+            <entityId>$pid</entityId>
+            <entityType>person</entityType>
+            <nameEntry>
+                #set ($value = $util.get($item, "data", "Family_Name"))
+                #if ("$!value" != "")
+                <part localType="surname">$util.encodeXml($value)</part>
+                <part localType="forename">$util.encodeXml($util.get($item, 'data', 'Given_Name'))</part>
+                #end
+            </nameEntry>
+        </identity>
+        <description>
+            <biogHist>
+                #set ($value = $util.get($item, "data", "Description"))
+                #if ("$!value" != "")
+                    <abstract>$util.encodeXml($value)</abstract>
+                #else
+                    #set ($pretend = "$util.encodeXml($util.get($item, 'data', 'Honorific')) $util.encodeXml($util.get($item, 'data', 'Given_Name')) $util.encodeXml($util.get($item, 'data', 'Family_Name')), $util.encodeXml($util.get($item, 'data', 'Division')), $util.encodeXml($util.get($item, 'data', 'School'))")
+                    <abstract>$pretend</abstract>
+                #end
+            </biogHist>
+        </description>
+    </cpfDescription>
+</eac-cpf>

@@ -1,0 +1,25 @@
+{
+  "portal" : {
+    "name" : "Activities",
+    "description" : "Research Activities",
+    "query" : "repository_type:\"Research Activities\"",
+    "facet-fields" : {
+      "foaf_name" : {
+        "label" : "Institution",
+        "display" : "list"
+      },
+      "repository_name" : {
+        "label" : "Source",
+        "display" : "list"
+      },
+      "repository_type" : {
+        "label" : "Source type",
+        "display" : "list"
+      }
+    },
+    "sort-fields" : {
+      "last_modified" : "Last modified",
+      "f_dc_title" : "Title"
+    }
+  }
+}
