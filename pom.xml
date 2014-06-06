@@ -125,8 +125,8 @@
 		<!-- Fascinator Plugins -->
 		<dependency>
 			<groupId>com.googlecode.the-fascinator.plugins</groupId>
-			<artifactId>plugin-access-derby</artifactId>
-			<version>1.2</version>
+			<artifactId>plugin-access-db</artifactId>           
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.the-fascinator.plugins</groupId>
