@@ -21,12 +21,6 @@ $buttonHtml
          		url = '$portalPath/workflows/simpleworkflow.ajax?func=action&action='+action+'&oid=$oid';
          	}
 			delete serverData["related.datasets"];
-			for (var key in serverData) {
-                // hack for dropdown widget returning the label instead of the empty value...
-                if (serverData[key] == "Please select one...") {
-                    serverData[key] = "";
-                }
-            }
          	jQuery.ajax({type:"POST", url:url, data:serverData,
 						 success:function(){
 							 if (workflow_next) {
