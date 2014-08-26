@@ -98,6 +98,7 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
         												nextCombo["data-list-key"] = 'results';
         												nextCombo["default-value"] = 'skos:narrower';           
     													nextCombo["class-list"] = 'widgetListBranding';
+                                                        jaffa.serverData[field+".bottom.dropdown"] = "";
     													$("span[id='"+field+".bottom']").jaffaDropDown(nextCombo);
     												}
     												if(comboValue == "") {
@@ -108,6 +109,7 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
     													$("[id='"+field+".displayLabel']").text(labelValue);
     													$("[id='"+field+"rdf:resource']").val(comboValue);
     													$("[id='"+field+".bottom.dropdown']").hide();
+                                                        jaffa.serverData[field+".bottom.dropdown"] = "";
     												}
 												});
 												
@@ -238,6 +240,7 @@ var AnzsrcSelectionWidgetBuilder = function($, jaffa) {
     													$("[id='"+field+".displayLabel']").text(labelValue);
     													$("[id='"+field+"rdf:resource']").val(comboValue);
     													$("[id='"+field+".bottom.dropdown']").hide();
+                                                        jaffa.serverData[field+".bottom.dropdown"] = "";
     												}
 												});
 												
