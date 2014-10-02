@@ -1,9 +1,9 @@
 {
     "version": "1.1.0.1",
     "redbox.version.string": "${redbox.version}",
-    "redbox.identity": {
+    "identity": {
         "institution": "University of Newcastle",
-        "RIF-CS Group": "The University of Newcastle, Australia",
+        "RIF_CSGroup": "The University of Newcastle, Australia",
         "internalGrantString": "urn:uon:internal"
     },
     "configured": true,

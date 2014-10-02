@@ -18,7 +18,7 @@
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
 #set($defaultIternal = "internal:id")
-#set($iternalId = $systemConfig.getString($defaultIternal, "redbox.identity", "internalGrantString"))
+#set($iternalId = $systemConfig.getString($defaultIternal, "identity", "internalGrantString"))
 var INTERNAL_GRANT_ID = "$iternalId";
 var widgetTabs;
 var packageData = {

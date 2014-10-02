@@ -94,7 +94,7 @@
 #set($dateFormat = "yyyy-MM-dd'T'HH:mm:ss")
 
 #set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
-#set($group = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
+#set($group = $systemConfig.getString($defaultOnError, "identity", "RIF_CSGroup"))
 
 ### Resolve the identifier
 #set ($formId = $util.get($item, 'dc:identifier.rdf:PlainLiteral'))

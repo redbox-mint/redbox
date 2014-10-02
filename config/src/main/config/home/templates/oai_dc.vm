@@ -146,7 +146,7 @@
 
 ## Management
 #set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
-#set ($institution = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
+#set ($institution = $systemConfig.getString($defaultOnError, "identity", "RIF_CSGroup"))
 #set ($affiliation = $util.get($item, "foaf:Organization.skos:prefLabel"))
 #if ("$!affiliation" != "")
     #set ($contributor = "${institution}. ${affiliation}")

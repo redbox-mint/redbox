@@ -187,7 +187,7 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
 
         ## Management
         #set($defaultOnError = "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
-        #set ($institution = $systemConfig.getString($defaultOnError, "redbox.identity", "RIF-CS Group"))
+        #set ($institution = $systemConfig.getString($defaultOnError, "identity", "RIF_CSGroup"))
         #openField("710", "1", " ")
             #subField("a", $institution)
             #set ($affiliation = $util.get($item, "foaf:Organization.skos:prefLabel"))
