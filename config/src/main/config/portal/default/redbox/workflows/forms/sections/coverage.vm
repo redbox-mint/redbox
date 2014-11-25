@@ -12,12 +12,12 @@
         <input type="text" placeholder="eg. 2010" class="dateYMD" id="dc:coverage.vivo:DateTimeInterval.vivo:end" />
         <label class="validation-err-msg" for="dc:coverage.vivo:DateTimeInterval.vivo:start"
             data-validation-rule="when(blur,change,submit);name(testCoverageFrom);
-                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+                    test(/^[012]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid from date or year is required!
         </label>
         <label class="validation-err-msg" for="dc:coverage.vivo:DateTimeInterval.vivo:end"
             data-validation-rule="when(blur,change,submit);name(testCoverageTo);
-                    test(/^[12]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
+                    test(/^[012]\d{3}([-\/]+(10|11|12|0?\d)([-\/]+(30|31|[012]?\d))?)?$/ or empty);">
             A valid to date or year is required!
         </label>
     </p>
