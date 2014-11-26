@@ -38,7 +38,7 @@
         </li>
         <li class="secondary">
             <form action="$portalPath/search" class="search" method="get">
-                <input class="text" type="text" id="query" name="query" size="25" value="$page.escapeHtml($page.getQuery())" />
+                <input class="text" type="text" id="query" name="query" size="25" value="$page.getQuery()" />
             </form>
         </li>
         <li class="secondary">
