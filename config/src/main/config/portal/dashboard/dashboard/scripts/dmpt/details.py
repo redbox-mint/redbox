@@ -9,4 +9,7 @@ class DetailsData:
         self.formData = context["formData"]
         self.log = context["log"]
         oid = self.request.getParameter("oid")
+        if oid is None:
+            uri = self.request.getAttribute("RequestURI").split("/")
+            oid = uri[len(uri)-1]
         self.response.sendRedirect(context["portalPath"] +"/detail/"+oid+"/")
