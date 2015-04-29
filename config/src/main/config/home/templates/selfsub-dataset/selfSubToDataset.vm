@@ -47,7 +47,7 @@
 
 #macro(mapTo $from $to)
     #set($v = $util.get($item, $from))
-    #if ($v) "$to": "$!v",
+    #if ($v) #set($escaped = $v.replaceAll("\"","\\\"").replaceAll("\n","\\n"))"$to": "$escaped",
     #end
 #end
 {
@@ -249,7 +249,7 @@
              "dc:subject.anzsrc:toa.rdf:resource","dc:subject.anzsrc:toa.skos:prefLabel"
              ])
     #set($v = $util.get($item, $key))
-    #if ($v) "$key": "$!v",
+    #if ($v) "$key": #set($escaped = $v.replaceAll("\"","\\\"").replaceAll("\n","\\n"))"$escaped",
     #else
     	"$key": "",
     #end
@@ -258,7 +258,8 @@
 	
 	#set($noteValue = $util.get($item, "skos:note.0.dc:description"))
     #if ("$!noteValue" != "") 
-     "skos:note.1.dc:description": "$!noteValue",
+      #set($escaped = $noteValue.replaceAll("\"","\\\"").replaceAll("\n","\\n"))
+     "skos:note.1.dc:description": "$!escaped",
      "skos:note.1.dc:created": "1970-01-01 00:00:00",
      "skos:note.1.foaf:name": "Self-submission User"
     #end
