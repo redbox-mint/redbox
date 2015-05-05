@@ -11,6 +11,7 @@ from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
 import preview
 from java.io import File
+from java.lang import String
 
 class DetailData:
     def __init__(self):
@@ -28,9 +29,9 @@ class DetailData:
         version = request.getParameter("version")
         versionTfPackage = request.getParameter("versionParked")
         if version is not None:
-            self.item = JsonSimple(File(storedObj.getPath() + "/version_tfpackage_" + version))
-            self.version = preview.formatDate(version, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss") 
-            self.versionStr = "This version was created on " + self.version  
+            self.item = JsonSimple(storedObj.getPayload("version_tfpackage_" + version).open())
+            self.version = preview.formatDate(version, "yyyyMMddHHmmss", "yyyy-MM-dd HH:mm:ss")
+            self.versionStr = "This version was created on " + self.version
         else:
             self.version = None
             self.versionStr = ""
@@ -61,9 +62,10 @@ class DetailData:
             baseKey = baseKey + "."
         valueMap = TreeMap()
         metadata = self.metadata.getJsonObject()
+
         for key in [k for k in metadata.keySet() if k.startswith(baseKey)]:
             value = metadata.get(key)
-            ## adding test below since UI is moving away from SOLR data storage, please add to detail scripts to prevent a "missing" output. 
+            ## adding test below since UI is moving away from SOLR data storage, please add to detail scripts to prevent a "missing" output.
             if value:
                 field = key[len(baseKey):]
                 index = field[:field.find(".")]
@@ -79,7 +81,8 @@ class DetailData:
                 if not data:
                     data = TreeMap()
                     valueMap.put(valueMapIndex, data)
-                if len(value) == 1:
+
+                if type(value).__name__ != 'unicode' and len(value) == 1:
                     value = value.get(0)
                 data.put(dataIndex, value)
         return valueMap

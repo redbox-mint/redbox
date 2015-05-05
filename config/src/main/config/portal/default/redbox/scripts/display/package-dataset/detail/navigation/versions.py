@@ -18,7 +18,7 @@
 from com.googlecode.fascinator.common import FascinatorHome, JsonSimple
 from org.json.simple import JSONArray
 import sys, os
-sys.path.append(os.path.join(FascinatorHome.getPath(), "lib", "jython", "util")) 
+sys.path.append(os.path.join(FascinatorHome.getPath(), "lib", "jython", "util"))
 import preview
 from java.io import File
 
@@ -30,23 +30,25 @@ class VersionsData:
         storage = context["Services"].getStorage()
         storedObj = storage.getObject(context["metadata"].getFirst("storage_id"))
         self.log = context["log"]
-        self.test = "Halo"
         self.log.debug("getting versions..")
         self.versions = self.getVersions(storedObj, "tfpackage")
         self.parkedVersions = self.getVersions(storedObj, "parked")
         self.oid = storedObj.getId()
 
     def getVersions(self, storedObj, extension):
-        indF = File(storedObj.getPath() + "/" + extension + "_Version_Index.json")
-        
+
         versions = []
-        if indF.exists():
-            versions = JsonSimple(indF).getJsonArray()
-            # reverse to the order to from latest to oldest 
+        try:
+            indF = storedObj.getPayload(extension + "_Version_Index.json")
+
+            versions = JsonSimple(indF.open()).getJsonArray()
+            # reverse to the order to from latest to oldest
             r = JSONArray()
             for s in reversed(versions):
                 r.add(s)
             versions = r
+        except:
+            self.log.debug("Versioning file not found for "+extension +". Perhaps versioning not enabled.")
 
         return versions
 

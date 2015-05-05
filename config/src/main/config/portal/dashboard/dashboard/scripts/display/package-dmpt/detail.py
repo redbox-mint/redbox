@@ -3,7 +3,7 @@ from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonObject, JsonSimple
 from com.googlecode.fascinator.common.solr import SolrResult
 from java.io import ByteArrayInputStream, ByteArrayOutputStream, File
-from java.lang import Exception, System
+from java.lang import Exception, System, String
 from java.util import TreeMap, TreeSet, ArrayList, HashMap
 from com.googlecode.fascinator.portal.lookup import MintLookupHelper
 from com.googlecode.fascinator.api.storage import PayloadType
@@ -29,12 +29,12 @@ class DetailData:
         self.__submittedDatasets = ArrayList()
         self.__getRelatedDataSets()
 
-    def formatDate(self, date):    
+    def formatDate(self, date):
         dfSource = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         dfTarget = SimpleDateFormat("dd/MM/yyyy")
         return dfTarget.format(dfSource.parse(date))
-    
-    def formatVersion(self, dString):    
+
+    def formatVersion(self, dString):
         dfSource = SimpleDateFormat("yyyyMMddHHmmss")
         dfTarget = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         return dfTarget.format(dfSource.parse(dString))
@@ -69,23 +69,31 @@ class DetailData:
             self.log.error("Error parsing package contents", e)
         payload.close()
         return __tfpackage
-        
+
     def hasPlanPDF(self):
-        path = self._getObject().getPath()
-        allPDFs = glob.glob(path+"/Data*.pdf")
-        return len(allPDFs) > 0
+        object = self.Services.getStorage().getObject(self.metadata.getFirst("storage_id"))
+        payloadList = object.getPayloadIdList()
+        for payload in payloadList:
+            if String(payload).contains("pdf"):
+                return True
+
+        return False
 
     def getPlanVersions(self):
         pdfs = TreeMap()
-        path = self._getObject().getPath()
-        allPDFs = glob.glob(path+"/Data*.pdf")
+        payloadList = self._getObject().getPayloadIdList()
+        allPDFs = ArrayList()
+        for payload in payloadList:
+            if String(payload).contains("pdf"):
+                allPDFs.add(payload)
+
         if len(allPDFs) > 2:
-            prog = re.compile('[a-zA-Z ]+\-(\d*)\.pdf')
-            for f in allPDFs:
-                bn = os.path.basename(f)
-                m = prog.match(bn)
-                if m:
-                    pdfs.put(self.formatVersion(m.group(1)), bn)
+             prog = re.compile('[a-zA-Z _]+\-(\d*)\.pdf')
+             for f in allPDFs:
+                 bn = os.path.basename(f)
+                 m = prog.match(bn)
+                 if m:
+                     pdfs.put(self.formatVersion(m.group(1)), bn)
         return pdfs
 
     def __getRelatedDataSets(self):
@@ -103,7 +111,7 @@ class DetailData:
                     self.__draftDatasets.add(result)
                 elif setType == 'dataset':
                     self.__submittedDatasets.add(result)
-    
+
     ## each object has an oid field.
     def __searchDataSetOids(self, oids):
         query_ids = "storage_id:"
@@ -112,23 +120,23 @@ class DetailData:
                 query_ids += "(" + oids[0].get('oid')
                 for oid in oids[1:]:
                     query_ids += " OR " + oid.get('oid')
-                query_ids += ")"   
+                query_ids += ")"
             else:
                 query_ids = oids[0].get('oid')
             self.log.debug("related.datasets: query_ids = {}", query_ids)
-                
+
             req = SearchRequest(query_ids)
             req.setParam("fq", 'item_type:"object"')
-    
+
             req.addParam("fq", "")
             req.setParam("sort", "last_modified desc, f_dc_title asc");
-            # FIXME: security? 
+            # FIXME: security?
             out = ByteArrayOutputStream()
             self.indexer.search(req, out)
             return SolrResult(ByteArrayInputStream(out.toByteArray()))
-        except: 
+        except:
             return None
-        
+
     def getMyDrafts(self):
         return self.__draftDatasets
 
@@ -156,7 +164,7 @@ class DetailData:
         object = self._getObject()
         objectMeta = object.getMetadata()
         return objectMeta.get(propertyName)
-    
+
     # get a list of metadata using basekey. Used by repeatable elements like FOR code or people
     def getList(self, baseKey):
         if baseKey[-1:] != ".":
@@ -179,11 +187,11 @@ class DetailData:
             if not data:
                 data = TreeMap()
                 valueMap.put(valueMapIndex, data)
-            if len(value) == 1:
+            if type(value).__name__ != 'unicode' and len(value) == 1:
                 value = value.get(0)
             data.put(dataIndex, value)
         return valueMap
-    # ability to add to pull the dropdown label off a json file using the value  
+    # ability to add to pull the dropdown label off a json file using the value
     def getLabel(self, jsonFile, key):
         value = self.metadata.get(key)
         jsonLabelFile = System.getProperty("fascinator.home") + jsonFile
@@ -201,17 +209,17 @@ class DetailData:
         ids = ""
         for eKey in valList.keySet():
             entry = valList.get(eKey)
-            if len(ids) > 0: 
-               ids = "%s,"%ids            
+            if len(ids) > 0:
+               ids = "%s,"%ids
             ids = "%s%s" % (ids,entry.get(suffix))
         if ids == "":
             return None
-        else:           
+        else:
             labels = ArrayList()
-            mapIds.put("id", ids) 
-            labelsMint = MintLookupHelper.get(self.systemConfig, urlName, mapIds)            
-            self.log.debug(labelsMint.getJsonArray().toString())    
+            mapIds.put("id", ids)
+            labelsMint = MintLookupHelper.get(self.systemConfig, urlName, mapIds)
+            self.log.debug(labelsMint.getJsonArray().toString())
             for label in labelsMint.getJsonArray():
                  labelJson = JsonSimple(label)
                  labels.add(labelJson.getString("", "label"))
-            return labels                    
+            return labels

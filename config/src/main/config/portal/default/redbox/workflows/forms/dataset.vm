@@ -293,19 +293,19 @@
     #set($updateAllVersionHdr= $languageService.displayMessage("dataset.dsupdates.allVersionHdr"))
     #set($updateAllVersionLbl= $languageService.displayMessage("dataset.dsupdates.allVersionLbl"))
     #set($updateAllVersionNoneLbl= $languageService.displayMessage("dataset.dsupdates.allVersionNoneLbl"))
-        
+
     <div id="form-heading" >
 		<span class="right">
 			<a id="view-record-link" href="$portalPath/detail/$oid">View record</a>
-			&nbsp;&nbsp;&nbsp;<a class="updateDlgLink" href="#">$updateLinkMsg</a>
+			##&nbsp;&nbsp;&nbsp;<a class="updateDlgLink" href="#">$updateLinkMsg</a>
 		</span>
         <span><img src="${portalPath}/images/icons/wf_${stage}.png" />$stageLabel</span>
-		#set($updateList = $self.getPendingUpdates($oid))
-		#if ($self.pendingUpdateSize > 0)
-			<span><br/>
-			$self.pendingUpdateSize $updateNotifyMsg <a class="updateDlgLink" href="#">$updateLinkMsg2</a>
-			</span>
-		#end
+		##set($updateList = $self.getPendingUpdates($oid))
+		##if ($self.pendingUpdateSize > 0)
+	##		<span><br/>
+	##		$self.pendingUpdateSize $updateNotifyMsg <a class="updateDlgLink" href="#">$updateLinkMsg2</a>
+	##		</span>
+	##end
         <script type="text/javascript">
 			$(function(){
 				$(".updateDlgLink").click(function() {
@@ -320,8 +320,8 @@
 					$("[id='parked-updates-list']").dialog('open');
 				});
                 $(".updateLink").click(function() {
-                    $("[id='parked-updates-list']").dialog('close');                    
-                });    
+                    $("[id='parked-updates-list']").dialog('close');
+                });
 			});
 		</script>
 		<div id="parked-updates-list" style="display:none">
@@ -348,7 +348,7 @@
 				<span>$updateAllVersionNoneLbl</span>
 			#end
 		</div>
-		
+
     </div>
 
     <script type="text/javascript">
@@ -425,7 +425,7 @@ $(function(){
 
     $(".form-fields-save-close").click(function() {
         saveAndClose = true;
-		$(".save-note").each(function(idx){ 
+		$(".save-note").each(function(idx){
 			this.click();
 		});
         $(".form-fields-save").click();
