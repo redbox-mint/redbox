@@ -1,8 +1,10 @@
+#macro(EscapeForJson $value)
+#set($escaped = $value.replaceAll("\"","\\\"").replaceAll("\n","\\n"))$escaped#end
 #macro(Collaborators $map $key $order)
 #set($queryKey = "person.${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"dc:contributor.locrel:clb.${order}.foaf:Agent.${key}": "$value",
+	"dc:contributor.locrel:clb.${order}.foaf:Agent.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -10,7 +12,7 @@
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"foaf:fundedBy.vivo:Grant.${order}.${key}": "$value",
+	"foaf:fundedBy.vivo:Grant.${order}.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -18,20 +20,20 @@
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"foaf:fundedBy.foaf:Agent.${order}.${key}": "$value",
+	"foaf:fundedBy.foaf:Agent.${order}.${key}": "#EscapeForJson($value)",
 #end
 #end
 
 #macro(copyCodes $map $key $order $type)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-	"dc:subject.anzsrc:${type}.${order}.${key}": "$value",	
+	"dc:subject.anzsrc:${type}.${order}.${key}": "#EscapeForJson($value)",	
 #end
 #end
 
 #macro(mapTo $from $to)
     #set($v = $util.get($item, $from))
-    #if ($v) "$to": "$!v",
+    #if ($v) "$to": "#EscapeForJson($!v)",
     #end
 #end
 {
@@ -57,7 +59,7 @@
                    ,"redbox:disposalDate"
                    ])
     #set($v = $util.get($item, $key))
-    #if ($v) "$key": "$!v",
+    #if ($v) "$key": "#EscapeForJson($escaped)",
     #end
 #end
 #mapTo("locrel:rth.foaf:Person.foaf:title" "dc:creator.foaf:Person.foaf:title")
@@ -136,6 +138,6 @@
     	#set($order = $order + 1)
     #end
 #end
-"redbox:newForm": "$util.get($item, 'redbox:newForm')",
-"redbox:formVersion": "$util.get($item, 'redbox:formVersion')"
+"redbox:newForm": "#EscapeForJson($util.get($item, 'redbox:newForm'))",
+"redbox:formVersion": "#EscapeForJson($util.get($item, 'redbox:formVersion'))"
 }

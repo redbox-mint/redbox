@@ -1,8 +1,10 @@
+#macro(EscapeForJson $value)
+#set($escaped = $value.replaceAll("\"","\\\"").replaceAll("\n","\\n"))$escaped#end
 #macro(Collaborators $map $key $order)
 #set($queryKey = "person.${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"dc:contributor.locrel:clb.${order}.foaf:Agent.${key}": "$value",
+	"dc:contributor.locrel:clb.${order}.foaf:Agent.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -10,7 +12,7 @@
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"foaf:fundedBy.vivo:Grant.${order}.${key}": "$value",
+	"foaf:fundedBy.vivo:Grant.${order}.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -18,7 +20,7 @@
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "")
-	"foaf:fundedBy.foaf:Agent.${order}.${key}": "$value",
+	"foaf:fundedBy.foaf:Agent.${order}.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -26,14 +28,14 @@
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 
-"${prefix}.${order}.${key}": "$value",
+"${prefix}.${order}.${key}": "#EscapeForJson($value)",
 #end
 
 #macro(multiValuedMappedProperty $map $prefix $key $suffix $order)
 #set($queryKey = "${key}")
 #set ($value = $map.get($queryKey))
 #if ("$!value" != "") 
-"${prefix}.${order}.${suffix}": "$value",
+"${prefix}.${order}.${suffix}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -41,13 +43,13 @@
 #macro(copyCodes $map $key $order $type)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-	"dc:subject.anzsrc:${type}.${order}.${key}": "$value",	
+	"dc:subject.anzsrc:${type}.${order}.${key}": "#EscapeForJson($value)",	
 #end
 #end
 
 #macro(mapTo $from $to)
     #set($v = $util.get($item, $from))
-    #if ($v) #set($escaped = $v.replaceAll("\"","\\\"").replaceAll("\n","\\n"))"$to": "$escaped",
+    #if ($v) $to": "#EscapeForJson($v)",
     #end
 #end
 {
@@ -57,14 +59,14 @@
     #mapTo('dc:description', 'description')
 	"redbox:newForm": "$util.get($item, 'redbox:newForm')",
 	"redbox:formVersion": "$util.get($item, 'redbox:formVersion')",
-	"dc:title": "$util.get($item, 'dc:title')",
+	#mapTo('dc:title', 'dc:title'),
 	#foreach( $key in ["dc:type.rdf:PlainLiteral","dc:type.skos:prefLabel","dc:created",
 			 "dc:modified","dc:language.dc:identifier","dc:language.skos:prefLabel",
 			 "dc:coverage.vivo:DateTimeInterval.vivo:start","dc:coverage.vivo:DateTimeInterval.vivo:end",
 			 "dc:coverage.redbox:timePeriod"
              ])
     #set($v = $util.get($item, $key))
-    #if ($v) "$key": "$!v",
+    #if ($v) "$key": "#EscapeForJson($v)",
     #else
     	"$key": "",
     #end
@@ -129,10 +131,9 @@
 	#mapTo('dc:creator.foaf:Person.foaf:givenName', 'dc:creator.foaf:Person.1.foaf:givenName')
 	#mapTo('dc:creator.foaf:Person.foaf:familyName', 'dc:creator.foaf:Person.1.foaf:familyName')
 	#mapTo('dc:creator.foaf:Person.dc:identifier', 'dc:creator.foaf:Person.1.dc:identifier')
-	#set($ciFamilyName = $util.get($item, "dc:creator.foaf:Person.foaf:familyName"))
-	#set($ciGivenName = $util.get($item, "dc:creator.foaf:Person.foaf:givenName"))
-	"dc:creator.foaf:Person.1.foaf:name": "$ciFamilyName, $ciGivenName",
+	"dc:creator.foaf:Person.1.foaf:name": "#EscapeForJson($ciFamilyName), #EscapeForJson($ciGivenName)",
 	"dc:creator.foaf:Person.1.redbox:isPrimaryInvestigator": "on",
+	
 	
 	#set($cList = $util.getList($item, "dc:contributor.locrel:clb"))
 	#set($order = 2)
@@ -148,7 +149,7 @@
 		#set($familyNameValue = $slot.get("foaf:Agent.foaf:familyName"))
 		#set($givenNameValue = $slot.get("foaf:Agent.foaf:givenName"))
 		#if ("$!familyNameValue" != "") 
-			"dc:creator.foaf:Person.${order}.foaf:name": "$familyNameValue, $givenNameValue",
+			"dc:creator.foaf:Person.${order}.foaf:name": "#EscapeForJson($familyNameValue), #EscapeForJson($givenNameValue)",
 		#end
     	#set($order = $order + 1)
     #end
@@ -161,7 +162,7 @@
 	#set($supFamilyName = $util.get($item, "swrc:supervisor.foaf:Person.foaf:familyName"))
 	#set($supGivenName = $util.get($item, "swrc:supervisor.foaf:Person.foaf:givenName"))
 	#if ("$!supFamilyName" != "") 
-		"swrc:supervisor.foaf:Person.1.foaf:name": "$supFamilyName, $supGivenName",
+		"swrc:supervisor.foaf:Person.1.foaf:name": "#EscapeForJson($supFamilyName), #EscapeForJson($supGivenName)",
 	#end
 
 	
@@ -249,7 +250,7 @@
              "dc:subject.anzsrc:toa.rdf:resource","dc:subject.anzsrc:toa.skos:prefLabel"
              ])
     #set($v = $util.get($item, $key))
-    #if ($v) "$key": #set($escaped = $v.replaceAll("\"","\\\"").replaceAll("\n","\\n"))"$escaped",
+    #if ($v) "$key": "#EscapeForJson($v)",
     #else
     	"$key": "",
     #end
@@ -258,8 +259,7 @@
 	
 	#set($noteValue = $util.get($item, "skos:note.0.dc:description"))
     #if ("$!noteValue" != "") 
-      #set($escaped = $noteValue.replaceAll("\"","\\\"").replaceAll("\n","\\n"))
-     "skos:note.1.dc:description": "$!escaped",
+     "skos:note.1.dc:description": "#EscapeForJson($noteValue)",
      "skos:note.1.dc:created": "1970-01-01 00:00:00",
      "skos:note.1.foaf:name": "Self-submission User"
     #end
