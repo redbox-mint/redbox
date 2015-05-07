@@ -49,7 +49,7 @@
 
 #macro(mapTo $from $to)
     #set($v = $util.get($item, $from))
-    #if ($v) $to": "#EscapeForJson($v)",
+    #if ($v) "$to": "#EscapeForJson($v)",
     #end
 #end
 {
