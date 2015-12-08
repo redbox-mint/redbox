@@ -315,18 +315,12 @@
 		});
         ### Searches for and converts full publication dates to a year
         function getPubYear() {
-            var dateList = $("#citationDates div.count-this");
             var pubYear = null;
-            dateList.each(function(i, element) {
-                element = $(element);
-                var type = element.find(".selection-added-id").val();
-                if (type == "publicationDate") {
-                    var value = element.find(".dateYMD").val();
-                    if (value != null && value.length > 3) {
-                        pubYear = value.substring(0, 4);
-                    }
-                }
-            });
+            var value = $("input[id='dc:biblioGraphicCitation.dc:hasPart.dc:date.1.rdf:PlainLiteral']").val();
+            if (value != null && value.length > 3) {
+                pubYear = value.substring(0, 4);
+            }
+
             return pubYear;
         }
 
