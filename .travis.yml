@@ -1,0 +1,19 @@
+sudo: required
+language: java
+services:
+- docker
+before_install:
+- mkdir /tmp/build
+- docker pull qcifengineering/redbox-builder
+- docker run -v /tmp/build:/build -e "CLONEPATH=https://github.com/redbox-mint/redbox.git"
+  qcifengineering/redbox-builder
+install: true
+script: true
+after_success:
+- docker run -v /tmp/build:/build -e "SONATYPE_USERNAME=$SONATYPE_USERNAME" -e "SONATYPE_PASSWORD=$SONATYPE_PASSWORD"
+  qcifengineering/redbox-builder /bin/bash -c "cd build/src;mvn --settings /m2_repo/travis-settings.xml
+  -Dmaven.repo.local=/m2_repo -DskipTests=true deploy"
+env:
+  global:
+  - secure: sFGdO68f/BOMUnsmgEuAzc/rBoYlu/9ooTqN89i4LHQ7oB5dpkOryt3O/5zSBBmU75udlVILfkTQAgdWN/woHjFRwlEsf0zZSLsMlsTWMAPBT3tOeER6pkCNyeIPM5Dxtzvx6RlVFs4Mt7Z8Hlny0yAkrGLXJeAyl+lplekmhlY=
+  - secure: hMDS1JmJjekKDC0g12+J90h3Kk+KVZ/QpSdC8oobIAYmRQkkhdGT5hIy9IHqRbIODisGGxmzwAPXFs/RpoksxHCu+ftlBcb9gi6BKzq7ZI1IpxUpnVxDZxaUS6YT78qOfLFMzjb9aemqC08X3CW6gTgRtzrIM4aXPMQfP/tFb0o=
