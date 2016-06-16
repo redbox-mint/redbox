@@ -55,6 +55,35 @@
             <input type="text" size="60" id="dc:accessRights.dc:RightsStatement.dc:identifier" placeholder="Rights Statement URI" /></span>
         </div>
         <div style="clear:both"/>
+         #fieldTitle("dc:accessRightsTypeLabel" "Access Rights Type" false)
+            <div class="help-content" id="help-dc:accessRightsTypeLabel">
+                <p>Add an access rights type for use with access rights.</p>
+                <p>
+                <ul>
+                    <li><b>Open:</b> Data is publicly accessible online.</li>
+                    <li><b>Conditional:</b> Data is publicly accessible subject to certain conditions.  For example:
+                        <ul>
+                            <li>a fee applies</li>
+                            <li>the data is only accessible at a specific physical location</li>
+                        </ul>
+                    </li>
+                    <li><b>Restricted:</b> Data access is limited.  For example:
+                        <ul>
+                            <li>following an embargo period;</li>
+                            <li>to a particular group of users;</li>
+                            <li>where formal permission is granted.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+           <div>
+                        <select id="dc:accessRightsType" style="left:20em;">
+                            <option value="">Please select one...</option>
+                            <option value="open">Open</option>
+                            <option value="conditional">Conditional</option>
+                            <option value="restricted">Restricted</option>
+                        </select>
+                 </div>
     </div>
 
     #fieldTitle("dc:license" "Licence" false)

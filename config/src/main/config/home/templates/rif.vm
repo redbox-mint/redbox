@@ -127,7 +127,7 @@
 #end
 #if ("$!identifier" == "")
     ## We want invalid XML here so the record is never harvested without the correct ID
-    #set($identifier = "&Invalid ID: Not curated yet&")
+    #set($identifier = "Invalid ID: Not curated yet")
     #set ($identifierType = "invalid")
 #end
 
@@ -294,6 +294,11 @@
         #if ("$!accessRightsUri" != "")
             #set ($accessRightsUriStr = " rightsUri=${quote}${accessRightsUri}${quote}")
         #end
+        #set ($accessRightsType = $util.get($item, "dc:accessRightsType"))
+        #set ($accessRightsTypeStr = "")
+        #if ("$!accessRightsType" != "")
+            #set ($accessRightsTypeStr = " type=${quote}${accessRightsType}${quote}")
+        #end
         #set ($rights = $util.get($item, "dc:accessRights.dc:RightsStatement.skos:prefLabel"))
         #set ($rightsUri = $util.get($item, "dc:accessRights.dc:RightsStatement.dc:identifier"))
         #set ($rightsUriStr = "")
@@ -312,6 +317,20 @@
                 #set ($licenceUriStr = " rightsUri=${quote}${licenceUri}${quote}")
             #end
         #end
+ ##       #set($licenceTypes = {"http://creativecommons.org/licenses/by/3.0/au": "CC-BY",
+ ##       "http://creativecommons.org/licenses/by-sa/3.0/au": "CC-BY-SA",
+ ##       "http://creativecommons.org/licenses/by-nd/3.0/au": "CC-BY-ND",
+ ##       "http://creativecommons.org/licenses/by-nc/3.0/au": "CC-BY-NC",
+ ##       "http://creativecommons.org/licenses/by-nc-sa/3.0/au": "CC-BY-NC-SA",
+ ##       "http://creativecommons.org/licenses/by-nc-nd/3.0/au": "CC-BY-NC-ND",
+ ##       "http://opendatacommons.org/licenses/pddl/1.0/": "Unknown/Other",
+ ##       "http://opendatacommons.org/licenses/by/1.0/": "Unknown/Other",
+ ##       "http://opendatacommons.org/licenses/odbl/1.0/": "Unknown/Other"
+ ##       })
+ ##       #set ($licenceType = $licenceTypes.get($licence))
+ ##       #if ("$!licence" != "" && "$!licenceType" == "")
+ ##           #set($licenceType = "Unknown/Other")
+ ##       #end
 
         #if ("$!accessRights" != "" || "$!rights" != "" || "$!licence" != "")
             <rif:rights>
@@ -319,7 +338,7 @@
                 <rif:rightsStatement${rightsUriStr}>$util.encodeXml($rights)</rif:rightsStatement>
             #end
             #if ("$!accessRights" != "")
-                <rif:accessRights${accessRightsUriStr}>$util.encodeXml($accessRights)</rif:accessRights>
+                <rif:accessRights${accessRightsTypeStr}${accessRightsUriStr}>$util.encodeXml($accessRights)</rif:accessRights>
             #end
             #if ("$!licence" != "")
                 <rif:licence${licenceUriStr}>$util.encodeXml($licence)</rif:licence>

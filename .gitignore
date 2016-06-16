@@ -12,7 +12,7 @@ target/
 .project
 .pydevproject
 *.pyc
-
+*.iml
 *.prefs
 
 .settings/org.maven.ide.eclipse.prefs
