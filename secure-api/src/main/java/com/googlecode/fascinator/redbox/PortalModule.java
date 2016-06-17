@@ -34,8 +34,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.ioc.Invocation;
-import org.apache.tapestry5.ioc.MethodAdvice;
+
+import org.apache.tapestry5.plastic.MethodAdvice;
+import org.apache.tapestry5.plastic.MethodInvocation;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -68,10 +69,10 @@ public class PortalModule {
         MethodAdvice advice = new MethodAdvice() {
 
             @Override
-            public void advise(Invocation invocation) {
+            public void advise(MethodInvocation invocation) {
                 invocation.proceed();
-                Storage storage = (Storage) invocation.getResult();
-                invocation.overrideResult(new SecureStorage(storage, indexer,
+                Storage storage = (Storage) invocation.getReturnValue();
+                invocation.setReturnValue(new SecureStorage(storage, indexer,
                         securityManager,
                         appStateManager.getIfExists(JsonSessionState.class)));
             }
@@ -97,7 +98,7 @@ public class PortalModule {
         MethodAdvice advice = new MethodAdvice() {
 
             @Override
-            public void advise(Invocation invocation) {
+            public void advise(MethodInvocation invocation) {
                 SearchRequest request = (SearchRequest) invocation.getParameter(0);
                 boolean hasSecurityFilter = false;
                 Set<String> fqList = request.getParams("fq");
@@ -136,7 +137,7 @@ public class PortalModule {
                     request.addParam("fq", "owner:\"" + username
                             + "\" OR security_filter:("
                             + StringUtils.join(rolesList, " OR ") + ")");
-                    invocation.override(0, request);
+//                    invocation.override(0, request);
                 }
                 invocation.proceed();
             }
