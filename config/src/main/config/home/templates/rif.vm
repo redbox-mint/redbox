@@ -317,20 +317,27 @@
                 #set ($licenceUriStr = " rightsUri=${quote}${licenceUri}${quote}")
             #end
         #end
- ##       #set($licenceTypes = {"http://creativecommons.org/licenses/by/3.0/au": "CC-BY",
- ##       "http://creativecommons.org/licenses/by-sa/3.0/au": "CC-BY-SA",
- ##       "http://creativecommons.org/licenses/by-nd/3.0/au": "CC-BY-ND",
- ##       "http://creativecommons.org/licenses/by-nc/3.0/au": "CC-BY-NC",
- ##       "http://creativecommons.org/licenses/by-nc-sa/3.0/au": "CC-BY-NC-SA",
- ##       "http://creativecommons.org/licenses/by-nc-nd/3.0/au": "CC-BY-NC-ND",
- ##       "http://opendatacommons.org/licenses/pddl/1.0/": "Unknown/Other",
- ##       "http://opendatacommons.org/licenses/by/1.0/": "Unknown/Other",
- ##       "http://opendatacommons.org/licenses/odbl/1.0/": "Unknown/Other"
- ##       })
- ##       #set ($licenceType = $licenceTypes.get($licence))
- ##       #if ("$!licence" != "" && "$!licenceType" == "")
- ##           #set($licenceType = "Unknown/Other")
- ##       #end
+        #set($licenceTypes = {"CC BY: Attribution 3.0 AU": "CC-BY",
+        "CC BY-SA: Attribution-Share Alike 3.0 AU": "CC-BY-SA",
+        "CC BY-ND: Attribution-No Derivative Works 3.0 AU": "CC-BY-ND",
+        "CC BY-NC: Attribution-Noncommercial 3.0 AU": "CC-BY-NC",
+        "CC BY-NC-SA: Attribution-Noncommercial-Share Alike 3.0 AU": "CC-BY-NC-SA",
+        "CC BY-NC-ND: Attribution-Noncommercial-No Derivatives 3.0 AU": "CC-BY-NC-ND",
+        "PDDL - Public Domain Dedication and License 1.0": "Unknown/Other",
+        "ODC-By - Attribution License 1.0": "Unknown/Other",
+        "ODC-ODbL - Attribution Share-Alike for data/databases 1.0": "Unknown/Other"
+        })
+        #set ($licenceType = "")
+        #if ("$!licence" != "")
+            #set ($licenceType = $licenceTypes.get($licence))
+             #if ("$!licenceType" == "")
+                #set($licenceType = "Unknown/Other")
+             #end
+        #end
+        #set ($licenceTypeStr = "")
+        #if ("$!licenceType" != "")
+            #set ($licenceTypeStr = " type=${quote}${licenceType}${quote}")
+        #end
 
         #if ("$!accessRights" != "" || "$!rights" != "" || "$!licence" != "")
             <rif:rights>
@@ -341,7 +348,7 @@
                 <rif:accessRights${accessRightsTypeStr}${accessRightsUriStr}>$util.encodeXml($accessRights)</rif:accessRights>
             #end
             #if ("$!licence" != "")
-                <rif:licence${licenceUriStr}>$util.encodeXml($licence)</rif:licence>
+                <rif:licence${licenceTypeStr}${licenceUriStr}>$util.encodeXml($licence)</rif:licence>
             #end
             </rif:rights>
         #end
