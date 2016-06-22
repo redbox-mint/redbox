@@ -9,6 +9,18 @@
 </div>
 
 #else
+#set($threads = $systemConfig.getArray("messaging","threads"))
+#set($curationPlugin = "internal")
+#foreach($thread in $threads)
+	#set($threadId = $thread.get("id"))
+	#if($threadId == "transactionManager")
+	  #set($curationPluginName = $thread.get("config").get("transactionManagerPlugin"))
+	  #if($curationPluginName == "curation-external")
+	    #set($curationPlugin = "external")
+	  #end
+	#end
+#end
+#if($curationPlugin == "internal")
 #sectionHeading("Curation")
 <div class="meta">
     <dl>
@@ -31,4 +43,82 @@
         #end
     </dl>
 </div>
+#else
+#set($curationJobId = $parent.getProperty("curationJobId"))
+#set($fascinatorHomePathMethod = $curationData.getClass().forName("com.googlecode.fascinator.common.FascinatorHome").getMethod("getPath"))
+#set($fascinatorHome = $fascinatorHomePathMethod.invoke(null))
+
+##Get Class types for relevant constructors
+#set($fileClass = $curationData.getClass().forName("java.io.File"))
+#set($stringClass = $curationData.getClass().forName("java.lang.String"))
+#set($jsonSimpleClass = $curationData.getClass().forName("com.googlecode.fascinator.common.JsonSimple"))
+
+##get Constructors to invoke
+#set($fileClassConstructor = $fileClass.getConstructor($stringClass))
+
+#if($!curationJobId)
+##invoke File constructor to create File Object for json file
+#set($jsonFilePath = ${fascinatorHome}+"/curation-status-responses/"+$curationJobId+".json")
+#set($fileObject = $fileClassConstructor.newInstance($jsonFilePath))
+#set($fileExistsMethod = $fileClass.getMethod("exists"))
+#if($fileExistsMethod.invoke($fileObject))
+#set($curationJobStatus = $jsonSimpleClass.getConstructor($fileClass).newInstance($fileObject))
+#end
+#end
+#sectionHeading("Curation")
+<div class="meta">
+	#if(!$curationJobStatus)
+	 <span>Curation has not yet commenced</span>
+	</div>
+	#else
+	<dl>
+		<dt>Curation Job Id</dt> <dd>$curationJobId</dd>
+		<dt>Status</dt> <dd>$curationJobStatus.getString("Unknown", "status")</dd>
+		<dt>Date started</dt> <dd>$curationJobStatus.getString("Unknown", "date_created")</dd>
+		#if($curationJobStatus.getString("", "date_completed") != "")
+		   <dt>Date completed</dt> <dd>$curationJobStatus.getString("Unknown", "date_completed")</dd>
+		#end
+		
+	</dl>
+	<div style="font-weight:bold">Records To Curate Status</div>
+	 #set($vals = $curationJobStatus.getArray("job_items"))
+
+        #foreach($val in $vals)
+	<div style='border: 1px dashed black; padding-left: 1em; padding-right: 1em;'>
+	<h3>$val.get("title")</h3>
+	<dl>
+                <dt>Record Title</dt> <dd>$val.get("title")</dd>
+                <dt>Record Type</dt> <dd>$val.get("type")</dd>
+		<dt>Record Id</dt> <dd>$val.get("oid")</dd>
+        </dl>
+	<table id="pdf-like" style="margin-top:0.5em">
+	 <thead><th>Identifier Type</th><th>Status</th><th>Identifier</th><th>Message</th></thead>
+     <tbody>
+     #set($requiredIdentifiers = $val.get("required_identifiers"))
+
+    	#foreach($identifier in $requiredIdentifiers)
+    		<tr>
+    		<td>$!identifier.get("identifier_type")</td>
+    		<td>$!identifier.get("status")</td>
+    		<td>$!identifier.get("identifier")</td>
+    		<td>$!identifier.get("error")</td>
+    		</tr>
+    	#end
+     </tbody>
+</table>
+</div>
+#end
+
+<a id='show-cm-response' href='javascript: void(0)'>Show raw curation manager response</a>
+<a id='hide-cm-response' href='javascript: void(0)' style='display:none'>Hide raw curation manager response</a>
+	<pre id="cm-response" style="display:none">
+	<code>$curationJobStatus.toString(true)</code>
+	</pre>
+<script>
+$('#show-cm-response').click(function () { $("#cm-response").show(); $("#hide-cm-response").show();$("#show-cm-response").hide();});
+$('#hide-cm-response').click(function () { $("#cm-response").hide(); $("#hide-cm-response").hide();$("#show-cm-response").show();});
+</script>
+</div>
+#end
+#end
 #end
