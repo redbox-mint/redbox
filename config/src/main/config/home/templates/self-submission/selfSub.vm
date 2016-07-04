@@ -27,7 +27,7 @@
 #macro(copyCodes $map $key $order $type)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-	"dc:subject.anzsrc:${type}.${order}.${key}": "#EscapeForJson($value)",	
+	"dc:subject.anzsrc:${type}.${order}.${key}": "#EscapeForJson($value)",
 #end
 #end
 
@@ -59,7 +59,7 @@
                    ,"redbox:disposalDate"
                    ])
     #set($v = $util.get($item, $key))
-    #if ($v) "$key": "#EscapeForJson($escaped)",
+    #if ($v) "$key": "#EscapeForJson($v)",
     #end
 #end
 #mapTo("locrel:rth.foaf:Person.foaf:title" "dc:creator.foaf:Person.foaf:title")
@@ -105,10 +105,10 @@
     #end
 #end
 
-#mapTo("dc:license.dc:identifier.other" "dc:license.rdf:Alt.skos:prefLabel") 
+#mapTo("dc:license.dc:identifier.other" "dc:license.rdf:Alt.skos:prefLabel")
 #mapTo("dc:rights.skos:note" "dc:accessRights.skos:prefLabel")
 ##mapTo("dc:RightsStatement" "dc:accessRights.dc:RightsStatement.skos:prefLabel")
-#mapTo("dc:license.dc:identifier.url" "dc:license.rdf:Alt.dc:identifier") 
+#mapTo("dc:license.dc:identifier.url" "dc:license.rdf:Alt.dc:identifier")
 
 #set($cList = $util.getList($item, "dc:subject.anzsrc:for"))
 #set($order = 1)
