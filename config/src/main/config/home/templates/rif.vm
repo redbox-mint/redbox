@@ -292,10 +292,23 @@
             <rif:subject type="anzsrc-toa">$util.encodeXml($value)</rif:subject>
         #end
 
-        #set ($value = $util.get($item, "dc:description"))
-        #if ("$!value" != "")
-            <rif:description type="full" $lang>$util.encodeXml($value)</rif:description>
+        ################
+        ## Description
+        ####set ($value = $util.get($item, "dc:description"))
+        ####if ("$!value" != "")
+        ###    <rif:description type="full" $lang>$util.encodeXml($value)</rif:description>
+        ####end
+
+        #set($valueMap = $util.getList($item, "dc:description"))
+        #foreach($key in $valueMap.keySet())
+            #set($description =  $valueMap.get($key))
+            #set($descText = $description.get("text"))
+            #set($descType = $description.get("type"))
+            #if("$!descText" != "")
+                <rif:description type="$descType" $lang>$util.encodeXml($descText)</rif:description>
+            #end
         #end
+
 
         #################
         ## Rights

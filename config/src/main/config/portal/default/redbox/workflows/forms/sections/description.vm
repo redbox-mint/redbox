@@ -98,18 +98,51 @@
         </ul>
     </div>
     <p>
-        <textarea rows="12" cols="80" id="dc:description" style="vertical-align: text-top;"
-                placeholder="eg. This dataset contains observational data and calibration files."></textarea>
-        #requiredValidation("dc:description" "A description is required!")
-        <script type="text/javascript">
-        $(function(){
-            $("#dc\\:description").jqEasyCounter({
-                maxChars: 12000,
-                maxCharsWarning: 11990,
-                msgTextAlign: 'left'
-            });
-        });
-        </script>
+        <table class="input-list clear-table">
+            <tbody>
+                <tr class="item-input-display">
+                    <td>
+                     <label for="dc:description" class="validation-err-msg"
+                            data-validation-rule="test(notEmpty);when(blur, change, submit);
+                                                    jsTest(
+                                                        var value = getReDBoxById('dc:description.1.text').val();
+                                                        value = jQ.trim(value); r = (value == '');
+                                                    );
+                                                    liveFor(.vdescription);">
+                            A description is required!
+                        </label>
+                        <textarea rows="12" cols="80" id="dc:description.0.text" class="vdescription" style="vertical-align: text-top;
+                                placeholder="eg. This dataset contains observational data and calibration files."></textarea>
+                        <script type="text/javascript">
+                           $(function(){
+                               $("#dc\\:description").jqEasyCounter({
+                                   maxChars: 12000,
+                                   maxCharsWarning: 11990,
+                                   msgTextAlign: 'left'
+                               });
+                           });
+                        </script>
+                    </td>
+                    <td style="vertical-align: middle;">
+                       <label for="dc:description.0.type">Type:</label>
+                       <select id="dc:description.0.type" style="left:20em;">
+                          <option value="">Please select one...</option>
+                          <option value="full">Full</option>
+                          <option value="brief">Brief</option>
+                          <option value="logo">Logo</option>
+                       </select>
+                    </td>
+                    <td class="delete-item" style="vertical-align: middle;"><a href="#">delete</a></td>
+                    <td style="width: 100%;"> </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                 <tr>
+                    <td><input type="button" class="button add-another-item" id="add-description" value="Add description" /></td>
+                    <td colspan="2"></td>
+                 </tr>
+            </tfoot>
+        </table>
     </p>
     
     #fieldTitle("dc:relation.swrc:Publication" "Related Publications" false)

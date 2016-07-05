@@ -294,6 +294,10 @@ fieldset p textarea {
     cursor: pointer;
 }
 
+table.clear-table, table.clear-table td {
+    border: none;
+}
+
 .strike {
     text-decoration: line-through;
 }
