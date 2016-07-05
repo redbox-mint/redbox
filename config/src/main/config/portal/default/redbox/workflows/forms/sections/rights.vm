@@ -40,7 +40,7 @@
                 <option value="open">Open</option>
                 <option value="conditional">Conditional</option>
                 <option value="restricted">Restricted</option>
-             </select
+             </select>
            </span>
         </p>
         <div style="clear:both"/>
