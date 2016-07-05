@@ -105,11 +105,12 @@
                      <label for="dc:description" class="validation-err-msg"
                             data-validation-rule="test(notEmpty);when(blur, change, submit);
                                                     jsTest(
-                                                        var value = getReDBoxById('dc:description.1.text').val();
-                                                        value = jQ.trim(value); r = (value == '');
+                                                        var textValue = getReDBoxById('dc:description.1.text').val();
+                                                        var typeValue = getReDBoxById('dc:description.1.type').val();
+                                                        value = jQ.trim(value); r = (textValue == '' || typeValue == '');
                                                     );
                                                     liveFor(.vdescription);">
-                            A description is required!
+                            A description and its type are required!
                         </label>
                         <textarea rows="12" cols="80" id="dc:description.0.text" class="vdescription" style="vertical-align: text-top;
                                 placeholder="eg. This dataset contains observational data and calibration files."></textarea>
@@ -125,7 +126,7 @@
                     </td>
                     <td style="vertical-align: middle;">
                        <label for="dc:description.0.type">Type:</label>
-                       <select id="dc:description.0.type" style="left:20em;">
+                       <select id="dc:description.0.type" style="left:20em;" class="vdescription">
                           <option value="">Please select one...</option>
                           <option value="full">Full</option>
                           <option value="brief">Brief</option>

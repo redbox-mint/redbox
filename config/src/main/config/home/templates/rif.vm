@@ -294,10 +294,6 @@
 
         ################
         ## Description
-        ####set ($value = $util.get($item, "dc:description"))
-        ####if ("$!value" != "")
-        ###    <rif:description type="full" $lang>$util.encodeXml($value)</rif:description>
-        ####end
 
         #set($valueMap = $util.getList($item, "dc:description"))
         #foreach($key in $valueMap.keySet())
