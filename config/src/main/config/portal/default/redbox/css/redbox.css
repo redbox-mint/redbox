@@ -294,8 +294,9 @@ fieldset p textarea {
     cursor: pointer;
 }
 
-table.clear-table, table.clear-table td {
+table.clear-table, table.clear-table td, table.clear-table th {
     border: none;
+    vertical-align: top;
 }
 
 .strike {
