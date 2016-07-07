@@ -138,7 +138,7 @@
 #end
 #if ("$!identifier" == "")
     ## We want invalid XML here so the record is never harvested without the correct ID
-    #set($identifier = "Invalid ID: Not curated yet")
+    #set($identifier = "&Invalid ID: Not curated yet&")
     #set ($identifierType = "invalid")
 #end
 
