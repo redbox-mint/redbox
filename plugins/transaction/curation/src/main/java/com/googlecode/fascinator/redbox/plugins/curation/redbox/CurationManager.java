@@ -387,9 +387,17 @@ public class CurationManager extends GenericTransactionManager {
 		}
 		String exStartsWith = config.getString(null, "excludeCondition",
 				"startsWith");
+		String exDoesntStartWith = config.getString(null, "excludeCondition",
+				"doesntStartWith");
 		if (exPath != null && !exPath.isEmpty() && exStartsWith != null) {
 			String value = baseNode.getString(null, exPath.toArray());
 			if (value != null && value.startsWith(exStartsWith)) {
+				log.info("Excluding relationship '{}' based on config", field);
+				return null;
+			}
+		}else {
+			String value = baseNode.getString(null, exPath.toArray());
+			if (value != null && !value.startsWith(exDoesntStartWith)) {
 				log.info("Excluding relationship '{}' based on config", field);
 				return null;
 			}
