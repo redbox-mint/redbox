@@ -1,5 +1,66 @@
 <h3><a href="#rights">Rights</a></h3>
 <div id="rights" class="inputscreen">
+    #fieldTitle("dc:license" "Licence" false)
+    <div class="help-content" id="help-dc:license">
+        This list contains data licences that this server has been configured with.
+        For more information about the Australian Creative Commons licences please
+        <a href="http://creativecommons.org.au/learn-more/licences" target="blank">&lt;see here&gt;</a>.
+    </div>
+
+    <span class="data-source-drop-down"
+          data-json-source-url="$portalPath/workflows/forms/data/licences.json"
+          data-id-key="id"
+          data-label-key="label"
+          data-desc-key="description"
+          data-list-key="results" >
+        <table class="selection-added licence">
+            <tr>
+                <th width="10%"><label for="dc:license.skos:prefLabel">Name:</label></th>
+                <td><input type="text" size="80" readonly="readonly" class="selection-added-label"
+                     id="dc:license.skos:prefLabel" name="dc:license.skos:prefLabel" /></td>
+            </tr>
+            <tr>
+                <th><label for="dc:license.dc:identifier">URL:</label></th>
+                <td><input type="text" size="80" readonly="readonly" class="selection-added-id"
+                     id="dc:license.dc:identifier" name="dc:license.dc:identifier" /></td>
+            </tr>
+            <tr>
+                <th>Description:</th>
+                <td><span class="selection-add-more-info selection-added-desc"></span><input type="hidden" class="selection-added-desc"/></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td><a href="#" class="clear-item">change</a></td>
+            </tr>
+        </table>
+        <span class="drop-down-location">
+            <button class="selection-add add-unique-only licence" data-add-on-click="1">
+                Select
+            </button>
+            <div class="selection-add-more-info-holder">
+              Description:<blockquote class="selection-add-more-info"></blockquote>
+            </div>
+        </span>
+    </span>
+    #fieldTitle("dc:license.rdf:Alt" "License - Other" false)
+    <div class="help-content" id="help-dc:license.rdf:Alt">
+        <p>If you want to use a license not included in the above list you can provide details below.</p>
+        <ul>
+            <li>If you are using this field frequently for the same license it would make sense to get your system administrator to add the license to the field above.</li>
+            <li>If you provide two licenses (one from above, plus this one) only the first will be sent to RDA in the RIF-CS.</li>
+            <li>Example of another license: <a href="http://www.opendefinition.org/licenses" target="blank">http://www.opendefinition.org/licenses</a></li>
+        </ul>
+    </div>
+    <table class="group">
+        <tr>
+            <th width="10%"><label for="dc:license.rdf:Alt.skos:prefLabel">Name:</label></th>
+            <td><input type="text" size="60" placeholder="license name" id="dc:license.rdf:Alt.skos:prefLabel" /></td>
+        </tr>
+        <tr>
+            <th><label for="dc:license.rdf:Alt.dc:identifier">URL:</label></th>
+            <td><input type="text" size="60" placeholder="license url" id="dc:license.rdf:Alt.dc:identifier" /></td>
+        </tr>
+</table>
     #fieldTitle("rights_group" "Access/Rights" true)
     <div class="help-content" id="help-rights_group">
         Information about access and rights of the collection. One of these
@@ -91,67 +152,17 @@
         </table>
         <div style="clear:both"/>
     </div>
-
-    #fieldTitle("dc:license" "Licence" false)
-    <div class="help-content" id="help-dc:license">
-        This list contains data licences that this server has been configured with.
-        For more information about the Australian Creative Commons licences please
-        <a href="http://creativecommons.org.au/learn-more/licences" target="blank">&lt;see here&gt;</a>.
     </div>
 
-    <span class="data-source-drop-down"
-          data-json-source-url="$portalPath/workflows/forms/data/licences.json"
-          data-id-key="id"
-          data-label-key="label"
-          data-desc-key="description"
-          data-list-key="results" >
-        <table class="selection-added">
-            <tr>
-                <th width="10%"><label for="dc:license.skos:prefLabel">Name:</label></th>
-                <td><input type="text" size="80" readonly="readonly" class="selection-added-label"
-                     id="dc:license.skos:prefLabel" name="dc:license.skos:prefLabel" /></td>
-            </tr>
-            <tr>
-                <th><label for="dc:license.dc:identifier">URL:</label></th>
-                <td><input type="text" size="80" readonly="readonly" class="selection-added-id"
-                     id="dc:license.dc:identifier" name="dc:license.dc:identifier" /></td>
-            </tr>
-            <tr>
-                <th>Description:</th>
-                <td><span class="selection-add-more-info selection-added-desc"></span><input type="hidden" class="selection-added-desc"/></td>
-            </tr>
-            <tr>
-                <th>&nbsp;</th>
-                <td><a href="#" class="clear-item">change</a></td>
-            </tr>
-        </table>
-        <span class="drop-down-location">
-            <button class="selection-add add-unique-only" data-add-on-click="1">
-                Select
-            </button>
-            <div class="selection-add-more-info-holder">
-              Description:<blockquote class="selection-add-more-info"></blockquote>
-            </div>
-        </span>
-    </span>
-
-    #fieldTitle("dc:license.rdf:Alt" "License - Other" false)
-    <div class="help-content" id="help-dc:license.rdf:Alt">
-        <p>If you want to use a license not included in the above list you can provide details below.</p>
-        <ul>
-            <li>If you are using this field frequently for the same license it would make sense to get your system administrator to add the license to the field above.</li>
-            <li>If you provide two licenses (one from above, plus this one) only the first will be sent to RDA in the RIF-CS.</li>
-            <li>Example of another license: <a href="http://www.opendefinition.org/licenses" target="blank">http://www.opendefinition.org/licenses</a></li>
-        </ul>
-    </div>
-    <table class="group">
-        <tr>
-            <th width="10%"><label for="dc:license.rdf:Alt.skos:prefLabel">Name:</label></th>
-            <td><input type="text" size="60" placeholder="license name" id="dc:license.rdf:Alt.skos:prefLabel" /></td>
-        </tr>
-        <tr>
-            <th><label for="dc:license.rdf:Alt.dc:identifier">URL:</label></th>
-            <td><input type="text" size="60" placeholder="license url" id="dc:license.rdf:Alt.dc:identifier" /></td>
-        </tr>
-    </table>
-</div>
+<script type="text/javascript">
+     //171 ready function addresses issues with capturing all dynamic rows
+     $171(document).ready(function() {
+        function updateRightsLicence() {
+            var regex = /(CC|ODC|PDDL).*/i;
+            if (regex.test($('[id=dc:license.skos:prefLabel]').val())) {
+                $('[id=dc:accessRightsType]').val("open");
+            }
+        }
+        $('.selection-add.licence').bind('click', updateRightsLicence);
+     });
+</script>
