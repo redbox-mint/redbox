@@ -83,11 +83,6 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:description">
-                    A Description is required!
-                </label>
-           </div>
-           <div>
                 <label class="validation-err-msg" for="${cite}.skos:prefLabel">
                     The full citation string has not been rendered!
                 </label>
@@ -160,6 +155,11 @@
            <div>
                 <label class="validation-err-msg" for="dc:extent">
                      Extent or quantity is required!
+                </label>
+           </div>
+           <div>
+               <label class="validation-err-msg" for="hasNoEmptyDescriptions">
+                   Empty descriptions are not allowed!
                 </label>
            </div>
         </div>

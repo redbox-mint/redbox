@@ -1,7 +1,10 @@
 #sectionHeading("Rights")
 <div class="meta">
     <dl>
-        #displayUrl("Access Rights/Conditions" "dc:accessRights.dc:identifier" "dc:accessRights.skos:prefLabel" "true")
+        <div class="group">
+            #displayUrl("Access Rights/Conditions" "dc:accessRights.dc:identifier" "dc:accessRights.skos:prefLabel" "true")
+            #displayFirst("dc:accessRightsType" "Type")
+        </div>
         #displayUrl("Rights" "dc:accessRights.dc:RightsStatement.dc:identifier" "dc:accessRights.dc:RightsStatement.skos:prefLabel" "true")
         #displayUrl("License" "dc:license.dc:identifier" "dc:license.skos:prefLabel")
         #displayUrl("License - Other" "dc:license.rdf:Alt.dc:identifier" "dc:license.rdf:Alt.skos:prefLabel" "true")

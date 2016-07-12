@@ -33,7 +33,31 @@
 #sectionHeading("Description")
 <div class="meta">
     <dl>
-        #displayFirst("dc:description" "Description")
+        #set($dataList = $self.getList("dc:description"))
+        #if ($dataList.isEmpty())
+            <dd>
+                #noInformation()
+            </dd>
+        #else
+                <dd>
+                    <ol>
+                        #foreach($key in $dataList.keySet())
+                            #set($data = $dataList.get($key))
+                        #set($descriptionText = $data.get("text"))
+                        #if ("$!descriptionText" != "")
+                             <li>#displayRequiredKey($data "text")
+                                 #set($type = $data.get("type"))
+                                 #if("$!type" != "")
+                                    <ul>
+                                        <li><b>Type</b>: $type</li>
+                                    </ul>
+                                 #end
+                            </li>
+                        #end
+                    #end
+                    </ol>
+                </dd>
+        #end
         #relatedURLs("dc:relation.swrc:Publication" "Related Publications" "value" "title")
         #relatedURLs("dc:relation.bibo:Website" "Related Websites" "value" "title")
 
