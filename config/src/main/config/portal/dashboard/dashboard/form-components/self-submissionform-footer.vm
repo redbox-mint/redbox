@@ -249,10 +249,10 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         console.log("checking description count...");
         var hasDescription = true;
         $(".description.hidden").each(function(index, e) {
-                var jQelement = $(escapeId(e.id));
-                if (jQelement.val() == "") {
-                    hasDescription = false;
-    }
+            var jQelement = $(escapeId(e.id));
+            if (jQelement.val() == "") {
+                hasDescription = false;
+            }
         });
         $('.hasNoEmptyDescriptions').val("");
         if (hasDescription) {
