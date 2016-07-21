@@ -56,7 +56,6 @@
 	#mapTo('dc:title', 'title')
 	"viewId": "default",
     "packageType": "dataset",
-    #mapTo('dc:description', 'description')
 	"redbox:newForm": "$util.get($item, 'redbox:newForm')",
 	"redbox:formVersion": "$util.get($item, 'redbox:formVersion')",
 	#mapTo('dc:title', 'dc:title'),
@@ -72,6 +71,17 @@
     #end
 	#end
 	
+	#set($cList = $util.getList($item, "dc:description"))
+    #set($order = 1)
+    #if ($cList.size() > 0)
+    #foreach($key in $cList.keySet())
+        #set($slot = $cList.get($key))
+        #multiValuedProperty($slot "dc:description" "text" $order)
+        #multiValuedProperty($slot "dc:description" "type" $order)
+        #set($order = $order + 1)
+    #end
+    #end
+
 	#set($cList = $util.getList($item, "dc:coverage.vivo:GeographicLocation"))
 	#set($order = 1)
 	#if ($cList.size() > 0)
