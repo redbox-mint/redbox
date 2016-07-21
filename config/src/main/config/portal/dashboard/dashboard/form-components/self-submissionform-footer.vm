@@ -229,3 +229,122 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 	});
 	</script>
 	
+<script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
+<script>var $171 = jQuery.noConflict(true);</script>
+<script type="text/javascript">
+    function escapeId(rawId) {
+        return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+    }
+    function hasInvalidDescription(id,lid) {
+        updateEmptyDescriptionsCount();
+        return ($(escapeId(id)).val() == "");
+        }
+
+    function isAnyDescriptionEmpty(id) {
+        return ($(escapeId(id)).val() == "");
+    }
+
+    function updateEmptyDescriptionsCount() {
+        console.log("checking description count...");
+        var hasDescription = true;
+        $(".description.hidden").each(function(index, e) {
+            if (index > 0) {
+                var jQelement = $(escapeId(e.id));
+                if (jQelement.val() == "") {
+                    hasDescription = false;
+    }
+            }
+        });
+        $('[id=hasNoEmptyDescriptions]').val("");
+        if (hasDescription) {
+            $('[id=hasNoEmptyDescriptions]').val(hasDescription);
+            $('[id=hasNoEmptyDescriptionsErrMsg]').hide();
+        }
+    }
+
+    function afterJaffaDelete() {
+        // use to clean up indexes after jaffa missed some children.
+        $171("[id^='dc:description.'][id$='ContainerItem']").each(function(index, e) {
+            var re = /dc\:description\.([\d]+)\./;
+            var matchedNumberedId = re.exec(e.id);
+            $171(this).find("[id^='dc:description.']").each(function(index, e) {
+                var matchedChildNumberedId = re.exec(e.id);
+                // ensure child element contains number first
+                if (matchedChildNumberedId && matchedChildNumberedId[1] != matchedNumberedId[1]) {
+                    var replaceId = $(this).attr("id").replace(matchedChildNumberedId[0], matchedNumberedId[0]);
+                    $(this).attr("id", replaceId);
+                }
+            });
+        });
+        updateEmptyDescriptionsCount();
+    }
+
+    function getDescriptionParent(jQDescriptionElement) {
+        return jQDescriptionElement.parents("[id^='dc:description'][id$='ContainerItem']");
+    }
+
+    function toggleDescriptionValidations(parent, descriptionType) {
+        parent.find(".validation.description").hide();
+        parent.find('.validation.description.'+descriptionType).show();
+    }
+
+    function getDescriptionInputElement(parent, descriptionType) {
+        parent.find('.descriptionInput').hide();
+        return parent.find('.descriptionInput.'+ descriptionType);
+    }
+
+    //171 ready function addresses issues with capturing all dynamic rows
+    $171(document).ready(function() {
+        $(".description").hide();
+        $(".descriptionSelect").each(function(index) {
+                var parent = getDescriptionParent($(this));
+                var descriptionType = $(this).val();
+                var textSource = parent.find(".description.hidden");
+                console.log("text source is: " + textSource.attr("id"));
+                var textDestination = getDescriptionInputElement(parent, descriptionType);
+                console.log("text destination is: " + textDestination.attr("id"));
+                toggleDescriptionValidations(parent, descriptionType);
+                if (textDestination) {
+                    textDestination.val(textSource.val());
+                    textDestination.show();
+                }
+        });
+        updateEmptyDescriptionsCount();
+        $171("[id='dc:description']").on('change', '.descriptionSelect', function() {
+            var parent = getDescriptionParent($(this));
+            var descriptionType = $(this).val();
+            var textSource = getDescriptionInputElement(parent, descriptionType);
+            toggleDescriptionValidations(parent, descriptionType);
+            var textValue = ""
+            if (textSource) {
+                textSource.show();
+                textValue = textSource.val();
+            }
+            parent.find(".description.hidden").val(textValue);
+            updateEmptyDescriptionsCount();
+        });
+        $171("[id='dc:description']").on('input', '.descriptionInput', function() {
+            var parent = getDescriptionParent($171(this));
+            console.log("parent: " + parent.attr("id"));
+            console.log($(this).val());
+            console.log(parent.find(".description.hidden").attr("id"));
+            var targetId = parent.find(".description.hidden").attr("id");
+            $("[id='"+ targetId + "']").val($(this).val());
+            var descriptionType = parent.find('.descriptionSelect').val();
+            toggleDescriptionValidations(parent, descriptionType);
+            updateEmptyDescriptionsCount();
+        });
+        $171("[id^=dc\\:description] .jaffaAddItem").click(function() {
+            var latestDescriptionIndex = $('.description.hidden').length;
+            var descriptionType = $(".descriptionSelect[id^='dc:description."+latestDescriptionIndex+".type']");
+            var parent = getDescriptionParent(descriptionType);
+            getDescriptionInputElement(parent, descriptionType.val()).show();
+            parent.find('.jaffaDeleteItem').each(function() {
+                $(this).attr("onclick", "afterJaffaDelete();");
+            });
+            toggleDescriptionValidations(parent, descriptionType.val());
+            updateEmptyDescriptionsCount();
+        });
+    });
+</script>
+

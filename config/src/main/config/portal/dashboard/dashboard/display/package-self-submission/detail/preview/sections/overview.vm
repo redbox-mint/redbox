@@ -98,5 +98,5 @@
 	    #end
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
-	<p>#if($metadata.get('dc:description')) $page.escapeHtml($metadata.get('dc:description')) #else #noInformation() #end</p>
+	<p>#displayArrayList("" "dc:description" "textFull")</p>
 </section>
