@@ -232,6 +232,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 <script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
 <script>var $171 = jQuery.noConflict(true);</script>
 <script type="text/javascript">
+    //multiple descriptions support
     function escapeId(rawId) {
         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
     }
@@ -248,17 +249,14 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         console.log("checking description count...");
         var hasDescription = true;
         $(".description.hidden").each(function(index, e) {
-            if (index > 0) {
                 var jQelement = $(escapeId(e.id));
                 if (jQelement.val() == "") {
                     hasDescription = false;
     }
-            }
         });
-        $('[id=hasNoEmptyDescriptions]').val("");
+        $('.hasNoEmptyDescriptions').val("");
         if (hasDescription) {
-            $('[id=hasNoEmptyDescriptions]').val(hasDescription);
-            $('[id=hasNoEmptyDescriptionsErrMsg]').hide();
+            $('.hasNoEmptyDescriptions').val(hasDescription);
         }
     }
 
@@ -310,7 +308,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 }
         });
         updateEmptyDescriptionsCount();
-        $171("[id='dc:description']").on('change', '.descriptionSelect', function() {
+        $171("[id^='dc:description']").on('change', '.descriptionSelect', function() {
             var parent = getDescriptionParent($(this));
             var descriptionType = $(this).val();
             var textSource = getDescriptionInputElement(parent, descriptionType);
@@ -323,7 +321,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
             parent.find(".description.hidden").val(textValue);
             updateEmptyDescriptionsCount();
         });
-        $171("[id='dc:description']").on('input', '.descriptionInput', function() {
+        $171("[id^='dc:description']").on('input', '.descriptionInput', function() {
             var parent = getDescriptionParent($171(this));
             console.log("parent: " + parent.attr("id"));
             console.log($(this).val());
@@ -345,6 +343,16 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
             toggleDescriptionValidations(parent, descriptionType.val());
             updateEmptyDescriptionsCount();
         });
+
     });
+
+     // licence support
+     $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
+        var regex = /(CC|ODC|PDDL).*/i;
+        if (regex.test($(escapeId('dc:license.skos:prefLabel')).val())) {
+            $("[id='dc:accessRightsType']").val("open");
+        }
+     });
+
 </script>
 
