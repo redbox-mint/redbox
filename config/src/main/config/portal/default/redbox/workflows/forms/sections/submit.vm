@@ -162,6 +162,11 @@
                    Empty descriptions are not allowed!
                 </label>
            </div>
+           <div>
+              <label class="validation-err-msg" for="isAdditionalIdentifiersComplete">
+                  There is at least 1 empty additional identifier!
+               </label>
+          </div>
         </div>
     </p>
 
