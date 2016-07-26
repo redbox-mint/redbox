@@ -186,6 +186,17 @@
         <rif:collection type="$util.get($item, "dc:type.rdf:PlainLiteral")" $dateModified $dateAccessioned>
             <rif:identifier type="$identifierType">$identifier</rif:identifier>
 
+             ## Additional identifiers
+             #set($valueMap = $util.getList($item, "dc:additionalidentifier"))
+             #foreach($key in $valueMap.keySet())
+                 #set ($row = $valueMap.get($key))
+                 #set ($additionalIdentifier = $row.get("rdf:PlainLiteral"))
+                 #set ($additionalIdentifierType = $row.get("type.rdf:PlainLiteral"))
+                 #if ("$!additionalIdentifier" != "" && "$!additionalIdentifierType" != "")
+                    <rif:identifier type="$util.encodeXml($additionalIdentifierType)">$util.encodeXml($additionalIdentifier)</rif:identifier>
+                 #end
+             #end
+
             <rif:name type="primary" $lang>
                 <rif:namePart>$util.encodeXml($util.get($item, "dc:title"))</rif:namePart>
             </rif:name>
