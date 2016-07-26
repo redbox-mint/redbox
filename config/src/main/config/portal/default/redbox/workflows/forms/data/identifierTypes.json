@@ -17,6 +17,10 @@
             "label": "Digital Object Identifier"
         },
         {
+            "id": "fundref",
+            "label": "Funder unique ID"
+        },
+        {
             "id": "handle",
             "label": "HANDLE System Identifier"
         },
@@ -31,6 +35,10 @@
         {
             "id": "local",
             "label": "Local Identifier"
+        },
+        {
+            "id": "nhmrc",
+            "label": "National Health and Medical Research Council identifier"
         },
         {
             "id": "nla",
