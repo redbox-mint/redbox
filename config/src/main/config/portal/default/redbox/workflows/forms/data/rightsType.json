@@ -1,0 +1,16 @@
+{
+    "results": [
+        {
+            "id": "open",
+            "label": "Open"
+        },
+        {
+            "id": "conditional",
+            "label": "Conditional"
+        },
+        {
+            "id": "restricted",
+            "label": "Restricted"
+        }
+    ]
+}

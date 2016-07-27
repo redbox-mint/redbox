@@ -26,7 +26,7 @@
 #end
 
 #macro(missing $value)
-<i>{missing: "$value" }</i>
+<i>{missing: "$!{value}" }</i>
 #end
 
 #macro(displayKey $map $key $required)
@@ -69,6 +69,8 @@ $page.escapeHtml($value)
     #noInformation()
     </dd>
     #else
+        #set($firstData = $personList.get("1").get("foaf:Agent.foaf:familyName"))
+        #if("$!firstData"!="")
     <dd>
         <ol>
         #foreach($key in $personList.keySet())
@@ -82,6 +84,7 @@ $page.escapeHtml($value)
         #end
         </ol>
     </dd>
+    #end
     #end
 
     #displayPerson("swrc:supervisor.foaf:Person.foaf" "Supervisor")

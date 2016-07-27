@@ -27,22 +27,61 @@
         </ul>
     </div>
     <div class="group">
-        <p>
-            <label for="dc:identifier.dc:type.rdf:PlainLiteral">Type of identifier:</label>
-            #mintSelectField("dc:identifier.dc:type.rdf:PlainLiteral"
-                             "dc:identifier.dc:type.skos:prefLabel"
-                             "$portalPath/workflows/forms/data/identifierTypes.json"
-                             "id"
-                             "label"
-                             "results"
-                             "handle")
+         <p>
+                    <label for="dc:identifier.dc:type.rdf:PlainLiteral">Type of identifier:</label>
+                    #mintSelectField("dc:identifier.dc:type.rdf:PlainLiteral"
+                                     "dc:identifier.dc:type.skos:prefLabel"
+                                     "$portalPath/workflows/forms/data/identifierTypes.json"
+                                     "id"
+                                     "label"
+                                     "results"
+                                     "handle")
+                    <label for="dc:identifier.rdf:PlainLiteral">Identifier:</label>
+                    <input type="text" size="60" placeholder="persistent identifier" id="dc:identifier.rdf:PlainLiteral" class="videntifier" />
+                    <input type="hidden" id="dc:identifier.redbox:origin" />
+                    <input type="checkbox" id="dc:identifier.checkbox" class="videntifier" />
+                    <label for="dc:identifier.checkbox">Use this record's ID</label>
         </p>
         <p>
-            <label for="dc:identifier.rdf:PlainLiteral">Identifier:</label>
-            <input type="text" size="60" placeholder="persistent identifier" id="dc:identifier.rdf:PlainLiteral" class="videntifier" />
-            <input type="hidden" id="dc:identifier.redbox:origin" />
-            <input type="checkbox" id="dc:identifier.checkbox" class="videntifier" />
-            <label for="dc:identifier.checkbox">Use this record's ID</label>
+            <h2>
+            <label for="dc:identifier.rdf">Additional Identifiers:</label>
+            </h2>
+            <div class="input-list additionalidentifiers">
+                <input type="input" id="isAdditionalIdentifiersComplete" class="isAdditionalIdentifiersComplete" style="display:none;"/>
+                    <label class="validation-err-msg"
+                        id="isAdditionalIdentifiersCompleteErrMsg"
+                        for="isAdditionalIdentifiersComplete"
+                        data-validation-rule="test(notEmpty); when(submit);
+                        jsTest(r = isAdditionalIdentifiersComplete(id););liveFor(.isAdditionalIdentifiersComplete);">
+                        There is at least 1 empty additional identifier. Each must have an identifier value and a 'selected' type!
+                    </label>
+                <div class="item-input-display">
+                    <label for="dc:additionalidentifier.0.type.rdf:PlainLiteral">Type of identifier:</label>
+                    <span class="data-source-drop-down"
+                          data-json-source-url="$portalPath/workflows/forms/data/identifierTypes.json"
+                          data-id-key="id"
+                          data-label-key="label"
+                          data-list-key="results"
+                          data-delay="1"
+                    >
+                    <span class="selection-added">
+                        <input type="hidden" class="selection-added-id additionalidentifier-type" id="dc:additionalidentifier.0.type.rdf:PlainLiteral" />
+                        <input type="text" class="selection-added-label" readonly="readonly" id="dc:additionalidentifier.0.type.rdf.skos:prefLabel" />
+                        <a href="#" class="clear-item">change</a>
+                    </span>
+                    <span class="drop-down-location">
+                        <button class="selection-add" data-add-on-click="1">
+                            Select
+                        </button>
+                    </span>
+                    <label for="dc:additionalidentifier.0.rdf:PlainLiteral">Identifier:</label>
+                    <input type="text" size="60" placeholder="persistent identifier" id="dc:additionalidentifier.0.rdf:PlainLiteral" class="additionalidentifier"/>
+                    <span class="delete-item deleteAdditionalIdentifier"><a href="#">delete</a></span>
+                </div>
+                <div>
+                    <input type="button" class="button add-another-item" value="Add identifier" />
+                </div>
+            </div>
         </p>
     </div>
 
@@ -473,3 +512,120 @@ $(function() {
     });
 });
 </script>
+<script type="text/javascript">
+    function isAdditionalIdentifiersComplete(id) {
+        return ($(escapeId(id)).val() == "");
+    }
+
+    function showFirstAdditionalIdentifierDelete() {
+        $(escapeId('dc:additionalidentifier.1.rdf:PlainLiteral')).parents('.data-source-drop-down').find('.deleteAdditionalIdentifier').css('display', 'inline');
+    }
+
+    function updateIsAdditionalIdentifiersComplete() {
+        var isAdditionalIdentifiersComplete = true;
+        $171('.additionalidentifiers').find('.data-source-drop-down').each( function(index, e) {
+            if (index > 0) {
+                if ($(this).find('.additionalidentifier').val() == "" || $(this).find('.additionalidentifier-type').val() == "") {
+                   isAdditionalIdentifiersComplete = false;
+                }
+            }
+        });
+        $('.isAdditionalIdentifiersComplete').val("");
+        if (isAdditionalIdentifiersComplete) {
+            $('.isAdditionalIdentifiersComplete').val(isAdditionalIdentifiersComplete);
+            $(escapeId('isAdditionalIdentifiersCompleteErrMsg')).hide();
+        }
+    }
+
+    function clearIdentifierTypeValue(additionalIdentifierParent) {
+        additionalIdentifierParent.find('.selection-added-id').val('');
+        additionalIdentifierParent.find('.selection-added-label').val('');
+        updateIsAdditionalIdentifiersComplete();
+    }
+
+    function toggleAndUpdate() {
+        showFirstAdditionalIdentifierDelete();
+        updateIsAdditionalIdentifiersComplete();
+    }
+
+    function removeFirstIdentifierIfBlank() {
+        var additionalidentifierCount = $171('.additionalidentifiers').find('.count-this .additionalidentifier').length;
+        if (additionalidentifierCount == 1) {
+            $(escapeId('dc:additionalidentifier.1.rdf:PlainLiteral')).each ( function() {
+                var identifierValue = $(this).val();
+                var dropDownValue = $(this).parents('.data-source-drop-down').find('.drop-down-location select').val();
+                var identifierType = $(this).parents('.data-source-drop-down').find('.additionalidentifier-type').val();
+                if (identifierValue == '' && dropDownValue == '' && identifierType == '') {
+                    $(this).parents('.data-source-drop-down').find('.deleteAdditionalIdentifier').click();
+                }
+            });
+        }
+    }
+
+    $171(document).ready(function() {
+        //resize additional identifier input boxes
+        $171('.additionalidentifiers .data-source-drop-down').find('.selection-added-label').each (function(index, e) {
+            var length = $(this).val().length;
+            if (index > 0 && length > 0) {
+                $(this).attr("size", $(this).val().length);
+            }
+        });
+
+       // update label and id with selected value and toggle drop-down and label
+        $171('.additionalidentifiers').on('click','.selection-add', function() {
+            var parent = $(this).parents('.data-source-drop-down');
+            var selectionId = parent.find('select').val();
+            var selectionLabel = parent.find('select option:selected').html();
+            parent.find('.selection-added-id').val(selectionId);
+            parent.find('.selection-added-label').val(selectionLabel);
+            //resize input
+            var label = parent.find('.selection-added-label');
+            label.attr("size", label.val().length);
+            $(this).parents('.drop-down-location').hide();
+            parent.find('.selection-added').show();
+            updateIsAdditionalIdentifiersComplete();
+        });
+
+        // bind for existing additional identifiers on page
+        $171('.additionalidentifiers').find('.clear-item').on('click', function() {
+            clearIdentifierTypeValue($(this).parents('.data-source-drop-down'));
+        });
+        $171('.additionalidentifiers').find('.selection-add').bind('click', updateIsAdditionalIdentifiersComplete);
+
+        // bind for new identifiers
+        $171('.additionalidentifiers').find('.add-another-item').each(function() {
+            $(this).bind('click', toggleAndUpdate);
+        });
+        $171('.additionalidentifiers').find('.selection-add').bind('click', updateIsAdditionalIdentifiersComplete);
+
+        // bind for all additional identifiers
+        $171('.additionalidentifiers').on('keyup', '.additionalidentifier', function() {
+            updateIsAdditionalIdentifiersComplete();
+        });
+        $171('.additionalidentifiers').on('hover', '.deleteAdditionalIdentifier', function() {
+            $(this).bind('click', toggleAndUpdate);
+        });
+
+        // for new identifiers: toggle label and drop-down when cleared
+        $171('.additionalidentifiers').on('click','.clear-item', function() {
+            $(this).parents('.data-source-drop-down').find('.drop-down-location').show();
+            $(this).parents('.selection-added').hide();
+            clearIdentifierTypeValue($(this).parents('.data-source-drop-down'));
+            // prevent link scrolling
+            return false;
+        });
+
+        // disable drop-down select button if no value selected, otherwise enable
+        $171('.additionalidentifiers').on('change','.drop-down-location select', function() {
+            var parent = $(this).parents('.drop-down-location');
+            if ($(this).val() != '') {
+                parent.find('.selection-add').attr("disabled", '');
+            } else {
+                parent.find('.selection-add').attr("disabled", 'true');
+            }
+        });
+        removeFirstIdentifierIfBlank();
+        updateIsAdditionalIdentifiersComplete();
+});
+
+</script

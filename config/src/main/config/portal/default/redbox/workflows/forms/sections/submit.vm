@@ -83,11 +83,6 @@
                 </label>
            </div>
            <div>
-                <label class="validation-err-msg" for="dc:description">
-                    A Description is required!
-                </label>
-           </div>
-           <div>
                 <label class="validation-err-msg" for="${cite}.skos:prefLabel">
                     The full citation string has not been rendered!
                 </label>
@@ -162,6 +157,21 @@
                      Extent or quantity is required!
                 </label>
            </div>
+           <div>
+               <label class="validation-err-msg" for="hasNoEmptyDescriptions">
+                   #displayMessage("dataset.description.empty.error.message")
+                </label>
+           </div>
+           <div>
+               <label class="validation-err-msg" for="isDescriptionRDACompliant">
+                  #displayMessage("dataset.description.rda.compliance.error.message")
+               </label>
+          </div>
+           <div>
+              <label class="validation-err-msg" for="isAdditionalIdentifiersComplete">
+                #displayMessage("dataset.additional.identifier.empty.error.message")
+               </label>
+          </div>
         </div>
     </p>
 
