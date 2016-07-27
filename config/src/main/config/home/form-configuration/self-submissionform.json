@@ -46,7 +46,24 @@
                                 "validation-id": "hasNoEmptyDescriptions",
                                 "focus-id": "hasNoEmptyDescriptions",
                                 "validation-messages": {
-                                    "required": "Empty descriptions are not allowed"
+                                    "required": "Empty descriptions are not allowed."
+                                }
+                            }
+                        },
+                        {
+                            "component-type": "text-input",
+                            "field-name": "isDescriptionRDACompliant",
+                            "label": "",
+                            "content": "",
+                            "additional-classes": "isDescriptionRDACompliant hidden",
+                            "validation": {
+                                "save-rules": [
+                                    "required"
+                                ],
+                                "validation-id": "isDescriptionRDACompliant",
+                                "focus-id": "isDescriptionRDACompliant",
+                                "validation-messages": {
+                                    "required": "At least 1 full or 1 brief description is required."
                                 }
                             }
                         },
@@ -705,6 +722,15 @@
                                     "required": "Access Conditions statement is required"
                                 }
                             }
+                        },
+                        {
+                            "component-type": "data-source-dropdown",
+                            "label": "self-submission.field.label.dc-accessRights.type",
+                            "field-name": "dc:accessRightsType",
+                            "sourceUrl": "workflows/forms/data/rightsType.json",
+                            "idKey": "id",
+                            "labelKey": "label",
+                            "listKey": "results"
                         },
                         {
                             "component-type": "text-input",

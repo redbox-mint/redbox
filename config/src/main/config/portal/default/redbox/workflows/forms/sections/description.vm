@@ -102,16 +102,28 @@
             <tbody>
                 <tr>
                     <td>
-                        <input type="input" id="hasNoEmptyDescriptions" class="hasNoEmptyDescriptions" style="display:none;"/>
+                        <input type="input" id="hasNoEmptyDescriptions" class="hasNoEmptyDescriptions" />
                         <label class="validation-err-msg"
                             id="hasNoEmptyDescriptionsErrMsg"
                             for="hasNoEmptyDescriptions"
                             data-validation-rule="test(notEmpty); when(focus,submit);
-                            jsTest(r = isAnyDescriptionEmpty(id););liveFor(.hasNoEmptyDescriptions);">
+                            jsTest(r = hasInvalidDescription(id););liveFor(.hasNoEmptyDescriptions);">
                             There is at least 1 empty description. Empty descriptions are not allowed!
                         </label>
                     </td>
                     <td colspan="2">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="input" id="isDescriptionRDACompliant" class="isDescriptionRDACompliant"/>
+                        <label class="validation-err-msg"
+                            id="isDescriptionRDACompliantErrMsg"
+                            for="isDescriptionRDACompliant"
+                            data-validation-rule="test(notEmpty); when(focus,submit);
+                            jsTest(r = hasInvalidDescription(id););liveFor(.isDescriptionRDACompliant);">
+                            #displayMessage("dataset.description.rda.compliance.error.message")
+                        </label>
                     </td>
                 </tr>
                 <tr class="item-input-display">
@@ -126,7 +138,7 @@
                         <label class="validation-err-msg"
                             id="dc:description.0.textFullErrMsg"
                             for="dc:description.0.textFull"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id, lid);label=$('.'+lid);); liveFor(.full);">
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.full);">
                             Empty descriptions are not allowed!
                         </label>
                         </div>
@@ -134,7 +146,7 @@
                         <label class="validation-err-msg"
                         id="dc:description.0.textBriefErrMsg"
                         for="dc:description.0.textBrief"
-                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id, lid);label=$('.'+lid);); liveFor(.brief);">
+                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.brief);">
                         Empty descriptions are not allowed!
                         </label>
                         </div>
@@ -142,7 +154,7 @@
                         <label class="validation-err-msg"
                         id="dc:description.0.textLogoErrMsg"
                         for="dc:description.0.textLogo"
-                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id, lid);label=$('.'+lid);); liveFor(.logo);">
+                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.logo);">
                         Empty descriptions are not allowed!
                         </label>
                         </div>
@@ -435,12 +447,7 @@ $(function() {
     function escapeId(rawId) {
         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
     }
-    function hasInvalidDescription(id,lid) {
-        updateEmptyDescriptionsCount();
-        return ($(escapeId(id)).val() == "");
-        }
-
-    function isAnyDescriptionEmpty(id) {
+    function hasInvalidDescription(id) {
         return ($(escapeId(id)).val() == "");
     }
 
@@ -448,14 +455,30 @@ $(function() {
         getDescriptionParent($('.descriptionInput')).find('.jqEasyCounterMsg').hide();
     }
 
-    function updateEmptyDescriptionsCount() {
+    function updateDescriptionsRDAComplianceValidation() {
+        var hasCompliance = false;
+        $('.descriptionSelect').each(function(index, e) {
+             if (index > 0) {
+                if ($171.inArray($(this).val(), ['brief','full']) != -1) {
+                    hasCompliance = true;
+                }
+             }
+        });
+        $('[id=isDescriptionRDACompliant]').val("");
+        if (hasCompliance) {
+            $('[id=isDescriptionRDACompliant]').val(hasCompliance);
+            $('[id=isDescriptionRDACompliant]').hide();
+        }
+    }
+
+    function updateEmptyDescriptionsValidation() {
         var hasDescription = true;
-        $(".description.hidden").each(function(index, e) {
+        $('.description.hidden').each(function(index, e) {
             if (index > 0) {
                 var jQelement = $(escapeId(e.id));
                 if (jQelement.val() == "") {
                     hasDescription = false;
-    }
+                }
             }
         });
         $('[id=hasNoEmptyDescriptions]').val("");
@@ -463,6 +486,11 @@ $(function() {
             $('[id=hasNoEmptyDescriptions]').val(hasDescription);
             $('[id=hasNoEmptyDescriptionsErrMsg]').hide();
         }
+    }
+
+    function updateAllDescriptionsValidation() {
+        updateEmptyDescriptionsValidation();
+        updateDescriptionsRDAComplianceValidation();
     }
 
     function getDescriptionParent(jQDescriptionElement) {
@@ -491,7 +519,7 @@ $(function() {
     $171(document).ready(function() {
         addFullEasyCounter($('.descriptionInput.full'));
 
-        $171('.deleteDescription').bind('click', updateEmptyDescriptionsCount);
+        $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
         $(".descriptionSelect").each(function(index) {
             if (index > 0) {
                 var parent = getDescriptionParent($(this));
@@ -505,7 +533,7 @@ $(function() {
                 }
             }
         });
-        updateEmptyDescriptionsCount();
+        updateAllDescriptionsValidation();
         $171('.input-list').on('change', '.descriptionSelect', function() {
             hideDescriptionJQEasyCounter();
             var parent = getDescriptionParent($(this));
@@ -518,14 +546,14 @@ $(function() {
                 textValue = textSource.val();
             }
             parent.find(".description.hidden").val(textValue);
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
         $171('.input-list').on('input', '.descriptionInput', function() {
             var parent = getDescriptionParent($(this));
             parent.find(".description.hidden").val($(this).val());
             var descriptionType = parent.find('.descriptionSelect').val();
             toggleDescriptionValidations(parent, descriptionType);
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
         $171('[id=add-description]').click(function() {
             var latestDescriptionIndex = $('.description.hidden').length -1
@@ -533,7 +561,7 @@ $(function() {
             var parent = getDescriptionParent(descriptionType);
             addFullEasyCounter(parent.find('.descriptionInput.full:visible'));
             toggleDescriptionValidations(parent, descriptionType.val());
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
     });
 </script>

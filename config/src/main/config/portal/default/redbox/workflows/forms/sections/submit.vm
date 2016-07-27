@@ -159,12 +159,17 @@
            </div>
            <div>
                <label class="validation-err-msg" for="hasNoEmptyDescriptions">
-                   Empty descriptions are not allowed!
+                   #displayMessage("dataset.description.empty.error.message")
                 </label>
            </div>
            <div>
+               <label class="validation-err-msg" for="isDescriptionRDACompliant">
+                  #displayMessage("dataset.description.rda.compliance.error.message")
+               </label>
+          </div>
+           <div>
               <label class="validation-err-msg" for="isAdditionalIdentifiersComplete">
-                  There is at least 1 empty additional identifier!
+                #displayMessage("dataset.additional.identifier.empty.error.message")
                </label>
           </div>
         </div>

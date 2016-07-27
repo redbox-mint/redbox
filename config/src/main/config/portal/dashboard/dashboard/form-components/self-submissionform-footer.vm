@@ -236,17 +236,22 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
     function escapeId(rawId) {
         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
     }
-    function hasInvalidDescription(id,lid) {
-        updateEmptyDescriptionsCount();
-        return ($(escapeId(id)).val() == "");
-        }
 
-    function isAnyDescriptionEmpty(id) {
-        return ($(escapeId(id)).val() == "");
+    function updateDescriptionsRDAComplianceValidation() {
+        var hasCompliance = false;
+        $('.descriptionSelect').each(function(index, e) {
+            if ($171.inArray($(this).val(), ['brief','full']) != -1) {
+                hasCompliance = true;
+            }
+        });
+        $('[id=isDescriptionRDACompliant]').val("");
+        if (hasCompliance) {
+            $('[id=isDescriptionRDACompliant]').val(hasCompliance);
+            $('[id=isDescriptionRDACompliant]').hide();
+        }
     }
 
-    function updateEmptyDescriptionsCount() {
-        console.log("checking description count...");
+    function updateEmptyDescriptionsValidation() {
         var hasDescription = true;
         $(".description.hidden").each(function(index, e) {
             var jQelement = $(escapeId(e.id));
@@ -257,7 +262,13 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         $('.hasNoEmptyDescriptions').val("");
         if (hasDescription) {
             $('.hasNoEmptyDescriptions').val(hasDescription);
+            $('[id=isDescriptionRDACompliant]').hide();
         }
+    }
+
+    function updateAllDescriptionsValidation() {
+        updateEmptyDescriptionsValidation();
+        updateDescriptionsRDAComplianceValidation();
     }
 
     function afterJaffaDelete() {
@@ -274,7 +285,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 }
             });
         });
-        updateEmptyDescriptionsCount();
+        updateAllDescriptionsValidation();
     }
 
     function getDescriptionParent(jQDescriptionElement) {
@@ -298,16 +309,14 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 var parent = getDescriptionParent($(this));
                 var descriptionType = $(this).val();
                 var textSource = parent.find(".description.hidden");
-                console.log("text source is: " + textSource.attr("id"));
                 var textDestination = getDescriptionInputElement(parent, descriptionType);
-                console.log("text destination is: " + textDestination.attr("id"));
                 toggleDescriptionValidations(parent, descriptionType);
                 if (textDestination) {
                     textDestination.val(textSource.val());
                     textDestination.show();
                 }
         });
-        updateEmptyDescriptionsCount();
+        updateAllDescriptionsValidation();
         $171("[id^='dc:description']").on('change', '.descriptionSelect', function() {
             var parent = getDescriptionParent($(this));
             var descriptionType = $(this).val();
@@ -319,18 +328,15 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 textValue = textSource.val();
             }
             parent.find(".description.hidden").val(textValue);
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
         $171("[id^='dc:description']").on('input', '.descriptionInput', function() {
             var parent = getDescriptionParent($171(this));
-            console.log("parent: " + parent.attr("id"));
-            console.log($(this).val());
-            console.log(parent.find(".description.hidden").attr("id"));
             var targetId = parent.find(".description.hidden").attr("id");
             $("[id='"+ targetId + "']").val($(this).val());
             var descriptionType = parent.find('.descriptionSelect').val();
             toggleDescriptionValidations(parent, descriptionType);
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
         $171("[id^=dc\\:description] .jaffaAddItem").click(function() {
             var latestDescriptionIndex = $('.description.hidden').length;
@@ -341,7 +347,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 $(this).attr("onclick", "afterJaffaDelete();");
             });
             toggleDescriptionValidations(parent, descriptionType.val());
-            updateEmptyDescriptionsCount();
+            updateAllDescriptionsValidation();
         });
 
     });

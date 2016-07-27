@@ -571,9 +571,6 @@ $(function() {
             }
         });
 
-        removeFirstIdentifierIfBlank();
-        updateIsAdditionalIdentifiersComplete();
-
        // update label and id with selected value and toggle drop-down and label
         $171('.additionalidentifiers').on('click','.selection-add', function() {
             var parent = $(this).parents('.data-source-drop-down');
@@ -627,6 +624,8 @@ $(function() {
                 parent.find('.selection-add').attr("disabled", 'true');
             }
         });
+        removeFirstIdentifierIfBlank();
+        updateIsAdditionalIdentifiersComplete();
 });
 
 </script
