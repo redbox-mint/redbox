@@ -98,5 +98,5 @@
 	    #end
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
-	<p>#displayArrayList("" "dc:description" "text")</p>
+	<p>#displayCompoundArrayList("Descriptions" "dc:description" ["type", "text"] ": ")</p>
 </section>

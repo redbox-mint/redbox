@@ -133,6 +133,8 @@
                         <textarea rows="2" cols="80" id="dc:description.0.textBrief" class="brief descriptionInput" style="vertical-align: text-top;"
                                 placeholder="Brief description."></textarea>
                         <input size="80" type="text" id="dc:description.0.textLogo" class="logo descriptionInput" style="display: none; vertical-align: text-top;" placeholder="URL that shows logo."/>
+                        <textarea rows="2" cols="80" id="dc:description.0.textNote" class="note descriptionInput" style="vertical-align: text-top;"
+                                                        placeholder="Description note."></textarea>
                         <input type="text" id="dc:description.0.text" class="description hidden text"/>
                         <div id="descriptionValidation.0.full" class="validation description full">
                         <label class="validation-err-msg"
@@ -143,20 +145,28 @@
                         </label>
                         </div>
                         <div id="descriptionValidation.0.brief" class="validation description brief">
-                        <label class="validation-err-msg"
-                        id="dc:description.0.textBriefErrMsg"
-                        for="dc:description.0.textBrief"
-                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.brief);">
-                        Empty descriptions are not allowed!
-                        </label>
+                            <label class="validation-err-msg"
+                            id="dc:description.0.textBriefErrMsg"
+                            for="dc:description.0.textBrief"
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.brief);">
+                            Empty descriptions are not allowed!
+                            </label>
                         </div>
                         <div id="descriptionValidation.0.logo" class="validation description logo">
-                        <label class="validation-err-msg"
-                        id="dc:description.0.textLogoErrMsg"
-                        for="dc:description.0.textLogo"
-                        data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.logo);">
-                        Empty descriptions are not allowed!
-                        </label>
+                            <label class="validation-err-msg"
+                            id="dc:description.0.textLogoErrMsg"
+                            for="dc:description.0.textLogo"
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.logo);">
+                            Empty descriptions are not allowed!
+                            </label>
+                        </div>
+                        <div id="descriptionValidation.0.note" class="validation description note">
+                            <label class="validation-err-msg"
+                            id="dc:description.0.textNoteErrMsg"
+                            for="dc:description.0.textNote"
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.note);">
+                            Empty descriptions are not allowed!
+                            </label>
                         </div>
                     </td>
                     <td style="vertical-align: middle;">
@@ -165,6 +175,7 @@
                           <option value="full">Full</option>
                           <option value="brief">Brief</option>
                           <option value="logo">Logo</option>
+                          <option value="note">Note</option>
                        </select>
                     </td>
                     <td class="delete-item deleteDescription" id="dc:description.0.delete" style="vertical-align: middle;"><a href="#">delete</a></td>

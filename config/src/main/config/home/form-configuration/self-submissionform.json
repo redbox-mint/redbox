@@ -69,7 +69,7 @@
                         },
                         {
                             "component-type": "text-block",
-                            "type": "text",
+                            "type": "label",
                             "content": "self-submission.field.label.dc-description",
                             "help": "self-submission.field.help.dc-description"
                         },
@@ -78,6 +78,37 @@
                             "containter-for": "dc:description",
                             "sub-elements": {
                                 "settings": [
+                                    {
+                                        "jaffaDropDown": {
+                                            "allow-empty": false,
+                                            "label": "Description Type: ",
+                                            "suffix": "type",
+                                            "field": "type",
+                                            "label-field": "type",
+                                            "option-data": [
+                                                {
+                                                    "value": "full",
+                                                    "label": "Full"
+                                                },
+                                                {
+                                                    "value": "brief",
+                                                    "label": "Brief"
+                                                },
+                                                {
+                                                    "value": "logo",
+                                                    "label": "Logo"
+                                                },
+                                                {
+                                                    "value": "note",
+                                                    "label": "Note"
+                                                }
+                                            ],
+                                            "mandatory": "true",
+                                            "class-list": "descriptionSelect",
+                                            "label-class-list": "descriptionTypeLabel",
+                                            "defaultValue": "full"
+                                        }
+                                    },
                                     {
                                         "jaffaText": {
                                             "class-list": "jaffa-field descriptionInput full",
@@ -107,34 +138,18 @@
                                     },
                                     {
                                         "jaffaText": {
-                                            "class-list": "jaffa-field description hidden",
-                                            "suffix": "text"
+                                            "class-list": "jaffa-field descriptionInput note",
+                                            "suffix": "textNote",
+                                            "textarea": {
+                                                "rows": "2",
+                                                "cols": "80"
+                                            }
                                         }
                                     },
                                     {
-                                        "jaffaDropDown": {
-                                            "allow-empty": false,
-                                            "label": "Type",
-                                            "suffix": "type",
-                                            "field": "type",
-                                            "label-field": "type",
-                                            "option-data": [
-                                                {
-                                                    "value": "full",
-                                                    "label": "Full"
-                                                },
-                                                {
-                                                    "value": "brief",
-                                                    "label": "Brief"
-                                                },
-                                                {
-                                                    "value": "logo",
-                                                    "label": "Logo"
-                                                }
-                                            ],
-                                            "mandatory": "true",
-                                            "class-list": "descriptionSelect",
-                                            "defaultValue": "full"
+                                        "jaffaText": {
+                                            "class-list": "jaffa-field description hidden",
+                                            "suffix": "text"
                                         }
                                     }
                                 ]
