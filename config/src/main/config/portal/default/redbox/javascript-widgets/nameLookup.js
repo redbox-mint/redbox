@@ -263,21 +263,65 @@ var globalObject = this;
         };
 
         var loaderGif = $(".nameLookup-progress").html();
-        var tabbedDiv = $("<div><ul><li><a href=\"#mintLookupDialog\">Mint</a></li><li><a href=\"#nlaLookupDialog\">NLA<span class=\"nlaLookup-progress\"> "+loaderGif+"</span></a></li></ul></div>");
+        var tabbedDiv = $("<div><ul><li><a href=\"#mintLookupDialog\">Mint</a></li><li><a href=\"#orcidLookupDialog\">ORCID</a></li><li><a href=\"#nlaLookupDialog\">NLA<span class=\"nlaLookup-progress\"> "+loaderGif+"</span></a></li></ul></div>");
         mintDiv = $("<div id=\"mintLookupDialog\"></div>");
+        orcidDiv = $('<div id="orcidLookupDialog"><table><tbody><tr><td><label for="orcidFirstname">First Name:</label></td><td><input id="orcidFirstname" type="text"></td></tr><tr><td><label for="norcidSurname">Surname:</label></td><td><input id="orcidSurname" type="text"></td></tr></tbody></table><input type="button" id="orcidSearchButton" value="Search"><hr/><div id="orcidSearchResults"></div></div>');
         nlaDiv = $("<div id=\"nlaLookupDialog\"><div class='nameLookup-waiting'>Searching National Library. Please wait... "+loaderGif+"</div></div>");
         tabbedDiv.append(mintDiv);
+        tabbedDiv.append(orcidDiv);
         tabbedDiv.append(nlaDiv);
 
         display();
         dialog.html(tabbedDiv);
         tabbedDiv.tabs();
 
+        function displayOrcidResults(jsonResponse) {
+          orcidSearchResultDiv = $("#orcidSearchResults");
+
+          results = jsonResponse['search_results'];
+          var resultTable = $("<table>");
+
+          for(var i=0; i<results.length;i++){
+            // alert(results[i]['orcid_uri']);
+            var tableRow = $("<tr>");
+            var tableElement = $("<td>");
+            var radiobutton = "<input type='radio' name='name' id='rId"+i+"' value='"+JSON.stringify(results[i])+"'>";
+            tableElement.html(radiobutton+'<label>'+results[i]['family_name']+ ', ' + results[i]['given_names'] +'</label>');
+            tableRow.append(tableElement);
+            var tableElement2 = $('<td><a href="'+results[i]['orcid_uri']+'" target="_blank">Details</a>');
+            tableRow.append(tableElement2);
+            resultTable.append(tableRow);
+
+          }
+          orcidSearchResultDiv.append(resultTable);
+        }
+        $("#orcidSearchButton").click(function(){var familyName = $("#orcidSurname").val();
+        var givenNames = $("#orcidFirstname").val();
+        orcidUrl = $(".orcidLookup-url").val();
+        var queryUrl = orcidUrl.replace("{familyName}", escape(encodeURIComponent(familyName)));
+        var queryUrl = queryUrl.replace("{givenNames}", escape(encodeURIComponent(givenNames)));
+        // alert(queryUrl);
+        $.ajax({
+          url: queryUrl,
+          dataType: "json",
+          timeout: 3000,
+          success: function(jdata) {
+                displayOrcidResults(jdata);
+              },
+          error: function(x, s, e) {
+            alert(e);
+          }
+      });
+
+      });
         dialog.dialog("option", "buttons", {
             "OK": function() {
                 var value = mintDiv.find("input[name=name]:checked").val();
                 if (value == null || value == "") {
                     value = nlaDiv.find("input[name=name]:checked").val();
+                }
+                if($(this).parent().find('.ui-state-active').text()=="ORCID") {
+                  value = orcidDiv.find("input[name=name]:checked").val();
                 }
                 dialog.dialog("close");
                 detailDialog.dialog("close");
@@ -382,6 +426,7 @@ var globalObject = this;
     function nameLookupSection(ctx) {
         var url = ctx.find(".nameLookup-url").val();
         var nlaUrl = ctx.find(".nlaLookup-url").val();
+        var orcidUrl = ctx.find(".orcidLookup-url").val();
         var valueNs = ctx.find(".nameLookup-value-ns").val();
         var textNs = ctx.find(".nameLookup-text-ns").val();
         function debug(msg) {
@@ -415,12 +460,17 @@ var globalObject = this;
                 if (ok) {
                     // National Library of Australia
                     var nlaId = result["nlaId"];
+                    var orcId = result["search_results"];
                     if (nlaId != null) {
                         parent.find(".nlLabel").val(result["displayName"]);
                         parent.find(".nlId").val(nlaId);
 
-                    // Mint Identity
-                    } else {
+                    //ORCID identity
+                  } if(orcId != null) {
+                    parent.find(".nlLabel").val(result["family_name"]+", "+result["given_names"]);
+                    parent.find(".nlId").val(result["orcid_uri"]);
+                  // Mint Identity
+                  } else {
                         function xUpdate(ns, what) {
                             var nsp, k;
                             if (!ns) return;
