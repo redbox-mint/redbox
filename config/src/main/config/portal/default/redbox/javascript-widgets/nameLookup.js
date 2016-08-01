@@ -277,12 +277,28 @@ var globalObject = this;
 
         function displayOrcidResults(jsonResponse) {
           orcidSearchResultDiv = $("#orcidSearchResults");
-
+          orcidSearchResultDiv.html("");
           results = jsonResponse['search_results'];
           var resultTable = $("<table>");
+          var page = jsonResponse['pageNumber'];
 
+          var recordNumber = 1 + 10*(page-1);
+          var resultSummary = $('<span>Showing '+recordNumber+'-'+(recordNumber+9)+' records of '+jsonResponse['totalFound']+' total.</span>');
+          var paginationDiv = $('<div></div>')
+
+          if (page > 1) {
+            var previousPage = parseInt(page) - 1;
+            previousLink = $('<a pageNumber="'+previousPage+'" href="#">« previous (10)&nbsp;</a>');
+            previousLink.click(function(){searchOrcid(previousPage)});
+            paginationDiv.append(previousLink);
+          }
+          if(jsonResponse['totalFound'] > page*10) {
+            var nextPage = parseInt(page) + 1;
+            var nextLink = $('<a pageNumber="'+nextPage+'" href="#">next (10) »</a>');
+            nextLink.click(function(){searchOrcid(nextPage)});
+            paginationDiv.append(nextLink);
+          }
           for(var i=0; i<results.length;i++){
-            // alert(results[i]['orcid_uri']);
             var tableRow = $("<tr>");
             var tableElement = $("<td>");
             var radiobutton = "<input type='radio' name='name' id='rId"+i+"' value='"+JSON.stringify(results[i])+"'>";
@@ -293,27 +309,34 @@ var globalObject = this;
             resultTable.append(tableRow);
 
           }
+          orcidSearchResultDiv.append(resultSummary);
+          orcidSearchResultDiv.append(paginationDiv);
+          orcidSearchResultDiv.append($('<hr/>'));
           orcidSearchResultDiv.append(resultTable);
         }
-        $("#orcidSearchButton").click(function(){var familyName = $("#orcidSurname").val();
-        var givenNames = $("#orcidFirstname").val();
-        orcidUrl = $(".orcidLookup-url").val();
-        var queryUrl = orcidUrl.replace("{familyName}", escape(encodeURIComponent(familyName)));
-        var queryUrl = queryUrl.replace("{givenNames}", escape(encodeURIComponent(givenNames)));
-        // alert(queryUrl);
-        $.ajax({
-          url: queryUrl,
-          dataType: "json",
-          timeout: 3000,
-          success: function(jdata) {
-                displayOrcidResults(jdata);
-              },
-          error: function(x, s, e) {
-            alert(e);
-          }
-      });
 
-      });
+        function searchOrcid (pageNumber){
+          var familyName = $("#orcidSurname").val();
+          var givenNames = $("#orcidFirstname").val();
+          orcidUrl = $(".orcidLookup-url").val();
+          var queryUrl = orcidUrl.replace("{familyName}", escape(encodeURIComponent(familyName)));
+          queryUrl = queryUrl.replace("{givenNames}", escape(encodeURIComponent(givenNames)));
+          queryUrl = queryUrl+"&page="+pageNumber;
+          $.ajax({
+            url: queryUrl,
+            dataType: "json",
+            timeout: 3000,
+            success: function(jdata) {
+                  displayOrcidResults(jdata);
+              },
+            error: function(x, s, e) {
+            alert(e);
+            }
+          });
+        }
+
+        $("#orcidSearchButton").click(function(){searchOrcid(1);});
+
         dialog.dialog("option", "buttons", {
             "OK": function() {
                 var value = mintDiv.find("input[name=name]:checked").val();
