@@ -42,6 +42,7 @@
             #displayUrlList("bibo:Website" "URL" "dc:identifier" "")
             #displayFirst("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At")
             #displayFirst("vivo:Location.vivo:GeographicLocation.skos:note" "Notes")
+            #displayFirst("recordAsLocationDefault" "This record as a location url")
         </div>
         #displayFirst("redbox:retentionPeriod" "Retention Period")
         #displayFirst("dc:extent" "Extent or Quantity")

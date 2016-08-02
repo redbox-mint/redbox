@@ -231,7 +231,16 @@
             #end
             </rif:location>
         #end
-
+        #set ($recordAsLocation = $util.get($item, "recordAsLocationDefault"))
+        #if ("$!$recordAsLocation" != "")
+            <rif:location>
+                <rif:address>
+                    <rif:electronic type="url">
+                        <rif:value>$util.encodeXml($recordAsLocation)</rif:value>
+                    </rif:electronic>
+                </rif:address>
+            </rif:location>
+        #end
         #set ($covFrom = $util.get($item, "dc:coverage.vivo:DateTimeInterval.vivo:start"))
         #set ($covTo = $util.get($item, "dc:coverage.vivo:DateTimeInterval.vivo:end"))
         #set ($covPeriod = $util.get($item, "dc:coverage.redbox:timePeriod"))

@@ -135,6 +135,7 @@
         dc:coverage.vivo:DateTimeInterval.vivo:start,
         dc:coverage.vivo:DateTimeInterval.vivo:end,
         dc:coverage.redbox:timePeriod,
+        recordAsLocationDefault,
         dc:coverage.vivo:GeographicLocation.0.dc:type,
         dc:coverage.vivo:GeographicLocation.0.redbox:wktRaw,
         dc:coverage.vivo:GeographicLocation.0.rdf:PlainLiteral,

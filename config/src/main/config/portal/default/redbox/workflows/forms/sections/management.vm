@@ -123,6 +123,17 @@
                 </div>
             </div>
         </p>
+        #set($recordAsLocation = $systemConfig.getString("", "rifcs", "recordAsLocation", "template"))
+        #set($recordAsLocationDefault = $systemConfig.getString("", "rifcs", "recordAsLocation", "default"))
+        #if ("$!recordAsLocation" != "")
+            <p>
+                <div>
+                    <input type="checkbox" id="recordAsLocationDefault.checkbox" value=#evaluate($recordAsLocation) #if("$!recordAsLocationDefault" == "true")checked="checked"#end />
+                    <label for="recordAsLocationDefault.checkbox">Add this record's URL as a location</label>
+                </div>
+            </p>
+        #end
+        <input type="hidden" id="recordAsLocationDefault" class="recordAsLocationDefault hidden" />
 
         #fieldTitle("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At" false)
         <div class="help-content" id="help-vivo:Location.vivo:GeographicLocation.gn:name">
@@ -562,7 +573,21 @@ $(function() {
         }
     }
 
+    function checkRecordAsLocationDefault() {
+        if ($(escapeId('recordAsLocationDefault.checkbox')).attr("checked")) {
+            $('#recordAsLocationDefault').val($(escapeId('recordAsLocationDefault.checkbox')).val());
+        } else {
+            $('#recordAsLocationDefault').val('');
+        }
+    }
+
     $171(document).ready(function() {
+        checkRecordAsLocationDefault();
+
+        $(escapeId('recordAsLocationDefault.checkbox')).click( function() {
+            checkRecordAsLocationDefault();
+        });
+
         //resize additional identifier input boxes
         $171('.additionalidentifiers .data-source-drop-down').find('.selection-added-label').each (function(index, e) {
             var length = $(this).val().length;
