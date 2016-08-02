@@ -2,6 +2,8 @@
 <div id="people" class="inputscreen nameLookup-section">
     <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet.script?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
+    <input type="hidden" class="orcidLookup-url" value="$portalPath/orcidSearch.script?familyName={familyName}&givenNames={givenNames}" />
+
     <input type="hidden" class="nameLookup-value-ns" value="nl" />
 
     #fieldTitle("dc:creator" "Creators" true)
@@ -73,7 +75,7 @@
                             </tr>
                             <tr>
                                 <td colspan="6">
-                                    <label class="validation-err-msg"				
+                                    <label class="validation-err-msg"
 										id="dc:creator.foaf:Person.0.foaf:givenNameErrMsg"
                                         for="dc:creator.foaf:Person.0.foaf:givenName"
                                         data-validation-rule="test(notEmpty);when(blur,change,submit);
@@ -86,7 +88,7 @@
                                                                     f=jQ.trim(f); g=jQ.trim(g);
                                                                     r=(g=='')&&(f=='');
                                                                     id=gid;
-																	lid=id+'ErrMsg';																	                                                                   
+																	lid=id+'ErrMsg';
                                                                     label=$('.'+lid);
                                                                 );
                                                                 liveFor(.creatorName);">
@@ -330,12 +332,22 @@ function lookupDone(target,data){
     // fill in the fields
     // National Library of Australia
     var nlaId = data["nlaId"];
+    var orcId = data["orcid"];
     if (nlaId != null) {
         displayName.append(" (<a href=\""+nlaId+"\" target=\"_blank\">NLA</a>)");
         var baseId = p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
         $("input[id='"+baseId+".foaf:title']").val("");
         $("input[id='"+baseId+".foaf:givenName']").val(data["firstName"]);
         $("input[id='"+baseId+".foaf:familyName']").val(data["surname"]);
+    // ORCID Identity
+    } else if (orcId != null) {
+      var fullName = data["family_name"]+", "+data["given_names"];
+      displayName.append(fullName+"(<a href=\""+data["orcid_uri"]+"\" target=\"_blank\">ORCID</a>)");
+      var baseId = p.find("input[id$=\\.foaf\\:name]").attr("id").replace(".foaf:name", "");
+      $("input[id='"+baseId+".foaf:givenName']").val(data["given_names"]);
+      $("input[id='"+baseId+".foaf:familyName']").val(data["family_name"]);
+      $("input[id='"+baseId+".foaf:name']").val(fullName);
+      $("input[id='"+baseId+".dc:identifier']").val(data["orcid_uri"]);
 
     // Mint Identity
     } else {
@@ -377,9 +389,9 @@ function pcLookupCleared(target,data){
     $("#locrel\\:prc\\.foaf\\:Person\\.foaf\\:email").val("");
 }
 
-$(function(){    
+$(function(){
     $("#people")[0].onActivate = function() {
-        setTimeout(function(){$(".creatorGivenName")[$(".creatorGivenName").length -1].focus();}, 200);        
-    };    
+        setTimeout(function(){$(".creatorGivenName")[$(".creatorGivenName").length -1].focus();}, 200);
+    };
 });
 </script>

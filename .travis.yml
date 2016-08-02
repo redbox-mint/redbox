@@ -5,7 +5,7 @@ services:
 before_install:
 - mkdir /tmp/build
 - docker pull qcifengineering/redbox-builder
-- docker run -v /tmp/build:/build -e "CLONEPATH=https://github.com/redbox-mint/redbox.git"
+- docker run -v /tmp/build:/build -e "CLONEPATH=--branch=rifcs161 https://github.com/redbox-mint/redbox.git"
   qcifengineering/redbox-builder
 install: true
 script: true

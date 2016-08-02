@@ -82,10 +82,22 @@ appender("SPRING", RollingFileAppender) {
 	encoder(PatternLayoutEncoder) {
 	  pattern = "%d %-8X{name} %-6p %-20.20c{0} %m%n"
 	}
-  }
+}
+appender("API", RollingFileAppender) {
+        file = "${logHome}/logs/rest_api.log"
+        rollingPolicy(TimeBasedRollingPolicy) {
+          fileNamePattern = "${logHome}/logs/archives/%d{yyyy-MM}_rest_api.zip"
+          maxHistory = 30
+        }
+        encoder(PatternLayoutEncoder) {
+          pattern = "%d %-8X{name} %-6p %-20.20c{0} %m%n"
+        }
+}
 root(OFF)
 logger("com.googlecode.fascinator", DEBUG, ["SIFT"])
 logger("org.apache.activemq", WARN, ["AMQ"])
 logger("org.apache.solr", INFO, ["SOLR"])
 logger("org.springframework", DEBUG, ["SPRING"])
 logger("au.com.redboxresearchdata", DEBUG, ["SIFT"])
+logger("org.restlet", DEBUG, ["API"])
+logger("com.googlecode.fascinator.redbox.ws", DEBUG, ["API"])
