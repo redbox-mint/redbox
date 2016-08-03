@@ -102,7 +102,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <input type="input" id="hasNoEmptyDescriptions" class="hasNoEmptyDescriptions" />
+                        <input type="input" id="hasNoEmptyDescriptions" class="hasNoEmptyDescriptions hidden" />
                         <label class="validation-err-msg"
                             id="hasNoEmptyDescriptionsErrMsg"
                             for="hasNoEmptyDescriptions"
