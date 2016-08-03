@@ -1,5 +1,5 @@
 <h3><a href="#people">People</a></h3>
-<div id="people" class="inputscreen nameLookup-section">
+<div id="people" class="inputscreen nameLookup-section" style="overflow:auto;">
     <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet.script?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
     <input type="hidden" class="orcidLookup-url" value="$portalPath/orcidSearch.script?familyName={familyName}&givenNames={givenNames}" />
@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="item-input-display sortable-item">
+            <tr class="item-input-display sortable-item people">
                 <td class="valign-middle">
                     <img class="facets-grip" src="$portalPath/images/icons/grippy.png" />
                 </td>
@@ -126,6 +126,10 @@
                     </table>
                 </td>
                 <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
                     <span class="lookup-show">
                         <span class="identified-as-name"></span>
                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone"
@@ -139,6 +143,22 @@
                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
                                class="nl nl-dc:identifier nlId" />
                     </span>
+                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="identifierText creatorName">
+                                        <div>or</div>
+                                        <a href="#" class="identifierText-enable">enter text</a>
+                                        <div class="identifierText-entry">
+                                            <input type="text" class="identifierText-input" size="20" id="identifierText.0.creatorName.input" value="" />
+                                            <a href="#" class="identifierText-clear">clear text</a>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
             </tr>
@@ -160,7 +180,7 @@
         Enter a given name and/or family name and click 'lookup' to search and
         select the name authority record.
     </div>
-    <table class="lookup">
+    <table class="lookup people">
         <thead>
             <tr>
                 <th colspan="6">Display Name</th>
@@ -193,6 +213,10 @@
                            id="locrel:prc.foaf:Person.foaf:familyName" />
                 </td>
                 <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
                     <span class="lookup-show">
                         <span class="identified-as-name"></span>
                         <a href="#" class="nameLookup-lookup" data-selected-func="pcLookupDone"
@@ -206,6 +230,22 @@
                         <input type="hidden" id="locrel:prc.foaf:Person.dc:identifier"
                                class="nl nl-dc:identifier nlId" value="" />
                     </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                    <span class="identifierText pcName">
+                                        <div>or</div>
+                                        <a href="#" class="identifierText-enable">enter text</a>
+                                        <div class="identifierText-entry">
+                                            <input type="text" class="identifierText-input" size="20" id="identifierText.pcName.input" value="" />
+                                            <a href="#" class="identifierText-clear">clear text</a>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
             <tr>
@@ -236,7 +276,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="item-input-display sortable-item">
+            <tr class="item-input-display sortable-item  people">
                 <td class="sort-number"></td>
                 <td>
                     <table class="lookup">
@@ -270,6 +310,9 @@
                     </table>
                 </td>
                 <td>
+                    <table>
+                        <tr>
+                            <td>
                     <span class="lookup-show">
                         <span class="identified-as-name"></span>
                         <a href="#" class="nameLookup-lookup" data-selected-func="lookupDone"
@@ -283,6 +326,21 @@
                         <input type="hidden" id="swrc:supervisor.foaf:Person.0.dc:identifier"
                                class="nl nl-dc:identifier nlId" value="" />
                     </span>
+                </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="identifierText supName">
+                                    <div>or</div>
+                                    <a href="#" class="identifierText-enable">enter text</a>
+                                    <div class="identifierText-entry">
+                                        <input type="text" class="identifierText-input" size="20" id="identifierText.0.supName.input" value="" />
+                                        <a href="#" class="identifierText-clear">clear text</a>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
             </tr>
@@ -303,14 +361,31 @@
         eg. CSIRO, University of X, Prof. Jim Bloggs, etc.
     </div>
     <table class="input-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Display Name</th>
+                <th>Name Authority</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr class="item-input-display sortable-item">
+            <tr class="item-input-display sortable-item people">
                 <td class="sort-number"></td>
                 <td>
                     <input type="text" size="60" placeholder="eg. CSIRO, University of X, Prof. Jim Bloggs, etc." id="dc:contributor.locrel:clb.0.foaf:Agent" />
                 </td>
+                <td>
+                    <span class="identifierText collaboratorName">
+                        <a href="#" class="identifierText-enable">enter text</a>
+                        <div class="identifierText-entry">
+                            <input type="text" class="identifierText-input" size="20" id="identifierText.0.collaboratorName.input" value="" />
+                            <a href="#" class="identifierText-clear">clear text</a>
+                        </div>
+                    </span>
+                </td>
                 <td class="delete-item"><a href="#">delete</a></td>
-                <td style="width: 100%;"> </td>
+
             </tr>
         </tbody>
         <tfoot>
@@ -367,6 +442,7 @@ function lookupDone(target,data){
             }
         });
     }
+    clearPeopleText(target.parents('.people').find('.identifierText'));
 }
 
 function lookupCleared(target,data){
@@ -374,6 +450,7 @@ function lookupCleared(target,data){
     target.text("lookup");
     p.find(".identified-as-name").text("");
     p.find("input.nl").val("");
+    target.parents('.people').find('.identifierText').show();
 }
 
 function pcLookupDone(target,data){
@@ -394,4 +471,49 @@ $(function(){
         setTimeout(function(){$(".creatorGivenName")[$(".creatorGivenName").length -1].focus();}, 200);
     };
 });
+</script>
+
+<script type="text/javascript">
+
+    function clearPeopleText(jQIdentifierTextElement) {
+        clearPeopleTextIdentifier(jQIdentifierTextElement);
+        jQIdentifierTextElement.hide();
+    }
+
+    function clearPeopleTextIdentifier(jQIdentifierTextElement) {
+        var identifierTextEntry = jQIdentifierTextElement.find('.identifierText-entry');
+        identifierTextEntry.hide();
+        identifierTextEntry.find('.identifierText-input').val('');
+        jQIdentifierTextElement.find('.identifierText-enable').show();
+    }
+
+    $171(document).ready(function() {
+        $('.identifierText-entry').hide();
+
+        $171('.identifierText-entry').each( function() {
+            var enableElement = $(this).parents('.identifierText').find('.identifierText-enable');
+            if ($(this).find('.identifierText-input').val() != '') {
+                enableElement.hide();
+                $(this).show();
+            } else {
+                $(this).hide();
+                enableElement.show();
+            }
+        });
+
+        $171('.people').on('click', '.identifierText-enable', function() {
+            $(this).parents('.identifierText').find('.identifierText-entry').show();
+            $(this).hide();
+            //prevent link scrolling
+            return false;
+        });
+
+        $171('.people').on('click', '.identifierText-clear', function() {
+            clearPeopleTextIdentifier($(this).parents('.identifierText'));
+            //prevent link scrolling
+            return false;
+        });
+
+    });
+
 </script>
