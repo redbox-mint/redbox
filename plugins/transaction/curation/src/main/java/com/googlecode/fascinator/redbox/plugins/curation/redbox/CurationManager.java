@@ -396,11 +396,15 @@ public class CurationManager extends GenericTransactionManager {
 				return null;
 			}
 		}else {
-			String value = baseNode.getString(null, exPath.toArray());
-			if (value != null && !value.startsWith(exDoesntStartWith)) {
-				log.info("Excluding relationship '{}' based on config", field);
-				return null;
-			}
+            if (exPath != null) {
+                String value = baseNode.getString(null, exPath.toArray());
+                if (value != null) {
+                    if (exDoesntStartWith instanceof String && !value.startsWith(exDoesntStartWith)) {
+                        log.info("Excluding relationship '{}' based on config", field);
+                        return null;
+                    }
+                }
+            }
 		}
 
 		// ** -2- ** IDENTIFIER
