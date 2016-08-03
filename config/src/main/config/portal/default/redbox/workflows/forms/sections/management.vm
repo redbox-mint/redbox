@@ -566,7 +566,7 @@ $(function() {
                 var identifierValue = $(this).val();
                 var dropDownValue = $(this).parents('.data-source-drop-down').find('.drop-down-location select').val();
                 var identifierType = $(this).parents('.data-source-drop-down').find('.additionalidentifier-type').val();
-                if (identifierValue == '' && dropDownValue == '' && identifierType == '') {
+                if ((!identifierValue || identifierValue == '') && (!dropDownValue || dropDownValue == '') && (!identifierType || identifierType == '')) {
                     $(this).parents('.data-source-drop-down').find('.deleteAdditionalIdentifier').click();
                 }
             });
