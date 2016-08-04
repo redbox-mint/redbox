@@ -141,23 +141,35 @@
                                type="hidden"
                                class="nl nl-rdfs:label nlLabel" readonly="readonly"/>
                         <input type="hidden" id="dc:creator.foaf:Person.0.dc:identifier"
-                               class="nl nl-dc:identifier nlId" />
+                               class="nl nl-dc:identifier nlId creatorValidation" />
                     </span>
                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="identifierText creatorName">
+                                    <span class="identifierText creatorNameText">
                                         <div>or</div>
                                         <a href="#" class="identifierText-enable">enter text</a>
                                         <div class="identifierText-entry">
                                             <input type="text" class="identifierText-input" size="20" id="identifierText.0.creatorName.input" value="" />
-                                            <a href="#" class="identifierText-clear">clear text</a>
+                                            <a href="#" class="identifierText-clear">clear</a>
                                         </div>
                                     </span>
                                 </td>
                             </tr>
                         </tbody>
+                        <tfooter>
+                            <tr>
+                                <td>
+                                     <label class="validation-err-msg"
+                                      id="dc:creator.foaf:Person.0.dc:identifierErrMsg"
+                                      for="dc:creator.foaf:Person.0.dc:identifier"
+                                      data-validation-rule="test(notEmpty); when(submit); jsTest(r = hasInvalidPeople(id);); liveFor(.creatorValidation);">
+                                      A Creator name authority is required!
+                                      </label>
+                                </td>
+                            <tr>
+                        </tfooter>
                     </table>
                 </td>
                 <td class="valign-middle"><a class="delete-item" href="#">delete</a></td>
@@ -239,7 +251,7 @@
                                         <a href="#" class="identifierText-enable">enter text</a>
                                         <div class="identifierText-entry">
                                             <input type="text" class="identifierText-input" size="20" id="identifierText.pcName.input" value="" />
-                                            <a href="#" class="identifierText-clear">clear text</a>
+                                            <a href="#" class="identifierText-clear">clear</a>
                                         </div>
                                     </span>
                                 </td>
@@ -335,7 +347,7 @@
                                     <a href="#" class="identifierText-enable">enter text</a>
                                     <div class="identifierText-entry">
                                         <input type="text" class="identifierText-input" size="20" id="identifierText.0.supName.input" value="" />
-                                        <a href="#" class="identifierText-clear">clear text</a>
+                                        <a href="#" class="identifierText-clear">clear</a>
                                     </div>
                                 </span>
                             </td>
@@ -380,7 +392,7 @@
                         <a href="#" class="identifierText-enable">enter text</a>
                         <div class="identifierText-entry">
                             <input type="text" class="identifierText-input" size="20" id="identifierText.0.collaboratorName.input" value="" />
-                            <a href="#" class="identifierText-clear">clear text</a>
+                            <a href="#" class="identifierText-clear">clear</a>
                         </div>
                     </span>
                 </td>
@@ -474,6 +486,14 @@ $(function(){
 </script>
 
 <script type="text/javascript">
+       function escapeId(rawId) {
+            return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+        }
+        function hasInvalidPeople(id) {
+            return ($(escapeId(id)).val() == "");
+        }
+
+
 
     function clearPeopleText(jQIdentifierTextElement) {
         clearPeopleTextIdentifier(jQIdentifierTextElement);
@@ -488,14 +508,20 @@ $(function(){
     }
 
     $171(document).ready(function() {
-        $('.identifierText-entry').hide();
-
         $171('.identifierText-entry').each( function() {
             var enableElement = $(this).parents('.identifierText').find('.identifierText-enable');
-            if ($(this).find('.identifierText-input').val() != '') {
-                enableElement.hide();
+            var lookupNameAuthElement = $(this).parents('.people').find('[id$=foaf:name]');
+            // a lookup value is present - hide the text entry
+            var textValue = $(this).find('.identifierText-input').val();
+            if (lookupNameAuthElement.attr('value') && lookupNameAuthElement.val() != '') {
+                clearPeopleText($(this).parents('.identifierText'));
+            } else if (textValue != '') {
+                // text entry has a value so show this, update foaf identifier, and hide the label
                 $(this).show();
+                $(this).parents('.people').find('.creatorValidation').val(textValue);
+                enableElement.hide();
             } else {
+                // no lookup value and no text value so show text entry label
                 $(this).hide();
                 enableElement.show();
             }
@@ -510,10 +536,15 @@ $(function(){
 
         $171('.people').on('click', '.identifierText-clear', function() {
             clearPeopleTextIdentifier($(this).parents('.identifierText'));
+            //clear foaf value
+            $(this).parents('.people').find('.creatorValidation').val('');
             //prevent link scrolling
             return false;
         });
 
+        $171('.people').on('keyup', '.identifierText-input', function() {
+            $(this).parents('.people').find('.creatorValidation').val($(this).val());
+        });
     });
 
 </script>

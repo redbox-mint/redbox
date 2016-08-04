@@ -163,6 +163,10 @@
         dc:relation.vivo:Service.0.dc:title,
         dc:relation.vivo:Service.0.skos:note,
         ## people
+        identifierText.0.creatorName.input,
+        identifierText.pcName.input,
+        identifierText.0.supName.input,
+        identifierText.0.collaboratorName.input,
         dc:creator.foaf:Person.0.dc:identifier,
         dc:creator.foaf:Person.0.foaf:name,
         dc:creator.foaf:Person.0.foaf:title,

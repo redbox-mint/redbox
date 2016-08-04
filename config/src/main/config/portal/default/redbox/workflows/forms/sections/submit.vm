@@ -158,6 +158,11 @@
                 </label>
            </div>
            <div>
+                 <label class="validation-err-msg" for="dc:creator.foaf:Person.1.dc:identifier">
+                     A Creator Name authority is required!
+                 </label>
+          </div>
+           <div>
                <label class="validation-err-msg" for="hasNoEmptyDescriptions">
                    #displayMessage("dataset.description.empty.error.message")
                 </label>
