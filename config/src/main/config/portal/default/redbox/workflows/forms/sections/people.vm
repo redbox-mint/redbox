@@ -23,7 +23,7 @@
             </li>
         </ul>
     </div>
-    <table class="input-list sortable">
+    <table class="input-list sortable peopleTable">
         <thead>
             <tr class="header-row">
                 <th></th>
@@ -493,8 +493,6 @@ $(function(){
             return ($(escapeId(id)).val() == "");
         }
 
-
-
     function clearPeopleText(jQIdentifierTextElement) {
         clearPeopleTextIdentifier(jQIdentifierTextElement);
         jQIdentifierTextElement.hide();
@@ -527,14 +525,15 @@ $(function(){
             }
         });
 
-        $171('.people').on('click', '.identifierText-enable', function() {
+        $171('.peopleTable').on('click', '.identifierText-enable', function() {
             $(this).parents('.identifierText').find('.identifierText-entry').show();
             $(this).hide();
             //prevent link scrolling
             return false;
         });
 
-        $171('.people').on('click', '.identifierText-clear', function() {
+
+        $171('.peopleTable').on('click', '.identifierText-clear', function() {
             clearPeopleTextIdentifier($(this).parents('.identifierText'));
             //clear foaf value
             $(this).parents('.people').find('.nameAuthority').val('');
@@ -542,7 +541,7 @@ $(function(){
             return false;
         });
 
-        $171('.people').on('keyup', '.identifierText-input', function() {
+        $171('.peopleTable').on('keyup', '.identifierText-input', function() {
             $(this).parents('.people').find('.nameAuthority').val($(this).val());
         });
     });

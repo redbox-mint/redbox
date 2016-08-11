@@ -164,7 +164,7 @@
         dc:relation.vivo:Service.0.skos:note,
         ## people
         identifierText.0.creatorName.input,
-        identifierText.pcName.input,
+        pcName.identifierText,
         identifierText.0.supName.input,
         identifierText.0.collaboratorName.input,
         dc:creator.foaf:Person.0.dc:identifier,
