@@ -113,6 +113,12 @@
             "roles": ["admin"]
         }
     },
+    "rifcs": {
+        "recordAsLocation": {
+            "template": "${urlBase}published/detail/${oid}",
+            "default": true
+        }
+    },
     "curation": {
         "curationEmailAddress": "${admin.email}",
         "curationRequiresConfirmation": false,
