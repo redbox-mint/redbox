@@ -36,25 +36,6 @@
     #end
 #end
 
-#macro(showRelatedObject $field $relatedInfoType $identifierType)
-    
-    #set($valueMap = $util.getList($item, $field))
-    #foreach($key in $valueMap.keySet())
-        #set ($row = $valueMap.get($key))
-        #set ($value = $row.get("dc:identifier"))
-        #if ("$!value" != "")
-        <rif:relatedObject>
-            <rif:key>$util.encodeXml($value)</rif:key>
-            #set ($relationship = $row.get("vivo:Relationship.rdf:PlainLiteral"))
-            #if ("$relationship" != "")
-            <rif:relation type="$relationship"/>
-            #end
-        </rif:relatedObject>
-        #end
-    #end
-#end
-
-
 #macro(geoSpatialMacro $field)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
@@ -141,9 +122,6 @@
     #set($identifier = "&Invalid ID: Not curated yet&")
     #set ($identifierType = "invalid")
 #end
-
-### Relationships
-#set($relationships = $item.getJsonSimpleList("relationships"))
 
 ####set($lang = "xml:lang=${quote}$util.get($item, 'dc:language.dc:identifier')${quote}")
 #set($lang = "xml:lang=${quote}en${quote}")
@@ -264,6 +242,7 @@
 
             ### Relations
             #set($valueList = $item.getJsonSimpleList("relationships"))
+            #set($relationshipKeys = [])
             #if($valueList)
                 #foreach($value in $valueList)
                     #if ($value.getBoolean(false, "isCurated"))
@@ -271,16 +250,17 @@
                         #set($rel = $value.getString("hasAssociationWith", "relationship"))
                         #set($desc = $value.getString("empty", "description"))
                         #if ($key != "empty")
-            <rif:relatedObject>
-                <rif:key>$util.encodeXml($key)</rif:key>
-                            #if ($desc != "empty")
-                <rif:relation type="$util.encodeXml($rel)">
-                    <rif:description>$util.encodeXml($desc)</rif:description>
-                </rif:relation>
-                            #else
-                <rif:relation type="$util.encodeXml($rel)"/>
-                            #end
-            </rif:relatedObject>
+                            $relationshipKeys.add($key)
+                            <rif:relatedObject>
+                                <rif:key>$key</rif:key>
+                                #if ($desc != "empty")
+                                    <rif:relation type="$util.encodeXml($rel)">
+                                        <rif:description>$util.encodeXml($desc)</rif:description>
+                                    </rif:relation>
+                                #else
+                                    <rif:relation type="$util.encodeXml($rel)"/>
+                                #end
+                            </rif:relatedObject>
                         #end
                     #end
                 #end
@@ -397,7 +377,28 @@
         #showRelatedInfo("dc:relation.swrc:Publication", "publication", "uri")
         #showRelatedInfo("dc:relation.bibo:Website", "website", "uri")
         #showRelatedInfo("dc:relation.vivo:Service", "service", "uri")
-		#showRelatedObject("dc:relation.vivo:Service", "service", "local")
+
+        #set($valueMap = $util.getList($item, "dc:relation.vivo:Service"))
+        #foreach($key in $valueMap.keySet())
+            #set ($row = $valueMap.get($key))
+            #set ($value = $row.get("dc:identifier"))
+            #set ($relatedObjectKey = $util.encodeXml($value))
+            ### Do not add related object if already listed in objects from curated relationships
+            #if ("$!relationshipKeys" == "")
+                #set ($relationshipKeys = [])
+            #end
+            #if ("$!value" != "" && !$relationshipKeys.contains($relatedObjectKey))
+                <rif:relatedObject>
+                    <rif:key>$relatedObjectKey</rif:key>
+                    #set ($relationship = $row.get("vivo:Relationship.rdf:PlainLiteral"))
+                    #if ("$relationship" != "")
+                    <rif:relation type="$relationship"/>
+                    #end
+                </rif:relatedObject>
+            #end
+        #end
+
+
         #set($showCitation = $util.get($item, "dc:biblioGraphicCitation.redbox:sendCitation"))
         #if ("$!showCitation" != "" && $showCitation == "on")
             #set($doiProperty = $systemConfig.getString($defaultOnError, "andsDoi", "doiProperty"))

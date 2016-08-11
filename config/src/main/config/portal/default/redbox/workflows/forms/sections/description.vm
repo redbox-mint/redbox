@@ -424,7 +424,9 @@ $(function() {
         var items = row[0].split("::");
         return {
             title: items[0],
-            id: items[1]
+            id: items[1],
+            curatedPid: items[2]
+
         };
     }
 
@@ -433,7 +435,7 @@ $(function() {
         var baseId = elem.attr("id").replace(".dc:title", "");
         elem.unautocomplete();
         elem.autocomplete(
-            "$portalPath/proxyGet.script?ns=Services&autocomplete=true&fields=dc:title,dc:identifier",
+            "$portalPath/proxyGet.script?ns=Services&autocomplete=true&fields=dc:title,dc:identifier,pidProperty",
             {
                 extraParams: {
                     qs: function() { return "count=25&searchTerms=" + escape(elem.val().toLowerCase()); }
@@ -444,7 +446,11 @@ $(function() {
             }).result(function(event, row) {
                 if (row) {
                     var data = splitService(row);
-                    getReDBoxById(baseId+".dc:identifier").val(data.id);
+                    var id = data.id;
+                    if (data.curatedPid && data.curatedPid != "*") {
+                        id = data.curatedPid;
+                    }
+                    getReDBoxById(baseId+".dc:identifier").val(id);
                 }
             })
     }).live("blur", function(){
