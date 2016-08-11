@@ -382,14 +382,13 @@
         #foreach($key in $valueMap.keySet())
             #set ($row = $valueMap.get($key))
             #set ($value = $row.get("dc:identifier"))
-            #set ($relatedObjectKey = $util.encodeXml($value))
             ### Do not add related object if already listed in objects from curated relationships
             #if ("$!relationshipKeys" == "")
                 #set ($relationshipKeys = [])
             #end
-            #if ("$!value" != "" && !$relationshipKeys.contains($relatedObjectKey))
+            #if ("$!value" != "" && !$relationshipKeys.contains($value))
                 <rif:relatedObject>
-                    <rif:key>$relatedObjectKey</rif:key>
+                    <rif:key>$util.encodeXml($value)</rif:key>
                     #set ($relationship = $row.get("vivo:Relationship.rdf:PlainLiteral"))
                     #if ("$relationship" != "")
                     <rif:relation type="$relationship"/>
