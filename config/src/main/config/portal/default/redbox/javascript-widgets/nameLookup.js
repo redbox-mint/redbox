@@ -42,7 +42,7 @@ var globalObject = this;
     });
 
     var displayNameLookups = function(json, position, queryTerm, callback,
-            getJson, nlaUrl, nlaFirstname, nlaSurname) {
+        getJson, nlaUrl, nlaFirstname, nlaSurname) {
         var mintDiv, nlaDiv, display;
 
         display = function() {
@@ -72,7 +72,7 @@ var globalObject = this;
                                 setTimeout(function() {
                                     try {
                                         i.focus();
-                                    } catch(e) {
+                                    } catch (e) {
                                         // IE7?
                                     }
                                 }, 10);
@@ -99,7 +99,7 @@ var globalObject = this;
                 td.append(r);
                 td.append(label);
                 //
-                tr.append(td=$("<td/>"));
+                tr.append(td = $("<td/>"));
                 a = $("<a style='color:blue;' href='#'>details</a>");
                 td.append(a);
                 tbody.append(tr);
@@ -121,14 +121,14 @@ var globalObject = this;
                 $(".nameLookup-waiting").hide();
                 $(".nlaLookup-progress").hide();
                 var searchMetadata = data.metadata;
-                var pageStart = searchMetadata.startRecord-0;
-                var pageRows = searchMetadata.rowsReturned-0;
-                var pageTotal = searchMetadata.totalHits-0;
-                var pageLast = (pageStart+pageRows-1);
+                var pageStart = searchMetadata.startRecord - 0;
+                var pageRows = searchMetadata.rowsReturned - 0;
+                var pageTotal = searchMetadata.totalHits - 0;
+                var pageLast = (pageStart + pageRows - 1);
                 if (pageTotal == 0) {
                     pageStart = 0;
                 }
-                nlaResultsDiv.html("Showing "+pageStart+"-"+pageLast+" records of "+pageTotal+" total.");
+                nlaResultsDiv.html("Showing " + pageStart + "-" + pageLast + " records of " + pageTotal + " total.");
                 // Pagination
                 var hasPrev = pageStart > 1;
                 var hasNext = pageLast < pageTotal;
@@ -137,7 +137,7 @@ var globalObject = this;
                     nlaResultsDiv.append(nlaPagination = $("<div/>"));
                 }
                 if (pageStart > 1) {
-                    var prevLink = $("<a href='#'>&laquo; prev ("+pageRows+")</a>");
+                    var prevLink = $("<a href='#'>&laquo; prev (" + pageRows + ")</a>");
                     nlaPagination.append(prevLink);
                     if (hasNext) {
                         nlaPagination.append(" | ");
@@ -151,10 +151,10 @@ var globalObject = this;
                     });
                 }
                 if (pageLast < pageTotal) {
-                    var nextLink = $("<a href='#'>next ("+pageRows+") &raquo;</a>");
+                    var nextLink = $("<a href='#'>next (" + pageRows + ") &raquo;</a>");
                     nlaPagination.append(nextLink);
                     nextLink.click(function() {
-                        pagedNlaSearch(pageLast+1, pageRows);
+                        pagedNlaSearch(pageLast + 1, pageRows);
                     });
                 }
 
@@ -177,7 +177,7 @@ var globalObject = this;
                     td.append(label);
 
                     // Show more details
-                    tr.append(td=$("<td/>"));
+                    tr.append(td = $("<td/>"));
                     detailLink = $("<a style='color:blue;' href='#'>details</a>");
                     td.append(detailLink);
                     tbody.append(tr);
@@ -196,10 +196,11 @@ var globalObject = this;
             var nlaResultsError = function(xhr, status, error) {
                 $(".nameLookup-waiting").hide();
                 $(".nlaLookup-progress").hide();
-                nlaResultsDiv.html("ERROR: "+status);
+                nlaResultsDiv.html("ERROR: " + status);
             }
+
             function searchNla(start, rows) {
-                var nlaQuery = "start="+start+"&rows="+rows;
+                var nlaQuery = "start=" + start + "&rows=" + rows;
                 if (nlaSurname != null && nlaSurname != "") {
                     nlaQuery += "&surname=" + encodeURIComponent(nlaSurname) + "";
                 }
@@ -263,10 +264,10 @@ var globalObject = this;
         };
 
         var loaderGif = $(".nameLookup-progress").html();
-        var tabbedDiv = $("<div><ul><li><a href=\"#mintLookupDialog\">Mint</a></li><li><a href=\"#orcidLookupDialog\">ORCID</a></li><li><a href=\"#nlaLookupDialog\">NLA<span class=\"nlaLookup-progress\"> "+loaderGif+"</span></a></li></ul></div>");
+        var tabbedDiv = $("<div><ul><li><a href=\"#mintLookupDialog\">Mint</a></li><li><a href=\"#orcidLookupDialog\">ORCID</a></li><li><a href=\"#nlaLookupDialog\">NLA<span class=\"nlaLookup-progress\"> " + loaderGif + "</span></a></li></ul></div>");
         mintDiv = $("<div id=\"mintLookupDialog\"></div>");
-        orcidDiv = $('<div id="orcidLookupDialog"><table><tbody><tr><td><label for="orcidFirstname">First Name:</label></td><td><input id="orcidFirstname" type="text"></td></tr><tr><td><label for="norcidSurname">Surname:</label></td><td><input id="orcidSurname" type="text"></td></tr></tbody></table><input type="button" id="orcidSearchButton" value="Search"><hr/></div>');
-        nlaDiv = $("<div id=\"nlaLookupDialog\"><div class='nameLookup-waiting'>Searching National Library. Please wait... "+loaderGif+"</div></div>");
+        orcidDiv = $('<div id="orcidLookupDialog"><input id="orcidNextPage" type="hidden" value="2"><input id="orcidPreviousPage" type="hidden" value="0"><table><tbody><tr><td><label for="orcidFirstname">First Name:</label></td><td><input id="orcidFirstname" type="text"></td></tr><tr><td><label for="norcidSurname">Surname:</label></td><td><input id="orcidSurname" type="text"></td></tr></tbody></table><input type="button" id="orcidSearchButton" value="Search"><hr/><div id="orcidSearchResults"></div></div>');
+        nlaDiv = $("<div id=\"nlaLookupDialog\"><div class='nameLookup-waiting'>Searching National Library. Please wait... " + loaderGif + "</div></div>");
         tabbedDiv.append(mintDiv);
         tabbedDiv.append(orcidDiv);
         tabbedDiv.append(nlaDiv);
@@ -274,17 +275,74 @@ var globalObject = this;
         display();
         dialog.html(tabbedDiv);
         tabbedDiv.tabs();
-        $("#orcidSearchButton").click(function(){var familyName = $("#orcidSurname").val();
-        var givenNames = $("#orcidFirstname").val();
-        orcidUrl = $(".orcidLookup-url").val();
-        var queryUrl = orcidUrl.replace("{familyName}", escape(encodeURIComponent(familyName)));
-        var queryUrl = queryUrl.replace("{givenNames}", escape(encodeURIComponent(givenNames)));
-        alert(queryUrl);});
+        $("#orcidSearchButton").click(function() { populateOrcidResults(1);
+        });
+
+        function populateOrcidResults(page) {
+            var familyName = $("#orcidSurname").val();
+            var givenNames = $("#orcidFirstname").val();
+            orcidUrl = $(".orcidLookup-url").val();
+            var queryUrl = orcidUrl.replace("{familyName}", escape(encodeURIComponent(familyName)));
+            var queryUrl = queryUrl.replace("{givenNames}", escape(encodeURIComponent(givenNames)));
+            var queryUrl = queryUrl.replace("{page}", escape(encodeURIComponent(page)));
+            $.ajax({
+                url: queryUrl,
+                dataType: "json",
+                timeout: 10000,
+                success: function(data) {
+                    var searchResultsDiv = $('#orcidSearchResults');
+                    searchResultsDiv.html('');
+                    var results = data['search_results'];
+                    if (results.length > 0) {
+                        // $('#orcidNextPage').val(data['pageNumber']+1);
+                        // $('#orcidPreviousPage').val(data['pageNumber']-1);
+                        var summaryDivElement = $('<div></div>');
+                        var startRecord = 1 + (data['pageNumber']-1)*10;
+                        var endRecord =  (data['pageNumber'])*10;
+                        var resultCountSpanElement = $('<span>Showing '+startRecord+'-'+endRecord+' records of '+ data['totalFound'] +' total.</span>');
+                        var resultCountPaginationElement = $('<div></div><hr/>');
+                        var nextPage = parseInt(data['pageNumber'])+1;
+                        var previousPage = parseInt(data['pageNumber'])-1;
+                        if(data['pageNumber'] == 1 && data['totalFound'] > 10) {
+                            resultCountPaginationElement = $('<div><a class="orcidPageNumber" href="#" pageNumber="'+ nextPage+'">next (10)  »</a></div><hr/>');
+                        } else {
+                            if(data['pageNumber']*10 > data['totalFound']) {
+                              resultCountPaginationElement = $('<div><a class="orcidPageNumber" href="#" pageNumber="'+ previousPage+'">« previous (10)</a></div><hr/>');
+                            } else {
+                              resultCountPaginationElement = $('<div><a class="orcidPageNumber" href="#" pageNumber="'+ previousPage+'"">« previous (10)</a>&nbsp;<a class="orcidPageNumber" pageNumber="'+ nextPage + '" href="#">next (10)  »</a></div><hr/>');
+                            }
+                        }
+
+                        summaryDivElement.append(resultCountSpanElement);
+                        summaryDivElement.append(resultCountPaginationElement);
+                        var tableElement = $('<table><tbody></tbody></table>')
+                        for (var i = 0; i < results.length; i++) {
+                            var result = results[i];
+                            tableElement.append('<tr><td><input type="radio" name="name" id="orcidRId' + i + '" value=\'' + JSON.stringify(result) + '\'><label for="orcidRId' + i + '">' + result['family_name'] + ', ' + result['given_names'] + '</label></td><td><a style="color:blue;" href="' + result['orcid_uri'] + '">details</a></td></tr>');
+                        }
+                        summaryDivElement.append(resultCountSpanElement);
+                        summaryDivElement.append(resultCountPaginationElement);
+                        summaryDivElement.append(tableElement);
+                        searchResultsDiv.append(summaryDivElement);
+                        $('.orcidPageNumber').click(function() {
+                          populateOrcidResults($(this).attr('pageNumber'));
+                        });
+                    }
+
+                },
+                error: function(x, s, e) {}
+            });
+
+
+        }
         dialog.dialog("option", "buttons", {
             "OK": function() {
                 var value = mintDiv.find("input[name=name]:checked").val();
                 if (value == null || value == "") {
                     value = nlaDiv.find("input[name=name]:checked").val();
+                }
+                if (value == null || value == "") {
+                    value = orcidDiv.find("input[name=name]:checked").val();
                 }
                 dialog.dialog("close");
                 detailDialog.dialog("close");
@@ -317,8 +375,8 @@ var globalObject = this;
         // National Library
         if (nla === true) {
             detailDialog.html("Known identities for:");
-            detailDialog.append("<h3>"+name+"</h3>");
-            detailDialog.append("NLA Link: <a href=\""+details["nlaId"]+"\" target=\"_blank\">"+details["nlaId"]+"</a>");
+            detailDialog.append("<h3>" + name + "</h3>");
+            detailDialog.append("NLA Link: <a href=\"" + details["nlaId"] + "\" target=\"_blank\">" + details["nlaId"] + "</a>");
             detailDialog.append("<hr/>");
             data = details["knownIdentities"];
             if (data) {
@@ -340,14 +398,15 @@ var globalObject = this;
                 });
             }
 
-        // Mint
+            // Mint
         } else {
             detailDialog.html("Details for:");
-            detailDialog.append("<h3>"+name+"</h3>");
+            detailDialog.append("<h3>" + name + "</h3>");
             data = details["result-metadata"]["all"];
             if (data) {
                 table = $("<table/>");
-                function addField(term,field) {
+
+                function addField(term, field) {
                     field = field || term;
                     table.append($("<tr ><th>" + term + "</th><td>" + data[field] + "</td></tr>"));
                 }
@@ -368,11 +427,11 @@ var globalObject = this;
         }
 
         detailDialog.dialog("option", "buttons", {
-            "OK": function(){
+            "OK": function() {
                 link.click();
                 detailDialog.dialog("close");
             },
-            "Cancel": function(){
+            "Cancel": function() {
                 detailDialog.dialog("close");
             }
         });
@@ -392,6 +451,7 @@ var globalObject = this;
         var orcidUrl = ctx.find(".orcidLookup-url").val();
         var valueNs = ctx.find(".nameLookup-value-ns").val();
         var textNs = ctx.find(".nameLookup-text-ns").val();
+
         function debug(msg) {
             ctx.find(".nameLookup-debugMsg").text(msg.toString());
         }
@@ -427,33 +487,39 @@ var globalObject = this;
                         parent.find(".nlLabel").val(result["displayName"]);
                         parent.find(".nlId").val(nlaId);
 
-                    // Mint Identity
+                        // Mint Identity
                     } else {
-                        function xUpdate(ns, what) {
-                            var nsp, k;
-                            if (!ns) return;
-                            nsp = ns + "-";
-                            parent.find("." + ns).each(function(c, e) {
-                                e = $(e);
-                                $.each(e.attr("class").split(/\s+/), function(_, cls) {
-                                    if (cls.substr(0, nsp.length) === nsp) {
-                                        k = cls.substr(nsp.length);
-                                        if (result[k]) {
-                                            e[what](result[k]);
+                        var orcid = result['orcid_uri']
+                        if (orcid != null) {
+                            parent.find(".nlId").val(result["orcid_uri"]);
+
+                        } else {
+                            function xUpdate(ns, what) {
+                                var nsp, k;
+                                if (!ns) return;
+                                nsp = ns + "-";
+                                parent.find("." + ns).each(function(c, e) {
+                                    e = $(e);
+                                    $.each(e.attr("class").split(/\s+/), function(_, cls) {
+                                        if (cls.substr(0, nsp.length) === nsp) {
+                                            k = cls.substr(nsp.length);
+                                            if (result[k]) {
+                                                e[what](result[k]);
+                                            }
                                         }
-                                    }
+                                    });
                                 });
-                            });
+                            }
+                            xUpdate(valueNs, "val");
+                            xUpdate(textNs, "text");
                         }
-                        xUpdate(valueNs, "val");
-                        xUpdate(textNs, "text");
                     }
 
                     var selectedFunc = globalObject[target.dataset("selected-func")];
                     if ($.isFunction(selectedFunc)) {
                         try {
                             selectedFunc(target, result);
-                        } catch(e) {
+                        } catch (e) {
                             alert("Error executing selected-func. " + e.message);
                         }
                     }
@@ -462,7 +528,7 @@ var globalObject = this;
                     if ($.isFunction(clearedFunc)) {
                         try {
                             clearedFunc(target, result);
-                        } catch(e) {
+                        } catch (e) {
                             alert("Error executing cleared-func. " + e.message);
                         }
                     }
