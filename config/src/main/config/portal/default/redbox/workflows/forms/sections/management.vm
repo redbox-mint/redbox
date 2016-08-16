@@ -653,4 +653,4 @@ $(function() {
         updateIsAdditionalIdentifiersComplete();
 });
 
-</script
+</script>
