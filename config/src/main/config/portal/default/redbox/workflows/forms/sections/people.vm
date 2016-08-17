@@ -192,14 +192,14 @@
         Enter a given name and/or family name and click 'lookup' to search and
         select the name authority record.
     </div>
-    <table class="lookup people">
+    <table class="lookup peopleTable">
         <thead>
             <tr>
                 <th colspan="6">Display Name</th>
                 <th>Name Authority</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="people">
             <tr>
                 <td>
                     <label for="locrel:prc.foaf:Person.foaf:title">Title:</label>
@@ -278,7 +278,7 @@
         applicable. Enter a given name and/or family name and click 'lookup' to
         search and select the name authority record.
     </div>
-    <table class="input-list">
+    <table class="input-list peopleTable">
         <thead>
             <tr>
                 <th>#</th>
@@ -372,7 +372,7 @@
         Names of other collaborators in the research project, if applicable,
         eg. CSIRO, University of X, Prof. Jim Bloggs, etc.
     </div>
-    <table class="input-list">
+    <table class="input-list peopleTable">
         <thead>
             <tr>
                 <th>#</th>
