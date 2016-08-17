@@ -250,7 +250,7 @@
                         #set($rel = $value.getString("hasAssociationWith", "relationship"))
                         #set($desc = $value.getString("empty", "description"))
                         #if ($key != "empty")
-                            $relationshipKeys.add($key)
+                            #set($dummy = $relationshipKeys.add($key))
                             <rif:relatedObject>
                                 <rif:key>$key</rif:key>
                                 #if ($desc != "empty")
