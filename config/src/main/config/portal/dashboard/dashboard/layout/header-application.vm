@@ -1,6 +1,22 @@
 <div class="grid_16">
     <ul class="nav main">
         <li><a href="$portalPath/home">Home</a></li>
+        #if($page.authentication.is_admin())
+         <li>
+            <a href="#">Views</a>
+            <ul>
+                #foreach($portal in $page.portals)
+                #if($portal.getBoolean(true, "portal", "show-in-view-menu"))
+                    #if($portal.name != $portalId)
+                        <li><a href="$urlBase$portal.name/$page.getRelativePath()">$portal.description</a></li>
+                    #else
+                        <li class="selected-view"><a href="#" onclick="return false">$portal.description</a></li>
+                    #end
+                   #end
+                 #end
+            </ul>
+        </li>
+        #end
         <li class="secondary">
             #if($page.authentication.is_logged_in())
                 <span id="user-info" class="status">Welcome <a class="user-data" href="#">$page.escapeHtml($page.authentication.get_name())</a>, <a href="#" id="logout-now">Logout</a></span>
