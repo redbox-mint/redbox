@@ -137,8 +137,10 @@
 
         #fieldTitle("vivo:Location.vivo:GeographicLocation.gn:name" "Stored At" false)
         <div class="help-content" id="help-vivo:Location.vivo:GeographicLocation.gn:name">
-            Record physical location of the research dataset/collection,
-            registry/repository, catalogue or index, if applicable, eg.
+            Record the physical location of the research dataset/collection, registry/repository,
+            catalogue or index, if applicable, ie if there is no electronic address,
+            it is a physical collection or it is necessary to send traditional mail addressed
+            to a person or organisation to access the collection., eg.
             University of X.
         </div>
         <p><input type="text" size="60" placeholder="eg. University of X" id="vivo:Location.vivo:GeographicLocation.gn:name" class="vlocation" /></p>
