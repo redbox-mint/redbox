@@ -207,6 +207,15 @@
                     </rif:physical>
                 </rif:address>
             #end
+            #set ($value = $util.get($item, "locrel:prc.foaf:Person.foaf:email"))
+            #if ("$!value" != "")
+                 <rif:address>
+                    <rif:electronic type="email">
+                        <rif:value>$util.encodeXml($value)</rif:value>
+                    </rif:electronic>
+                </rif:address>
+            #end
+
             </rif:location>
         #end
         #set ($recordAsLocation = $util.get($item, "recordAsLocationDefault"))
