@@ -130,10 +130,10 @@
                     <td>
                         <textarea rows="12" cols="80" id="dc:description.0.textFull" class="full descriptionInput" style="vertical-align: text-top;"
                                 placeholder="eg. This dataset contains observational data and calibration files."></textarea>
-                        <textarea rows="2" cols="80" id="dc:description.0.textBrief" class="brief descriptionInput" style="vertical-align: text-top;"
+                        <textarea rows="2" cols="80" id="dc:description.0.textBrief" class="brief descriptionInput" style="display: none; vertical-align: text-top;"
                                 placeholder="Brief description."></textarea>
                         <input size="80" type="text" id="dc:description.0.textLogo" class="logo descriptionInput" style="display: none; vertical-align: text-top;" placeholder="URL that shows logo."/>
-                        <textarea rows="2" cols="80" id="dc:description.0.textNote" class="note descriptionInput" style="vertical-align: text-top;"
+                        <textarea rows="2" cols="80" id="dc:description.0.textNote" class="note descriptionInput" style="display: none; vertical-align: text-top;"
                                                         placeholder="Description note."></textarea>
                         <input type="text" id="dc:description.0.text" class="description hidden text"/>
                         <div id="descriptionValidation.0.full" class="validation description full">
