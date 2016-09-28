@@ -33,19 +33,20 @@
                     #if ("$!url" != "" || "$!url" != "")
                         <li><b>Geonames</b>: <a href="$self.escapeHtml($url)">$self.escapeHtml($title)</a></li>
                     #else
-                        <li><b>Text</b>: #if ("$!title" != "" || "$!title" != "")$self.escapeHtml($title)#end</li>
                         <li><b>Text</b>: #if ("$!title" != "")
-                                                 #if ($title.startsWith("POLYGON"))
-                                                #set($sanitisedLiteral = $title.replaceFirst("POLYGON\(\((.*)\)\)", "$1"))
-                                                ###the placement of commas is counter to what's required
-                                                #set($literalArray = $sanitisedLiteral.split(","))
-                                                #foreach($pair in $literalArray)
-                                                    #set($kmlResult = "$!kmlResult " + $pair.replace(" ", ","))
-                                                #end
-                                                #set($kml = $kmlResult.trim())
-                                                $self.escapeHtml($kml)
-#end
-                                            #end</li>
+                            #if ($title.startsWith("POLYGON"))
+                                #set($sanitisedLiteral = $title.replaceFirst("POLYGON\(\((.*)\)\)", "$1"))
+                                ###the placement of commas is counter to what's required
+                                #set($literalArray = $sanitisedLiteral.split(","))
+                                #foreach($pair in $literalArray)
+                                    #set($kmlResult = "$!kmlResult " + $pair.replace(" ", ","))
+                                #end
+                                #set($kml = $kmlResult.trim())
+                                $self.escapeHtml($kml)
+                            #else
+                                $self.escapeHtml($title)
+                            #end
+                        #end</li>
                     #end
 
                 #### Everything else
