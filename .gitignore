@@ -14,13 +14,9 @@ target/
 *.pyc
 *.iml
 *.prefs
-
 .settings/org.maven.ide.eclipse.prefs
-
 parent/.settings/org.maven.ide.eclipse.prefs
-
 *.log
-
 classpath
 .processed
 config/src/main/config/portal/default/redbox/scripts/hkjobs/new-alerts/alertlib/test/test-alerts
