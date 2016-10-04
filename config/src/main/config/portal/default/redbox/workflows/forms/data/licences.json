@@ -31,33 +31,33 @@
             "description": "This licence is the most restrictive of the six main licences, allowing redistribution of the work in its current form only. This licence is often called the 'free advertising' licence because it allows others to download and share the work as long as they credit the original creator/s (and any other nominated parties), they don't change the material in any way and they don't use it commercially."
         },
         {
-            "id": "http://creativecommons.org/licenses/by/4.0/au",
-            "label": "CC BY: Attribution 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by/4.0",
+            "label": "CC BY 4.0: Attribution 4.0 International",
             "description": "This licence lets others distribute, remix and build upon a work, even commercially, as long as they credit the original creator/s (and any other nominated parties). This is the most accommodating of the licences in terms of what others can do with the work."
         },
         {
-            "id": "http://creativecommons.org/licenses/by-sa/4.0/au",
-            "label": "CC BY-SA: Attribution-Share Alike 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by-sa/4.0",
+            "label": "CC BY-SA 4.0: Attribution-Share Alike 4.0 International",
             "description": "This licence lets others distribute, remix and build upon the work, even for commercial purposes, as long as they credit the original creator/s (and any other nominated parties) and license any new creations based on the work under the same terms. All new derivative works will carry the same licence, so will also allow commercial use."
         },
         {
-            "id": "http://creativecommons.org/licenses/by-nd/4.0/au",
-            "label": "CC BY-ND: Attribution-No Derivative Works 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by-nd/4.0",
+            "label": "CC BY-ND 4.0: Attribution-No Derivative Works 4.0 International",
             "description": "This licence allows others to distribute the work, even for commercial purposes, as long as the work is unchanged, and the original creator/s (and any other nominated parties) are credited."
         },
         {
-            "id": "http://creativecommons.org/licenses/by-nc/4.0/au",
-            "label": "CC BY-NC: Attribution-Noncommercial 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by-nc/4.0",
+            "label": "CC BY-NC 4.0: Attribution-Noncommercial 4.0 International",
             "description": "This licence lets others distribute, remix and build upon the work, but only if it is for non-commercial purposes and they credit the original creator/s (and any other nominated parties). They don't have to license their derivative works on the same terms."
         },
         {
-            "id": "http://creativecommons.org/licenses/by-nc-sa/4.0/au",
-            "label": "CC BY-NC-SA: Attribution-Noncommercial-Share Alike 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by-nc-sa/4.0",
+            "label": "CC BY-NC-SA 4.0: Attribution-Noncommercial-Share Alike 4.0 International",
             "description": "This licence lets others distribute, remix and build upon the work, but only if it is for non-commercial purposes, they credit the original creator/s (and any other nominated parties) and they license their derivative works under the same terms."
         },
         {
-            "id": "http://creativecommons.org/licenses/by-nc-nd/4.0/au",
-            "label": "CC BY-NC-ND: Attribution-Noncommercial-No Derivatives 4.0 AU",
+            "id": "http://creativecommons.org/licenses/by-nc-nd/4.0",
+            "label": "CC BY-NC-ND 4.0: Attribution-Noncommercial-No Derivatives 4.0 International",
             "description": "This licence is the most restrictive of the six main licences, allowing redistribution of the work in its current form only. This licence is often called the 'free advertising' licence because it allows others to download and share the work as long as they credit the original creator/s (and any other nominated parties), they don't change the material in any way and they don't use it commercially."
         },
         {
