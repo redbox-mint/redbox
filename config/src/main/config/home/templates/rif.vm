@@ -304,7 +304,7 @@
         ################
         ## Description
 
-        #set($valueMap = $util.getList($item, "dc:description"))
+        #set($valueMap = $util.getList($item, "dc:descriptionshadow"))
         #foreach($key in $valueMap.keySet())
             #set($description =  $valueMap.get($key))
             #set($descText = $description.get("text"))

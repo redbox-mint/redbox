@@ -128,45 +128,16 @@
                 </tr>
                 <tr class="item-input-display">
                     <td>
-                        <textarea rows="12" cols="80" id="dc:description.0.textFull" class="full descriptionInput" style="vertical-align: text-top;"
+                        <textarea rows="12" cols="80" id="dc:description.0.text" class="text descriptionInput description wysiwygEditor" style="vertical-align: text-top;"
                                 placeholder="eg. This dataset contains observational data and calibration files."></textarea>
-                        <textarea rows="2" cols="80" id="dc:description.0.textBrief" class="brief descriptionInput" style="display: none; vertical-align: text-top;"
-                                placeholder="Brief description."></textarea>
-                        <input size="80" type="text" id="dc:description.0.textLogo" class="logo descriptionInput" style="display: none; vertical-align: text-top;" placeholder="URL that shows logo."/>
-                        <textarea rows="2" cols="80" id="dc:description.0.textNote" class="note descriptionInput" style="display: none; vertical-align: text-top;"
-                                                        placeholder="Description note."></textarea>
-                        <input type="text" id="dc:description.0.text" class="description hidden text"/>
-                        <div id="descriptionValidation.0.full" class="validation description full">
+                        <input type="hidden" id="dc:description.0.shadow" class="wysiwygShadow hidden" />
+                        <div id="descriptionValidation.0.text" class="validation description text">
                         <label class="validation-err-msg"
-                            id="dc:description.0.textFullErrMsg"
-                            for="dc:description.0.textFull"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.full);">
+                            id="dc:description.0.textErrMsg"
+                            for="dc:description.0.text"
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.text);">
                             Empty descriptions are not allowed!
                         </label>
-                        </div>
-                        <div id="descriptionValidation.0.brief" class="validation description brief">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textBriefErrMsg"
-                            for="dc:description.0.textBrief"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.brief);">
-                            Empty descriptions are not allowed!
-                            </label>
-                        </div>
-                        <div id="descriptionValidation.0.logo" class="validation description logo">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textLogoErrMsg"
-                            for="dc:description.0.textLogo"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.logo);">
-                            Empty descriptions are not allowed!
-                            </label>
-                        </div>
-                        <div id="descriptionValidation.0.note" class="validation description note">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textNoteErrMsg"
-                            for="dc:description.0.textNote"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.note);">
-                            Empty descriptions are not allowed!
-                            </label>
                         </div>
                     </td>
                     <td style="vertical-align: middle;">
@@ -174,7 +145,6 @@
                        <select id="dc:description.0.type" style="left:20em;" class="descriptionSelect">
                           <option value="full">Full</option>
                           <option value="brief">Brief</option>
-                          <option value="logo">Logo</option>
                           <option value="note">Note</option>
                        </select>
                     </td>
@@ -191,7 +161,7 @@
             </tfoot>
         </table>
     </p>
-    
+
     #fieldTitle("dc:relation.swrc:Publication" "Related Publications" false)
     <div class="help-content" id="help-dc:relation.swrc:Publication">
         Include URL/s to any publications underpinning the research
@@ -490,7 +460,7 @@ $(function() {
 
     function updateEmptyDescriptionsValidation() {
         var hasDescription = true;
-        $('.description.hidden').each(function(index, e) {
+        $('.description').each(function(index, e) {
             if (index > 0) {
                 var jQelement = $(escapeId(e.id));
                 if (jQelement.val() == "") {
@@ -514,14 +484,14 @@ $(function() {
         return jQDescriptionElement.parents(".item-input-display");
     }
 
-    function toggleDescriptionValidations(parent, descriptionType) {
-        parent.find(".validation.description").hide();
-        parent.find('.validation.description.'+descriptionType).show();
+    function toggleDescriptionValidations(parent) {
+    //    parent.find(".validation.description").hide();
+        parent.find('.validation.description').show();
     }
 
     function getDescriptionInputElement(parent, descriptionType) {
-        parent.find('.descriptionInput').hide();
-        return parent.find('.descriptionInput.'+ descriptionType);
+       // parent.find('.descriptionInput').hide();
+        return parent.find('.descriptionInput');
     }
 
     function addFullEasyCounter(jQElement) {
@@ -534,51 +504,116 @@ $(function() {
 
     //171 ready function addresses issues with capturing all dynamic rows
     $171(document).ready(function() {
-        addFullEasyCounter($('.descriptionInput.full'));
+        addFullEasyCounter($('.descriptionInput'));
 
         $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
         $(".descriptionSelect").each(function(index) {
             if (index > 0) {
                 var parent = getDescriptionParent($(this));
-                var descriptionType = $(this).val();
-                var textSource = parent.find(".description.hidden");
-                var textDestination = getDescriptionInputElement(parent, descriptionType);
-                toggleDescriptionValidations(parent, descriptionType);
-                if (textDestination) {
-                    textDestination.val(textSource.val());
-                    textDestination.show();
-                }
+           //     var textSource = parent.find(".description");
+            //    var textDestination = getDescriptionInputElement(parent, descriptionType);
+                toggleDescriptionValidations(parent);
+             //   if (textDestination) {
+              //      textDestination.val(textSource.val());
+               //     textDestination.show();
+               // }
             }
         });
         updateAllDescriptionsValidation();
         $171('.input-list').on('change', '.descriptionSelect', function() {
-            hideDescriptionJQEasyCounter();
+          //  hideDescriptionJQEasyCounter();
             var parent = getDescriptionParent($(this));
-            var descriptionType = $(this).val();
-            var textSource = getDescriptionInputElement(parent, descriptionType);
-            toggleDescriptionValidations(parent, descriptionType);
-            var textValue = ""
-            if (textSource) {
-                textSource.show();
-                textValue = textSource.val();
-            }
-            parent.find(".description.hidden").val(textValue);
+          //  var descriptionType = $(this).val();
+          //  var textSource = getDescriptionInputElement(parent, descriptionType);
+            toggleDescriptionValidations(parent);
+           // var textValue = ""
+           // if (textSource) {
+            //    textSource.show();
+            //    textValue = textSource.val();
+           // }
+          //  parent.find(".description.hidden").val(textValue);
             updateAllDescriptionsValidation();
         });
         $171('.input-list').on('input', '.descriptionInput', function() {
-            var parent = getDescriptionParent($(this));
-            parent.find(".description.hidden").val($(this).val());
-            var descriptionType = parent.find('.descriptionSelect').val();
-            toggleDescriptionValidations(parent, descriptionType);
+         //   var parent = getDescriptionParent($(this));
+         //   parent.find(".description.hidden").val($(this).val());
+          //  var descriptionType = parent.find('.descriptionSelect').val();
+            toggleDescriptionValidations(parent);
             updateAllDescriptionsValidation();
         });
         $171('[id=add-description]').click(function() {
-            var latestDescriptionIndex = $('.description.hidden').length -1
+            var latestDescriptionIndex = $('.description').length -1
             var descriptionType = $('.descriptionSelect[id^=dc:description.'+latestDescriptionIndex+'.type]');
             var parent = getDescriptionParent(descriptionType);
-            addFullEasyCounter(parent.find('.descriptionInput.full:visible'));
+            addFullEasyCounter(parent.find('.descriptionInput:visible'));
             toggleDescriptionValidations(parent, descriptionType.val());
             updateAllDescriptionsValidation();
         });
     });
+
+
+    //wysiwyg
+    function getUnescapedDescription() {
+            var currentDescriptionWithTags = $(escapeId('dc:description')).val();
+            ## need to set html to get unescaped text
+            var unescapedDescription = $(escapeId('dc:description')).html(currentDescriptionWithTags).text();
+            return unescapedDescription;
+        }
+
+        function updateDescription(text) {
+            ## ensure all linebreaks are removed - otherwise this will break views
+            var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
+            ## need to set html to get unescaped text to render correctly in preview.
+            var unescaped = $(escapeId('dc:description')).html(sanitisedText).text();
+            $(escapeId('dc:description')).val(unescaped);
+            ## need to set text to get escaped html
+            var escaped = $(escapeId('dc:description')).text(unescaped).html();
+            $('.wysiwygShadow').val(escaped);
+        }
+
+        function escapeId(rawId) {
+            return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+        }
+
+        $("#dc\\:description").jqEasyCounter({
+            maxChars: 12000,
+            maxCharsWarning: 11990,
+            msgTextAlign: 'left'
+        });
+
+
+        function updateDescriptionFromEditor(text, jqEditorElement) {
+            updateDescription(text);
+            ## ensure word count is visible, but then bring focus back to editor
+            $("#dc\\:description").focus();
+            $(jqEditorElement).focus();
+        }
+
+            $(".wysiwygEditor").each( function(index, e) {
+            tinymce.init({
+                width: 800,
+                selector: escapeId(e.id),
+                plugins: ["link","image"],
+                    menubar: false,
+                    setup : function(ed) {
+                      ed.on('init', function(e) {
+                        tinymce.activeEditor.setContent(getUnescapedDescription());
+                        updateDescription(tinymce.activeEditor.getContent());
+                      });
+                      ed.on('click', function(e) {
+                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                      });
+                      ed.on('change', function(e) {
+                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                      });
+                      ed.on('keyup', function(e) {
+                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                      });
+                    }
+                });
+            });
+        });
+
+
+
 </script>

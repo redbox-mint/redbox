@@ -45,7 +45,7 @@
                             #set($data = $dataList.get($key))
                         #set($descriptionText = $data.get("text"))
                         #if ("$!descriptionText" != "")
-                             <li>#displayRequiredKey($data "text")
+                             <li><div id="dcdescription-${key}" class="dcdescription">#displayRequiredKey($data "text")</div>
                                  #set($type = $data.get("type"))
                                  #if("$!type" != "")
                                     <ul>
@@ -141,7 +141,7 @@
                 </dd>
             #end
         #end
-        
+
         <dt>Technical metadata</dt>
         #set($dataList = $self.getList("dc:relation.redbox:TechnicalMetadata"))
         #if ($dataList.isEmpty())
@@ -180,3 +180,26 @@
         #end
     </dl>
 </div>
+
+<script type="text/javascript">
+$(function() {
+    function appendIFrameForUnescaped(text, jQId) {
+    ## attach to an element to get unescaped.
+    var unescaped = $(jQId).html(text).text();
+    ## reset value
+    $(jQId).html('');
+    var idName = $(jQId).attr('id') + "Frame";
+    $('<iframe id='+idName+' style="height:200px; border: none;"/>').appendTo(jQId)
+        .contents().find('body').append(unescaped);
+    }
+    $('.dcdescription').each( function(index, element) {
+        var className = $(this).attr('class');
+        console.log("class name is:" + className);
+        var text = $(this).val();
+        console.log("text is: " + text);
+        var descriptionCount=$(this).attr('id').replace(className, '');
+        console.log("count is: " + count);
+        appendIFrameForUnescaped("'" + text + "'", $(this).attr('id'));
+    });
+});
+</script>
