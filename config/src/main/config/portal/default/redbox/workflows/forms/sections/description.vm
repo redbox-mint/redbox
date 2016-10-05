@@ -549,7 +549,6 @@ $(function() {
             toggleDescriptionValidations(parent, descriptionType.val());
             updateAllDescriptionsValidation();
         });
-    });
 
 
     //wysiwyg
