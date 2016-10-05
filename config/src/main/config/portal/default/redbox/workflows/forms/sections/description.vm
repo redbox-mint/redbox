@@ -128,7 +128,7 @@
                 </tr>
                 <tr class="item-input-display">
                     <td>
-                        <textarea rows="12" cols="80" id="dc:description.0.text" class="text descriptionInput description wysiwygEditor" style="vertical-align: text-top;"
+                   <textarea rows="12" cols="80" id="dc:description.0.text" class="text descriptionInput description wysiwygEditor" style="vertical-align: text-top;"
                                 placeholder="eg. This dataset contains observational data and calibration files."></textarea>
                         <input type="hidden" id="dc:description.0.shadow" class="wysiwygShadow hidden" />
                         <div id="descriptionValidation.0.text" class="validation description text">
@@ -475,23 +475,84 @@ $(function() {
         }
     }
 
+    function updateDescriptionFromEditor(text, jqEditorElement) {
+        updateDescription(text, jqEditorElement);
+        $(jqEditorElement).focus();
+    }
+
+    function getUnescapedDescription(jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        var currentDescriptionWithTags = $(descriptionInputElementId).val();
+        ## need to set html to get unescaped text
+        var unescapedDescription = $(descriptionInputElementId).html(currentDescriptionWithTags).text();
+        return unescapedDescription;
+    }
+
+    function updateDescription(text, jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        console.log("id is: " + descriptionInputElementId);
+        ## ensure all linebreaks are removed - otherwise this will break views
+        var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
+        ## need to set html to get unescaped text to render correctly in preview.
+        var unescaped = $(descriptionInputElementId).html(sanitisedText).text();
+        $(descriptionInputElementId).val(unescaped);
+        ## need to set text to get escaped html
+        $(descriptionInputElementId).focus();
+        var escaped = $(descriptionInputElementId).text(unescaped).html();
+        getDescriptionParent($(descriptionInputElementId)).find('.wysiwygShadow').val(escaped);
+    }
+
+
+    function editorUpdate(index, e) {
+        if (index > 0) {
+            tinymce.init({
+            width: 800,
+            selector: escapeId(e.id),
+            plugins: ["link","image"],
+                menubar: false,
+                setup : function(ed) {
+                  ed.on('init', function(e) {
+                    console.log("init ed");
+                    tinymce.activeEditor.setContent(getUnescapedDescription(this));
+                    console.log("editor done");
+                    updateDescription(tinymce.activeEditor.getContent(), this);
+                    updateAllDescriptionsValidation();
+                  });
+                  ed.on('click', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                  ed.on('change', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                  ed.on('keyup', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                }
+            });
+        }
+    }
+
     function updateAllDescriptionsValidation() {
+        tinymce.remove(".wysiwygEditor");
+        tinymce.add(".wysiwygEditor");
+        $(".wysiwygEditor").each( function(index, e) {
+            console.log("index is: " + index);
+            var parent = $(e).parents(".item-input-display");
+            var ifr = $171(parent).find('iframe').attr('id');
+            var test = $(escapeId('dc:description.'+ index + '.text_ifr')).contents().find("#tinymce");
+            console.log("iframe attr is: " + test.attr('data-id'));
+            test.attr('data-id', $(e).attr('id'));
+            console.log("iframe attr twice is: " + test.attr('data-id'));
+            editorUpdate(index, e);
+        });
         updateEmptyDescriptionsValidation();
         updateDescriptionsRDAComplianceValidation();
     }
 
     function getDescriptionParent(jQDescriptionElement) {
-        return jQDescriptionElement.parents(".item-input-display");
-    }
-
-    function toggleDescriptionValidations(parent) {
-    //    parent.find(".validation.description").hide();
-        parent.find('.validation.description').show();
-    }
-
-    function getDescriptionInputElement(parent, descriptionType) {
-       // parent.find('.descriptionInput').hide();
-        return parent.find('.descriptionInput');
+        var jQDescriptionElementId = escapeId(jQDescriptionElement.attr('id'));
+        var parent = $(jQDescriptionElementId).parents(".item-input-display");
+        return parent;
     }
 
     function addFullEasyCounter(jQElement) {
@@ -507,112 +568,23 @@ $(function() {
         addFullEasyCounter($('.descriptionInput'));
 
         $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
-        $(".descriptionSelect").each(function(index) {
-            if (index > 0) {
-                var parent = getDescriptionParent($(this));
-           //     var textSource = parent.find(".description");
-            //    var textDestination = getDescriptionInputElement(parent, descriptionType);
-                toggleDescriptionValidations(parent);
-             //   if (textDestination) {
-              //      textDestination.val(textSource.val());
-               //     textDestination.show();
-               // }
-            }
-        });
+
         updateAllDescriptionsValidation();
-        $171('.input-list').on('change', '.descriptionSelect', function() {
-          //  hideDescriptionJQEasyCounter();
-            var parent = getDescriptionParent($(this));
-          //  var descriptionType = $(this).val();
-          //  var textSource = getDescriptionInputElement(parent, descriptionType);
-            toggleDescriptionValidations(parent);
-           // var textValue = ""
-           // if (textSource) {
-            //    textSource.show();
-            //    textValue = textSource.val();
-           // }
-          //  parent.find(".description.hidden").val(textValue);
-            updateAllDescriptionsValidation();
-        });
-        $171('.input-list').on('input', '.descriptionInput', function() {
-         //   var parent = getDescriptionParent($(this));
-         //   parent.find(".description.hidden").val($(this).val());
-          //  var descriptionType = parent.find('.descriptionSelect').val();
-            toggleDescriptionValidations(parent);
-            updateAllDescriptionsValidation();
-        });
+
         $171('[id=add-description]').click(function() {
-            var latestDescriptionIndex = $('.description').length -1
+            var latestDescriptionIndex = $('.descriptionInput').length -1;
             var descriptionType = $('.descriptionSelect[id^=dc:description.'+latestDescriptionIndex+'.type]');
             var parent = getDescriptionParent(descriptionType);
-            addFullEasyCounter(parent.find('.descriptionInput:visible'));
-            toggleDescriptionValidations(parent, descriptionType.val());
+            addFullEasyCounter(parent.find('.descriptionInput'));
+            $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
             updateAllDescriptionsValidation();
         });
 
-
-    //wysiwyg
-    function getUnescapedDescription() {
-            var currentDescriptionWithTags = $(escapeId('dc:description')).val();
-            ## need to set html to get unescaped text
-            var unescapedDescription = $(escapeId('dc:description')).html(currentDescriptionWithTags).text();
-            return unescapedDescription;
-        }
-
-        function updateDescription(text) {
-            ## ensure all linebreaks are removed - otherwise this will break views
-            var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
-            ## need to set html to get unescaped text to render correctly in preview.
-            var unescaped = $(escapeId('dc:description')).html(sanitisedText).text();
-            $(escapeId('dc:description')).val(unescaped);
-            ## need to set text to get escaped html
-            var escaped = $(escapeId('dc:description')).text(unescaped).html();
-            $('.wysiwygShadow').val(escaped);
-        }
-
-        function escapeId(rawId) {
-            return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
-        }
-
-        $("#dc\\:description").jqEasyCounter({
-            maxChars: 12000,
-            maxCharsWarning: 11990,
-            msgTextAlign: 'left'
+        $(".wysiwygEditor").each( function(index, e) {
+            editorUpdate(index, e);
         });
 
 
-        function updateDescriptionFromEditor(text, jqEditorElement) {
-            updateDescription(text);
-            ## ensure word count is visible, but then bring focus back to editor
-            $("#dc\\:description").focus();
-            $(jqEditorElement).focus();
-        }
-
-            $(".wysiwygEditor").each( function(index, e) {
-            tinymce.init({
-                width: 800,
-                selector: escapeId(e.id),
-                plugins: ["link","image"],
-                    menubar: false,
-                    setup : function(ed) {
-                      ed.on('init', function(e) {
-                        tinymce.activeEditor.setContent(getUnescapedDescription());
-                        updateDescription(tinymce.activeEditor.getContent());
-                      });
-                      ed.on('click', function(e) {
-                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
-                      });
-                      ed.on('change', function(e) {
-                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
-                      });
-                      ed.on('keyup', function(e) {
-                          updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
-                      });
-                    }
-                });
-            });
-        });
-
-
+   });
 
 </script>
