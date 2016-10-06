@@ -503,8 +503,17 @@ $(function() {
     }
 
 
+    function deleteDescription(event) {
+        // reset all wysiwyg editors
+        tinymce.remove();
+        $(".wysiwygEditor").each( function(index, e) {
+            editorUpdate(index, e);
+        });
+    }
+
     function editorUpdate(index, e) {
         if (index > 0) {
+           $(e.id).show();
             tinymce.init({
             width: 800,
             selector: escapeId(e.id),
@@ -514,9 +523,11 @@ $(function() {
                   ed.on('init', function(e) {
                     console.log("init ed");
                     tinymce.activeEditor.setContent(getUnescapedDescription(this));
-                    console.log("editor done");
                     updateDescription(tinymce.activeEditor.getContent(), this);
-                    updateAllDescriptionsValidation();
+                    var descriptionId = $(this).attr('id');
+                    var deleteId = descriptionId.replace("text", "delete");
+                    // setup delete method for wysiwyg editor
+                    $171(escapeId(deleteId)).one('click', {index: descriptionId}, deleteDescription);
                   });
                   ed.on('click', function(e) {
                       updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
@@ -533,25 +544,15 @@ $(function() {
     }
 
     function updateAllDescriptionsValidation() {
-        tinymce.remove(".wysiwygEditor");
-        tinymce.add(".wysiwygEditor");
-        $(".wysiwygEditor").each( function(index, e) {
-            console.log("index is: " + index);
-            var parent = $(e).parents(".item-input-display");
-            var ifr = $171(parent).find('iframe').attr('id');
-            var test = $(escapeId('dc:description.'+ index + '.text_ifr')).contents().find("#tinymce");
-            console.log("iframe attr is: " + test.attr('data-id'));
-            test.attr('data-id', $(e).attr('id'));
-            console.log("iframe attr twice is: " + test.attr('data-id'));
-            editorUpdate(index, e);
-        });
         updateEmptyDescriptionsValidation();
         updateDescriptionsRDAComplianceValidation();
     }
 
     function getDescriptionParent(jQDescriptionElement) {
         var jQDescriptionElementId = escapeId(jQDescriptionElement.attr('id'));
+        console.log("id in child element of parent is: " + jQDescriptionElementId);
         var parent = $(jQDescriptionElementId).parents(".item-input-display");
+        console.log("parent: " + $(parent).attr('id'));
         return parent;
     }
 
@@ -567,23 +568,18 @@ $(function() {
     $171(document).ready(function() {
         addFullEasyCounter($('.descriptionInput'));
 
-        $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
-
+        $(".wysiwygEditor").each( function(index, e) {
+            editorUpdate(index, e);
+        });
         updateAllDescriptionsValidation();
 
         $171('[id=add-description]').click(function() {
             var latestDescriptionIndex = $('.descriptionInput').length -1;
-            var descriptionType = $('.descriptionSelect[id^=dc:description.'+latestDescriptionIndex+'.type]');
-            var parent = getDescriptionParent(descriptionType);
-            addFullEasyCounter(parent.find('.descriptionInput'));
-            $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
-            updateAllDescriptionsValidation();
+            var descriptionTextElement = 'dc:description.'+latestDescriptionIndex+'.text';
+            addFullEasyCounter($(escapeId(descriptionTextElement)));
+            // only need to update editor for latest description added
+            editorUpdate(latestDescriptionIndex,  $(escapeId(descriptionTextElement))[0]);
         });
-
-        $(".wysiwygEditor").each( function(index, e) {
-            editorUpdate(index, e);
-        });
-
 
    });
 
