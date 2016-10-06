@@ -116,7 +116,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="input" id="isDescriptionRDACompliant" class="isDescriptionRDACompliant"/>
+                        <input type="input" id="isDescriptionRDACompliant" class="isDescriptionRDACompliant hidden"/>
                         <label class="validation-err-msg"
                             id="isDescriptionRDACompliantErrMsg"
                             for="isDescriptionRDACompliant"
@@ -148,7 +148,9 @@
                           <option value="note">Note</option>
                        </select>
                     </td>
-                    <td class="delete-item deleteDescription" id="dc:description.0.delete" style="vertical-align: middle;"><a href="#">delete</a></td>
+                    <td style="vertical-align: middle;">
+                    <div class="delete-item deleteDescription" id="dc:description.0.delete" ><a href="#">delete</a></div>
+                    </td>
                     <td style="width: 100%;"> </td>
                 </tr>
             </tbody>
@@ -451,16 +453,16 @@ $(function() {
                 }
              }
         });
-        $('[id=isDescriptionRDACompliant]').val("");
+        $('#isDescriptionRDACompliant').val("");
         if (hasCompliance) {
-            $('[id=isDescriptionRDACompliant]').val(hasCompliance);
-            $('[id=isDescriptionRDACompliant]').hide();
+            $('#isDescriptionRDACompliant').val(hasCompliance);
+            $('#isDescriptionRDACompliantErrMsg').hide();
         }
     }
 
     function updateEmptyDescriptionsValidation() {
         var hasDescription = true;
-        $('.description').each(function(index, e) {
+        $('.descriptionInput').each(function(index, e) {
             if (index > 0) {
                 var jQelement = $(escapeId(e.id));
                 if (jQelement.val() == "") {
@@ -468,29 +470,20 @@ $(function() {
                 }
             }
         });
-        $('[id=hasNoEmptyDescriptions]').val("");
+        $('#hasNoEmptyDescriptions').val("");
         if (hasDescription) {
-            $('[id=hasNoEmptyDescriptions]').val(hasDescription);
-            $('[id=hasNoEmptyDescriptionsErrMsg]').hide();
+            $('#hasNoEmptyDescriptions').val(hasDescription);
+            $('#hasNoEmptyDescriptionsErrMsg').hide();
         }
     }
 
-    function updateDescriptionFromEditor(text, jqEditorElement) {
-        updateDescription(text, jqEditorElement);
-        $(jqEditorElement).focus();
-    }
-
-    function getUnescapedDescription(jQElement) {
-        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
-        var currentDescriptionWithTags = $(descriptionInputElementId).val();
-        ## need to set html to get unescaped text
-        var unescapedDescription = $(descriptionInputElementId).html(currentDescriptionWithTags).text();
-        return unescapedDescription;
+    function updateAllDescriptionsValidation() {
+        updateEmptyDescriptionsValidation();
+        updateDescriptionsRDAComplianceValidation();
     }
 
     function updateDescription(text, jQElement) {
         var descriptionInputElementId = escapeId($(jQElement).attr('id'));
-        console.log("id is: " + descriptionInputElementId);
         ## ensure all linebreaks are removed - otherwise this will break views
         var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
         ## need to set html to get unescaped text to render correctly in preview.
@@ -500,8 +493,23 @@ $(function() {
         $(descriptionInputElementId).focus();
         var escaped = $(descriptionInputElementId).text(unescaped).html();
         getDescriptionParent($(descriptionInputElementId)).find('.wysiwygShadow').val(escaped);
+        updateAllDescriptionsValidation();
     }
 
+
+    function updateDescriptionFromEditor(text, jqEditorElement) {
+        updateDescription(text, jqEditorElement);
+        $(jqEditorElement).focus();
+    }
+
+
+    function getUnescapedDescription(jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        var currentDescriptionWithTags = $(descriptionInputElementId).val();
+        ## need to set html to get unescaped text
+        var unescapedDescription = $(descriptionInputElementId).html(currentDescriptionWithTags).text();
+        return unescapedDescription;
+    }
 
     function deleteDescription(event) {
         // reset all wysiwyg editors
@@ -521,7 +529,6 @@ $(function() {
                 menubar: false,
                 setup : function(ed) {
                   ed.on('init', function(e) {
-                    console.log("init ed");
                     tinymce.activeEditor.setContent(getUnescapedDescription(this));
                     updateDescription(tinymce.activeEditor.getContent(), this);
                     var descriptionId = $(this).attr('id');
@@ -538,22 +545,18 @@ $(function() {
                   ed.on('keyup', function(e) {
                       updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
                   });
+                  ed.on('blur', function(e) {
+                      updateAllDescriptionsValidation();
+                  });
+
                 }
             });
         }
     }
 
-    function updateAllDescriptionsValidation() {
-        updateEmptyDescriptionsValidation();
-        updateDescriptionsRDAComplianceValidation();
-    }
-
     function getDescriptionParent(jQDescriptionElement) {
         var jQDescriptionElementId = escapeId(jQDescriptionElement.attr('id'));
-        console.log("id in child element of parent is: " + jQDescriptionElementId);
-        var parent = $(jQDescriptionElementId).parents(".item-input-display");
-        console.log("parent: " + $(parent).attr('id'));
-        return parent;
+        return $(jQDescriptionElementId).parents(".item-input-display");
     }
 
     function addFullEasyCounter(jQElement) {
@@ -581,6 +584,7 @@ $(function() {
             editorUpdate(latestDescriptionIndex,  $(escapeId(descriptionTextElement))[0]);
         });
 
+        $171('#description-table').on('change', '.descriptionSelect', updateAllDescriptionsValidation);
    });
 
 </script>
