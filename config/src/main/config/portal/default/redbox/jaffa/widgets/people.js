@@ -33,7 +33,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             container.find("input[id=\""+this.oldField+"foaf:email\"]").attr("id", this.field+"foaf:email");
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
             container.attr("id", container.attr("id").replace(from, to));
-            
+
             // Tell Jaffa to ignore the field's this widget used to manage
             var titleFieldId= this.oldField+"foaf:title";
             var givenNameFieldId= this.oldField+"foaf:givenName";
@@ -45,7 +45,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             jaffa.form.ignoreField(familyNameFieldId);
             jaffa.form.ignoreField(emailFieldId);
             jaffa.form.ignoreField(dcIdentifierId);
-            
+
             titleFieldId= this.field+"foaf:title";
             givenNameFieldId= this.field+"foaf:givenName";
             familyNameFieldId= this.field+"foaf:familyName";
@@ -56,7 +56,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             jaffa.form.addField(familyNameFieldId, this.id());
             jaffa.form.addField(emailFieldId, this.id());
             jaffa.form.addField(dcIdentifierId, this.id());
-            
+
         },
         // Notify Jaffa that field <=> widget relations need to be updated
         //  This is called separately from above to avoid duplicate IDs that
@@ -96,27 +96,27 @@ var PeopleWidgetBuilder = function($, jaffa) {
             if(this.field.indexOf(".", this.field.length - 1) == -1) {
             	this.field = this.field+".";
             }
-            
+
             var lookup_only = this.getConfig("lookup-only");
             var titleFieldId= this.field+"foaf:title";
             ui.append("<label for=\""+titleFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Title</label>");
-            ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field\" />");
-            
+            ui.append("<input type=\"text\" id=\""+titleFieldId+"\" class=\"jaffa-field title\" />");
+
             var givenNameFieldId= this.field+"foaf:givenName";
             ui.append("<label for=\""+givenNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Given Name</label>");
-            ui.append("<input type=\"text\" id=\""+givenNameFieldId+"\" class=\"jaffa-field\" />");
-            
+            ui.append("<input type=\"text\" id=\""+givenNameFieldId+"\" class=\"jaffa-field given-name\" />");
+
             var familyNameFieldId= this.field+"foaf:familyName";
             ui.append("<label for=\""+familyNameFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Family Name</label>");
-            ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field\" />");
-            
+            ui.append("<input type=\"text\" id=\""+familyNameFieldId+"\" class=\"jaffa-field family-name\" />");
+
             var emailFieldId= this.field+"foaf:email";
             ui.append("<label for=\""+emailFieldId+"\" class=\"widgetLabel peopleWidgetLabel\">Email</label>");
-            ui.append("<input type=\"text\" id=\""+emailFieldId+"\" class=\"jaffa-field\" />");
+            ui.append("<input type=\"text\" id=\""+emailFieldId+"\" class=\"jaffa-field email\" />");
 
             var dcIdentifierId = this.field+"dc:identifier";
             ui.append("<input type=\"hidden\" id=\""+dcIdentifierId+"\" class=\"jaffa-field\" />");
-            
+
             var dlg_source = this.getConfig("source");
             if (dlg_source == null) { dlg_source = 'mint'; }
             ui.append("<a onclick='showMintNlaLookupDialog(this,\""+dlg_source+"\");return false;' class='mintNlaLookup' href='#'>lookup</a>");
@@ -190,7 +190,7 @@ var PeopleWidgetBuilder = function($, jaffa) {
             jaffa.form.addField(familyNameFieldId,  this.id());
             jaffa.form.addField(emailFieldId,  this.id());
             jaffa.form.addField(dcIdentifierId,  this.id());
-            
+
 
             // Add help content
             this._super();
