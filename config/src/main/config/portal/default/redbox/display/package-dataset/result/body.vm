@@ -12,9 +12,9 @@ $(function() {
         $('<iframe id='+idName+' style="height:200px; width:75%;border: none;"/>').appendTo(jQId)
             .contents().find('body').append(unescaped);
      }
-     ## ensure that pre-wysiwyg records don't break
-     #set($description=$self.getFirst("dc:description.1.shadow").replaceAll("'","\\'").replaceAll("\n","\\n"))
-     appendIFrameForUnescaped("$!{description}", '#displaydescription$velocityCount');
+     ## serverside quotes and newlines should be escaped.
+     #set($description=$self.getFirst("dc:description.1.shadow").replaceAll("'","\\'").replaceAll("\"", "\\\"").replaceAll("\n","\\n"))
+     appendIFrameForUnescaped('$!{description}', '#displaydescription$velocityCount');
 
 });
 </script>

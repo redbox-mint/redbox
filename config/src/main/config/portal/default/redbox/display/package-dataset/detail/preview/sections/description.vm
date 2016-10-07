@@ -188,15 +188,18 @@ $(function() {
          return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
      }
     function appendIFrameForUnescaped(text, jQId) {
+            console.log("text before is: " + text);
         ## attach to an element to get unescaped.
         iFramejQId = $('#dcdescriptionFrame').contents().find(jQId);
         var unescapedText = iFramejQId.html(text).text();
+        console.log("unescaped is: " + unescapedText);
         ## reset the element before updating
         iFramejQId.html('');
-        iFramejQId.html(unescapedText);
+        iFramejQId.html(text);
     }
     var originalDescriptions=$('#dcdescriptionList').html();
     $('#dcdescriptionList').html('');
+    console.log("original descriptions: " + originalDescriptions);
     $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
          .contents().find('body').append(originalDescriptions);
     $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
