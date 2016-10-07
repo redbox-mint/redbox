@@ -39,13 +39,13 @@
                 #noInformation()
             </dd>
         #else
-                <dd>
+                <dd id="dcdescriptionList">
                     <ol>
                         #foreach($key in $dataList.keySet())
                             #set($data = $dataList.get($key))
                         #set($descriptionText = $data.get("text"))
                         #if ("$!descriptionText" != "")
-                             <li><div id="dcdescription-${key}" class="dcdescription">#displayRequiredKey($data "text")</div>
+                             <li><div id="dcdescription${key}" class="dcdescription">#displayUnescapedRequiredKey($data "text")</div>
                                  #set($type = $data.get("type"))
                                  #if("$!type" != "")
                                     <ul>
@@ -183,23 +183,34 @@
 
 <script type="text/javascript">
 $(function() {
-    function appendIFrameForUnescaped(text, jQId) {
-    ## attach to an element to get unescaped.
-    var unescaped = $(jQId).html(text).text();
-    ## reset value
-    $(jQId).html('');
-    var idName = $(jQId).attr('id') + "Frame";
-    $('<iframe id='+idName+' style="height:200px; border: none;"/>').appendTo(jQId)
-        .contents().find('body').append(unescaped);
-    }
-    $('.dcdescription').each( function(index, element) {
+
+     function escapeId(rawId) {
+         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+     }
+     function appendIFrameForUnescaped(text, jQId) {
+         ## attach to an element to get unescaped.
+        iFramejQId = $('#dcdescriptionFrame').contents().find(jQId);
+        var unescapedText = iFramejQId.html(text).text();
+        ## reset the element before updating
+        iFramejQId.html('');
+        iFramejQId.html(unescapedText);
+     }
+    var originalDescriptions=$('#dcdescriptionList').html();
+    $('#dcdescriptionList').html('');
+    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
+         .contents().find('body').append(originalDescriptions);
+    $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
         var className = $(this).attr('class');
         console.log("class name is:" + className);
-        var text = $(this).val();
+        ## ensure that pre-wysiwyg records don't break
+        var text = $(this).html();
+        console.log("pre text is: ." + text + ".");
+        text = text.trim();
         console.log("text is: " + text);
+        console.log("id is: " + $(this).attr('id'));
         var descriptionCount=$(this).attr('id').replace(className, '');
-        console.log("count is: " + count);
-        appendIFrameForUnescaped("'" + text + "'", $(this).attr('id'));
+        console.log("count is: " + descriptionCount);
+        appendIFrameForUnescaped(text, escapeId('dcdescription' + descriptionCount));
     });
 });
 </script>

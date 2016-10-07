@@ -1,0 +1,19 @@
+<p id="displaydescription$velocityCount" class="item-description $velocityCount" rel="$!displayType"></p>
+
+<script type="text/javascript">
+$(function() {
+     function appendIFrameForUnescaped(text, jQId) {
+        ## attach to an element to get unescaped.
+        var unescaped = $(jQId).html(text).text();
+        ## reset value
+        $(jQId).html('');
+        var idName = $(jQId).attr('id') + "Frame";
+        $('<iframe id='+idName+' style="height:200px; width:75%;border: none;"/>').appendTo(jQId)
+            .contents().find('body').append(unescaped);
+     }
+     ## ensure that pre-wysiwyg records don't break
+     #set($description=$self.getFirst("dc:descriptionshadow.1.text"))
+     appendIFrameForUnescaped($description.replaceAll("'","\\'").replaceAll("\n","\\n"), '#displaydescription$velocityCount');
+
+});
+</script>

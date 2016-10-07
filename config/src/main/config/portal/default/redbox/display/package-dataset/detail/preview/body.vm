@@ -97,12 +97,27 @@ $self.escapeHtml($value)
     #end
 #end
 
+#macro(displayUnescapedKey $map $key $required)
+    #set ($value = $map.get($key))
+    #if ("$!value" != "")
+$value
+    #else
+        #if ($required)
+#missing($key)
+        #end
+    #end
+#end
+
 #macro(displayOptionalKey $map $key)
     #displayKey($map $key false)
 #end
 
 #macro(displayRequiredKey $map $key)
     #displayKey($map $key true)
+#end
+
+#macro(displayUnescapedRequiredKey $map $key)
+    #displayUnescapedKey($map $key true)
 #end
 
 #parseDisplayTemplate("detail/preview/identification.vm")
