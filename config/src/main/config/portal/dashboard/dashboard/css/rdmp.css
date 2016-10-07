@@ -1,0 +1,125 @@
+#simpleworkflow-form textarea {
+  width:75%;
+}
+
+#dc\:title {
+ width:75%;
+}
+
+#dc\:identifier {
+ width:75%;
+}
+
+#dc\:relation\.bibo\:Website {
+ width:75%;
+}
+
+#dc\:description {
+ width:75%;
+}
+
+#dataLicensingAccess\.manager {
+  width:75%;
+}
+
+#dc\:license\.dc\:identifier\.other {
+  width:75%;
+}
+
+#dc\:license\.dc\:identifier\.url {
+  width:75%;
+}
+
+.component-wrapper .grant-description{
+  width:55%;
+}
+
+.component-wrapper .grant-number{
+  width:20%;
+  margin-right: 2px;
+}
+
+#dc\:description {
+ width:75%;
+}
+
+div[id='repeat-textbox-of-foaf:fundedBy.vivo:Grant'] .jaffaListItem {
+ float:none !important;
+}
+
+div[id='repeat-textbox-of-foaf:fundedBy.foaf:Agent'] .jaffaListItem {
+ float:none !important;
+}
+
+div[id='repeat-textbox-of-foaf:fundedBy.foaf:Agent'] input {
+ width:75%;
+}
+
+#locrel\:rth\.foaf\:Person\.foaf\:title {
+ width:5em;
+}
+
+#locrel\:rth\.foaf\:Person\.foaf\:givenName {
+ width:20em;
+}
+
+
+#locrel\:rth\.foaf\:Person\.foaf\:familyName {
+ width:20em;
+}
+
+#locrel\:rth\.foaf\:Person\.foaf\:email {
+ width:20em;
+}
+
+#locrel\:prc\.foaf\:Person\.foaf\:title {
+ width:5em;
+}
+
+#locrel\:prc\.foaf\:Person\.foaf\:givenName {
+ width:20em;
+}
+
+#locrel\:prc\.foaf\:Person\.foaf\:familyName {
+ width:20em;
+}
+
+#locrel\:prc\.foaf\:Person\.foaf\:email {
+ width:20em;
+}
+
+#locrel\:clb\.foaf\:Person .title{
+ width:5em;
+}
+
+#locrel\:clb\.foaf\:Person .given-name {
+ width:20em;
+}
+
+#locrel\:clb\.foaf\:Person .family-name {
+ width:20em;
+}
+
+#locrel\:clb\.foaf\:Person .email {
+ width:20em;
+}
+
+#swrc\:supervisor\.foaf\:Person\.foaf\:title {
+ width:5em;
+}
+
+#swrc\:supervisor\.foaf\:Person\.foaf\:givenName {
+ width:20em;
+}
+
+#swrc\:supervisor\.foaf\:Person\.foaf\:familyName {
+ width:20em;
+}
+
+#swrc\:supervisor\.foaf\:Person\.foaf\:email {
+ width:20em;
+}
+
+.mintNlaLookup {
+  padding-left:5px;
+}

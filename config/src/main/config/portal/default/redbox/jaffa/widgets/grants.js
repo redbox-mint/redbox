@@ -25,14 +25,14 @@ var GrantWidgetBuilder = function($, jaffa) {
             container.find("input[id=\""+this.oldField+"skos:prefLabel\"]").attr("id", this.field+"skos:prefLabel");
             container.find("input[id=\""+this.oldField+"redbox:grantNumber\"]").attr("id", this.field+"redbox:grantNumber");
             container.find("input[id=\""+this.oldField+"dc:identifier\"]").attr("id", this.field+"dc:identifier");
-           
+
             // Tell Jaffa to ignore the field's this widget used to manage
             jaffa.form.ignoreField(this.oldField);
             jaffa.form.ignoreField(this.oldField+".displayLabel");
             jaffa.form.ignoreField(this.oldField+"skos:prefLabel");
             jaffa.form.ignoreField(this.oldField+"redbox:grantNumber");
             jaffa.form.ignoreField(this.oldField+"dc:identifier");
-            
+
         },
         // Notify Jaffa that field <=> widget relations need to be updated
         //  This is called separately from above to avoid duplicate IDs that
@@ -72,7 +72,7 @@ var GrantWidgetBuilder = function($, jaffa) {
 
             // Control
             var type = this.getConfig("type") || "text";
-            var input = $("<input type=\""+type+"\" id=\""+this.field+"redbox:grantNumber\"   />");
+            var input = $("<input type=\""+type+"\" id=\""+this.field+"redbox:grantNumber\"  class='grant-number' />");
 
             var placeHolder = this.getConfig("placeholder");
             if  (placeHolder != null) {
@@ -90,9 +90,9 @@ var GrantWidgetBuilder = function($, jaffa) {
             }
 
             ui.append(input);
-            
-            
-           	
+
+
+
 
    				// Save current value of element
   				input.attr('oldVal', input.val());
@@ -107,15 +107,15 @@ var GrantWidgetBuilder = function($, jaffa) {
        						$("[id='"+fieldId+"skos:prefLabel']").val('');
 				     }
   			    });
-            
-            
-            
-            
-  
-            
+
+
+
+
+
+
             var hiddenInput = $("<input type=\"hidden\" id=\""+this.field+"dc:identifier\" />");
             ui.append(hiddenInput);
-            
+
             var descriptionLabel = $("<input id=\""+this.field+"skos:prefLabel\" disabled=\"disabled\" class=\"grant-description\" />");
             ui.append(descriptionLabel);
             // Are we tying any data lookups to the control?
@@ -182,7 +182,7 @@ var GrantWidgetBuilder = function($, jaffa) {
                             }
                         });
                     }
-                    
+
                 }
 
                 input.autocomplete({
@@ -191,7 +191,7 @@ var GrantWidgetBuilder = function($, jaffa) {
                     var targetId = $(event.target).attr('id');
             	targetId = targetId.substring(0,targetId.length-18);
            		 for (var field in ui.item) {
-            	
+
                 if (field != "label" && field != "value") {
                     var value = ui.item[field];
                     var found = false;
@@ -215,7 +215,7 @@ var GrantWidgetBuilder = function($, jaffa) {
                         target.change();
                         found = true;
                     }
-					
+
                     // Hmm, log something
                     if (!found) {
                         jaffa.logWarning("Unable to send output to '"+field+"', could not find anything meaningful with that value.");
