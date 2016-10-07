@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(function() {
      function appendIFrameForUnescaped(text, jQId) {
+        console.log("checking text: " + text);
         ## attach to an element to get unescaped.
         var unescaped = $(jQId).html(text).text();
         ## reset value
@@ -12,8 +13,8 @@ $(function() {
             .contents().find('body').append(unescaped);
      }
      ## ensure that pre-wysiwyg records don't break
-     #set($description=$self.getFirst("dc:descriptionshadow.1.text"))
-     appendIFrameForUnescaped($description.replaceAll("'","\\'").replaceAll("\n","\\n"), '#displaydescription$velocityCount');
+     #set($description=$self.getFirst("dc:description.1.shadow").replaceAll("'","\\'").replaceAll("\n","\\n"))
+     appendIFrameForUnescaped("$!{description}", '#displaydescription$velocityCount');
 
 });
 </script>
