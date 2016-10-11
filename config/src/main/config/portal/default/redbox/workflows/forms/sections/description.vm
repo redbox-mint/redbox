@@ -515,26 +515,24 @@ $(function() {
         // reset all wysiwyg editors
         tinymce.remove();
         $(".wysiwygEditor").each( function(index, e) {
+            $(e.id).show();
             editorUpdate(index, e);
         });
     }
 
     function editorUpdate(index, e) {
         if (index > 0) {
-           $(e.id).show();
             tinymce.init({
-            width: 800,
-            selector: escapeId(e.id),
-            plugins: ["link","image"],
+                width: 800,
+                selector: escapeId(e.id),
+                plugins: ["link","image"],
                 menubar: false,
                 setup : function(ed) {
                   ed.on('init', function(e) {
-                    tinymce.activeEditor.setContent(getUnescapedDescription(this));
-                    updateDescription(tinymce.activeEditor.getContent(), this);
-                    var descriptionId = $(this).attr('id');
-                    var deleteId = descriptionId.replace("text", "delete");
-                    // setup delete method for wysiwyg editor
-                    $171(escapeId(deleteId)).one('click', {index: descriptionId}, deleteDescription);
+                      var descriptionId = $(this).attr('id');
+                      var deleteId = descriptionId.replace("text", "delete");
+                      // setup delete method for wysiwyg editor
+                      $171(escapeId(deleteId)).one('click', deleteDescription);
                   });
                   ed.on('click', function(e) {
                       updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
@@ -552,6 +550,21 @@ $(function() {
                 }
             });
         }
+    }
+
+    function resetDescription(index, e) {
+    // incoming descriptions may have pre-wysiwyg escaped values, reset them before wysiwyg
+       if (index > 0) {
+            var descriptionId = e.id;
+            var text = $(escapeId(descriptionId)).val();
+            var unescaped = $(escapeId(descriptionId)).html(text).text();
+            var escaped = $(escapeId(descriptionId)).text(unescaped).html();
+            //reset
+            $(escapeId(descriptionId)).html('');
+            var shadowId = descriptionId.replace("text", "shadow");
+            $(escapeId(descriptionId)).val(unescaped);
+            $(escapeId(shadowId)).val(escaped);
+       }
     }
 
     function getDescriptionParent(jQDescriptionElement) {
@@ -572,7 +585,8 @@ $(function() {
         addFullEasyCounter($('.descriptionInput'));
 
         $(".wysiwygEditor").each( function(index, e) {
-            editorUpdate(index, e);
+                resetDescription(index, e);
+                editorUpdate(index, e);
         });
         updateAllDescriptionsValidation();
 

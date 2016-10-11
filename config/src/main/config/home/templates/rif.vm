@@ -304,10 +304,10 @@
         ################
         ## Description
 
-        #set($valueMap = $util.getList($item, "dc:descriptionshadow"))
+        #set($valueMap = $util.getList($item, "dc:description"))
         #foreach($key in $valueMap.keySet())
             #set($description =  $valueMap.get($key))
-            #set($descText = $description.get("text"))
+            #set($descText = $description.get("shadow"))
             #set($descType = $description.get("type"))
             #if("$!descText" != "")
                 <rif:description type="$descType" $lang>$util.encodeXml($descText)</rif:description>
