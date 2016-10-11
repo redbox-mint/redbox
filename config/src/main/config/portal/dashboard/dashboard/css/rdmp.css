@@ -123,3 +123,8 @@ div[id='repeat-textbox-of-foaf:fundedBy.foaf:Agent'] input {
 .mintNlaLookup {
   padding-left:5px;
 }
+
+label[for=redbox\:retentionPeriod\.dc\:date\.skos\:note] {
+  font-size: 105%;
+  font-weight: bold;
+}
