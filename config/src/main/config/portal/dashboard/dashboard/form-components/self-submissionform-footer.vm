@@ -293,14 +293,6 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
     }
 
 
-    function getUnescapedDescription(jQElement) {
-        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
-        var currentDescriptionWithTags = $(descriptionInputElementId).val();
-        ## need to set html to get unescaped text
-        var unescapedDescription = $(descriptionInputElementId).html(currentDescriptionWithTags).text();
-        return unescapedDescription;
-    }
-
     function deleteDescription(event) {
         // reset all wysiwyg editors
         tinymce.remove();
@@ -311,11 +303,11 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
             var correctedId = descriptionId.replace(/(\d)+/g,nextDescriptionCount);
             $(escapeId(descriptionId)).attr('id', correctedId);
             $(correctedId).show();
-            editorUpdate(index, e);
+            editorUpdate(e);
         });
     }
 
-    function editorUpdate(index, e) {
+    function editorUpdate(e) {
         tinymce.init({
             width: 800,
             selector: escapeId(e.id),
@@ -328,6 +320,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                     var deleteId = descriptionId.replace("text", "delete");
                     $171(parent).find('.jaffaDeleteItem').attr('id', deleteId);
                     $171(parent).one('click', escapeId(deleteId), deleteDescription);
+                    updateAllDescriptionsValidation();
                 });
                 ed.on('click', function(e) {
                     updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
@@ -339,13 +332,13 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                     updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
                 });
                 ed.on('blur', function(e) {
-                  updateAllDescriptionsValidation();
+                    updateAllDescriptionsValidation();
                 });
             }
         });
     }
 
-    function resetDescription(index, e) {
+    function resetDescription(e) {
         // incoming descriptions may have pre-wysiwyg escaped values, reset them before wysiwyg
         var descriptionId = e.id;
         var text = $(escapeId(descriptionId)).val();
@@ -364,23 +357,20 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         return $(escapeId(jQDescriptionElementId)).parents(escapeId(parentId));
     }
 
-    $171(document).ready(function() {
-        $(".wysiwygEditor").each( function(index, e) {
-            resetDescription(index, e);
-            editorUpdate(index, e);
-        });
-        updateAllDescriptionsValidation();
 
+    $171(document).ready(function() {
+        updateAllDescriptionsValidation();
         $171(escapeId("dc:description")).on('click', '.jaffaAddItem', function() {
-            var latestDescriptionIndex = $('.descriptionInput').length;
-            var descriptionTextElement = 'dc:description.'+latestDescriptionIndex+'.text';
-            // only need to update editor for latest description added
-            editorUpdate(latestDescriptionIndex,  $(escapeId(descriptionTextElement))[0]);
+            // jaffa add is clicked on initial form load and jaffa is slower than tinymce
+            //    - ensures descriptions always clean
+            $('.wysiwygEditor').each(function() {
+                resetDescription(this);
+                editorUpdate(this);
         });
+    });
+
 
         $171(escapeId('dc:description')).on('change', '.descriptionSelect', updateAllDescriptionsValidation);
-
-    });
 
      // licence support
      $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
@@ -389,6 +379,6 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
             $("[id='dc:accessRightsType']").val("open");
         }
      });
-
+});
 </script>
 

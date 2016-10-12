@@ -78,6 +78,7 @@
         #set($slot = $cList.get($key))
         #multiValuedProperty($slot "dc:description" "text" $order)
         #multiValuedProperty($slot "dc:description" "type" $order)
+        #multiValuedProperty($slot "dc:description" "shadow" $order)
         #set($order = $order + 1)
     #end
     #end
@@ -302,7 +303,9 @@
         "dc:coverage.vivo:GeographicLocation.2.geo:lat",
         "dc:coverage.vivo:GeographicLocation.1.dc:identifier",
         "dc:coverage.vivo:GeographicLocation.2.dc:identifier",
-        "dc:description",
+        "dc:description.0.text",
+        "dc:description.0.type",
+        "dc:description.0.shadow",
         "dc:relation.swrc:Publication.1.dc:identifier",
         "dc:relation.swrc:Publication.1.dc:title",
         "dc:relation.swrc:Publication.1.skos:note",
