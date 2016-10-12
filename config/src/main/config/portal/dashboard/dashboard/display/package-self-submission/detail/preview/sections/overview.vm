@@ -39,7 +39,22 @@
     </tr>
 #end
 
-## display a list in a row 
+#macro(displayUnescapedKey $map $key $required)
+    #set ($value = $map.get($key))
+    #if ("$!value" != "")
+$value
+    #else
+        #if ($required)
+#missing($key)
+        #end
+    #end
+#end
+
+#macro(displayUnescapedRequiredKey $map $key)
+    #displayUnescapedKey($map $key true)
+#end
+
+## display a list in a row
 #macro(displayRowList $label $baseKey $subKey)
 <tr>
 <td>$label</td>
@@ -98,5 +113,58 @@
 	    #end
     </table>
     <h4>#displayMessage("self-submission.field.label.dc-description")</h4>
-	<p>#displayCompoundArrayList("Descriptions" "dc:description" ["type", "text"] ": ")</p>
+     #set($dataList = $self.getList("dc:description"))
+    #if ($dataList.isEmpty())
+        <dd>
+            #noInformation()
+        </dd>
+    #else
+            <dd id="dcdescriptionList">
+                <ol>
+                    #foreach($key in $dataList.keySet())
+                        #set($data = $dataList.get($key))
+                    #set($descriptionText = $data.get("text"))
+                    #if ("$!descriptionText" != "")
+                         <li><div id="dcdescription${key}" class="dcdescription">#displayUnescapedRequiredKey($data "text")</div>
+                             #set($type = $data.get("type"))
+                             #if("$!type" != "")
+                                <ul>
+                                    <li><b>Type</b>: $type</li>
+                                </ul>
+                             #end
+                        </li>
+                    #end
+                #end
+                </ol>
+            </dd>
+    #end
 </section>
+
+<script type="text/javascript">
+$(function() {
+
+     function escapeId(rawId) {
+         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+     }
+    function appendIFrameForUnescaped(text, jQId) {
+        ## attach to an element to get unescaped.
+        iFramejQId = $('#dcdescriptionFrame').contents().find(jQId);
+        var unescapedText = iFramejQId.html(text).text();
+        ## reset the element before updating
+        iFramejQId.html('');
+        iFramejQId.html(text);
+    }
+    var originalDescriptions=$('#dcdescriptionList').html();
+    $('#dcdescriptionList').html('');
+    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
+         .contents().find('body').append(originalDescriptions);
+    $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
+        var className = $(this).attr('class');
+        ## ensure that pre-wysiwyg records don't break
+        var text = $(this).html();
+        text = text.trim();
+        var descriptionCount=$(this).attr('id').replace(className, '');
+        appendIFrameForUnescaped(text, escapeId('dcdescription' + descriptionCount));
+    });
+});
+</script>
