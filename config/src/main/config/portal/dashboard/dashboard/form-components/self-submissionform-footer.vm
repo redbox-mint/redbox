@@ -357,28 +357,57 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         return $(escapeId(jQDescriptionElementId)).parents(escapeId(parentId));
     }
 
+    function startFirst() {
+         var firstDescriptionJqElement = $(escapeId('dc:description.1.text'));
+         var iFrameId = escapeId('dc:description.1.text') + '_ifr';
+         resetDescription($(firstDescriptionJqElement)[0]);
+         editorUpdate($(firstDescriptionJqElement)[0]);
+         var initialValue = $(firstDescriptionJqElement).val();
+         getDescriptionParent(firstDescriptionJqElement).find(iFrameId).contents().find('#tinymce').val(initialValue);
+    }
+
+    function initialiseSingleDescription() {
+        //  a hack to wait for jaffa to come back with first value
+        var counter = 0;
+        var repeats = 6;
+        var intervalId = setInterval(function() {
+            var len = $(escapeId('dc:description')).find('.jaffaDeleteItem').length;
+            if (len > 1) {
+                window.clearInterval(intervalId);
+            }
+            var wywiwygContainer = $(escapeId('dc:description')).find('[id$=_ifr]')
+            if ($(wywiwygContainer).is(':visible')) {
+                 startFirst();
+                 window.clearInterval(intervalId);
+            }
+            if (++counter === repeats) {
+                startFirst();
+                window.clearInterval(intervalId);
+            }
+        }, 500);
+    }
+
 
     $171(document).ready(function() {
-        updateAllDescriptionsValidation();
+        initialiseSingleDescription();
         $171(escapeId("dc:description")).on('click', '.jaffaAddItem', function() {
-            // jaffa add is clicked on initial form load and jaffa is slower than tinymce
-            //    - ensures descriptions always clean
-            $('.wysiwygEditor').each(function() {
-                resetDescription(this);
-                editorUpdate(this);
-        });
-    });
-
+           // jaffa add is clicked on initial form load and jaffa is slower than tinymce
+           //    - ensures descriptions always clean
+           $('.wysiwygEditor').each(function() {
+               resetDescription(this);
+               editorUpdate(this);
+           });
+       });
 
         $171(escapeId('dc:description')).on('change', '.descriptionSelect', updateAllDescriptionsValidation);
 
-     // licence support
-     $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
-        var regex = /(CC|ODC|PDDL).*/i;
-        if (regex.test($(escapeId('dc:license.skos:prefLabel')).val())) {
-            $("[id='dc:accessRightsType']").val("open");
-        }
-     });
-});
+        // licence support
+        $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
+            var regex = /(CC|ODC|PDDL).*/i;
+            if (regex.test($(escapeId('dc:license.skos:prefLabel')).val())) {
+                $("[id='dc:accessRightsType']").val("open");
+            }
+        });
+    });
 </script>
 
