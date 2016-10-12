@@ -95,10 +95,6 @@
                                                     "label": "Brief"
                                                 },
                                                 {
-                                                    "value": "logo",
-                                                    "label": "Logo"
-                                                },
-                                                {
                                                     "value": "note",
                                                     "label": "Note"
                                                 }
@@ -111,8 +107,8 @@
                                     },
                                     {
                                         "jaffaText": {
-                                            "class-list": "jaffa-field descriptionInput full",
-                                            "suffix": "textFull",
+                                            "class-list": "jaffa-field description descriptionInput wysiwygEditor",
+                                            "suffix": "text",
                                             "textarea": {
                                                 "rows": "12",
                                                 "cols": "80"
@@ -121,35 +117,8 @@
                                     },
                                     {
                                         "jaffaText": {
-                                            "class-list": "jaffa-field descriptionInput brief",
-                                            "suffix": "textBrief",
-                                            "textarea": {
-                                                "rows": "2",
-                                                "cols": "80"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "jaffaText": {
-                                            "class-list": "jaffa-field descriptionInput logo",
-                                            "suffix": "textLogo",
-                                            "size": "80"
-                                        }
-                                    },
-                                    {
-                                        "jaffaText": {
-                                            "class-list": "jaffa-field descriptionInput note",
-                                            "suffix": "textNote",
-                                            "textarea": {
-                                                "rows": "2",
-                                                "cols": "80"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "jaffaText": {
-                                            "class-list": "jaffa-field description hidden",
-                                            "suffix": "text"
+                                            "class-list": "jaffa-field description hidden wysiwygShadow",
+                                            "suffix": "shadow"
                                         }
                                     }
                                 ]
