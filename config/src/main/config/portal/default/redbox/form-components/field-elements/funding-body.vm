@@ -24,6 +24,7 @@ $("[id='repeat-textbox-of-$field-name']").jaffaFundingBodyRepeatable({
 	"min-size":1,
 	"child-config":{
 		"label":"#displayMessage($label)",
+	    #if($!size != "")size:"$!size"#end,
 		"field":"",
 		"lookup-data":"$portalPath/proxyGet.script?ns=Funding_Bodies&fields=dc:identifier,dc:title&jaffa2autocomplete=true",
     "lookup-request": {

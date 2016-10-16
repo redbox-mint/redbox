@@ -163,6 +163,7 @@
                             "label": "",
                             "field-name": "dc:extent",
                             "field-name-label": "dc:extent",
+                            "size":"50",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -201,6 +202,7 @@
                             "component-type": "funding-body",
                             "field-name": "foaf:fundedBy.foaf:Agent",
                             "label": "",
+                            "size":"50",
                             "additional-classes": ""
                         },
                         {
@@ -273,6 +275,7 @@
                             "component-type": "text-input",
                             "field-name": "dc:identifier.rdf:PlainLiteral",
                             "label": "",
+                            "size": "50",
                             "additional-classes": ""
                         },
                         {
@@ -294,6 +297,7 @@
                                     {
                                         "jaffaText": {
                                             "label": "",
+                                            "size": "50",
                                             "class-list": "jaffa-field",
                                             "suffix": "dc:identifier"
                                         }
@@ -312,6 +316,7 @@
                             "component-type": "text-input",
                             "field-name": "vivo:Location.vivo:GeographicLocation.gn:name",
                             "label": "",
+                            "size": "50",
                             "additional-classes": "",
                             "content": ""
                         },
@@ -422,6 +427,7 @@
                                     {
                                         "jaffaText": {
                                             "label": "",
+                                            "size": "50",
                                             "class-list": "jaffa-field",
                                             "suffix": "rdf:PlainLiteral"
                                         }
@@ -633,12 +639,14 @@
                         {
                             "component-type": "text-input",
                             "field-name": "dc:license.rdf:Alt.skos:prefLabel",
+                            "size": "50",
                             "label": "self-submission.field.label.dc-license.rdf-Alt.skos-prefLabel",
                             "additional-classes": ""
                         },
                         {
                             "component-type": "text-input",
                             "field-name": "dc:license.rdf:Alt.dc:identifier",
+                            "size": "50",
                             "label": "self-submission.field.label.dc-license.rdf-Alt.dc-identifier",
                             "additional-classes": ""
                         },
@@ -656,6 +664,7 @@
                             "component-type": "text-input",
                             "field-name": "dc:accessRights.dc:RightsStatement.skos:prefLabel",
                             "label": "",
+                            "size": "50",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -671,6 +680,7 @@
                             "component-type": "text-input",
                             "label": "self-submission.field.label.dc-accessRights.dc-RightsStatement.dc-identifier",
                             "field-name": "dc:accessRights.dc:RightsStatement.dc:identifier",
+                            "size": "50",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -696,6 +706,7 @@
                             "component-type": "text-input",
                             "label": "",
                             "field-name": "dc:accessRights.skos:prefLabel",
+                            "size": "50",
                             "validation": {
                                 "save-rules": [
                                     "required"
@@ -719,6 +730,7 @@
                         {
                             "component-type": "text-input",
                             "label": "self-submission.field.label.dc-accessRights.dc-identifier",
+                            "size": "50",
                             "field-name": "dc:accessRights.dc:identifier",
                             "validation": {
                                 "save-rules": [
