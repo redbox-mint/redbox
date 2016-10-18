@@ -179,6 +179,18 @@
                 <rif:namePart>$util.encodeXml($util.get($item, "dc:title"))</rif:namePart>
             </rif:name>
 
+        ## Dates
+        ## Just date created for now to reach ANDS Quality Level 3
+        #set($dateCreated = "")
+        #if ($util.get($item, "dc:created") != "")
+            #set($dateCreated = "$util.getDateTime($util.get($item, 'dc:created'), $dateFormat)")
+            <rif:dates type="dc.created">
+                <date type="dateFrom" dateFormat="W3CDTF">$dateCreated</date>
+                <date type="dateTo" dateFormat="W3CDTF"/>
+            </rif:dates>
+        #end
+
+
         ## Location
         #set($valueMap = $util.getList($item, "bibo:Website"))
         #set($firstValue = "")
