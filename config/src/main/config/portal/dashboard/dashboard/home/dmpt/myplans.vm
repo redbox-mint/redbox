@@ -43,7 +43,7 @@ function plansMapFn(mod, rawdata) {
   	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
   	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
   	data[i]["editUrl"] = '$portalPath/workflow/' + data[i].id;
-    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/Data%20Management%20Plan.pdf' : null;
+    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/DataManagementPlan.pdf' : null;
     data[i]["currentUser"] = currentUser; 
   	mod.rows.push(data[i]);
   }
@@ -94,7 +94,7 @@ function sharedPlansMapFn(mod, rawdata) {
     data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
   	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
   	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);  	
-    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/Data%20Management%20Plan.pdf' : null;     
+    data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/DataManagementPlan.pdf' : null;
   	mod.rows.push(data[i]);
   }
 };
