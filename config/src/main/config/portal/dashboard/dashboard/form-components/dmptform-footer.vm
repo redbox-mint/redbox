@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="$portalPath/css/rdmp.css"/>
 <script src="$portalPath/js/wizard.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -14,9 +15,9 @@
 		#else
 			wizard_init('#simpleworkflow-form','h1.tab-heading', "$portalPath/form-components/dmpt-iniflow.json", "dmptTabs");
 		#end
-		
+
 		$("[id='dataLicensingAccess.manager']").attr('disabled','disabled');
-		
+
 		//on change event to set read only field in Data licensing and access with data manager
 		$("[id='locrel:prc.foaf:Person.foaf:familyName']").change(function() {
 			var dataManager= $("[id='locrel:prc.foaf:Person.foaf:title']").val() + " " +

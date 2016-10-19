@@ -41,7 +41,17 @@ class GetRecordsData(PaginatedDataRetriever):
         return "packageType:" + self.packageType
 
     def getFilterQuery(self):
-        return ""
+        if self.formData.get("relatedOids") is not None:
+            oids= self.formData.get("relatedOids").split(",")
+            query = "("
+            for oid in oids:
+                if oid != "":
+                    query= query+"storage_id:"+oid + " OR "
+            query = query[:-3]
+            query = query +")"
+            return query
+        else:
+            return ""
 
     def isAdmin(self):
         return self.vc("page").authentication.is_admin()

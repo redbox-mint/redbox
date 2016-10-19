@@ -15,6 +15,7 @@
 <script type="text/javascript" src="$portalPath/js/jquery-wikitext-0.3.js"></script>
 <script type="text/javascript" src="$portalPath/js/jquery.jqEasyCharCounter.min.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/widgets2.js"></script>
+<script type="text/javascript" src="$portalPath/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="$portalPath/javascript-widgets/nameLookup.js"></script>
 <script type="text/javascript">
 #set($defaultIternal = "internal:id")

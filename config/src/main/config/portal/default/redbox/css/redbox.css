@@ -456,3 +456,7 @@ button.anzsrcSelection {
     padding-left: 10px;
     margin-top: 5px;
 }
+
+.nav.actions.fascinator {
+    display: none !important;
+}

@@ -1,8 +1,8 @@
-##    locrel:rth.foaf:Person.foaf:title 
-##    locrel:rth.foaf:Person.foaf:givenName 
-##    locrel:rth.foaf:Person.foaf:familyName 
-##    locrel:rth.foaf:Person.foaf:email    
-    
+##    locrel:rth.foaf:Person.foaf:title
+##    locrel:rth.foaf:Person.foaf:givenName
+##    locrel:rth.foaf:Person.foaf:familyName
+##    locrel:rth.foaf:Person.foaf:email
+
 #macro(displayPerson $key $name)
     <dt>$name</dt>
     <dd>
@@ -13,7 +13,7 @@
     #if ($familyName || $givenName)
     	$page.escapeHtml($!title) $page.escapeHtml($!givenName) $page.escapeHtml($!familyName)
     	#if ( $!email != "") [ $page.escapeHtml($email) ] #end
-    #else	
+    #else
     ##if ($items && $items.size > 0)
 		##set($i = 0)
 		##foreach($item in $items)
@@ -33,7 +33,7 @@
 #macro(displayKey $map $key $required)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-$page.escapeHtml($value)
+$page.escapeHtml($!value)
 #else
     #if ($required)
 #missing($key)
@@ -58,10 +58,10 @@ $page.escapeHtml($value)
     <dl>
 	#displayPerson("locrel:rth.foaf:Person.foaf" "#displayMessage('dmpt.field.label.locrel-rth.foaf-Person')")
     #displayPerson("locrel:prc.foaf:Person.foaf" "#displayMessage('dmpt.field.label.locrel-prc.foaf-Person')")
-    
+
     <dt>#displayMessage('dmpt.field.label.locrel-clb.foaf-Person')</dt>
     #set($personList = $self.getList("locrel:clb.foaf:Person"))
-    #if ($personList.isEmpty())
+    #if ($personList.isEmpty() || $metadata.get("locrel:clb.foaf:Person.1.person.foaf:givenName") == "" || !$metadata.get("locrel:clb.foaf:Person.1.person.foaf:givenName") == "")
     <dd>
     #noInformation()
     </dd>
@@ -82,6 +82,6 @@ $page.escapeHtml($value)
     #end
 
     #displayPerson("swrc:supervisor.foaf:Person.foaf" "#displayMessage('dmpt.field.label.swrc-supervisor.foaf-Person')")
-        
+
     </dl>
 </div>

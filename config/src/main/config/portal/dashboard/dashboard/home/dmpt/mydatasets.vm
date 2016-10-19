@@ -1,13 +1,19 @@
 #parseTemplate("page-components/pagedSection.vm")
 
-
+#set($relatedDatasets = $self.getTFPackage().getArray("related.datasets"))
 <div class="block">
-
 #if ($self.myDrafts && $self.myDrafts.size() > 0)
 #############################
 ## Begin Paged Table - MyDrafts
 #############################
+#if($relatedDatasets)
+  #set($draftsRecUrl = "$portalPath/getRecords.script?packageType=self-submission&relatedOids=")
+#foreach($relatedDataset in $relatedDatasets)
+  #set($draftsRecUrl = $draftsRecUrl+$relatedDataset.get("oid")+",")
+#end
+#else
 #set($draftsRecUrl = "$portalPath/getRecords.script?packageType=self-submission")
+#end
 #set($draftsTblStruct = "
     <thead>
        <tr>
@@ -29,7 +35,7 @@
                 <a data-bind='click: $parent.manageAccess' href='#' title=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.access')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.mydatasets.manage.access')${q} src='$portalPath/images/icons/application_key.png' title='Manage Record'></a>
            </td>
         </tr>
-    </tbody>    
+    </tbody>
 ")
 <script>
 function draftsMapFn(mod, rawdata) {
@@ -58,7 +64,14 @@ draftFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
 #############################
 ## Begin Paged Table - Datasets
 #############################
+#if($relatedDatasets)
+  #set($dsRecUrl = "$portalPath/getRecords.script?packageType=dataset&relatedOids=")
+#foreach($relatedDataset in $relatedDatasets)
+  #set($dsRecUrl = $dsRecUrl+$relatedDataset.get("oid")+",")
+#end
+#else
 #set($dsRecUrl = "$portalPath/getRecords.script?packageType=dataset")
+#end
 #set($dsTblStruct = "
     <thead>
         <tr>
@@ -75,7 +88,7 @@ draftFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
            <td data-bind='text: last_modified' />
            <td data-bind='text: workflow_step_label' />
         </tr>
-    </tbody>    
+    </tbody>
 ")
 <script>
 function dsMapFn(mod, rawdata) {
@@ -97,5 +110,5 @@ function dsMapFn(mod, rawdata) {
 ## End Paged Table - Datasets
 #############################
 #end
-       
+
 </div>

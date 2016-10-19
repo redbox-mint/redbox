@@ -39,13 +39,13 @@
                 #noInformation()
             </dd>
         #else
-                <dd>
+                <dd id="dcdescriptionList">
                     <ol>
                         #foreach($key in $dataList.keySet())
                             #set($data = $dataList.get($key))
                         #set($descriptionText = $data.get("text"))
                         #if ("$!descriptionText" != "")
-                             <li>#displayRequiredKey($data "text")
+                             <li><div id="dcdescription${key}" class="dcdescription">#displayUnescapedRequiredKey($data "text")</div>
                                  #set($type = $data.get("type"))
                                  #if("$!type" != "")
                                     <ul>
@@ -141,7 +141,7 @@
                 </dd>
             #end
         #end
-        
+
         <dt>Technical metadata</dt>
         #set($dataList = $self.getList("dc:relation.redbox:TechnicalMetadata"))
         #if ($dataList.isEmpty())
@@ -180,3 +180,32 @@
         #end
     </dl>
 </div>
+
+<script type="text/javascript">
+$(function() {
+
+     function escapeId(rawId) {
+         return "#" + rawId.replace( /(:|\.)/g, "\\$1" );
+     }
+    function appendIFrameForUnescaped(text, jQId) {
+        ## attach to an element to get unescaped.
+        iFramejQId = $('#dcdescriptionFrame').contents().find(jQId);
+        var unescapedText = iFramejQId.html(text).text();
+        ## reset the element before updating
+        iFramejQId.html('');
+        iFramejQId.html(text);
+    }
+    var originalDescriptions=$('#dcdescriptionList').html();
+    $('#dcdescriptionList').html('');
+    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
+         .contents().find('body').append(originalDescriptions);
+    $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
+        var className = $(this).attr('class');
+        ## ensure that pre-wysiwyg records don't break
+        var text = $(this).html();
+        text = text.trim();
+        var descriptionCount=$(this).attr('id').replace(className, '');
+        appendIFrameForUnescaped(text, escapeId('dcdescription' + descriptionCount));
+    });
+});
+</script>

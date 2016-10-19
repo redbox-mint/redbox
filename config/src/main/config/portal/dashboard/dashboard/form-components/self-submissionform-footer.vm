@@ -231,6 +231,7 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
 	
 <script type="text/javascript" src="$portalPath/js/jquery.1.7.1.min.js"></script>
 <script>var $171 = jQuery.noConflict(true);</script>
+<script type="text/javascript" src="$portalPath/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
     //multiple descriptions support
     function escapeId(rawId) {
@@ -244,25 +245,25 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
                 hasCompliance = true;
             }
         });
-        $('[id=isDescriptionRDACompliant]').val("");
+        $('#isDescriptionRDACompliant').val("");
         if (hasCompliance) {
-            $('[id=isDescriptionRDACompliant]').val(hasCompliance);
-            $('[id=isDescriptionRDACompliant]').hide();
+            $('#isDescriptionRDACompliant').val(hasCompliance);
+            $('#isDescriptionRDACompliant').hide();
         }
     }
 
     function updateEmptyDescriptionsValidation() {
-        var hasDescription = true;
-        $(".description.hidden").each(function(index, e) {
+        var hasAllDescriptions = true;
+        $('.descriptionInput').each(function(index, e) {
             var jQelement = $(escapeId(e.id));
             if (jQelement.val() == "") {
-                hasDescription = false;
+                hasAllDescriptions = false;
             }
         });
-        $('.hasNoEmptyDescriptions').val("");
-        if (hasDescription) {
-            $('.hasNoEmptyDescriptions').val(hasDescription);
-            $('[id=isDescriptionRDACompliant]').hide();
+        $('#hasNoEmptyDescriptions').val("");
+        if (hasAllDescriptions) {
+            $('#hasNoEmptyDescriptions').val(hasAllDescriptions);
+            $('#hasNoEmptyDescriptions').hide();
         }
     }
 
@@ -271,94 +272,142 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
         updateDescriptionsRDAComplianceValidation();
     }
 
-    function afterJaffaDelete() {
-        // use to clean up indexes after jaffa missed some children.
-        $171("[id^='dc:description.'][id$='ContainerItem']").each(function(index, e) {
-            var re = /dc\:description\.([\d]+)\./;
-            var matchedNumberedId = re.exec(e.id);
-            $171(this).find("[id^='dc:description.']").each(function(index, e) {
-                var matchedChildNumberedId = re.exec(e.id);
-                // ensure child element contains number first
-                if (matchedChildNumberedId && matchedChildNumberedId[1] != matchedNumberedId[1]) {
-                    var replaceId = $(this).attr("id").replace(matchedChildNumberedId[0], matchedNumberedId[0]);
-                    $(this).attr("id", replaceId);
-                }
-            });
-        });
+    function updateDescription(text, jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        ## ensure all linebreaks are removed - otherwise this will break views
+        var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
+        ## need to set html to get unescaped text to render correctly in preview.
+        var unescaped = $(descriptionInputElementId).html(sanitisedText).text();
+        $(descriptionInputElementId).val(unescaped);
+        ## need to set text to get escaped html
+        $(descriptionInputElementId).focus();
+        var escaped = $(descriptionInputElementId).text(unescaped).html();
+        getDescriptionParent(descriptionInputElementId).find('.wysiwygShadow').val(escaped);
         updateAllDescriptionsValidation();
+    }
+
+
+    function updateDescriptionFromEditor(text, jqEditorElement) {
+        updateDescription(text, jqEditorElement);
+        $(jqEditorElement).focus();
+    }
+
+
+    function deleteDescription(event) {
+        // reset all wysiwyg editors
+        tinymce.remove();
+        $(".wysiwygEditor").each( function(index, e) {
+            var descriptionId = e.id;
+            // jaffa will auto adjust container count - need to force mce to do the same
+            var nextDescriptionCount = index + 1;
+            var correctedId = descriptionId.replace(/(\d)+/g,nextDescriptionCount);
+            $(escapeId(descriptionId)).attr('id', correctedId);
+            $(correctedId).show();
+            editorUpdate(e);
+        });
+    }
+
+    function editorUpdate(e) {
+        tinymce.init({
+            width: 800,
+            selector: escapeId(e.id),
+            plugins: ["link","image"],
+            menubar: false,
+            setup : function(ed) {
+                ed.on('init', function(e) {
+                    var descriptionId = $(this).attr('id');
+                    var parent = getDescriptionParent(escapeId(descriptionId));
+                    var deleteId = descriptionId.replace("text", "delete");
+                    $171(parent).find('.jaffaDeleteItem').attr('id', deleteId);
+                    $171(parent).one('click', escapeId(deleteId), deleteDescription);
+                    updateAllDescriptionsValidation();
+                });
+                ed.on('click', function(e) {
+                    updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                });
+                ed.on('change', function(e) {
+                    updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                });
+                ed.on('keyup', function(e) {
+                    updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                });
+                ed.on('blur', function(e) {
+                    updateAllDescriptionsValidation();
+                });
+            }
+        });
+    }
+
+    function resetDescription(e) {
+        // incoming descriptions may have pre-wysiwyg escaped values, reset them before wysiwyg
+        var descriptionId = e.id;
+        var text = $(escapeId(descriptionId)).val();
+        var unescaped = $(escapeId(descriptionId)).html(text).text();
+        var escaped = $(escapeId(descriptionId)).text(unescaped).html();
+        //reset
+        $(escapeId(descriptionId)).html('');
+        var shadowId = descriptionId.replace("text", "shadow");
+        $(escapeId(descriptionId)).val(unescaped);
+        $(escapeId(shadowId)).val(escaped);
     }
 
     function getDescriptionParent(jQDescriptionElement) {
-        return jQDescriptionElement.parents("[id^='dc:description'][id$='ContainerItem']");
+        var parentId = $(jQDescriptionElement).attr("id").replace('text', 'ContainerItem');
+        var jQDescriptionElementId = $(jQDescriptionElement).attr('id');
+        return $(escapeId(jQDescriptionElementId)).parents(escapeId(parentId));
     }
 
-    function toggleDescriptionValidations(parent, descriptionType) {
-        parent.find(".validation.description").hide();
-        parent.find('.validation.description.'+descriptionType).show();
+    function startFirst() {
+         var firstDescriptionJqElement = $(escapeId('dc:description.1.text'));
+         var iFrameId = escapeId('dc:description.1.text') + '_ifr';
+         resetDescription($(firstDescriptionJqElement)[0]);
+         editorUpdate($(firstDescriptionJqElement)[0]);
+         var initialValue = $(firstDescriptionJqElement).val();
+         getDescriptionParent(firstDescriptionJqElement).find(iFrameId).contents().find('#tinymce').val(initialValue);
     }
 
-    function getDescriptionInputElement(parent, descriptionType) {
-        parent.find('.descriptionInput').hide();
-        return parent.find('.descriptionInput.'+ descriptionType);
-    }
-
-    //171 ready function addresses issues with capturing all dynamic rows
-    $171(document).ready(function() {
-        $(".description").hide();
-        $(".descriptionSelect").each(function(index) {
-                var parent = getDescriptionParent($(this));
-                var descriptionType = $(this).val();
-                var textSource = parent.find(".description.hidden");
-                var textDestination = getDescriptionInputElement(parent, descriptionType);
-                toggleDescriptionValidations(parent, descriptionType);
-                if (textDestination) {
-                    textDestination.val(textSource.val());
-                    textDestination.show();
-                }
-        });
-        updateAllDescriptionsValidation();
-        $171("[id^='dc:description']").on('change', '.descriptionSelect', function() {
-            var parent = getDescriptionParent($(this));
-            var descriptionType = $(this).val();
-            var textSource = getDescriptionInputElement(parent, descriptionType);
-            toggleDescriptionValidations(parent, descriptionType);
-            var textValue = ""
-            if (textSource) {
-                textSource.show();
-                textValue = textSource.val();
+    function initialiseSingleDescription() {
+        //  a hack to wait for jaffa to come back with first value
+        var counter = 0;
+        var repeats = 6;
+        var intervalId = setInterval(function() {
+            var len = $(escapeId('dc:description')).find('.jaffaDeleteItem').length;
+            if (len > 1) {
+                window.clearInterval(intervalId);
             }
-            parent.find(".description.hidden").val(textValue);
-            updateAllDescriptionsValidation();
-        });
-        $171("[id^='dc:description']").on('input', '.descriptionInput', function() {
-            var parent = getDescriptionParent($171(this));
-            var targetId = parent.find(".description.hidden").attr("id");
-            $("[id='"+ targetId + "']").val($(this).val());
-            var descriptionType = parent.find('.descriptionSelect').val();
-            toggleDescriptionValidations(parent, descriptionType);
-            updateAllDescriptionsValidation();
-        });
-        $171("[id^=dc\\:description] .jaffaAddItem").click(function() {
-            var latestDescriptionIndex = $('.description.hidden').length;
-            var descriptionType = $(".descriptionSelect[id^='dc:description."+latestDescriptionIndex+".type']");
-            var parent = getDescriptionParent(descriptionType);
-            getDescriptionInputElement(parent, descriptionType.val()).show();
-            parent.find('.jaffaDeleteItem').each(function() {
-                $(this).attr("onclick", "afterJaffaDelete();");
-            });
-            toggleDescriptionValidations(parent, descriptionType.val());
-            updateAllDescriptionsValidation();
-        });
+            var wywiwygContainer = $(escapeId('dc:description')).find('[id$=_ifr]')
+            if ($(wywiwygContainer).is(':visible')) {
+                 startFirst();
+                 window.clearInterval(intervalId);
+            }
+            if (++counter === repeats) {
+                startFirst();
+                window.clearInterval(intervalId);
+            }
+        }, 500);
+    }
 
+
+    $171(document).ready(function() {
+        initialiseSingleDescription();
+        $171(escapeId("dc:description")).on('click', '.jaffaAddItem', function() {
+           // jaffa add is clicked on initial form load and jaffa is slower than tinymce
+           //    - ensures descriptions always clean
+           $('.wysiwygEditor').each(function() {
+               resetDescription(this);
+               editorUpdate(this);
+           });
+       });
+
+        $171(escapeId('dc:description')).on('change', '.descriptionSelect', updateAllDescriptionsValidation);
+
+        // licence support
+        $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
+            var regex = /(CC|ODC|PDDL).*/i;
+            if (regex.test($(escapeId('dc:license.skos:prefLabel')).val())) {
+                $("[id='dc:accessRightsType']").val("open");
+            }
+        });
     });
-
-     // licence support
-     $171('.simple-workflow.component-wrapper').on('change', escapeId('dc:license.dc:identifier'), function() {
-        var regex = /(CC|ODC|PDDL).*/i;
-        if (regex.test($(escapeId('dc:license.skos:prefLabel')).val())) {
-            $("[id='dc:accessRightsType']").val("open");
-        }
-     });
-
 </script>
 

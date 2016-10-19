@@ -116,7 +116,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="input" id="isDescriptionRDACompliant" class="isDescriptionRDACompliant"/>
+                        <input type="input" id="isDescriptionRDACompliant" class="isDescriptionRDACompliant hidden"/>
                         <label class="validation-err-msg"
                             id="isDescriptionRDACompliantErrMsg"
                             for="isDescriptionRDACompliant"
@@ -128,45 +128,16 @@
                 </tr>
                 <tr class="item-input-display">
                     <td>
-                        <textarea rows="12" cols="80" id="dc:description.0.textFull" class="full descriptionInput" style="vertical-align: text-top;"
+                   <textarea rows="12" cols="80" id="dc:description.0.text" class="text descriptionInput description wysiwygEditor" style="vertical-align: text-top;"
                                 placeholder="eg. This dataset contains observational data and calibration files."></textarea>
-                        <textarea rows="2" cols="80" id="dc:description.0.textBrief" class="brief descriptionInput" style="display: none; vertical-align: text-top;"
-                                placeholder="Brief description."></textarea>
-                        <input size="80" type="text" id="dc:description.0.textLogo" class="logo descriptionInput" style="display: none; vertical-align: text-top;" placeholder="URL that shows logo."/>
-                        <textarea rows="2" cols="80" id="dc:description.0.textNote" class="note descriptionInput" style="display: none; vertical-align: text-top;"
-                                                        placeholder="Description note."></textarea>
-                        <input type="text" id="dc:description.0.text" class="description hidden text"/>
-                        <div id="descriptionValidation.0.full" class="validation description full">
+                        <input type="hidden" id="dc:description.0.shadow" class="wysiwygShadow hidden" />
+                        <div id="descriptionValidation.0.text" class="validation description text">
                         <label class="validation-err-msg"
-                            id="dc:description.0.textFullErrMsg"
-                            for="dc:description.0.textFull"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.full);">
+                            id="dc:description.0.textErrMsg"
+                            for="dc:description.0.text"
+                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.text);">
                             Empty descriptions are not allowed!
                         </label>
-                        </div>
-                        <div id="descriptionValidation.0.brief" class="validation description brief">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textBriefErrMsg"
-                            for="dc:description.0.textBrief"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.brief);">
-                            Empty descriptions are not allowed!
-                            </label>
-                        </div>
-                        <div id="descriptionValidation.0.logo" class="validation description logo">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textLogoErrMsg"
-                            for="dc:description.0.textLogo"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.logo);">
-                            Empty descriptions are not allowed!
-                            </label>
-                        </div>
-                        <div id="descriptionValidation.0.note" class="validation description note">
-                            <label class="validation-err-msg"
-                            id="dc:description.0.textNoteErrMsg"
-                            for="dc:description.0.textNote"
-                            data-validation-rule="test(notEmpty); when(blur, change, keyup); jsTest(var lid = id + 'ErrMsg';r = hasInvalidDescription(id);label=$('.'+lid);); liveFor(.note);">
-                            Empty descriptions are not allowed!
-                            </label>
                         </div>
                     </td>
                     <td style="vertical-align: middle;">
@@ -174,11 +145,12 @@
                        <select id="dc:description.0.type" style="left:20em;" class="descriptionSelect">
                           <option value="full">Full</option>
                           <option value="brief">Brief</option>
-                          <option value="logo">Logo</option>
                           <option value="note">Note</option>
                        </select>
                     </td>
-                    <td class="delete-item deleteDescription" id="dc:description.0.delete" style="vertical-align: middle;"><a href="#">delete</a></td>
+                    <td style="vertical-align: middle;">
+                    <div class="delete-item deleteDescription" id="dc:description.0.delete" ><a href="#">delete</a></div>
+                    </td>
                     <td style="width: 100%;"> </td>
                 </tr>
             </tbody>
@@ -191,7 +163,7 @@
             </tfoot>
         </table>
     </p>
-    
+
     #fieldTitle("dc:relation.swrc:Publication" "Related Publications" false)
     <div class="help-content" id="help-dc:relation.swrc:Publication">
         Include URL/s to any publications underpinning the research
@@ -481,16 +453,16 @@ $(function() {
                 }
              }
         });
-        $('[id=isDescriptionRDACompliant]').val("");
+        $('#isDescriptionRDACompliant').val("");
         if (hasCompliance) {
-            $('[id=isDescriptionRDACompliant]').val(hasCompliance);
-            $('[id=isDescriptionRDACompliant]').hide();
+            $('#isDescriptionRDACompliant').val(hasCompliance);
+            $('#isDescriptionRDACompliantErrMsg').hide();
         }
     }
 
     function updateEmptyDescriptionsValidation() {
         var hasDescription = true;
-        $('.description.hidden').each(function(index, e) {
+        $('.descriptionInput').each(function(index, e) {
             if (index > 0) {
                 var jQelement = $(escapeId(e.id));
                 if (jQelement.val() == "") {
@@ -498,10 +470,10 @@ $(function() {
                 }
             }
         });
-        $('[id=hasNoEmptyDescriptions]').val("");
+        $('#hasNoEmptyDescriptions').val("");
         if (hasDescription) {
-            $('[id=hasNoEmptyDescriptions]').val(hasDescription);
-            $('[id=hasNoEmptyDescriptionsErrMsg]').hide();
+            $('#hasNoEmptyDescriptions').val(hasDescription);
+            $('#hasNoEmptyDescriptionsErrMsg').hide();
         }
     }
 
@@ -510,18 +482,94 @@ $(function() {
         updateDescriptionsRDAComplianceValidation();
     }
 
+    function updateDescription(text, jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        ## ensure all linebreaks are removed - otherwise this will break views
+        var sanitisedText = text.replace(/(\r\n|\n|\r)/gm,"");
+        ## need to set html to get unescaped text to render correctly in preview.
+        var unescaped = $(descriptionInputElementId).html(sanitisedText).text();
+        $(descriptionInputElementId).val(unescaped);
+        ## need to set text to get escaped html
+        $(descriptionInputElementId).focus();
+        var escaped = $(descriptionInputElementId).text(unescaped).html();
+        getDescriptionParent($(descriptionInputElementId)).find('.wysiwygShadow').val(escaped);
+        updateAllDescriptionsValidation();
+    }
+
+
+    function updateDescriptionFromEditor(text, jqEditorElement) {
+        updateDescription(text, jqEditorElement);
+        $(jqEditorElement).focus();
+    }
+
+
+    function getUnescapedDescription(jQElement) {
+        var descriptionInputElementId = escapeId($(jQElement).attr('id'));
+        var currentDescriptionWithTags = $(descriptionInputElementId).val();
+        ## need to set html to get unescaped text
+        var unescapedDescription = $(descriptionInputElementId).html(currentDescriptionWithTags).text();
+        return unescapedDescription;
+    }
+
+    function deleteDescription(event) {
+        // reset all wysiwyg editors
+        tinymce.remove();
+        $(".wysiwygEditor").each( function(index, e) {
+            $(e.id).show();
+            editorUpdate(index, e);
+        });
+    }
+
+    function editorUpdate(index, e) {
+        if (index > 0) {
+            tinymce.init({
+                width: 800,
+                selector: escapeId(e.id),
+                plugins: ["link","image"],
+                menubar: false,
+                setup : function(ed) {
+                  ed.on('init', function(e) {
+                      var descriptionId = $(this).attr('id');
+                      var deleteId = descriptionId.replace("text", "delete");
+                      // setup delete method for wysiwyg editor
+                      $171(escapeId(deleteId)).one('click', deleteDescription);
+                  });
+                  ed.on('click', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                  ed.on('change', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                  ed.on('keyup', function(e) {
+                      updateDescriptionFromEditor(tinymce.activeEditor.getContent(), this);
+                  });
+                  ed.on('blur', function(e) {
+                      updateAllDescriptionsValidation();
+                  });
+
+                }
+            });
+        }
+    }
+
+    function resetDescription(index, e) {
+    // incoming descriptions may have pre-wysiwyg escaped values, reset them before wysiwyg
+       if (index > 0) {
+            var descriptionId = e.id;
+            var text = $(escapeId(descriptionId)).val();
+            var unescaped = $(escapeId(descriptionId)).html(text).text();
+            var escaped = $(escapeId(descriptionId)).text(unescaped).html();
+            //reset
+            $(escapeId(descriptionId)).html('');
+            var shadowId = descriptionId.replace("text", "shadow");
+            $(escapeId(descriptionId)).val(unescaped);
+            $(escapeId(shadowId)).val(escaped);
+       }
+    }
+
     function getDescriptionParent(jQDescriptionElement) {
-        return jQDescriptionElement.parents(".item-input-display");
-    }
-
-    function toggleDescriptionValidations(parent, descriptionType) {
-        parent.find(".validation.description").hide();
-        parent.find('.validation.description.'+descriptionType).show();
-    }
-
-    function getDescriptionInputElement(parent, descriptionType) {
-        parent.find('.descriptionInput').hide();
-        return parent.find('.descriptionInput.'+ descriptionType);
+        var jQDescriptionElementId = escapeId(jQDescriptionElement.attr('id'));
+        return $(jQDescriptionElementId).parents(".item-input-display");
     }
 
     function addFullEasyCounter(jQElement) {
@@ -534,51 +582,23 @@ $(function() {
 
     //171 ready function addresses issues with capturing all dynamic rows
     $171(document).ready(function() {
-        addFullEasyCounter($('.descriptionInput.full'));
+        addFullEasyCounter($('.descriptionInput'));
 
-        $171('.deleteDescription').bind('click', updateAllDescriptionsValidation);
-        $(".descriptionSelect").each(function(index) {
-            if (index > 0) {
-                var parent = getDescriptionParent($(this));
-                var descriptionType = $(this).val();
-                var textSource = parent.find(".description.hidden");
-                var textDestination = getDescriptionInputElement(parent, descriptionType);
-                toggleDescriptionValidations(parent, descriptionType);
-                if (textDestination) {
-                    textDestination.val(textSource.val());
-                    textDestination.show();
-                }
-            }
+        $(".wysiwygEditor").each( function(index, e) {
+                resetDescription(index, e);
+                editorUpdate(index, e);
         });
         updateAllDescriptionsValidation();
-        $171('.input-list').on('change', '.descriptionSelect', function() {
-            hideDescriptionJQEasyCounter();
-            var parent = getDescriptionParent($(this));
-            var descriptionType = $(this).val();
-            var textSource = getDescriptionInputElement(parent, descriptionType);
-            toggleDescriptionValidations(parent, descriptionType);
-            var textValue = ""
-            if (textSource) {
-                textSource.show();
-                textValue = textSource.val();
-            }
-            parent.find(".description.hidden").val(textValue);
-            updateAllDescriptionsValidation();
-        });
-        $171('.input-list').on('input', '.descriptionInput', function() {
-            var parent = getDescriptionParent($(this));
-            parent.find(".description.hidden").val($(this).val());
-            var descriptionType = parent.find('.descriptionSelect').val();
-            toggleDescriptionValidations(parent, descriptionType);
-            updateAllDescriptionsValidation();
-        });
+
         $171('[id=add-description]').click(function() {
-            var latestDescriptionIndex = $('.description.hidden').length -1
-            var descriptionType = $('.descriptionSelect[id^=dc:description.'+latestDescriptionIndex+'.type]');
-            var parent = getDescriptionParent(descriptionType);
-            addFullEasyCounter(parent.find('.descriptionInput.full:visible'));
-            toggleDescriptionValidations(parent, descriptionType.val());
-            updateAllDescriptionsValidation();
+            var latestDescriptionIndex = $('.descriptionInput').length -1;
+            var descriptionTextElement = 'dc:description.'+latestDescriptionIndex+'.text';
+            addFullEasyCounter($(escapeId(descriptionTextElement)));
+            // only need to update editor for latest description added
+            editorUpdate(latestDescriptionIndex,  $(escapeId(descriptionTextElement))[0]);
         });
-    });
+
+        $171('#description-table').on('change', '.descriptionSelect', updateAllDescriptionsValidation);
+   });
+
 </script>
