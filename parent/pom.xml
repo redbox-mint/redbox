@@ -34,6 +34,11 @@
                 <artifactId>fascinator-plugin-api</artifactId>
                 <version>1.4-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>au.com.redboxresearchdata.rifcs</groupId>
+                <artifactId>ands-rifcs-builder</artifactId>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

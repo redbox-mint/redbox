@@ -327,6 +327,11 @@
             "id": "jsonVelocity",
             "sourcePayload": ".tfpackage",
             "templatesPath": "${fascinator.home}/templates"
+        },
+        "rifcs": {
+            "id": "scripting",
+            "scriptType": "groovy",
+            "scriptPath": "${fascinator.home}/scripts/transformer/tfpackageToRifcs.groovy"
         }
     },
     "uploader": {
@@ -533,7 +538,7 @@
     		"className":"com.googlecode.fascinator.portal.report.service.ReportManager",
     		"config": {
     			"home":"${fascinator.home}/reports/saved-reports"
-    		}	
+    		}
     	},
       {
     		"id":"reportStats",
@@ -549,81 +554,81 @@
                 },
                 "fields":[
                   {
-                    "name":"rb-total",                  
+                    "name":"rb-total",
                     "label":"Records in ReDBox",
                     "solr_field":"numFound",
-                    "solr_field_value":""                                                
+                    "solr_field_value":""
                   },
-                  { 
-                    "name":"rb-collection",                
+                  {
+                    "name":"rb-collection",
                     "label":"Records in ReDBox   - COLLECTION (type)",
                     "solr_field":"workflow_id",
-                    "solr_field_value":"dataset"                
+                    "solr_field_value":"dataset"
                   },
-                  {                 
+                  {
                     "name":"rb-collection-dataset",
                     "label":"Records in ReDBox - (Collection type) Dataset",
                     "solr_field":"dc_type",
-                    "solr_field_value":"dataset"                
+                    "solr_field_value":"dataset"
                   },
-                  { 
-                    "name":"rb-collection-collection",                 
+                  {
+                    "name":"rb-collection-collection",
                     "label":"Records in ReDBox - (Collection type) Collection",
                     "solr_field":"dc_type",
-                    "solr_field_value":"collection"                
+                    "solr_field_value":"collection"
                   },
                   {
                     "name":"rb-collection-index",
                     "label":"Records in ReDBox - (Collection type) Catalogue or Index",
                     "solr_field":"dc_type",
-                    "solr_field_value":"catalogueOrIndex"                
+                    "solr_field_value":"catalogueOrIndex"
                   },
-                  {                  
+                  {
                     "name":"rb-collection-registry",
                     "label":"Records in ReDBox - (Collection type) Registry",
                     "solr_field":"dc_type",
-                    "solr_field_value":"registry"                
+                    "solr_field_value":"registry"
                   },
                   {
                     "name":"rb-collection-repository",
                     "label":"Records in ReDBox - (Collection type) Repository",
                     "solr_field":"dc_type",
-                    "solr_field_value":"repository"                
+                    "solr_field_value":"repository"
                   },
-                  {                  
+                  {
                     "name":"rb-workflow-published",
                     "label":"Records in ReDBox - (workflow) Published",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"live"                
+                    "solr_field_value":"live"
                   },
-                  {                  
+                  {
                     "name":"rb-workflow-final",
                     "label":"Records in ReDBox - (workflow) Final Review",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"final-review"                
+                    "solr_field_value":"final-review"
                   },
-                  {                  
+                  {
                     "name":"rb-workflow-metadata",
                     "label":"Records in ReDBox - (workflow) Metadata Review",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"metadata-review"                
+                    "solr_field_value":"metadata-review"
                   },
-                  {                  
+                  {
                     "name":"rb-workflow-investigation",
                     "label":"Records in ReDBox - (workflow) Investigation",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"investigation"                
+                    "solr_field_value":"investigation"
                   },
-                  {                  
+                  {
                     "name":"rb-workflow-retired",
                     "label":"Records in ReDBox - (workflow) Retired",
                     "solr_field":"workflow_step",
-                    "solr_field_value":"retired"                
+                    "solr_field_value":"retired"
                   }
-                ]                         
+                ]
               }
             ]
-          }         
+          }
         }
     ]
 }

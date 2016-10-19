@@ -186,7 +186,6 @@
             #set($dateCreated = "$util.getDateTime($util.get($item, 'dc:created'), $dateFormat)")
             <rif:dates type="dc.created">
                 <date type="dateFrom" dateFormat="W3CDTF">$dateCreated</date>
-                <date type="dateTo" dateFormat="W3CDTF"/>
             </rif:dates>
         #end
 
