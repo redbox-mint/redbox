@@ -9,6 +9,7 @@ import org.apache.velocity.Template
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.Velocity
 import org.apache.velocity.app.VelocityEngine
+import org.joda.time.DateTimeZone
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -47,8 +48,12 @@ class RifTest extends GenericVelocitySpecification {
 
     @Unroll
     def "main rifcs test"() {
-        when:
+        given:
+        DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
+        def currentZone = DateTimeZone.getDefault()
+        log.info("current zone is: " + currentZone)
         StringWriter writer = new StringWriter()
+        when:
         velocityTemplate.merge(velocityContext, writer)
         def result = new XmlSlurper().parseText(writer.toString())
         def expected = new XmlSlurper().parseText(stubRifcsOutput()).declareNamespace("rif":"http://ands.org.au/standards/rif-cs/registryObjects")
