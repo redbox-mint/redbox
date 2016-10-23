@@ -13,7 +13,7 @@
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
     <properties>
-        <groovy.version>2.3.4</groovy.version>
+        <groovy.version>2.4.5</groovy.version>
     </properties>
     <dependencies>
         <!-- Fascinator Portal Dependencies -->
