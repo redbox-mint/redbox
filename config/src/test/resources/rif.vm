@@ -289,7 +289,7 @@
             #set($valueMap = $util.getList($item, "dc:creator.foaf:Person"))
             #foreach($key in $valueMap.keySet())
                 #set ($value = $valueMap.get($key).get("dc:identifier"))
-                #if ("$!value" != "" && $value.startsWith("http://nla.gov.au/nla.party-"))
+                #if ("$!value" != "" && ( $value.startsWith("http://nla.gov.au/nla.party-") || $value.startsWith("http://orcid.org/")))
             <rif:relatedObject>
                 <rif:key>$util.encodeXml($value)</rif:key>
                 <rif:relation type="hasCollector"></rif:relation>

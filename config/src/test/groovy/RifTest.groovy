@@ -180,6 +180,15 @@ class RifTest extends GenericVelocitySpecification {
                 "  \"dc:creator.foaf:Person.1.foaf:familyName\": \"James\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:Organization.dc:identifier\": \"\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:Organization.skos:prefLabel\": \"\",\n" +
+                "  \"dc:creator.foaf:Person.3.dc:identifier\": \"http://orcid.org/0000-0001-6810-1260\",\n" +
+                "  \"dc:creator.foaf:Person.3.foaf:name\": \"Chambers, John\",\n" +
+                "   \"dc:creator.foaf:Person.3.foaf:title\": \"Prof\",\n" +
+                "   \"dc:creator.foaf:Person.3.redbox:isCoPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.3.redbox:isPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.3.foaf:givenName\": \"John\",\n" +
+                "   \"dc:creator.foaf:Person.3.foaf:familyName\": \"Chambers\",\n" +
+                "   \"dc:creator.foaf:Person.3.foaf:Organization.dc:identifier\": \"redbox-mint.googlecode.com/parties/group/2\",\n" +
+                "   \"dc:creator.foaf:Person.3.foaf:Organization.skos:prefLabel\": \"Faculty of Technology\",\n" +
                 "  \"locrel:prc.foaf:Person.dc:identifier\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:name\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:title\": \"\",\n" +
@@ -542,6 +551,10 @@ class RifTest extends GenericVelocitySpecification {
                 "            </relatedObject>\n" +
                 "            <relatedObject>\n" +
                 "                <key>http://nla.gov.au/nla.party-965000</key>\n" +
+                "                <relation type=\"hasCollector\"/>\n" +
+                "            </relatedObject>\n" +
+                "            <relatedObject>\n" +
+                "                <key>http://orcid.org/0000-0001-6810-1260</key>\n" +
                 "                <relation type=\"hasCollector\"/>\n" +
                 "            </relatedObject>\n" +
                 "            <subject type=\"local\" xml:lang=\"en\">keywords</subject>\n" +
