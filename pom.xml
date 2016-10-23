@@ -37,7 +37,7 @@
 		<dir.storage>${project.home}/storage</dir.storage>
 		<smtp.host>localhost</smtp.host>
 		<admin.email>admin@localhost</admin.email>
-		<groovy.version>2.3.4</groovy.version>
+		<groovy.version>2.4.5</groovy.version>
 		<!-- Control scripts try to auto-detect proxy. Use this value if you want 
 			Java to specifically exclude certain hosts from proxying. -->
 		<non.proxy.hosts>localhost</non.proxy.hosts>
@@ -220,7 +220,7 @@
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
-				<version>1.2</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<id>default</id>
