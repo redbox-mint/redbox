@@ -97,7 +97,7 @@ class MigrateData:
             self.log.debug("raw deprecated description is: %s" % rawDescription)
             if (rawDescription):
                 # not completely accurate for checking for tags but ensures a style consistent with wysiwyg editor
-                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", rawDescription):
+                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", str(rawDescription)):
                     ## deprecated description may be unescaped or escaped already - so ensure both cases covered
                     unescapedDescription = StringEscapeUtils.unescapeHtml("%s" % rawDescription)
                     escapedDescription = StringEscapeUtils.escapeHtml("%s" % rawDescription)
@@ -138,7 +138,7 @@ class MigrateData:
         if accessRightsType is None:
             license = StringUtils.defaultString(self.getPackageJson().get("dc:license.skos:prefLabel"))
             self.log.info("License rights is: %s " % license)
-            if re.search("CC|ODC|PDDL", license, re.IGNORECASE):
+            if re.search("CC|ODC|PDDL", str(license), re.IGNORECASE):
                 self.getPackageJson().put("dc:accessRightsType", "open")
                 self.log.debug("Added access rights type.")
             else:
