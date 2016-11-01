@@ -86,8 +86,8 @@ class MigrateData:
         if self.getPackageJson().get("dc:description.0.text"):
             self.log.warn("Found current description for workflow initializer: 'dc:description.0.text'")
         if relevant_description:
-            self.log.debug("Found current populated description for 'dc:description.1.text': %s" % relevant_description)
-            self.log.info("Found relevant 'dc:description.1.text'. Skipping description migration...")
+            self.log.info(
+                "Found current populated description for 'dc:description.1.text': %s, so skipping description migration..." % relevant_description)
             return
         else:
             ## no tags are added to wysiwyg until user interacts with wysiwyg editor
@@ -133,40 +133,33 @@ class MigrateData:
 
     def updateRightsType(self):
         accessRightsType = self.getPackageJson().get("dc:accessRightsType")
-        if accessRightsType is None:
-            self.log.info("access rights type is None")
-        elif (not accessRightsType):
-            self.log.info("access rights type is empty")
-        else:
-            self.log.info("access rights type is: %s" % accessRightsType)
-
-        self.log.info("access rights: %s" % accessRightsType)
+        self.log.debug("access rights: %s" % accessRightsType)
         ## because a user can deliberately change access rights type to "", ensure only change for null access rights types
         if accessRightsType is None:
             license = StringUtils.defaultString(self.getPackageJson().get("dc:license.skos:prefLabel"))
             self.log.info("License rights is: %s " % license)
             if re.search("CC|ODC|PDDL", license, re.IGNORECASE):
-                self.getPackageJson().put("dc:accessRightsType","open")
+                self.getPackageJson().put("dc:accessRightsType", "open")
                 self.log.debug("Added access rights type.")
             else:
-                self.getPackageJson().put("dc:accessRightsType","")
+                self.getPackageJson().put("dc:accessRightsType", "")
                 self.log.debug("Added empty access rights type, because licence is: %s" % license)
         else:
-            self.log.info("Record already has access rights type key, with value: %s, so skipping update rights type migration." % accessRightsType)
-
+            self.log.info(
+                "Record already has access rights type key, with value: %s, so skipping update rights type migration." % accessRightsType)
 
     def injectFreshKeys(self):
-        for freshKey in ["identifierText.1.creatorName.input", "pcName.identifierText", "identifierText.1.supName.input",
+        for freshKey in ["identifierText.1.creatorName.input", "pcName.identifierText",
+                         "identifierText.1.supName.input",
                          "identifierText.1.collaboratorName.input"]:
             if self.getPackageJson().get(freshKey) is None:
                 self.getPackageJson().put(freshKey, "")
+                self.log.debug("added fresh key: %s" % freshKey)
             else:
-                self.log.debug("skipping fresh key: %s as it already exists" % freshKey)
-
+                self.log.info("skipping fresh key: %s as it already exists" % freshKey)
 
     def getPackageJson(self):
         return self.packageData.getJsonObject()
-
 
     def __getPackageData(self):
         # Find our package payload
