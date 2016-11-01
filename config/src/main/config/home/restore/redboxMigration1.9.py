@@ -1,0 +1,206 @@
+import re
+
+from com.googlecode.fascinator.api.storage import StorageException
+from com.googlecode.fascinator.common import JsonSimple
+from java.io import ByteArrayInputStream
+from java.lang import Exception
+from java.lang import String
+from org.apache.commons.lang import StringEscapeUtils
+from org.apache.commons.lang import StringUtils
+from org.joda.time import DateTime
+
+
+class MigrateData:
+    def __init__(self):
+        self.packagePidSuffix = ".tfpackage"
+        self.redboxVersion = None
+
+    def __activate__(self, bindings):
+        # Prepare variables
+        self.systemConfig = bindings["systemConfig"]
+        self.object = bindings["object"]
+        self.log = bindings["log"]
+        self.audit = bindings["auditMessages"]
+        self.pidList = None
+
+        # Look at some data
+        self.oid = self.object.getId()
+
+        try:
+            # # check if object creation and modification dates...
+            self.insertCreateAndModifiedDate()
+            #
+            # # load the package data..
+            self.__getPackageData()
+
+            # update the redbox version...
+            self.updateVersion()
+
+            # # update description to wysiwyg descriptions and init for multiple descriptions
+            self.setDescriptionShadow()
+
+            # # check recordAsLocation config and, if true, set record as location
+            self.setRecordAsLocation()
+
+            # add access rights type if none exists, but relevant licence present
+            self.updateRightsType()
+
+            # add new keys if not present
+            self.injectFreshKeys()
+
+            # # save the package data...
+            self.__savePackageData()
+
+            self.object.close()
+        except Exception, e:
+            self.object = None
+
+    def insertCreateAndModifiedDate(self):
+        # check if object created and modified date exists, populate with current date if not..
+        propMetadata = self.object.getMetadata()
+        try:
+            now = DateTime()
+            self.log.debug("time now is: %s" % str(now))
+            if (propMetadata.getProperty("date_object_created") is None):
+                self.log.debug("Updating created time...")
+                propMetadata.setProperty("date_object_created", now)
+            if (propMetadata.getProperty("date_object_modified") is None):
+                self.log.debug("Updating modified time...")
+                propMetadata.setProperty("date_object_modified", now)
+        except Exception, e:
+            self.log.warn("Created/modified time may not have been updated.")
+            self.log.error("Error accessing time", e)
+            return None
+
+    def updateVersion(self):
+        if self.redboxVersion is None:
+            self.redboxVersion = self.systemConfig.getString(None, ["redbox.version.string"])
+        if self.redboxVersion is None:
+            self.log.error("Error, could not determine system version!")
+            return
+        self.getPackageJson().put("redbox:formVersion", self.redboxVersion)
+
+    def setDescriptionShadow(self):
+        deprecated_description = self.getPackageJson().get("dc:description")
+        relevant_description = self.getPackageJson().get("dc:description.1.text")
+        if self.getPackageJson().get("dc:description.0.text"):
+            self.log.warn("Found current description for workflow initializer: 'dc:description.0.text'")
+        if relevant_description:
+            self.log.debug("Found current populated description for 'dc:description.1.text': %s" % relevant_description)
+            self.log.info("Found relevant 'dc:description.1.text'. Skipping description migration...")
+            return
+        else:
+            ## no tags are added to wysiwyg until user interacts with wysiwyg editor
+            unescapedDescription = ""
+            escapedDescription = ""
+            rawDescription = StringUtils.defaultString(deprecated_description)
+            self.log.debug("raw deprecated description is: %s" % rawDescription)
+            if (rawDescription):
+                # not completely accurate for checking for tags but ensures a style consistent with wysiwyg editor
+                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", rawDescription):
+                    ## deprecated description may be unescaped or escaped already - so ensure both cases covered
+                    unescapedDescription = StringEscapeUtils.unescapeHtml("%s" % rawDescription)
+                    escapedDescription = StringEscapeUtils.escapeHtml("%s" % rawDescription)
+                else:
+                    unescapedDescription = StringEscapeUtils.unescapeHtml("<p>%s</p>" % rawDescription)
+                    escapedDescription = StringEscapeUtils.escapeHtml("<p>%s</p>" % rawDescription)
+            self.log.info("relevant unescaped description is: %s" % unescapedDescription)
+            self.log.info("relevant escaped description is: %s" % escapedDescription)
+            self.getPackageJson().put("dc:description.1.text", unescapedDescription)
+            self.getPackageJson().put("dc:description.1.shadow", escapedDescription)
+            self.getPackageJson().put("dc:description.1.type", "full")
+            self.log.debug("Removing deprecated 'dc:description' key...")
+            self.getPackageJson().remove("dc:description")
+            self.log.debug(
+                "Completed migrating 'dc:description' %s to dc:description.1.text|shadow" % deprecated_description)
+
+    def setRecordAsLocation(self):
+        hasRecordAsLocationDefault = self.systemConfig.getString("", "rifcs", "recordAsLocation", "default")
+        if hasRecordAsLocationDefault:
+            recordAsLocationTemplate = self.systemConfig.getString("", "rifcs", "recordAsLocation", "template")
+            self.log.debug("record as location template is %s" % recordAsLocationTemplate)
+            urlBase = self.systemConfig.getString("", "urlBase")
+            self.log.debug("url base is: %s" % urlBase)
+            urlBasePattern = "\$\{urlBase\}"
+            oidBasePattern = "\$\{oid\}"
+            recordAsLocation = re.sub(urlBasePattern, urlBase, recordAsLocationTemplate)
+            recordAsLocation = re.sub(oidBasePattern, self.oid, recordAsLocation)
+            self.log.info("record as location is: %s" % recordAsLocation)
+            self.getPackageJson().put("recordAsLocationDefault", recordAsLocation)
+        else:
+            self.log.info("record as location default is: %s," % hasRecordAsLocationDefault,
+                          "so skipping 'record as location' migration...")
+
+    def updateRightsType(self):
+        accessRightsType = self.getPackageJson().get("dc:accessRightsType")
+        if accessRightsType is None:
+            self.log.info("access rights type is None")
+        elif (not accessRightsType):
+            self.log.info("access rights type is empty")
+        else:
+            self.log.info("access rights type is: %s" % accessRightsType)
+
+        self.log.info("access rights: %s" % accessRightsType)
+        ## because a user can deliberately change access rights type to "", ensure only change for null access rights types
+        if accessRightsType is None:
+            license = StringUtils.defaultString(self.getPackageJson().get("dc:license.skos:prefLabel"))
+            self.log.info("License rights is: %s " % license)
+            if re.search("CC|ODC|PDDL", license, re.IGNORECASE):
+                self.getPackageJson().put("dc:accessRightsType","open")
+                self.log.debug("Added access rights type.")
+            else:
+                self.getPackageJson().put("dc:accessRightsType","")
+                self.log.debug("Added empty access rights type, because licence is: %s" % license)
+        else:
+            self.log.info("Record already has access rights type key, with value: %s, so skipping update rights type migration." % accessRightsType)
+
+
+    def injectFreshKeys(self):
+        for freshKey in ["identifierText.1.creatorName.input", "pcName.identifierText", "identifierText.1.supName.input",
+                         "identifierText.1.collaboratorName.input"]:
+            if self.getPackageJson().get(freshKey) is None:
+                self.getPackageJson().put(freshKey, "")
+            else:
+                self.log.debug("skipping fresh key: %s as it already exists" % freshKey)
+
+
+    def getPackageJson(self):
+        return self.packageData.getJsonObject()
+
+
+    def __getPackageData(self):
+        # Find our package payload
+        self.packagePid = None
+        try:
+            self.pidList = self.object.getPayloadIdList()
+            for pid in self.pidList:
+                if pid.endswith(self.packagePidSuffix):
+                    self.packagePid = pid
+        except StorageException:
+            self.log.error("Error accessing object PID list for object '{}' ", self.oid)
+            return
+        if self.packagePid is None:
+            self.log.debug("Object '{}' has no package data", self.oid)
+            return
+
+        # Retrieve our package data
+        self.packageData = None
+        try:
+            payload = self.object.getPayload(self.packagePid)
+            try:
+                self.packageData = JsonSimple(payload.open())
+            except Exception:
+                self.log.error("Error parsing JSON '{}'", self.packagePid)
+            finally:
+                payload.close()
+        except StorageException:
+            self.log.error("Error accessing '{}'", self.packagePid)
+            return
+
+    def __savePackageData(self):
+        jsonString = String(self.packageData.toString(True))
+        inStream = ByteArrayInputStream(jsonString.getBytes("UTF-8"))
+        try:
+            self.object.updatePayload(self.packagePid, inStream)
+        except StorageException, e:
+            self.log.error("Error updating package data payload: ", e)
