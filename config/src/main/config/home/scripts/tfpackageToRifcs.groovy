@@ -146,7 +146,7 @@ class TfpackageToRifcs {
             [key: it.curatedPid, type: it.relationship ?: "hasAssociationWith", description: it.description]
         }
         log.debug("relations collected: " + collected)
-        def grouped = collected.plus(getAllNlaRelations()).groupBy { it.key }
+        def grouped = collected.plus(getAllNlaRelations()).plus(getAllOrcidRelations()).groupBy { it.key }
         log.debug("grouped: " + grouped)
         return grouped
     }
@@ -158,6 +158,13 @@ class TfpackageToRifcs {
     def getAllNlaRelations() {
         return findAndCollect(getTfpackageNumberedCollection("dc:creator.foaf:Person"),
                 { k, v -> v.'dc:identifier'?.trim() && v.'dc:identifier' =~ /http:\/\/nla.gov.au\/nla.party-/ },
+                { k, v -> [key: v.'dc:identifier', type: "hasCollector"] }
+        )
+    }
+
+    def getAllOrcidRelations() {
+        return findAndCollect(getTfpackageNumberedCollection("dc:creator.foaf:Person"),
+                { k, v -> v.'dc:identifier'?.trim() && v.'dc:identifier' =~ /http:\/\/orcid.org\// },
                 { k, v -> [key: v.'dc:identifier', type: "hasCollector"] }
         )
     }
@@ -410,7 +417,7 @@ class TfpackageToRifcs {
             return delegate.locationBuilder()
                     .addNonEmpty('physicalAddress', tfpackage.'vivo:Location.vivo:GeographicLocation.gn:name')
                     .addEveryNonEmpty('urlElectronicAddress', getAllElectronicAddress())
-                    .addNonEmpty('physicalAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
+                    .addNonEmpty('emailElectronicAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
                     .build()
         }
         RifcsGenericBuilder.metaClass.buildTemporalCoverage = {
