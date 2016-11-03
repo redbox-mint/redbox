@@ -17,7 +17,9 @@
  *    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * /
  */
-package au.com.redboxresearchdata.rifcs.transformer;
+
+
+package home.scripts;
 
 
 import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsCollectionBuilder
@@ -37,7 +39,6 @@ import org.apache.commons.lang.StringUtils
 import org.slf4j.LoggerFactory
 
 import javax.xml.XMLConstants
-import javax.xml.bind.DatatypeConverter
 import javax.xml.transform.dom.DOMSource
 import javax.xml.validation.Schema
 import javax.xml.validation.SchemaFactory
