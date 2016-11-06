@@ -33,7 +33,7 @@ import com.googlecode.fascinator.transformer.ScriptingTransformer
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import org.ands.rifcs.base.RIFCSWrapper
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
 import javax.xml.XMLConstants
@@ -51,8 +51,9 @@ import javax.xml.validation.Validator
 def log = LoggerFactory.getLogger(ScriptingTransformer.class)
 log.info("TfpackageToRifcs script starting...")
 
+String data = null
 try {
-    String data = new TfpackageToRifcs(digitalObject).transformAndStore()
+    data = new TfpackageToRifcs(digitalObject).transformAndStore()
 } catch (Exception e) {
     throw new TransformerException("Could not create rifcs from script.", e)
 }
@@ -67,20 +68,24 @@ static def createInstance(digitalObject, config) {
 @Slf4j
 class TfpackageToRifcs {
     final DigitalObject digitalObject
-    final def config
+    // using methods from JsonSimple ensures system properties are injected
+    final JsonSimpleConfig config
     final def metadata
     final def tfpackage
+    final def urlBase
 
     TfpackageToRifcs(final DigitalObject digitalObject) {
         this.digitalObject = digitalObject
-        this.config = parseJson(new JsonSimpleConfig().toString())
+        this.config = new JsonSimpleConfig()
+        this.urlBase =  this.config.getString(null,"urlBase")
         this.metadata = digitalObject.getMetadata()
         this.tfpackage = parseJson(getTfpackage(digitalObject))
     }
 
-    TfpackageToRifcs(final DigitalObject digitalObject, final JsonSimple config) {
+    TfpackageToRifcs(final DigitalObject digitalObject, final String config) {
         this.digitalObject = digitalObject
-        this.config = parseJson(config.toString())
+        this.config = new JsonSimpleConfig(config)
+        this.urlBase =  this.config.getString(null,"urlBase")
         this.metadata = digitalObject.getMetadata()
         this.tfpackage = parseJson(getTfpackage(digitalObject))
     }
@@ -116,14 +121,15 @@ class TfpackageToRifcs {
     }
 
     Expando createIdentifierData() {
-        def metadataPid = config.curation?.pidProperty ? digitalObject?.getMetadata().get(config.curation.pidProperty) : null
+        def pidProperty = config.getString(null, "curation", "pidProperty")
+        def metadataPid = pidProperty ? digitalObject?.getMetadata().get(pidProperty) : null
         String pid = metadataPid ?: tfpackage.metadata?.'rdf:resource' ?: tfpackage.metadata?.'dc.identifier'
         log.debug("pid is: " + pid)
 
         def expando = new Expando()
         if (tfpackage.'dc:identifier.redbox:origin' == 'internal') {
-            expando.identifier = pid ?: config.'urlBase' + "/detail/" + metadata.get("objectId")
-            expando.identifierType = pid ? StringUtils.defaultIfBlank(config.curation?.pidType, "&Invalid XML placeholder... prevents ANDS Harvesting records in error&") : "uri"
+            expando.identifier = pid ?: urlBase + "/detail/" + metadata.get("objectId")
+            expando.identifierType = pid ? StringUtils.defaultIfBlank(config.getString(null, "curation","pidType"), "&Invalid XML placeholder... prevents ANDS Harvesting records in error&") : "uri"
         } else {
             expando.identifier = tfpackage.'dc:identifier.rdf:PlainLiteral' ?: "&Invalid ID: Not curated yet&"
             expando.identifierType = tfpackage.'dc:identifier.rdf:PlainLiteral' ? tfpackage.'dc:identifier.dc:type.rdf:PlainLiteral' : "invalid"
@@ -264,9 +270,10 @@ class TfpackageToRifcs {
 
     def getCitation(def identifierData) {
 //        <citationInfo> element should contain either <fullCitation> or <citationMetadata> (not both)
+        def doiProperty = config.getString(null,"andsDoi", "doiProperty")
         if (tfpackage.'dc:biblioGraphicCitation.redbox:sendCitation'?.trim() == "on") {
             String value = tfpackage.'dc:biblioGraphicCitation.skos:prefLabel'
-            def doi = config?.andsDoi?.doiProperty ? metadata.get(config.andsDoi.doiProperty) : null
+            def doi = doiProperty ? metadata.get(doiProperty) : null
             if (value?.trim()) {
                 // send citation info value
                 return [style: "Datacite", citation: value.replaceAll(/\{ID_WILL_BE_HERE\}/, doi ? "http://dx.doi.org/" + doi : identifierData.identifier)]
@@ -440,7 +447,7 @@ class TfpackageToRifcs {
                     .build()
         }
 
-        def rifcs = new RifcsCollectionBuilder(identifierData.identifier, config.urlBase, config.identity.RIF_CSGroup, tfpackage.'dc:type.rdf:PlainLiteral')
+        def rifcs = new RifcsCollectionBuilder(identifierData.identifier, urlBase, config.getString(null,"identity","RIF_CSGroup"), tfpackage.'dc:type.rdf:PlainLiteral')
                 .identifier(identifierData.identifier, identifierData.identifierType)
                 .addEveryNonEmpty('identifier', getAllAdditionalIdentifiers())
                 .addNonEmpty('dateModified', getISO8601DateString(tfpackage.'dc:modified'))
@@ -469,10 +476,10 @@ class TfpackageToRifcs {
     def transformAndStore() {
         String transformation = this.transform()
         try {
-            digitalObject.createStoredPayload("rif.xml", getInputStream(transformation))
+            return digitalObject.createStoredPayload("rif.xml", getInputStream(transformation))
         } catch (StorageException e) {
             log.warn("Assuming digital object already exists. Will try to update it....", e.getCause())
-            digitalObject.updatePayload("rif.xml", getInputStream(transformation))
+            return digitalObject.updatePayload("rif.xml", getInputStream(transformation))
         }
     }
 

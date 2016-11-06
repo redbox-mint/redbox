@@ -9,7 +9,13 @@ import org.apache.velocity.Template
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.Velocity
 import org.apache.velocity.app.VelocityEngine
+import org.custommonkey.xmlunit.DetailedDiff
+import org.custommonkey.xmlunit.XMLUnit
 import org.joda.time.DateTimeZone
+import org.xmlunit.XMLUnitException
+import org.xmlunit.diff.Diff
+import org.xmlunit.diff.Difference
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -38,7 +44,11 @@ import spock.lang.Unroll
  * Created on 21/10/2016.
  */
 @Slf4j
-class RifTest extends GenericVelocitySpecification {
+class RifVelocityTest extends GenericVelocitySpecification {
+    @Shared loader = new GroovyClassLoader(getClass().getClassLoader())
+    @Shared scriptLocation = loader.getResource("home/scripts/tfpackageToRifcs.groovy").text
+    @Shared scriptClass = new GroovyShell().parse(scriptLocation).class
+
     private def rifTemplateName = "rif.vm"
 
     def setup() {
@@ -46,20 +56,23 @@ class RifTest extends GenericVelocitySpecification {
         loadTfPackage()
     }
 
-    @Unroll
-    def "main rifcs test"() {
-        given:
+    def "main rifcs velocity test"() {
+        when:
+        def result = getRifcsVelocityOutputForAEST()
+        def expected = new XmlSlurper().parseText(stubRifcsOutput()).declareNamespace("rif":"http://ands.org.au/standards/rif-cs/registryObjects")
+        then:
+        assert result == XmlUtil.serialize(expected)
+    }
+
+    def getRifcsVelocityOutputForAEST() {
         DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
         def currentZone = DateTimeZone.getDefault()
         log.info("current zone is: " + currentZone)
         StringWriter writer = new StringWriter()
-        when:
         velocityTemplate.merge(velocityContext, writer)
         def result = new XmlSlurper().parseText(writer.toString())
-        def expected = new XmlSlurper().parseText(stubRifcsOutput()).declareNamespace("rif":"http://ands.org.au/standards/rif-cs/registryObjects")
-        then:
         //serializer will escape the 'escaped', so revert
-        assert XmlUtil.serialize(result).replaceAll("&amp;", "&") == XmlUtil.serialize(expected)
+        return XmlUtil.serialize(result).replaceAll("&amp;", "&")
     }
 
     def loadTfPackage() {

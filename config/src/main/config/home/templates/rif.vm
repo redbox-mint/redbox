@@ -251,7 +251,7 @@
                         <rif:date type="dateTo" dateFormat="W3CDTF">$util.getW3CDateTime($covTo)</rif:date>
                     #end
                     #if ("$!covPeriod" != "")
-                    <rif:text>$util.encodeXml($covPeriod)</rif:text>
+                        <rif:text>$util.encodeXml($covPeriod)</rif:text>
                     #end
                 </rif:temporal>
             </rif:coverage>

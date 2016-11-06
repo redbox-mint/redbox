@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.googlecode.redbox-mint</groupId>
-	<artifactId>redbox-config</artifactId>
-	<version>1.9-SNAPSHOT</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.googlecode.redbox-mint</groupId>
+    <artifactId>redbox-config</artifactId>
+    <version>1.9-SNAPSHOT</version>
     <properties>
         <groovy.version>2.4.5</groovy.version>
         <spock.version>0.7-groovy-2.0</spock.version>
@@ -31,7 +32,7 @@
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-common</artifactId>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -63,23 +64,23 @@
             <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-	<packaging>jar</packaging>
-	<name>ReDBox - Generic Configuration</name>
-	<parent>
-		<groupId>com.googlecode.redbox-mint</groupId>
-		<artifactId>redbox-project</artifactId>
-		<version>1.9-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
-	</parent>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<includeEmptyDirs>true</includeEmptyDirs>
-				</configuration>
+    <packaging>jar</packaging>
+    <name>ReDBox - Generic Configuration</name>
+    <parent>
+        <groupId>com.googlecode.redbox-mint</groupId>
+        <artifactId>redbox-project</artifactId>
+        <version>1.9-SNAPSHOT</version>
+        <relativePath>../parent/pom.xml</relativePath>
+    </parent>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <includeEmptyDirs>true</includeEmptyDirs>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -102,12 +103,12 @@
                         <version>${groovy.version}</version>
                     </dependency>
                 </dependencies>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/config</directory>
-			</resource>
-		</resources>
-	</build>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/config</directory>
+            </resource>
+        </resources>
+    </build>
 </project>
