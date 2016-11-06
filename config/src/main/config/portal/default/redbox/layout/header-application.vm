@@ -12,7 +12,7 @@
                     #else
                         <li class="selected-view"><a href="#" onclick="return false">$portal.description</a></li>
                     #end
-                   #end 
+                   #end
                  #end
             </ul>
         </li>
@@ -26,6 +26,7 @@
 				#end
                 <li><a href="$portalPath/settings">Settings</a></li>
                 <li><a href="$portalPath/admin">Security</a></li>
+                <li><a href="$portalPath/apiAdmin">API Administration</a></li>
                 <li><a href="$portalPath/batchprocess">Batch</a></li>
                 <li><a href="$portalPath/export/csv">Export</a></li>
                 #parseTemplate("elements/queues.vm")

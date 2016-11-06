@@ -1,0 +1,32 @@
+#set($pageTitle = "API Administration")
+<h2 id="page-heading">API Administration</h2>
+<div id="form-section" class="grid_16">
+<div id="users-section" class="box">
+    <h2>Manage Api Keys</h2>
+    #set($keys = $self.get_keys())
+    <table style="margin-top: 1em;">
+    <thead><th>Name</th><th>Key</th><th>Actions</th></thead>
+    <tbody>
+     #foreach($key in $keys.get("keys"))
+     <tr><td>$key.get("name")</td><td>$key.get("key")</td><td><form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post"><input type="hidden" name='name' value='$key.get("name")'><input type="hidden" name='action' value='Remove'></input><input type="submit" value="Remove"/></form><form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post"><input type="hidden" name='name' value='$key.get("name")'><input type="hidden" name='action' value='Regenerate'></input><input type="submit" value="Generate new key"/></form></td></tr>
+     #end
+    </tbody>
+    </table>
+    <form action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post">
+    <div><label style="width: 3em;display: inline-block;font-weight: bold;">Name</label><input name='name' id='name'></input></div>
+    <div><input type="checkbox" id="generateKey" name="generateKey" value="true" checked /><label>Generate a random key for this user</label></div>
+    <div id="manualKey" style="display:none;"><label style="width: 3em;display: inline-block;font-weight: bold;">Key</label><input name='key' id='key'></input></div>
+    <div><input type="submit" value="Add"/> <input type="hidden" name='action' value='Add'></input></div>
+    </form>
+  </div>
+</div>
+
+<script>
+$("#generateKey").change(function() {
+ if($("#generateKey").attr('checked')) {
+  $("#manualKey").hide();
+ } else {
+  $("#manualKey").show();
+ }
+})
+</script>
