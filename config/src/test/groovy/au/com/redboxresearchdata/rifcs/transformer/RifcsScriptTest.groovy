@@ -38,6 +38,9 @@ class RifcsScriptTest extends Specification {
     @Shared scriptClass = new GroovyShell().parse(scriptLocation).class
 
     def "Rifcs transform"() {
+        DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
+        def currentZone = DateTimeZone.getDefault()
+        log.info("current zone is: " + currentZone)
         def rifcs = tfpackageToRifcs().transform()
         expect:
         rifcs == stubRifcsOutput()
