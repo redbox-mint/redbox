@@ -2,22 +2,10 @@ import com.googlecode.fascinator.common.JsonSimple
 import com.googlecode.fascinator.common.JsonSimpleConfig
 import com.googlecode.fascinator.common.StorageDataUtil
 import com.googlecode.fascinator.common.storage.impl.GenericDigitalObject
-import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import groovy.xml.XmlUtil
-import org.apache.velocity.Template
-import org.apache.velocity.VelocityContext
-import org.apache.velocity.app.Velocity
-import org.apache.velocity.app.VelocityEngine
-import org.custommonkey.xmlunit.DetailedDiff
-import org.custommonkey.xmlunit.XMLUnit
 import org.joda.time.DateTimeZone
-import org.xmlunit.XMLUnitException
-import org.xmlunit.diff.Diff
-import org.xmlunit.diff.Difference
 import spock.lang.Shared
-import spock.lang.Specification
-import spock.lang.Unroll
 
 /*
  *
