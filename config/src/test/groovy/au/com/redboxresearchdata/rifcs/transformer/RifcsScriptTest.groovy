@@ -22,6 +22,7 @@ package au.com.redboxresearchdata.rifcs.transformer
 
 import com.googlecode.fascinator.common.storage.impl.GenericDigitalObject
 import groovy.util.logging.Slf4j
+import org.joda.time.DateTimeZone
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -44,6 +45,10 @@ class RifcsScriptTest extends Specification {
 
     @Unroll
     def "Date string from date texts"() {
+        given:
+        DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
+        def currentZone = DateTimeZone.getDefault()
+        log.info("current zone is: " + currentZone)
         when:
         def result = tfpackageToRifcs().getISO8601DateString(dateText)
         then:
