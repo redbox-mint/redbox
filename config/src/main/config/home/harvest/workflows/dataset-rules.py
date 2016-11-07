@@ -27,7 +27,7 @@ class IndexData:
         for pid in pidList:
             if pid.endswith(".tfpackage"):
                 self.packagePid = pid
-                
+
         # Real metadata
         if self.itemType == "object":
             self.__basicData()
@@ -61,8 +61,11 @@ class IndexData:
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
         formatter = SimpleDateFormat('yyyyMMddHHmmss')
-        self.params.setProperty("last_modified", formatter.format(Date()))        
-        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
+        self.params.setProperty("last_modified", formatter.format(Date()))
+        formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        formatterWithoutTZ =SimpleDateFormat("yyyy-MM-dd'T'HH':'mm':'ss")
+        self.utils.add(self.index, "date_object_created", formatterWithoutTZ.format(formatterWithTZ.parse(self.params.getProperty("date_object_created")))+"Z")
+        # self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
         self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )
         self.utils.add(self.index, "date_object_modified",  self.params.getProperty("date_object_modified"))
 
@@ -124,7 +127,7 @@ class IndexData:
                     # Grant access if new
                     self.__grantRoleAccess(role)
                     self.utils.add(self.index, "security_filter", role)
-        
+
         users = self.utils.getUsersWithAccess(self.oid)
         if users is not None:
             # For every role currently with access
@@ -147,7 +150,7 @@ class IndexData:
         schema.setRecordId(self.oid)
         schema.set("role", newRole)
         self.utils.setAccessSchema(schema)
-        
+
     def __grantUserAccess(self, newUser):
         schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
@@ -159,7 +162,7 @@ class IndexData:
         schema.setRecordId(self.oid)
         schema.set("role", oldRole)
         self.utils.removeAccessSchema(schema)
-        
+
     def __revokeUserAccess(self, oldUser):
         schema = self.utils.getAccessSchema();
         schema.setRecordId(self.oid)
@@ -177,7 +180,7 @@ class IndexData:
         self.formatList = ["application/x-fascinator-package"]
         self.fulltext = []
         self.relationDict = {}
-        self.customFields = {}        
+        self.customFields = {}
         self.creatorFullNameMap = HashMap()
         self.grantNumberList = []
         self.arrayBucket = HashMap()
@@ -307,12 +310,12 @@ class IndexData:
                 if self.title is None:
                     self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
-        
+
         #Used to make sure we have a created date
         createdDateFlag  = False
-        
+
         formData = manifest.getJsonObject()
-        
+
         for field in formData.keySet():
             if field not in coreFields:
                 value = formData.get(field)
@@ -362,9 +365,9 @@ class IndexData:
                     if fnameparts is not None and len(fnameparts) >= 3:
                         if field.startswith("bibo") or field.startswith("skos"):
                             arrParts = fnameparts[1].split(".")
-                        else:    
+                        else:
                             arrParts = fnameparts[2].split(".")
-                        # we're not interested in: Relationship, Type and some redbox:origin 
+                        # we're not interested in: Relationship, Type and some redbox:origin
                         if arrParts is not None and len(arrParts) >= 2 and field.find(":Relationship.") == -1 and field.find("dc:type") == -1 and field.find("redbox:origin") == -1 and arrParts[1].isdigit():
                             # we've got an array field
                             fldPart = ":%s" % arrParts[0]
@@ -374,7 +377,7 @@ class IndexData:
                             if field.endswith("Name"):
                                 arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx]
                             self.log.debug("Array Field name is:%s  from: %s, with value:%s" % (arrFldName, field, value))
-                            
+
                             if field.endswith("Name"):
                                 fullFieldMap = self.arrayBucket.get(arrFldName)
                                 if fullFieldMap is None:
@@ -387,7 +390,7 @@ class IndexData:
                                 if (field.endswith("givenName")):
                                     fullField = "%s, %s" % (fullField, value)
                                 if (field.endswith("familyName")):
-                                    fullField = "%s%s" % (value, fullField) 
+                                    fullField = "%s%s" % (value, fullField)
                                 self.log.debug("fullname now is :%s" % fullField)
                                 fullFieldMap.put(idx, fullField)
                             else:
@@ -396,9 +399,9 @@ class IndexData:
                                     fieldlist = []
                                     self.arrayBucket.put(arrFldName, fieldlist)
                                 fieldlist.append(value)
-                                
+
                     for compfield in self.compFields:
-                        if field.startswith(compfield):    
+                        if field.startswith(compfield):
                             arrFldName = self.reportingFieldPrefix +compfield
                             fullFieldMap = self.arrayBucket.get(arrFldName)
                             if fullFieldMap is None:
@@ -410,12 +413,12 @@ class IndexData:
                             if field.endswith(self.compFieldsConfig[compfield]["end"]):
                                 fullField = "%s%s%s" % (fullField, self.compFieldsConfig[compfield]["delim"] ,value)
                             if field.endswith(self.compFieldsConfig[compfield]["start"]):
-                                fullField = "%s%s" % (value, fullField) 
+                                fullField = "%s%s" % (value, fullField)
                             self.log.debug("full field now is :%s" % fullField)
-                            fullFieldMap.put("1", fullField)     
+                            fullFieldMap.put("1", fullField)
 
-        self.utils.add(self.index, "display_type", displayType) 
-        
+        self.utils.add(self.index, "display_type", displayType)
+
         # Make sure we have a creation date
         if not createdDateFlag:
             self.utils.add(self.index, "date_created", self.last_modified)
