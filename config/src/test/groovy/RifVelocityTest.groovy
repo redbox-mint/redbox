@@ -3,18 +3,9 @@ import com.googlecode.fascinator.common.JsonSimpleConfig
 import com.googlecode.fascinator.common.StorageDataUtil
 import com.googlecode.fascinator.common.storage.impl.GenericDigitalObject
 import groovy.util.logging.Slf4j
-import groovy.xml.DOMBuilder
 import groovy.xml.XmlUtil
-import org.ands.rifcs.base.RIFCS
-import org.ands.rifcs.base.RIFCSWrapper
-import org.ands.rifcs.base.RegistryObject
-import org.apache.pdfbox.util.XMLUtil
 import org.joda.time.DateTimeZone
-import org.w3c.dom.Document
 import spock.lang.Shared
-import org.custommonkey.xmlunit.*
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
 
 /*
  *
@@ -63,74 +54,10 @@ class RifVelocityTest extends GenericVelocitySpecification {
         assert result == XmlUtil.serialize(expected)
     }
 
-//    def "compare rifcs test"() {
-//        given:
-//        DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
-//        def tfPackageToRifcsInstance = scriptClass.createInstance(stubDigitalObject(), stubConfig())
-//        when:
-//        def velocityResult = getRifcsVelocityOutputForAEST().replaceAll("rif:", "").replaceAll(":rif", "")
-//        def sortedSplitVelocityResult = sortXml(velocityResult)
-//
-//        def scriptResult = tfPackageToRifcsInstance.transform()
-//        def sortedSplitScriptResult = sortXml(scriptResult)
-//        then:
-//        XMLUnit.setIgnoreWhitespace(true)
-//        XMLUnit.setIgnoreComments(true)
-//        XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true)
-//        XMLUnit.setIgnoreAttributeOrder(true)
-//        XMLUnit.setNormalizeWhitespace(true)
-//        def diff = XMLUnit.compareXML(sortedSplitVelocityResult, sortedSplitScriptResult)
-//        log.info(diff.toString())
-//        assert diff.similar()
-//        assert sortedSplitVelocityResult[0] == sortedSplitScriptResult[0]
-//        assert sortedSplitVelocityResult[1] == sortedSplitScriptResult[1]
-    }
-
-    def "compare velocity test"() {
-        when:
-        def velocityResult = getRifcsVelocityOutputForAEST().replaceAll("rif:", "").replaceAll(":rif", "")
-        def sortedVelocityResult = sortXml(velocityResult)
-        then:
-        assert sortedVelocityResult == ""
-    }
-
-    def "compare script test"() {
-        given:
-        DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
-        def tfPackageToRifcsInstance = scriptClass.createInstance(stubDigitalObject(), stubConfig())
-        when:
-        def scriptResult = tfPackageToRifcsInstance.transform()
-        def sortedScriptResult = sortXml(scriptResult)
-        then:
-        assert sortedScriptResult == ""
-    }
-
-    // error exists in spock where large strings cause heap space error: https://github.com/spockframework/spock/issues/121
-    def halveResult(String input) {
-        def size = input.size()
-        def firstHalf = input.substring(0, (size/2).toInteger())
-        def secondHalf = input.substring((size/2).toInteger(), size-1)
-        return [firstHalf, secondHalf]
-    }
-
-    String sortXml(String xmlText) {
-        Node rootNode = new XmlParser().parseText(xmlText)
-        List<Node> sorted = rootNode.children().sort(true) {it.name()}
-        def stringWriter = new StringWriter()
-        sorted.each {
-            prettyprintXml(it, stringWriter)
-        }
-        return stringWriter.toString()
-    }
-
     def prettyprintXml(def xml) {
         def stringWriter = new StringWriter()
         new XmlNodePrinter(new PrintWriter(stringWriter)).print(xml)
         return stringWriter.toString()
-    }
-
-    def prettyprintXml(def xml, StringWriter stringWriter) {
-        new XmlNodePrinter(new PrintWriter(stringWriter)).print(xml)
     }
 
     def getRifcsVelocityOutputForAEST() {
