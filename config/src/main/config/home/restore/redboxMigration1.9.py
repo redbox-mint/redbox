@@ -79,7 +79,7 @@ class MigrateData:
         if modifiedDateTime is None:
             self.log.debug("Updating modified time...")
             propMetadata.setProperty("date_object_modified", now)
-        elif createdDateTime.endswith("Z"):
+        elif modifiedDateTime.endswith("Z"):
             ## TODO : remove this temporary workaround to strip any UTC and replace with local timezone (for solr)
             modifiedDateTimeAsLocal = re.sub("Z+$", "", modifiedDateTime) + localTimeZoneHrs
             self.log.debug("updated modified date time to: %s" % modifiedDateTimeAsLocal)
