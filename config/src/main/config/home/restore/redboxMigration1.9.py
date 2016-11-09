@@ -7,7 +7,7 @@ from java.lang import Exception
 from java.lang import String
 from org.apache.commons.lang import StringEscapeUtils
 from org.apache.commons.lang import StringUtils
-from org.joda.time import DateTime
+from org.joda.time import DateTime, DateTimeZone
 
 
 class MigrateData:
@@ -58,19 +58,35 @@ class MigrateData:
     def insertCreateAndModifiedDate(self):
         # check if object created and modified date exists, populate with current date if not..
         propMetadata = self.object.getMetadata()
-        try:
-            now = DateTime()
-            self.log.debug("time now is: %s" % str(now))
-            if (propMetadata.getProperty("date_object_created") is None):
-                self.log.debug("Updating created time...")
-                propMetadata.setProperty("date_object_created", now)
-            if (propMetadata.getProperty("date_object_modified") is None):
-                self.log.debug("Updating modified time...")
-                propMetadata.setProperty("date_object_modified", now)
-        except Exception, e:
-            self.log.warn("Created/modified time may not have been updated.")
-            self.log.error("Error accessing time", e)
-            return None
+        now = DateTime().toString()
+        self.log.debug("date time now is: %s" % now)
+        localTimeZoneHrs = str(DateTime().toString("ZZ"))
+        self.log.info("current zone hours is: %s" % localTimeZoneHrs)
+        createdDateTime = str(propMetadata.getProperty("date_object_created"))
+        self.log.debug("created date time was: %s" % createdDateTime)
+        if createdDateTime is None:
+            self.log.debug("Updating created time...")
+            propMetadata.setProperty("date_object_created", now)
+        elif createdDateTime.endswith("Z"):
+            ## TODO : remove this temporary workaround to strip any UTC and replace with local timezone (for solr)
+            createdDateTimeAsLocal = re.sub("Z+$", "", createdDateTime) + localTimeZoneHrs
+            self.log.debug("updated created date time to: %s" % createdDateTimeAsLocal)
+            propMetadata.setProperty("date_object_created", createdDateTimeAsLocal)
+        else:
+            self.log.debug("existing created time does not end in 'Z', so remains untouched.")
+        modifiedDateTime = str(propMetadata.getProperty("date_object_modified"))
+        self.log.debug("modified date time was: %s" % modifiedDateTime)
+        if modifiedDateTime is None:
+            self.log.debug("Updating modified time...")
+            propMetadata.setProperty("date_object_modified", now)
+        elif createdDateTime.endswith("Z"):
+            ## TODO : remove this temporary workaround to strip any UTC and replace with local timezone (for solr)
+            modifiedDateTimeAsLocal = re.sub("Z+$", "", modifiedDateTime) + localTimeZoneHrs
+            self.log.debug("updated modified date time to: %s" % modifiedDateTimeAsLocal)
+            propMetadata.setProperty("date_object_modified", modifiedDateTimeAsLocal)
+        else:
+            self.log.debug("existing modified time does not end in 'Z', so remains untouched.")
+
 
     def updateVersion(self):
         if self.redboxVersion is None:
@@ -197,3 +213,4 @@ class MigrateData:
             self.object.updatePayload(self.packagePid, inStream)
         except StorageException, e:
             self.log.error("Error updating package data payload: ", e)
+

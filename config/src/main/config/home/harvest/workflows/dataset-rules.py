@@ -4,6 +4,8 @@ from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
 from java.util import HashSet, HashMap, Date
+from org.joda.time import DateTime, DateTimeZone
+from org.joda.time.format import DateTimeFormat
 from org.apache.commons.io import IOUtils
 from java.text import SimpleDateFormat
 
@@ -60,13 +62,33 @@ class IndexData:
 
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
-        formatter = SimpleDateFormat('yyyyMMddHHmmss')
-        self.params.setProperty("last_modified", formatter.format(Date()))
-        formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+
+        ## We have incorrect timezones ending in 'Z' and datetimes with timezone indicator (using +/-, which breaks solr queries)
+        # Strip the current timezone/UTC designator from datetime and add Z as workaround for solr queries using now()-10
+        # TODO: fix this hack in next release
+        current_date_object_created = self.params.getProperty("date_object_created")
+        self.log.debug("Current date object created is: %s" % current_date_object_created)
+        if str(current_date_object_created).endswith("Z"):
+            self.log.debug("Attempting to parse existing solr date created with UTC format..")
+            formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+            formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
+        else:
+            self.log.debug("Attempting to parse existing solr date created with ISO timezone format..")
+            formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+            formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
         formatterWithoutTZ =SimpleDateFormat("yyyy-MM-dd'T'HH':'mm':'ss")
-        self.utils.add(self.index, "date_object_created", formatterWithoutTZ.format(formatterWithTZ.parse(self.params.getProperty("date_object_created")))+"Z")
+        formattedCreatedDateTime = formatterWithoutTZ.format(formattedTZCreatedDateTime)+"Z"
+        self.log.debug("'date_object_created' will be: %s" % str(formattedCreatedDateTime))
+        self.utils.add(self.index, "date_object_created", formattedCreatedDateTime)
         # self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
-        self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )
+
+        formatter = SimpleDateFormat('yyyyMMddHHmmss')
+        last_modified = formatter.format(Date())
+        self.params.setProperty("last_modified", last_modified)
+        self.log.debug("'last_modified' will be: %s" % str(last_modified))
+        formattedModifiedDateTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
+        self.log.debug("'date_object_modified' will be: %s" % str(formattedModifiedDateTime))
+        self.params.setProperty("date_object_modified", formattedModifiedDateTime)
         self.utils.add(self.index, "date_object_modified",  self.params.getProperty("date_object_modified"))
 
     def __basicData(self):
