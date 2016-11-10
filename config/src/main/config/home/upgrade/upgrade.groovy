@@ -45,7 +45,7 @@ def displayUpgradeCompleteMessage() {
 
 def verifyCorrectUpgradeVersion(){
   println "Verifying the ReDBox installation is the correct version\n"
-  if(!new File("lib/redbox-1.8.1-SNAPSHOT.pom").exists()) {
+  if(!new File("lib/redbox-1.9-SNAPSHOT.pom").exists()) {
     println "The ReDBox installation does not appear to be the correct version. Please ensure you have deployed the latest distribution."
     return false;
   }
@@ -104,8 +104,24 @@ def configureNewRIFCSTransformer(initialConfig){
       FileUtils.writeStringToFile(datasetHarvestConfigFile, datasetHarvestConfigJsonSimple.toString(true))
     }
     changeList.add("enabledRifcsTransformer")
+    // ensure new transformer is triggered on using restore tool
+    enableHarvestRemappingOnRestore()
   }
 
+}
+
+def enableHarvestRemappingOnRestore(){
+  println "Configuring Harvest Remapping on restore"
+  println "--------------------------------------\n"
+
+  def restoreFile = FascinatorHome.getPathFile("config-include/2-misc-modules/migration.json")
+  backupFileBeforeChange(restoreFile);
+  def restoreJsonSimple = new JsonSimple(restoreFile)
+  def harvestRemapEnabledObject = restoreJsonSimple.getObject("restoreTool","harvestRemap")
+  harvestRemapEnabledObject.put("enabled",true)
+  FileUtils.writeStringToFile(restoreFile, restoreJsonSimple.toString(true))
+  println "\nUpdated restore tool's harvest remap enabled configuration to true\n"
+  changeList.add("enabledHarvestRemappingOnRestore")
 }
 
 def createAPIUsersConfig(){
