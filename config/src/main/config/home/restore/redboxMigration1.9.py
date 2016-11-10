@@ -113,7 +113,7 @@ class MigrateData:
             self.log.debug("raw deprecated description is: %s" % rawDescription)
             if (rawDescription):
                 # not completely accurate for checking for tags but ensures a style consistent with wysiwyg editor
-                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", str(rawDescription)):
+                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", rawDescription):
                     ## deprecated description may be unescaped or escaped already - so ensure both cases covered
                     unescapedDescription = StringEscapeUtils.unescapeHtml("%s" % rawDescription)
                     escapedDescription = StringEscapeUtils.escapeHtml("%s" % rawDescription)
