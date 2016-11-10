@@ -17,16 +17,15 @@
  *    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * /
  */
-package au.com.redboxresearchdata.rifcs.transformer;
-
+package au.com.redboxresearchdata.rifcs.transformer
 
 import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsCollectionBuilder
+import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsCoreBuilder
 import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsGenericBuilder
 import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsGenericSubBuilder
 import com.googlecode.fascinator.api.storage.DigitalObject
 import com.googlecode.fascinator.api.storage.StorageException
 import com.googlecode.fascinator.api.transformer.TransformerException
-import com.googlecode.fascinator.common.JsonSimple
 import com.googlecode.fascinator.common.JsonSimpleConfig
 import com.googlecode.fascinator.common.StorageDataUtil
 import com.googlecode.fascinator.transformer.ScriptingTransformer
@@ -445,6 +444,16 @@ class TfpackageToRifcs {
                     .addNonEmpty('licence', getLicence())
                     .addNonEmpty('rightsStatement', getRightsStatement())
                     .build()
+        }
+
+        RifcsCoreBuilder.metaClass.dateModified = { String date ->
+            proxy.setDateModified(date)
+            return delegate
+        }
+
+        RifcsCollectionBuilder.metaClass.dateModified = { String date ->
+            coreBuilder.dateModified(date);
+            return delegate
         }
 
         def rifcs = new RifcsCollectionBuilder(identifierData.identifier, urlBase, config.getString(null,"identity","RIF_CSGroup"), tfpackage.'dc:type.rdf:PlainLiteral')

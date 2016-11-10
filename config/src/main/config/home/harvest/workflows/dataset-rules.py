@@ -1,13 +1,11 @@
 import time
-
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
-from java.util import HashSet, HashMap, Date
-from org.joda.time import DateTime, DateTimeZone
-from org.joda.time.format import DateTimeFormat
-from org.apache.commons.io import IOUtils
 from java.text import SimpleDateFormat
+from java.util import HashSet, HashMap, Date
+from org.apache.commons.io import IOUtils
+from org.joda.time import DateTime
 
 class IndexData:
     def __activate__(self, context):
@@ -68,19 +66,26 @@ class IndexData:
         # TODO: fix this hack in next release
         current_date_object_created = self.params.getProperty("date_object_created")
         self.log.debug("Current date object created is: %s" % current_date_object_created)
+        formatterWithoutTZPattern = "yyyy-MM-dd'T'HH':'mm':'ss"
         if str(current_date_object_created).endswith("Z"):
             self.log.debug("Attempting to parse existing solr date created with UTC format..")
+            # don't convert timezone, just strip the 'Z' as workaround for now
             formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
             formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
+            self.log.debug("parsed 'date_object_created' is: %s" % formattedTZCreatedDateTime)
+            formatterWithoutTZ = SimpleDateFormat(formatterWithoutTZPattern)
+            dateTimeWithoutTZ = formatterWithoutTZ.format(formattedTZCreatedDateTime)
+            self.log.debug("timezone-stripped date time is: %s" % dateTimeWithoutTZ)
         else:
-            self.log.debug("Attempting to parse existing solr date created with ISO timezone format..")
-            formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-            formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
-        formatterWithoutTZ =SimpleDateFormat("yyyy-MM-dd'T'HH':'mm':'ss")
-        formattedCreatedDateTime = formatterWithoutTZ.format(formattedTZCreatedDateTime)+"Z"
-        self.log.debug("'date_object_created' will be: %s" % str(formattedCreatedDateTime))
+            self.log.debug("Attempting to parse existing solr date created, presuming an ISO timezone format..")
+            # Too many various formats to predict, joda's datetime can ingest various ISO formats assuming timezone has been constant
+            formattedTZCreatedDateTime = DateTime(current_date_object_created)
+            self.log.debug("parsed 'date_object_created' is: %s" % formattedTZCreatedDateTime.toString())
+            dateTimeWithoutTZ =formattedTZCreatedDateTime.toString(formatterWithoutTZPattern)
+            self.log.debug("timezone-stripped date time is: %s" % dateTimeWithoutTZ)
+        formattedCreatedDateTime = dateTimeWithoutTZ + "Z"
+        self.log.debug("'date_object_created' will be: %s" % formattedCreatedDateTime)
         self.utils.add(self.index, "date_object_created", formattedCreatedDateTime)
-        # self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
 
         formatter = SimpleDateFormat('yyyyMMddHHmmss')
         last_modified = formatter.format(Date())
