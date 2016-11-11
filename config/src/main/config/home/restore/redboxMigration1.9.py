@@ -1,5 +1,5 @@
 import re
-
+import traceback
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from java.io import ByteArrayInputStream
@@ -32,27 +32,29 @@ class MigrateData:
             #
             # # load the package data..
             self.__getPackageData()
+            if self.packageData is not None:
+                self.log.info(self.packageData.toString(True))
+                # update the redbox version...
+                self.updateVersion()
 
-            # update the redbox version...
-            self.updateVersion()
+                # # update description to wysiwyg descriptions and init for multiple descriptions
+                self.setDescriptionShadow()
 
-            # # update description to wysiwyg descriptions and init for multiple descriptions
-            self.setDescriptionShadow()
+                # # check recordAsLocation config and, if true, set record as location
+                self.setRecordAsLocation()
 
-            # # check recordAsLocation config and, if true, set record as location
-            self.setRecordAsLocation()
+                # add access rights type if none exists, but relevant licence present
+                self.updateRightsType()
 
-            # add access rights type if none exists, but relevant licence present
-            self.updateRightsType()
+                # add new keys if not present
+                self.injectFreshKeys()
 
-            # add new keys if not present
-            self.injectFreshKeys()
-
-            # # save the package data...
-            self.__savePackageData()
+                # # save the package data...
+                self.__savePackageData()
 
             self.object.close()
         except Exception, e:
+            traceback.print_exc()
             self.object = None
 
     def insertCreateAndModifiedDate(self):
@@ -180,6 +182,7 @@ class MigrateData:
     def __getPackageData(self):
         # Find our package payload
         self.packagePid = None
+        self.packageData = None
         try:
             self.pidList = self.object.getPayloadIdList()
             for pid in self.pidList:
@@ -193,7 +196,7 @@ class MigrateData:
             return
 
         # Retrieve our package data
-        self.packageData = None
+
         try:
             payload = self.object.getPayload(self.packagePid)
             try:
@@ -212,5 +215,5 @@ class MigrateData:
         try:
             self.object.updatePayload(self.packagePid, inStream)
         except StorageException, e:
+            traceback.print_exc()
             self.log.error("Error updating package data payload: ", e)
-
