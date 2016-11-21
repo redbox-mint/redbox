@@ -13,9 +13,12 @@ println "--------------------------------\n"
 
 changeList = []
 
-if(!verifyCorrectUpgradeVersion()) {
+redboxVersion = "1.9-SNAPSHOT";
+
+if(!verifyCorrectUpgradeVersion(redboxVersion)) {
   return;
 }
+
 
 
 initialConfig = new JsonSimpleConfig();
@@ -31,9 +34,44 @@ if(changedDatasetForm.toLowerCase() == "n") {
 configureNewRIFCSTransformer(initialConfig);
 createAPIUsersConfig();
 
+updateVersionInTfEnv(redboxVersion);
+
 displayUpgradeCompleteMessage();
 
 
+def updateVersionInTfEnv(redboxVersion){
+  println "Update version number"
+  println "----------------------------------\n"
+  println "If you are using you're own versioning scheme for your institutional build select N for the following question.";
+  updateVersionNumber = util.promptUserInput("Would you like to update the version number string to the version " + redboxVersion+"?","[Y/N]","[ynYN]");
+  if(updateVersionNumber.toLowerCase() == "y") {
+  
+  	def lines = FileUtils.readLines(new File("tf_env.sh"));
+  	def index = 0;
+  	for(line in lines) {
+  		if(line.startsWith("export REDBOX_VERSION")) {
+  		  line = "export REDBOX_VERSION=\""+redboxVersion+"\"";
+  		  lines.set(index, line);
+  		}
+  		index++;
+  	}
+  	FileUtils.writeLines(new File("tf_env.sh"),lines);
+  	
+  	index = 0;
+  	lines = FileUtils.readLines(new File("tf_env.bat"));
+  	for(line in lines) {
+  		if(line.startsWith("set REDBOX_VERSION")) {
+  		  line = "set REDBOX_VERSION="+redboxVersion+"";
+  		  lines.set(index, line);
+  		 }
+  		 index++;
+  	}
+  	FileUtils.writeLines(new File("tf_env.bat"),lines);
+  	
+  	println "Version string updated.\n"
+  }
+  
+ }
 
 def displayUpgradeCompleteMessage() {
   println "----------------------------------"
@@ -43,9 +81,9 @@ def displayUpgradeCompleteMessage() {
   println "All files pre-modification have been copied to " + FascinatorHome.getPathFile("pre-upgrade-backup").getPath() + " so that they can be restored if there are any issues. These files can be safely deleted if there are no issues.\n"
 }
 
-def verifyCorrectUpgradeVersion(){
+def verifyCorrectUpgradeVersion(redboxVersion){
   println "Verifying the ReDBox installation is the correct version\n"
-  if(!new File("lib/redbox-1.9-SNAPSHOT.pom").exists()) {
+  if(!new File("lib/redbox-"+redboxVersion+".pom").exists()) {
     println "The ReDBox installation does not appear to be the correct version. Please ensure you have deployed the latest distribution."
     return false;
   }
