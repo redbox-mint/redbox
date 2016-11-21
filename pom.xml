@@ -183,7 +183,7 @@
 		</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>uk.bl</groupId>
+			<groupId>au.com.redboxresearchdata</groupId>
 			<artifactId>orcid-java-client</artifactId>
 			<version>0.12.2-SNAPSHOT</version>
 		</dependency>
