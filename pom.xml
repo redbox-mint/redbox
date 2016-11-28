@@ -185,7 +185,7 @@
 		<dependency>
 			<groupId>au.com.redboxresearchdata</groupId>
 			<artifactId>orcid-java-client</artifactId>
-			<version>0.12.2-SNAPSHOT</version>
+			<version>0.12.3</version>
 		</dependency>
 	</dependencies>
 	<build>
