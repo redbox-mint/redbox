@@ -42,7 +42,7 @@
         <dependency>
             <groupId>au.com.redboxresearchdata.rifcs</groupId>
             <artifactId>ands-rifcs-builder</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.googlecode.the-fascinator.plugins</groupId>
             <artifactId>plugin-transformer-scripting</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
         </dependency>
     </dependencies>
     <packaging>jar</packaging>

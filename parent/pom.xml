@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-common</artifactId>
-                <version>1.4-SNAPSHOT</version>
+                <version>1.4</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
