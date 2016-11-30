@@ -13,7 +13,7 @@
         <relativePath />
     </parent>
     <properties>
-        <fascinator.version>1.4-SNAPSHOT</fascinator.version>
+        <fascinator.version>1.4</fascinator.version>
         <jetty.version>6.1.24</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -27,12 +27,12 @@
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-core</artifactId>
-                <version>1.4-SNAPSHOT</version>
+                <version>1.4</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-plugin-api</artifactId>
-                <version>1.4-SNAPSHOT</version>
+                <version>1.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
