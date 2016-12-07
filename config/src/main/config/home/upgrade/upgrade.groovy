@@ -13,7 +13,7 @@ println "--------------------------------\n"
 
 changeList = []
 
-redboxVersion = "1.9-SNAPSHOT";
+redboxVersion = "1.9";
 
 if(!verifyCorrectUpgradeVersion(redboxVersion)) {
   return;
