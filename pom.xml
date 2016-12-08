@@ -321,7 +321,7 @@
 						<directory>src/main/config/server</directory>
 					</resource>
 					<resource>
-						<directory>src/main/config/solr</directory>
+						<directory>src/main/config/data</directory>
 					</resource>
 				</resources>
 				<plugins>
