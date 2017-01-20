@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.redbox-mint</groupId>
 	<artifactId>redbox</artifactId>
-	<version>1.10-SNAPSHOT</version>
+	<version>1.9.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ReDBox</name>
 	<parent>
 		<groupId>com.googlecode.redbox-mint</groupId>
 		<artifactId>redbox-project</artifactId>
-		<version>1.10-SNAPSHOT</version>
+		<version>1.9.0.1-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 	<modules>
@@ -49,14 +49,14 @@
 			<artifactId>fascinator-portal</artifactId>
 			<type>war</type>
 			<classifier>skinny</classifier>
-			<version>1.4</version>
+			<version>1.4.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.the-fascinator</groupId>
 			<artifactId>fascinator-portal</artifactId>
 			<type>jar</type>
 			<classifier>classes</classifier>
-			<version>1.4</version>
+			<version>1.4.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.the-fascinator</groupId>
@@ -305,7 +305,7 @@
 					<groupId>com.googlecode.the-fascinator</groupId>
 					<artifactId>fascinator-portal</artifactId>
 					<type>warpath</type>
-					<version>1.4</version>
+					<version>1.4.1-SNAPSHOT</version>
 				</dependency>
 			</dependencies>
 			<!-- The standard build/deploy process for making a server -->
