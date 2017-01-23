@@ -1,0 +1,22 @@
+#set($pageTitle = "System Settings")
+<h2 id="page-heading">System Settings</h2>
+<div id="form-section" class="grid_16">
+<div id="toggle-maint-section" class="box">
+    <h2>Toggle Maintenance Mode</h2>
+    <form action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/systemSettings" method="post">
+    <div><label>Maintenance Mode </label><input type="radio" name="maintenanceMode" value="Enabled" #if($self.maintenanceModeEnabled()) checked #end> Enable
+    <input type="radio" name="maintenanceMode" value="Disabled" #if($self.maintenanceModeEnabled() == false) checked #end> Disable</div>
+    <div><input type="submit" value="Save"/> <input type="hidden" name='action' value='Save'></input></div>
+    </form>
+</div>
+<div id="reindex-section" class="box">
+      <h2>Run data migration</h2>
+      <form action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/systemSettings" method="post">
+      <div><label>Data migration </label><input type="hidden" name='action' value='RunReindex'></input><input type="submit" value="Run"/>
+      </form>
+</div>
+<div id="log-section" class="box">
+
+</div>
+
+</div>
