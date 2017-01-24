@@ -5,6 +5,10 @@ from com.googlecode.fascinator.common import JsonSimple
 from com.googlecode.fascinator.common.storage import StorageUtils
 from java.util import HashSet
 from org.apache.commons.io import IOUtils
+from org.joda.time import DateTime;
+from org.joda.time import DateTimeZone;
+from org.joda.time.format import DateTimeFormatter;
+from org.joda.time.format import ISODateTimeFormat;
 import imp
 
 class BaseIndexData(object):
@@ -222,9 +226,18 @@ class BaseIndexData(object):
         if self.createTimeStamp is None:
             self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))        
         self.params.setProperty("date_object_modified", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()) )        
-        self.utils.add(self.index, "date_object_modified", self.params.getProperty("date_object_modified"))
-        self.utils.add(self.index, "date_object_created", self.params.getProperty("date_object_created"))
+        self.utils.add(self.index, "date_object_modified", self.getUTCString(self.params.getProperty("date_object_modified")))
+        self.utils.add(self.index, "date_object_created", self.getUTCString(self.params.getProperty("date_object_created")))
 
+    def getUTCString(self, dateString):
+        parser = ISODateTimeFormat.dateTimeParser();
+        formatter = ISODateTimeFormat.dateTime();
+        localDateTime = parser.parseDateTime(dateString);
+        #utcDateTime = localDateTime.withZone(DateTimeZone.forID("UTC"));
+        formatterWithoutTZPattern = "yyyy-MM-dd'T'HH':'mm':'ss"
+        return localDateTime.toString(formatterWithoutTZPattern)+"Z"
+#         return formatter.print(utcDateTime)
+        
     def __workflow(self):
         # Workflow data
         WORKFLOW_ID = self.config.getString(None, ["workflow-id"])
