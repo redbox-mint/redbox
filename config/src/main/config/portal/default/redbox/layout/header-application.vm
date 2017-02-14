@@ -30,6 +30,7 @@
                 <li><a href="$portalPath/apiAdmin">API Administration</a></li>
                 <li><a href="$portalPath/batchprocess">Batch</a></li>
                 <li><a href="$portalPath/export/csv">Export</a></li>
+                <li><a href="$portalPath/logviewer">Log viewer</a></li>
                 #parseTemplate("elements/queues.vm")
             </ul>
         </li>
