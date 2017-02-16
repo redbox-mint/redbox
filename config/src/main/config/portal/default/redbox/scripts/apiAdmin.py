@@ -1,5 +1,6 @@
 from com.googlecode.fascinator.common import JsonSimple, JsonObject
 from com.googlecode.fascinator.common import FascinatorHome
+from com.googlecode.fascinator.spring import ApplicationContextProvider
 from org.json.simple import JSONArray
 from org.apache.commons.io import FileUtils
 from java.util import UUID
@@ -14,6 +15,9 @@ class ApiAdminData:
         self.velocityContext = context
         self.formData = self.velocityContext["formData"]
         self.request = self.velocityContext["request"]
+        self.apiKeyService = ApplicationContextProvider.getApplicationContext().getBean("apiKeyTokenService")
+
+
         if self.request.getMethod() == "POST":
             if self.formData.get("action") == "Add":
                 self.add_key()
@@ -44,12 +48,10 @@ class ApiAdminData:
             clientObject.put("name", self.formData.get("name"))
             clientObject.put("key", self.get_random_key())
             clientArray.set(index,clientObject)
-            FileUtils.writeStringToFile(keysFile, keysJsonSimple.toString(True))
+            self.apiKeyService.updateAndSaveKeys(clientArray)
 
     def remove_key(self):
-        keysFile = FascinatorHome.getPathFile("security/apikeys.json")
-        keysJsonSimple = JsonSimple(keysFile)
-        clientArray = keysJsonSimple.getArray("api", "clients")
+        clientArray = self.apiKeyService.getClients()
         name = self.formData.get("name")
         clientToBeRemoved = None
         for client in clientArray:
@@ -58,7 +60,7 @@ class ApiAdminData:
                 break
         if clientToBeRemoved is not None:
             clientArray.remove(clientToBeRemoved)
-            FileUtils.writeStringToFile(keysFile, keysJsonSimple.toString(True))
+            self.apiKeyService.updateAndSaveKeys(clientArray)
 
     def add_key(self):
         keysFile = FascinatorHome.getPathFile("security/apikeys.json")
@@ -71,24 +73,19 @@ class ApiAdminData:
                 return
 
         clientObject = JsonObject()
-        clientObject.put("name", self.formData.get("name"))
+        clientObject.put("username", self.formData.get("name"))
         if(self.formData.get("generateKey") == "true"):
-            clientObject.put("key", self.get_random_key())
+            clientObject.put("apiKey", self.get_random_key())
         else:
-            clientObject.put("key", self.formData.get("key"))
+            clientObject.put("apiKey", self.formData.get("key"))
         clientArray.add(clientObject)
-        FileUtils.writeStringToFile(keysFile, keysJsonSimple.toString(True))
+        self.apiKeyService.updateAndSaveKeys(clientArray)
 
     def get_random_key(self):
         return UUID.randomUUID().toString()
-    def get_keys(self):
-        keyJson = None
-        keysFile = FascinatorHome.getPathFile("security/apikeys.json")
-        if keysFile.exists():
-            clientArray = JsonSimple(keysFile).getArray("api", "clients")
-        else:
-            clientArray = JSONArray()
 
+    def get_keys(self):
+        clientArray = self.apiKeyService.getClients()
         responseJson = JsonObject()
         responseJson.put("keys", clientArray)
         return responseJson

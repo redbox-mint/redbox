@@ -20,7 +20,7 @@
 		<module>plugins/transformer/vital-fedora3</module>
 		<module>secure-api</module>
 	</modules>
-	<!-- Typically these would be provided by an institutional build, but these 
+	<!-- Typically these would be provided by an institutional build, but these
 		are ok for fallback defaults and/or debugging values. -->
 	<properties>
 		<server.port>9000</server.port>
@@ -38,7 +38,7 @@
 		<smtp.host>localhost</smtp.host>
 		<admin.email>admin@localhost</admin.email>
 		<groovy.version>2.4.5</groovy.version>
-		<!-- Control scripts try to auto-detect proxy. Use this value if you want 
+		<!-- Control scripts try to auto-detect proxy. Use this value if you want
 			Java to specifically exclude certain hosts from proxying. -->
 		<non.proxy.hosts>localhost</non.proxy.hosts>
 	</properties>
@@ -91,7 +91,7 @@
 			<artifactId>jetty-spring</artifactId>
 			<version>${jetty.version}</version>
 			<exclusions>
-				<!-- Facsinator will bring JCL-over-SLF4J. Although the logback JARs 
+				<!-- Facsinator will bring JCL-over-SLF4J. Although the logback JARs
 					must be in Jetty's own /lib folder. http://logback.qos.ch/faq.html#setup_jetty -->
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -174,7 +174,7 @@
 		<dependency>
 			<groupId>com.googlecode.redbox-mint</groupId>
 			<artifactId>redbox-web-service</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		<exclusions>
 			<exclusion>
 				<groupId>org.slf4j</groupId>
@@ -190,7 +190,7 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- This is a workaround to get submodules working with the maven release 
+			<!-- This is a workaround to get submodules working with the maven release
 				plugin -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -215,7 +215,7 @@
 					</arguments>
 				</configuration>
 			</plugin>
-			<!-- Use Groovy to define a clean path to the top level directory. Windows 
+			<!-- Use Groovy to define a clean path to the top level directory. Windows
 				pathing can be problematic, so we fix that here too -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
@@ -258,7 +258,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -292,7 +292,7 @@
 	<profiles>
 		<profile>
 			<id>deploy-server</id>
-			<!-- Allows downstream POMs to trigger this profile by adding a marker 
+			<!-- Allows downstream POMs to trigger this profile by adding a marker
 				file to the project root -->
 			<activation>
 				<file>
@@ -420,7 +420,7 @@
 									<goal>unpack</goal>
 								</goals>
 								<configuration>
-									<!-- Make sure we don't unpack the bundled logging JAR. Fascinator 
+									<!-- Make sure we don't unpack the bundled logging JAR. Fascinator
 										will provide logback instead. -->
 									<excludes>WEB-INF/lib/slf4j-jdk14-1.6.1.jar</excludes>
 									<outputDirectory>${dir.server}/webapps/solr</outputDirectory>
