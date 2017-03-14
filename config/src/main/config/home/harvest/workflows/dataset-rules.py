@@ -6,6 +6,7 @@ from java.text import SimpleDateFormat
 from java.util import HashSet, HashMap, Date
 from org.apache.commons.io import IOUtils
 from org.joda.time import DateTime
+from java.lang import Exception
 
 class IndexData:
     def __activate__(self, context):
@@ -56,12 +57,12 @@ class IndexData:
         self.utils.add(self.index, "item_type", self.itemType)
         self.utils.add(self.index, "last_modified", self.last_modified)
         self.utils.add(self.index, "harvest_config", self.params.getProperty("jsonConfigOid"))
-        self.utils.add(self.index, "harvest_rules",  self.params.getProperty("rulesOid"))
+        self.utils.add(self.index, "harvest_rules", self.params.getProperty("rulesOid"))
 
         self.item_security = []
         self.owner = self.params.getProperty("owner", "guest")
 
-        ## We have incorrect timezones ending in 'Z' and datetimes with timezone indicator (using +/-, which breaks solr queries)
+        # # We have incorrect timezones ending in 'Z' and datetimes with timezone indicator (using +/-, which breaks solr queries)
         # Strip the current timezone/UTC designator from datetime and add Z as workaround for solr queries using now()-10
         # TODO: fix this hack in next release
         current_date_object_created = self.params.getProperty("date_object_created")
@@ -70,8 +71,9 @@ class IndexData:
         if str(current_date_object_created).endswith("Z"):
             self.log.debug("Attempting to parse existing solr date created with UTC format..")
             # don't convert timezone, just strip the 'Z' as workaround for now
-            formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-            formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
+#             formatterWithTZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+            formattedTZCreatedDateTime = self.parseDates(current_date_object_created, ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"])
+#             formattedTZCreatedDateTime = formatterWithTZ.parse(current_date_object_created)
             self.log.debug("parsed 'date_object_created' is: %s" % formattedTZCreatedDateTime)
             formatterWithoutTZ = SimpleDateFormat(formatterWithoutTZPattern)
             dateTimeWithoutTZ = formatterWithoutTZ.format(formattedTZCreatedDateTime)
@@ -81,7 +83,7 @@ class IndexData:
             # Too many various formats to predict, joda's datetime can ingest various ISO formats assuming timezone has been constant
             formattedTZCreatedDateTime = DateTime(current_date_object_created)
             self.log.debug("parsed 'date_object_created' is: %s" % formattedTZCreatedDateTime.toString())
-            dateTimeWithoutTZ =formattedTZCreatedDateTime.toString(formatterWithoutTZPattern)
+            dateTimeWithoutTZ = formattedTZCreatedDateTime.toString(formatterWithoutTZPattern)
             self.log.debug("timezone-stripped date time is: %s" % dateTimeWithoutTZ)
         formattedCreatedDateTime = dateTimeWithoutTZ + "Z"
         self.log.debug("'date_object_created' will be: %s" % formattedCreatedDateTime)
@@ -94,8 +96,21 @@ class IndexData:
         formattedModifiedDateTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime())
         self.log.debug("'date_object_modified' will be: %s" % str(formattedModifiedDateTime))
         self.params.setProperty("date_object_modified", formattedModifiedDateTime)
-        self.utils.add(self.index, "date_object_modified",  self.params.getProperty("date_object_modified"))
+        self.utils.add(self.index, "date_object_modified", self.params.getProperty("date_object_modified"))
 
+    def parseDates(self, dateString, dateFormats):
+        
+        for format in dateFormats:
+                try:
+                    formatter = SimpleDateFormat(format)
+                    return formatter.parse(dateString)
+                except Exception, e:
+                    a = ""
+            
+        raise Exception("Date parsing error")
+        return ""
+            
+    
     def __basicData(self):
         self.utils.add(self.index, "repository_name", self.params["repository.name"])
         self.utils.add(self.index, "repository_type", self.params["repository.type"])
@@ -212,7 +227,7 @@ class IndexData:
         self.grantNumberList = []
         self.arrayBucket = HashMap()
         self.compFields = ["dc:coverage.vivo:DateTimeInterval", "locrel:prc.foaf:Person"]
-        self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ","start":"start","end":"end"},"locrel:prc.foaf:Person":{"delim":", ","start":"familyName","end":"givenName"} }
+        self.compFieldsConfig = {"dc:coverage.vivo:DateTimeInterval":{"delim":" to ", "start":"start", "end":"end"}, "locrel:prc.foaf:Person":{"delim":", ", "start":"familyName", "end":"givenName"} }
         self.reportingFieldPrefix = "reporting_"
         self.embargoedDate = None
         self.createTimeStamp = None
@@ -231,7 +246,7 @@ class IndexData:
         self.utils.add(self.index, "dc_title", self.title)
         if self.dcType is not None:
             self.utils.add(self.index, "dc_type", self.dcType)
-        self.__indexList("dc_creator", self.creatorList)  #no dc_author in schema.xml, need to check
+        self.__indexList("dc_creator", self.creatorList)  # no dc_author in schema.xml, need to check
         self.__indexList("dc_contributor", self.contributorList)
         self.__indexList("dc_description", self.descriptionList)
         self.__indexList("dc_format", self.formatList)
@@ -248,7 +263,7 @@ class IndexData:
                 else:
                     self.__indexList(arrFldName, self.arrayBucket.get(arrFldName))
         if self.embargoedDate is not None:
-            self.utils.add(self.index, "date_embargoed", self.embargoedDate+"T00:00:00Z")
+            self.utils.add(self.index, "date_embargoed", self.embargoedDate + "T00:00:00Z")
         if self.createTimeStamp is None:
             self.utils.add(self.index, "create_timestamp", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.localtime()))
     def __workflow(self):
@@ -338,8 +353,8 @@ class IndexData:
                     self.title = formTitle
         self.descriptionList = [manifest.getString("", ["description"])]
 
-        #Used to make sure we have a created date
-        createdDateFlag  = False
+        # Used to make sure we have a created date
+        createdDateFlag = False
 
         formData = manifest.getJsonObject()
 
@@ -372,7 +387,7 @@ class IndexData:
                             facetField = basicField[:dot]
                         else:
                             facetField = basicField
-                        #print "Indexing DC field '%s':'%s'" % (field, facetField)
+                        # print "Indexing DC field '%s':'%s'" % (field, facetField)
                         if facetField == "dc_title":
                             if self.title is None:
                                 self.title = value
@@ -399,7 +414,7 @@ class IndexData:
                             # we've got an array field
                             fldPart = ":%s" % arrParts[0]
                             prefixEndIdx = field.find(fldPart) + len(fldPart)
-                            suffixStartIdx = prefixEndIdx+len(arrParts[1])+1
+                            suffixStartIdx = prefixEndIdx + len(arrParts[1]) + 1
                             arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx] + field[suffixStartIdx:]
                             if field.endswith("Name"):
                                 arrFldName = self.reportingFieldPrefix + field[:prefixEndIdx]
@@ -429,7 +444,7 @@ class IndexData:
 
                     for compfield in self.compFields:
                         if field.startswith(compfield):
-                            arrFldName = self.reportingFieldPrefix +compfield
+                            arrFldName = self.reportingFieldPrefix + compfield
                             fullFieldMap = self.arrayBucket.get(arrFldName)
                             if fullFieldMap is None:
                                 fullFieldMap = HashMap()
@@ -438,7 +453,7 @@ class IndexData:
                             if fullField is None:
                                 fullField = ""
                             if field.endswith(self.compFieldsConfig[compfield]["end"]):
-                                fullField = "%s%s%s" % (fullField, self.compFieldsConfig[compfield]["delim"] ,value)
+                                fullField = "%s%s%s" % (fullField, self.compFieldsConfig[compfield]["delim"] , value)
                             if field.endswith(self.compFieldsConfig[compfield]["start"]):
                                 fullField = "%s%s" % (value, fullField)
                             self.log.debug("full field now is :%s" % fullField)
