@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                     http://www.springframework.org/schema/security
-                    http://www.springframework.org/schema/security/spring-security-3.0.3.xsd
+                    http://www.springframework.org/schema/security/spring-security-3.2.xsd
                     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<http auto-config="false"  disable-url-rewriting="true" access-decision-manager-ref="fascinatorAccessDecisionManagerBean" use-expressions="true" entry-point-ref="authenticationEntryPoint">
@@ -15,7 +15,7 @@
 		<intercept-url pattern="/**/accessDenied" access="permitAll" />
 		<intercept-url pattern="/**/history/*" access="hasRole('admin')" />
 		<intercept-url pattern="/**/admin" access="hasRole('admin')" />
-		<intercept-url pattern="/**/apiAdmin" access="hasRole('admin')" />                                                         
+		<intercept-url pattern="/**/apiAdmin" access="hasRole('admin')" />
 		<intercept-url pattern="/**/settings" access="hasRole('admin')" />
 		<intercept-url pattern="/**/systemSettings" access="hasRole('admin')" />
 		<intercept-url pattern="/**/logviewer" access="hasRole('admin')" />
@@ -32,10 +32,12 @@
 		<intercept-url pattern="/dashboard/**" access="isAuthenticated()"/>
 		<intercept-url pattern="/**/*.*" access="permitAll" />
 		<intercept-url pattern="/*/**" access="permitAll" />
+		<custom-filter ref="fascinatorOwaspInterceptor" before="HEADERS_FILTER" />
 		<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
 		<custom-filter ref="fascinatorAuthInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
 		<access-denied-handler ref="accessDeniedHandler"/>
-
+		<!-- implementing spring's default owasp see: https://docs.spring.io/spring-security/site/docs/current/reference/html/appendix-namespace.html#nsa-headers-->
+		<headers/>
 	</http>
 
 	<beans:bean id="fascinatorWebSecurityExpressionHandler" class="com.googlecode.fascinator.portal.security.FascinatorWebSecurityExpressionHandler">

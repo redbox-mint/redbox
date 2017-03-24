@@ -27,7 +27,7 @@
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-core</artifactId>
-                <version>1.4</version>
+                <version>1.4.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
