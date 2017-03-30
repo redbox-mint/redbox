@@ -33,7 +33,8 @@
 #sectionHeading("Description")
 <div class="meta">
     <dl>
-        #set($dataList = $self.getList("dc:description"))
+        #set($rawList = $self.getList("dc:description"))
+        #set($dataList = $self.owaspSanitize($rawList, "text"))
         #if ($dataList.isEmpty())
             <dd>
                 #noInformation()

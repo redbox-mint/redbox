@@ -8,6 +8,7 @@ from java.lang import String
 from org.apache.commons.lang import StringEscapeUtils
 from org.apache.commons.lang import StringUtils
 from org.joda.time import DateTime, DateTimeZone
+from com.googlecode.fascinator.portal.services import OwaspSanitizer
 
 
 class MigrateData:
@@ -112,16 +113,18 @@ class MigrateData:
             unescapedDescription = ""
             escapedDescription = ""
             rawDescription = StringUtils.defaultString(deprecated_description)
+            ## sanitize the incoming description
             self.log.debug("raw deprecated description is: %s" % rawDescription)
-            if (rawDescription):
+            sanitizedDescription = OwaspSanitizer.sanitizeHtml(rawDescription)
+            if (sanitizedDescription):
                 # not completely accurate for checking for tags but ensures a style consistent with wysiwyg editor
-                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", rawDescription):
+                if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", sanitizedDescription):
                     ## deprecated description may be unescaped or escaped already - so ensure both cases covered
-                    unescapedDescription = StringEscapeUtils.unescapeHtml("%s" % rawDescription)
-                    escapedDescription = StringEscapeUtils.escapeHtml("%s" % rawDescription)
+                    unescapedDescription = StringEscapeUtils.unescapeHtml("%s" % sanitizedDescription)
+                    escapedDescription = OwaspSanitizer.escapeHtml("%s" % sanitizedDescription)
                 else:
-                    unescapedDescription = StringEscapeUtils.unescapeHtml("<p>%s</p>" % rawDescription)
-                    escapedDescription = StringEscapeUtils.escapeHtml("<p>%s</p>" % rawDescription)
+                    unescapedDescription = StringEscapeUtils.unescapeHtml("<p>%s</p>" % sanitizedDescription)
+                    escapedDescription = OwaspSanitizer.escapeHtml("<p>%s</p>" % sanitizedDescription)
             self.log.info("relevant unescaped description is: %s" % unescapedDescription)
             self.log.info("relevant escaped description is: %s" % escapedDescription)
             self.getPackageJson().put("dc:description.1.text", unescapedDescription)

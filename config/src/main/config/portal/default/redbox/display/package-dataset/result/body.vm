@@ -8,12 +8,27 @@ $(function() {
         ## reset value
         $(jQId).html('');
         var idName = $(jQId).attr('id') + "Frame";
-        $('<iframe id='+idName+' style="height:200px; width:75%;border: none;"/>').appendTo(jQId)
-            .contents().find('body').append(unescaped);
+        $('<iframe id='+idName+' style="height:200px; width:75%;border: none;"/>').appendTo(jQId);
+        appendSanitized(unescaped, idName);
+     }
+     function appendSanitized(value, id) {
+         jQuery.ajax({
+             type: "POST",
+             url: "$portalPath/actions/owasp.ajax",
+             data: {
+                 raw: value
+             },
+             success: function(data) {
+                $("iframe[id='" + id + "']").contents().find('body').append(data.response);
+             },
+             error: function (req, status, e) {
+                console.log(req.responseText);
+             },
+             dataType: "json"
+         });
      }
      ## serverside quotes and newlines should be escaped.
      #set($description=$self.getFirst("dc:description.1.shadow").replaceAll("'","\\'").replaceAll("\"", "\\\"").replaceAll("\n","\\n"))
      appendIFrameForUnescaped('$!{description}', '#displaydescription$velocityCount');
-
 });
 </script>

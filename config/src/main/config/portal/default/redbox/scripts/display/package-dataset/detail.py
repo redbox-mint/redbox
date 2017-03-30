@@ -9,6 +9,7 @@ from java.util import TreeMap, TreeSet
 
 from org.apache.commons.lang import StringEscapeUtils, WordUtils
 from org.json.simple import JSONArray
+from com.googlecode.fascinator.portal.services import OwaspSanitizer
 import preview
 from java.io import File
 from java.lang import String
@@ -89,6 +90,12 @@ class DetailData:
 
     def getSortedKeySet(self):
         return TreeSet(self.metadata.getJsonObject().keySet())
+
+    def owaspSanitize(self, map, subKey):
+        self.log.debug("sanitising detail...%s" % subKey)
+        OwaspSanitizer.sanitizeMapNumberedField(map, subKey)
+        self.log.debug("map is %s" % map)
+        return map
 
     def escapeHtml(self, value):
         if value:
