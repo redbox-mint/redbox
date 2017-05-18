@@ -48,7 +48,7 @@
             <!-- custom headers -->
             <!-- append -Report-Only to Content-Security-Policy to report, rather than block -->
             <header name="Content-Security-Policy-Report-Only"
-                    value="Content-Security-Policy-Report-Only: default-src 'none'; img-src localhost http://tile.openstreetmap.org; style-src localhost 'unsafe-inline'; connect-src 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' ajax.googleapis.com http://ajax.aspnetcdn.com http://code.jquery.com; font-src 'self'; report-uri /redbox/csp-reports;"/>
+                    value="default-src 'none'; img-src 'self' http://tile.openstreetmap.org; style-src 'self' 'unsafe-inline'; connect-src 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval' ajax.googleapis.com http://ajax.aspnetcdn.com http://code.jquery.com; font-src 'self'; report-uri /redbox/csp-reports/"/>
         </headers>
     </http>
 
