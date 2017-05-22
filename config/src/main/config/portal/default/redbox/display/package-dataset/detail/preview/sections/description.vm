@@ -198,8 +198,12 @@ $(function() {
     }
     var originalDescriptions=$('#dcdescriptionList').html();
     $('#dcdescriptionList').html('');
-    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
-         .contents().find('body').append(originalDescriptions);
+    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList');
+    var doc = document.getElementById('dcdescriptionFrame').contentWindow.document;
+	doc.open();
+	doc.write(originalDescriptions);
+	doc.close();
+	
     $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
         var className = $(this).attr('class');
         ## ensure that pre-wysiwyg records don't break

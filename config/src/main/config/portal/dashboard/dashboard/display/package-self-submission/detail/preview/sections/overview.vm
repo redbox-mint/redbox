@@ -156,9 +156,16 @@ $(function() {
     }
     var originalDescriptions=$('#dcdescriptionList').html();
     $('#dcdescriptionList').html('');
-    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList')
-         .contents().find('body').append(originalDescriptions);
-    $('#dcdescriptionFrame').contents().find('.dcdescription').each( function(index, element) {
+    $('<iframe id="dcdescriptionFrame" style="height:200px; border: none;"/>').appendTo('#dcdescriptionList');
+    var doc = document.getElementById('dcdescriptionFrame').contentWindow.document;
+	doc.open();
+	doc.write(originalDescriptions);
+	doc.close();
+	
+         
+    dcDescriptionFrame.ready(function() {
+        dcDescriptionFrame.contents().find("body").append(originalDescriptions);
+        dcDescriptionFrame.contents().find('.dcdescription').each( function(index, element) {
         var className = $(this).attr('class');
         ## ensure that pre-wysiwyg records don't break
         var text = $(this).html();
@@ -166,5 +173,8 @@ $(function() {
         var descriptionCount=$(this).attr('id').replace(className, '');
         appendIFrameForUnescaped(text, escapeId('dcdescription' + descriptionCount));
     });
+    });
+    
+    
 });
 </script>
