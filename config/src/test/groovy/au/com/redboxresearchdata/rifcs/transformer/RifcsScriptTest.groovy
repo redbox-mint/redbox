@@ -789,7 +789,7 @@ class RifcsScriptTest extends Specification {
                 "  \"dc:language.skos:prefLabel\": \"English\",\n" +
                 "  \"dc:coverage.vivo:DateTimeInterval.vivo:start\": \"2004-04-02T18:06:02\",\n" +
                 "  \"dc:coverage.vivo:DateTimeInterval.vivo:end\": \"2004-04-30T18:06:02\",\n" +
-                "  \"dc:coverage.redbox:timePeriod\": \"\",\n" +
+                "  \"dc:coverage.redbox:timePeriod\": \"21st Century\",\n" +
                 "  \"dc:coverage.vivo:GeographicLocation.1.dc:type\": \"text\",\n" +
                 "  \"dc:coverage.vivo:GeographicLocation.1.redbox:wktRaw\": \"\",\n" +
                 "  \"dc:coverage.vivo:GeographicLocation.1.rdf:PlainLiteral\": \"Brisbane\",\n" +
@@ -1202,6 +1202,9 @@ class RifcsScriptTest extends Specification {
                 "                </temporal>\n" +
                 "                <temporal>\n" +
                 "                    <date dateFormat=\"W3CDTF\" type=\"dateTo\">2004-04-30T18:06:02.000+10:00</date>\n" +
+                "                </temporal>\n" +
+                "                <temporal>\n" +
+                "                    <text>21st Century</text>\n" +
                 "                </temporal>\n" +
                 "            </coverage>\n" +
                 "            <coverage>\n" +

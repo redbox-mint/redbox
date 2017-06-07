@@ -430,7 +430,7 @@ class TfpackageToRifcs {
             return delegate.temporalCoverageBuilder()
                     .addNonEmpty('coverageDateFrom', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:start'))
                     .addNonEmpty('coverageDateTo', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:end'))
-                    .addNonEmpty('coveragePeriod', getISO8601DateString(tfpackage.'dc:coverage.redbox:timePeriod'))
+                    .addNonEmpty('coveragePeriod', tfpackage.'dc:coverage.redbox:timePeriod')
                     .build()
         }
         RifcsGenericBuilder.metaClass.buildSpatialCoverage = {
