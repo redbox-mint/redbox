@@ -1,8 +1,10 @@
-from com.googlecode.fascinator.common import JsonSimple, JsonObject
+from com.googlecode.fascinator.common import JsonSimpleConfig, JsonSimple, JsonObject
 from com.googlecode.fascinator.common import FascinatorHome
 from com.googlecode.fascinator.spring import ApplicationContextProvider
 from org.json.simple import JSONArray
+from org.json.simple.parser import ParseException
 from org.apache.commons.io import FileUtils
+from java.io import File, IOException
 from java.util import UUID
 
 
@@ -16,7 +18,8 @@ class ApiAdminData:
         self.formData = self.velocityContext["formData"]
         self.request = self.velocityContext["request"]
         self.apiKeyService = ApplicationContextProvider.getApplicationContext().getBean("apiKeyTokenService")
-
+        self.systemConfig = JsonSimpleConfig()
+        self.log = self.velocityContext["log"]
 
         if self.request.getMethod() == "POST":
             if self.formData.get("action") == "Add":
@@ -31,9 +34,7 @@ class ApiAdminData:
         self.json = JsonSimple(json_string)
 
     def regenerate_key(self):
-        keysFile = FascinatorHome.getPathFile("security/apikeys.json")
-        keysJsonSimple = JsonSimple(keysFile)
-        clientArray = keysJsonSimple.getArray("api", "clients")
+        clientArray = self.getKeysArray()
         name = self.formData.get("name")
         clientToBeReplaced = None
         index = 0
@@ -50,12 +51,25 @@ class ApiAdminData:
             clientArray.set(index,clientObject)
             self.apiKeyService.updateAndSaveKeys(clientArray)
 
+    def getKeysArray(self):
+        keysFile = FileUtils.getFile(self.systemConfig.getString("", "api", "apiKeyFile"))
+        keysFile.createNewFile()
+        try:
+            keysJsonSimple = JsonSimple(keysFile)
+        except IOException, ParseException:
+            self.log.warn("File may be blank. Creating empty json api keys file...")
+            FileUtils.writeStringToFile(keysFile, '{"api": {"clients": []}}')
+            keysJsonSimple = JsonSimple(keysFile)
+        clientArray = keysJsonSimple.getArray("api", "clients")
+        self.log.debug("client array is: {}", clientArray)
+        return clientArray
+
     def remove_key(self):
         clientArray = self.apiKeyService.getClients()
         name = self.formData.get("name")
         clientToBeRemoved = None
         for client in clientArray:
-            if client.get("name") == name:
+            if client.get("username") == name or client.get("username") == "":
                 clientToBeRemoved = client
                 break
         if clientToBeRemoved is not None:
@@ -63,9 +77,7 @@ class ApiAdminData:
             self.apiKeyService.updateAndSaveKeys(clientArray)
 
     def add_key(self):
-        keysFile = FascinatorHome.getPathFile("security/apikeys.json")
-        keysJsonSimple = JsonSimple(keysFile)
-        clientArray = keysJsonSimple.getArray("api", "clients")
+        clientArray = self.getKeysArray()
 
         name = self.formData.get("name")
         for client in clientArray:
