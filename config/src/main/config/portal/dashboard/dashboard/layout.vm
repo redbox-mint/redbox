@@ -6,6 +6,9 @@
         <style>
         .component-wrapper > label { diplay:inline; /* to allow help content next to it */} 
         </style>
+        #if($headTemplate)
+        	#parseTemplate($headTemplate)
+        #end
     </head>
     <body>
         #parseTemplate("layout/jquery-settings.vm")

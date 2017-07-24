@@ -318,7 +318,7 @@ var globalObject = this;
                         var tableElement = $('<table><tbody></tbody></table>')
                         for (var i = 0; i < results.length; i++) {
                             var result = results[i];
-                            tableElement.append('<tr><td><input type="radio" name="name" id="orcidRId' + i + '" value=\'' + JSON.stringify(result) + '\'><label for="orcidRId' + i + '">' + result['family_name'] + ', ' + result['given_names'] + '</label></td><td><a style="color:blue;" href="' + result['orcid_uri'] + '">details</a></td></tr>');
+                            tableElement.append('<tr><td><input type="radio" name="name" id="orcidRId' + i + '" value=\'' + JSON.stringify(result) + '\'><label for="orcidRId' + i + '">' + result['family_name'] + ', ' + result['given_names'] + '</label></td><td><a style="color:blue;" target="_blank" href="' + result['orcid_uri'] + '">details</a></td></tr>');
                         }
                         summaryDivElement.append(resultCountSpanElement);
                         summaryDivElement.append(resultCountPaginationElement);

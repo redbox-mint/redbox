@@ -120,6 +120,8 @@ $value
     #displayUnescapedKey($map $key true)
 #end
 
+#set($headTemplate = "display/package-dataset/detail/head.vm")
+
 #parseDisplayTemplate("detail/preview/identification.vm")
 <div id="toggle-accordion" class="toggle-accordion">
     <span id="toggle-accordion-icon" class="ui-icon ui-icon-triangle-1-e"></span>

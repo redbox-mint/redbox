@@ -1,0 +1,16 @@
+#set($sysConfig = $self.vc("systemConfig"))
+#set($metadata = $self.vc("metadata"))
+#set($doiProperty = $sysConfig.getString("doi","andsDoi","doiProperty"))
+#set($digitalObject = $self.vc("Services").getStorage().getObject($metadata.get("id")))
+#set($doi = $digitalObject.getMetadata().getProperty($doiProperty))
+
+#if($doi)
+<meta name="citation_doi" content='$doi' />
+<meta name="citation_title" content='$metadata.get("dc:biblioGraphicCitation.dc:hasPart.dc:title")' />
+#set($authorList = $jsonUtil.getJavaList($metadata.getPayloadData(), "dc:biblioGraphicCitation.dc:hasPart.locrel:ctb"))
+#foreach($val in $authorList)
+<meta name="citation_author" content='$val.get("foaf:familyName"), $val.get("foaf:givenName")'>
+#end
+<meta name="citation_publisher" content='$metadata.get("dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral")'>
+<meta name="citation_online_date" content='$metadata.get("dc:biblioGraphicCitation.dc:hasPart.dc:date.1.rdf:PlainLiteral")'>
+#end
