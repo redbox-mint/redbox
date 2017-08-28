@@ -73,6 +73,10 @@ class AndsDoiData:
         if page == "get":
             return baseUrl + "xml.json/?doi="
 
+        # Status = Not used by the interface but useful for checking that the service can be connected to by visiting /default/redbox/actions/andsDoi.script?verb=checkStatus
+        if page == "status":
+            return baseUrl + "status.json"
+
     # Get from velocity context
     def vc(self, index):
         if self.velocityContext[index] is not None:
@@ -151,7 +155,7 @@ class AndsDoiData:
             #######
             # Which will work?
             #post.setRequestBody(postBody)
-            post.addParameter("xml", postBody) 
+            post.addParameter("xml", postBody)
             #######
             code = client.executeMethod(post)
             if str(code) == "302":
@@ -212,7 +216,7 @@ class AndsDoiData:
         if responseCode != "MT001":
             self.throwError(responseCode + "-" + andsJsonResp.getString(None, ["response", "verbosemessage"]))
             return
-        doi = andsJsonResp.getString(None, ["response", "doi"]) 
+        doi = andsJsonResp.getString(None, ["response", "doi"])
         stored = self.storeDoi(doi, oid)
         if not stored:
             # We've already thrown the error
@@ -264,6 +268,13 @@ class AndsDoiData:
     def getXml(self):
         self.throwError("Not implemented yet")
 
+    def checkStatus(self):
+        andsUrl = self.getApiUrl("status")
+        (code, body) = self.urlGet(andsUrl)
+        self.writer.println(body)
+        self.writer.close()
+
+
     def parseJson(self, jsonString):
         ## Parse JSON Metadata
         try:
@@ -275,12 +286,16 @@ class AndsDoiData:
             return None
 
     def process(self):
+        action = self.vc("formData").get("verb")
+        if action == 'checkStatus':
+            self.checkStatus()
+            return
+
         valid = self.vc("page").csrfSecurePage()
         if not valid:
             self.throwError("Invalid request")
             return
 
-        action = self.vc("formData").get("verb")
 
         switch = {
             "createDoi"      : self.createDoi,
