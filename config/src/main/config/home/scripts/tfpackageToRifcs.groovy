@@ -21,8 +21,10 @@ package au.com.redboxresearchdata.rifcs.transformer
 
 import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsCollectionBuilder
 import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsCoreBuilder
-import au.com.redboxresearchdata.rifcs.ands.builder.impl.RifcsGenericBuilder
-import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsGenericSubBuilder
+import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsLocationBuilder
+import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsRightsBuilder
+import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsSpatialCoverageBuilder
+import au.com.redboxresearchdata.rifcs.ands.builder.sub.impl.RifcsTemporalCoverageBuilder
 import com.googlecode.fascinator.api.storage.DigitalObject
 import com.googlecode.fascinator.api.storage.StorageException
 import com.googlecode.fascinator.api.transformer.TransformerException
@@ -401,6 +403,23 @@ class TfpackageToRifcs {
         return delegate
     }
 
+    /** ensure that any class additions such as ExpandoMetaClass are added to implementations not abstract/parent classes, so that
+     * they are reset with each run.
+     *
+     */
+    def resetCollectClosures() {
+        RifcsCollectionBuilder.metaClass.addNonEmpty = addNonEmpty
+        RifcsCollectionBuilder.metaClass.addEveryNonEmpty = addEveryNonEmpty
+        RifcsCollectionBuilder.metaClass.addEveryNonEmptyMap = addEveryNonEmptyMap
+
+        RifcsLocationBuilder.metaClass.addNonEmpty = addNonEmpty
+        RifcsLocationBuilder.metaClass.addEveryNonEmpty = addEveryNonEmpty
+        RifcsTemporalCoverageBuilder.metaClass.addNonEmpty = addNonEmpty
+        RifcsSpatialCoverageBuilder.metaClass.addEveryNonEmpty = addEveryNonEmpty
+        RifcsRightsBuilder.metaClass.addNonEmpty = addNonEmpty
+    }
+
+
     def transform() {
         def identifierData = createIdentifierData()
 
@@ -414,37 +433,7 @@ class TfpackageToRifcs {
             validator.validate(new DOMSource(doc))
         }
 
-        RifcsGenericBuilder.metaClass.addNonEmpty = addNonEmpty
-        RifcsGenericBuilder.metaClass.addEveryNonEmpty = addEveryNonEmpty
-        RifcsGenericBuilder.metaClass.addEveryNonEmptyMap = addEveryNonEmptyMap
-        RifcsGenericSubBuilder.metaClass.addNonEmpty = addNonEmpty
-        RifcsGenericSubBuilder.metaClass.addEveryNonEmpty = addEveryNonEmpty
-        RifcsGenericBuilder.metaClass.buildLocation = {
-            return delegate.locationBuilder()
-                    .addNonEmpty('physicalAddress', tfpackage.'vivo:Location.vivo:GeographicLocation.gn:name')
-                    .addEveryNonEmpty('urlElectronicAddress', getAllElectronicAddress())
-                    .addNonEmpty('emailElectronicAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
-                    .build()
-        }
-        RifcsGenericBuilder.metaClass.buildTemporalCoverage = {
-            return delegate.temporalCoverageBuilder()
-                    .addNonEmpty('coverageDateFrom', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:start'))
-                    .addNonEmpty('coverageDateTo', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:end'))
-                    .addNonEmpty('coveragePeriod', tfpackage.'dc:coverage.redbox:timePeriod')
-                    .build()
-        }
-        RifcsGenericBuilder.metaClass.buildSpatialCoverage = {
-            return delegate.spatialCoverageBuilder()
-                    .addEveryNonEmpty('spatial', getAllGeoSpatialCoverage())
-                    .build()
-        }
-        RifcsGenericBuilder.metaClass.buildRights = {
-            return delegate.rightsBuilder()
-                    .addNonEmpty('accessRights', getAccessRights())
-                    .addNonEmpty('licence', getLicence())
-                    .addNonEmpty('rightsStatement', getRightsStatement())
-                    .build()
-        }
+        resetCollectClosures()
 
         RifcsCoreBuilder.metaClass.dateModified = { String date ->
             proxy.setDateModified(date)
@@ -464,12 +453,26 @@ class TfpackageToRifcs {
                 .addNonEmpty('dateCreated', getISO8601DateString(tfpackage.'dc:created'))
                 .addEveryNonEmptyMap('relatedObjects', getAllRelations())
                 .addNonEmpty('primaryName', tfpackage.'dc:title')
-                .buildLocation()
-                .buildTemporalCoverage()
-                .buildSpatialCoverage()
+                .locationBuilder()
+                    .addNonEmpty('physicalAddress', tfpackage.'vivo:Location.vivo:GeographicLocation.gn:name')
+                    .addEveryNonEmpty('urlElectronicAddress', getAllElectronicAddress())
+                    .addNonEmpty('emailElectronicAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
+                    .build()
+                .temporalCoverageBuilder()
+                    .addNonEmpty('coverageDateFrom', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:start'))
+                    .addNonEmpty('coverageDateTo', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:end'))
+                    .addNonEmpty('coveragePeriod', tfpackage.'dc:coverage.redbox:timePeriod')
+                    .build()
+                .spatialCoverageBuilder()
+                    .addEveryNonEmpty('spatial', getAllGeoSpatialCoverage())
+                    .build()
                 .addEveryNonEmpty('subject', getAllSubjects())
                 .addEveryNonEmpty('description', getAllDescriptions())
-                .buildRights()
+                .rightsBuilder()
+                    .addNonEmpty('accessRights', getAccessRights())
+                    .addNonEmpty('licence', getLicence())
+                    .addNonEmpty('rightsStatement', getRightsStatement())
+                    .build()
                 .addEveryNonEmpty('relatedInfo', getAllRelatedInfo())
                 .addEveryNonEmpty('relatedObject', getRelatedObject("dc:relation.vivo:Service"))
                 .addNonEmpty('fullCitation', getCitation(identifierData))
