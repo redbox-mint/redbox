@@ -3,7 +3,8 @@ import os
 from com.googlecode.fascinator.api.indexer import SearchRequest
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common.solr import SolrDoc, SolrResult
-
+from org.apache.tapestry5.internal.services import URLEncoderImpl
+from org.apache.tapestry5.internal import TapestryInternalUtils
 from java.io import ByteArrayInputStream, ByteArrayOutputStream
 from java.lang import Boolean
 from java.net import URLDecoder
@@ -31,10 +32,14 @@ class DownloadData:
 
         # URL basics
         basePath = self.portalId + "/" + self.pageName
+        # Turn our URL into objects
         fullUri = URLDecoder.decode(self.request.getAttribute("RequestURI"))
+        fullUri = self.tapestryUrlDecode(fullUri)
         uri = fullUri[len(basePath)+1:]
 
-        # Turn our URL into objects
+
+
+
         object, payload = self.__resolve(uri)
         if object is None:
             if uri.endswith("/"):
@@ -58,7 +63,7 @@ class DownloadData:
             self.__metadata.getJsonObject().put("id", oid)
         #print "URI='%s' OID='%s' PID='%s'" % (uri, object.getId(), payload.getId())
 
-        
+
 
         ## The byte range cache will check for byte range requests first
         self.cache = self.services.getByteRangeCache()
@@ -100,6 +105,15 @@ class DownloadData:
             writer.println("Resource not found: uri='%s'" % uri)
             writer.close()
 
+    def tapestryUrlDecode(self, uri):
+        tapestryUrlEncoder = URLEncoderImpl()
+        splitPath = TapestryInternalUtils.splitPath(uri);
+        decodedArray = []
+        for splitComponent in splitPath:
+            decodedArray.append(tapestryUrlEncoder.decode(splitComponent))
+
+        return '/'.join(decodedArray)
+
     def getAllowedRoles(self):
         metadata = self.getMetadata()
         if metadata is not None:
@@ -113,9 +127,9 @@ class DownloadData:
             return metadata.getList("security_exception")
         else:
             return []
-        
+
     def getMetadata(self):
-        return self.__metadata      
+        return self.__metadata
 
     def isDetail(self):
         preview = Boolean.parseBoolean(self.formData.get("preview", "false"))
@@ -181,7 +195,7 @@ class DownloadData:
             security_roles = self.page.authentication.get_roles_list()
             security_exceptions = 'security_exception:"' + current_user + '"'
             owner_query = 'owner:"' + current_user + '"'
-            security_query = "(" + security_exceptions + ") OR (" + owner_query + ") OR ("+ security_exceptions +")"    
+            security_query = "(" + security_exceptions + ") OR (" + owner_query + ") OR ("+ security_exceptions +")"
             req.addParam("fq", security_query)
         out = ByteArrayOutputStream()
         self.log.error("searching to get solrData")

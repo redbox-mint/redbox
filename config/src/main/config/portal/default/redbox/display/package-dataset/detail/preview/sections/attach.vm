@@ -1,4 +1,5 @@
 #sectionHeading("Attachments")
+
 <div class="meta">
     <dl>
         <dd>
@@ -9,8 +10,9 @@
                 <ol>
                 #foreach($file in $attachedFiles)
                     #set($filename = $file.get("filename"))
+                    #set($encodedFileName = $filename.replaceAll("\s", "\$0020"))
                     <li>
-                        <a href="$portalPath/detail/$file.get('id')/$filename?preview=true" target="_blank">$filename</a>
+                        <a href="$portalPath/detail/$file.get('id')/$encodedFileName?preview=true" target="_blank">$filename</a>
                         ($file.get("attachment_type"), $file.get("access_rights"))
                     </li>
                 #end

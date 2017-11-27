@@ -41,13 +41,13 @@
                             <option value="readme">Read me</option>
                             <option value="ethics">Ethics</option>
                         </select>
-                    	<!--TODO Instate this when data-source-dropdown is fixd 
+                    	<!--TODO Instate this when data-source-dropdown is fixd
                          <span class="data-source-drop-down"
          					 data-json-source-url="$portalPath/workflows/forms/data/attachmentTypes.json"
          					 data-id-key="id"
           					 data-label-key="label"
           					data-list-key="results"          					 >
-       
+
             	<span class="drop-down-location" id='attachmentType-span'>
             		<button class="selection-add add-unique-only" style='display:none' data-add-on-click="1">
                			 Select
@@ -118,7 +118,8 @@ function updateAttachedFiles(attachedFiles) {
     jQ.each(attachedFiles, function(_, attachment) {
         tr = jQ("<tr/>");
         // A link to the attachment
-        fileLink = "$portalPath/detail/" + attachment.oid + "/" + attachment.filename + "?preview=true";
+        var encodedFileName = attachment.filename.split(" ").join("$0020")
+        fileLink = "$portalPath/detail/" + attachment.oid + "/" + encodedFileName + "?preview=true";
         tr.append("<td><a href='" + fileLink + "' target='_blank'>" + attachment.filename + "</a></td>");
         // Details onscreen (after some cleaning)
         tr.append("<td>" + format(attachment.attachment_type) + "</td>");
