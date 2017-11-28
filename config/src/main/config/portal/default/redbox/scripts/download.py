@@ -93,8 +93,10 @@ class DownloadData:
                 if type is None:
                     # Send as raw data
                     out = self.response.getOutputStream("application/octet-stream")
+                    self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
                 else:
                     out = self.response.getOutputStream(type)
+                    self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
                 IOUtils.copy(payload.open(), out)
                 payload.close()
                 object.close()
