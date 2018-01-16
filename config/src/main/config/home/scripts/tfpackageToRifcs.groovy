@@ -478,7 +478,7 @@ class TfpackageToRifcs {
                 .addNonEmpty('fullCitation', getCitation(identifierData))
                 .build()
 
-        def prettyPrintedRifcs = prettyPrint(rifcs)
+        def prettyPrintedRifcs = fixEscapedInvalidMarkers(prettyPrint(rifcs))
         log.info("pre-validation rifcs transformation: " + prettyPrintedRifcs)
         rifcs.validate()
         return prettyPrintedRifcs

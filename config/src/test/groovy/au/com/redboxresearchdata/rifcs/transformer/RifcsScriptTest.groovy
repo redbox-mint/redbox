@@ -1760,7 +1760,7 @@ class RifcsScriptTest extends Specification {
                 "                <relation type=\"hasAssociationWith\"/>\n" +
                 "            </relatedObject>\n" +
                 "            <citationInfo>\n" +
-                "                <fullCitation style=\"Datacite\">citation data id: http://demo.redboxresearchdata.com.au/redbox/published/detail/df96891d804da76bf2f30fb253d4aebb</fullCitation>\n" +
+                "                <fullCitation style=\"Datacite\">citation data id: &Invalid ID: Not curated yet&</fullCitation>\n" +
                 "            </citationInfo>\n" +
                 "        </collection>\n" +
                 "    </registryObject>\n" +
