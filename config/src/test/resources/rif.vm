@@ -107,7 +107,11 @@
 #if ($formOrigin == "internal")
     #if ($pid != "")
         #set ($identifier = $util.encodeXml($pid))
-        #set ($identifierType = $util.encodeXml($pidType))
+        #if ("$pidType" == "$defaultOnError")
+            #set ($identifierType = $pidType)
+        #else
+            #set ($identifierType = $util.encodeXml($pidType))
+        #end
     #else
         #set ($identifier = $util.encodeXml("$urlBase/detail/$oid"))
         #set ($identifierType = "uri")
@@ -127,7 +131,11 @@
 <rif:registryObjects xmlns:rif="http://ands.org.au/standards/rif-cs/registryObjects"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.6/schema/registryObjects.xsd">
-    <rif:registryObject group="$util.encodeXml($group)">
+            #if ("$group" == "$defaultOnError")
+                <rif:registryObject group="&Invalid XML placeholder... prevents ANDS Harvesting records in error&">
+            #else
+                <rif:registryObject group="$util.encodeXml($group)">
+            #end
 
         <rif:key>$identifier</rif:key>
         <rif:originatingSource>$urlBase</rif:originatingSource>

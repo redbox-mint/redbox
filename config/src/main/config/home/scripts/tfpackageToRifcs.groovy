@@ -484,6 +484,12 @@ class TfpackageToRifcs {
         return prettyPrintedRifcs
     }
 
+    def fixEscapedInvalidMarkers(xml) {
+        def pass1 = xml.replaceAll("&amp;Invalid ID: Not curated yet&amp;", "&Invalid ID: Not curated yet&")
+        def pass2 = pass1.replaceAll("&amp;Invalid XML placeholder... prevents ANDS Harvesting records in error&amp;", "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+        return pass2
+    }
+
 
     def transformAndStore() {
         String transformation = this.transform()
