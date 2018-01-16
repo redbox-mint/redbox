@@ -95,7 +95,7 @@ class RifVelocityTest extends GenericVelocitySpecification {
         return unescaped
     }
 
-    
+
     def preXmlHandle(xml) {
         def pass1 =  xml.replaceAll("&Invalid XML placeholder... prevents ANDS Harvesting records in error&", "dummyinvalidxmlmarker1")
         def pass2 = pass1.replaceAll("&Invalid ID: Not curated yet&", "dummyinvalidxmlmarker2")
