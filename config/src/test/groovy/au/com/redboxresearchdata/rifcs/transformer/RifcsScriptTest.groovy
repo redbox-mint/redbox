@@ -256,7 +256,10 @@ class RifcsScriptTest extends Specification {
     @Unroll
     def "collection name exists in valid RIF-CS xml where dc:title exists in tfpackage"() {
         when:
-        def registryObjects = new XmlSlurper().parseText(tfpackageToRifcs(stubDigitalObject(tfpackage)).transform());
+        def rifcs = tfpackageToRifcs(stubDigitalObject(tfpackage)).transform()
+        def sanitised = preXmlHandle(rifcs)
+        // the sanitising result doesn't matter - we just don't want invalid xml from another entity we don't care about for this test
+        def registryObjects = new XmlSlurper().parseText(sanitised);
         then:
         registryObjects.registryObject.collection.name.namePart == "Research Data Collection"
         registryObjects.registryObject.collection.name.@type == "primary"
@@ -270,13 +273,28 @@ class RifcsScriptTest extends Specification {
     @Unroll
     def "collection name does NOT exist in valid RIF-CS xml where NO dc:title exists in tfpackage"() {
         when:
-        def registryObjects = new XmlSlurper().parseText(tfpackageToRifcs(stubDigitalObject(tfpackage)).transform());
+        def rifcs = tfpackageToRifcs(stubDigitalObject(tfpackage)).transform()
+        def sanitised = preXmlHandle(rifcs)
+        // the sanitising result doesn't matter - we just don't want invalid xml from another entity we don't care about for this test
+        def registryObjects = new XmlSlurper().parseText(sanitised);
         then:
         registryObjects.registryObject.collection.name.size() == 0
         where:
         tfpackage << ["{\n" +
                               "  \"dc:type.rdf:PlainLiteral\": \"collection\",\n" +
                               "}"]
+    }
+
+    def preXmlHandle(xml) {
+        def pass1 =  xml.replaceAll("&Invalid XML placeholder... prevents ANDS Harvesting records in error&", "dummyinvalidxmlmarker1")
+        def pass2 = pass1.replaceAll("&Invalid ID: Not curated yet&", "dummyinvalidxmlmarker2")
+        return pass2
+    }
+
+    def postXmlHandle(xml) {
+        def pass1 = xml.replaceAll("dummyinvalidxmlmarker1", "&Invalid XML placeholder... prevents ANDS Harvesting records in error&")
+        def pass2 = pass1.replaceAll("dummyinvalidxmlmarker2", "&Invalid ID: Not curated yet&")
+        return pass2
     }
 
     def "identifier and identifier type"() {
