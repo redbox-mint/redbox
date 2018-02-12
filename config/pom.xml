@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-config</artifactId>
-    <version>1.9.0.1-SNAPSHOT</version>
+    <version>1.10-SNAPSHOT</version>
     <properties>
         <groovy.version>2.4.5</groovy.version>
         <spock.version>0.7-groovy-2.0</spock.version>
@@ -68,7 +68,7 @@
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>1.9.0.1-SNAPSHOT</version>
+        <version>1.10-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
     <build>

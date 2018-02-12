@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox-project</artifactId>
-    <version>1.9.0.1-SNAPSHOT</version>
+    <version>1.10-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ReDBox - Project</name>
     <parent>
@@ -22,17 +22,17 @@
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-common</artifactId>
-                <version>1.4</version>
+                <version>1.5</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-core</artifactId>
-                <version>1.4.0.1-SNAPSHOT</version>
+                <version>1.5</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.the-fascinator</groupId>
                 <artifactId>fascinator-plugin-api</artifactId>
-                <version>1.4</version>
+                <version>1.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
