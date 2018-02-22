@@ -880,6 +880,7 @@ class RifcsScriptTest extends Specification {
                 "  \"dc:relation.vivo:Service.2.vivo:Relationship.skos:prefLabel\": \"Has association with:\",\n" +
                 "  \"dc:relation.vivo:Service.2.dc:title\": \"Service test\",\n" +
                 "  \"dc:relation.vivo:Service.2.skos:note\": \"service note\",\n" +
+                "  \"identifierText.1.creatorName.input\": \"\",\n" +
                 "  \"dc:creator.foaf:Person.1.dc:identifier\": \"redbox-mint.googlecode.com/parties_people/1241\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:name\": \"James, Paul\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:title\": \"Dr\",\n" +
@@ -889,6 +890,7 @@ class RifcsScriptTest extends Specification {
                 "  \"dc:creator.foaf:Person.1.foaf:familyName\": \"James\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:Organization.dc:identifier\": \"\",\n" +
                 "  \"dc:creator.foaf:Person.1.foaf:Organization.skos:prefLabel\": \"\",\n" +
+                "  \"identifierText.3.creatorName.input\": \"\",\n" +
                 "  \"dc:creator.foaf:Person.3.dc:identifier\": \"http://orcid.org/0000-0001-6810-1260\",\n" +
                 "  \"dc:creator.foaf:Person.3.foaf:name\": \"Chambers, John\",\n" +
                 "   \"dc:creator.foaf:Person.3.foaf:title\": \"Prof\",\n" +
@@ -898,6 +900,16 @@ class RifcsScriptTest extends Specification {
                 "   \"dc:creator.foaf:Person.3.foaf:familyName\": \"Chambers\",\n" +
                 "   \"dc:creator.foaf:Person.3.foaf:Organization.dc:identifier\": \"redbox-mint.googlecode.com/parties/group/2\",\n" +
                 "   \"dc:creator.foaf:Person.3.foaf:Organization.skos:prefLabel\": \"Faculty of Technology\",\n" +
+                "  \"dc:creator.foaf:Person.4.dc:identifier\": \"https://www.scopus.com/authid/detail.uri?authorId=000111\",\n" +
+                "  \"identifierText.4.creatorName.input\": \"https://www.scopus.com/authid/detail.uri?authorId=000111\",\n" +
+                "  \"dc:creator.foaf:Person.4.foaf:name\": \"Smith, John\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:title\": \"Prof\",\n" +
+                "   \"dc:creator.foaf:Person.4.redbox:isCoPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.4.redbox:isPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:givenName\": \"John\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:familyName\": \"Smith\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:Organization.dc:identifier\": \"redbox-mint.googlecode.com/parties/group/2\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:Organization.skos:prefLabel\": \"Faculty of Technology\",\n" +
                 "  \"locrel:prc.foaf:Person.dc:identifier\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:name\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:title\": \"\",\n" +
@@ -1045,6 +1057,7 @@ class RifcsScriptTest extends Specification {
                 "    \"dc:relation.vivo:Service.1.skos:note\",\n" +
                 "    \"dc:creator.foaf:Person.1.dc:identifier\",\n" +
                 "    \"dc:creator.foaf:Person.2.dc:identifier\",\n" +
+                "    \"identifierText.2.creatorName.input\",\n" +
                 "    \"dc:creator.foaf:Person.1.foaf:name\",\n" +
                 "    \"dc:creator.foaf:Person.2.foaf:name\",\n" +
                 "    \"dc:creator.foaf:Person.1.foaf:title\",\n" +
@@ -1061,6 +1074,8 @@ class RifcsScriptTest extends Specification {
                 "    \"dc:creator.foaf:Person.2.foaf:Organization.dc:identifier\",\n" +
                 "    \"dc:creator.foaf:Person.1.foaf:Organization.skos:prefLabel\",\n" +
                 "    \"dc:creator.foaf:Person.2.foaf:Organization.skos:prefLabel\",\n" +
+                "    \"identifierText.1.creatorName.input\",\n" +
+                "    \"identifierText.2.creatorName.input\",\n" +
                 "    \"locrel:prc.foaf:Person.dc:identifier\",\n" +
                 "    \"locrel:prc.foaf:Person.foaf:name\",\n" +
                 "    \"locrel:prc.foaf:Person.foaf:title\",\n" +

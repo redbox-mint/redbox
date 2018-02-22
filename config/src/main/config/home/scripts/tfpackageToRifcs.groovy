@@ -153,7 +153,7 @@ class TfpackageToRifcs {
             [key: it.curatedPid, type: it.relationship ?: "hasAssociationWith", description: it.description]
         }
         log.debug("relations collected: " + collected)
-        def grouped = collected.plus(getAllNlaRelations()).plus(getAllOrcidRelations()).groupBy { it.key }
+        def grouped = collected.plus(getAllNlaRelations()).plus(getAllOrcidRelations()).plus(getAllFreeTextRelations()).groupBy { it.key }
         log.debug("grouped: " + grouped)
         return grouped
     }
@@ -173,6 +173,13 @@ class TfpackageToRifcs {
         return findAndCollect(getTfpackageNumberedCollection("dc:creator.foaf:Person"),
                 { k, v -> v.'dc:identifier'?.trim() && v.'dc:identifier' =~ /http:\/\/orcid.org\// },
                 { k, v -> [key: v.'dc:identifier', type: "hasCollector"] }
+        )
+    }
+
+    def getAllFreeTextRelations() {
+        return findAndCollect(getTfpackageNumberedCollection("identifierText"),
+                { k, v -> v.'creatorName.input'?.trim()?.length() > 0 },
+                { k, v -> [key: v.'creatorName.input', type: "hasCollector"] }
         )
     }
 
