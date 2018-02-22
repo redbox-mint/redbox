@@ -124,10 +124,10 @@ class RifcsScriptTest extends Specification {
         }.flatten()
         actualDescription == description
         where:
-        size << [4, 1, 2]
+        size << [5, 1, 2]
         key << [["http://demo.redboxresearchdata.com.au/mint/published/detail/84176738cc5e80306afc7adb163a4bab", "http://nla.gov.au/nla.party-965000"], ["foo"], ["foo"]]
-        type << [["hasCollector", "hasAssociationWith", "hasCollector", "hasCollector"], ["hasFooBar"], ["hasFooBar", "hasFooBar2"]]
-        description << [[null, null, null, null], ["bar"], ["bar", "bar2"]]
+        type << [["hasCollector", "hasAssociationWith", "hasCollector", "hasCollector", "hasCollector"], ["hasFooBar"], ["hasFooBar", "hasFooBar2"]]
+        description << [[null, null, null, null, null], ["bar"], ["bar", "bar2"]]
         tfpackageStub << [
                 stubTfpackage(),
                 "{\n" +
@@ -1607,6 +1607,10 @@ class RifcsScriptTest extends Specification {
                 "            </relatedObject>\n" +
                 "            <relatedObject>\n" +
                 "                <key>http://orcid.org/0000-0001-6810-1260</key>\n" +
+                "                <relation type=\"hasCollector\"/>\n" +
+                "            </relatedObject>\n" +
+                "            <relatedObject>\n" +
+                "                <key>https://www.scopus.com/authid/detail.uri?authorId=000111</key>\n" +
                 "                <relation type=\"hasCollector\"/>\n" +
                 "            </relatedObject>\n" +
                 "            <name type=\"primary\" xml:lang=\"en\">\n" +
