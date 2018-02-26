@@ -258,6 +258,16 @@ class RifVelocityTest extends GenericVelocitySpecification {
                 "   \"dc:creator.foaf:Person.3.foaf:familyName\": \"Chambers\",\n" +
                 "   \"dc:creator.foaf:Person.3.foaf:Organization.dc:identifier\": \"redbox-mint.googlecode.com/parties/group/2\",\n" +
                 "   \"dc:creator.foaf:Person.3.foaf:Organization.skos:prefLabel\": \"Faculty of Technology\",\n" +
+                "   \"dc:creator.foaf:Person.4.dc:identifier\": \"https://www.scopus.com/authid/detail.uri?authorId=000111\",\n" +
+                "  \"identifierText.4.creatorName.input\": \"https://www.scopus.com/authid/detail.uri?authorId=000111\",\n" +
+                "  \"dc:creator.foaf:Person.4.foaf:name\": \"Smith, John\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:title\": \"Prof\",\n" +
+                "   \"dc:creator.foaf:Person.4.redbox:isCoPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.4.redbox:isPrimaryInvestigator\": \"\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:givenName\": \"John\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:familyName\": \"Smith\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:Organization.dc:identifier\": \"redbox-mint.googlecode.com/parties/group/2\",\n" +
+                "   \"dc:creator.foaf:Person.4.foaf:Organization.skos:prefLabel\": \"Faculty of Technology\",\n" +
                 "  \"locrel:prc.foaf:Person.dc:identifier\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:name\": \"\",\n" +
                 "  \"locrel:prc.foaf:Person.foaf:title\": \"\",\n" +
@@ -995,6 +1005,10 @@ class RifVelocityTest extends GenericVelocitySpecification {
                 "                <key>http://orcid.org/0000-0001-6810-1260</key>\n" +
                 "                <relation type=\"hasCollector\"/>\n" +
                 "            </relatedObject>\n" +
+                "            <relatedObject>\n" +
+                "               <key>https://www.scopus.com/authid/detail.uri?authorId=000111</key>\n" +
+                "               <relation type=\"hasCollector\"/>\n" +
+                "            </relatedObject>" +
                 "            <subject type=\"local\" xml:lang=\"en\">keywords</subject>\n" +
                 "            <subject type=\"anzsrc-for\" xml:lang=\"en\">0402</subject>\n" +
                 "            <description type=\"full\" xml:lang=\"en\">&lt;p&gt;The description&lt;/p&gt;</description>\n" +

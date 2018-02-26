@@ -1,20 +1,20 @@
 #macro(showElementRifCS $tag $field $attr $label $anzsrc)
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
-        #set($value = $valueMap.get($key))     
-            #if ($label != "" && $value.get($label)!= "")				
-                #set($labelVal = $value.get($label))				
+        #set($value = $valueMap.get($key))
+            #if ($label != "" && $value.get($label)!= "")
+                #set($labelVal = $value.get($label))
                 #if ($anzsrc == "anzsrc")
                     #set($lastIndex = $labelVal.lastIndexOf('/') + 1 )
                     #set($labelVal = $labelVal.substring($lastIndex) )
                 #end
-    			<$tag$attr>$util.encodeXml($labelVal)</$tag> 
+    			<$tag$attr>$util.encodeXml($labelVal)</$tag>
         	#end
     #end
 #end
 
 #macro(showRelatedInfo $field $relatedInfoType $identifierType)
-    
+
     #set($valueMap = $util.getList($item, $field))
     #foreach($key in $valueMap.keySet())
         #set ($row = $valueMap.get($key))
@@ -304,16 +304,28 @@
             </rif:relatedObject>
                 #end
             #end
-			
-			
-			
+
+            ### Free text support
+            #set($valueMap = $util.getList($item, "identifierText"))
+            #foreach($key in $valueMap.keySet())
+                #set ($value = $valueMap.get($key).get("creatorName.input"))
+                #if ("$!value" != "")
+            <rif:relatedObject>
+                <rif:key>$util.encodeXml($value)</rif:key>
+                <rif:relation type="hasCollector"></rif:relation>
+            </rif:relatedObject>
+                #end
+            #end
+
+
+
            	#showElementRifCS ("rif:subject"  "dc:subject.vivo:keyword"  " type=${quote}local${quote} $lang"  "rdf:PlainLiteral"  "")
             #showElementRifCS ("rif:subject"  "dc:subject.anzsrc:for"  " type=${quote}anzsrc-for${quote} $lang"  "rdf:resource"  "anzsrc")
             #showElementRifCS ("rif:subject"  "dc:subject.anzsrc:seo"  " type=${quote}anzsrc-seo${quote} $lang"  "rdf:resource"  "anzsrc")
-            
 
-			
-            
+
+
+
         #set ($value = $util.get($item, "dc:subject.anzsrc:toa.skos:prefLabel"))
         #if ("$!value" != "")
             <rif:subject type="anzsrc-toa">$util.encodeXml($value)</rif:subject>
@@ -406,7 +418,7 @@
             </rif:rights>
         #end
         #################
-		
+
         #showRelatedInfo("dc:relation.swrc:Publication", "publication", "uri")
         #showRelatedInfo("dc:relation.bibo:Website", "website", "uri")
         #showRelatedInfo("dc:relation.vivo:Service", "service", "uri")

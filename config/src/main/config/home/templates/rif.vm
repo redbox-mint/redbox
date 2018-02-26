@@ -304,6 +304,18 @@
             </rif:relatedObject>
                 #end
             #end
+
+            ### Free text support
+            #set($valueMap = $util.getList($item, "identifierText"))
+            #foreach($key in $valueMap.keySet())
+                #set ($value = $valueMap.get($key).get("creatorName.input"))
+                #if ("$!value" != "")
+            <rif:relatedObject>
+                <rif:key>$util.encodeXml($value)</rif:key>
+                <rif:relation type="hasCollector"></rif:relation>
+            </rif:relatedObject>
+                #end
+            #end
 			
 			
 			
