@@ -36,6 +36,11 @@ import groovy.util.logging.Slf4j
 import org.ands.rifcs.base.RIFCSWrapper
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
+import org.w3c.dom.DOMConfiguration
+import org.w3c.dom.DOMImplementation
+import org.w3c.dom.ls.DOMImplementationLS
+import org.w3c.dom.ls.LSOutput
+import org.w3c.dom.ls.LSSerializer
 
 import javax.xml.XMLConstants
 import javax.xml.transform.dom.DOMSource
@@ -78,7 +83,7 @@ class TfpackageToRifcs {
     TfpackageToRifcs(final DigitalObject digitalObject) {
         this.digitalObject = digitalObject
         this.config = new JsonSimpleConfig()
-        this.urlBase =  this.config.getString(null,"urlBase")
+        this.urlBase = this.config.getString(null, "urlBase")
         this.metadata = digitalObject.getMetadata()
         this.tfpackage = parseJson(getTfpackage(digitalObject))
     }
@@ -86,7 +91,7 @@ class TfpackageToRifcs {
     TfpackageToRifcs(final DigitalObject digitalObject, final String config) {
         this.digitalObject = digitalObject
         this.config = new JsonSimpleConfig(config)
-        this.urlBase =  this.config.getString(null,"urlBase")
+        this.urlBase = this.config.getString(null, "urlBase")
         this.metadata = digitalObject.getMetadata()
         this.tfpackage = parseJson(getTfpackage(digitalObject))
     }
@@ -102,7 +107,9 @@ class TfpackageToRifcs {
 
     def prettyPrint(RIFCSWrapper data) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream()
-        data.write(baos)
+        // turn off the <?xml.../> declaration at start: this will interfere in generating xml list of records later (ie: xml can only appear ONCE in xml doc)
+        def parameters = ["xml-declaration": false]
+        data.write(baos, parameters)
         log.debug("returning pretty print format for ${data.class} ...")
         return baos.toString()
     }
@@ -130,7 +137,7 @@ class TfpackageToRifcs {
         def expando = new Expando()
         if (tfpackage.'dc:identifier.redbox:origin' == 'internal') {
             expando.identifier = pid ?: urlBase + "/detail/" + metadata.get("objectId")
-            expando.identifierType = pid ? StringUtils.defaultIfBlank(config.getString(null, "curation","pidType"), "&Invalid XML placeholder... prevents ANDS Harvesting records in error&") : "uri"
+            expando.identifierType = pid ? StringUtils.defaultIfBlank(config.getString(null, "curation", "pidType"), "&Invalid XML placeholder... prevents ANDS Harvesting records in error&") : "uri"
         } else {
             expando.identifier = tfpackage.'dc:identifier.rdf:PlainLiteral' ?: "&Invalid ID: Not curated yet&"
             expando.identifierType = tfpackage.'dc:identifier.rdf:PlainLiteral' ? tfpackage.'dc:identifier.dc:type.rdf:PlainLiteral' : "invalid"
@@ -153,7 +160,9 @@ class TfpackageToRifcs {
             [key: it.curatedPid, type: it.relationship ?: "hasAssociationWith", description: it.description]
         }
         log.debug("relations collected: " + collected)
-        def grouped = collected.plus(getAllNlaRelations()).plus(getAllOrcidRelations()).plus(getAllFreeTextRelations()).groupBy { it.key }
+        def grouped = collected.plus(getAllNlaRelations()).plus(getAllOrcidRelations()).plus(getAllFreeTextRelations()).groupBy {
+            it.key
+        }
         log.debug("grouped: " + grouped)
         return grouped
     }
@@ -278,7 +287,7 @@ class TfpackageToRifcs {
 
     def getCitation(def identifierData) {
 //        <citationInfo> element should contain either <fullCitation> or <citationMetadata> (not both)
-        def doiProperty = config.getString(null,"andsDoi", "doiProperty")
+        def doiProperty = config.getString(null, "andsDoi", "doiProperty")
         if (tfpackage.'dc:biblioGraphicCitation.redbox:sendCitation'?.trim() == "on") {
             String value = tfpackage.'dc:biblioGraphicCitation.skos:prefLabel'
             def doi = doiProperty ? metadata.get(doiProperty) : null
@@ -426,10 +435,7 @@ class TfpackageToRifcs {
         RifcsRightsBuilder.metaClass.addNonEmpty = addNonEmpty
     }
 
-
-    def transform() {
-        def identifierData = createIdentifierData()
-
+    def overrideRIFCSWrapper() {
         RIFCSWrapper.metaClass.validate = {
             // ensures dependencies do not override schema factory library that works with ANDS library
             SchemaFactory factory = SchemaFactory.newInstance(
@@ -439,6 +445,33 @@ class TfpackageToRifcs {
             Validator validator = schema.newValidator()
             validator.validate(new DOMSource(doc))
         }
+
+        // enable setting of parameters
+        RIFCSWrapper.metaClass.write << { final OutputStream os, Map<String, Boolean> parameters ->
+            DOMImplementation impl = doc.getImplementation();
+            DOMImplementationLS implLS =
+                    (DOMImplementationLS) impl.getFeature("LS", "3.0");
+
+            LSOutput lso = implLS.createLSOutput()
+            lso.setByteStream(os)
+            LSSerializer writer = implLS.createLSSerializer()
+            DOMConfiguration domConfig = writer.getDomConfig()
+            // keep default parameter for pretty print, but allow it also to be overridden
+            domConfig.setParameter("format-pretty-print", Boolean.TRUE);
+            for (Map.Entry<String, Boolean> entry : parameters.entrySet()) {
+                String key = entry.getKey()
+                Boolean value = entry.getValue()
+                domConfig.setParameter(key, value)
+            }
+            writer.write(doc, lso);
+        }
+    }
+
+
+    def transform() {
+        def identifierData = createIdentifierData()
+
+        overrideRIFCSWrapper()
 
         resetCollectClosures()
 
@@ -452,7 +485,7 @@ class TfpackageToRifcs {
             return delegate
         }
 
-        def rifcs = new RifcsCollectionBuilder(identifierData.identifier, urlBase, config.getString(null,"identity","RIF_CSGroup"), tfpackage.'dc:type.rdf:PlainLiteral')
+        def rifcs = new RifcsCollectionBuilder(identifierData.identifier, urlBase, config.getString(null, "identity", "RIF_CSGroup"), tfpackage.'dc:type.rdf:PlainLiteral')
                 .identifier(identifierData.identifier, identifierData.identifierType)
                 .addEveryNonEmpty('identifier', getAllAdditionalIdentifiers())
                 .addNonEmpty('dateModified', getISO8601DateString(tfpackage.'dc:modified'))
@@ -461,25 +494,25 @@ class TfpackageToRifcs {
                 .addEveryNonEmptyMap('relatedObjects', getAllRelations())
                 .addNonEmpty('primaryName', tfpackage.'dc:title')
                 .locationBuilder()
-                    .addNonEmpty('physicalAddress', tfpackage.'vivo:Location.vivo:GeographicLocation.gn:name')
-                    .addEveryNonEmpty('urlElectronicAddress', getAllElectronicAddress())
-                    .addNonEmpty('emailElectronicAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
-                    .build()
+                .addNonEmpty('physicalAddress', tfpackage.'vivo:Location.vivo:GeographicLocation.gn:name')
+                .addEveryNonEmpty('urlElectronicAddress', getAllElectronicAddress())
+                .addNonEmpty('emailElectronicAddress', tfpackage.'locrel:prc.foaf:Person.foaf:email')
+                .build()
                 .temporalCoverageBuilder()
-                    .addNonEmpty('coverageDateFrom', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:start'))
-                    .addNonEmpty('coverageDateTo', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:end'))
-                    .addNonEmpty('coveragePeriod', tfpackage.'dc:coverage.redbox:timePeriod')
-                    .build()
+                .addNonEmpty('coverageDateFrom', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:start'))
+                .addNonEmpty('coverageDateTo', getISO8601DateString(tfpackage.'dc:coverage.vivo:DateTimeInterval.vivo:end'))
+                .addNonEmpty('coveragePeriod', tfpackage.'dc:coverage.redbox:timePeriod')
+                .build()
                 .spatialCoverageBuilder()
-                    .addEveryNonEmpty('spatial', getAllGeoSpatialCoverage())
-                    .build()
+                .addEveryNonEmpty('spatial', getAllGeoSpatialCoverage())
+                .build()
                 .addEveryNonEmpty('subject', getAllSubjects())
                 .addEveryNonEmpty('description', getAllDescriptions())
                 .rightsBuilder()
-                    .addNonEmpty('accessRights', getAccessRights())
-                    .addNonEmpty('licence', getLicence())
-                    .addNonEmpty('rightsStatement', getRightsStatement())
-                    .build()
+                .addNonEmpty('accessRights', getAccessRights())
+                .addNonEmpty('licence', getLicence())
+                .addNonEmpty('rightsStatement', getRightsStatement())
+                .build()
                 .addEveryNonEmpty('relatedInfo', getAllRelatedInfo())
                 .addEveryNonEmpty('relatedObject', getRelatedObject("dc:relation.vivo:Service"))
                 .addNonEmpty('fullCitation', getCitation(identifierData))

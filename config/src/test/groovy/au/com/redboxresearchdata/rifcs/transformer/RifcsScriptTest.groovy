@@ -21,10 +21,31 @@ package au.com.redboxresearchdata.rifcs.transformer
 
 import com.googlecode.fascinator.common.storage.impl.GenericDigitalObject
 import groovy.util.logging.Slf4j
+import org.ands.rifcs.base.Constants
+import org.ands.rifcs.base.RIFCS
+import org.ands.rifcs.base.RIFCSException
+import org.ands.rifcs.base.RIFCSWrapper
+import org.ands.rifcs.base.RegistryObject
 import org.joda.time.DateTimeZone
+import org.w3c.dom.DOMConfiguration
+import org.w3c.dom.DOMImplementation
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.ls.DOMImplementationLS
+import org.w3c.dom.ls.LSOutput
+import org.w3c.dom.ls.LSSerializer
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import javax.xml.XMLConstants
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.ParserConfigurationException
+import javax.xml.transform.dom.DOMSource
+import javax.xml.validation.Schema
+import javax.xml.validation.SchemaFactory
+import javax.xml.validation.Validator
 
 /**
  * @author <a href="matt@redboxresearchdata.com.au">Matt Mulholland</a>
@@ -32,9 +53,25 @@ import spock.lang.Unroll
  */
 @Slf4j
 class RifcsScriptTest extends Specification {
-    @Shared loader = new GroovyClassLoader(getClass().getClassLoader())
-    @Shared scriptLocation = loader.getResource("home/scripts/tfpackageToRifcs.groovy").text
-    @Shared scriptClass = new GroovyShell().parse(scriptLocation).class
+    @Shared
+            loader = new GroovyClassLoader(getClass().getClassLoader())
+    @Shared
+            scriptLocation = loader.getResource("home/scripts/tfpackageToRifcs.groovy").text
+    @Shared
+            scriptClass = new GroovyShell().parse(scriptLocation).class
+
+
+    def "Basic RIFCSWrapper generates registryObjects NS, but without leading '?xml' declaration"() {
+        def tfpackage = tfpackageToRifcs()
+        tfpackage.overrideRIFCSWrapper()
+        RIFCSWrapper wrapper = new RIFCSWrapper();
+        def result = tfpackage.prettyPrint(wrapper)
+        log.info(result)
+
+        expect:
+        result == stubEmptyXmlRegistryObjectsDoc()
+
+    }
 
     def "Rifcs transform"() {
         DateTimeZone.setDefault(DateTimeZone.forID("Australia/Brisbane"))
@@ -286,7 +323,7 @@ class RifcsScriptTest extends Specification {
     }
 
     def preXmlHandle(xml) {
-        def pass1 =  xml.replaceAll("&Invalid XML placeholder... prevents ANDS Harvesting records in error&", "dummyinvalidxmlmarker1")
+        def pass1 = xml.replaceAll("&Invalid XML placeholder... prevents ANDS Harvesting records in error&", "dummyinvalidxmlmarker1")
         def pass2 = pass1.replaceAll("&Invalid ID: Not curated yet&", "dummyinvalidxmlmarker2")
         return pass2
     }
@@ -465,13 +502,13 @@ class RifcsScriptTest extends Specification {
                    ["http://www.google.com", "http://www.foo.bar", "http://demo.redboxresearchdata.com.au/redbox/published/detail/df96891d804da76bf2f30fb253d4aebb"]
         ]
         where:
-        tfpackage << [ '''{
+        tfpackage << ['''{
                         "dc:type.rdf:PlainLiteral": "collection",
                         "bibo:Website.1.dc:identifier": "http://www.google.com",
                         "bibo:Website.2.dc:identifier": "http://www.foo.bar",
                         "recordAsLocationDefault": "http://demo.redboxresearchdata.com.au/redbox/published/detail/df96891d804da76bf2f30fb253d4aebb"
         }''',
-                       '''{
+                      '''{
                         "dc:type.rdf:PlainLiteral": "collection",
                         "bibo:Website.1.dc:identifier": "http://www.google.com",
                         "bibo:Website.2.dc:identifier": "http://www.foo.bar",
@@ -689,7 +726,7 @@ class RifcsScriptTest extends Specification {
                         "dc:license.rdf:Alt.skos:prefLabel": "",
                         "dc:license.rdf:Alt.dc:identifier": "bar",
         }''']
-        expectedResult << [[value: "licence", uri: "foo", type: "Unknown/Other"], [value: "CC BY-ND: Attribution-No Derivative Works 3.0 AU", uri: "foo", type: "CC-BY-ND"], [value: "CC BY-ND 4.0: Attribution-No Derivative Works 4.0 International", uri: "foo", type: "CC-BY-ND"],[value: "ODC-By - Attribution License 1.0", uri: "foo", type: "Unknown/Other"],[value: "licence2", uri: "bar", type: "Unknown/Other"], [value: "licence2", uri: "bar", type: "Unknown/Other"], [value: "licence2", type: "Unknown/Other"], null]
+        expectedResult << [[value: "licence", uri: "foo", type: "Unknown/Other"], [value: "CC BY-ND: Attribution-No Derivative Works 3.0 AU", uri: "foo", type: "CC-BY-ND"], [value: "CC BY-ND 4.0: Attribution-No Derivative Works 4.0 International", uri: "foo", type: "CC-BY-ND"], [value: "ODC-By - Attribution License 1.0", uri: "foo", type: "Unknown/Other"], [value: "licence2", uri: "bar", type: "Unknown/Other"], [value: "licence2", uri: "bar", type: "Unknown/Other"], [value: "licence2", type: "Unknown/Other"], null]
     }
 
     def "relatedObject"() {
@@ -804,6 +841,13 @@ class RifcsScriptTest extends Specification {
         digitalObject.createStoredPayload('test.tfpackage', dataStream)
         dataStream.close()
         return digitalObject
+    }
+
+    def stubEmptyXmlRegistryObjectsDoc() {
+        return '''<registryObjects
+    xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.6/schema/registryObjects.xsd"/>
+'''
     }
 
     def stubMetadata() {
@@ -1579,8 +1623,7 @@ class RifcsScriptTest extends Specification {
     }
 
     def stubRifcsOutput() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<registryObjects\n" +
+        return "<registryObjects\n" +
                 "    xmlns=\"http://ands.org.au/standards/rif-cs/registryObjects\"\n" +
                 "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.6/schema/registryObjects.xsd\">\n" +
                 "    <registryObject group=\"The University of Examples, Australia\">\n" +
@@ -1694,8 +1737,7 @@ class RifcsScriptTest extends Specification {
     }
 
     def stubRifcsOutputThatHasInvalidXml() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<registryObjects\n" +
+        return "<registryObjects\n" +
                 "    xmlns=\"http://ands.org.au/standards/rif-cs/registryObjects\"\n" +
                 "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/1.6/schema/registryObjects.xsd\">\n" +
                 "    <registryObject group=\"\">\n" +
