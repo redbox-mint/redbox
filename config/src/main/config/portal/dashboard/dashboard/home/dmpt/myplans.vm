@@ -24,30 +24,37 @@
       	    <td data-bind=${q}text: create_timestamp${q}/>
       	    <td data-bind=${q}text: last_modified${q} />
               <td>
-              <a data-bind=${q}attr: {href:editUrl}${q}>					
+              <a data-bind=${q}attr: {href:editUrl}${q}>
   			<img title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.edit')${q} alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.edit')'${q} src=${q}$portalPath/images/icons/workflow_edit.png${q}>
   		</a>
             <a data-bind=${q}if: planPdfUrl, attr:{href: planPdfUrl}${q} target=${q}_blank${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q} src=${q}$portalPath/images/icons/mimetype/application/pdf/icon.png${q}></a>
-  		<a data-bind=${q}if: currentUser!='admin', click:$parent.changeOwner${q} href=${q}#${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q} src=${q}$portalPath/images/icons/delete.png${q}></a> 
+  		<a data-bind=${q}if: currentUser!='admin', click:$parent.changeOwner${q} href=${q}#${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.delete')${q} src=${q}$portalPath/images/icons/delete.png${q}></a>
   		<a href=${q}#${q} data-bind=${q}click: $parent.manageAccess${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.access')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.access')${q} src=${q}$portalPath/images/icons/application_key.png${q}></a>
   		</td>
-          </tr>				
-  </tbody>    
+          </tr>
+  </tbody>
 ")
 <script>
 var currentUser = "$currentUser";
 function plansMapFn(mod, rawdata) {
-  var data = rawdata.response.docs;  
+  var data = rawdata.response.docs;
   for(var i=0; i < data.length; i++) {
     data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
   	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
   	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
   	data[i]["editUrl"] = '$portalPath/workflow/' + data[i].id;
     data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/DataManagementPlan.pdf' : null;
-    data[i]["currentUser"] = currentUser; 
+    data[i]["currentUser"] = currentUser;
+    data[i]["dc_title"] = htmlDecode(data[i]["dc_title"]);
   	mod.rows.push(data[i]);
   }
 };
+htmlDecode = function(input)
+{
+  var doc = new DOMParser().parseFromString(input, "text/html");
+  return doc.documentElement.textContent;
+}
+
 var plansFuncFn = {};
 plansFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
 plansFuncFn['changeOwner'] = function(item) { change_owner(item.id); };
@@ -76,7 +83,7 @@ plansFuncFn['changeOwner'] = function(item) { change_owner(item.id); };
             <th>#displayMessage('researcher-dashboard.home.myplans.table.pdf')</th>
         </tr>
     </thead>
-     <tbody data-bind=${q}foreach: rows${q}>          
+     <tbody data-bind=${q}foreach: rows${q}>
         <tr>
       		<td><a data-bind=${q}attr: {href: detailUrl}, text: dc_title${q}></a></td>
       	    <td data-bind=${q}text: create_timestamp${q}/>
@@ -84,16 +91,16 @@ plansFuncFn['changeOwner'] = function(item) { change_owner(item.id); };
             <td>
             <a data-bind=${q}if: planPdfUrl, attr:{href: planPdfUrl}${q} target=${q}_blank${q} title=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q}><img alt=${q}#displayMessage('researcher-dashboard.home.myplans.manage.pdf')${q} src=${q}$portalPath/images/icons/mimetype/application/pdf/icon.png${q}></a>
             </td>
-          </tr>				
-  </tbody>    
+          </tr>
+  </tbody>
 ")
 <script>
 function sharedPlansMapFn(mod, rawdata) {
-  var data = rawdata.response.docs;  
+  var data = rawdata.response.docs;
   for(var i=0; i < data.length; i++) {
     data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
   	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
-  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);  	
+  	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
     data[i]["planPdfUrl"] = data[i].hasPlanPdf ? '$portalPath/download/'+ data[i].id + '/DataManagementPlan.pdf' : null;
   	mod.rows.push(data[i]);
   }
