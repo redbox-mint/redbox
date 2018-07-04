@@ -45,9 +45,17 @@ function draftsMapFn(mod, rawdata) {
     data[i]["detailUrl"] = '$portalPath/detail/' + data[i].id;
   	data[i]["create_timestamp"] = formatDate(data[i]["date_object_created"]);
   	data[i]["last_modified"] = formatDate(data[i]["date_object_modified"]);
+    data[i]["dc_title"] = htmlDecode(data[i]["dc_title"]);
   	mod.rows.push(data[i]);
   }
 };
+
+htmlDecode = function(input)
+{
+  var doc = new DOMParser().parseFromString(input, "text/html");
+  return doc.documentElement.textContent;
+}
+
 var draftFuncFn = {};
 draftFuncFn['manageAccess'] = function(item) { manage_access(item.id); };
 </script>

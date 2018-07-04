@@ -9,7 +9,7 @@
     #set($v = $metadata.get("$key"))
     <dd>
     #if ($v)
-		$page.escapeHtml($!v)
+		$!v
     #else
 		#noInformation()
     </dd>
@@ -27,7 +27,7 @@
 			<dd>
             #set($item = $forList.get($key))            
             #set($subv = $item.get("$subKey"))
-            $page.escapeHtml($!subv)
+            $!subv
 			</dd>
         #end
     #end
@@ -48,7 +48,7 @@
 #foreach($subKey in $subKeys)
 #if($i>0)$sep #end 
 #set($subv = $item.get("$subKey"))
-#set($i = $i+1)$page.escapeHtml($!subv)#end
+#set($i = $i+1)$!subv#end
 			</li>
 		#end
 		</ol>

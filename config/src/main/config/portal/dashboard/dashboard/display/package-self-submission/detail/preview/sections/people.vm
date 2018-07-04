@@ -1,8 +1,8 @@
-##    locrel:rth.foaf:Person.foaf:title 
-##    locrel:rth.foaf:Person.foaf:givenName 
-##    locrel:rth.foaf:Person.foaf:familyName 
-##    locrel:rth.foaf:Person.foaf:email    
-    
+##    locrel:rth.foaf:Person.foaf:title
+##    locrel:rth.foaf:Person.foaf:givenName
+##    locrel:rth.foaf:Person.foaf:familyName
+##    locrel:rth.foaf:Person.foaf:email
+
 #macro(displayPerson $key $name)
     <dt>$name</dt>
     <dd>
@@ -11,8 +11,8 @@
 		#set($familyName = $metadata.get("$key:familyName"))
 		#set($email = $metadata.get("$key:email"))
     #if ($familyName || $givenName)
-    	$page.escapeHtml($!title) $page.escapeHtml($!givenName) $page.escapeHtml($!familyName) $page.escapeHtml($!email)
-    #else	
+    	$!title $!givenName $!familyName $!email
+    #else
     ##if ($items && $items.size > 0)
 		##set($i = 0)
 		##foreach($item in $items)
@@ -32,7 +32,7 @@
 #macro(displayKey $map $key $required)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
-$page.escapeHtml($value)
+$value
 #else
     #if ($required)
 #missing($key)
@@ -61,7 +61,7 @@ $page.escapeHtml($value)
 
 	#displayPerson("dc:creator.foaf:Person.foaf" "Principal investigator")
     #displayPerson("locrel:prc.foaf:Person.foaf" "Data manager")
-    
+
     <dt>Collaborators</dt>
     #set($personList = $self.getList("dc:contributor.locrel:clb"))
     #if ($personList.isEmpty())
@@ -88,6 +88,6 @@ $page.escapeHtml($value)
     #end
 
     #displayPerson("swrc:supervisor.foaf:Person.foaf" "Supervisor")
-        
+
     </dl>
 </div>

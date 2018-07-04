@@ -18,16 +18,16 @@
     #if ($items && $items.size() > 0)
 		#set($i = 0)
 #foreach($item in $items)
-#if($i > 0),#else #set($i = 1) #end $page.escapeHtml($!item)#end
+#if($i > 0),#else #set($i = 1) #end $!item#end
     #else
 		#noInformation()
-	#end	
+	#end
 #end
 
 #macro(getSingleValue $key)
  #set($v = $metadata.get("$key"))
     #if ($v)
-		$page.escapeHtml($v)
+		$v
     #else
 		#noInformation()
     #end
@@ -49,12 +49,12 @@
           $!label
         #else
     	  #noInformation()
-      #end 
+      #end
     </td>
     </tr>
 #end
 
-## display a list in a row 
+## display a list in a row
 #macro(displayRowList $label $baseKey $subKey)
 <tr>
 <td>$label</td>
@@ -68,12 +68,12 @@
 #set($item = $forList.get($key))
 #if($i > 0), #else #set($i = 1) #end
 #set($subv = $item.get("$subKey"))
-$page.escapeHtml($!subv)#end#end
+$!subv#end#end
 </td>
 </tr>
 #end
 
-## Special treat for Grant Numbers 
+## Special treat for Grant Numbers
 #macro(displayGrantNumbers $label $baseKey)
 <tr>
 <td>$label</td>
@@ -88,7 +88,7 @@ $page.escapeHtml($!subv)#end#end
 #if($i > 0), #else #set($i = 1) #end
   #set($subv = $item.get("skos:prefLabel"))
 #if ("$!subv" != "")$!subv#else
-#set($subv = $item.get("redbox:grantNumber"))$page.escapeHtml($!subv)#end    
+#set($subv = $item.get("redbox:grantNumber"))$!subv#end    
 #end
 #end
 </td>
@@ -112,5 +112,5 @@ $page.escapeHtml($!subv)#end#end
         #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo" "skos:prefLabel")
     </table>
     <h4>#displayMessage('dmpt.field.label.dc-description')</h4>
-	<p>#if($metadata.get('dc:description')) $page.escapeHtml($metadata.get('dc:description')) #else #noInformation() #end</p>
+	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description')) #else #noInformation( #end</p>
 </section>
