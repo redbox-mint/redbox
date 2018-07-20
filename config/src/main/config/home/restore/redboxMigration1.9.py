@@ -130,8 +130,9 @@ class MigrateData:
             self.getPackageJson().put("dc:description.1.text", unescapedDescription)
             self.getPackageJson().put("dc:description.1.shadow", escapedDescription)
             self.getPackageJson().put("dc:description.1.type", "full")
-            self.log.debug("Removing deprecated 'dc:description' key...")
-            self.getPackageJson().remove("dc:description")
+            if self.getPackageJson().get("viewId") not in [ "dashboard" ]:
+              self.log.debug("Removing deprecated 'dc:description' key...")
+              self.getPackageJson().remove("dc:description")
             self.log.debug(
                 "Completed migrating 'dc:description' %s to dc:description.1.text|shadow" % deprecated_description)
 
