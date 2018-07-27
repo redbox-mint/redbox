@@ -88,7 +88,7 @@ $!subv#end#end
 #if($i > 0), #else #set($i = 1) #end
   #set($subv = $item.get("skos:prefLabel"))
 #if ("$!subv" != "")$!subv#else
-#set($subv = $item.get("redbox:grantNumber"))$!subv#end    
+#set($subv = $item.get("redbox:grantNumber"))$!subv#end
 #end
 #end
 </td>
@@ -112,5 +112,5 @@ $!subv#end#end
         #displayRowList("#displayMessage('dmpt.field.label.dc-subject.dc-subject.anzsrc-seo')" "dc:subject.anzsrc:seo" "skos:prefLabel")
     </table>
     <h4>#displayMessage('dmpt.field.label.dc-description')</h4>
-	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description')) #else #noInformation( #end</p>
+	<p>#if($metadata.get('dc:description')) $metadata.get('dc:description')) #else #noInformation() #end</p>
 </section>
