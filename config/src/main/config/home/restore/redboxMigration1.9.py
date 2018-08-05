@@ -1,5 +1,6 @@
 import re
 import traceback
+import os
 from com.googlecode.fascinator.api.storage import StorageException
 from com.googlecode.fascinator.common import JsonSimple
 from java.io import ByteArrayInputStream
@@ -14,6 +15,7 @@ from com.googlecode.fascinator.portal.services import OwaspSanitizer
 class MigrateData:
     def __init__(self):
         self.packagePidSuffix = ".tfpackage"
+        self.pdfSuffix = ".pdf"
         self.redboxVersion = None
 
     def __activate__(self, bindings):
@@ -23,6 +25,7 @@ class MigrateData:
         self.log = bindings["log"]
         self.audit = bindings["auditMessages"]
         self.pidList = None
+        self.pdfs = {}
 
         # Look at some data
         self.oid = self.object.getId()
@@ -37,6 +40,8 @@ class MigrateData:
                 self.log.info(self.packageData.toString(True))
                 # update the redbox version...
                 self.updateVersion()
+
+                self.createLinkedFile(self.pdfs)
 
                 # # update description to wysiwyg descriptions and init for multiple descriptions
                 self.setDescriptionShadow()
@@ -192,6 +197,7 @@ class MigrateData:
             for pid in self.pidList:
                 if pid.endswith(self.packagePidSuffix):
                     self.packagePid = pid
+                self.collectWhitespacePdfs(pid)
         except StorageException:
             self.log.error("Error accessing object PID list for object '{}' ", self.oid)
             return
@@ -221,3 +227,16 @@ class MigrateData:
         except StorageException, e:
             traceback.print_exc()
             self.log.error("Error updating package data payload: ", e)
+
+    def collectWhitespacePdfs(self, pid):
+        if pid.endswith(self.pdfSuffix):
+            sanitized = StringUtils.deleteWhitespace(pid)
+            if not StringUtils.equals(pid, sanitized):
+                self.log.debug('found a pdf with whitespace: %s' % pid)
+                self.pdfs[pid] = sanitized
+
+    def createLinkedFile(self, paths_dict):
+        for next_path, link in paths_dict.iteritems():
+            original_path = os.path.join(self.object.getPath(), next_path)
+            self.log.debug('linking: %s, to: %s' % (link, original_path))
+            self.object.createLinkedPayload(link, original_path)
