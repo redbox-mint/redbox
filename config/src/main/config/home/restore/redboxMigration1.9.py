@@ -10,6 +10,7 @@ from org.apache.commons.lang import StringEscapeUtils
 from org.apache.commons.lang import StringUtils
 from org.joda.time import DateTime, DateTimeZone
 from com.googlecode.fascinator.portal.services import OwaspSanitizer
+from java.util import Arrays, Collections
 
 
 class MigrateData:
@@ -54,6 +55,8 @@ class MigrateData:
 
                 # add new keys if not present
                 self.injectFreshKeys()
+
+                self.handleOwaspWhitelist()
 
                 # # save the package data...
                 self.__savePackageData()
@@ -117,10 +120,10 @@ class MigrateData:
             ## no tags are added to wysiwyg until user interacts with wysiwyg editor
             unescapedDescription = ""
             escapedDescription = ""
-            rawDescription = StringUtils.defaultString(deprecated_description)
+            rawDescription = StringUtils.defaultString("%s" % deprecated_description)
             ## sanitize the incoming description
             self.log.debug("raw deprecated description is: %s" % rawDescription)
-            sanitizedDescription = OwaspSanitizer.sanitizeHtml(rawDescription)
+            sanitizedDescription = OwaspSanitizer.sanitizeHtml("dc:description.1.text", rawDescription)
             if (sanitizedDescription):
                 # not completely accurate for checking for tags but ensures a style consistent with wysiwyg editor
                 if re.search("^<p>.*</p>|^&lt;p&gt;.*&lt;\/p&gt;", sanitizedDescription):
@@ -184,6 +187,19 @@ class MigrateData:
                 self.log.debug("added fresh key: %s" % freshKey)
             else:
                 self.log.info("skipping fresh key: %s as it already exists" % freshKey)
+
+    def handleOwaspWhitelist(self):
+        whitelist = OwaspSanitizer.whitelist
+        self.log.debug("have whitelist: %s" % whitelist.toString())
+        for field in whitelist.toArray():
+            value = self.getPackageJson().get(field)
+            if value:
+                unescaped = StringEscapeUtils.unescapeHtml("%s" % value)
+                self.log.debug("Unescaped field: %s from: %s to: %s" % (field, value, unescaped))
+                if unescaped:
+                    self.getPackageJson().put(field, unescaped)
+                else:
+                    self.log.warning("Failed to unescape field: %s from: %s" % (field, value))
 
     def getPackageJson(self):
         return self.packageData.getJsonObject()
