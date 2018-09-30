@@ -47,9 +47,10 @@ var globalObject = this;
 
         display = function() {
             var tbody, tr, td, label, id;
-            mintDiv.html("");
-            if (queryTerm) mintDiv.text("Search result for '" + queryTerm + "'");
-            if (getJson) {
+            if (!$(".mint-lookup-disabled").val()) {
+              mintDiv.html("");
+              if (queryTerm) mintDiv.text("Search result for '" + queryTerm + "'");
+              if (getJson) {
                 var i, s;
                 mintDiv.append("<br/>");
                 i = $("<input type='text'/>");
@@ -57,33 +58,34 @@ var globalObject = this;
                 mintDiv.append(i);
                 s = $("<input type='button' value='Search'/>");
                 mintDiv.append(s);
-                i.keypress(function(e) {
-                    if (e.which == 13) s.click();
+                i.keypress(function (e) {
+                  if (e.which == 13) s.click();
                 });
-                s.click(function() {
-                    queryTerm = $.trim(i.val());
-                    if (queryTerm) {
-                        getJson(queryTerm, function(jdata) {
-                            if (jdata.error) {
-                                alert(jdata.error);
-                            } else {
-                                json = jdata;
-                                display();
-                                setTimeout(function() {
-                                    try {
-                                        i.focus();
-                                    } catch (e) {
-                                        // IE7?
-                                    }
-                                }, 10);
-                            }
-                        });
-                    }
+                s.click(function () {
+                  queryTerm = $.trim(i.val());
+                  if (queryTerm) {
+                    getJson(queryTerm, function (jdata) {
+                      if (jdata.error) {
+                        alert(jdata.error);
+                      } else {
+                        json = jdata;
+                        display();
+                        setTimeout(function () {
+                          try {
+                            i.focus();
+                          } catch (e) {
+                            // IE7?
+                          }
+                        }, 10);
+                      }
+                    });
+                  }
                 });
-            }
-            mintDiv.append("<hr/>");
-            mintDiv.append($("<table/>").append(tbody = $("<tbody/>")));
-            $.each(json.results, function(c, result) {
+              }
+              mintDiv.append("<hr/>");
+              mintDiv.append($("<table/>").append(tbody = $("<tbody/>")));
+
+              $.each(json.results, function (c, result) {
                 var r, a, name;
                 id = "rId" + c;
                 tr = $("<tr/>").append(td = $("<td/>"));
@@ -93,7 +95,7 @@ var globalObject = this;
                 name = result["rdfs:label"] || result["foaf:name"];
                 label.append(name);
                 if (result["dc:description"]) {
-                    label.append(" - " + result["dc:description"]);
+                  label.append(" - " + result["dc:description"]);
                 }
                 //
                 td.append(r);
@@ -103,17 +105,18 @@ var globalObject = this;
                 a = $("<a style='color:blue;' href='#'>details</a>");
                 td.append(a);
                 tbody.append(tr);
-                label.dblclick(function() {
-                    dialog.dialog("option", "buttons").OK();
+                label.dblclick(function () {
+                  dialog.dialog("option", "buttons").OK();
                 });
-                a.click(function(e) {
-                    var pos = dialog.parent().position();
-                    pos.left += 10;
-                    pos.top += 20;
-                    displayDetails(name, result, pos, r);
-                    return false;
+                a.click(function (e) {
+                  var pos = dialog.parent().position();
+                  pos.left += 10;
+                  pos.top += 20;
+                  displayDetails(name, result, pos, r);
+                  return false;
                 });
-            });
+              });
+            }
 
             // National Library Integration
             var nlaResultsDiv = $("<div/>");
@@ -220,54 +223,58 @@ var globalObject = this;
                 });
             }
 
-            // Search Form
-            var nlaTbody, nlaTrow, nlaTcell;
-            nlaDiv.append($("<table/>").append(nlaTbody = $("<tbody/>")));
+            if (!$(".nla-lookup-disabled").val()) {
+                // Search Form
+                var nlaTbody, nlaTrow, nlaTcell;
+                nlaDiv.append($("<table/>").append(nlaTbody = $("<tbody/>")));
 
-            var nlaFirstnameInput = $("<input id='nlaFirstname' type='text' />");
-            nlaFirstnameInput.val(nlaFirstname);
-            nlaTbody.append(nlaTrow = $("<tr/>"));
-            nlaTrow.append(nlaTcell = $("<td/>"));
-            nlaTcell.append("<label for='nlaFirstname'>First Name:</label>");
-            nlaTrow.append(nlaTcell = $("<td/>"));
-            nlaTcell.append(nlaFirstnameInput);
+                var nlaFirstnameInput = $("<input id='nlaFirstname' type='text' />");
+                nlaFirstnameInput.val(nlaFirstname);
+                nlaTbody.append(nlaTrow = $("<tr/>"));
+                nlaTrow.append(nlaTcell = $("<td/>"));
+                nlaTcell.append("<label for='nlaFirstname'>First Name:</label>");
+                nlaTrow.append(nlaTcell = $("<td/>"));
+                nlaTcell.append(nlaFirstnameInput);
 
-            var nlaSurnameInput = $("<input id='nlaSurname' type='text' />");
-            nlaSurnameInput.val(nlaSurname);
-            nlaTbody.append(nlaTrow = $("<tr/>"));
-            nlaTrow.append(nlaTcell = $("<td/>"));
-            nlaTcell.append("<label for='nlaSurname'>Surname:</label>");
-            nlaTrow.append(nlaTcell = $("<td/>"));
-            nlaTcell.append(nlaSurnameInput);
+                var nlaSurnameInput = $("<input id='nlaSurname' type='text' />");
+                nlaSurnameInput.val(nlaSurname);
+                nlaTbody.append(nlaTrow = $("<tr/>"));
+                nlaTrow.append(nlaTcell = $("<td/>"));
+                nlaTcell.append("<label for='nlaSurname'>Surname:</label>");
+                nlaTrow.append(nlaTcell = $("<td/>"));
+                nlaTcell.append(nlaSurnameInput);
 
-            var nlaSearch = $("<input type='button' value='Search' />");
-            nlaDiv.append(nlaSearch);
-            nlaDiv.append("<hr/>");
-            nlaDiv.append(nlaResultsDiv);
-            nlaFirstnameInput.keypress(function(e) {
-                if (e.which == 13) nlaSearch.click();
-            });
-            nlaSurnameInput.keypress(function(e) {
-                if (e.which == 13) nlaSearch.click();
-            });
+                var nlaSearch = $("<input type='button' value='Search' />");
+                nlaDiv.append(nlaSearch);
+                nlaDiv.append("<hr/>");
+                nlaDiv.append(nlaResultsDiv);
+                nlaFirstnameInput.keypress(function(e) {
+                    if (e.which == 13) nlaSearch.click();
+                });
+                nlaSurnameInput.keypress(function(e) {
+                    if (e.which == 13) nlaSearch.click();
+                });
 
-            // Search metadata wrappers
-            function pagedNlaSearch(start, rows) {
-                nlaFirstname = $.trim(nlaFirstnameInput.val());
-                nlaSurname = $.trim(nlaSurnameInput.val());
-                searchNla(start, rows);
-            }
-            nlaSearch.click(function() {
+                // Search metadata wrappers
+                function pagedNlaSearch(start, rows) {
+                    nlaFirstname = $.trim(nlaFirstnameInput.val());
+                    nlaSurname = $.trim(nlaSurnameInput.val());
+                    searchNla(start, rows);
+                }
+                nlaSearch.click(function() {
+                    pagedNlaSearch(1, 10);
+                });
+
                 pagedNlaSearch(1, 10);
-            });
-            pagedNlaSearch(1, 10);
+            }
         };
 
         var loaderGif = $(".nameLookup-progress").html();
+        var disabledLookupMsg = "Unfortunately this lookup has been disabled"
         var tabbedDiv = $("<div><ul><li><a href=\"#mintLookupDialog\">Mint</a></li><li><a href=\"#orcidLookupDialog\">ORCID</a></li><li><a href=\"#nlaLookupDialog\">NLA<span class=\"nlaLookup-progress\"> " + loaderGif + "</span></a></li></ul></div>");
-        mintDiv = $("<div id=\"mintLookupDialog\"></div>");
-        orcidDiv = $('<div id="orcidLookupDialog"><input id="orcidNextPage" type="hidden" value="2"><input id="orcidPreviousPage" type="hidden" value="0"><table><tbody><tr><td><label for="orcidFirstname">First Name:</label></td><td><input id="orcidFirstname" type="text"></td></tr><tr><td><label for="norcidSurname">Surname:</label></td><td><input id="orcidSurname" type="text"></td></tr></tbody></table><input type="button" id="orcidSearchButton" value="Search"><hr/><div id="orcidSearchResults"></div></div>');
-        nlaDiv = $("<div id=\"nlaLookupDialog\"><div class='nameLookup-waiting'>Searching National Library. Please wait... " + loaderGif + "</div></div>");
+        var mintDiv = $(".mint-lookup-disabled").val() ? $('<div id="mintLookupDialog">' + disabledLookupMsg + '</div>') : $("<div id=\"mintLookupDialog\"></div>");
+        var orcidDiv = $(".orcid-lookup-disabled").val() ? $('<div id="orcidLookupDialog">' + disabledLookupMsg + '</div>') : $('<div id="orcidLookupDialog"><input id="orcidNextPage" type="hidden" value="2"><input id="orcidPreviousPage" type="hidden" value="0"><table><tbody><tr><td><label for="orcidFirstname">First Name:</label></td><td><input id="orcidFirstname" type="text"></td></tr><tr><td><label for="norcidSurname">Surname:</label></td><td><input id="orcidSurname" type="text"></td></tr></tbody></table><input type="button" id="orcidSearchButton" value="Search"><hr/><div id="orcidSearchResults"></div></div>');
+        var nlaDiv = $(".nla-lookup-disabled").val() ? $('<div id="nlaLookupDialog">' + disabledLookupMsg + '</div>') : $("<div id=\"nlaLookupDialog\"><div class='nameLookup-waiting'>Searching National Library. Please wait... " + loaderGif + "</div></div>");
         tabbedDiv.append(mintDiv);
         tabbedDiv.append(orcidDiv);
         tabbedDiv.append(nlaDiv);
@@ -275,7 +282,8 @@ var globalObject = this;
         display();
         dialog.html(tabbedDiv);
         tabbedDiv.tabs();
-        $("#orcidSearchButton").click(function() { populateOrcidResults(1);
+        $("#orcidSearchButton").click(function() {
+            populateOrcidResults(1);
         });
 
         function populateOrcidResults(page) {
@@ -315,7 +323,7 @@ var globalObject = this;
 
                         summaryDivElement.append(resultCountSpanElement);
                         summaryDivElement.append(resultCountPaginationElement);
-                        var tableElement = $('<table><tbody></tbody></table>')
+                        var tableElement = $('<table><tbody></tbody></table>');
                         for (var i = 0; i < results.length; i++) {
                             var result = results[i];
                             tableElement.append('<tr><td><input type="radio" name="name" id="orcidRId' + i + '" value=\'' + JSON.stringify(result) + '\'><label for="orcidRId' + i + '">' + result['family_name'] + ', ' + result['given_names'] + '</label></td><td><a style="color:blue;" target="_blank" href="' + result['orcid_uri'] + '">details</a></td></tr>');

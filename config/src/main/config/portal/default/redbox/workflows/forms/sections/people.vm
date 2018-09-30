@@ -1,5 +1,9 @@
 <h3><a href="#people">People</a></h3>
 <div id="people" class="inputscreen nameLookup-section" style="overflow:auto;">
+    #foreach($disabledLookup in $systemConfig.getStringList("lookup", "disabled"))
+      <input type="hidden" class="${disabledLookup}-lookup-disabled" value="disabled"/>
+    #end
+
     <input type="hidden" class="nameLookup-url" value="$portalPath/proxyGet.script?ns=Parties_People&qs=searchTerms%3D{searchTerms}" />
     <input type="hidden" class="nlaLookup-url" value="$portalPath/proxyGet.script?ns=NLA_SRU&qs={searchTerms}" />
     <input type="hidden" class="orcidLookup-url" value="$portalPath/orcidSearch.script?familyName={familyName}&givenNames={givenNames}&page={page}" />
