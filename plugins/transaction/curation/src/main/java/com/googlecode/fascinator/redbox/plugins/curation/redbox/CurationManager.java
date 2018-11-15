@@ -32,6 +32,7 @@ import com.googlecode.fascinator.common.JsonSimple;
 import com.googlecode.fascinator.common.JsonSimpleConfig;
 import com.googlecode.fascinator.common.solr.SolrDoc;
 import com.googlecode.fascinator.common.solr.SolrResult;
+import com.googlecode.fascinator.common.storage.StorageUtils;
 import com.googlecode.fascinator.common.transaction.GenericTransactionManager;
 import com.googlecode.fascinator.messaging.EmailNotificationConsumer;
 import com.googlecode.fascinator.messaging.TransactionManagerQueueConsumer;
@@ -536,10 +537,11 @@ public class CurationManager extends GenericTransactionManager {
 	 * 
 	 * @param oid
 	 *            The object ID being curated
+	 * @throws TransactionException 
 	 * @returns JsonSimple The response object to send back to the queue
 	 *          consumer
 	 */
-	private JsonSimple curation(JsonSimple message, String task, String oid) {
+	private JsonSimple curation(JsonSimple message, String task, String oid) throws TransactionException {
 		JsonSimple response = new JsonSimple();
 
 		// *******************
@@ -599,7 +601,7 @@ public class CurationManager extends GenericTransactionManager {
 						DigitalObject object = storage.getObject(oid);
 						metadata = object.getMetadata();
 						metadata.setProperty(pidProperty, id);
-						object.close();
+						storeProperties(object, metadata);
 						metadata = getObjectMetadata(oid);
 						curated = true;
 						audit(response, oid, "Persitent ID set in properties");
@@ -650,6 +652,9 @@ public class CurationManager extends GenericTransactionManager {
 					responseObj.put("originOid", oid);
 					responseObj.put("curatedPid", thisPid);
 				}
+				//We've responded so let's clear the response list for next time
+				responses.clear();
+				saveObjectData(data, oid);
 
 				// Set a flag to let publish events that may come in later
 				// that this is ready to publish (if not already set)
@@ -658,7 +663,7 @@ public class CurationManager extends GenericTransactionManager {
 						DigitalObject object = storage.getObject(oid);
 						metadata = object.getMetadata();
 						metadata.setProperty(READY_PROPERTY, "ready");
-						object.close();
+						storeProperties(object, metadata);
 						metadata = getObjectMetadata(oid);
 						audit(response, oid,
 								"This object is ready for publication");
@@ -1235,7 +1240,7 @@ public class CurationManager extends GenericTransactionManager {
 			// Already published?
 			if (!metadata.containsKey(PUBLISH_PROPERTY)) {
 				metadata.setProperty(PUBLISH_PROPERTY, "true");
-				object.close();
+				storeProperties(object, metadata);
 				log.info("Publication flag set '{}'", oid);
 				audit(response, oid, "Publication flag set");
 			} else {
@@ -1278,8 +1283,9 @@ public class CurationManager extends GenericTransactionManager {
 	 * 
 	 * @param oid
 	 *            The object identifier to publish
+	 * @throws TransactionException 
 	 */
-	private void publishRelations(JsonSimple response, String oid) {
+	private void publishRelations(JsonSimple response, String oid) throws TransactionException {
 		log.debug("Publishing Children of '{}'", oid);
 
 		JsonSimple data = getDataFromStorage(oid);
@@ -1313,7 +1319,8 @@ public class CurationManager extends GenericTransactionManager {
 
 			// We only publish downstream relations (ie. we are their authority)
 			boolean authority = json.getBoolean(false, "authority");
-			if (authority) {
+			boolean relationPublishRequested = json.getBoolean(false, "relationPublishedRequested");
+			if (authority && !relationPublishRequested) {
 				// Is this relationship using a curated ID?
 				boolean isCurated = json.getBoolean(false, "isCurated");
 				if (isCurated) {
@@ -1330,6 +1337,9 @@ public class CurationManager extends GenericTransactionManager {
 						task.remove("oid");
 						task.put("identifier", relatedId);
 					}
+					log.debug(" * Writing relationPublishedRequested for '{}'", relatedId);
+					json.getJsonObject().put("relationPublishedRequested",true);
+					saveObjectData(data, oid);
 				} else {
 					log.debug(" * Ignoring non-curated relationship '{}'",
 							relatedId);
@@ -1631,10 +1641,24 @@ public class CurationManager extends GenericTransactionManager {
 			DigitalObject object = storage.getObject(oid);
 			Properties props = object.getMetadata();
 			props.setProperty("render-pending", "false");
-			object.close();
+			
+			storeProperties(object, props);
 		} catch (StorageException ex) {
 			log.error("Error accessing storage for '{}'", oid, ex);
 		}
+	}
+
+	private void storeProperties(DigitalObject object, Properties props) throws StorageException {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		try {
+			props.store(output, null);
+		} catch (IOException e) {
+			throw new StorageException(e);
+		}
+		ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
+		StorageUtils.createOrUpdatePayload(object,"TF-OBJ-META",input);
+		object.close();
+		
 	}
 
 	/**
@@ -1648,11 +1672,12 @@ public class CurationManager extends GenericTransactionManager {
 			DigitalObject object = storage.getObject(oid);
 			Properties props = object.getMetadata();
 			props.setProperty("render-pending", "true");
-			object.close();
+			storeProperties(object, props);
 		} catch (StorageException ex) {
 			log.error("Error accessing storage for '{}'", oid, ex);
 		}
 	}
+	
 
 	/**
 	 * Create a task. Tasks are basically just trivial messages that will come
