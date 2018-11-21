@@ -165,7 +165,17 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
         #basicField("653", "0", "4", "a", "dc:coverage.redbox:timePeriod")
 
         ## Description tab
-        #basicField("520", " ", " ", "a", "dc:description")
+        #set($valueMap = $util.getList($item, "dc:description"))
+        #foreach($key in $valueMap.keySet())
+            #set($description = $valueMap.get($key))
+            #set($descText = $description.get("shadow"))
+            #if("$!descText" != "")
+                #openField("520", " ", " ")
+                #subField("a", $descText)
+                #closeField()
+            #end
+        #end
+
         #showElementMarc("dc:relation.swrc:Publication", "856", "4", "2", "u", "dc:identifier", "")
         #showElementMarc("dc:relation.bibo:Website", "856", "4", "2", "u", "dc:identifier", "")
 

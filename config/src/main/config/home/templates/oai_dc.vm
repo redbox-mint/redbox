@@ -111,7 +111,14 @@
 #dc2("subject", "dc:coverage.redbox:timePeriod")
 
 ## Description tab
-#dc1("description")
+#set($valueMap = $util.getList($item, "dc:description"))
+#foreach($key in $valueMap.keySet())
+    #set($description =  $valueMap.get($key))
+    #set($descText = $description.get("shadow"))
+    #if("$!descText" != "")
+      <dc:description>$util.encodeXml($descText)</dc:description>
+    #end
+#end
 #relations("dc:relation.swrc:Publication")
 #relations("dc:relation.bibo:Website")
 
