@@ -60,7 +60,7 @@ $(function() {
                 ajax: 1,
                 func: "create-new",
                 packageType: "dmpt",
-                metaList: ["title", "dc:description", "redbox:newForm", "redbox:formVersion","project.name"],
+                metaList: ["title", "description", "redbox:newForm", "redbox:formVersion","project.name"],
                 title: "[Untitled]",
                 description: "",
                 "project.name": "New Project",
