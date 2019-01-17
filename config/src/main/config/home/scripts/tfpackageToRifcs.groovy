@@ -520,7 +520,8 @@ class TfpackageToRifcs {
 
         def prettyPrintedRifcs = fixEscapedInvalidMarkers(prettyPrint(rifcs))
         log.info("pre-validation rifcs transformation: " + prettyPrintedRifcs)
-        rifcs.validate()
+        // validation is slow as fetches schema every time for Document - TODO: fetch and cache
+//        rifcs.validate()
         return prettyPrintedRifcs
     }
 
