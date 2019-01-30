@@ -341,7 +341,8 @@ div[id^="dc:coverage.vivo:GeographicLocation"] select { display:none }
     function resetDescription(e) {
         // incoming descriptions may have pre-wysiwyg escaped values, reset them before wysiwyg
         var descriptionId = e.id;
-        var text = $(escapeId(descriptionId)).val();
+        var shadowSiblingId =  descriptionId.replace("text", "shadow");
+        var text = $(escapeId(shadowSiblingId)).val();
         var unescaped = $(escapeId(descriptionId)).html(text).text();
         var escaped = $(escapeId(descriptionId)).text(unescaped).html();
         //reset

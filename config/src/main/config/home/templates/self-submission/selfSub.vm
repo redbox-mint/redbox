@@ -1,5 +1,9 @@
 #macro(EscapeForJson $value)
 #set($escaped = $value.replaceAll("\"","\\\"").replaceAll("\n","\\n"))$escaped#end
+
+#macro(EscapeForHtml $value)
+	#set($escaped = $value.replaceAll("\n","<p>&nbsp;</p>"))$escaped#end
+
 #macro(Collaborators $map $key $order)
 #set($queryKey = "person.${key}")
 #set ($value = $map.get($queryKey))
@@ -36,14 +40,21 @@
     #if ($v) "$to": "#EscapeForJson($!v)",
     #end
 #end
+
+#macro(multiValuedProperty $map $prefix $key $order)
+	#set($queryKey = "${key}")
+	#set ($value = $map.get($queryKey))
+
+"${prefix}.${order}.${key}": "$value",
+#end
 {
 	"viewId": "dashboard",
     "packageType": "self-submission",
     "viewId": "dashboard",
-    "dc:title": "[untitled]",
-    "dc:description": "",
     #mapTo('oid', 'redbox:ManagementPlan.oid')
     #mapTo('dc:title', 'redbox:ManagementPlan.skos:note')
+    #mapTo('dc:title', 'title')
+    #mapTo('dc:title', 'dc:title'),
 #foreach( $key in ["swrc:supervisor.foaf:Person.foaf:title","swrc:supervisor.foaf:Person.foaf:givenName","swrc:supervisor.foaf:Person.foaf:familyName"
                    ,"swrc:supervisor.foaf:Person.foaf:email","swrc:supervisor.foaf:Person.dc:identifier"
                    ,"locrel:prc.foaf:Person.foaf:title","locrel:prc.foaf:Person.foaf:givenName","locrel:prc.foaf:Person.foaf:familyName"
@@ -137,6 +148,23 @@
     	#copyCodes($slot ".bottom.dropdown" $order 'seo')
     	#set($order = $order + 1)
     #end
+#end
+
+#set($cList = $util.getList($item, "dc:description"))
+#set($order = 1)
+#if ($cList.size() > 0)
+	#foreach($key in $cList.keySet())
+		#set($slot = $cList.get($key))
+		#multiValuedProperty($slot "dc:description" "text" $order)
+		#multiValuedProperty($slot "dc:description" "type" $order)
+		#multiValuedProperty($slot "dc:description" "shadow" $order)
+		#set($order = $order + 1)
+	#end
+#else
+	#set($singleDescription = $util.get($item, 'dc:description'))
+  #if ("$!singleDescription" != "")
+    "dc:description.1.text": "#EscapeForHtml($!singleDescription)",
+	#end
 #end
 "redbox:newForm": "#EscapeForJson($util.get($item, 'redbox:newForm'))",
 "redbox:formVersion": "#EscapeForJson($util.get($item, 'redbox:formVersion'))"
