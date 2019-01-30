@@ -165,7 +165,8 @@ $(function(){
                 	ajax: 1,
                 	func: "create-new",
                 	packageType: "self-submission",
-                	metaList: ["redbox:newForm", "redbox:formVersion"],
+                	metaList: ["dc:description", "redbox:newForm", "redbox:formVersion"],
+									"dc:description": $("#dmpt-description").html(),
                 	"redbox:newForm": "true",
                 	"redbox:formVersion": "$systemConfig.getString("Unknown", "redbox.version.string")"
             	}, success: function(data) {
