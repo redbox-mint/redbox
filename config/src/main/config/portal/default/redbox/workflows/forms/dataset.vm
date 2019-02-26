@@ -261,6 +261,8 @@
         dc:biblioGraphicCitation.dc:hasPart.dc:date.0.dc:type.skos:prefLabel,
         dc:biblioGraphicCitation.dc:hasPart.bibo:Website.dc:identifier,
         dc:biblioGraphicCitation.dc:hasPart.skos:scopeNote,
+        dc:biblioGraphicCitation.dc:hasPart.resourceType,
+        dc:biblioGraphicCitation.dc:hasPart.resourceTypeText,
         ## submission request
         redbox:submissionProcess.redbox:submitted,
         redbox:submissionProcess.dc:date,

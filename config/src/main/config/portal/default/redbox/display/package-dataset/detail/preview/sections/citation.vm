@@ -26,6 +26,8 @@
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:title" "Title")
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:hasVersion.rdf:PlainLiteral" "Edition")
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.dc:publisher.rdf:PlainLiteral" "Publisher")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.resourceType" "Resource Type General")
+        #displayFirst("dc:biblioGraphicCitation.dc:hasPart.resourceTypeText" "Resource Type Text")
         #displayFirst("dc:biblioGraphicCitation.dc:hasPart.vivo:Publisher.vivo:Location" "Place of Publication")
 
         <dt>Dates</dt>

@@ -9,11 +9,12 @@ from org.apache.commons.httpclient.methods import PostMethod
 class AndsDoiData:
     def __init__(self):
         # Some templates for making our XML
-        self.xml_xmlWrapper = "<resource xmlns=\"http://datacite.org/schema/kernel-2.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://datacite.org/schema/kernel-2.2 http://schema.datacite.org/meta/kernel-2.2/metadata.xsd\">\n%s</resource>"
+        self.xml_xmlWrapper = "<resource xmlns=\"http://datacite.org/schema/kernel-4\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.1/metadata.xsd\">\n%s</resource>"
         self.xml_id = "<identifier identifierType=\"DOI\">%s</identifier>\n"
         self.xml_title = "<titles><title>%s</title></titles>\n"
         self.xml_publisher = "<publisher>%s</publisher>\n"
         self.xml_pubYear = "<publicationYear>%s</publicationYear>\n"
+        self.xml_resourceType = "<resourceType resourceTypeGeneral=\"%s\">%s</resourceType>\n"
         self.xml_creator = "<creator><creatorName>%s</creatorName></creator>\n"
         self.xml_creatorWrapper = "<creators>\n%s</creators>\n"
 
@@ -32,7 +33,7 @@ class AndsDoiData:
 
     def doiConfig(self, key):
         config = self.vc("systemConfig")
-        return config.getString(None, ["andsDoi", key]);
+        return config.getString(None, ["andsDoi", key])
 
     def doiSecurityCheck(self):
         config = self.vc("systemConfig")
@@ -82,14 +83,14 @@ class AndsDoiData:
         if self.velocityContext[index] is not None:
             return self.velocityContext[index]
         else:
-            log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
+            self.log.error("ERROR: Requested context entry '" + index + "' doesn't exist")
             return None
 
     def activateDoi(self):
         self.throwError("Not implemented yet")
 
     def buildXml(self, json, doi):
-        xmlString = "";
+        xmlString = ""
 
         ## Check metadata validity along the way
         if doi is None or doi == "":
@@ -135,6 +136,14 @@ class AndsDoiData:
         else:
             xmlString += self.xml_pubYear % (pubYear)
 
+        resourceType = json.getString(None, ["resourceType"])
+        resourceTypeText = json.getString(None, ["resourceTypeText"])
+        if resourceType is None or resourceType == "":
+            return None
+        if resourceTypeText is None or resourceTypeText == "null":
+            resourceTypeText = ""
+        xmlString += self.xml_resourceType % (resourceType, resourceTypeText)
+
         return self.xml_xmlWrapper % (xmlString)
 
     def urlGet(self, url):
@@ -142,7 +151,7 @@ class AndsDoiData:
             client = BasicHttpClient(url)
             get = GetMethod(url)
             code = client.executeMethod(get)
-            body = get.getResponseBodyAsString().strip()
+            body = str(get.getResponseBodyAsString()).strip()
             return (str(code), body)
         except Exception, e:
             self.log.error("Error during HTTP request: ", e)
@@ -159,12 +168,12 @@ class AndsDoiData:
             #######
             code = client.executeMethod(post)
             if str(code) == "302":
-                locationHeader = post.getResponseHeader("location");
+                locationHeader = post.getResponseHeader("location")
                 if locationHeader is not None:
-                    redirectLocation = locationHeader.getValue();
+                    redirectLocation = locationHeader.getValue()
                     self.log.info("302 Redirection was requested: '{}'", redirectLocation)
                     ##return self.urlPost(redirectLocation, postBody)
-            body = post.getResponseBodyAsString().strip()
+            body = str(post.getResponseBodyAsString()).strip()
             return (str(code), body)
         except Exception, e:
             self.log.error("Error during HTTP request: ", e)
@@ -183,7 +192,7 @@ class AndsDoiData:
                 # An error, and it has already been thrown
                 return
             else:
-                self.throwError("There's already a DOI for this object! '"+oldDoi+"'")
+                self.throwError("There's already a DOI for this object! '"+ str(oldDoi) + "'")
                 return
 
         xmlString = self.buildXml(json, None)
@@ -214,7 +223,7 @@ class AndsDoiData:
             return
         responseCode = andsJsonResp.getString(None, ["response", "responsecode"])
         if responseCode != "MT001":
-            self.throwError(responseCode + "-" + andsJsonResp.getString(None, ["response", "verbosemessage"]))
+            self.throwError("" + str(responseCode) + "-" + str(andsJsonResp.getString(None, ["response", "verbosemessage"])))
             return
         doi = andsJsonResp.getString(None, ["response", "doi"])
         stored = self.storeDoi(doi, oid)
@@ -230,13 +239,13 @@ class AndsDoiData:
         self.writer.close()
 
     def getDoiFromStorage(self, oid):
-        propName = self.doiConfig("doiProperty");
+        propName = self.doiConfig("doiProperty")
         if propName is None:
             self.throwError("Error accessing storing, no configured storage property name for DOIs!")
             return False
 
         try:
-            object = self.storage.getObject(oid);
+            object = self.storage.getObject(oid)
             metadata = object.getMetadata()
             return metadata.getProperty(propName)
         except StorageException, e:
@@ -245,16 +254,16 @@ class AndsDoiData:
             return False
 
     def storeDoi(self, doi, oid):
-        propName = self.doiConfig("doiProperty");
+        propName = self.doiConfig("doiProperty")
         if propName is None:
             self.throwError("Error storing DOI, no configured storage property name!")
             return False
 
         try:
-            object = self.storage.getObject(oid);
+            object = self.storage.getObject(oid)
             metadata = object.getMetadata()
             metadata.setProperty(propName, doi)
-            object.close();
+            object.close()
             self.log.debug("DOI '{}' stored for OID '{}'", doi, oid)
             return True
         except StorageException, e:
@@ -307,7 +316,7 @@ class AndsDoiData:
         switch.get(action, self.unknownAction)()
 
     def throwError(self, message):
-        self.log.error("andsDoi.py : " + message);
+        self.log.error("andsDoi.py : " + message)
         self.vc("response").setStatus(500)
         self.responseJson.getJsonObject().put("error", "Error: " + message)
         self.writer.println(self.responseJson.toString(True))

@@ -102,6 +102,11 @@
                     A citation title is required!
                 </label>
            </div>
+          <div>
+            <label class="validation-err-msg" for="${citePart}.resourceType">
+              A citation general resource Type is required!
+            </label>
+          </div>
            ##<div>
            ##     <label class="validation-err-msg" for="${citePart}.dc:hasVersion.rdf:PlainLiteral">
            ##         A citation edition is required!

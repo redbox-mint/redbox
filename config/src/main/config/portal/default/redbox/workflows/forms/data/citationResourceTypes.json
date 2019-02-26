@@ -1,0 +1,64 @@
+{
+    "results": [
+        {
+            "id": "Audiovisual",
+            "label": "Audiovisual"
+        },
+        {
+            "id": "Collection",
+            "label": "Collection"
+        },
+        {
+            "id": "DataPaper",
+            "label": "DataPaper"
+        },
+        {
+            "id": "Dataset",
+            "label": "Dataset"
+        },
+        {
+            "id": "Event",
+            "label": "Event"
+        },
+        {
+            "id": "Image",
+            "label": "Image"
+        },
+        {
+            "id": "InteractiveResource",
+            "label": "InteractiveResource"
+        },
+        {
+            "id": "Model",
+            "label": "Model"
+        },
+        {
+            "id": "PhysicalObject",
+            "label": "PhysicalObject"
+        },
+        {
+            "id": "Service",
+            "label": "Service"
+        },
+        {
+            "id": "Software",
+            "label": "Software"
+        },
+        {
+            "id": "Sound",
+            "label": "Sound"
+        },
+        {
+            "id": "Text",
+            "label": "Text"
+        },
+        {
+            "id": "Workflow",
+            "label": "Workflow"
+        },
+        {
+            "id": "Other",
+            "label": "Other"
+        }
+    ]
+}
