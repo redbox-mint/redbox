@@ -129,10 +129,11 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
                     var thisWidget = this;
                     source = function(request, response) {
                         var data = {};
+                        var escapedRequestTerm = encodeURIComponent(request.term.toLowerCase());
                         if (requestQuote)  {
-                            data[requestField] = '"' + request.term + '"';
+                            data[requestField] = '"' + escapedRequestTerm + '"';
                         } else {
-                            data[requestField] = request.term;
+                            data[requestField] = escapedRequestTerm;
                         }
 
                         $.ajax({
@@ -144,7 +145,7 @@ var FundingBodyWidgetBuilder = function($, jaffa) {
                                 // Find the 'node' containing our list of items
                                 var results = thisWidget.dataGetOnJsonPath(data, resultsPath);
                                 if (results == null) {
-                                    jaffa.logWarning("Error parsing response from lookup in widget '"+thisWidget.getId()+"', cannot find results on configured data path.");
+                                    jaffa.logWarning("Error parsing response from lookup in widget '"+thisWidget.id()+"', cannot find results on configured data path.");
                                     response({});
                                     return;
                                 }
