@@ -166,6 +166,13 @@ class AndsDoiData:
             #post.setRequestBody(postBody)
             post.addParameter("xml", postBody)
             #######
+            sharedSecret = self.doiConfig("sharedSecret")
+            if (sharedSecret):
+                apiKey = self.doiConfig("apiKey")
+                if (apiKey is not None):
+                    client.authenticate(apiKey, sharedSecret)
+                else:
+                    raise EnvironmentError("Cannot have shared secret without an api key")
             code = client.executeMethod(post)
             if str(code) == "302":
                 locationHeader = post.getResponseHeader("location")

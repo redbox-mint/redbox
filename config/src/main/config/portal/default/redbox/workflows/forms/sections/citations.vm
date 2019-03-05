@@ -745,7 +745,7 @@
     }
 
     // Time to put the complete String together
-    return creators.join("; ") + " (" + pubYear + "): " + title + ". " + publisher + ". {ID_WILL_BE_HERE}";
+    return creators.join("; ") + " (" + pubYear + "): " + title + ". " + publisher + ". (" + resourceType.toLowerCase() + "). " + "{ID_WILL_BE_HERE}";
   }
 
   renderBtn.live("click", function () {
