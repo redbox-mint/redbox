@@ -219,7 +219,7 @@ class AndsDoiData:
         self.log.debug("Response Code: '{}'", code)
         self.log.debug("Response Body: '{}'", body)
         if code != "200":
-            self.throwError("Invalid response from ANDS server, code "+code+ ": "+body)
+            self.throwError("Invalid response from ANDS server, code "+ str(code) + ": " + str(body))
             return
 
         # Grab the DOI from their response string

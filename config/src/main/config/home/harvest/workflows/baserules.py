@@ -132,8 +132,10 @@ class BaseIndexData(object):
                 self.utils.add(self.index, "security_exception", user)
 
         # Ownership
+        self.log.debug("Checking for ownership...If there is none, will add system...")
         if self.owner is None:
             self.utils.add(self.index, "owner", "system")
+            self.log.debug("Added 'system' as owner")
         else:
             if self.owner == 'guest' and self.user_id != "":
                 self.log.debug("baseRule.py: Need to assign ownership by mapping user_id to user because user_id and default owner 'guest' are found.")
