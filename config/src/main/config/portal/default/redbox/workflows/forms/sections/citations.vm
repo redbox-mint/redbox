@@ -668,7 +668,7 @@
 
       var resourceType = citeResourceType.val();
       if (resourceType == null || resourceType == "") {
-        alert("'Resource Type' is a mandatory field for DOI");
+        alert("'Resource Type General' is a mandatory field for DOI");
         return false;
       } else {
         doiMetadata.resourceType = resourceType;

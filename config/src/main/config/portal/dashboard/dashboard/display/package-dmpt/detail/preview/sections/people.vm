@@ -30,7 +30,7 @@
 <i>{missing: "$value" }</i>
 #end
 
-#macro(displayKey $map $key $required)
+#macro(displayPeopleKey $map $key $required)
 #set ($value = $map.get($key))
 #if ("$!value" != "")
 $!value
@@ -39,18 +39,6 @@ $!value
 #missing($key)
     #end
 #end
-#end
-
-#macro(displayOptionalKey $map $key)
-	#if ($key == "person.foaf:email")
-		[ #displayKey($map $key false) ]
-	#else
-		#displayKey($map $key false)
-	#end
-#end
-
-#macro(displayRequiredKey $map $key)
-#displayKey($map $key true)
 #end
 
 #sectionHeading("#displayMessage('dmpt.heading.people')")
@@ -71,10 +59,10 @@ $!value
         #foreach($key in $personList.keySet())
             #set($person = $personList.get($key))
             <li>
-                #displayOptionalKey($person "person.foaf:title")
-                #displayRequiredKey($person "person.foaf:givenName")
-                #displayRequiredKey($person "person.foaf:familyName")
-                #displayOptionalKey($person "person.foaf:email")
+                #displayPeopleKey($person "person.foaf:title" false)
+                #displayPeopleKey($person "person.foaf:givenName" true)
+                #displayPeopleKey($person "person.foaf:familyName" true)
+                [ #displayPeopleKey($person "person.foaf:email" false) ]
             </li>
         #end
         </ol>

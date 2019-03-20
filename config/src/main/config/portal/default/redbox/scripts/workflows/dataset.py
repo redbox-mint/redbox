@@ -304,7 +304,7 @@ class DatasetData:
     def _saveTFPackage(self, tfpackage):
         object = self._getObject()
         OwaspSanitizer.sanitizeTfPackage(tfpackage)
-        self.log.debug("tfpackage after sanitized is: %s" % tfpackage)
+        self.log.trace("tfpackage after sanitized is: %s" % tfpackage)
         jsonString = String(tfpackage.toString(True))
         jsonData = jsonString.getBytes("UTF-8")
         self.packagePid = None
