@@ -8,7 +8,21 @@
     <thead><th>Name</th><th>Key</th><th>Actions</th></thead>
     <tbody>
      #foreach($key in $keys.get("keys"))
-     <tr><td>$key.get("username")</td><td>$key.get("apiKey")</td><td><form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post"><input type="hidden" name='name' value='$key.get("name")'><input type="hidden" name='action' value='Remove'></input><input type="submit" value="Remove"/></form><form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post"><input type="hidden" name='name' value='$key.get("name")'><input type="hidden" name='action' value='Regenerate'></input><input type="submit" value="Generate new key"/></form></td></tr>
+     <tr>
+       <td>$key.get("username")</td>
+       <td>$key.get("apiKey")</td>
+       <td>
+         <form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post">
+           <input type="hidden" name='name' value='$key.get("name")' />
+           <input type="hidden" name='action' value='Remove'/>
+           <input type="submit" value="Remove"/>
+         </form>
+         <form style="display:inline" action="$portalPath.replaceAll("verNum[0-9A-Za-z_.\\-]+/","")/apiAdmin" method="post">
+           <input type="hidden" name='name' value='$key.get("name")' />
+           <input type="hidden" name='action' value='Regenerate' />
+           <input type="submit" value="Generate new key"/>
+       </form></td>
+     </tr>
      #end
     </tbody>
     </table>
