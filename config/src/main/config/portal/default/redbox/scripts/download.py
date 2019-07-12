@@ -75,6 +75,7 @@ class DownloadData:
         # Now the 'real' work of payload retrieval
         if payload is not None:
             filename = os.path.split(payload.getId())[1]
+            filename = "\"" + filename + "\""
             mimeType = payload.getContentType()
             if mimeType == "application/octet-stream":
                 self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
