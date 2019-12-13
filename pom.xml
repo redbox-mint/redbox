@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox</artifactId>
-    <version>1.10.2</version>
+    <version>1.10.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ReDBox</name>
     <parent>
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-secure-api</artifactId>
-            <version>1.10.1</version>
+            <version>1.10.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>plugin-transaction-curation-redbox</artifactId>
-            <version>1.10</version>
+            <version>1.11-SNAPSHOT</version>
         </dependency>
         <!-- Fascinator Plugins -->
         <dependency>
