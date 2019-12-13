@@ -22,7 +22,7 @@
             <artifactId>fascinator-portal</artifactId>
             <type>jar</type>
             <classifier>classes</classifier>
-            <version>1.6-SNAPSHOT</version>
+            <version>1.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
