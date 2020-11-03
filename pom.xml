@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.redbox-mint</groupId>
     <artifactId>redbox</artifactId>
-    <version>1.10.2-SNAPSHOT</version>
+    <version>1.10.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ReDBox</name>
     <parent>
         <groupId>com.googlecode.redbox-mint</groupId>
         <artifactId>redbox-project</artifactId>
-        <version>1.10</version>
+        <version>1.10.2</version>
         <relativePath>parent/pom.xml</relativePath>
     </parent>
     <modules>
@@ -49,14 +49,14 @@
             <artifactId>fascinator-portal</artifactId>
             <type>war</type>
             <classifier>skinny</classifier>
-            <version>1.6-SNAPSHOT</version>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
             <artifactId>fascinator-portal</artifactId>
             <type>jar</type>
             <classifier>classes</classifier>
-            <version>1.6-SNAPSHOT</version>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.the-fascinator</groupId>
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>redbox-secure-api</artifactId>
-            <version>1.10.1-SNAPSHOT</version>
+            <version>1.10.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>com.googlecode.redbox-mint</groupId>
             <artifactId>plugin-transaction-curation-redbox</artifactId>
-            <version>1.10-SNAPSHOT</version>
+            <version>1.11-SNAPSHOT</version>
         </dependency>
         <!-- Fascinator Plugins -->
         <dependency>
@@ -334,7 +334,7 @@
                     <groupId>com.googlecode.the-fascinator</groupId>
                     <artifactId>fascinator-portal</artifactId>
                     <type>warpath</type>
-                    <version>1.6-SNAPSHOT</version>
+                    <version>1.6</version>
                 </dependency>
             </dependencies>
             <!-- The standard build/deploy process for making a server -->
@@ -581,9 +581,9 @@
         </repository>
     </repositories>
     <scm>
-        <url>scm:git://github.com/redbox-mint/redbox.git</url>
-        <connection>scm:git://github.com/redbox-mint/redbox.git</connection>
-        <developerConnection>scm:git:https://github.com/redbox-mint/redbox.git</developerConnection>
+        <url>https://github.com/redbox-mint/redbox.git</url>
+        <connection>scm:git:git@github.com:redbox-mint/redbox.git</connection>
+        <developerConnection>scm:git:git@github.com:redbox-mint/redbox.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 </project>
