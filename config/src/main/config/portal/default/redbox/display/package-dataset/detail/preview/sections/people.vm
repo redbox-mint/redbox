@@ -11,20 +11,15 @@
         #else
         <dd>
             <ol>
-                #set ($aList = [] )
-                #foreach($key in [1..30])
-                    #if($creatorList.get("$key"))
-                        #set($silent = $aList.add($creatorList.get("$key")))
-                    #end
-                #end
-                #foreach($dcCreator in $aList)
-                    #set($dcCreatorAssociation = $dcCreator.get("foaf:Organization.skos:prefLabel"))
-                    <li>
-                        #displayOptionalKey($dcCreator "foaf:title") #displayRequiredKey($dcCreator "foaf:givenName") #displayRequiredKey($dcCreator "foaf:familyName")#if("$!dcCreatorAssociation" != ""), $self.escapeHtml($dcCreatorAssociation)#end
-                        #if($dcCreator.get("redbox:isCoPrimaryInvestigator"))[CI]#end
-                        #if($dcCreator.get("redbox:isPrimaryInvestigator"))[PI]#end
-                    </li>
-                #end
+            #foreach($key in $creatorList.keySet())
+                #set($dcCreator = $creatorList.get($key))
+                #set($dcCreatorAssociation = $dcCreator.get("foaf:Organization.skos:prefLabel"))
+                <li>
+                    #displayOptionalKey($dcCreator "foaf:title") #displayRequiredKey($dcCreator "foaf:givenName") #displayRequiredKey($dcCreator "foaf:familyName")#if("$!dcCreatorAssociation" != ""), $self.escapeHtml($dcCreatorAssociation)#end
+                    #if($dcCreator.get("redbox:isCoPrimaryInvestigator"))[CI]#end
+                    #if($dcCreator.get("redbox:isPrimaryInvestigator"))[PI]#end
+                </li>
+            #end
             </ol>
         </dd>
         #end
