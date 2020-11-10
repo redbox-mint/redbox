@@ -13,8 +13,13 @@
         #else
         <dd>
             <ol>
-            #foreach($key in $creatorList.keySet())
-                #set($dcCreator = $creatorList.get($key))
+            #set ($aList = [] )
+            #foreach($key in [1..30])
+                #if($creatorList.get("$key"))
+                    #set($silent = $aList.add($creatorList.get("$key")))
+                #end
+            #end
+            #foreach($dcCreator in $aList)
                 <li>
                     #displayOptionalKey($dcCreator "foaf:title") #displayRequiredKey($dcCreator "foaf:givenName") #displayRequiredKey($dcCreator "foaf:familyName")
                 </li>
